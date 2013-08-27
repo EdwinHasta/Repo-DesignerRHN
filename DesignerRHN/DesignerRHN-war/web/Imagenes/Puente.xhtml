@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head> 
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:lightBox  width="350" height="300" iframe="true">
+            <h:outputLink value="faces/Prueba.xhtml">
+                <h:outputText value="PrimeFaces HomePage"/>
+            </h:outputLink>
+        </p:lightBox>
+
+        <p:commandButton  value="Ver Forma" id="ok" onclick="dlg2.show();"/>
+
+
+
+        <p:dialog     closable="false" resizable="false" draggable="false" id="ventana" header="Grupo Tipo Entidad" widgetVar="dlg2" modal="true" width="340" height="320" style="font-size: 12px; ">
+
+            <object  data="faces/Imagenes/Prueba.xhtml" width="310" height="320">
+                <embed wmode="transparent" src="faces/Prueba.xhtml" width="300" height="310"/>
+            </object>
+
+        </p:dialog> 
+    </h:body>
+</html>
+

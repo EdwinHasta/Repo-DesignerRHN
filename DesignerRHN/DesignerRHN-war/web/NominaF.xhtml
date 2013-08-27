@@ -1,0 +1,822 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>NominaF</title>
+
+        <style type="text/css"> 
+
+            .ui-felipe>.ui-datagrid-content {
+                border: none;
+            }
+
+            .ui-datagrid .ui-paginator {
+                font-size: 10px;
+                height: 20px;
+                width: 375px;
+                position: absolute;
+                top: 35px;
+                left: 255px;
+            }
+
+            .ui-datagrid .ui-paginator .ui-paginator-next,
+            .ui-datagrid .ui-paginator .ui-paginator-last,
+            .ui-datagrid .ui-paginator .ui-paginator-first,
+            .ui-datagrid .ui-paginator .ui-paginator-prev{
+                height: 15px;
+            }
+
+        </style>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">
+
+                <h:form id="form"> 
+                    <p:panel id="PanelTotal" header="Sistema de Recursos Humanos - Principal - Designer Software" style=" font-size: 12px; position: absolute; width: 685px; height: 530px;">  
+
+                        <p:growl id="idcualquiera" showDetail="true"/>
+
+
+                        <p:tabView id="tabMenu" dynamic="true" style=" height: 485px; font-size: 10px;" widgetVar="tabMenu">  
+
+          <!--      <p:ajax event="tabChange" listener="#{tabBean.onTabChange}" update=":form:growl"/>  --> 
+
+                            <p:tab title="Personal" id="Nomina">  
+
+                                <h:outputText id="fechas" style="position: absolute; left: 170px; top: 58px; width: 475px; text-align: right; color: #D20005" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
+
+                                <p:inputText id="menu" style="position: absolute; top: 30px; width: 610px; height: 15px; border-color: #6F0;" value="AQUI VA EL MENU :)" disabled="true" />
+
+                                <!-- Panel Izquierdo - Superior -->
+
+                                <fieldset style="height: 90px; width: 125px; display: block; position: absolute; border-radius: 10px; top: 70px;">
+                                    <legend style="color: #00F; font-family: Tahoma, Geneva, sans-serif; font-size: 12px;">Tipo Personal</legend>
+
+                                    <p:commandButton  style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 40px; height: 80px; position: absolute; top: 16px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" id="TipoPersonal" value="" />
+                                    <p:tooltip style="font-size: 12px" for="TipoPersonal">
+                                        CARGOS DESEMPEÑADOS: Observe y/o ingrese todos los cargos<br/>que el empleado ha desempeñado dentro de la empresa.
+                                    </p:tooltip>
+                                    <p:commandButton id="Activos" value="Activos" style="position: absolute; width: 89px;left: 47px; top: 16px; font-size: 9px;" actionListener="#{controlRemoto.activos()}" update="data, :form:alerta, TipoPersonal, panelInf " />
+                                    <p:tooltip style="font-size: 12px" for="Activos" value="Ver información del Personal Activo"  />
+
+                                    <p:commandButton id="Pensionados" value="Pensionados" style="position: absolute; left: 47px; top: 36px; width: 89px; font-size: 9px;" actionListener="#{controlRemoto.pensionados()}" update="data, :form:alerta, TipoPersonal, panelInf"/>
+                                    <p:tooltip style="font-size: 12px" for="Pensionados" value="Ver información del Personal Pensionado"  />
+
+                                    <p:commandButton id="Retirados" value="Retirados" style="position: absolute; left: 47px; top: 56px; width: 89px; font-size: 9px;" actionListener="#{controlRemoto.retirados()}" update="data, data:info, :form:alerta, TipoPersonal, panelInf"/>
+                                    <p:tooltip style="font-size: 12px" for="Retirados" value="Ver información del Personal Retirado"  />
+
+                                    <p:commandButton id="Aspirantes" value="Aspirantes"  style="position: absolute; left: 47px; top: 76px; width: 89px; font-size: 9px;" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, panelInf"/>
+                                    <p:tooltip style="font-size: 12px" for="Aspirantes" value="Ver información del Personal Aspirante"  />
+
+                                </fieldset>
+
+
+                                <!-- Panel Derecho - Superior -->
+
+                                <p:dataGrid   id="data" var="item" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" paginator="true"  
+                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
+                                              {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-felipe" first="#{controlRemoto.estadoEmpleado}" >
+
+                                    <fieldset id="set" style="height: 90px; width: 460px; display: block; position: absolute; border-radius: 10px; left: 165px; top: 70px;">
+                                        <legend style="color: #00F; font-family: Tahoma, Geneva, sans-serif; font-size: 12px;">Personal Activo </legend>
+
+                                        <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" styleClass="ui-felipe">
+
+                                            <p:outputLabel value="Codigo" id="cod" style="position: absolute; left: 12px; color: #006; font-family: Tahoma, Geneva, sans-serif;
+                                                           font-size: 11px; width: 63px; height: 20px; top: 20px;"/>
+                                            <p:inputText id="codigo" readonly="true"  value="#{item.empleado.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)};"
+                                                         style="position: absolute; left: 12px; top: 35px; width: 56px; height: 15px; font-family: Tahoma, Geneva, sans-serif;
+                                                         font-size: 10px;"/>
+                                            <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
+
+                                            <p:outputLabel value="Primer Apellido" id="pa" style="position: absolute; left: 80px; font-family: Tahoma, Geneva,sans-serif;
+                                                           color: #006; font-size: 11px; top: 20px;"  />
+                                            <p:inputText id="primerApellido" readonly="true" value="#{item.empleado.persona.primerapellido}" style="position: absolute;left: 80px;
+                                                         top: 35px; width: 85px; height: 15px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"/>
+
+                                            <p:outputLabel value="Segundo Apellido" id="sa" style="position: absolute; left: 177px; font-family: Tahoma, Geneva, sans-serif;
+                                                           color: #006; font-size: 11px; top: 20px;" />
+                                            <p:inputText id="segundoApellido" readonly="true" value="#{item.empleado.persona.segundoapellido}" style="position: absolute;
+                                                         left: 177px; top: 35px; height: 15px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; width: 85px;" />
+
+                                            <p:outputLabel value="Nombre" id="n" style="position: absolute; left: 274px; font-family: Tahoma, Geneva, sans-serif; color: #006;
+                                                           font-size: 11px; top: 20px;"  />
+                                            <p:inputText id="nombre" readonly="true" value="#{item.empleado.persona.nombre}" style="position: absolute; left: 274px; top: 35px; 
+                                                         height: 15px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; width: 108px;" />
+
+
+                                        </p:dataGrid>
+
+
+
+
+                                        <!-- Botones Con Imagen (3) -->
+
+                                        <p:commandButton style="background-image: url(Imagenes/buscarlaboral1.gif); position: absolute; top: 72px; width: 23px; height: 23px; background-size: 100% 100%; left: 12px; background-repeat: no-repeat; " id="buscarLaboral" value="" />
+                                        <p:tooltip style="font-size: 12px" for="buscarLaboral" value="Busqueda avanzada datos Laborales."  />
+
+                                        <p:commandButton style="background-image: url(Imagenes/buscarpersonal1.gif); position: absolute; left: 38px; top: 72px; width: 23px; height: 23px; background-size: 100% 100%; background-repeat: no-repeat; " id="buscarPersonal" value="" />
+                                        <p:tooltip style="font-size: 12px" for="buscarPersonal" value="Busqueda avanzada datos Personales."  />
+
+                                        <p:commandButton style="background-image: url(Imagenes/buscarrapida1.gif); position: absolute; left: 64px; top: 72px; width: 23px; height: 23px; background-size: 100% 100%; background-repeat: no-repeat; " id="busquedaRapida" value=""
+                                                         onclick="lvBr.show();"/>
+                                        <p:tooltip style="font-size: 12px" for="busquedaRapida" value="Busqueda Rapida."  />
+
+                                        <!-- Botones Buscar Empleado y Mostrar Todos --> 
+                                        <p:commandButton style="position: absolute; left: 184px; top: 72px; font-family: Tahoma, Geneva, sans-serif; font-size: 9px; width: 114px;"  id="BuscarEmpleado" value="Buscar Empleado..."
+                                                         update=":form:lvBuscarEmpleado" oncomplete="lvBE.show()" disabled="#{controlRemoto.buscarEmp}" />
+                                        <p:tooltip style="font-size: 12px" for="BuscarEmpleado">
+                                            Buscar un Empleado por Cédula,<br/>Nombre o Apellidos.
+                                        </p:tooltip>
+
+                                        <p:commandButton style="position: absolute; left: 299px; top: 72px; font-family: Tahoma, Geneva, sans-serif; font-size: 9px;  width: 94px;" id="MostrarTodos" value="Mostrar Todos"
+                                                         actionListener="#{controlRemoto.mostrarTodos()}" update=":form:tabMenu:data" disabled="#{controlRemoto.mostrarT}"/>
+                                        <p:tooltip style="font-size: 12px" for="MostrarTodos" value="Mostrar Todos los Empleados" />
+
+                                        <!-- Boton Hoja de Vida -->
+
+                                        <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/birrete1.gif); left: 409px; top: 15px; width: 49px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(item.empleado)}" action="hojaVida" />
+                                        <p:tooltip style="font-size: 12px" for="HojaDeVida">
+                                            Visualizar, Adicionar y/o Modificar<br/> datos personales del Empleado.
+                                        </p:tooltip>
+
+
+                                        <strong><h:outputText style="position: absolute; left: 403px; top: 80px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; color: #006; width: 89.25px;" value="Hoja de Vida"/></strong>
+                                    </fieldset>
+
+
+                                    <!-- Panel Central -->
+
+
+                                    <fieldset id="field" style="height: 230px; width: 610px; display: block; position: absolute; border-radius: 10px; top: 175px; left: 15px">
+                                        <legend style="color: #00F; font-family: Tahoma, Geneva, sans-serif; font-size: 12px;">Información Laboral</legend>
+
+                                        <!-- Etiquetas Panel Central -->
+
+
+
+
+                                        <p style="font-family: Tahoma, Geneva, sans-serif; color: #006"> 
+
+                                            <h:outputText style="position: absolute; left: 45px; top: 15px; font-size: 12px; font-weight: bold; color: #14388B; " value="Cargo desempeñado"/>
+                                            <h:outputText style="position: absolute; left: 45px; top: 52px; font-size: 12px; font-weight: bold; color: #14388B; " value="Fecha Contratación"/>
+                                            <h:outputText style="position: absolute; left: 45px; top: 87px; font-size: 12px; font-weight: bold; color: #14388B; " value="Norma Laboral"/>
+                                            <h:outputText style="position: absolute; left: 45px; top: 123px; font-size: 12px; font-weight: bold; color: #14388B; " value="Afiliaciones"/>
+                                            <h:outputText style="position: absolute; left: 45px; top: 159px; font-size: 12px; font-weight: bold; color: #14388B; " value="I.B.C"/>
+                                            <h:outputText style="position: absolute; left: 45px; top: 194px; font-size: 12px; font-weight: bold; color: #14388B; " value="Tipo Viajero"/>
+                                            <h:outputText style="position: absolute; left: 250px; top: 15px; font-size: 12px; font-weight: bold; color: #14388B; " value="Centro de Costo - Localización"/>
+                                            <h:outputText style="position: absolute; left: 250px; top: 52px; font-size: 12px; font-weight: bold; color: #14388B; " value="Tipo Trabajador"/>
+                                            <h:outputText style="position: absolute; left: 250px; top: 87px; font-size: 12px; font-weight: bold; color: #14388B; " value="Legislación Laboral"/>
+                                            <h:outputText style="position: absolute; left: 250px; top: 123px; font-size: 12px; font-weight: bold; color: #14388B; " value="Jornada"/>
+                                            <h:outputText style="position: absolute; left: 250px; top: 159px; font-size: 12px; font-weight: bold; color: #14388B; " value="Menor Valor Retención"/>
+                                            <h:outputText style="position: absolute; left: 250px; top: 194px; font-size: 12px; font-weight: bold; color: #14388B; " value="Vacaciones (Solo Consulta)"/>
+                                            <h:outputText style="position: absolute; left: 455px; top: 15px; font-size: 12px; font-weight: bold; color: #14388B; " value="Sueldo"/>
+                                            <h:outputText style="position: absolute; left: 455px; top: 52px; font-size: 12px; font-weight: bold; color: #14388B; " value="Tipo Salario (Reforma Laboral)"/>
+                                            <h:outputText style="position: absolute; left: 455px; top: 87px; font-size: 12px; font-weight: bold; color: #14388B; " value="Ubicación Geográfica"/>
+                                            <h:outputText style="position: absolute; left: 455px; top: 123px; font-size: 12px; font-weight: bold; color: #14388B; " value="Forma de Pago"/>
+                                            <h:outputText style="position: absolute; left: 455px; top: 159px; font-size: 12px; font-weight: bold; color: #14388B; " value="S.E.T."/>
+                                            <h:outputText style="position: absolute; left: 455px; top: 194px; font-size: 12px; font-weight: bold; color: #14388B; " value="Comprobantes de Pago"/>
+                                        </p>
+
+                                        <!-- Botones Panel Central -->
+
+                                        <p:commandButton id="CargoDesempeñado" value="" style="position: absolute; background-image: url(Imagenes/cargo.gif); width: 29px; height: 35px; top: 15px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" action="vigenciasC"  disabled="#{controlRemoto.acumulado}" actionListener="#{controlVigenciasCargos.recibirEmpleado(item.empleado.secuencia)}" />
+                                        <p:tooltip style="font-size: 12px" for="CargoDesempeñado">
+                                            CARGOS DESEMPEÑADOS: Observe y/o ingrese todos los cargos <br/>que el empleado ha desempeñado dentro de la empresa.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/tipocontrato.gif); width: 29px; height: 35px; top: 52px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="vigenciasTC" actionListener="#{controlVigenciasTiposContratos.recibirEmpleado(item.empleado.secuencia)}"  />
+                                        <p:tooltip style="font-size: 12px" for="FechaContratacion">
+                                            TIPOS CONTRATOS: Observe y/o ingrese todos los tipos<br/> de contratos que el empleado ha tenido con la empresa
+                                        </p:tooltip>
+
+                                        <p:commandButton id="NormaLaboral" value="" style="position: absolute; background-image: url(Imagenes/normalaboral.gif); width: 29px; height: 35px; top: 87px;left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="aficiones"/>
+                                        <p:tooltip style="font-size: 12px" for="NormaLaboral">
+                                            NORMAS LABORALES: Observe y/o ingrese <br/>la(s) norma(s) laboral(es) del empleado.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="Afiliaciones" value="" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 29px; height: 35px; top: 123px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="Afiliaciones" >
+                                            AFILIACIONES: Observe y/o ingrese todos las afiliaciones<br/> que el empleado tiene con los diferentes terceros.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/ibc.gif); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="IBC" value="I.B.C.: Observe y/o ingrese todos los históricos de I.B.C."  />
+
+                                        <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/viajero.gif); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="TipoViajero">
+                                            TIPOS VIAJEROS: Observe y/o ingrese todos los tipos<br/> de viajero que ha pertenecido el trabajador.
+                                        </p:tooltip>
+
+
+
+                                        <p:commandButton id="CentroDeCosto" value="" style="position: absolute; background-image: url(Imagenes/localizacion.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" action="VigenciaLocalizacion" actionListener="#{controlVigenciaLocalizacion.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="CentroDeCosto">
+                                            LOCALIZACIONES: Observe y/o ingrese los<br/> históricos de localización del empleado.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="TipoTrabajador" value="" style="position: absolute; background-image: url(Imagenes/tipotrabajador.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" action="VigenciaTipoTrabajador" actionListener="#{controlVigenciaTipoTrabajador.recibirEmpleado(item.empleado)}" />
+                                        <p:tooltip style="font-size: 12px" for="TipoTrabajador"  >
+                                            TIPOS TRABAJADORES: Observe y/o ingrese<br/> todos los históricos de tipo de trabajo.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="LegislacionLaboral" value="" style="position: absolute; background-image: url(Imagenes/contrato.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" action="LegislacionLaboral" actionListener="#{controlVigenciasContratos.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="LegislacionLaboral" >
+                                            LEGISLACIONES LABORALES: Observe y/o ingrese<br/> la legislación laboral a la cual pertenece.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="Jornada" value="" style="position: absolute; background-image: url(Imagenes/jornadalaboral.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" action="VigenciaJornada" actionListener="#{controlVigenciaJornada.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="Jornada" >
+                                            JORNADAS: Observe y/o ingrese las diferentes<br/> jornadas de trabajo que ha tenido el empleado.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="MenorValorRetencio" value="" style="position: absolute; background-image: url(Imagenes/retencion.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="MenorValorRetencio" >
+                                            MENORES VALORES DE RETENCION: Observe<br/> y/o ingrese todos los M.V.R.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="Vacaciones" value="" style="position: absolute; background-image: url(Imagenes/vacacion.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="Vacaciones">
+                                            VACACIONES: Observe todos los históricos de<br/> vacaciones que el empleado ha disfrutado.
+                                        </p:tooltip>
+
+
+
+                                        <p:commandButton id="Sueldo" value="" style="position: absolute; background-image: url(Imagenes/sueldo.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" action="VigenciaSueldo" actionListener="#{controlVigenciaSueldo.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="Sueldo" >
+                                            SUELDOS: Observe y/o ingrese todos los diferentes<br/> sueldos que ha tenido el empleado.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="TipoSalario" value="" style="position: absolute; background-image: url(Imagenes/reformalaboral.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" action="VigenciaReformaLaboral" actionListener="#{controlVigenciasReformasLaborales.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="TipoSalario" >
+                                            TIPOS SALARIOS: Observe y/o ingrese los<br/> tipos de salario del empleado.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="Ubicacion" value="" style="position: absolute; background-image: url(Imagenes/origen.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" disabled="#{controlRemoto.acumulado}" action="vigenciasUG" actionListener="#{controlVigenciasUbicaciones.recibirEmpleado(item.empleado.secuencia)}" />
+                                        <p:tooltip style="font-size: 12px" for="Ubicacion">
+                                            ORIGENES: Observe y/o ingrese los históricos<br/> de origen del empleado.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="FormaDePago" value="" style="position: absolute; background-image: url(Imagenes/pasivoestimado.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:tooltip style="font-size: 12px" for="FormaDePago">
+                                            FORMAS DE PAGO: Observe y/o ingrese los<br/> históricos de formas de pago.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="SET" value="" style="position: absolute; background-image: url(Imagenes/notacontable.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" disabled="#{controlRemoto.acumulado}" action="EmplSets" actionListener="#{controlSets.recibirEmpleado(item.empleado)}"/>
+                                        <p:tooltip style="font-size: 12px" for="SET" >
+                                            S.E.T.: Salario Equivalente Tributario.<br/> Calculo de retención en la fuente
+                                        </p:tooltip>
+
+                                        <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
+                                        <p:tooltip style="font-size: 12px" for="Comprobantes" >
+                                            COMPROBANTES DE PAGO: Observe todos los comprobantes<br/> de pago que ha tenido el empleado.
+                                        </p:tooltip>
+
+                                        <!-- Cajas de Texto -->
+
+                                        <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; border: none;" readonly="true" value="#{controlRemoto.vwActualesCargos.cargo.nombre}"  /> 
+                                        <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
+                                        <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
+                                        <p:inputText id="VAfiliaciones" style="position: absolute; left: 45px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesAfiliacionesSalud.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesSalud.tercerosSucursales.tercero.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tercerosSucursales.tercero.nombre}" />
+                                        <p:inputText id="VIBC" style="position: absolute; left: 45px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+                                        <p:inputText id="VTipoViajero" style="position: absolute; left: 45px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  readonly="true" value="#{controlRemoto.vwActualesVigenciasViajeros.tipoViajero.nombre}"/>
+
+                                        <p:inputText id="VCentroDeCosto" style="position: absolute; left: 250px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
+                                        <p:inputText id="VTipoTrabajador" style="position: absolute; left: 250px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
+                                        <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 250px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
+                                        <p:inputText id="VJornada" style="position: absolute; left: 250px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
+                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 250px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+                                        <p:inputText id="VVacaciones" style="position: absolute; left: 250px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+
+                                        <p:inputText id="VSueldo" style="position: absolute; left: 455px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.sueldo}"  />
+                                        <p:inputText id="VTipoSalario" style="position: absolute; left: 455px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
+                                        <p:inputText id="VUbicacion" style="position: absolute; left: 455px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
+                                        <p:inputText id="VFormaDePago" style="position: absolute; left: 455px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
+                                        <p:inputText id="VSET" style="position: absolute; left: 455px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+                                        <p:inputText id="VComprobantes" style="position: absolute; left: 455px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+                                    </fieldset>
+
+                                </p:dataGrid>
+
+
+                                <p:panel id="panelInf" style="border: none" >
+
+                                    <!-- Panel Acumulados y Novedades -->
+
+                                    <fieldset style="height: 35px; width: 62px; display: block; position: absolute; top: 420px; border-radius: 5px; left: 17px">
+
+                                        <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/acumulados.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />
+                                        <p:tooltip style="font-size: 12px" for="AcumuladosNomina">
+                                            ACUMULADOS DE NÓMINA: Observe todos los acumulados<br/> de nómina que el empleado ha tenido desde su ingreso.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="position: absolute; background-image: url(Imagenes/novedad.gif); width: 35px; height: 35px; background-repeat: no-repeat; background-size: 100% 100%; left: 39px; top: 7px;" />
+                                        <!--     <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" value="NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas y/o ocacionales que el empleado ha tenido desde su ingreso."  /> -->
+                                        <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" >
+                                            NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas 
+                                            <br/>
+                                            y/o ocacionales que el empleado ha tenido desde su ingreso.
+                                        </p:tooltip>
+
+                                    </fieldset>
+
+
+                                    <!-- Panel Evaluacion y Resultados -->
+
+                                    <fieldset style="height: 35px; width: 62px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 100px;">
+
+                                        <p:commandButton id="EvaluarPersona" value="" disabled="#{controlRemoto.evaluacion}" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />
+                                        <p:tooltip style="font-size: 12px" for="EvaluarPersona" value="EVALUAR PERSONAS: Ingrese a evaluar las personas a cargo."  />
+
+                                        <p:commandButton id="ResultadosEvaluaciones" value=""  style="position: absolute; background-image: url(Imagenes/escalafonsalarial.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 39px;" />
+                                        <p:tooltip style="font-size: 12px" for="ResultadosEvaluaciones">
+                                            RESULTADOS DE EVALUACIONES: Observe y/o ingrese<br/> los resultados de las evaluaciones.
+                                        </p:tooltip>
+
+                                    </fieldset>
+
+
+                                    <!-- Panel Salud Ocupacional-->
+
+                                    <fieldset style="height: 35px; width: 57px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 183px;">
+                                        <p:commandButton id="SaludOcupacional" value="" style="position: absolute; background-image: url(Imagenes/g_saludocupacional.gif); width: 60px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 5px;" />
+                                        <p:tooltip style="font-size: 12px" for="SaludOcupacional" >
+                                            SALUD OCUPACIONAL: Observe todo lo referente a servicio<br/> médico, dotaciones, entre otros, de la persona.
+                                        </p:tooltip>
+                                    </fieldset>
+
+                                    <!-- Panel Ingresos Act. Pen. y Asp.-->
+
+                                    <fieldset style="height: 35px; width: 100px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 262px;">
+
+                                        <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}"  style="position: absolute; background-image: url(Imagenes/ingreso.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />                            
+                                        <p:tooltip style="font-size: 12px" for="IngresoPersonal">
+                                            INGRESO DE PERSONAL: Permite ingresar los datos<br/> básicos laborales de un nuevo trabajador activo.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="InformacionJubilados" value="" disabled="#{controlRemoto.pensionado}"  style="position: absolute; background-image: url(Imagenes/pensionado.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 39px;" />
+                                        <p:tooltip style="font-size: 12px" for="InformacionJubilados" >
+                                            INFORMACIÓN ADICIONAL PARA JUBILADOS: Administre la<br/> información adicional de la persona jubilada.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="IngresoAspirantes" value="" disabled="#{controlRemoto.aspirante}"  style="position: absolute; background-image: url(Imagenes/perfil.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 75px;" />
+                                        <p:tooltip style="font-size: 12px" for="IngresoAspirantes">
+                                            INGRESO DE ASPIRANTES: ingresar los datos necesarios<br/> de un aspirante para una futura contratación.
+                                        </p:tooltip>
+
+                                    </fieldset>
+
+                                    <!-- Panel Hoja de Vida -->
+
+                                    <fieldset style="height: 35px; width: 62px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 383px;">
+
+                                        <p:commandButton id="InformacionAdicional" value="" disabled="#{controlRemoto.hv1}"  style="position: absolute; background-image: url(Imagenes/inconsistencia.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />
+                                        <p:tooltip style="font-size: 12px" for="InformacionAdicional">
+                                            INFORMACIÓN ADICIONAL ASPIRANTES: Administre<br/> la información de los aspirantes.
+                                        </p:tooltip>
+
+                                        <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="position: absolute; background-image: url(Imagenes/n_informes.gif); width: 35px; height: 35px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 39px;" />
+                                        <p:tooltip style="font-size: 12px" for="IngresoHojaDeVida">
+                                            INGRESO DE LA HOJA DE VIDA DEL EMPLEADO:Ingrese<br/> la Hoja de Vida de los Empleados.
+                                        </p:tooltip>
+
+                                    </fieldset>
+
+
+                                    <!-- Panel Reportes -->
+
+                                    <fieldset style="height: 35px; width: 30px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 466px;">
+                                        <p:commandButton id="ReportesLaborales" value="" style="position: absolute; background-image: url(Imagenes/reportesboton.gif); width: 35px; height: 32px; top: 7px; background-repeat: no-repeat; background-size: 100% 100%; left: 5px;" />
+                                        <p:tooltip style="font-size: 12px" for="ReportesLaborales">
+                                            REPORTES LABORALES: Permite Generar Reportes<br/> Preestablecidos de datos laborales.
+                                        </p:tooltip>
+                                    </fieldset>
+
+
+                                    <p:commandButton id="CargoDesempeñado11" value="" style="position: absolute; background-image: url(Imagenes/Designer.GIF); width: 122px; height: 42px; top: 423px; background-repeat: no-repeat; background-size: 100% 100%; left: 520px;" />
+
+                                    <em><h:outputText style="position: absolute; top: 472px; font-size: 11px; left: 17px" value="Bienvenido(a):"/></em>
+
+                                    <strong><h:outputText id="Usuario" style="position: absolute; top: 473px; left: 90px; font-size: 10px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+
+                                    <strong><h:outputText id="Empresa"  style="position: absolute; top: 473px; left: 280px; font-size: 10px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+
+                                </p:panel>
+                            </p:tab>  
+
+                            <p:tab title="Nomina" id="nomina">  
+
+                                <h:outputText id="fechas2" style="position: absolute; left: 170px; top: 35px; width: 475px; text-align: right;" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
+
+                                <fieldset style="position: absolute; border-radius: 10px; width: 610px; height: 110px; top: 50px">
+                                    <legend style="color:#009; font-size:12px">Propiedades de Nómina</legend>
+
+                                    <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 25px; top: 100px; font-size: 11px" value="Novedades de Nómina"/>
+                                    <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 185px; top: 100px; font-size: 11px"  value="Conceptos de Nómina"/>
+                                    <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 338px; top: 100px; font-size: 11px"  value="Formulas de Liquidación"/>
+                                    <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 506px; top: 100px; font-size: 11px"  value="Legislación Laboral"/>
+
+                                    <p:commandButton id="NovedadesNomina" value=" " style="position: absolute; left: 513px; top: 15px; width: 80px; height: 80px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                    <hr style="float: left; height: 110px; position: absolute; left: 474px; top: 2px;"/>
+
+                                    <p:commandButton id="ConceptosNomina" value=" " style="position: absolute; left: 355px; top: 15px; width: 80px; height: 80px;  background-image: url(Imagenes/nom_formulas.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                    <hr style="float: left; height: 110px; position: absolute; left: 316px; top: 2px;"/>
+
+                                    <p:commandButton id="FormulasLiquidacion" value=" " style="position: absolute; left: 197px; top: 15px; width: 80px; height: 80px;  background-image: url(Imagenes/nom_hojaconcepto.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                    <hr style="float: left; height: 110px; position: absolute; left: 158px; top: 2px;"/>
+
+                                    <p:commandButton id="LegislacionLaboral"  value=" " style="position: absolute; left: 39px; top: 15px; width: 80px; height: 80px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                </fieldset>
+
+                                <fieldset style="position: absolute; border-radius: 10px; width: 610px; height: 280px; top: 175px;">
+                                    <legend style="color:#009; font-size:12px">Opciones de Liquidación</legend>
+
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 160px; height: 130px; top: 20px;">
+
+                                        <p:selectOneRadio id="options" style="font-size: 11px;" layout="pageDirection">  
+                                            <f:selectItem itemLabel="Pagos Automáticos" itemValue="1" />  
+                                            <f:selectItem itemLabel="Pagos NO Automáticos" itemValue="2" />
+                                        </p:selectOneRadio> 
+
+                                        <hr style="position: absolute; top: 55px; width: 160px; left: 5px;"/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 35px; top: 65px;" value="Pagos Automaticos"/></strong>
+                                        <h:outputText style=" font-size: 11px; overflow: auto; position: absolute; left: 9px; top: 80px; width: 160px; height: 53px;" value="Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla." />
+
+                                    </fieldset>
+
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 160px; height: 100px; top: 170px;">
+
+                                        <strong><h:outputText  value="Estadisticas" style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 9px;"/></strong>
+
+                                        <h:outputText  style="font-size: 11px; position: absolute; left: 70px; top: 25px; width: 110px;" value="Facilita analizar los datos generados por la nómina acorde a parámetros seleccionados."/>
+
+                                        <p:commandButton value=" " id="LegislacionLaboral1" style="position: absolute; left: 5px; top: 8px; width: 60px; height: 90px; background-image: url(Imagenes/interrogante.gif);  background-repeat: no-repeat; background-size: 100% 100%; " />
+
+                                    </fieldset>
+
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 392px; height: 250px; top: 20px; left: 200px;">
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 5px;" value="Parámetros de Liquidación"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 70px; top: 25px; width: 140px; text-align: justify" value="Ingresar los parámetros por centro de costo a liquidar y fecha de liquidación."/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 175px;" value="Generar Liquidación"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 70px; top: 110px; width: 140px;" value="Ejecuta la liquidación acorde a los parametros establecidos con anterioridad."/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 90px;" value="Comprobantes de Pago"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 70px; top: 195px; width: 140px; text-align: justify" value="Muestra los resultados de la liquidación por empleado."/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 290px; top: 5px;" value="Borrar Liquidación"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 290px; top: 25px; width: 110px; text-align: justify" value="Elimina la liquidación actual para permitir correcciones."/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 290px; top: 90px;" value="Cerrar Liquidación"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 290px; top: 110px; width: 110px; text-align: justify" value="Proceso que deja en firme la liquidación y actualiza acumulados."/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 290px; top: 175px;" value="Reportes de Nómina"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 290px; top: 195px; width: 110px;" value="Genera reportes predefinidos referentes a la nómina."/>
+
+
+                                        <p:commandButton value=" " id="LegislacionLaboral2" style="position: absolute; left: 5px; top: 5px; width: 60px; height: 80px; background-image: url(Imagenes/nom_parametros.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                        <p:commandButton value=" " id="LegislacionLaboral3" style="position: absolute; left: 5px; top: 175px; width: 60px; height: 80px; background-image: url(Imagenes/nom_liquidar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                        <p:commandButton value=" " id="LegislacionLaboral4" style="position: absolute; left: 5px; top: 90px; width: 60px; height: 80px; background-image: url(Imagenes/nom_comprobante.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                        <hr style="float: left; height: 250px; position: absolute; left: 220px; top: 0px;"/>
+
+                                        <p:commandButton value=" " id="LegislacionLaboral5" style="position: absolute; left: 225px; top: 5px; width: 60px; height: 80px; background-image: url(Imagenes/nom_borrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                        <p:commandButton value=" " id="LegislacionLaboral6" style="position: absolute; left: 225px; top: 175px; width: 60px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteNomina"/>
+
+                                        <p:commandButton value=" " id="LegislacionLaboral7" style="position: absolute; left: 225px; top: 90px; width: 60px; height: 80px; background-image: url(Imagenes/reportesboton.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+
+                                    </fieldset>
+
+                                </fieldset>
+
+                                <em><h:outputText style="position: absolute; top: 472px; font-size: 11px; left: 17px" value="Bienvenido(a):"/></em>
+
+                                <strong><h:outputText id="Usuario2" style="position: absolute; top: 473px; left: 90px; font-size: 10px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+
+                                <strong><h:outputText id="Empresa2" style="position: absolute; top: 473px; left: 280px; font-size: 10px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+
+
+                            </p:tab>  
+
+                            <p:tab title="Integración" id="integracion">  
+
+                                <h:outputText id="fechas3" style="position: absolute; left: 170px; top: 35px; width: 475px; text-align: right;" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
+
+
+                                <fieldset style="width: 300px; height: 400px; position: absolute; top: 50px; border-radius: 10px; left: 5px;">
+                                    <legend style="font-size: 12px; color: blue;">Herramientas Contables</legend>
+
+                                    <p:commandButton id="btnPUC" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
+                                    <p:commandButton id="btnCC"  value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 120px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnTerceros" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 220px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnRepCont" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <h:outputText value="Plan de cuentas PUC" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 15px; color:blue; font-size:11px; font-weight: bold" />
+                                    <h:outputText value="Registra el código y el nombre de las cuentas contables que son afectadas con los movimientos
+                                                  de pago y descuento de cada uno de los conceptos de nómina." style="width: 215px; height: 35px; position: absolute; left: 80px; top: 32px; font-size:11px" />                            
+                                    <h:outputText value="Centros de costos y tipo centro costo" style="width: 215px; height: 12px; position: absolute; left: 80px; top: 120px; color: blue; font-size: 11px; font-weight: bold" />                            
+                                    <h:outputText value="Registra el código y nombre de cada uno de los Centros de Costos de la compañía a donde
+                                                  van a ser registrados los movimientos de pago y descuento de cada uno de los conceptos." style="width: 215px; height: 12px; position: absolute; left: 80px; top: 140px; font-size: 11px" />
+                                    <h:outputText value="Informacion de cada Tercero y su NIT" style=" height: 12px; position: absolute; left: 80px; top: 220px; color: blue; font-size: 11px; font-weight: bold" />
+                                    <h:outputText value="Registra el número de NIT y el Nombre de cada uno de los Terceros vinculados con la nómina,
+                                                  como EPS, Fondos de Pensiones, ARP, Cajas de Compensación entre otros." style="width: 215px; height: 12px; position: absolute; left: 80px; top: 240px; font-size: 11px" />
+                                    <h:outputText value="Reportes Contables Historicos De Nomina" style="height: 12px; position: absolute; left: 80px; top: 310px; color: blue; font-size: 11px; font-weight: bold" />                    
+                                    <h:outputText value="Contiene los informes contables generados por el aplicativo de nómina con el fin de soportar las
+                                                  contabilizaciones efectuadas por la nómina." style="width: 215px; height: 12px; position: absolute; left: 80px; top: 330px; font-size: 11px;"/>
+                                </fieldset>
+
+                                <fieldset style="width: 303px; height: 400px; position: absolute; left: 330px; top: 50px; border-radius: 10px;" >
+                                    <legend style="font-size: 12px; color: blue;">Herramientas De Integracion</legend>
+
+                                    <p:commandButton id="btnPILA" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 20px; background-image: url(Imagenes/IntPILA.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
+                                    <p:commandButton id="btnPresup" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 120px; background-image: url(Imagenes/IntPresupuesto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnTersoreria" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 220px; background-image: url(Imagenes/IntTesoreria.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnContabi" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 310px; background-image: url(Imagenes/IntContabilidad.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <h:outputText value="Integracion con PILA" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 15px; color: blue; font-size: 11px; font-weight: bold" />
+                                    <h:outputText value="Proceso de la Planilla Integrada de Liquidación de Aportes con el fìn de generar un archivo único para 
+                                                  la presentación y pago de los aportes a la seguridad Social y Parafiscales de la empresa, ante operadores
+                                                  como SOI, miplanilla,etc." style="width: 230px; height: 12px; position: absolute; left: 80px; top: 32px; font-size: 11px" />
+                                    <h:outputText value="Integracion con Presupuesto" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 120px; color: blue; font-size: 11px; font-weight: bold"/>
+                                    <h:outputText value="Genera una integración acorde a los parametros preestablecidos con presupuesto y de acuerdo con
+                                                  la prenómina y los saldos." style="width: 199px; height: 12px; position: absolute; left: 80px; top: 140px; font-size: 11px" />
+                                    <h:outputText value="Integracion con Tesoreria" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 220px; color: blue; font-size: 11px; font-weight: bold" />                
+                                    <h:outputText value="Genera una integración acorde a los parametros
+                                                  preestablecidos con Tesorería." style="width: 199px; height: 12px; position: absolute; left: 80px; top: 240px; font-size: 11px" />
+                                    <h:outputText value="Integracion con Contabilidad" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 310px; color: blue; font-size: 11px; font-weight: bold" />
+                                    <h:outputText value="Genera una integración acorde a los parametros
+                                                  preestablecidos con Contabilidad." style="width: 199px; height: 12px; position: absolute; left: 80px; top: 330px; font-size: 11px" />
+                                </fieldset>
+
+                                <em><h:outputText style="position: absolute; top: 472px; font-size: 11px; left: 17px" value="Bienvenido(a):"/></em>
+
+                                <strong><h:outputText id="Usuario3" style="position: absolute; top: 473px; left: 90px; font-size: 10px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+
+                                <strong><h:outputText id="Empresa3" style="position: absolute; top: 473px; left: 280px; font-size: 10px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+
+
+                            </p:tab> 
+
+                            <p:tab title="Gerencial" id="Gerencial" > 
+
+
+                                <fieldset style="position:absolute; width:600px; height: 400px; border-radius: 10px; top: 50px;">
+                                    <legend style="color: blue; font-size: 12px">Herramientas Gerenciales</legend>
+
+                                    <p:commandButton id="btnGRepor" value=" " style="position: absolute; width: 80px; height: 80px; left: 40px; top: 20px; background-image: url(Imagenes/GereGeneradorRepor.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnEstrucOrgan" value=" " style="position: absolute; width: 80px; height: 80px; left: 344px; top: 20px; background-image: url(Imagenes/GereEstructuraOrgan.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnSaludOcu" value=" " style="position: absolute; width: 80px; height: 80px; left: 192px; top: 20px; background-image: url(Imagenes/GereSaludOcupacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnConcepJuridicos" value=" " style="position: absolute; width: 80px; height: 80px; left: 494px; top: 20px; background-image: url(Imagenes/GereNormativo.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 40px; top:102px; text-align:center" value="Generador de Reportes..."/></strong>
+                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 191px; top:102px; text-align:center" value="Estructura Organizacional"/></strong>
+                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 345px; top:102px; text-align:center" value="Salud Ocupacional"/></strong>
+                                    <strong><h:outputText style="width:120px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 474px; top:102px; text-align:center" value="Conceptos Juridicos y Normatividad..."/></strong>
+                                    <hr style="width:560px; top:133.3px; position:absolute; height:0px" />
+
+                                    <p:commandButton id="btnAnalisisCargos" value=" " style="position: absolute; width: 80px; height: 80px; left: 40px; top: 153.3px; background-image: url(Imagenes/GereAnalisisCargos.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnGPlanGestion" value=" " style="position: absolute; width: 80px; height: 80px; left: 192px; top: 153.3px; background-image: url(Imagenes/GerePlanGestion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnEvaluacionComp" value=" " style="position: absolute; width: 80px; height: 80px; left: 344px; top: 153.3px; background-image: url(Imagenes/GereEvaluacionComp.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnEvaluacionDesemp" value=" " style="position: absolute; width: 80px; height: 80px; left: 494px; top: 153.3px; background-image: url(Imagenes/GereEvalDesempenho.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 40px; top:235.3px; text-align:center" value="Analisis de Cargos..."/></strong>
+                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 192px; top:235.3px; text-align:center" value="Plan de Gestion..."/></strong>
+                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 335px; top:235.3px; text-align:center" value="Evaluación Competencias..."/></strong>
+                                    <strong><h:outputText style="width:110px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 480px; top:235.3px; text-align:center" value="Evaluación Desempeño..."/></strong>
+                                    <hr style="width:560px; top:266.6px; position:absolute; height:0px" />
+
+                                    <p:commandButton id="btnEvaluacionSeleccion" value=" " style="position: absolute; width: 80px; height: 80px; left: 40px; top: 286.6px; background-image: url(Imagenes/GereEvalSeleccion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnCapacitacion" value=" " style="position: absolute; width: 80px; height: 80px; left: 192px; top: 286.6px; background-image: url(Imagenes/GereCapacitacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 80px; height: 80px; left: 344px; top: 286.6px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnProyecciones" value=" " style="position: absolute; width: 80px; height: 80px; left: 494px; top: 286.6px; background-image: url(Imagenes/GereProyeccion1.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 32px; top:368.6px; text-align:center" value="Evaluacion Selección..."/></strong>
+                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 182px; top:368.6px; text-align:center" value="Capacitacion..."/></strong>
+                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 334px; top:368.6px; text-align:center" value="Bienestar..."/></strong>
+                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 484px; top:368.6px; text-align:center" value="Proyecciones"/></strong>
+                                </fieldset>
+
+                            </p:tab>
+
+                            <p:tab title="Designer" id="Designer">
+
+                                <h:commandLink  style="position: absolute; left: 605px; top: 100px">  
+                                    <p:graphicImage value="Imagenes/XML.jpg"  width="30" height="30"/>  
+                                    <p:dataExporter type="xml" target="#{controlRemoto.tablaExportar}" fileName="Modulos"/> 
+                                </h:commandLink>
+
+                                <h:commandLink  style="position: absolute; left: 605px; top: 65px">  
+                                    <p:graphicImage value="Imagenes/excel.png"  width="30" height="30"/>  
+                                    <p:dataExporter type="xls" target="#{controlRemoto.tablaExportar}" fileName="Modulos"/> 
+                                </h:commandLink>
+
+                                <p:commandButton id="AcercaDe" value=" " style="position: absolute; width: 120px; height: 120px; background-image: url(Imagenes/b_designer.gif); background-repeat: no-repeat; background-size: 100% 100%;"/>
+
+                                <fieldset id="contModulos"  style="position:absolute; width:440px; border-radius: 10px; left: 140px; top: 35px;">
+                                    <legend style="color: blue; font-size: 12px;"><strong>Módulos</strong></legend>
+
+                                    <p:dataTable id="data1" var="modulo" style="font-size: 11px; width: 370px; " value="#{controlRemoto.listModulos}"
+                                                 rowKey="#{modulo.secuencia}" selection="#{controlRemoto.selectModulo}" selectionMode="single"
+                                                 scrollable="true" scrollHeight="70" scrollWidth="446" widgetVar="data1"
+                                                 filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">   
+
+                                        <p:ajax event="rowSelect" update=":form:tabMenu:Tablas"  listener="#{controlRemoto.cambiarTablas}" />  
+
+                                        <p:column id="moduloCodigo" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                            <f:facet name="header">  
+                                                <h:outputText value="Codigo" />  
+                                            </f:facet> 
+                                            <h:outputText value="#{modulo.nombrecorto}" />  
+                                        </p:column>  
+
+                                        <p:column id="moduloNombre" headerText="Nombre_Modulo" sortBy="#{modulo.nombre}" width="160" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                            <f:facet name="header">  
+                                                <h:outputText value="Nombre Módulo" />  
+                                            </f:facet> 
+                                            <h:outputText value="#{modulo.nombre}" />  
+                                        </p:column>  
+
+                                        <p:column id="moduloObs" sortBy="#{modulo.observacion}" width="160" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                            <f:facet name="header">  
+                                                <h:outputText value="Observacion" />  
+                                            </f:facet> 
+                                            <h:outputText value="#{modulo.observacion}" />  
+                                        </p:column>
+
+                                    </p:dataTable> 
+                                </fieldset>
+
+
+                                <fieldset id="contTablas"  style="position:absolute; border-radius: 10px; top: 180px; width: 600px; height: 280px">
+                                    <legend style="color: blue; font-size: 12px;"><strong>Tablas del Sistema</strong></legend>
+
+                                    <p:dataTable id="Tablas"  var="tablas" style="font-size: 11px;" value="#{controlRemoto.listTablas}"
+                                                 rowKey="#{tablas.secuencia}" selection="#{controlRemoto.selectTabla}" selectionMode="single"
+                                                 scrollable="true" scrollHeight="220" emptyMessage="No se encontraron registros para la selección"
+                                                 filteredValue="#{controlRemoto.filterListTablas}" widgetVar="tabl" >   
+
+                                        <p:ajax event="rowSelect" listener="#{controlRemoto.exportarTabla}" />
+
+                                        <p:column exportable="false"  width="16">
+                                            <p:commandButton id="desplegar"  value=""  actionListener="#{controlRemoto.infoTablas(tablas)}" update="Tablas, :form:VentanaTab"
+                                                             style=" width: 16px; height:16px ;background-image: url(Imagenes/revertir.gif); background-repeat: no-repeat; background-size: 100% 100%;" />
+                                            <p:tooltip for="desplegar" value="Despliega este registro en una pantalla."/>
+
+                                        </p:column>
+
+                                        <p:column id="tablasNombre" sortBy="#{tablas.nombre}" filterBy="#{tablas.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                            <f:facet name="header">  
+                                                <h:outputText value="Nombre" />  
+                                            </f:facet> 
+                                            <h:outputText value="#{tablas.nombre}"/>  
+                                        </p:column>  
+
+                                        <p:column id="tablasDescripcion" sortBy="#{tablas.descripcion}" filterBy="#{tablas.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                            <f:facet name="header">  
+                                                <h:outputText value="Descripcion" />  
+                                            </f:facet>
+                                            <h:outputText value="#{tablas.descripcion}" />  
+                                        </p:column>  
+
+                                    </p:dataTable>
+                                </fieldset>
+
+                            </p:tab>
+                        </p:tabView>  
+
+
+
+                    </p:panel>
+
+                    <p:dialog id="alerta" header="No hay datos" widgetVar="alerta"  resizable="false" draggable="false" modal="true" height="95" width="285px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="No existe personal #{controlRemoto.mensaje} dentro de la base de datos." style="position: absolute; left: 60px; top: 20px; width: 220px;" />
+                        <p:commandButton value="Aceptar" onclick="alerta.hide();" style="position: absolute; top: 60px; left: 200px" />
+                    </p:dialog>
+
+                    <p:dialog     closable="false" resizable="false" draggable="true" id="ventana" header="Historicos Cargos Desempeñados" widgetVar="dlg" modal="true" width="602" height="320" style="font-size: 12px; ">
+                        <object id="obj"  data="faces/vigenciasCargos.xhtml" width="627" height="340" style="position: absolute; left: -25px; top: -30px;">
+                            <embed wmode="transparent" src="faces/vigenciasCargos.xhtml" width="300" height="310"/>
+                        </object>
+                    </p:dialog>
+
+                    <p:dialog id="VentanaTab" header="Ventana Segun Tabla" widgetVar="VentanaTab"  resizable="false" draggable="false" modal="true" height="95" width="285px" style="font-size: 12px" closable="false">   
+                        <h:outputText value="#{controlRemoto.pantalla.nombre}" style="position: absolute; left: 60px; top: 20px; width: 220px;" />
+                        <p:commandButton value="Atras" onclick="VentanaTab.hide();" style="position: absolute; top: 60px; left: 200px" />
+                    </p:dialog>
+
+                    <p:dialog id="lvBr" header="Búsqueda Rápida" widgetVar="lvBr"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
+                        <p:dataTable  id="lvBusquedaRapida" style="font-size: 11px; width: 700px" var="item" value="#{controlRemoto.busquedaRapida}"
+                                      scrollable="true" scrollHeight="162" scrollWidth="720" widgetVar="busquedaR" 
+                                      filteredValue="#{controlRemoto.filterBusquedaRapida}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionado}" selectionMode="single" >
+
+                            <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarRap"/>
+
+
+                            <f:facet name="header" >  
+                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 22px; top: 18px"/>  
+                                <p:inputText id="globalFilter" onkeyup="busquedaR.filter()" style="width:150px; position: relative; left: -150px;" />  
+                                <p:watermark for="globalFilter" value="Ingresar valor a buscar" />
+                            </f:facet>
+
+                            <p:column  headerText="Codigo Empleado" filterOptions="" filterBy="#{item.empleado.codigoempleado}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.empleado.codigoempleado}" />  
+                            </p:column>  
+
+                            <p:column headerText="Primer Apellido" filterBy="#{item.empleado.persona.primerapellido}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.empleado.persona.primerapellido}" />  
+                            </p:column>  
+
+                            <p:column headerText="Segundo Apellido" filterBy="#{item.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
+                                <h:outputText value="#{item.empleado.persona.segundoapellido}" />  
+                            </p:column>  
+
+                            <p:column headerText="Nombre" width="160" filterBy="#{item.empleado.persona.nombre}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.empleado.persona.nombre}" />  
+                            </p:column>  
+
+                            <p:column headerText="Tipo" filterBy="#{item.tipoTrabajador.tipo}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.tipoTrabajador.tipo}" />  
+                            </p:column>
+                        </p:dataTable> 
+
+                        <p:commandButton id="buscarRap" value="Aceptar" actionListener="#{controlRemoto.busquedaRapida}"   update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:panelInf, buscarRap, form:tabMenu:data:MostrarTodos" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 580px"  disabled="#{controlRemoto.buscar}">
+                            <p:resetInput target=":form:lvBusquedaRapida:globalFilter" />
+                        </p:commandButton>
+                        <p:commandButton value="Atras" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 653px" actionListener="#{controlRemoto.busquedaRapidaAtras()}" update="buscarRap, lvBusquedaRapida">
+                            <p:resetInput target=":form:lvBusquedaRapida:globalFilter" />
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog id="lvBE" header="Empleados" widgetVar="lvBE"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
+                        <p:dataTable  id="lvBuscarEmpleado" style="font-size: 11px; width: 700px" var="item" value="#{controlRemoto.buscarEmplTipo}"
+                                      scrollable="true" scrollHeight="162" scrollWidth="720" widgetVar="buscarE" 
+                                      filteredValue="#{controlRemoto.filterBuscarEmpleado}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionadoBE}" selectionMode="single" >
+
+                            <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarEmpl"/>
+
+                            <f:facet name="header" >  
+                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 22px; top: 18px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="buscarE.filter()" style="width:150px; position: relative; left: -150px;"/>
+                                <p:watermark for="globalFilter" value="Ingresar valor a buscar" />
+                            </f:facet>
+
+                            <p:column  headerText="Codigo Empleado" filterOptions="" filterBy="#{item.empleado.codigoempleado}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.empleado.codigoempleado}" />  
+                            </p:column>  
+
+                            <p:column headerText="Primer Apellido" filterBy="#{item.empleado.persona.primerapellido}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.empleado.persona.primerapellido}" />  
+                            </p:column>  
+
+                            <p:column headerText="Segundo Apellido" filterBy="#{item.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
+                                <h:outputText value="#{item.empleado.persona.segundoapellido}" />  
+                            </p:column>  
+
+                            <p:column headerText="Nombre" width="160" filterBy="#{item.empleado.persona.nombre}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.empleado.persona.nombre}" />  
+                            </p:column>  
+                        </p:dataTable> 
+
+                        <p:commandButton id="buscarEmpl" value="Aceptar" onclick="lvBE.hide(), buscarE.clearFilters();" actionListener="#{controlRemoto.buscarEmpleado()}"   update=":form:tabMenu:data, lvBuscarEmpleado, buscarEmpl, form:tabMenu:data:MostrarTodos" disabled="#{controlRemoto.buscar}" style="position: absolute; top: 260px; left: 580px">
+                            <p:resetInput target=":form:lvBuscarEmpleado:globalFilter" />
+                        </p:commandButton>
+                        <p:commandButton value="Atras" onclick="lvBE.hide(), buscarE.clearFilters();" actionListener="#{controlRemoto.busquedaEmpleadoAtras()}" update="buscarEmpl, lvBuscarEmpleado"  style="position: absolute; top: 260px; left: 653px">
+                            <p:resetInput target=":form:lvBuscarEmpleado:globalFilter" />
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog   resizable="false" draggable="false" id="ViewHV" header="Hoja de Vida" widgetVar="ViewHV" modal="true" width="450" height="150" style="font-size: 12px; ">
+                        <p:panel id="ViewHojaVida" style="border: 0px; position: absolute; left: 0px;">
+                            <object id="obj"  data="faces/Pruebas.xhtml" width="420" height="120" >
+                                <embed wmode="transparent" src="Pruebas.xhtml" width="300" height="310"/>
+                            </object>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlRemoto.lab()}"/> 
+                    <p:hotkey bind="ctrl+f12" actionListener="#{controlRemoto.lab2()}"/> 
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

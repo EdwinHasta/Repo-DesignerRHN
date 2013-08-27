@@ -1,0 +1,739 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Históricos Jornadas" style=" font-size: 12px; position: absolute; width: 740px; height: 555px; left: 300px; top: 100px;text-align: left" >  
+                        <h:outputText style="position: absolute; left: 500px; top: 60px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlVigenciaJornada.empleado.persona.primerapellido} #{controlVigenciaJornada.empleado.persona.segundoapellido} #{controlVigenciaJornada.empleado.persona.nombre}">
+                        </h:outputText>  
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaJornada.guardadoGeneral()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciaJornada.verificarExportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.limpiarNuevaVJ()}" ajax="false">
+                                    <p:dataExporter type="xml"  target="#{controlVigenciaJornada.exportXML()}" fileName="#{controlVigenciaJornada.nombreXML}" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.validarExportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.validarNuevoRegistro()}"  process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Localizacion" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.validarBorradoVigencia()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Localizacion" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.verificarDuplicarVigencia()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Localizacion" />
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 700px; height: 222px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>Jornada del Trabajador</strong></legend>
+                            <!-- TABLA EMPLVIGENCIALOCALIZACION -->
+
+                            <p:dataTable id="datosVJEmpleado" var="infoVJ" rowKey="#{infoVJ.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 700px"   
+                                         value="#{controlVigenciaJornada.listVigenciasJornadas}" scrollable="true" scrollHeight="85" scrollWidth="700"
+                                         filteredValue="#{controlVigenciaJornada.filtrarVigenciasJornadas}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="3"  
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrar()}"/>
+
+                                <p:column headerText="Fecha" sortBy="#{infoVJ.fechavigencia}" filterBy="#{infoVJ.fechavigencia}" filterMatchMode="contains"  width="72" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoVJ.fechavigencia}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{infoVJ.fechavigencia}" id="editFechaVigencia"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVJ(indice)}" update="editFechaVigencia"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice)}" update="editFechaVigencia"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,'0')}" /> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Nombre Jornada" sortBy="#{infoVJ.jornadatrabajo.descripcion}" filterBy="#{infoVJ.jornadatrabajo.descripcion}" filterMatchMode="contains" id="vJNombreJornada" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoVJ.jornadatrabajo.descripcion}"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoVJ.jornadatrabajo.descripcion}"  id="editarNombreJornada" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice, 'NOMBREJORNADA', infoVJ.jornadatrabajo.descripcion)}" update="editarNombreJornada"/>
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,'0', '0','0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,'1')}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooNombreJornada" value="Nombre Jornada"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Tipo Descanso" sortBy="#{infoVJ.tipodescanso.descripcion}" filterBy="#{infoVJ.tipodescanso.descripcion}" filterMatchMode="contains" id="vJTipoDescanso" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoVJ.tipodescanso.descripcion}"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoVJ.tipodescanso.descripcion}"  id="editarTipoDescanso" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice, 'TIPODESCANSO', infoVJ.tipodescanso.descripcion)}" update="editarTipoDescanso"/>
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,'1', '0','0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,'2')}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTIpoDescanso" value="Tipo Descanso"/>
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>  
+                        </fieldset>
+
+                        <fieldset style="position: absolute;top: 327px;left: 10px;height: 180px;width: 335px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 10px; color: blue"><strong>Descanso tomado en tiempo</strong></legend>
+                            <p:dataTable id="datosVigenciaCT" var="info" rowKey="" rowIndexVar="indiceVCT" value="#{controlVigenciaJornada.listVigenciasCompensacionesTiempo}"
+                                         editable="true" editMode="cell" rows="3" filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesTiempo}"
+                                         scrollable="true" scrollHeight="100" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;">
+
+                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vCTFechaInicial"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechainicial}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info.fechainicial}" id="editarFechaInicialVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%; text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" update="editarFechaInicialVCT" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" process="@this" update="editarFechaInicialVCT"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCT(indiceVCT,'0')}" process="@this"/> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" style="font-size: 9px" id="fooFechaInicialVCT"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vCTFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechafinal}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info.fechafinal}" id="editarFechaFinalVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%; text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" update="editarFechaFinalVCT" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" process="@this" update="editarFechaFinalVCT"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCT(indiceVCT,'1')}" process="@this"/> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVCT"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Comentario" sortBy="#{info.comentario}" filterBy="#{info.comentario}" filterMatchMode="contains" id="vCTComentario" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.comentario}" style="width: 100px; font-size: 11px; text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.comentario}" id="editarComentarioVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCT(indiceVCT,'2')}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" process="@this" update="editarComentarioVCT"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Comentario" style="font-size: 9px" id="fooComentarioVCT"/>
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>
+                        </fieldset>
+
+
+                        <fieldset style="position: absolute;top: 327px;left: 375px;height: 180px;width: 335px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 10px; color: blue"><strong>Descanso tomado en dinero</strong></legend>
+                            <p:dataTable id="datosVigenciaCD" var="info2" rowKey="" rowIndexVar="indiceVCD" value="#{controlVigenciaJornada.listVigenciasCompensacionesDinero}"
+                                         editable="true" editMode="cell" rows="3" filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesDinero}"
+                                         scrollable="true" scrollHeight="100"  emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;">
+
+                                <p:column headerText="Fecha Inicial" sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vCDFechaInicial"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info2.fechainicial}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info2.fechainicial}" id="editarFechaInicialVCD" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" update="editarFechaInicialVCD" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" process="@this" update="editarFechaInicialVCD"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCD(indiceVCD,'0')}" process="@this"/> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" style="font-size: 9px" id="fooFechaInicialVCD"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" sortBy="#{info2.fechafinal}" filterBy="#{info2.fechafinal}" filterMatchMode="contains" id="vCDFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info2.fechafinal}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info2.fechafinal}" id="editarFechaFinalVCD" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" update="editarFechaFinalVCD" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" process="@this" update="editarFechaFinalVCD"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCD(indiceVCD,'1')}" process="@this"/> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVCD"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Comentario" sortBy="#{info2.comentario}" filterBy="#{info2.comentario}" filterMatchMode="contains" id="vCDComentario" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px;">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info2.comentario}" style="width: 100px; font-size: 11px; text-transform: uppercase"/>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info2.comentario}" id="editarComentarioVCD" style="font-size: 11px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCD(indiceVCD,'2')}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" process="@this" update="editarComentarioVCD"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Comentario" style="font-size: 9px" id="fooComentarioVCD"/>
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>
+                        </fieldset>
+
+                        <!-- Dialogo Jornadas Laborales -->
+                        <p:dialog header="Jornada Laboral" widgetVar="JornadaLaboralDialogo" draggable="false" resizable="false" closable="false" id="JornadaLaboralDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="720" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovJornadaLaboral" style="font-size: 11px; width: 700px" var="jLaboral" value="#{controlVigenciaJornada.listJornadasLaborales}" rowKey="#{jLaboral.secuencia}"
+                                         selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="700" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaJornada.filtrarJornadasLaborales}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarJL"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Jornada Laboral: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovJornadaLaboral.filter();" style="width:150px; position: relative; left: 20px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{jLaboral.descripcion}" width="200" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Jornada Laboral" />
+                                    </f:facet>
+                                    <h:outputText  value="#{jLaboral.descripcion}" />
+                                </p:column>
+                                <p:column filterBy="#{jLaboral.codigo}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText value="#{jLaboral.codigo}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarJL" style="position: relative; left: 450px" value="Aceptar" disabled="#{controlVigenciaJornada.aceptar}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" update="lovJornadaLaboral, aceptarJL, datosVJEmpleado" process="@this">
+                                <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasJL" style="position: relative; left: 500px" value="Atras" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" update="lovJornadaLaboral" process="@this">
+                                <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- Dialogo Jornadas Laborales -->
+                        <p:dialog header="Descripcion Descanso" widgetVar="TiposDescansosDialogo" draggable="false" resizable="false" closable="false" id="TiposDescansosDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="720" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovTipoDescanso" style="font-size: 11px; width: 700px" var="tDescanso" value="#{controlVigenciaJornada.listTiposDescansos}" rowKey="#{tDescanso.secuencia}"
+                                         selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="700" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaJornada.filtradoTiposDescansos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarTD"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Tipo Descanso: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovTipoDescanso.filter();" style="width:150px; position: relative; left: 20px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{tDescanso.descripcion}" width="200" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Descripción Descanso" />
+                                    </f:facet>
+                                    <h:outputText  value="#{tDescanso.descripcion}" />
+                                </p:column>
+                                <p:column filterBy="#{tDescanso.codigo}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText value="#{tDescanso.codigo}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarTD" style="position: relative; left: 450px" value="Aceptar" disabled="#{controlVigenciaJornada.aceptar}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}" update="lovTipoDescanso, aceptarTD, datosVJEmpleado" process="@this">
+                                <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasTD" style="position: relative; left: 500px" value="Atras" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters()" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}" update="lovTipoDescanso" process="@this">
+                                <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <p:commandButton style="position: absolute; left: 560px; top: 530px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVJEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 626px; top: 530px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 330px; top: 530px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" action="nomina" process="@this" />
+                    </p:panel>  
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaJornada.guardadoGeneral()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="confirmarGuardarVJ" header="ATENCIÓN...!" widgetVar="confirmarGuardarVJ"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar la nueva Vigencia Jornada?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardarVJ.hide();" actionListener="#{controlVigenciaJornada.guardarCambiosVJ()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaJornada.activarCtrlF11()}"/> 
+                </h:form>
+                <h:form id="formularioDialogos" >
+
+
+                    <p:dialog id="NuevoRegistroPagina" header="Nuevo Registro Para Ingreso" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="215" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="Seleccione la tabla para ingresar nuevo registro" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <h:outputText value="Localización del Empleado" style="position: absolute; top: 47px;left: 60px"/>
+                        <p:commandButton id="NuevoVigenciaJornada" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVJ.show()" update=":formularioDialogos:nuevaVJ" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <h:outputText value="Descansos tomados en tiempo" style="position: absolute; top: 92px;left: 60px"/>
+                        <p:commandButton id="NuevoVigenciaCompensacionTiempo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCT.show()" update=":formularioDialogos:nuevaVCT" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <h:outputText value="Descansos tomados en dinero" style="position: absolute; top: 137px;left: 60px"/>
+                        <p:commandButton id="NuevoVigenciaCompensacionDinero" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCD.show()" update=":formularioDialogos:nuevaVCD" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="Cancelar" style="position: absolute; top: 185px;left: 280px"/>
+                    </p:dialog>
+
+                    <p:dialog id="NuevoRegistroVJ" header="Nuevo Registro" widgetVar="NuevoRegistroVJ" closable="false" resizable="false"  draggable="false" modal="true" height="280" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVJ" style="border: none;">
+                            <strong><h:outputText value="Fecha Vigencia: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaVigencia" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" value="#{controlVigenciaJornada.nuevaVigencia.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaVigencia"/>
+                                <p:ajax event="change" update="nuevaFechaVigencia"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Nombre Jornada: " style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
+                            <p:inputText id="nuevaJornadaLaboral" value="#{controlVigenciaJornada.nuevaVigencia.jornadatrabajo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,'0','1','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar('1', 'NOMBREJORNADA')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaJornada.autocompletarNuevoyDuplicado('NOMBREJORNADA', controlVigenciaJornada.nuevaVigencia.jornadatrabajo.descripcion, '1')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnNuevoJornadaLaboral" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaJornada.asignarIndex(indice,'0','1','0')}" update="nuevaJornadaLaboral"/>   
+                            <p:watermark for="nuevaJornadaLaboral" value="Jornada Laboral" />
+
+                            <strong><h:outputText value="Tipo Descanso " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaTipoDescanso" value="#{controlVigenciaJornada.nuevaVigencia.tipodescanso.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,'1','1','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar('1', 'TIPODESCANSO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaJornada.autocompletarNuevoyDuplicado('TIPODESCANSO', controlVigenciaJornada.nuevaVigencia.tipodescanso.descripcion, '1')}" update="nuevaTipoDescanso"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoTipoDescanso" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaJornada.asignarIndex(indice,'1','1','0')}"/>   
+                            <p:watermark for="nuevaTipoDescanso" value="Tipo Descanso" />
+
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVJ()}" update="nuevaVJ" process="@this"/>
+                            <p:commandButton id="agregarVJ" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 250px;"  process="@this" actionListener="#{controlVigenciaJornada.agregarNuevaVJ()}" />
+                            <p:commandButton id="cancelarVJ" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVJ()}" update="nuevaVJ" onclick="NuevoRegistroVJ.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroVJ" header="Duplicar Registro" widgetVar="DuplicarRegistroVJ" closable="false" resizable="false"  draggable="false" modal="true" height="280" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVJ" style="border: none;">
+                            <strong><h:outputText value="Fecha Vigencia: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaVigencia" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlVigenciaJornada.duplicarVJ.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaVigencia"/>
+                                <p:ajax event="change" update="duplicarFechaVigencia"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Nombre Jornada: " style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
+                            <p:inputText id="duplicarJornadaLaboral" value="#{controlVigenciaJornada.duplicarVJ.jornadatrabajo.descripcion}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 110px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,'0','2','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar('2', 'NOMBREJORNADA')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaJornada.autocompletarNuevoyDuplicado('NOMBREJORNADA', controlVigenciaJornada.duplicarVJ.jornadatrabajo.descripcion, '2')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnDuplicarJornadaLaboral" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaJornada.asignarIndex(indice,'0','2','0')}"/>   
+                            <p:watermark for="duplicarJornadaLaboral" value="Jornada Laboral" />
+
+                            <strong><h:outputText value="Tipo Descanso: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarTipoDescanso" value="#{controlVigenciaJornada.duplicarVJ.tipodescanso.descripcion}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 150px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,'1','2','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar('2', 'TIPODESCANSO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaJornada.autocompletarNuevoyDuplicado('TIPODESCANSO', controlVigenciaJornada.duplicarVJ.tipodescanso.descripcion, '2')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarTipoDescanso" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaJornada.asignarIndex(indice,'1','2','0')}"/>   
+                            <p:watermark for="duplicarTipoDescanso" value="Tipo Descanso" />
+
+                            <p:commandButton id="limpiarDuplicadoVJ" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVJ()}" update="duplicarVJ" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVJ" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 250px;"  process="@this" actionListener="#{controlVigenciaJornada.confirmarDuplicar()}" />
+                            <p:commandButton id="cancelarDuplicadoVJ" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVJ()}" update="duplicarVJ" onclick="DuplicarRegistroVJ.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="NuevoRegistroVCT" header="Nuevo Registro Descanso Tomado en Tiempo" widgetVar="NuevoRegistroVCT" closable="false" resizable="false"  draggable="false" modal="true" height="290" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información para descanso tomado en tiempo" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVCT" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaInicialVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaInicialVCT"/>
+                                <p:ajax event="change" update="nuevaFechaInicialVCT"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaFinalVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaFinalVCT"/>
+                                <p:ajax event="change" update="nuevaFechaFinalVCT"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Comentario: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <p:inputTextarea id="nuevaComentarioVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
+                                <p:ajax event="change" update="nuevaComentarioVCT"  />
+                            </p:inputTextarea>
+                            <p:watermark for="nuevaComentarioVCT" value="Comentario" />
+
+                            <p:commandButton id="limpiarVCT" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCT()}" update="nuevaVCT" process="@this"/>
+                            <p:commandButton id="agregarVCT" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 250px;" actionListener="#{controlVigenciaJornada.agregarNuevaVCT()}" process="@this"  onclick="NuevoRegistroVCT.hide();"  />
+                            <p:commandButton id="cancelarVCT" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCT()}" update="nuevaVCT" onclick="NuevoRegistroVCT.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicadoRegistroVCT" header="Duplicado Registro Descanso Tomado en Tiempo" widgetVar="DuplicadoRegistroVCT" closable="false" resizable="false"  draggable="false" modal="true" height="290" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información para descanso tomado en tiempo" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicadoVCT" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicadoFechaInicialVCT" value="#{controlVigenciaJornada.duplicarVCT.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicadoFechaInicialVCT"/>
+                                <p:ajax event="change" update="duplicadoFechaInicialVCT"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicadoFechaFinalVCT" value="#{controlVigenciaJornada.duplicarVCT.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicadoFechaFinalVCT"/>
+                                <p:ajax event="change" update="duplicadoFechaFinalVCT"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Comentario: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <p:inputTextarea id="duplicadoComentarioVCT" value="#{controlVigenciaJornada.duplicarVCT.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
+                                <p:ajax event="change" update="duplicadoComentarioVCT"/>
+                            </p:inputTextarea>
+                            <p:watermark for="duplicadoComentarioVCT" value="Comentario" />
+
+                            <p:commandButton id="limpiarDuplicadoVCT" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCT()}" update="duplicadoVCT" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVCT" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 250px;" actionListener="#{controlVigenciaJornada.confirmarDuplicarVCT()}" process="@this"  onclick="DuplicadoRegistroVCT.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoVCT" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCT()}" update="duplicadoVCT" onclick="DuplicadoRegistroVCT.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="NuevoRegistroVCD" header="Nuevo Registro Descanso Tomado en Dinero" widgetVar="NuevoRegistroVCD" closable="false" resizable="false"  draggable="false" modal="true" height="290" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="Ingresar nueva información para descanso tomado en dinero" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVCD" style="border: none;">
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaInicialVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaInicialVCD"/>
+                                <p:ajax event="change" update="nuevaFechaInicialVCD"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaFinalVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaFinalVCD"/>
+                                <p:ajax event="change" update="nuevaFechaFinalVCD"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Comentario: "  style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <p:inputTextarea id="nuevaComentarioVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="change" update="nuevaComentarioVCD"/>
+                            </p:inputTextarea>
+                            <p:watermark for="nuevaComentarioVCD" value="Comentario" /> 
+
+                            <p:commandButton id="limpiarVCD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCD()}" update="nuevaVCD" process="@this"/>
+                            <p:commandButton id="agregarVCD" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 250px;" actionListener="#{controlVigenciaJornada.agregarNuevaVCD()}"  process="@this"  onclick="NuevoRegistroVCD.hide();"  />
+                            <p:commandButton id="cancelarVCD" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCD()}" update="nuevaVCD" onclick="NuevoRegistroVCD.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroVCD" header="Duplicado Registro Descanso Tomado en Dinero" widgetVar="DuplicarRegistroVCD" closable="false" resizable="false"  draggable="false" modal="true" height="290" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información para descanso tomado en dinero" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVCD" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaInicialVCD" value="#{controlVigenciaJornada.duplicarVCD.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaInicialVCD"/>
+                                <p:ajax event="change" update="duplicarFechaInicialVCD"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaFinalVCD" value="#{controlVigenciaJornada.duplicarVCD.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaFinalVCD"/>
+                                <p:ajax event="change" update="duplicarFechaFinalVCD"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Comentario: "  style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <p:inputText id="duplicarComentarioVCD" value="#{controlVigenciaJornada.duplicarVCD.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase" onclick="select();" >
+                            </p:inputText>
+                            <p:watermark for="duplicarComentarioVCD" value="Comentario" />
+
+                            <p:commandButton id="limpiarDuplicarVCD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCD()}" update="duplicarVCD" process="@this"/>
+                            <p:commandButton id="agregarDuplicarVCD" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 250px;" actionListener="#{controlVigenciaJornada.confirmarDuplicarVCD()}"  process="@this"  onclick="DuplicarRegistroVCD.hide();"  />
+                            <p:commandButton id="cancelarDuplicarVCD" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 250px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCD()}" update="duplicarVCD" onclick="DuplicarRegistroVCD.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaVigencia" header="Fecha Vigencia Jornada Trabajador" widgetVar="editarFechaVigencia" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaJornada.editarVJ.fechavigencia}" id="editFechaVigenciaCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaVigencia" value="Atras" onclick="editarFechaVigencia.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarNombreJornada" header="Nombre Jornada" widgetVar="editarNombreJornada" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaJornada.editarVJ.jornadatrabajo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarNombreJornada" value="Atras" onclick="editarNombreJornada.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarTipoDescanso" header="Tipo Descanso" widgetVar="editarTipoDescanso" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaJornada.editarVJ.tipodescanso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTipoDescanso" value="Atras" onclick="editarTipoDescanso.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <!-- Dialogos tabla Vigencia Prorrateo -->
+
+                    <p:dialog id="editarComentarioVCT" header="Comentario Descanso Tiempo" widgetVar="editarComentarioVCT" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaJornada.editarVCT.comentario}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarComentarioVCT" value="Atras" onclick="editarComentarioVCT.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialVCT" header="Fecha Inicial Descanso Tiempo" widgetVar="editarFechaInicialVCT" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaJornada.editarVCT.fechainicial}" id="editFechaInicialVCTCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaInicialVCT" value="Atras" onclick="editarFechaInicialVCT.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalVCT" header="Fecha Final Descanso Tiempo" widgetVar="editarFechaFinalVCT" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaJornada.editarVCT.fechafinal}" id="editFechaFinalVCTCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaFinalVCT" value="Atras" onclick="editarFechaFinalVCT.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <!-- Dialogos tabla Vigencia Prorrateo Proyecto -->
+
+
+                    <p:dialog id="editarComentarioVCD" header="Comentario Descanso Dinero" widgetVar="editarComentarioVCD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaJornada.editarVCD.comentario}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarComentarioVCD" value="Atras" onclick="editarComentarioVCD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialVCD" header="Fecha Inicial Descanso Tiempo" widgetVar="editarFechaInicialVCD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaJornada.editarVCD.fechainicial}" id="editFechaInicialVCDCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaInicialVCD" value="Atras" onclick="editarFechaInicialVCD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalVCD" header="Fecha Final Descanso Tiempo" widgetVar="editarFechaFinalVCD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaJornada.editarVCD.fechafinal}" id="editFechaFinalVCDCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaFinalVCD" value="Atras" onclick="editarFechaFinalVCD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="guardarCambiosVigenciaCompensacionTiempo" header="ATENCIÓN...!" widgetVar="guardarCambiosVigenciaCompensacionTiempo"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados en Descanso Tomado en Tiempo" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="guardarCambiosVigenciaCompensacionTiempo.hide();" style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaJornada.guardarCambiosVCT()}" process="@this" />
+                        <p:commandButton value="No" onclick="guardarCambiosVigenciaCompensacionTiempo.hide();"   style="position: absolute; top: 60px; left: 255px" actionListener="#{controlVigenciaJornada.cancelarModificacionVCT()}" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarCambiosVigenciaCompensacionTiempo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="guardarCambiosVigenciaCompensacionDinero" header="ATENCIÓN...!" widgetVar="guardarCambiosVigenciaCompensacionDinero"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados en Descanso Tomado en Dinero?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="guardarCambiosVigenciaCompensacionDinero.hide();" style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaJornada.guardarCambiosVCD()}" process="@this" />
+                        <p:commandButton value="No" onclick="guardarCambiosVigenciaCompensacionDinero.hide();"   style="position: absolute; top: 60px; left: 255px" actionListener="#{controlVigenciaJornada.cancelarModificacionVCD()}" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarCambiosVigenciaCompensacionDinero.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="negacionBorradoVJ" header="ATENCIÓN...!" widgetVar="negacionBorradoVJ"  resizable="false" draggable="false" modal="true" height="110" width="470px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para eliminar el registro Jornada Del Trabajador es NECESARIO que las tablas Descanso Tomado en Tiempo y Descanso Tomado en Dinero esten vacias." style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="Aceptar" onclick="negacionBorradoVJ.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="negacionNuevaVJ" header="ATENCIÓN...!" widgetVar="negacionNuevaVJ"  resizable="false" draggable="false" modal="true" height="105" width="460px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Es necesario ingresar la FECHA VIGENCIA para almacenar el nuevo registro." style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="Aceptar" onclick="negacionNuevaVJ.hide();" style="position: absolute; top: 70px; left: 320px" process="@this" />
+                    </p:dialog>
+                </h:form>
+                
+                <h:form id="formExportarVJ">
+                    <p:dataTable id="datosVJEmpleadoExportar" var="infoVJ" style="visibility: hidden; display: none;"                           
+                                 value="#{controlVigenciaJornada.listVigenciasJornadas}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS LOCALIZACIONES DE UN EMPLEADO --> 
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Vigencia" />
+                            </f:facet>
+                            <h:outputText value="#{infoVJ.fechavigencia}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Jornada Trabajo">                                  
+                            <f:facet name="header"><h:outputText value="Jornada Trabajo"/> </f:facet> 
+                            <h:outputText value="#{infoVJ.jornadatrabajo.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Tipo Descanso">                                  
+                            <f:facet name="header"><h:outputText value="Tipo Descanso"/> </f:facet> 
+                            <h:outputText value="#{infoVJ.tipodescanso.descripcion}" />
+                        </p:column>          
+                    </p:dataTable>
+                </h:form>
+                
+                <h:form id="formExportarVCT">
+                    <p:dataTable id="datosVCTVigenciaExportar" var="infoVCT" style="visibility: hidden; display: none;"                           
+                                 value="#{controlVigenciaJornada.listVigenciasCompensacionesTiempo}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS COMPENSACION TIEMPO DE UNA VIGENCIA --> 
+                        
+                        <p:column headerText="Fecha Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVCT.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVCT.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Comentario">                                  
+                            <f:facet name="header"><h:outputText value="Comentario"/> </f:facet> 
+                            <h:outputText value="#{infoVCT.comentario}" />
+                        </p:column>  
+                        
+                    </p:dataTable>
+                </h:form>
+                
+                <h:form id="formExportarVCD">
+                    <p:dataTable id="datosVCDVigenciaExportar" var="infoVCD" style="visibility: hidden; display: none;"                           
+                                 value="#{controlVigenciaJornada.listVigenciasCompensacionesDinero}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS COMPENSACION DINERO DE UNA VIGENCIA --> 
+                        <p:column headerText="Fecha Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVCD.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVCD.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Comentario">                                  
+                            <f:facet name="header"><h:outputText value="Comentario"/> </f:facet> 
+                            <h:outputText value="#{infoVCD.comentario}" />
+                        </p:column>  
+                    </p:dataTable>
+                </h:form>
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

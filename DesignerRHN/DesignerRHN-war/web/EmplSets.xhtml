@@ -1,0 +1,371 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Históricos Sets" style=" font-size: 12px; position: absolute; width: 685px; height: 440px; left: 300px; text-align: left" >  
+
+                        <h:outputText id="btn" style="position: absolute; left: 25px; top: 40px; background-image: url(Imagenes/icon-question-big.png); width:60px ;height:60px; background-repeat: no-repeat; background-size: 100% 100%; "/>
+                        <p:tooltip style="font-size: 12px" for="btn" value="Información del SET (Salario Equivalente Tributario)" showEffect="slide" hideEffect="slide"/>
+                        <p:inputText style="position: absolute; left: 90px; top: 80px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado" value="#{controlSets.empleado.persona.primerapellido} #{controlSets.empleado.persona.segundoapellido} #{controlSets.empleado.persona.nombre}"/>  
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 70px; left: 360px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlSets.guardarCambiosSets()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlSets.exportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.limpiarNuevaSets()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosSetsEmpleadoExportar" fileName="SetsXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroSet.show()" update=":formularioDialogos:nuevoSet" process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo SET" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.borrarSets()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar SET" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.duplicarSets()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar SET" />
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Reformas Laborales</strong></legend>
+                            <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
+
+                            <p:dataTable id="datosSetsEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
+                                         value="#{controlSets.setsEmpleado}" scrollable="true" scrollHeight="150" scrollWidth="642"
+                                         filteredValue="#{controlSets.filtrarSets}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="6"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:ajax event="filter" listener="#{controlSets.eventoFiltrar()}"/>
+
+                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="setsFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechainicial}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{info.fechainicial}" id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect" listener="#{controlSets.modificarSets(indice)}" update="editFechaInicial"/>
+                                                <p:ajax event="change" listener="#{controlSets.modificarSets(indice)}" />
+                                                <p:ajax event="select" listener="#{controlSets.cambiarIndice(indice,'0')}" /> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="setsFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechafinal}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{info.fechafinal}" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect" listener="#{controlSets.modificarSets(indice)}" update="editFechaFinal"/>
+                                                <p:ajax event="change" listener="#{controlSets.modificarSets(indice)}" />
+                                                <p:ajax event="select" listener="#{controlSets.cambiarIndice(indice,'1')}" /> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Porcentaje (%)" sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="setsPorcentaje" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.porcentaje}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.porcentaje}" id="editarPorcentaje" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlSets.modificarSets(indice)}"/>
+                                                <p:ajax event="select" listener="#{controlSets.cambiarIndice(indice, '2')}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Porcentaje (%)" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Promedio" sortBy="#{info.promedio}" filterBy="#{info.promedio}" filterMatchMode="contains" id="setsPromedio" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.promedio}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.promedio}" id="editarPromedio" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlSets.modificarSets(indice)}"/>
+                                                <p:ajax event="select" listener="#{controlSets.cambiarIndice(indice, '3')}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Promedio" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Tipo Set" sortBy="#{info.tiposet}" filterBy="#{info.tiposet}" filterMatchMode="contains" id="setsTipo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.tiposet}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.tiposet}" id="editarTipoSet" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlSets.modificarSets(indice)}"/>
+                                                <p:ajax event="select" listener="#{controlSets.cambiarIndice(indice, '4')}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Tipo Set" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Total Ingreso" sortBy="#{info.totalingresos}" filterBy="#{info.totalingresos}" filterMatchMode="contains" id="setsTotalIngresos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.totalingresos}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.totalingresos}" id="editarTotal" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlSets.modificarSets(indice)}"/>
+                                                <p:ajax event="select" listener="#{controlSets.cambiarIndice(indice, '5')}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Total Ingreso" />
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>  
+                        </fieldset>  
+
+                        <p:commandButton style="position: absolute; left: 530px; top: 415px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosSetsEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 596px; top: 415px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlSets.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 300px; top: 415px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" actionListener="#{controlSets.salir()}" action="nomina" process="@this" />
+
+                    </p:panel>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlSets.guardarCambiosSets()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlSets.activarCtrlF11()}"/> 
+                </h:form>
+                <h:form id="formularioDialogos" >
+                    <p:dialog id="NuevoRegistroSet" header="Nuevo Registro" widgetVar="NuevoRegistroSet" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevoSet" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlSets.nuevoSet.fechainicial}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaInicial"/>
+                                <p:ajax event="change" update="nuevaFechaInicial"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlSets.nuevoSet.fechafinal}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
+                                <p:ajax event="change" update="nuevaFechaFinal"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Porcentaje (%): " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <p:inputText id="nuevoPorcentaje" value="#{controlSets.nuevoSet.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
+                                <p:ajax event="change" update="nuevoPorcentaje"/>
+                            </p:inputText>
+
+                            <strong><h:outputText value="Promedio: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <p:inputText id="nuevoPromedio" value="#{controlSets.nuevoSet.promedio}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
+                                <p:ajax event="change" update="nuevoPromedio"/>
+                            </p:inputText>
+                            <strong><h:outputText value="Tipo Set: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="nuevoTipoSet" value="#{controlSets.nuevoSet.tiposet}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;">
+                                <p:ajax event="change" update="nuevoTipoSet"/>
+                            </p:inputText>
+                            <strong><h:outputText value="Total Ingresos: " style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
+                            <p:inputText id="nuevoTotalIngresos" value="#{controlSets.nuevoSet.totalingresos}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 320px;">
+                                <p:ajax event="change" update="nuevoTotalIngresos"/>
+                            </p:inputText>
+
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlSets.limpiarNuevaSets()}" update="nuevoSet" process="@this"/>
+                            <p:commandButton id="nuevoSetAceptar" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlSets.agregarNuevoSet()}" onclick="NuevoRegistroSet.hide();"  />
+                            <p:commandButton id="nuevoSetCancelar" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlSets.limpiarNuevaSets()}" update="nuevoSet" onclick="NuevoRegistroSet.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroSet" header="Duplicar Registro" widgetVar="DuplicarRegistroSet" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarSet" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlSets.duplicarSet.fechainicial}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaInicial"/>
+                                <p:ajax event="change" update="duplicarFechaInicial"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlSets.duplicarSet.fechafinal}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
+                                <p:ajax event="change" update="duplicarFechaFinal"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Porcentaje (%): " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <p:inputText id="duplicarPorcentaje" value="#{controlSets.duplicarSet.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;"/>
+
+                            <strong><h:outputText value="Promedio: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <p:inputText id="duplicarPromedio" value="#{controlSets.duplicarSet.promedio}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;"/>
+
+                            <strong><h:outputText value="Tipo Set: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="duplicarTipoSet" value="#{controlSets.duplicarSet.tiposet}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;"/>
+
+                            <strong><h:outputText value="Total Ingresos: " style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
+                            <p:inputText id="duplicarTotalIngresos" value="#{controlSets.duplicarSet.totalingresos}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 320px;"/>
+
+
+                            <p:commandButton id="limpiarDuplicadoSet" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlSets.limpiarDuplicarSets()}" update="duplicarSet" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoSet" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlSets.confirmarDuplicar()}" onclick="DuplicarRegistroSet.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoSet" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlSets.limpiarDuplicarSets()}" update="duplicarSet" onclick="DuplicarRegistroSet.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicial" header="Fecha Inicial SET" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlSets.editarSets.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" >
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaInicial" value="Atras" onclick="editarFechaInicial.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinal" header="Fecha Final SET" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlSets.editarSets.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinal.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarPorcentaje" header="Porcentaje (%)" widgetVar="editarPorcentaje" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlSets.editarSets.porcentaje}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarPorcentaje" value="Atras" onclick="editarPorcentaje.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarPromedio" header="Promedio" widgetVar="editarPromedio" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlSets.editarSets.promedio}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarPromedio" value="Atras" onclick="editarPromedio.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarTipoSet" header="Porcentaje (%)" widgetVar="editarTipoSet" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlSets.editarSets.tiposet}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTipoSet" value="Atras" onclick="editarTipoSet.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarTotalIngresos" header="Total Ingresos" widgetVar="editarTotalIngresos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlSets.editarSets.totalingresos}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTotalIngresos" value="Atras" onclick="editarTotalIngresos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                </h:form>
+                <h:form id="formExportar">
+                    <p:dataTable id="datosSetsEmpleadoExportar" var="info" style="visibility: hidden; display: none;"                           
+                                 value="#{controlSets.setsEmpleado}"> 
+                        <!--COLUMNAS TABLA DATOS SETS DE UN EMPLEADO --> 
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Inicial" />
+                            </f:facet>
+                            <h:outputText value="#{info.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Final" />
+                            </f:facet>
+                            <h:outputText value="#{info.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Porcentaje (%)">                                  
+                            <f:facet name="header"><h:outputText value="Porcentaje (%)"/> </f:facet> 
+                            <h:outputText value="#{info.porcentaje}" />
+                        </p:column>  
+
+                        <p:column headerText="Promedio">                                  
+                            <f:facet name="header"><h:outputText value="Promedio"/> </f:facet> 
+                            <h:outputText value="#{info.porcentaje}" />
+                        </p:column>
+
+                        <p:column headerText="Tipo Set">                                  
+                            <f:facet name="header"><h:outputText value="Tipo Set"/> </f:facet> 
+                            <h:outputText value="#{info.porcentaje}" />
+                        </p:column>
+
+                        <p:column headerText="Total Ingresos">                                  
+                            <f:facet name="header"><h:outputText value="Total Ingresos"/> </f:facet> 
+                            <h:outputText value="#{info.porcentaje}" />
+                        </p:column>
+
+
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

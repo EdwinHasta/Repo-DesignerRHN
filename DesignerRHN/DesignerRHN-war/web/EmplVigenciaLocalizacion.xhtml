@@ -1,0 +1,1148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Históricos de Localizaciones" style=" font-size: 12px; position: absolute; width: 740px; height: 555px; left: 300px; top: 100px;text-align: left" >  
+                        <h:outputText style="position: absolute; left: 500px; top: 60px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlVigenciaLocalizacion.empleado.persona.primerapellido} #{controlVigenciaLocalizacion.empleado.persona.segundoapellido} #{controlVigenciaLocalizacion.empleado.persona.nombre}">
+                        </h:outputText>  
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaLocalizacion.guardadoGeneral()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciaLocalizacion.verificarExportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVL()}" ajax="false">
+                                    <p:dataExporter type="xml"  target="#{controlVigenciaLocalizacion.exportXML()}" fileName="#{controlVigenciaLocalizacion.nombreXML}" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.validarExportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.validarNuevoRegistro()}"  process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Localizacion" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.validarBorradoVigencia()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Localizacion" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.verificarDuplicarVigencia()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Localizacion" />
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 700px; height: 222px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>Localización del Empleado</strong></legend>
+                            <!-- TABLA EMPLVIGENCIALOCALIZACION -->
+
+                            <p:dataTable id="datosVJEmpleado" var="infoDVL" rowKey="#{infoDVL.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 700px"   
+                                         value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}" scrollable="true" scrollHeight="85" scrollWidth="700"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtrarVL}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="3"  
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
+
+                                <p:column headerText="Fecha" sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoDVL.fechavigencia}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{infoDVL.fechavigencia}" id="editFechaVigencia"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaLocalizacion.modificarVL(indice)}" update="editFechaVigencia"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVL(indice)}" />
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(indice,'0')}" /> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Centro Costos" sortBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterMatchMode="contains" id="vlCentroCosto" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.centrocosto.codigoNombre}"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoDVL.localizacion.centrocosto.codigoNombre}"  id="editarNombreJornada" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVL(indice, 'CENTROCOSTO', infoDVL.localizacion.centrocosto.codigoNombre)}" update="editarNombreJornada"/>
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0', '0','0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(indice,'1')}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooNombreJornada" value="Centro Costo"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Localizacion" sortBy="#{infoDVL.localizacion.nombre}" filterBy="#{infoDVL.localizacion.nombre}" filterMatchMode="contains" id="vlLocalizacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.nombre}"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoDVL.localizacion.nombre}" id="editarLocalizacion" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"   > 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(indice,'2')}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooLocalizacion" value="Localizacion"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Motivo" sortBy="#{infoDVL.motivo.descripcion}" filterBy="#{infoDVL.motivo.descripcion}" filterMatchMode="contains" id="vlMotivo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoDVL.motivo.descripcion}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoDVL.motivo.descripcion}" id="editarMotivo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVL(indice, 'MOTIVOLOCALIZACION', infoDVL.motivo.descripcion)}" update="editarMotivo"/>                                                
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1', '0','0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(indice, '3')}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooMotivo" value="Motivo"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Proyecto" sortBy="#{infoDVL.proyecto.nombreproyecto}" filterBy="#{infoDVL.proyecto.nombreproyecto}" filterMatchMode="contains" id="vlProyecto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoDVL.proyecto.nombreproyecto}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoDVL.proyecto.nombreproyecto}" id="editarProyecto" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVL(indice, 'PROYECTO', infoDVL.proyecto.nombreproyecto)}" update="editarProyecto"/>
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'2', '0','0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(indice, '4')}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooProyecto" value="Proyecto"/>
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>  
+                        </fieldset>
+
+                        <fieldset style="position: absolute;top: 327px;left: 10px;height: 180px;width: 335px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 10px; color: blue"><strong>Prorrateo por Centros de Costo</strong></legend>
+                            <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosVigencia}" 
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosVigencia}" editable="true" editMode="cell" rows="3" 
+                                         scrollable="true" scrollHeight="100" scrollWidth="335" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width:">
+
+                                <p:column headerText="Centro de Costos" sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="vPCentroCosto" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.centrocosto.nombre}" style="width: 100px; font-size: 11px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.centrocosto.nombre}" id="editarCentroCostoVP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,'0')}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indiceVP,'0', '0','1')}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP, 'CENTROCOSTO', info.centrocosto.nombre)}" process="@this" update="editarCentroCostoVP"/>                                                
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCentroCostoVP" value="Centro de Costos"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="P(%)" sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="vCTComentario" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.porcentaje}" style="width: 100px; font-size: 11px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.porcentaje}" id="editarComentarioVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,'1')}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="P(%)" style="font-size: 9px" id="fooComentarioVCT"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vCTFechaInicial"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechainicial}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info.fechainicial}" id="editarFechaInicialVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" update="editarFechaInicialVCT" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,'2')}" process="@this"/> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" style="font-size: 9px" id="fooFechaInicialVCT"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vCTFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechafinal}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info.fechafinal}" id="editarFechaFinalVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" update="editarFechaFinalVCT" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,'3')}" process="@this"/> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVCT"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Proyecto" sortBy="#{info.proyecto.nombreproyecto}" filterBy="#{info.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 70px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.proyecto.nombreproyecto}" style="width: 100px; font-size: 11px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.proyecto.nombreproyecto}" id="editarProyectoVP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,'4')}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indiceVP,'1', '0','1')}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP, 'PROYECTO', info.proyecto.nombreproyecto)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Proyecto" style="font-size: 9px" id="fooProyectoVP"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="SubPorcentaje" sortBy="#{info.subporcentaje}" filterBy="#{info.subporcentaje}" filterMatchMode="contains" id="vPSubPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 90px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.subporcentaje}" style="width: 100px; font-size: 11px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.subporcentaje}" id="editarSubPorcentajeVP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,'5')}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="SubPorcentaje" style="font-size: 9px" id="fooSubPorcentajeVP"/>
+                                    </f:facet>
+                                </p:column> 
+
+                            </p:dataTable>
+                        </fieldset>
+
+
+                        <fieldset style="position: absolute;top: 327px;left: 375px;height: 180px;width: 335px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 10px; color: blue"><strong>Prorrateo por Proyecto</strong></legend>
+                            <p:dataTable id="datosVPPVigencia" var="info2" rowKey="#{info2.secuencia}" rowIndexVar="indiceVPP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectosVigencia}" 
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosProyectosVigencia}" editable="true" editMode="cell" rows="3"
+                                         scrollable="true" scrollHeight="100" scrollWidth="335" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width:">
+
+                                <p:column headerText="Proyecto" sortBy="#{info2.proyecto.nombreproyecto}" filterBy="#{info2.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 100px; font-size: 11px">
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info2.proyecto.nombreproyecto}" style="width: 100px; font-size: 11px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info2.proyecto.nombreproyecto}" id="editarProyectoVPP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVPP,'0')}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0', '0','2')}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPP(indiceVPP, 'PROYECTO', info2.proyecto.nombreproyecto)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooProyectosPP" value="Proyectos"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="P(%)" sortBy="#{info2.porcentaje}" filterBy="#{info2.porcentaje}" filterMatchMode="contains" id="vPPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info2.porcentaje}" style="width: 100px; font-size: 11px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info2.porcentaje}" id="editarPorcentajeVPP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVPP,'1')}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPP(indiceVPP)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="P(%)" style="font-size: 9px"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Inicial" sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vPPFechaInicial" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info2.fechainicial}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info2.fechainicial}" id="editarFechaInicialVPP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVPP,'2')}" process="@this"/>
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaLocalizacion.modificarVPP(indiceVPP)}" update="editarFechaInicialVPP" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPP(indiceVPP)}"  process="@this"/>
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" style="font-size: 9px" id="fooFechaInicialVPP"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" sortBy="#{info2.fechafinal}" filterBy="#{info2.fechafinal}" filterMatchMode="contains" id="vPPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px" > 
+                                    <p:cellEditor>   
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info2.fechafinal}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info2.fechafinal}" id="editarFechaFinalVPP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVPP,'3')}" process="@this"/>
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaLocalizacion.modificarVPP(indiceVPP)}" update="editarFechaFinalVPP" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPP(indiceVPP)}" process="@this"/>
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVPP"/>
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>
+                        </fieldset>
+
+                        <!-- DIALOGO L.O.V ESTATICO LOCALIZACION -->
+                        <p:dialog header="Localizacion" widgetVar="LocalizacionDialogo" draggable="false" resizable="false" closable="false" id="LocalizacionDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="720" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovLocalizacion" style="font-size: 11px; width: 700px" var="localizacion" value="#{controlVigenciaLocalizacion.estructuras}" rowKey="#{localizacion.secuencia}"
+                                         selection="#{controlVigenciaLocalizacion.estructuraSelecionada}" selectionMode="single" widgetVar="lovLocalizacion" scrollable="true" scrollWidth="700" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoEstructura}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarL"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Localizacion: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovLocalizacion.filter();" style="width:150px; position: relative; left: 20px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{localizacion.centrocosto.codigoNombre}" width="200" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Centro Costo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{localizacion.centrocosto.codigoNombre}" />
+                                </p:column>
+                                <p:column filterBy="#{localizacion.nombre}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre" />
+                                    </f:facet>
+                                    <h:outputText value="#{localizacion.nombre}" />
+                                </p:column>
+                                <p:column filterBy="#{localizacion.centrocosto.empresa.nombre}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre" />
+                                    </f:facet>
+                                    <h:outputText value="#{localizacion.centrocosto.empresa.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarL" style="position: relative; left: 450px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="LocalizacionDialogo.hide(), lovLocalizacion.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" update="lovLocalizacion, aceptarL, datosVJEmpleado" process="@this">
+                                <p:resetInput target=":form:lovLocalizacion:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasL" style="position: relative; left: 500px" value="Atras" onclick="LocalizacionDialogo.hide(), lovLocalizacion.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioEstructura()}" update="lovLocalizacion" process="@this">
+                                <p:resetInput target=":form:lovLocalizacion:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- DIALOGO L.O.V ESTATICO MOTIVOS -->
+                        <p:dialog header="Motivo" widgetVar="MotivoDialogo" draggable="false" resizable="false" closable="false" id="MotivoDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovMotivo" style="font-size: 11px; width: 430px" var="motivo" value="#{controlVigenciaLocalizacion.motivosLocalizaciones}" rowKey="#{motivo.secuencia}"
+                                         selection="#{controlVigenciaLocalizacion.motivoLocalizacionSelecionado}" selectionMode="single" widgetVar="lovMotivo" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoMotivosLocalizaciones}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarM"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Motivo: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovMotivo.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{motivo.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{motivo.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{motivo.descripcion}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Descripcion del Motivo" />
+                                    </f:facet>
+                                    <h:outputText value="#{motivo.descripcion}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarM" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" update="lovMotivo, aceptarM, datosVJEmpleado" process="@this">
+                                <p:resetInput target=":form:lovMotivo:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasM" style="position: relative; left: 250px" value="Atras" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioMotivoLocalizacion()}" update="lovMotivo" process="@this">
+                                <p:resetInput target=":form:lovMotivo:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- DIALOGO L.O.V ESTATICO PROYECTOS -->
+                        <p:dialog header="Lista Proyectos" widgetVar="ProyectosDialogo" draggable="false" resizable="false" closable="false" id="ProyectosDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="620" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovProyectos" style="font-size: 11px; width: 600px" var="proyecto" value="#{controlVigenciaLocalizacion.proyectos}" rowKey="#{proyecto.secuencia}"
+                                         selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectos" scrollable="true" scrollWidth="600" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarP"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Proyecto: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovProyectos.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{proyecto.codigo}" width="160" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo Proyecto" />
+                                    </f:facet>
+                                    <h:outputText  value="#{proyecto.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{proyecto.nombreproyecto}" width="160"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre del Proyecto" />
+                                    </f:facet>
+                                    <h:outputText value="#{proyecto.nombreproyecto}" />
+                                </p:column>
+                                <p:column filterBy="#{proyecto.empresa.nombre}" width="160"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Empresa" />
+                                    </f:facet>
+                                    <h:outputText value="#{proyecto.empresa.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarP" style="position: relative; left: 350px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="ProyectosDialogo.hide(), lovProyectos.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" update="lovProyectos, aceptarP, datosVJEmpleado" process="@this">
+                                <p:resetInput target=":form:lovProyectos:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasP" style="position: relative; left: 400px" value="Atras" onclick="ProyectosDialogo.hide(), lovProyectos.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyecto()}" update="lovProyectos" process="@this">
+                                <p:resetInput target=":form:lovProyectos:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+
+                        <!-- DIALOGO L.O.V ESTATICO CENTRO COSTO VIGENCIA PRORRATEO -->
+                        <p:dialog header="Localización Prorrateo" widgetVar="CentroCostosDialogo" draggable="false" resizable="false" closable="false" id="CentroCostosDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="720" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovCentroCostos" style="font-size: 11px; width: 700px" var="centro" value="#{controlVigenciaLocalizacion.centrosCostos}" rowKey="#{centro.secuencia}"
+                                         selection="#{controlVigenciaLocalizacion.centroCostoSeleccionado}" selectionMode="single" widgetVar="lovCentroCostos" scrollable="true" scrollWidth="700" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoCentroCostos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarCC"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Localización: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovCentroCostos.filter();" style="width:150px; position: relative; left: 20px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{centro.codigo}" width="200" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Código" />
+                                    </f:facet>
+                                    <h:outputText  value="#{centro.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{centro.nombre}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Localización" />
+                                    </f:facet>
+                                    <h:outputText value="#{centro.nombre}" />
+                                </p:column>
+                                <p:column filterBy="#{centro.empresa.nombre}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Empresa" />
+                                    </f:facet>
+                                    <h:outputText value="#{centro.empresa.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarCC" style="position: relative; left: 450px" value="Aceptar" actionListener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="CentroCostosDialogo.hide(), lovCentroCostos.clearFilters();" update="lovCentroCostos, aceptarL, datosVPVigencia" process="@this">
+                                <p:resetInput target=":form:lovCentroCostos:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasCC" style="position: relative; left: 500px" value="Atras" actionListener="#{controlVigenciaLocalizacion.cancelarCambioCentroCostoVP()}" onclick="CentroCostosDialogo.hide(), lovCentroCostos.clearFilters();" update="lovCentroCostos" process="@this">
+                                <p:resetInput target=":form:lovCentroCostos:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO -->
+                        <p:dialog header="Lista Proyectos" widgetVar="ProyectosDialogoVP" draggable="false" resizable="false" closable="false" id="ProyectosDialogoVP"  
+                                  showEffect="fade" hideEffect="fade" width="620" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovProyectosVP" style="font-size: 11px; width: 600px" var="proyecto" value="#{controlVigenciaLocalizacion.proyectos}" rowKey="#{proyecto.secuencia}"
+                                         selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVP" scrollable="true" scrollWidth="600" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVP"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Proyecto: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovProyectosVP.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{proyecto.codigo}" width="160" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo Proyecto" />
+                                    </f:facet>
+                                    <h:outputText  value="#{proyecto.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{proyecto.nombreproyecto}" width="160"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre del Proyecto" />
+                                    </f:facet>
+                                    <h:outputText value="#{proyecto.nombreproyecto}" />
+                                </p:column>
+                                <p:column filterBy="#{proyecto.empresa.nombre}" width="160"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Empresa" />
+                                    </f:facet>
+                                    <h:outputText value="#{proyecto.empresa.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarPVP" style="position: relative; left: 350px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}" onclick="ProyectosDialogoVP.hide(), lovProyectosVP.clearFilters();" update="lovProyectosVP, aceptarPVP, datosVPVigencia" process="@this">
+                                <p:resetInput target=":form:lovProyectosVP:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasPVP" style="position: relative; left: 400px" value="Atras" onclick="ProyectosDialogoVP.hide(), lovProyectosVP.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVP()}" update="lovProyectosVP" process="@this">
+                                <p:resetInput target=":form:lovProyectosVP:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO PROYECTO -->
+                        <p:dialog header="Lista Proyectos" widgetVar="ProyectosDialogoVPP" draggable="false" resizable="false" closable="false" id="ProyectosDialogoVPP"  
+                                  showEffect="fade" hideEffect="fade" width="620" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovProyectosVPP" style="font-size: 11px; width: 600px" var="proyecto" value="#{controlVigenciaLocalizacion.proyectos}" rowKey="#{proyecto.secuencia}"
+                                         selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVPP" scrollable="true" scrollWidth="600" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVPP"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Proyecto: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovProyectosVPP.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{proyecto.codigo}" width="160" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo Proyecto" />
+                                    </f:facet>
+                                    <h:outputText  value="#{proyecto.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{proyecto.nombreproyecto}" width="160"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre del Proyecto" />
+                                    </f:facet>
+                                    <h:outputText value="#{proyecto.nombreproyecto}" />
+                                </p:column>
+                                <p:column filterBy="#{proyecto.empresa.nombre}" width="160"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Empresa" />
+                                    </f:facet>
+                                    <h:outputText value="#{proyecto.empresa.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarPVPP" style="position: relative; left: 350px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}" onclick="ProyectosDialogoVPP.hide(), lovProyectosVPP.clearFilters();" update="lovProyectosVPP, aceptarPVPP, datosVPPVigencia" process="@this">
+                                <p:resetInput target=":form:lovProyectosVPP:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasPVPP" style="position: relative; left: 400px" value="Atras" onclick="ProyectosDialogoVPP.hide(), lovProyectosVPP.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVPP()}" update="lovProyectosVPP" process="@this">
+                                <p:resetInput target=":form:lovProyectosVPP:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+
+                        <p:commandButton style="position: absolute; left: 560px; top: 530px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVJEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 626px; top: 530px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 400px; top: 530px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 200px; top: 530px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ARCHIVOPLANO" value="Archivo Plano" process="@this" />
+
+                    </p:panel>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaLocalizacion.guardadoGeneral()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaLocalizacion.activarCtrlF11()}"/> 
+                </h:form>
+                <h:form id="formularioDialogos" >
+                    
+                    
+                    <p:dialog id="NuevoRegistroPagina" header="Nuevo Registro Para Ingreso" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="215" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="Seleccione la tabla para ingresar nuevo registro" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <h:outputText value="Localización del Empleado" style="position: absolute; top: 47px;left: 60px"/>
+                        <p:commandButton id="NuevoVigenciaLocalizacion" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVL.show()" update=":formularioDialogos:nuevaVL" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <h:outputText value="Prorrateo por Centros de Costos" style="position: absolute; top: 92px;left: 60px"/>
+                        <p:commandButton id="NuevoVigenciaProrrateo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVP.show()" update=":formularioDialogos:nuevaVP" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <h:outputText value="Prorrateo por Proyecto" style="position: absolute; top: 137px;left: 60px"/>
+                        <p:commandButton id="NuevoVigenciaProrrateoProyecto" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" actionListener="#{controlVigenciaLocalizacion.validarRegistroVPP()}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="Cancelar" style="position: absolute; top: 185px;left: 280px"/>
+                    </p:dialog>
+
+                    <p:dialog id="NuevoRegistroVL" header="Nuevo Registro" widgetVar="NuevoRegistroVL" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVL" style="border: none;">
+                            <strong><h:outputText value="Fecha Vigencia: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaVigencia" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" value="#{controlVigenciaLocalizacion.nuevaVigencia.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaVigencia"/>
+                                <p:ajax event="change" update="nuevaFechaVigencia"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Centro Costo: " style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
+                            <p:inputText id="nuevaCentroCosto" value="#{controlVigenciaLocalizacion.nuevaVigencia.localizacion.centrocosto.codigoNombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','1','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletar('1', 'CENTROCOSTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicado('CENTROCOSTO', controlVigenciaLocalizacion.nuevaVigencia.localizacion.centrocosto.codigoNombre, '1')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnNuevoCentroCosto" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','1','0')}" update="nuevaCentroCosto"/>   
+                            <p:watermark for="nuevaCentroCosto" value="Centro Costo" />
+
+                            <strong><h:outputText value="Localizacion: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaLocalizacion" value="#{controlVigenciaLocalizacion.nuevaVigencia.localizacion.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;"/>
+                            <p:watermark for="nuevaLocalizacion" value="Localizacion" />
+
+                            <strong><h:outputText value="Motivo: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:inputText id="nuevaMotivo" value="#{controlVigenciaLocalizacion.nuevaVigencia.motivo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','1','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletar('1', 'MOTIVOLOCALIZACION')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicado('MOTIVOLOCALIZACION', controlVigenciaLocalizacion.nuevaVigencia.motivo.descripcion, '1')}" update="nuevaMotivo"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnNuevoMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','1','0')}"/>   
+                            <p:watermark for="nuevaMotivo" value="Motivo" />
+
+                            <strong><h:outputText value="Proyecto: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
+                            <p:inputText id="nuevaProyecto" value="#{controlVigenciaLocalizacion.nuevaVigencia.proyecto.nombreproyecto}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 230px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'2','1','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletar('1', 'PROYECTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicado('PROYECTO', controlVigenciaLocalizacion.nuevaVigencia.proyecto.nombreproyecto, '1')}" update="nuevaProyecto"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 230px;  " id="btnNuevoProyecto" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'2','1','0')}"/>   
+                            <p:watermark for="nuevaProyecto" value="Proyecto" />
+
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVL()}" update="nuevaVL" process="@this"/>
+                            <p:commandButton id="agregarVL" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 300px;"  process="@this" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVL()}" onclick="NuevoRegistroVL.hide();"  />
+                            <p:commandButton id="cancelarVL" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 300px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVL()}" update="nuevaVL" onclick="NuevoRegistroVL.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroVL" header="Duplicar Registro" widgetVar="DuplicarRegistroVL" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVL" style="border: none;">
+                            <strong><h:outputText value="Fecha Vigencia: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaVigencia" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlVigenciaLocalizacion.duplicarVL.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaVigencia"/>
+                                <p:ajax event="change" update="duplicarFechaVigencia"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Centro Costo: " style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCentroCosto" value="#{controlVigenciaLocalizacion.duplicarVL.localizacion.centrocosto.codigoNombre}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 110px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','2','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletar('2', 'CENTROCOSTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicado('CENTROCOSTO', controlVigenciaLocalizacion.duplicarVL.localizacion.centrocosto.codigoNombre, '2')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnDuplicarCentroCosto" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','2','0')}"/>   
+                            <p:watermark for="duplicarCentroCosto" value="Centro Costo" />
+
+                            <strong><h:outputText value="Localizacion: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarLocalizacion" value="#{controlVigenciaLocalizacion.duplicarVL.localizacion.nombre}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 150px;"/>
+                            <p:watermark for="duplicarLocalizacion" value="Localizacion" />
+
+                            <strong><h:outputText value="Motivo: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:inputText id="duplicarMotivo" value="#{controlVigenciaLocalizacion.duplicarVL.motivo.descripcion}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 190px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','2','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletar('2', 'MOTIVOLOCALIZACION')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicado('MOTIVOLOCALIZACION', controlVigenciaLocalizacion.duplicarVL.localizacion.nombre, '2')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnDuplicarMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','2','0')}"/>   
+                            <p:watermark for="duplicarMotivo" value="Motivo" />
+
+                            <strong><h:outputText value="Proyecto: " style="font-size: 14px; position: absolute; top: 240px; left: 50px" /></strong>
+                            <p:inputText id="duplicarProyecto" value="#{controlVigenciaLocalizacion.duplicarVL.proyecto.nombreproyecto}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 240px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'2','2','0')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletar('2', 'PROYECTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicado('PROYECTO', controlVigenciaLocalizacion.duplicarVL.proyecto.nombreproyecto, '2')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 240px;  " id="btnDuplicarProyecto" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'2','2','0')}"/>   
+                            <p:watermark for="duplicarProyecto" value="Proyecto" />
+
+                            <p:commandButton id="limpiarDuplicadoVL" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVL()}" update="duplicarVL" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVL" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 300px;"  process="@this" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicar()}" onclick="DuplicarRegistroVL.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoVL" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 300px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVL()}" update="duplicarVL" onclick="DuplicarRegistroVL.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="NuevoRegistroVP" header="Nuevo Registro Prorrateo de Centros Costos" widgetVar="NuevoRegistroVP" closable="false" resizable="false"  draggable="false" modal="true" height="410" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información para prorrateo centros costos" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVP" style="border: none;">
+
+                            <strong><h:outputText value="Centro Costo: " style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
+                            <p:inputText id="nuevaCentroCostoVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.centrocosto.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','1','1')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletarVP('1', 'CENTROCOSTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVP('CENTROCOSTO', controlVigenciaLocalizacion.nuevaVigenciaP.centrocosto.nombre, '1')}" update="nuevaCentroCostoVP"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 70px;  " id="btnNuevoCentroCostoVP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','1','1')}"/>   
+                            <p:watermark for="nuevaCentroCostoVP" value="Centro Costo" />
+
+                            <strong><h:outputText value="Porcentaje: " style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
+                            <p:inputText id="nuevaPorcentajeVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" >
+                                <p:ajax event="change" update="nuevaPorcentajeVP"  />
+                            </p:inputText>
+                            <p:watermark for="nuevaPorcentajeVP" value="P(%)" />
+
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 170px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaInicialVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.fechainicial}" style="font-size: 10px; position: absolute;  top: 170px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaInicialVP"/>
+                                <p:ajax event="change" update="nuevaFechaInicialVP"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 220px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaFinalVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.fechafinal}" style="font-size: 10px; position: absolute;  top: 220px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaFinalVP"/>
+                                <p:ajax event="change" update="nuevaFechaFinalVP"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Proyecto: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="nuevaProyectoVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.proyecto.nombreproyecto}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','1','1')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletarVP('1', 'PROYECTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVP('PROYECTO', controlVigenciaLocalizacion.nuevaVigenciaP.proyecto.nombreproyecto, '1')}" update="nuevaProyectoVP"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 270px;  " id="btnNuevoProyectoVP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','1','1')}"/>   
+                            <p:watermark for="nuevaProyectoVP" value="Proyecto" />
+
+                            <strong><h:outputText value="SubPorcentaje: " style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
+                            <p:inputText id="nuevaSubPorcentajeVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.subporcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 320px;">
+                                <p:ajax event="change" update="nuevaSubPorcentajeVP"  />
+                            </p:inputText>
+                            <p:watermark for="nuevaSubPorcentajeVP" value="SubPorcentaje" />
+
+                            <p:commandButton id="limpiarVP" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 370px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" process="@this"/>
+                            <p:commandButton id="agregarVP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVP()}" process="@this"  onclick="NuevoRegistroVP.hide();"  />
+                            <p:commandButton id="cancelarVP" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" onclick="NuevoRegistroVP.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+                    
+                    <p:dialog id="DuplicadoRegistroVP" header="Duplicado Registro Prorrateo de Centros Costos" widgetVar="DuplicadoRegistroVP" closable="false" resizable="false"  draggable="false" modal="true" height="410" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información para prorrateo centros costos" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicadoVP" style="border: none;">
+
+                            <strong><h:outputText value="Centro Costo: " style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
+                            <p:inputText id="duplicadoCentroCostoVP" value="#{controlVigenciaLocalizacion.duplicarVP.centrocosto.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','2','1')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletarVP('2', 'CENTROCOSTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVP('CENTROCOSTO', controlVigenciaLocalizacion.duplicarVP.centrocosto.nombre, '2')}" update="duplicadoCentroCostoVP"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 70px;  " id="btnDuplicadoCentroCostoVP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','2','1')}"/>   
+                            <p:watermark for="duplicadoCentroCostoVP" value="Centro Costo" />
+
+                            <strong><h:outputText value="Porcentaje: " style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
+                            <p:inputText id="duplicadoPorcentajeVP" value="#{controlVigenciaLocalizacion.duplicarVP.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" >
+                            </p:inputText>
+                            <p:watermark for="duplicadoPorcentajeVP" value="P(%)" />
+
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 170px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicadoFechaInicialVP" value="#{controlVigenciaLocalizacion.duplicarVP.fechainicial}" style="font-size: 10px; position: absolute;  top: 170px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicadoFechaInicialVP"/>
+                                <p:ajax event="change" update="duplicadoFechaInicialVP"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 220px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicadoFechaFinalVP" value="#{controlVigenciaLocalizacion.duplicarVP.fechafinal}" style="font-size: 10px; position: absolute;  top: 220px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicadoFechaFinalVP"/>
+                                <p:ajax event="change" update="duplicadoFechaFinalVP"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Proyecto: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="duplicadoProyectoVP" value="#{controlVigenciaLocalizacion.duplicarVP.proyecto.nombreproyecto}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','2','1')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletarVP('2', 'PROYECTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVP('PROYECTO', controlVigenciaLocalizacion.duplicarVP.proyecto.nombreproyecto, '2')}" update="duplicadoProyectoVP"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 270px;  " id="btnDuplicadoProyectoVP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'1','2','1')}"/>   
+                            <p:watermark for="duplicadoProyectoVP" value="Proyecto" />
+
+                            <strong><h:outputText value="SubPorcentaje: " style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
+                            <p:inputText id="duplicadoSubPorcentajeVP" value="#{controlVigenciaLocalizacion.duplicarVP.subporcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 320px;"/>
+                            <p:watermark for="duplicadoSubPorcentajeVP" value="SubPorcentaje" />
+
+                            <p:commandButton id="limpiarDuplicadoVP" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 370px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVP()}" update="duplicadoVP" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicarVP()}" process="@this"  onclick="DuplicadoRegistroVP.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoVP" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVP()}" update="duplicadoVP" onclick="DuplicadoRegistroVP.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+
+
+                    <p:dialog id="NuevoRegistroVPP" header="Nuevo Registro Prorrateo de Proyecto" widgetVar="NuevoRegistroVPP" closable="false" resizable="false"  draggable="false" modal="true" height="320" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información para prorrateo proyecto" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVPP" style="border: none;">
+
+                            <strong><h:outputText value="Proyecto: " style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
+                            <p:inputText id="nuevaProyectoVPP" value="#{controlVigenciaLocalizacion.nuevaVigenciaPP.proyecto.nombreproyecto}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','1','2')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletarVPP('1', 'PROYECTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVPP('PROYECTO', controlVigenciaLocalizacion.duplicarVPP.proyecto.nombreproyecto, '1')}" update="nuevaProyectoVPP"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 70px;  " id="btnNuevoProyectoVPP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','1','2')}"/>   
+                            <p:watermark for="nuevaProyectoVPP" value="Proyecto" />
+
+                            <strong><h:outputText value="Porcentaje: "  style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
+                            <p:inputText id="nuevaPorcentajeVPP" value="#{controlVigenciaLocalizacion.nuevaVigenciaPP.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="change" update="nuevaPorcentajeVPP"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaPorcentajeVPP" value="P(%)" />
+
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 170px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaInicialVPP" value="#{controlVigenciaLocalizacion.nuevaVigenciaPP.fechainicial}" style="font-size: 10px; position: absolute;  top: 170px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaInicialVPP"/>
+                                <p:ajax event="change" update="nuevaFechaInicialVPP"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 220px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaFinalVPP" value="#{controlVigenciaLocalizacion.nuevaVigenciaPP.fechafinal}" style="font-size: 10px; position: absolute;  top: 220px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaFinalVPP"/>
+                                <p:ajax event="change" update="nuevaFechaFinalVPP"/>
+                            </p:calendar>
+
+                            <p:commandButton id="limpiarVPP" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" process="@this"/>
+                            <p:commandButton id="agregarVPP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVPP()}"  process="@this"  onclick="NuevoRegistroVPP.hide();"  />
+                            <p:commandButton id="cancelarVPP" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" onclick="NuevoRegistroVPP.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+                    
+                    <p:dialog id="DuplicarRegistroVPP" header="Duplicado Registro Prorrateo de Proyecto" widgetVar="DuplicarRegistroVPP" closable="false" resizable="false"  draggable="false" modal="true" height="320" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información para prorrateo proyecto" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVPP" style="border: none;">
+
+                            <strong><h:outputText value="Proyecto: " style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
+                            <p:inputText id="duplicarProyectoVPP" value="#{controlVigenciaLocalizacion.duplicarVPP.proyecto.nombreproyecto}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','2','2')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletarVPP('2', 'PROYECTO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVPP('PROYECTO', controlVigenciaLocalizacion.duplicarVPP.proyecto.nombreproyecto, '2')}" update="duplicarProyectoVPP"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 70px;  " id="btnDuplicarProyectoVPP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,'0','1','2')}"/>   
+                            <p:watermark for="duplicarProyectoVPP" value="Proyecto" />
+
+                            <strong><h:outputText value="Porcentaje: "  style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
+                            <p:inputText id="duplicarPorcentajeVPP" value="#{controlVigenciaLocalizacion.duplicarVPP.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();" >
+                            </p:inputText>
+                            <p:watermark for="duplicarPorcentajeVPP" value="P(%)" />
+
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 170px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaInicialVPP" value="#{controlVigenciaLocalizacion.duplicarVPP.fechainicial}" style="font-size: 10px; position: absolute;  top: 170px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaInicialVPP"/>
+                                <p:ajax event="change" update="duplicarFechaInicialVPP"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 220px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaFinalVPP" value="#{controlVigenciaLocalizacion.duplicarVPP.fechafinal}" style="font-size: 10px; position: absolute;  top: 220px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaFinalVPP"/>
+                                <p:ajax event="change" update="duplicarFechaFinalVPP"/>
+                            </p:calendar>
+
+                            <p:commandButton id="limpiarDuplicarVPP" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVPP()}" update="duplicarVPP" process="@this"/>
+                            <p:commandButton id="agregarDuplicarVPP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicarVPP()}"  process="@this"  onclick="DuplicarRegistroVPP.hide();"  />
+                            <p:commandButton id="cancelarDuplicarVPP" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVPP()}" update="duplicarVPP" onclick="DuplicarRegistroVPP.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaVigencia" header="Fecha Vigencia Historicos Localizacion" widgetVar="editarFechaVigencia" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaLocalizacion.editarVL.fechavigencia}" id="editFechaVigenciaCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaVigencia" value="Atras" onclick="editarFechaVigencia.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarNombreJornada" header="Centro Costo" widgetVar="editarCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVL.localizacion.centrocosto.codigoNombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCentroCosto" value="Atras" onclick="editarCentroCosto.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarLocalizacion" header="Localizacion" widgetVar="editarLocalizacion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVL.localizacion.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarLocalizacion" value="Atras" onclick="editarLocalizacion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarMotivoD" header="Motivo" widgetVar="editarMotivoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVL.motivo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarMotivo" value="Atras" onclick="editarMotivoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarProyecto" header="Proyecto" widgetVar="editarProyecto" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVL.proyecto.nombreproyecto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarProyecto" value="Atras" onclick="editarProyecto.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <!-- Dialogos tabla Vigencia Prorrateo -->
+
+                    <p:dialog id="editarCentroCostoVP" header="Centro Costos" widgetVar="editarCentroCostoVP" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVP.centrocosto.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCentroCostoVP" value="Atras" onclick="editarCentroCostoVP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarPorcentajeVP" header="Porcentaje (%)" widgetVar="editarPorcentajeVP" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVP.porcentaje}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarPorcentajeVP" value="Atras" onclick="editarPorcentajeVP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarProyectoVP" header="Proyecto" widgetVar="editarProyectoVP" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVP.proyecto.nombreproyecto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarProyectoVP" value="Atras" onclick="editarProyectoVP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarSubPorcentajeVP" header="SubPorcentaje" widgetVar="editarSubPorcentajeVP" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVP.subporcentaje}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarSubPorcentajeVP" value="Atras" onclick="editarSubPorcentajeVP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialVP" header="Fecha Inicial Prorrateo Centro Costo" widgetVar="editarFechaInicialVP" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaLocalizacion.editarVP.fechainicial}" id="editFechaInicialVPCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaInicialVP" value="Atras" onclick="editarFechaInicialVP.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalVP" header="Fecha Final Prorrateo Centro Costo" widgetVar="editarFechaFinalVP" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaLocalizacion.editarVP.fechafinal}" id="editFechaFinalVPCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaFinalVP" value="Atras" onclick="editarFechaFinalVP.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <!-- Dialogos tabla Vigencia Prorrateo Proyecto -->
+
+
+                    <p:dialog id="editarPorcentajeVPP" header="Porcentaje (%)" widgetVar="editarPorcentajeVPP" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVPP.porcentaje}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarPorcentajeVPP" value="Atras" onclick="editarPorcentajeVPP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarProyectoVPP" header="Proyecto" widgetVar="editarProyectoVPP" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaLocalizacion.editarVPP.proyecto.nombreproyecto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarProyectoVPP" value="Atras" onclick="editarProyectoVPP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialVPP" header="Fecha Inicial Prorrateo Proyecto" widgetVar="editarFechaInicialVPP" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaLocalizacion.editarVPP.fechainicial}" id="editFechaInicialVPPCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaInicialVPP" value="Atras" onclick="editarFechaInicialVPP.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalVPP" header="Fecha Final Prorrateo Proyecto" widgetVar="editarFechaFinalVPP" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaLocalizacion.editarVPP.fechafinal}" id="editFechaFinalVPPCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaFinalVPP" value="Atras" onclick="editarFechaFinalVPP.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="guardarCambiosVigenciaProrrateo" header="ATENCIÓN...!" widgetVar="guardarCambiosVigenciaProrrateo"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados en Prorrateo por Centro Costo" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="guardarCambiosVigenciaProrrateo.hide();" style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaLocalizacion.guardarCambiosVP()}" process="@this" />
+                        <p:commandButton value="No" onclick="guardarCambiosVigenciaProrrateo.hide();"   style="position: absolute; top: 60px; left: 255px" actionListener="#{controlVigenciaLocalizacion.cancelarModificacionVP()}" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarCambiosVigenciaProrrateo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="guardarCambiosVigenciaProrrateoProyecto" header="ATENCIÓN...!" widgetVar="guardarCambiosVigenciaProrrateoProyecto"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados en Prorrateo por Proyecto?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();" style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaLocalizacion.guardarCambiosVPP()}" process="@this" />
+                        <p:commandButton value="No" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();"   style="position: absolute; top: 60px; left: 255px" actionListener="#{controlVigenciaLocalizacion.cancelarModificacionVPP()}" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="negacionNuevoRegistroVPP" header="ATENCIÓN...!" widgetVar="negacionNuevoRegistroVPP"  resizable="false" draggable="false" modal="true" height="110" width="450px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para ingresar un registro Prorrateo por Proyectos es necesario que exista un dato o mas de Prorrateos por Centro Costo" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="Aceptar" onclick="negacionNuevoRegistroVPP.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="negacionBorradoVL" header="ATENCIÓN...!" widgetVar="negacionBorradoVL"  resizable="false" draggable="false" modal="true" height="110" width="470px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para eliminar el registro Vigencia Localizacion es NECESARIO que las tablas Prorrateos por Centro Costos y Prorrateos por Proyectos esten vacias." style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="Aceptar" onclick="negacionBorradoVL.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="negacionNuevaVL" header="ATENCIÓN...!" widgetVar="negacionNuevaVL"  resizable="false" draggable="false" modal="true" height="110" width="450px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Es necesario ingresar la FECHA VIGENCIA para almacenar la nueva vigencia." style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="Aceptar" onclick="negacionNuevaVL.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                </h:form>
+                <h:form id="formExportarVL">
+                    <p:dataTable id="datosVJEmpleadoExportar" var="infoVL" style="visibility: hidden; display: none;"                           
+                                 value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS LOCALIZACIONES DE UN EMPLEADO --> 
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Vigencia" />
+                            </f:facet>
+                            <h:outputText value="#{infoVL.fechavigencia}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Centro Costo">                                  
+                            <f:facet name="header"><h:outputText value="Centro Costo"/> </f:facet> 
+                            <h:outputText value="#{infoVL.localizacion.centrocosto.codigoNombre}" />
+                        </p:column>
+
+                        <p:column headerText="Localizacion">                                  
+                            <f:facet name="header"><h:outputText value="Localizacion"/> </f:facet> 
+                            <h:outputText value="#{infoVL.localizacion.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Motivo">                                  
+                            <f:facet name="header"><h:outputText value="Motivo"/> </f:facet> 
+                            <h:outputText value="#{infoVL.motivo.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Proyecto">                                  
+                            <f:facet name="header"><h:outputText value="Proyecto"/> </f:facet> 
+                            <h:outputText value="#{infoVL.proyecto.nombreproyecto}" />
+                        </p:column>                     
+                    </p:dataTable>
+                </h:form>
+                
+                <h:form id="formExportarVP">
+                    <p:dataTable id="datosVPVigenciaExportar" var="infoVP" style="visibility: hidden; display: none;"                           
+                                 value="#{controlVigenciaLocalizacion.vigenciasProrrateosVigencia}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS PRORRATEOS DE UNA VIGENCIA --> 
+                        <p:column headerText="Centro de Costo">                                  
+                            <f:facet name="header"><h:outputText value="Centro de Costo"/> </f:facet> 
+                            <h:outputText value="#{infoVP.centrocosto.nombre}" />
+                        </p:column>  
+
+                        <p:column headerText="Porcentaje(%)">                                  
+                            <f:facet name="header"><h:outputText value="Porcentaje(%)"/> </f:facet> 
+                            <h:outputText value="#{infoVP.porcentaje}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVP.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVP.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Proyecto">                                  
+                            <f:facet name="header"><h:outputText value="Proyecto"/> </f:facet> 
+                            <h:outputText value="#{infoVP.proyecto.nombreproyecto}" />
+                        </p:column>     
+                        
+                        <p:column headerText="SubPorcentaje">                                  
+                            <f:facet name="header"><h:outputText value="SubPorcentaje"/> </f:facet> 
+                            <h:outputText value="#{infoVP.subporcentaje}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                
+                <h:form id="formExportarVPP">
+                    <p:dataTable id="datosVPPVigenciaExportar" var="infoVPP" style="visibility: hidden; display: none;"                           
+                                 value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectosVigencia}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS PRORRATEOS DE UNA VIGENCIA --> 
+                        <p:column headerText="Proyecto">                                  
+                            <f:facet name="header"><h:outputText value="Proyecto"/> </f:facet> 
+                            <h:outputText value="#{infoVPP.proyecto.nombreproyecto}" />
+                        </p:column>    
+
+                        <p:column headerText="Porcentaje(%)">                                  
+                            <f:facet name="header"><h:outputText value="Porcentaje(%)"/> </f:facet> 
+                            <h:outputText value="#{infoVPP.porcentaje}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVPP.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoVPP.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

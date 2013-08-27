@@ -1,0 +1,576 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Historia Tipo Trabajador" style=" font-size: 12px; position: absolute; width: 685px; height: 545px; left: 300px; top: 105px; text-align: left" >  
+
+                        <h:outputText id="btn" style="position: absolute; left: 25px; top: 40px; background-image: url(Imagenes/icon-question-big.png); width:60px ;height:60px; background-repeat: no-repeat; background-size: 100% 100%; "/>
+                        <p:tooltip style="font-size: 12px" for="btn" value="Ingrese el tipo de trabajador, puede utilizar la lista de valores; si el empleado es Pensionado o Retirado utilice los botones continuos para ingresar los datos faltantes" showEffect="slide" hideEffect="slide"/>
+                        <p:inputText style="position: absolute; left: 90px; top: 80px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado" value="#{controlVigenciaTipoTrabajador.empleado.persona.primerapellido} #{controlVigenciaTipoTrabajador.empleado.persona.segundoapellido} #{controlVigenciaTipoTrabajador.empleado.persona.nombre}"/>  
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 70px; left: 360px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaTipoTrabajador.guardarGeneral()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciaTipoTrabajador.exportXLS()}" process="@this" immediate="true"/>
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.limpiarNuevaVTT()}" ajax="false" process="@this" immediate="true">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosVTTEmpleadoExportar" fileName="VigenciasTiposTrabajadoresXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.exportPDF()}" ajax="false" process="@this" immediate="true"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVTT.show()" update=":formularioDialogos:nuevaVTT" process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Tipo Trabajador" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.borrarVTT()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Tipo Trabajador" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.duplicarVigenciaTT()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Tipo Trabajador" />
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 645px; height: 185px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Tipo de Trabajador</strong></legend>
+                            <!-- TABLA EMPLVIGENCIATIPOTRABAJADOR -->
+
+                            <p:dataTable id="datosVTTEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
+                                         value="#{controlVigenciaTipoTrabajador.vigenciasTiposTrabajadoresEmpleado}" scrollable="true" scrollHeight="45" 
+                                         filteredValue="#{controlVigenciaTipoTrabajador.filtrarVTT}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="2"  
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:ajax event="filter" listener="#{controlVigenciaTipoTrabajador.eventoFiltrar()}"/>
+
+                                <p:column headerText="Fecha" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="72" id="vttFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechavigencia}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{info.fechavigencia}" id="editFecha"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice)}" update="editFecha"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice)}" />
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice,'0')}" />
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Tipo Trabajador" sortBy="#{info.tipotrabajador.nombre}" filterBy="#{info.tipotrabajador.nombre}" filterMatchMode="contains" id="vttTipoTrabajador" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.tipotrabajador.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.tipotrabajador.nombre}" id="editarTipoTrabajador" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice, 'TIPOTRABAJADOR', info.tipotrabajador.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, '1')}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '0')}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTipoTrabajador" value="Tipo Trabajador"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Tipo Cotizante" sortBy="#{info.tipotrabajador.tipocotizante.descripcion}" filterBy="#{info.tipotrabajador.tipocotizante.descripcion}" filterMatchMode="contains" id="vttTipoCotizante" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.tipotrabajador.tipocotizante.descripcion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.tipotrabajador.tipocotizante.descripcion}" id="editarTipoCotizante" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" readonly="true"> 
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, '2')}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTipoCotizante" value="Tipo Cotizante"/>
+                                    </f:facet>
+                                </p:column> 
+                            </p:dataTable>  
+                        </fieldset>
+                        <p:panel id="panelPensionadosMensaje" header="Información Adicional Para Pensionados" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 330px; height: 228px; border-radius: 10px; text-align: left; visibility: visible">
+                            <h:outputText value="Este bloque se habilita cuando el Tipo Trabajador es un Pensionado; en el cual podra ver información como: fecha inicio, fecha final, porcentage de la pensión, nombre de quien sustituye pensión, nombre del tutor, resolución pensión o sustitución" style="font-size: 12px;"/>
+                        </p:panel>
+                        <p:panel id="panelPensionadosInput" header="Información Adicional Para Pensionados" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 330px; height: 228px; border-radius: 10px; text-align: left; visibility: hidden;" >
+                            <h:outputText value="Fecha Inicio" style="font-size: 11px;position: absolute; left: 8px; top: 25px"/>
+                            <p:calendar  id="fechaPensionInicio" value="#{controlVigenciaTipoTrabajador.pensionVigencia.fechainiciopension}" style="font-size: 11px; position: absolute; left: 8px; top: 40px;"   styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="fechaPensionInicio"/>
+                                <p:ajax event="change" update="fechaPensionInicio"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                            </p:calendar>
+                            <h:outputText value="Fecha Final" style="font-size: 11px;position: absolute; left: 105px; top: 25px"/>
+                            <p:calendar  id="fechaPensionFinal" value="#{controlVigenciaTipoTrabajador.pensionVigencia.fechafinalpension}" style="font-size: 11px; position: absolute; left: 105px; top: 40px"   styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="fechaPensionFinal"/>
+                                <p:ajax event="change" update="fechaPensionFinal"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                            </p:calendar>
+                            <h:outputText value="Porcentaje" style="font-size: 11px;position: absolute; left: 205px; top: 25px"/>
+                            <p:inputText id="porcentajePension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.porcentaje}" style="font-size: 11px;position: absolute; left: 205px; top: 40px; width: 105px">
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Clase Pensión" style="font-size: 11px;position: absolute; left: 8px; top: 68px"/>
+                            <p:inputText id="clasePension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.clase.descripcion}" style="font-size: 11px;position: absolute; left: 8px; top: 83px; width: 280px">
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoClasePension()}" immediate="true" process="@this"/>
+                            </p:inputText>
+                            <p:commandButton value="" icon="ui-icon-search" style="position: absolute; left: 297px; top: 83px; height: 23px; width: 23px"/>
+
+                            <h:outputText value="Tipo Pensionado" style="font-size: 11px;position: absolute; left: 8px; top: 108px"/>
+                            <p:inputText id="tipoPensionado" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tipopensionado.descripcion}" style="font-size: 11px;position: absolute; left: 8px; top: 123px; width: 120px">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoTipoPensionado()}" immediate="true" process="@this"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                            </p:inputText>
+                            <p:commandButton value="" icon="ui-icon-search" style="position: absolute; left: 138px; top: 123px; height: 23px; width: 23px"/>
+
+                            <h:outputText value="Resolución Pensión" style="font-size: 11px;position: absolute; left: 175px; top: 108px"/>
+                            <p:inputText id="resolucionPension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.resolucionpension}" style="font-size: 11px;position: absolute; left: 175px; top: 123px; width: 135px">
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Nombre a Quien Sustituye Pensión" style="font-size: 11px;position: absolute; left: 8px; top: 147px"/>
+                            <p:inputText id="causaBiente" value="#{controlVigenciaTipoTrabajador.pensionVigencia.causabiente.persona.nombre}" style="font-size: 11px;position: absolute; left: 8px; top: 162px; width: 302px">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoCausaBiente()}" immediate="true" process="@this"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Nombre Tutor" style="font-size: 11px;position: absolute; left: 8px; top: 185px"/>
+                            <p:inputText id="tutorPension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tutor.nombreCompleto}" style="font-size: 11px;position: absolute; left: 8px; top: 200px; width: 240px">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoTutor()}" immediate="true" process="@this"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
+                            </p:inputText>
+                            <p:commandButton value="Limpiar" id="LimpiarPensionados" style="font-size: 10px;position: absolute; left: 266px; top: 200px; width: 55px; height: 23px" actionListener="#{controlVigenciaTipoTrabajador.limpiarPension()}" process="@this"/>
+                        </p:panel>
+
+                        <p:panel id="panelRetiradosInput" header="Información Adicional Para Retirado" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 325px; height: 200px; border-radius: 10px; text-align: left; visibility: hidden">
+                            <h:outputText value="Fecha Retiro" style="font-size: 12px;position: absolute; left: 25px; top: 40px"/>
+                            <p:calendar  id="fechaRetiro" value="#{controlVigenciaTipoTrabajador.retiroVigencia.fecharetiro}" style="font-size: 10px; position: absolute; left: 125px; top: 40px"   styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="fechaRetiro" listener="#{controlVigenciaTipoTrabajador.banderaCambiosRetirados()}"  process="@this" immediate="true"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoRetirados()}" process="@this" immediate="true"/>
+                                <p:ajax event="change" update="fechaRetiro" />                                
+                            </p:calendar>
+
+                            <h:outputText value="Motivo Retiro" style="font-size: 12px;position: absolute; left: 25px; top: 75px"/>
+                            <p:inputText id="motivoRetiro" value="#{controlVigenciaTipoTrabajador.retiroVigencia.motivoretiro.nombre}" style="font-size: 10px;position: absolute; left: 125px; top: 75px; width: 113px">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoRetiros()}" immediate="true" process="@this"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoRetirados()}" process="@this" immediate="true"/>
+                            </p:inputText>
+                            <p:commandButton value="" icon="ui-icon-search" style="position: absolute; left: 248px; top: 75px; height: 23px; width: 23px" process="@this"/>
+                            <p:watermark for="motivoRetiro" value="Motivo Retiro" />
+
+
+                            <h:outputText value="Observación" style="font-size: 12px;position: absolute; left: 25px; top: 110px"/>
+                            <p:inputTextarea id="observacion" value="#{controlVigenciaTipoTrabajador.retiroVigencia.descripcion}" style="font-size: 12px;position: absolute; left: 125px; top: 110px; width: 135px; height: 50px;">
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoRetirados()}" process="@this" immediate="true"/>
+                                <p:ajax event="change" update="observacion" listener="#{controlVigenciaTipoTrabajador.banderaCambiosRetirados()}" process="@this" immediate="true"/>
+                            </p:inputTextarea>
+
+                            <p:commandButton value="Limpiar" id="LimpiarRetirado" style="font-size: 10px;position: absolute; left: 25px; top: 175px; height: 25px; width: 60px" actionListener="#{controlVigenciaTipoTrabajador.limpiarRetiro()}" update="panelRetiradosInput" process="@this"/>
+                        </p:panel>
+                        <p:panel id="panelRetiradosMensaje" header="Información Adicional Para Retirado" style="position: absolute; left: 360px; top: 310px; font-size: 10px; width: 300px; height: 200px; border-radius: 10px; text-align: left; visibility: visible">
+                            <h:outputText value="Este bloque se habilita cuando el Tipo Trabajador es un Retirado; en el cual podra ver informacion como: fecha del Retiro, motivo del Retiro y las observaciones correspondientes" style="font-size: 12px;"/>
+                        </p:panel>
+
+
+                        <!-- DIALOGO L.O.V ESTATICO TIPOS TRABAJADORES -->
+                        <p:dialog header="Tipo Trabajador" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="610" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovTipoTrabajador" style="font-size: 11px; width: 590px" var="tipoTrabajador" value="#{controlVigenciaTipoTrabajador.listaTiposTrabajadores}" rowKey="#{tipoTrabajador.secuencia}"
+                                         selection="#{controlVigenciaTipoTrabajador.tipoTrabajadorSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaTipoTrabajador.filtradoTiposTrabajadores}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarTT"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Tipo Trabajador: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: 5px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{tipoTrabajador.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{tipoTrabajador.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{tipoTrabajador.nombre}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Descripción del Tipo de Trabajador" />
+                                    </f:facet>
+                                    <h:outputText value="#{tipoTrabajador.nombre}" />
+                                </p:column>
+                                <p:column filterBy="#{tipoTrabajador.tipocotizante.descripcion}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Tipo Cotizante" />
+                                    </f:facet>
+                                    <h:outputText value="#{tipoTrabajador.tipocotizante.descripcion}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarTT" style="position: relative; left: 330px" value="Aceptar" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT, datosVTTEmpleado" process="@this">
+                                <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasTT" style="position: relative; left: 380px" value="Atras" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
+                                <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog> 
+
+
+
+                        <!-- DIALOGO MOTIVOS RETIROS -->
+                        <p:dialog header="Motivo Retiro" widgetVar="RetirosDialogo" draggable="false" resizable="false" closable="false" id="RetirosDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="610" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovMotivosRetiros" style="font-size: 11px; width: 590px" var="motivosRetiros" value="#{controlVigenciaTipoTrabajador.motivosRetiros}" rowKey="#{motivosRetiros.secuencia}"
+                                         selection="#{controlVigenciaTipoTrabajador.motivoRetiroSeleccionado}" selectionMode="single" widgetVar="lovMotivosRetiros" scrollable="true" scrollHeight="250"
+                                         emptyMessage="No se encontraron resultados con el criterio de busqueda.">
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarMR"/>
+                                <p:column width="40">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{motivosRetiros.codigo}" />
+                                </p:column>
+                                <p:column width="200">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre" />
+                                    </f:facet>
+                                    <h:outputText value="#{motivosRetiros.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarMR" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="RetirosDialogo.hide();" actionListener="#{controlVigenciaTipoTrabajador.actualizarMotivoRetiro()}" update="lovMotivosRetiros, aceptarMR, panelRetiradosInput" process="@this"/>
+                            <p:commandButton id="atrasMR" style="position: relative; left: 150px" value="Atras" onclick="RetirosDialogo.hide();" actionListener="#{controlVigenciaTipoTrabajador.cancelarMotivoRetiro()}" update="lovMotivosRetiros" process="@this"/>
+                        </p:dialog>
+
+
+                        <!-- DIALOGO CLASE PENSION -->
+                        <p:dialog header="Clase de Pensión" widgetVar="clasePensionDialogo" draggable="false" resizable="false" closable="false" id="clasePensionDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovClasePension" style="font-size: 11px; width: 430px" var="clasePension" value="#{controlVigenciaTipoTrabajador.clasesPensiones}" rowKey="#{clasePension.secuencia}"
+                                         selection="#{controlVigenciaTipoTrabajador.clasesPensionesSeleccionada}" selectionMode="single" widgetVar="lovClasePension" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaTipoTrabajador.clasesPensionesFiltrado}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarCP"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Clase Pensión: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovClasePension.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{clasePension.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{clasePension.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{clasePension.descripcion}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Descripcion" />
+                                    </f:facet>
+                                    <h:outputText value="#{clasePension.descripcion}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarCP" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="clasePensionDialogo.hide(), lovClasePension.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarClasePension()}" update="lovClasePension, aceptarCP, panelPensionadosInput" process="@this">
+                                <p:resetInput target=":form:lovClasePension:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasCP" style="position: relative; left: 150px" value="Atras" onclick="clasePensionDialogo.hide(), lovClasePension.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarClasePension()}" update="lovClasePension" process="@this">
+                                <p:resetInput target=":form:lovClasePension:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- DIALOGO TIPO PENSIONADO -->
+                        <p:dialog header="Tipo Pensionado" widgetVar="tipoPensionadoDialogo" draggable="false" resizable="false" closable="false" id="tipoPensionadoDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovTipoPensionado" style="font-size: 11px; width: 430px" var="tipoPensionado" value="#{controlVigenciaTipoTrabajador.tiposPensionados}" rowKey="#{tipoPensionado.secuencia}"
+                                         selection="#{controlVigenciaTipoTrabajador.tiposPensionadosSeleccionada}" selectionMode="single" widgetVar="lovTipoPensionado" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaTipoTrabajador.tiposPensionadosFiltrado}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarTP"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Tipo Pensionado: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovTipoPensionado.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{tipoPensionado.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{tipoPensionado.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{tipoPensionado.descripcion}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Descripcion" />
+                                    </f:facet>
+                                    <h:outputText value="#{tipoPensionado.descripcion}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarTP" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="tipoPensionadoDialogo.hide(), lovTipoPensionado.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarTipoPensionado()}" update="lovTipoPensionado, aceptarTP, panelPensionadosInput" process="@this">
+                                <p:resetInput target=":form:lovTipoPensionado:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasTP" style="position: relative; left: 150px" value="Atras" onclick="tipoPensionadoDialogo.hide(), lovTipoPensionado.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarTipoPensionado()}" update="lovTipoPensionado" process="@this">
+                                <p:resetInput target=":form:lovTipoPensionado:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- DIALOGO CAUSABIENTES -->
+                        <p:dialog header="Empleados" widgetVar="causaBientesDialogo" draggable="false" resizable="false" closable="false" id="causaBientesDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovCausaBientes" style="font-size: 11px; width: 430px" var="causaBiente" value="#{controlVigenciaTipoTrabajador.listaPensionados}" rowKey="#{causaBiente.secuencia}"
+                                         selection="#{controlVigenciaTipoTrabajador.pensionadoSeleccionado}" selectionMode="single" widgetVar="lovCausaBientes" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaTipoTrabajador.tiposPensionadosFiltrado}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarCB"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 27px; top: 14px; text-align: left"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovCausaBientes.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{causaBiente.causabiente.codigoempleado}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{causaBiente.causabiente.codigoempleado}" />
+                                </p:column>
+                                <p:column filterBy="#{causaBiente.causabiente.persona.nombre}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre del Pensionado" />
+                                    </f:facet>
+                                    <h:outputText value="#{causaBiente.causabiente.persona.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarCB" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="causaBientesDialogo.hide(), lovCausaBientes.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarCausaBiente()}" update="lovCausaBientes, aceptarCB, panelPensionadosInput" process="@this">
+                                <p:resetInput target=":form:lovCausaBientes:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasCB" style="position: relative; left: 150px" value="Atras" onclick="causaBientesDialogo.hide(), lovCausaBientes.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarCausaBiente()}" update="lovCausaBientes" process="@this">
+                                <p:resetInput target=":form:lovCausaBientes:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <!-- DIALOGO TUTOR -->
+                        <p:dialog header="Personas" widgetVar="tutorDialogo" draggable="false" resizable="false" closable="false" id="tutorDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovTutor" style="font-size: 11px; width: 430px" var="tutor" value="#{controlVigenciaTipoTrabajador.listaPersonas}" rowKey="#{tutor.secuencia}"
+                                         selection="#{controlVigenciaTipoTrabajador.personaSeleccionada}" selectionMode="single" widgetVar="lovTutor" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaTipoTrabajador.personasFiltrado}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarT"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Persona: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovTutor.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{tutor.nombreCompleto}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre del Pensionado" />
+                                    </f:facet>
+                                    <h:outputText value="#{tutor.nombreCompleto}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarT" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="tutorDialogo.hide(), lovTutor.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarTutor()}" update="lovTutor, aceptarT, panelPensionadosInput" process="@this">
+                                <p:resetInput target=":form:lovTutor:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasT" style="position: relative; left: 150px" value="Atras" onclick="tutorDialogo.hide(), lovTutor.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarTutor()}" update="lovTutor" process="@this">
+                                <p:resetInput target=":form:lovTutor:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <p:commandButton style="position: absolute; left: 530px; top: 520px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVTTEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 596px; top: 520px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 400px; top: 520px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this" />
+
+                    </p:panel>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaTipoTrabajador.guardarGeneral()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaTipoTrabajador.activarCtrlF11()}"/> 
+                </h:form>
+                <h:form id="formularioDialogos" >
+                    <p:dialog id="NuevoRegistroVTT" header="Nuevo Registro" widgetVar="NuevoRegistroVTT" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <p:panel id="nuevaVTT" style="border: none;">
+                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 85px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; top: 80px; left: 200px;" value="#{controlVigenciaTipoTrabajador.nuevaVigencia.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFecha"/>
+                                <p:ajax event="change" update="nuevaFecha"/>
+                            </p:calendar>
+                            <strong><h:outputText value="Tipo Trabajador: " style="font-size: 14px; position: absolute; top: 118px; left: 50px" /></strong>
+                            <p:inputText id="nuevoTipoTrabajador" value="#{controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '1')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar('1', 'TIPOTRABAJADOR')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre, '1')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevoTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice,'1')}"/>   
+                            <p:watermark for="nuevoTipoTrabajador" value="Tipo Trabajador" />
+
+                            <strong><h:outputText value="Tipo Cotizante: " style="font-size: 14px; position: absolute; top: 150px; left: 50px"  /></strong>
+                            <p:inputText id="nuevoTipoCotizante" value="#{controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.tipocotizante.descripcion}" readonly="true" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;">
+                            </p:inputText>
+                            <p:watermark for="nuevoTipoCotizante" value="Tipo Cotizante" />
+
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 220px;" actionListener="#{controlVigenciaTipoTrabajador.limpiarNuevaVTT()}" update="nuevaVTT" process="@this"/>
+                            <p:commandButton id="agregarVTT" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 220px;"  process="@this" actionListener="#{controlVigenciaTipoTrabajador.agregarNuevaVTT()}" onclick="NuevoRegistroVTT.hide();"  />
+                            <p:commandButton id="cancelarVTT" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 220px;" actionListener="#{controlVigenciaTipoTrabajador.limpiarNuevaVTT()}" update="nuevaVTT" onclick="NuevoRegistroVTT.hide();"  process="@this"/>
+
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroVTT" header="Duplicar Registro" widgetVar="DuplicarRegistroVTT" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVTT" style="border: none;">
+                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 85px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; top: 80px; left: 200px;" value="#{controlVigenciaTipoTrabajador.duplicarVTT.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFecha"/>
+                                <p:ajax event="change" update="duplicarFecha"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Tipo Trabajador: " style="font-size: 14px; position: absolute; top: 118px; left: 50px" /></strong>
+                            <p:inputText id="duplicarTipoTrabajador" value="#{controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '2')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar('2', 'TIPOTRABAJADOR')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre, '2')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnDuplicarTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '2')}"/>   
+                            <p:watermark for="duplicarTipoTrabajador" value="Tipo Trabajador" />
+
+                            <strong><h:outputText value="Tipo Cotizante: " style="font-size: 14px; position: absolute; top: 150px; left: 50px"/></strong>
+                            <p:inputText id="duplicarTipoCotizante" value="#{controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.tipocotizante.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;" readonly="true"/>
+                            <p:watermark for="duplicarTipoCotizante" value="Tipo Cotizante" />
+
+                            <p:commandButton id="limpiarDuplicadoVTT" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 220px;" actionListener="#{controlVigenciaTipoTrabajador.limpiarduplicarVTT()}" update="duplicarVTT" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVTT" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 220px;"  process="@this" actionListener="#{controlVigenciaTipoTrabajador.confirmarDuplicar()}" onclick="DuplicarRegistroVTT.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoVTT" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 220px;" actionListener="#{controlVigenciaTipoTrabajador.limpiarduplicarVTT()}" update="duplicarVTT" onclick="DuplicarRegistroVTT.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaDialogo" header="Fecha Vigencia Tipo Trabajador" widgetVar="editarFechaDialogo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaTipoTrabajador.editarVTT.fechavigencia}" id="editFechaCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFechaDialogo.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarTipoTrabajadorDialogo" header="Tipo Trabajador" widgetVar="editarTipoTrabajadorDialogo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaTipoTrabajador.editarVTT.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTipoTrabajador" value="Atras" onclick="editarTipoTrabajadorDialogo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarTipoCotizanterDialogo" header="Tipo Cotizante" widgetVar="editarTipoCotizanterDialogo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaTipoTrabajador.editarVTT.tipotrabajador.tipocotizante.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTipoCotizante" value="Atras" onclick="editarTipoCotizanterDialogo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+
+                    <p:dialog id="guardarCambiosRetiros" header="ATENCIÓN...!" widgetVar="guardarCambiosRetiros"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados en Información Adicional Retirados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="guardarCambiosRetiros.hide();" actionListener="#{controlVigenciaTipoTrabajador.guardarDatosRetiros()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="guardarCambiosRetiros.hide();" actionListener="#{controlVigenciaTipoTrabajador.cancelarDatosRetiros()}"  style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarCambiosRetiros.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="guardarNuevoRegistroRetiro" header="ATENCIÓN...!" widgetVar="guardarNuevoRegistroRetiro"  resizable="false" draggable="false" modal="true" height="120" width="450px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Se encontro un nuevo registro EXTRABAJADOR. Para efectuar las operaciones es necesario almacenarlo. ¿Desea almacenar el nuevo registro?" style="position: absolute; left: 100px; top: 20px; width: 340px;" />
+                        <p:commandButton value="Si" onclick="guardarNuevoRegistroRetiro.hide();" actionListener="#{controlVigenciaTipoTrabajador.guardarNuevoRegistroRetiro()}" style="position: absolute; top: 80px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="guardarNuevoRegistroRetiro.hide();" actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" style="position: absolute; top: 80px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarNuevoRegistroRetiro.hide();" style="position: absolute; top: 80px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="informacionEliminarExtrabajador" header="ATENCIÓN...!" widgetVar="informacionEliminarExtrabajador"  resizable="false" draggable="false" modal="true" height="100" width="450px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Se intento eliminar un registro EXTRABAJADOR. Para eliminarlo es necesario limpiar la información adicional." style="position: absolute; left: 100px; top: 20px; width: 340px;" />
+                        <p:commandButton value="Aceptar" onclick="informacionEliminarExtrabajador.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="guardarNuevoRegistroPensionado" header="ATENCIÓN...!" widgetVar="guardarNuevoRegistroPensionado"  resizable="false" draggable="false" modal="true" height="120" width="450px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Se encontro un nuevo registro PENSIONADO. Para efectuar las operaciones es necesario almacenarlo. ¿Desea almacenar el nuevo registro?" style="position: absolute; left: 100px; top: 20px; width: 340px;" />
+                        <p:commandButton value="Si" onclick="guardarNuevoRegistroPensionado.hide();" actionListener="#{controlVigenciaTipoTrabajador.guardarNuevoRegistroPension()}" style="position: absolute; top: 80px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="guardarNuevoRegistroPensionado.hide();" actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" style="position: absolute; top: 80px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarNuevoRegistroPensionado.hide();" style="position: absolute; top: 80px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="guardarCambiosPensionados" header="ATENCIÓN...!" widgetVar="guardarCambiosPensionados"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados en Información Adicional Pensionados" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="guardarCambiosPensionados.hide();" actionListener="#{controlVigenciaTipoTrabajador.guardarDatosPensiones()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="guardarCambiosPensionados.hide();" actionListener="#{controlVigenciaTipoTrabajador.cancelarDatosPension()}"  style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="guardarCambiosPensionados.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="informacionEliminarPensionado" header="ATENCIÓN...!" widgetVar="informacionEliminarPensionado"  resizable="false" draggable="false" modal="true" height="100" width="450px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Se intento eliminar un registro PENSIONADO. Para eliminarlo es necesario limpiar la información adicional." style="position: absolute; left: 100px; top: 20px; width: 340px;" />
+                        <p:commandButton value="Aceptar" onclick="informacionEliminarPensionado.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+
+                </h:form>
+                <h:form id="formExportar">
+                    <p:dataTable id="datosVTTEmpleadoExportar" var="info" style="visibility: hidden; display: none;"                           
+                                 value="#{controlVigenciaTipoTrabajador.vigenciasTiposTrabajadoresEmpleado}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS REFORMAS LABORALES DE UN EMPLEADO --> 
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Fecha" />
+                            </f:facet>
+                            <h:outputText value="#{info.fechavigencia}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Tipo Trabajador">                                  
+                            <f:facet name="header"><h:outputText value="Tipo Trabajador"/> </f:facet> 
+                            <h:outputText value="#{info.tipotrabajador.nombre}" />
+                        </p:column>  
+
+                        <p:column headerText="Tipo Cotizante">                                  
+                            <f:facet name="header"><h:outputText value="Tipo Cotizante"/> </f:facet> 
+                            <h:outputText value="#{info.tipotrabajador.tipocotizante.descripcion}" />
+                        </p:column> 
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

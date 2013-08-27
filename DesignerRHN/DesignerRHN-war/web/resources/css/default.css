@@ -1,0 +1,163 @@
+body {
+    background-color: #ffffff;
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    color: #000000;  
+    margin: 10px;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #D20005;
+}
+
+a:link, a:visited {
+    color: #045491;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: #045491;
+    font-weight : bold;
+    text-decoration : underline;
+}
+
+.ui-felipe>.ui-datagrid-content {
+    border: none;
+}
+
+.ui-datagrid .ui-paginator {
+    font-size: 10px;
+    height: 20px;
+    width: 375px;
+    position: absolute;
+    top: 30px;
+    left: 255px;
+}
+
+.ui-datagrid .ui-paginator .ui-paginator-next,
+.ui-datagrid .ui-paginator .ui-paginator-last,
+.ui-datagrid .ui-paginator .ui-paginator-first,
+.ui-datagrid .ui-paginator .ui-paginator-prev{
+    height: 15px;
+}
+
+.myClass input {
+    width: 81px;
+    border-radius: 0px;
+    height: 15px
+}
+.myClass2 input {
+    width: 83px;
+    height: 15px
+}
+
+/*pantalla EmpleadoPersonal*/
+.calendarEmpleadoPersonal input {
+    width: 55px;
+}
+
+.calendarEmpleadoPersonal button {
+    position: relative;
+    top: 0.5px;
+    width: 23px;  
+    height: 24.5px;
+    border-radius: 0px;
+}
+/*Pantalla Estructura*/
+.calendarEstructura input {
+    width: 93%;
+    height: 15px
+}
+.ui-datepicker{
+    font-size: 11px;
+}
+.myClass button {
+    position: relative;
+    top: 0.5px;
+    width: 23px;  
+    height: 24.5px;
+    border-radius: 0px;
+}
+.inputAutoCompletar input {
+    border-radius: 0px;
+    width: 100px; 
+    font-size: 10px;
+}
+
+.inputAutoCompletar2 input {
+    width: 100px; 
+    font-size: 10px;
+}
+
+#endingDate_popupContainer{
+    left: auto !important;
+    top: auto !important;
+}
+.red{
+    background-color: plum;
+    background-image:none;
+}
+
+.ui-fileupload{
+    position: absolute;
+    left: 120px;
+    top: 50px;
+}
+.ui-fileupload .start {
+    display: none;
+}
+.ui-fileupload .cancel {
+    display: none;
+}
+.ui-fileupload .progress {
+    display: none;
+}
+.ui-fileupload .files {
+    margin: 0px;
+    display: none;
+    visibility: hidden;
+}
+.ui-fileupload .fileupload-content {
+    display: none;
+    visibility: hidden;
+}
+
+.ui-fileupload .fileinput-button {
+    position: absolute;
+    left: 15px;
+    top: -11px;
+}
+
+.ui-datatable .ui-sortable-column-icon {
+    display: none !important;
+}
+
+.ui-dataGrid-CargueNovedad>.ui-datagrid-content {
+    border: none;
+    position: absolute;
+    top: 30px;
+    left: 75px;
+}
+
+.ui-tree .ui-tree-container {
+    height: 98%;
+    padding-bottom: 0px;
+    white-space: nowrap;
+}
+
+.registroInsertado{
+    background-color: #D1F0FF;
+    background-image:none;
+}
+
+.registroModificado{
+    background-color: #C6FCD3;
+    background-image:none;
+}

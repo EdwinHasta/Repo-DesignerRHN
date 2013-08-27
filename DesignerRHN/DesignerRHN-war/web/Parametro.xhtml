@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Parametro</title> 
+
+        <style type="text/css">
+            .ui-datagrid-no-border>.ui-datagrid-content {
+                border: none;
+            }
+
+            .ui-datagrid .ui-paginator {
+                font-size: 10px;
+                height: 20px;
+                width: 375px;
+                position: absolute;
+                top: 50px;
+                left: 270px;
+            }
+
+            .ui-datagrid .ui-paginator .ui-paginator-next,
+            .ui-datagrid .ui-paginator .ui-paginator-last,
+            .ui-datagrid .ui-paginator .ui-paginator-first,
+            .ui-datagrid .ui-paginator .ui-paginator-prev{
+                height: 15px;
+            }
+
+        </style>
+
+    </h:head>
+    <h:body>
+
+        <h:form id="formulario" >
+
+            <p:dataGrid   id="data" var="item" value="#{controlRemoto.empl}" rows="1" paginator="true"  
+                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
+                          {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-datagrid-no-border" >
+
+
+                <fieldset id="set" style="height: 90px; width: 460px; display: block; position: absolute; border-radius: 10px; left: 165px; top: 70px;">
+                    <legend style="color: #00F; font-family: Tahoma, Geneva, sans-serif; font-size: 12px;">Personal Activo </legend>
+
+                    <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.empl}" rows="1" styleClass="ui-datagrid-no-border">
+
+
+
+                        <p:outputLabel value="Codigo" id="cod" style="position: absolute; left: 12px; color: #006; font-family: Tahoma, Geneva, sans-serif;
+                                       font-size: 10px; width: 63px; height: 20px; top: 37px;"/>
+                        <p:inputText id="codigo" readonly="true"  value="#{item.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)};"
+                                     style="position: absolute; left: 12px; top: 50px; width: 56px; height: 20px; font-family: Tahoma, Geneva, sans-serif;
+                                     font-size: 10px;"/>
+                        <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
+
+                        <p:outputLabel value="Primer Apellido" id="pa" style="position: absolute; left: 80px; font-family: Tahoma, Geneva,sans-serif;
+                                       color: #006; font-size: 10px; top: 37px;"  />
+                        <p:inputText id="primerApellido" readonly="true" value="#{item.persona.primerapellido}" style="position: absolute;left: 80px;
+                                     top: 50px; width: 85px; height: 20px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"/>
+
+                        <p:outputLabel value="Segundo Apellido" id="sa" style="position: absolute; left: 177px; font-family: Tahoma, Geneva, sans-serif;
+                                       color: #006; font-size: 10px; top: 37px;" />
+                        <p:inputText id="segundoApellido" readonly="true" value="#{item.persona.segundoapellido}" style="position: absolute;
+                                     left: 177px; top: 50px; height: 20px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; width: 85px;" />
+
+                        <p:outputLabel value="Nombre" id="n" style="position: absolute; left: 274px; font-family: Tahoma, Geneva, sans-serif; color: #006;
+                                       font-size: 10px; top: 37px;"  />
+                        <p:inputText id="nombre" readonly="true" value="#{item.persona.nombre}" style="position: absolute; left: 274px; top: 50px; 
+                                     height: 20px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; width: 108px;" />
+
+
+                    </p:dataGrid>
+
+
+
+
+                    <!-- Botones Con Imagen (3) -->
+
+                    <p:commandButton style="background-image: url(Imagenes/buscarlaboral1.gif); position: absolute; top: 82px; width: 23px; height: 23px; background-size: 100% 100%; left: 12px; background-repeat: no-repeat; " id="buscarLaboral" value="" />
+
+                    <p:commandButton style="background-image: url(Imagenes/buscarpersonal1.gif); position: absolute; left: 38px; top: 82px; width: 23px; height: 23px; background-size: 100% 100%; background-repeat: no-repeat; " id="buscarPersonal" value="" />
+
+                    <p:commandButton style="background-image: url(Imagenes/buscarrapida1.gif); position: absolute; left: 64px; top: 82px; width: 23px; height: 23px; background-size: 100% 100%; background-repeat: no-repeat; " id="busquedaRapida" value="" />
+
+                    <!-- Botones Buscar Empleado y Mostrar Todos --> 
+
+                    <p:commandButton style="position: absolute; left: 195px; top: 82px; font-family: Tahoma, Geneva, sans-serif; font-size: 9px; width: 114px;"  id="BuscarEmpleado" value="Buscar Empleado..." />
+
+                    <p:commandButton style="position: absolute; left: 310px; top: 82px; font-family: Tahoma, Geneva, sans-serif; font-size: 9px;  width: 94px;" id="MostrarTodos" value="Mostrar Todos" />
+
+                    <!-- Boton Hoja de Vida -->
+
+                    <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/birrete1.gif); left: 415px; top: 10px; width: 49px; height: 60px; background-repeat: no-repeat;"/>
+
+
+                    <strong><h:outputText style="position: absolute; left: 408px; top: 75px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; color: #006; width: 89.25px;" value="Hoja de Vida"/></strong>
+                </fieldset>
+
+
+                <!-- Panel Central -->
+
+
+                <fieldset id="field" style="height: 230px; width: 610px; display: block; position: absolute; border-radius: 10px; top: 175px;">
+                    <legend style="color: #00F; font-family: Tahoma, Geneva, sans-serif; font-size: 12px;">Información Laboral</legend>
+
+                    <!-- Etiquetas Panel Central -->
+
+
+
+
+                    <p style="font-family: Tahoma, Geneva, sans-serif; color: #006"> 
+
+                        <h:outputText style="position: absolute; left: 45px; top: 15px; font-size: 12px" value="Cargo desempeñado"/>
+                        <h:outputText style="position: absolute; left: 45px; top: 52px; font-size: 12px" value="Fecha Contratación"/>
+                        <h:outputText style="position: absolute; left: 45px; top: 87px; font-size: 12px" value="Norma Laboral"/>
+                        <h:outputText style="position: absolute; left: 45px; top: 123px; font-size: 12px" value="Afiliaciones"/>
+                        <h:outputText style="position: absolute; left: 45px; top: 159px; font-size: 12px" value="I.B.C"/>
+                        <h:outputText style="position: absolute; left: 45px; top: 194px; font-size: 12px" value="Tipo Viajero"/>
+                        <h:outputText style="position: absolute; left: 250px; top: 15px; font-size: 12px" value="Centro de Costo - Localización"/>
+                        <h:outputText style="position: absolute; left: 250px; top: 52px; font-size: 12px" value="Tipo Trabajador"/>
+                        <h:outputText style="position: absolute; left: 250px; top: 87px; font-size: 12px" value="Legislación Laboral"/>
+                        <h:outputText style="position: absolute; left: 250px; top: 123px; font-size: 12px" value="Jornada"/>
+                        <h:outputText style="position: absolute; left: 250px; top: 159px; font-size: 12px" value="Menor Valor Retención"/>
+                        <h:outputText style="position: absolute; left: 250px; top: 194px; font-size: 12px" value="Vacaciones (Solo Consulta)"/>
+                        <h:outputText style="position: absolute; left: 455px; top: 15px; font-size: 12px" value="Sueldo"/>
+                        <h:outputText style="position: absolute; left: 455px; top: 52px; font-size: 12px" value="Tipo Salario (Reforma Laboral)"/>
+                        <h:outputText style="position: absolute; left: 455px; top: 87px; font-size: 12px" value="Ubicación Geográfica"/>
+                        <h:outputText style="position: absolute; left: 455px; top: 123px; font-size: 12px" value="Forma de Pago"/>
+                        <h:outputText style="position: absolute; left: 455px; top: 159px; font-size: 12px" value="S.E.T."/>
+                        <h:outputText style="position: absolute; left: 455px; top: 194px; font-size: 12px" value="Comprobantes de Pago"/>
+                    </p>
+
+                    <!-- Botones Panel Central -->
+
+                    <p:commandButton id="CargoDesempeñado" value="" style="position: absolute; background-image: url(Imagenes/cargo.gif); width: 29px; height: 35px; top: 15px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                    <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/tipocontrato.gif); width: 29px; height: 35px; top: 52px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                    <p:commandButton id="NormaLaboral" value="" style="position: absolute; background-image: url(Imagenes/normalaboral.gif); width: 29px; height: 35px; top: 87px;left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                    <p:commandButton id="Afiliaciones" value="" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 29px; height: 35px; top: 123px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                    <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/ibc.gif); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                    <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/viajero.gif); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
+
+                    <p:commandButton id="CentroDeCosto" value="" style="position: absolute; background-image: url(Imagenes/localizacion.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
+                    <p:commandButton id="TipoTrabajador" value="" style="position: absolute; background-image: url(Imagenes/tipotrabajador.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
+                    <p:commandButton id="LegislacionLaboral" value="" style="position: absolute; background-image: url(Imagenes/contrato.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
+                    <p:commandButton id="Jornada" value="" style="position: absolute; background-image: url(Imagenes/jornadalaboral.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
+                    <p:commandButton id="MenorValorRetencio" value="" style="position: absolute; background-image: url(Imagenes/retencion.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
+                    <p:commandButton id="Vacaciones" value="" style="position: absolute; background-image: url(Imagenes/vacacion.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
+
+                    <p:commandButton id="Sueldo" value="" style="position: absolute; background-image: url(Imagenes/sueldo.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
+                    <p:commandButton id="TipoSalario" value="" style="position: absolute; background-image: url(Imagenes/reformalaboral.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
+                    <p:commandButton id="Ubicacion" value="" style="position: absolute; background-image: url(Imagenes/origen.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
+                    <p:commandButton id="FormaDePago" value="" style="position: absolute; background-image: url(Imagenes/pasivoestimado.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
+                    <p:commandButton id="SET" value="" style="position: absolute; background-image: url(Imagenes/notacontable.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
+                    <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
+
+                    <!-- Cajas de Texto -->
+
+                    <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesCargos.cargo.nombre}"  /> -->
+                    <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
+                    <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
+                    <p:inputText id="VAfiliaciones" style="position: absolute; left: 45px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesAfiliacionesSalud.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesSalud.tercerosSucursales.tercero.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tercerosSucursales.tercero.nombre}" />
+                    <p:inputText id="VIBC" style="position: absolute; left: 45px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+                    <p:inputText id="VTipoViajero" style="position: absolute; left: 45px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  readonly="true" value="#{controlRemoto.vwActualesVigenciasViajeros.tipoViajero.nombre}"/>
+
+                    <p:inputText id="VCentroDeCosto" style="position: absolute; left: 250px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
+                    <p:inputText id="VTipoTrabajador" style="position: absolute; left: 250px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
+                    <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 250px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
+                    <p:inputText id="VJornada" style="position: absolute; left: 250px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
+                    <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 250px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+                    <p:inputText id="VVacaciones" style="position: absolute; left: 250px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+
+                    <p:inputText id="VSueldo" style="position: absolute; left: 455px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.sueldo}"  />
+                    <p:inputText id="VTipoSalario" style="position: absolute; left: 455px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
+                    <p:inputText id="VUbicacion" style="position: absolute; left: 455px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
+                    <p:inputText id="VFormaDePago" style="position: absolute; left: 455px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
+                    <p:inputText id="VSET" style="position: absolute; left: 455px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+                    <p:inputText id="VComprobantes" style="position: absolute; left: 455px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
+
+
+                </fieldset>
+
+            </p:dataGrid>
+        </h:form>
+
+
+    </h:body>
+
+</html>
+

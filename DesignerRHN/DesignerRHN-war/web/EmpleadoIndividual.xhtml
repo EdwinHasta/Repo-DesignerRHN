@@ -1,0 +1,248 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Hola</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Datos Básicos" style=" font-size: 13px; position: absolute; width: 685px; height: 490px;" > 
+
+                        <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 11px; width: 645px; height: 195px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue"><strong>Datos personales</strong></legend>
+
+                            <p:commandButton id="btnFoto" value="" style="background-image: url(Imagenes/copia.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 90px; height: 100px " process="@this"/>
+                            
+                            <h:outputText value="Apellidos y Nombres" style="position: absolute; left: 105px; font-weight: bold; color: #14388B" />
+                            <p:inputText id="primerApellido" value="#{controlEmpleadoIndividual.empleado.persona.primerapellido}" style="position: absolute; left: 223px; top: 11px; width: 100px"/>
+                            <p:watermark for="primerApellido" value="Primer apellido" />
+                            <p:inputText id="segundoApellido" value="#{controlEmpleadoIndividual.empleado.persona.segundoapellido}" style="position: absolute; left: 334px; top: 11px; width: 100px"/>
+                            <p:watermark for="segundoApellido" value="Segundo apellido" />
+                            <p:inputText id="primerNombre" value="#{controlEmpleadoIndividual.empleado.persona.nombre}" style="position: absolute; left: 445px; top: 11px; width: 95px"/>
+                            <p:watermark for="primerNombre" value="Primer nombre" />
+                            <p:inputText id="segundoNombre" value="#{controlEmpleadoIndividual.empleado.persona.segundonombre}" style="position: absolute; left: 551px; top: 11px; width: 94px"/>
+                            <p:watermark for="segundoNombre" value="Segundo nombre" />
+
+                            <h:outputText value="Identificación" style="position: absolute; left: 146px; font-weight: bold; color: #14388B; top: 40px" />
+                            <p:inputText id="tipo" value="#{controlEmpleadoIndividual.empleado.persona.tipodocumento.nombrecorto}" style="position: absolute; left: 223px; top: 36px; width: 22px; top: 36px" maxlength="3"/>
+                            <p:watermark for="tipo" value="Tipo" />
+                            <p:inputText id="Identificacion" value="#{controlEmpleadoIndividual.empleado.persona.numerodocumento}" style="position: absolute; left: 256px; top: 36px; width: 100px"/>
+                            <p:watermark for="Identificacion" value="Identificación" />
+                            <h:outputText id="txtDigito" value="Digito Verif." style="position: absolute; left: 368px; font-weight: bold; color: #14388B; top: 40px" />
+                            <p:tooltip for="txtDigito" value="Digito de verificación del documento."/>
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.digitoverificaciondocumento}" style="position: absolute; left: 435px; top: 36px; width: 15px; top: 36px" maxlength="1"/>
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudaddocumento.nombre}" id="lugarExpedicion" style="position: absolute; left: 461px; top: 36px; width: 184px"/>
+                            <p:watermark for="lugarExpedicion" value="Lugar de expedición" />
+
+                            <h:outputText value="Fecha Nacimiento" style="position: absolute; left: 122px; font-weight: bold; color: #14388B; top: 67px" />
+                            <p:calendar value="#{controlEmpleadoIndividual.empleado.persona.fechanacimiento}" style="position: absolute; left: 223px; top: 62px;" id="fechaNacimiento"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
+                                        navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:watermark for="fechaNacimiento" value="Fecha Nac." />
+                            <h:outputText value="Ciudad" style="position: absolute; left: 292px; font-weight: bold; color: #14388B; top: 67px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudadnacimiento.nombre}" id="lugarNacimiento" style="position: absolute; left: 334px; top: 62px; width: 83px"/>
+                            <p:watermark for="lugarNacimiento" value="Lugar de Nac." />
+                            <h:outputText value="Edad (Años)" style="position: absolute; left: 431px; font-weight: bold; color: #14388B; top: 67px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.edad}" style="position: absolute; left: 498px; top: 62px; width: 12px" maxlength="2"/>
+                            <h:outputText value="Sexo" style="position: absolute; left: 523px; font-weight: bold; color: #14388B; top: 67px" />
+                            <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.sexo}" id="sexo" style="position: absolute; top: 62px; left: 553px; width: 100px">  
+                                <f:selectItem itemLabel="MASCULINO" itemValue="M" />  
+                                <f:selectItem itemLabel="FEMENINO" itemValue="F" />
+                                <p:ajax update="@this" />
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Grupo Sanguineo" style="position: absolute; left: 123px; font-weight: bold; color: #14388B; top: 92px" />
+                            <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.gruposanguineo}" id="grupoSanguineo" style="position: absolute; top: 87px; left: 223px; width: 45px">  
+                                <f:selectItem itemLabel="A" itemValue="A" />  
+                                <f:selectItem itemLabel="AB" itemValue="AB" />
+                                <f:selectItem itemLabel="B" itemValue="B" />
+                                <f:selectItem itemLabel="O" itemValue="O" />
+                                <p:ajax update="@this" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Factor RH" style="position: absolute; left: 278px; font-weight: bold; color: #14388B; top: 92px" />
+                            <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.factorrh}" id="factorRH" style="position: absolute; top: 87px; left: 334px; width: 45px;" panelStyle="font-size: 14px">  
+                                <f:selectItem itemLabel="+" itemValue="POSITIVO" />  
+                                <f:selectItem itemLabel="-" itemValue="NEGATIVO" />
+                                <p:ajax update="@this" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Email" style="position: absolute; left: 385px; font-weight: bold; color: #14388B; top: 92px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.email}" id="email" style="position: absolute; left: 417px; top: 87px; width: 228px"/>
+                            <p:watermark for="email" value="Dirección de correo electrónico" />
+                            <hr width="550" style="position: absolute; left: 102px; top: 108px"/>
+
+                            <h:outputText value="Cert. Judicial Vencim." style="position: absolute; left: 10px; font-weight: bold; color: #14388B; top: 124px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.certificadojudicial}" id="certificadoJudicial" style="position: absolute; left: 133px; top: 119px; width: 110px"/>
+                            <p:watermark for="certificadoJudicial" value="Nº Certificado Judicial" />
+                            <p:calendar  value="#{controlEmpleadoIndividual.empleado.persona.fechavencimientocertificado}" style="position: absolute; left: 255px; top: 119px;" id="fechaVencimientoCJ"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
+                                         navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:watermark for="fechaVencimientoCJ" value="Fecha Ven." />
+                            <h:outputText value="Libreta Militar" style="position: absolute; left: 324px; font-weight: bold; color: #14388B; top: 124px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.numerolibretamilitar}" id="libretaMilitar" style="position: absolute; left: 402px; top: 119px; width: 80px"/>
+                            <p:watermark for="libretaMilitar" value="Nº Libreta Militar"/>
+                            <h:outputText value="Distrito Militar" style="position: absolute; left: 495px; font-weight: bold; color: #14388B; top: 124px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.distritomilitar}" style="position: absolute; left: 575px; top: 119px; width: 12px" maxlength="2"/>
+                            <h:outputText value="Clase" style="position: absolute; left: 602px; font-weight: bold; color: #14388B; top: 124px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.claselibretamilitar}" style="position: absolute; left: 636px; top: 119px; width: 8px" maxlength="1"/>
+
+                            <hr width="642" style="position: absolute; left: 10px; top: 140px"/>
+
+                            <h:outputText value="Vivienda Propia" style="position: absolute; left: 10px; font-weight: bold; color: #14388B; top: 155px" />
+                            <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.viviendapropia}" id="viviendaPropia" style="position: absolute; top: 150px; left: 96px; width: 45px;" panelStyle="font-size: 14px">  
+                                <f:selectItem itemLabel="SI" itemValue="S" />  
+                                <f:selectItem itemLabel="NO" itemValue="N" />
+                                <p:ajax update="@this" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Vehículo" style="position: absolute; left: 145px; font-weight: bold; color: #14388B; top: 155px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.placavehiculo}" id="vehiculo" style="position: absolute; left: 194px; top: 150px; width: 50px" maxlength="8"/>
+                            <p:watermark for="vehiculo" value="Placa" />
+                            <h:outputText value="Parqueo" style="position: absolute; left: 256px; font-weight: bold; color: #14388B; top: 155px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.parqueadero}" id="parqueo" style="position: absolute; left: 303px; top: 150px; width: 40px" maxlength="6"/>
+                            <p:watermark for="parqueo" value="Nº Parq." />
+                            <h:outputText value="Ruta Trans." style="position: absolute; left: 355px; font-weight: bold; color: #14388B; top: 155px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.rutatransporte}" id="ruta" style="position: absolute; left: 418px; top: 150px; width: 40px" maxlength="6"/>
+                            <p:watermark for="ruta" value="Ruta" />
+                            <h:outputText value="Fecha Fallecimiento" style="position: absolute; left: 477px; font-weight: bold; color: #14388B; top: 155px" />
+                            <p:calendar value="#{controlEmpleadoIndividual.empleado.persona.fechafallecimiento}" style="position: absolute; left: 590px; top: 150px;" id="fechaFallecimiento"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
+                                         navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:watermark for="fechaFallecimiento" value="Fecha Fall." />
+
+                            <h:outputText value="Cargo postulado" style="position: absolute; left: 10px; font-weight: bold; color: #14388B; top: 181px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.hojaDeVidaPersona.cargo.nombre}" id="cargoPostulado" style="position: absolute; left: 105px; top: 177px; width: 180px"/>
+                            <p:watermark for="cargoPostulado" value="Cargo postulado" />
+                            <h:outputText value="Vehículo Empresa" style="position: absolute; left: 300px; font-weight: bold; color: #14388B; top: 182px" />
+                            <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.vehiculoempresa}" id="vehiculoEmpresa" style="position: absolute; top: 177px; left: 403px; width: 45px;" panelStyle="font-size: 14px">  
+                                <f:selectItem itemLabel="SI" itemValue="S" />  
+                                <f:selectItem itemLabel="NO" itemValue="N" />
+                                <p:ajax update="@this" />
+                            </p:selectOneMenu>
+                            <p:commandButton value="Tallas" process="@this" style="position: absolute; top: 174px; left: 452px; "/>
+                            <p:commandButton value="Anteriores Contratos" style="position: absolute; top: 174px; left: 512px; "/>
+                        </fieldset>
+
+                        <p:scrollPanel style="position: absolute; top: 280px; width: 668px; height: 208px; font-size: 11px; left: 10px; border: none ">  
+                            <fieldset style="position: relative; width: 628px; height: 85px; border-radius: 7px; left: -2px ">
+
+                                <h:outputText value="Perfil Profesional" style="position: absolute; left: 10px; font-weight: bold; color: #14388B;" />
+                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.perfilprofesional}" style="position: relative; top: 18px; width: 300px; height: 60px; overflow: auto"/>
+
+                                <h:outputText value="Informe Ejecutivo" style="position: absolute; left: 338px; font-weight: bold; color: #14388B;" />
+                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.informeejecutivo}" style="position: relative; left: 5px; top: 18px; width: 300px; height: 60px; overflow: auto"/>
+
+                            </fieldset>
+                            <fieldset style="position: relative; width: 132px; height: 230px; border-radius: 7px; left: -2px; top: 2px ">
+                                <legend style="font-size: 11px; color: blue"><strong>Ubicación y Otros</strong></legend>
+                                <p:commandButton id="btnTelefono" value="" style="background-image: url(Imagenes/telefono.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
+                                <h:outputText value="Telefonos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
+                                <p:inputText id="telefonos" style="position: absolute; left: 45px; top: 30px; width: 90px"/>
+
+                                <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/direccion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
+                                <h:outputText value="Direcciones" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
+                                <p:inputText id="direcciones" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 75px"/>
+
+                                <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/estadocivil.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
+                                <h:outputText value="Estado civil" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
+                                <p:inputText id="estadoCivil" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 120px"/>
+
+                                <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/relacione.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this"/>
+                                <h:outputText value="Información Ad." style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
+                                <p:inputText id="informacionAdicional" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 165px"/>
+
+                                <p:commandButton id="btnRemplazos" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" process="@this"/>
+                                <h:outputText value="Remplazos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 195px" />
+                                <p:inputText id="remplazos" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 210px"/>
+                            </fieldset>
+                            <br/>
+                            <fieldset style="position: absolute; width: 132px; height: 136px; border-radius: 7px; left: 152px; top: 100px ">
+                                <legend style="font-size: 11px; color: blue"><strong>Educación</strong></legend>
+
+                                <p:commandButton id="btnEducacion" value="" style="background-image: url(Imagenes/niveleducativo.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
+                                <h:outputText value="Educación" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
+                                <p:inputText id="educacion" style="position: absolute; left: 45px; top: 30px; width: 90px"/>
+
+                                <p:commandButton id="btnIdiomas" value="" style="background-image: url(Imagenes/idioma.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
+                                <h:outputText value="Idiomas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
+                                <p:inputText id="idiomas" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 75px"/>
+
+                                <p:commandButton id="btnProyectos" value="" style="background-image: url(Imagenes/proyecto.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
+                                <h:outputText value="Proyectos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
+                                <p:inputText id="proyectos" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 120px"/>
+                            </fieldset>
+
+                            <fieldset style="position: absolute; width: 147px; height: 136px; border-radius: 7px; left: 306px; top: 100px ">
+                                <legend style="font-size: 11px; color: blue"><strong>Experiencia y Referencias</strong></legend>
+
+                                <p:commandButton id="btnReferenciaLaboral" value="" style="background-image: url(Imagenes/tipotrabajador.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
+                                <h:outputText value="Referencia Laboral" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
+                                <p:inputText id="referenciaLaboral" style="position: absolute; left: 45px; top: 30px; width: 105px"/>
+
+                                <p:commandButton id="btnReferenciaFamiliar" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
+                                <h:outputText value="Referencia Familiar" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
+                                <p:inputText id="referenciaFamiliar" style="position: absolute; left: 45px; top: 30px; width: 105px; top: 75px"/>
+
+                                <p:commandButton id="btnExperienciaLaboral" value="" style="background-image: url(Imagenes/comprobante.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
+                                <h:outputText value="Experiencia Laboral" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
+                                <p:inputText id="experienciaLaboral" style="position: absolute; left: 45px; top: 30px; width: 105px; top: 120px"/>
+
+                            </fieldset>
+
+                            <fieldset style="position: absolute; width: 151px; height: 230px; border-radius: 7px; left: 475px; top: 100px ">
+                                <legend style="font-size: 11px; color: blue"><strong>Datos de Selección y Otros</strong></legend>
+
+                                <p:commandButton id="btnPruebasAplicadas" value="" style="background-image: url(Imagenes/g_evaldesempeno.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
+                                <h:outputText value="Pruebas Aplicadas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
+                                <p:inputText id="pruebasAplicadas" style="position: absolute; left: 45px; top: 30px; width: 90px"/>
+
+                                <p:commandButton id="btnEntrevistas" value="" style="background-image: url(Imagenes/afiliacion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
+                                <h:outputText value="Entrevistas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
+                                <p:inputText id="entrevistas" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 75px"/>
+
+                                <p:commandButton id="btnCensos" value="" style="background-image: url(Imagenes/indicadorgestion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
+                                <h:outputText value="Censos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
+                                <p:inputText id="censos" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 120px"/>
+
+                                <p:commandButton id="btnDemandas" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this"/>
+                                <h:outputText value="Demandas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
+                                <p:inputText id="demandas" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 165px"/>
+
+                                <p:commandButton id="btnVisitasDomiciliarias" value="" style="background-image: url(Imagenes/familiar.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" process="@this"/>
+                                <h:outputText value="Visitas domiciliarias" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 195px" />
+                                <p:inputText id="visitasDomiciliarias" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 210px"/>
+                            </fieldset>
+
+
+                            <fieldset style="position: absolute; width: 301px; height: 81px; border-radius: 7px; left: 152px; top: 250px ">
+                                <legend style="font-size: 11px; color: blue"><strong>Actividades de bienestar y familiares</strong></legend>
+                                <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/evento.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px " process="@this"/>
+                                <h:outputText value="Eventos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 10px" />
+                                <p:inputText id="eventos" style="position: absolute; left: 45px; top: 23px; width: 100px"/>
+                                <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/deporte.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; " process="@this"/>
+                                <h:outputText value="Deporte" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 50px" />
+                                <p:inputText id="deporte" style="position: absolute; left: 45px; top: 63px; width: 100px"/>
+
+                                <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/aficion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px; left: 160px " process="@this"/>
+                                <h:outputText value="Aficiones" style="position: absolute; left: 200px; font-weight: bold; color: #14388B; top: 10px;" />
+                                <p:inputText id="aficiones" style="position: absolute; left: 198px; top: 23px; width: 100px"/>
+
+                                <p:commandButton id="btnFamiliares" value="" style="background-image: url(Imagenes/familiar.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; left: 160px " process="@this"/>
+                                <h:outputText value="Familiares" style="position: absolute; left: 200px; font-weight: bold; color: #14388B; top: 50px" />
+                                <p:inputText id="familiares" style="position: absolute; left: 198px; top: 63px; width: 100px"/>
+                            </fieldset>
+                        </p:scrollPanel>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

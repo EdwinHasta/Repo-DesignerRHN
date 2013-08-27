@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title> 
+    </h:head>
+    <h:body>
+       
+            <fieldset style="border-radius: 10px; width: 270px; height: 280px">
+
+                <div style="float: left;">
+                    <p:commandButton value="" id="IconDesigner" style="background-size: 100% 100%; background-image: url(DS.JPG); table-layout: fixed; width: 55px; height: 45px" />
+                </div>
+                <div style="float: left;">
+
+                    <br></br>
+                    <h:outputText  value=" &nbsp; &nbsp; &nbsp;Permite agrupar entidades." /> 
+                </div>
+                <br/><br/><br/>
+
+                <fieldset style="width: 234px; height: 155px">
+                    <legend style="color: blue; font-size: 15px">Grupo de Tipo Entidad</legend>
+
+                    <form id="form"> 
+                        <p:dataTable id="dt"   widgetVar="dta" editable="true"  editMode="cell"   style="font-size: 8px;"  var="item" value="#{controlCarpetaDesigner.listModulos}"  
+                                     scrollable="true"   scrollHeight="115" rowKey="#{item.secuencia}" selectionMode="single">  
+
+                            <p:column  style="width: auto; height: 0.5px"  sortBy="#{item.nombre}" headerText="Codigo">  
+                                <p:inputText id="codigo" value="#{item.nombre}" style="width:96%"/>
+                            </p:column>
+
+
+                            <p:column  style="height: 0.5px; width: auto;" sortBy="#{item.nombrecorto}" headerText="Nombre">  
+                                <p:inputText value="#{item.nombrecorto}" />
+                            </p:column>  
+
+                        </p:dataTable>
+                    </form>
+                </fieldset>
+                <br></br>
+                <div align="right">
+
+                    <p:commandButton  value=" Atras "  id="Previous" style=" font-size: 10px; width: 70px" onclick="window.parent.dlg2.hide()" />
+                    <p:commandButton value=" Adelante " id="Next" style="font-size: 10px; width: 70px" />
+                </div>
+
+            </fieldset>
+        
+
+    </h:body>
+</html>
+
