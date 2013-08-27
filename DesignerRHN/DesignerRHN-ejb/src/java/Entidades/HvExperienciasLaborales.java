@@ -1,0 +1,188 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Entidades;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "HVEXPERIENCIASLABORALES")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "HvExperienciasLaborales.findAll", query = "SELECT h FROM HvExperienciasLaborales h")})
+public class HvExperienciasLaborales implements Serializable {
+    private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "SECUENCIA")
+    private BigDecimal secuencia;
+    @Size(max = 50)
+    @Column(name = "EMPRESA")
+    private String empresa;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHADESDE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechadesde;
+    @Column(name = "FECHAHASTA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechahasta;
+    @Size(max = 100)
+    @Column(name = "JEFEINMEDIATO")
+    private String jefeinmediato;
+    @Column(name = "TELEFONO")
+    private Long telefono;
+    @Size(max = 50)
+    @Column(name = "CARGO")
+    private String cargo;
+    @Size(max = 4000)
+    @Column(name = "ALCANCE")
+    private String alcance;
+    @JoinColumn(name = "MOTIVORETIRO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private MotivosRetiros motivoretiros;
+    @JoinColumn(name = "HOJADEVIDA", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private HVHojasDeVida hojadevida;
+
+    public HvExperienciasLaborales() {
+    }
+
+    public HvExperienciasLaborales(BigDecimal secuencia) {
+        this.secuencia = secuencia;
+    }
+
+    public HvExperienciasLaborales(BigDecimal secuencia, Date fechadesde) {
+        this.secuencia = secuencia;
+        this.fechadesde = fechadesde;
+    }
+
+    public BigDecimal getSecuencia() {
+        return secuencia;
+    }
+
+    public void setSecuencia(BigDecimal secuencia) {
+        this.secuencia = secuencia;
+    }
+
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+
+    public Date getFechadesde() {
+        return fechadesde;
+    }
+
+    public void setFechadesde(Date fechadesde) {
+        this.fechadesde = fechadesde;
+    }
+
+    public Date getFechahasta() {
+        return fechahasta;
+    }
+
+    public void setFechahasta(Date fechahasta) {
+        this.fechahasta = fechahasta;
+    }
+
+    public String getJefeinmediato() {
+        return jefeinmediato;
+    }
+
+    public void setJefeinmediato(String jefeinmediato) {
+        this.jefeinmediato = jefeinmediato;
+    }
+
+    public Long getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(Long telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public String getAlcance() {
+        return alcance;
+    }
+
+    public void setAlcance(String alcance) {
+        this.alcance = alcance;
+    }
+
+    public MotivosRetiros getMotivoretiro() {
+        return motivoretiros;
+    }
+
+    public void setMotivoretiro(MotivosRetiros motivoretiro) {
+        this.motivoretiros = motivoretiro;
+    }
+
+    public HVHojasDeVida getHojadevida() {
+        return hojadevida;
+    }
+
+    public void setHojadevida(HVHojasDeVida hojadevida) {
+        this.hojadevida = hojadevida;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (secuencia != null ? secuencia.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof HvExperienciasLaborales)) {
+            return false;
+        }
+        HvExperienciasLaborales other = (HvExperienciasLaborales) object;
+        if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Entidades.HvExperienciasLaborales[ secuencia=" + secuencia + " ]";
+    }
+    
+}

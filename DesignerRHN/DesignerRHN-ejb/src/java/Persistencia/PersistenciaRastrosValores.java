@@ -1,0 +1,30 @@
+package Persistencia;
+
+import Entidades.RastrosValores;
+import InterfacePersistencia.PersistenciaRastrosValoresInterface;
+import java.math.BigInteger;
+import java.util.List;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+@Stateless
+public class PersistenciaRastrosValores implements PersistenciaRastrosValoresInterface{
+
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+    
+    public List<RastrosValores> rastroValores(BigInteger secRastro) {
+        try {
+            Query query = em.createQuery("SELECT rv FROM RastrosValores rv WHERE rv.rastro.secuencia = :secRastro");
+            query.setParameter("secRastro", secRastro);
+            List<RastrosValores> listaRastroV =query.getResultList();
+            return listaRastroV;
+
+        } catch (Exception e) {
+            System.out.println("Exepcion en rastroValores " + e);
+            return null;
+        }
+    }
+}
