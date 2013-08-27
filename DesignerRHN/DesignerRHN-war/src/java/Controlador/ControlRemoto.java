@@ -23,8 +23,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datagrid.DataGrid;
+import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean
@@ -96,6 +98,8 @@ public class ControlRemoto implements Serializable {
     private Pantallas pantalla;
     private String tablaExportar;
     private BigInteger secuenciaMod;
+    //PESTAÑA ACTUAL
+    private int numPestaña;
 
     public ControlRemoto() {
         vwActualesCargos = new VWActualesCargos();
@@ -131,8 +135,10 @@ public class ControlRemoto implements Serializable {
         selectModulo = null;
         tablaExportar = "data1";
         System.out.println("Se creo un nuevo BakingBean de NominaF");
+        //Inicializar pestaña en 0
+        numPestaña = 0;
     }
-    
+
     public void cancelarModificacion() {
         //vigenciasCargosEmpleado = null;
         //RequestContext context = RequestContext.getCurrentInstance();
@@ -206,8 +212,7 @@ public class ControlRemoto implements Serializable {
         }
 
         try {
-            Sueldo = "Total: " + nf.format(administrarCarpetaPersonal.ConsultarSueldo(secuencia));
-
+            Sueldo = "TOTAL: " + nf.format(administrarCarpetaPersonal.ConsultarSueldo(secuencia));
         } catch (Exception e) {
             Sueldo = null;
         }
@@ -755,9 +760,8 @@ public class ControlRemoto implements Serializable {
             tipo = "ACTIVO";
             vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
             return vwActualesTiposTrabajadoresesLista;
-        }
-        else{
-            return vwActualesTiposTrabajadoresesLista= null;
+        } else {
+            return vwActualesTiposTrabajadoresesLista = null;
         }
 
 
@@ -932,6 +936,14 @@ public class ControlRemoto implements Serializable {
         return estadoEmpleado;
     }
 
+    public int getNumPestaña() {
+        return numPestaña;
+    }
+
+    public void setNumPestaña(int numPestaña) {
+        this.numPestaña = numPestaña;
+    }
+
     public String getFotoEmpleado() {
         persona = administrarCarpetaPersonal.buscarFotoPersona(identificacion);
         if (persona.getPathfoto() == null || persona.getPathfoto().equalsIgnoreCase("N")) {
@@ -942,5 +954,19 @@ public class ControlRemoto implements Serializable {
             return fotoEmpleado;
         }
     }
-}
 
+    public void pestañaActual(TabChangeEvent event) {
+        Tab pestaña = event.getTab();
+        if (pestaña.getId().equals("Personal")) {
+            numPestaña = 0;
+        } else if (pestaña.getId().equals("Nomina")) {
+            numPestaña = 1;
+        } else if (pestaña.getId().equals("Integracion")) {
+            numPestaña = 2;
+        } else if (pestaña.getId().equals("Gerencial")) {
+            numPestaña = 3;
+        } else if (pestaña.getId().equals("Designer")) {
+            numPestaña = 5;
+        }
+    }
+}

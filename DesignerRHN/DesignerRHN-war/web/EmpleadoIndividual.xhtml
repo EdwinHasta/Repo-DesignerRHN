@@ -144,23 +144,23 @@
                                 <legend style="font-size: 11px; color: blue"><strong>Ubicación y Otros</strong></legend>
                                 <p:commandButton id="btnTelefono" value="" style="background-image: url(Imagenes/telefono.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
                                 <h:outputText value="Telefonos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
-                                <p:inputText id="telefonos" style="position: absolute; left: 45px; top: 30px; width: 90px"/>
+                                <p:inputText id="telefonos" value="#{controlEmpleadoIndividual.telefonoP}" style="position: absolute; left: 45px; top: 30px; width: 90px" readonly="true"/>
 
                                 <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/direccion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
                                 <h:outputText value="Direcciones" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
-                                <p:inputText id="direcciones" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 75px"/>
+                                <p:inputText id="direcciones" value="#{controlEmpleadoIndividual.direccionP}" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 75px" readonly="true"/>
 
                                 <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/estadocivil.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
                                 <h:outputText value="Estado civil" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
-                                <p:inputText id="estadoCivil" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 120px"/>
+                                <p:inputText id="estadoCivil" value="#{controlEmpleadoIndividual.estadoCivilP}" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 120px" readonly="true"/>
 
                                 <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/relacione.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this"/>
                                 <h:outputText value="Información Ad." style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
-                                <p:inputText id="informacionAdicional" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 165px"/>
+                                <p:inputText id="informacionAdicional" value="#{controlEmpleadoIndividual.informacionAdicionalP}" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 165px" readonly="true"/>
 
-                                <p:commandButton id="btnRemplazos" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" process="@this"/>
-                                <h:outputText value="Remplazos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 195px" />
-                                <p:inputText id="remplazos" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 210px"/>
+                                <p:commandButton id="btnReemplazos" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" process="@this"/>
+                                <h:outputText value="Reemplazos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 195px" />
+                                <p:inputText id="reemplazos" value="#{controlEmpleadoIndividual.reemplazoP}" style="position: absolute; left: 45px; top: 30px; width: 90px; top: 210px" readonly="true"/>
                             </fieldset>
                             <br/>
                             <fieldset style="position: absolute; width: 132px; height: 136px; border-radius: 7px; left: 152px; top: 100px ">

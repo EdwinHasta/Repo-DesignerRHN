@@ -7,30 +7,6 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>NominaF</title>
-
-        <style type="text/css"> 
-
-            .ui-felipe>.ui-datagrid-content {
-                border: none;
-            }
-
-            .ui-datagrid .ui-paginator {
-                font-size: 10px;
-                height: 20px;
-                width: 375px;
-                position: absolute;
-                top: 35px;
-                left: 255px;
-            }
-
-            .ui-datagrid .ui-paginator .ui-paginator-next,
-            .ui-datagrid .ui-paginator .ui-paginator-last,
-            .ui-datagrid .ui-paginator .ui-paginator-first,
-            .ui-datagrid .ui-paginator .ui-paginator-prev{
-                height: 15px;
-            }
-
-        </style>
     </h:head>
     <h:body>
 
@@ -42,15 +18,13 @@
 
                         <p:growl id="idcualquiera" showDetail="true"/>
 
+                        <p:tabView  id="tabMenu"  dynamic="true" style=" height: 485px; font-size: 10px;" widgetVar="tabMenu" activeIndex="#{controlRemoto.numPestaña}" >  
 
-                        <p:tabView id="tabMenu" dynamic="true" style=" height: 485px; font-size: 10px;" widgetVar="tabMenu">  
+                            <p:ajax event="tabChange" listener="#{controlRemoto.pestañaActual}"/> 
 
-          <!--      <p:ajax event="tabChange" listener="#{tabBean.onTabChange}" update=":form:growl"/>  --> 
-
-                            <p:tab title="Personal" id="Nomina">  
+                            <p:tab title="Personal" id="Personal">  
 
                                 <h:outputText id="fechas" style="position: absolute; left: 170px; top: 58px; width: 475px; text-align: right; color: #D20005" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
-
                                 <p:inputText id="menu" style="position: absolute; top: 30px; width: 610px; height: 15px; border-color: #6F0;" value="AQUI VA EL MENU :)" disabled="true" />
 
                                 <!-- Panel Izquierdo - Superior -->
@@ -294,7 +268,7 @@
                                         <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 250px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
                                         <p:inputText id="VVacaciones" style="position: absolute; left: 250px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
 
-                                        <p:inputText id="VSueldo" style="position: absolute; left: 455px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.sueldo}"  />
+                                        <p:inputText id="VSueldo" style="position: absolute; left: 455px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.sueldo}"/>
                                         <p:inputText id="VTipoSalario" style="position: absolute; left: 455px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
                                         <p:inputText id="VUbicacion" style="position: absolute; left: 455px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
                                         <p:inputText id="VFormaDePago" style="position: absolute; left: 455px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
@@ -410,7 +384,7 @@
                                 </p:panel>
                             </p:tab>  
 
-                            <p:tab title="Nomina" id="nomina">  
+                            <p:tab title="Nomina" id="Nomina">  
 
                                 <h:outputText id="fechas2" style="position: absolute; left: 170px; top: 35px; width: 475px; text-align: right;" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
 
@@ -518,7 +492,7 @@
 
                             </p:tab>  
 
-                            <p:tab title="Integración" id="integracion">  
+                            <p:tab title="Integración" id="Integracion">  
 
                                 <h:outputText id="fechas3" style="position: absolute; left: 170px; top: 35px; width: 475px; text-align: right;" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
 
