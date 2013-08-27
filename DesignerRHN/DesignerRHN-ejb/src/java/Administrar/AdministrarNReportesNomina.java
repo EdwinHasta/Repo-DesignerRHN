@@ -23,7 +23,7 @@ import javax.ejb.Stateful;
  * @author AndresPineda
  */
 @Stateful
-public class AdministrarReportes implements AdministrarReportesInterface {
+public class AdministrarNReportesNomina implements AdministrarReportesInterface {
 
     @EJB
     PersistenciaInforeportesInterface persistenciaInforeportes;
