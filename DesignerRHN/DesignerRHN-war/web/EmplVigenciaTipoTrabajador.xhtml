@@ -403,9 +403,9 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 530px; top: 520px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVTTEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 596px; top: 520px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 400px; top: 520px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 530px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTTEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 360px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 610px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

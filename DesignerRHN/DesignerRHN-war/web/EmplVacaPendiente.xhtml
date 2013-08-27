@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Vacaciones" style=" font-size: 12px; position: absolute; width: 685px; height: 575px; left: 300px;top: 80px; text-align: left" >  
+
+                        <p:commandButton style="position: absolute; left: 500px; top: 550px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" process="@this" />
+                        <p:commandButton style="position: absolute; left: 40px; top: 550px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 600px; top: 550px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  action="nomina" process="@this" />
+
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 360px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "  process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
+
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro Vacaciones" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro Vacaciones" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro Vacaciones" />
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <h:outputText id="btn" style="position: absolute; left: 25px; top: 40px; background-image: url(Imagenes/sol-gafas.jpg); width:60px ;height:60px; background-repeat: no-repeat; background-size: 100% 100%; "/>
+                        <p:tooltip style="font-size: 12px" for="btn" value="Conocera los historicos del empleado con relacion a las vacaciones" showEffect="slide" hideEffect="slide"/>
+                        <p:inputText style="position: absolute; left: 90px; top: 80px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado"/>
+                        <h:outputText style="position: absolute; left: 400px; top: 90px; width: 200px; height: 12px;position: absolute; font-weight: bold " value="Días Provisionados : "/>  
+
+
+
+                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 645px; height: 215px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Vacaciones Pendientes</strong></legend>
+                            <!-- TABLA EMPLVACACIONESEMPLEADO -->
+
+                            <p:dataTable id="datosVacacionesPEmpleado" var="info"  rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
+                                         scrollable="true" scrollHeight="70" scrollWidth="642"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="6"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:column headerText="Estado"  filterMatchMode="contains" id="vacacionesEstado" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText  /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText  id="editarEstado" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Estado" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="DP"  filterMatchMode="contains" id="vacacionesDP" width="50" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText  id="editarDP" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="DP" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Inicial"  filterMatchMode="contains"  width="112" id="vacacionesFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText  >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;"  id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" filterMatchMode="contains"  width="113" id="vacacionesFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText  >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" />
+                                    </f:facet>
+                                </p:column>
+                                <f:facet name="footer">  
+                                    <h:outputText value="Total Dias Pendientes:  "  style="position: relative; left: -130px; "/>  
+                                    <p:inputText id="totalDiasP" style="width:50px; position: relative; left: -120px" />  
+                                </f:facet>
+                               
+
+                            </p:dataTable>  
+                        </fieldset>  
+
+                        <fieldset style="position: absolute; left: 10px; top: 340px; font-size: 10px; width: 645px; height: 195px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Vacaciones Pendientes</strong></legend>
+                            <!-- TABLA EMPLVACACIONESEMPLEADO -->
+
+                            <p:dataTable id="datosVacacionesDEmpleado" var="info"  rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
+                                         scrollable="true" scrollHeight="70" scrollWidth="642"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="6"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:column headerText="Estado"  filterMatchMode="contains" id="vacacionesEstadoD" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText  /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText  id="editarEstadoD" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Estado" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="DP"  filterMatchMode="contains" id="vacacionesDPD" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText  id="editarDPD" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="DP" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Inicial"  filterMatchMode="contains"  width="72" id="vacacionesFechaInicialD" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText  >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;"  id="editFechaInicialD"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" filterMatchMode="contains"  width="72" id="vacacionesFechaFinalD" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText  >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" id="editFechaFinalD"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial" />
+                                    </f:facet>
+                                </p:column>
+
+
+                            </p:dataTable>  
+                        </fieldset>  
+
+
+                    </p:panel>
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

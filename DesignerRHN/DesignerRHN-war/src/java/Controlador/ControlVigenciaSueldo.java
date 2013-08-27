@@ -1,6 +1,5 @@
 package Controlador;
 
-import Administrar.AdministrarVigenciasSueldos;
 import Entidades.Empleados;
 import Entidades.MotivosCambiosSueldos;
 import Entidades.Terceros;
@@ -2236,6 +2235,7 @@ public class ControlVigenciaSueldo implements Serializable {
     //GET - SET 
 
     public List<VigenciasSueldos> getListVigenciasSueldos() {
+        System.out.println("getListVigenciasSueldos");
         try {
             if (listVigenciasSueldos == null) {
                 listVigenciasSueldos = new ArrayList<VigenciasSueldos>();
@@ -2262,6 +2262,7 @@ public class ControlVigenciaSueldo implements Serializable {
 
     public List<VigenciasAfiliaciones> getListVigenciasAfiliaciones() {
         if (index >= 0) {
+            System.out.println("listVigenciasSueldos.get(index) : "+listVigenciasSueldos);
             VigenciasSueldos vigenciaTemporal = (VigenciasSueldos) listVigenciasSueldos.get(index);
             listVigenciasAfiliaciones = administrarVigenciasSueldos.VigenciasAfiliacionesVigencia(vigenciaTemporal.getSecuencia());
             if (listVigenciasAfiliaciones == null) {
