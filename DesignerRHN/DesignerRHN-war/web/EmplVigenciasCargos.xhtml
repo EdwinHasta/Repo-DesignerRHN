@@ -13,9 +13,8 @@
                 <h:form id="form">            
                     <p:panel  id="PanelTotal" header="Historicos Cargos Desempeñados" style=" font-size: 12px; position: absolute; width: 685px; height: 490px;" >  
 
-                        <h:outputText style="position: absolute; width: 450px; left: 150px; height: 22px; top: 50px; font-size: 12px; font-family: Arial, Helvetica, sans-serif; text-align: justify; visibility: hidden; display: none" value="Ingrese el cargo asignado al empleado, todo cargo debe estar asignado a una estructura, de esta forma podemos comparar los cargos asignados, contra los cargos artorizados por estructura." id="jgj"/>
-                        <h:outputText value=" " style="position: absolute; left: 25px; top: 70px; background-image: url(Imagenes/interrogacion.jpg); width:50px ;height:50px; background-repeat: no-repeat; background-size: 100% 100%; visibility: hidden; display: none;  " id="jgg"/>
-                        <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="T_EMPLEADO" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
+                        <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
+
                         <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">   
                             <p:toolbarGroup align="left"> 
 
@@ -378,7 +377,7 @@
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; left: 522px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 605px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
                     </p:panel>
 

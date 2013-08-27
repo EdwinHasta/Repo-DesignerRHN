@@ -13,10 +13,9 @@
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Ubicaciones Geograficas" style=" font-size: 12px; position: absolute; width: 685px; height: 530px;" >  
 
-                        <h:outputText id="btn" value=" " style="position: absolute; left: 25px; top: 70px; background-image: url(Imagenes/tipocontrato.gif); width:50px ;height:50px; background-repeat: no-repeat; background-size: 100% 100%;  "/> 
-                        <p:inputText style="position: absolute; left: 90px; top: 100px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado" value="#{controlVigenciasUbicaciones.empleado.persona.primerapellido} #{controlVigenciasUbicaciones.empleado.persona.segundoapellido} #{controlVigenciasUbicaciones.empleado.persona.nombre}"/>  
+                        <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlVigenciasUbicaciones.empleado.persona.nombreCompleto}"/>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 100px; left: 360px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasUbicaciones.guardarCambiosVU()}" process="@this" />
@@ -58,7 +57,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 130px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue"><strong>Origenes del trabajador</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
 
@@ -168,9 +167,9 @@
                             </p:commandButton>
                         </p:dialog> 
 
-                        <p:commandButton style="position: absolute; left: 530px; top: 435px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVUEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 596px; top: 435px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciasUbicaciones.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 300px; top: 435px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" actionListener="#{controlVigenciasUbicaciones.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 522px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVUEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciasUbicaciones.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 605px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlVigenciasUbicaciones.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
