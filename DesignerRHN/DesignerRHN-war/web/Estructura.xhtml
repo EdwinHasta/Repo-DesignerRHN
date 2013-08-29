@@ -164,9 +164,9 @@
                             <p:commandButton id="btnRiesgosProfesionales" value="[Riegos Profesionales]" style="position: relative; top: 215px;"/>
                             <p:commandButton id="btnReportePlanta" value="[Reporte Planta Personal]" style="position: relative; top: 215px;"/>
                         </fieldset>
-                        <p:commandButton id="btnAceptar" value="Aceptar" icon="ui-icon-check" style="position: relative; top: 302px; left: 480px" onclick="confirmarGuardar.show();" update=":form:datosOrganigramas" process="@this" />
-                        <p:commandButton id="btnCancelar" value="Cancelar" icon="ui-icon-closethick" style="position: relative; top: 302px; left: 480px" actionListener="#{controlEstructura.salir()}"  process="@this" />
-                        <p:commandButton style="position: relative; left: -180px; top: 302px;" id="REFRESCAR" value="Refrescar" actionListener="#{controlEstructura.cancelarModificacion()}" process="@this" />
+                        <p:commandButton id="btnAceptar" value="Aceptar" icon="ui-icon-check" style="position: relative; top: 302px; left: 500px" onclick="confirmarGuardar.show();" update=":form:datosOrganigramas" process="@this" />
+                        <p:commandButton id="btnAtras" value="Atras" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; top: 302px; left: 500px" actionListener="#{controlEstructura.salir()}"  process="@this" action="nomina" />
+                        <p:commandButton style="position: relative; left: -160px; top: 302px;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEstructura.cancelarModificacion()}" process="@this" />
                     </p:panel>
 
                     <!-- DIALOGO L.O.V ESTATICO DE EMPRESAS -->

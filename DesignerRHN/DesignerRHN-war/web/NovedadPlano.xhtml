@@ -384,8 +384,8 @@
                             <h:outputText value="Los Demas Documentos Soporte(Si lo hay), fueron borrados exitosamente." style="font-weight: bold; font-size: 13px; position: absolute; left: 80px; top: 10px; color: red;"/>
                         </p:dialog>
 
-                        <p:commandButton id="aceptarN" value="Aceptar" actionListener="#{cargarArchivoPlano.host()}" process="@this" style="position: absolute; top: 500px; left: 575px"/>
-                        <p:commandButton id="atrasN" value="Atras" actionListener="#{cargarArchivoPlano.revisarNovedad(tNovedades.secuencia)}" process="@this" style="position: absolute; top: 500px; left: 650px"/>
+                        <p:commandButton id="aceptarN" value="Aceptar" icon="ui-icon-check" actionListener="#{cargarArchivoPlano.host()}" process="@this" style="position: absolute; top: 500px; left: 565px"/>
+                        <p:commandButton id="atrasN" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{cargarArchivoPlano.revisarNovedad(tNovedades.secuencia)}" process="@this" style="position: absolute; top: 500px; left: 650px" action="nomina"/>
                         <p:commandButton id="borrarTodo" value="[Borrar Todo]" process="@this" style="position: absolute; top: 460px;" oncomplete="borrarTodoDialogo.show();" update="pickListDocumentosSoporte" />
                         <p:commandButton id="borrarNoCargado" value="[Borrar No Cargado]" actionListener="#{cargarArchivoPlano.borrarRegistrosNoCargados()}" update="tempNovedades, nombreArchivo" process="@this" style="position: absolute; top: 460px; left: 120px;"/>
                         <p:commandButton id="novedadPlanoOcacional" value="[Novedad Plano Ocacional]" actionListener="#{cargarArchivoPlano.revisarNovedad(tNovedades.secuencia)}" process="@this" style="position: absolute; top: 460px; left: 535px; width: 178px"/>

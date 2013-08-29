@@ -7,6 +7,7 @@ import Entidades.HVHojasDeVida;
 import Entidades.InformacionesAdicionales;
 import Entidades.Telefonos;
 import Entidades.VigenciasEstadosCiviles;
+import Entidades.VigenciasFormales;
 import InterfacePersistencia.AdministrarEmpleadoIndividualInterface;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -28,8 +29,9 @@ public class ControlEmpleadoIndividual implements Serializable {
     private VigenciasEstadosCiviles estadoCivil;
     private InformacionesAdicionales informacionAdicional;
     private Encargaturas encargatura;
+    private VigenciasFormales vigenciaFormal;
     //CAMPOS A MOSTRAR EN LA PAGINA
-    private String telefonoP, direccionP, estadoCivilP, informacionAdicionalP, reemplazoP;
+    private String telefonoP, direccionP, estadoCivilP, informacionAdicionalP, reemplazoP, educacionP;
     //CONVERTIR FECHA
     private SimpleDateFormat formatoFecha;
     public ControlEmpleadoIndividual() {
@@ -71,6 +73,12 @@ public class ControlEmpleadoIndividual implements Serializable {
         }else{
             reemplazoP = "SIN REGISTRAR";
         }
+        vigenciaFormal = administrarEmpleadoIndividual.educacionPersona(secPersona);
+        if(vigenciaFormal != null){
+            educacionP = vigenciaFormal.getTipoeducacion().getNombre() + "  " + formatoFecha.format(vigenciaFormal.getFechavigencia());
+        }else{
+            educacionP = "SIN REGISTRAR";
+        }
     }
 
     public Empleados getEmpleado() {
@@ -104,6 +112,10 @@ public class ControlEmpleadoIndividual implements Serializable {
     public void setEncargatura(Encargaturas encargatura) {
         this.encargatura = encargatura;
     }
+
+    public void setVigenciaFormal(VigenciasFormales vigenciaFormal) {
+        this.vigenciaFormal = vigenciaFormal;
+    }
     
     public HVHojasDeVida getHojaDeVidaPersona() {
         return hojaDeVidaPersona;
@@ -128,5 +140,8 @@ public class ControlEmpleadoIndividual implements Serializable {
     public String getReemplazoP() {
         return reemplazoP;
     }
-    
+
+    public String getEducacionP() {
+        return educacionP;
+    }
 }

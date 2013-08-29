@@ -35,10 +35,12 @@ a:link:hover, a:visited:hover  {
 .ui-datagrid .ui-paginator {
     font-size: 10px;
     height: 20px;
-    width: 375px;
+    width: 360px;
     position: absolute;
-    top: 30px;
-    left: 255px;
+    top: 45px;
+    left: 477px;
+    text-align: left;
+    
 }
 
 .ui-datagrid .ui-paginator .ui-paginator-next,
