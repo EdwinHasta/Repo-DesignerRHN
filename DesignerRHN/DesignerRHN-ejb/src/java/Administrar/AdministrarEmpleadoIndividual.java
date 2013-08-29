@@ -6,6 +6,7 @@ import Entidades.HVHojasDeVida;
 import Entidades.InformacionesAdicionales;
 import Entidades.Telefonos;
 import Entidades.VigenciasEstadosCiviles;
+import Entidades.VigenciasFormales;
 import InterfacePersistencia.AdministrarEmpleadoIndividualInterface;
 import InterfacePersistencia.PersistenciaDireccionesInterface;
 import InterfacePersistencia.PersistenciaEncargaturasInterface;
@@ -13,6 +14,7 @@ import InterfacePersistencia.PersistenciaHVHojasDeVidaInterface;
 import InterfacePersistencia.PersistenciaInformacionesAdicionalesInterface;
 import InterfacePersistencia.PersistenciaTelefonosInterface;
 import InterfacePersistencia.PersistenciaVigenciasEstadosCivilesInterface;
+import InterfacePersistencia.PersistenciaVigenciasFormalesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -33,6 +35,8 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     PersistenciaInformacionesAdicionalesInterface persistenciaInformacionesAdicionales;
     @EJB
     PersistenciaEncargaturasInterface persistenciaEncargaturas;
+    @EJB
+    PersistenciaVigenciasFormalesInterface persistenciaVigenciasFormales;
 
     @Override
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secPersona) {
@@ -84,6 +88,16 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         listaEncargaturas = persistenciaEncargaturas.reemplazoPersona(secEmpleado);
         if (listaEncargaturas != null) {
             return listaEncargaturas.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public VigenciasFormales educacionPersona(BigInteger secPersona) {
+        List<VigenciasFormales> listaVigenciasFormales;
+        listaVigenciasFormales = persistenciaVigenciasFormales.educacionPersona(secPersona);
+        if (listaVigenciasFormales != null) {
+            return listaVigenciasFormales.get(0);
         } else {
             return null;
         }
