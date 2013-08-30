@@ -6,7 +6,6 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,7 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -28,9 +26,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "VIGENCIASPROYECTOS")
-@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VigenciasProyectos.findAll", query = "SELECT v FROM VigenciasProyectos v")})
+    @NamedQuery(name = "VigenciasProyectos.findAll", query = "SELECT v FROM VigenciasProyectos v"),
+    @NamedQuery(name = "VigenciasProyectos.findBySecuencia", query = "SELECT v FROM VigenciasProyectos v WHERE v.secuencia = :secuencia"),
+    @NamedQuery(name = "VigenciasProyectos.findByFechainicial", query = "SELECT v FROM VigenciasProyectos v WHERE v.fechainicial = :fechainicial"),
+    @NamedQuery(name = "VigenciasProyectos.findByFechafinal", query = "SELECT v FROM VigenciasProyectos v WHERE v.fechafinal = :fechafinal"),
+    @NamedQuery(name = "VigenciasProyectos.findByCantidadpersonaacargo", query = "SELECT v FROM VigenciasProyectos v WHERE v.cantidadpersonaacargo = :cantidadpersonaacargo")})
 public class VigenciasProyectos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -49,13 +50,12 @@ public class VigenciasProyectos implements Serializable {
     private Date fechafinal;
     @Column(name = "CANTIDADPERSONAACARGO")
     private Short cantidadpersonaacargo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "PROYECTO")
-    private BigInteger proyecto;
     @JoinColumn(name = "PRY_ROL", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private PryRoles pryRol;
+    @JoinColumn(name = "PROYECTO", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Proyectos proyecto;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
@@ -70,10 +70,9 @@ public class VigenciasProyectos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public VigenciasProyectos(BigDecimal secuencia, Date fechainicial, BigInteger proyecto) {
+    public VigenciasProyectos(BigDecimal secuencia, Date fechainicial) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
-        this.proyecto = proyecto;
     }
 
     public BigDecimal getSecuencia() {
@@ -108,20 +107,20 @@ public class VigenciasProyectos implements Serializable {
         this.cantidadpersonaacargo = cantidadpersonaacargo;
     }
 
-    public BigInteger getProyecto() {
-        return proyecto;
-    }
-
-    public void setProyecto(BigInteger proyecto) {
-        this.proyecto = proyecto;
-    }
-
     public PryRoles getPryRol() {
         return pryRol;
     }
 
     public void setPryRol(PryRoles pryRol) {
         this.pryRol = pryRol;
+    }
+
+    public Proyectos getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Proyectos proyecto) {
+        this.proyecto = proyecto;
     }
 
     public Empleados getEmpleado() {

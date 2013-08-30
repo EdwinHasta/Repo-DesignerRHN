@@ -46,6 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proyectos.findByCodigo", query = "SELECT p FROM Proyectos p WHERE p.codigo = :codigo")})
 public class Proyectos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
+    private Collection<VigenciasProyectos> vigenciasProyectosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
     private Collection<VigenciasProrrateosProyectos> vigenciasprorrateosproyectosCollection;
     @OneToMany(mappedBy = "proyecto")
     private Collection<VigenciasProrrateos> vigenciasprorrateosCollection;
@@ -259,5 +261,13 @@ public class Proyectos implements Serializable {
 
     public void setVigenciasprorrateosproyectosCollection(Collection<VigenciasProrrateosProyectos> vigenciasprorrateosproyectosCollection) {
         this.vigenciasprorrateosproyectosCollection = vigenciasprorrateosproyectosCollection;
+    }
+
+    public Collection<VigenciasProyectos> getVigenciasProyectosCollection() {
+        return vigenciasProyectosCollection;
+    }
+
+    public void setVigenciasProyectosCollection(Collection<VigenciasProyectos> vigenciasProyectosCollection) {
+        this.vigenciasProyectosCollection = vigenciasProyectosCollection;
     }
 }

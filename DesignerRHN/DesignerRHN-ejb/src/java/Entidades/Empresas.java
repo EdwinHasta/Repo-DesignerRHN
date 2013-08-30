@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
     @OneToMany(mappedBy = "empresa")
+    private Collection<Proyectos> proyectosCollection;
+    @OneToMany(mappedBy = "empresa")
     private Collection<Direcciones> direccionesCollection;
     @OneToMany(mappedBy = "empresa")
     private Collection<Pantallas> pantallasCollection;
@@ -1051,6 +1053,14 @@ public class Empresas implements Serializable {
 
     public void setDireccionesCollection(Collection<Direcciones> direccionesCollection) {
         this.direccionesCollection = direccionesCollection;
+    }
+
+    public Collection<Proyectos> getProyectosCollection() {
+        return proyectosCollection;
+    }
+
+    public void setProyectosCollection(Collection<Proyectos> proyectosCollection) {
+        this.proyectosCollection = proyectosCollection;
     }
     
 }

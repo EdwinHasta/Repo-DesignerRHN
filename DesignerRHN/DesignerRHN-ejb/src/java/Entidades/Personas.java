@@ -552,14 +552,6 @@ public class Personas implements Serializable {
         this.hVHojasDeVida = hVHojasDeVida;
     }
 
-    public BigInteger getNumerodocumento() {
-        return numerodocumento;
-    }
-
-    public void setNumerodocumento(BigInteger numerodocumento) {
-        this.numerodocumento = numerodocumento;
-    }
-
     @XmlTransient
     public Collection<Telefonos> getTelefonosCollection() {
         return telefonosCollection;
@@ -657,5 +649,13 @@ public class Personas implements Serializable {
 
     public void setDireccionesCollection(Collection<Direcciones> direccionesCollection) {
         this.direccionesCollection = direccionesCollection;
+    }
+
+    public BigInteger getNumerodocumento() {
+        return numerodocumento;
+    }
+
+    public void setNumerodocumento(BigInteger numerodocumento) {
+        this.numerodocumento = numerodocumento;
     }
 }

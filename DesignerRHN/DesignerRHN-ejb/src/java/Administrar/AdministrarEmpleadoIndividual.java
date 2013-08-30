@@ -3,14 +3,18 @@ package Administrar;
 import Entidades.Direcciones;
 import Entidades.Encargaturas;
 import Entidades.HVHojasDeVida;
+import Entidades.IdiomasPersonas;
 import Entidades.InformacionesAdicionales;
 import Entidades.Telefonos;
 import Entidades.VigenciasEstadosCiviles;
 import Entidades.VigenciasFormales;
+import Entidades.VigenciasProyectos;
+import InterfaceAdministrar.PersistenciaVigenciasProyectosInterface;
 import InterfacePersistencia.AdministrarEmpleadoIndividualInterface;
 import InterfacePersistencia.PersistenciaDireccionesInterface;
 import InterfacePersistencia.PersistenciaEncargaturasInterface;
 import InterfacePersistencia.PersistenciaHVHojasDeVidaInterface;
+import InterfacePersistencia.PersistenciaIdiomasPersonasInterface;
 import InterfacePersistencia.PersistenciaInformacionesAdicionalesInterface;
 import InterfacePersistencia.PersistenciaTelefonosInterface;
 import InterfacePersistencia.PersistenciaVigenciasEstadosCivilesInterface;
@@ -37,6 +41,10 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     PersistenciaEncargaturasInterface persistenciaEncargaturas;
     @EJB
     PersistenciaVigenciasFormalesInterface persistenciaVigenciasFormales;
+    @EJB
+    PersistenciaIdiomasPersonasInterface persistenciaIdiomasPersonas;
+    @EJB
+    PersistenciaVigenciasProyectosInterface persistenciaVigenciasProyectos;
 
     @Override
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secPersona) {
@@ -98,6 +106,26 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         listaVigenciasFormales = persistenciaVigenciasFormales.educacionPersona(secPersona);
         if (listaVigenciasFormales != null) {
             return listaVigenciasFormales.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public IdiomasPersonas idiomasPersona(BigInteger secPersona) {
+        List<IdiomasPersonas> listaIdiomasPersonas;
+        listaIdiomasPersonas = persistenciaIdiomasPersonas.idiomasPersona(secPersona);
+        if (listaIdiomasPersonas != null) {
+            return listaIdiomasPersonas.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public VigenciasProyectos proyectosPersona(BigInteger secEmpleado) {
+        List<VigenciasProyectos> listaVigenciasProyectos;
+        listaVigenciasProyectos = persistenciaVigenciasProyectos.proyectosPersona(secEmpleado);
+        if (listaVigenciasProyectos != null) {
+            return listaVigenciasProyectos.get(0);
         } else {
             return null;
         }
