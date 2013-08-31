@@ -65,18 +65,16 @@
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue"><strong>Cargos del empleado</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
-                            <p:focus id="focoRegistro" for="#{controlVigenciasCargos.registroFoco}"/>
                             <h:outputText id="informacionRegistro" value="#{controlVigenciasCargos.infoRegistro}"/>
-                            <p:commandButton id="btnPrimerRegistro" disabled="#{controlVigenciasCargos.botonPrimero}" value=" " icon="ui-icon-arrowstop-1-w" actionListener="#{controlVigenciasCargos.primerRegistro()}" process="@this"/>
-                            <p:commandButton id="btnAnteriorRegistro" disabled="#{controlVigenciasCargos.botonAnterior}" value=" " icon="ui-icon-arrow-1-w" actionListener="#{controlVigenciasCargos.anteriorRegistro()}" process="@this"/>
-                            <p:commandButton id="btnSiguienteRegistro" disabled="#{controlVigenciasCargos.botonSiguiente}" value=" "  icon="ui-icon-arrow-1-e" actionListener="#{controlVigenciasCargos.siguienteRegistro()}" process="@this"/>
+                            <p:commandButton id="btnPrimerRegistro" disabled="#{controlVigenciasCargos.botonPrimero}" value=" " icon="ui-icon-arrowstop-1-w" actionListener="#{controlVigenciasCargos.primerRegistro()}" process="@this" immediate="true" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
+                            <p:commandButton id="btnAnteriorRegistro" disabled="#{controlVigenciasCargos.botonAnterior}" value=" " icon="ui-icon-arrow-1-w" actionListener="#{controlVigenciasCargos.anteriorRegistro()}" process="@this" immediate="true" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
+                            <p:commandButton id="btnSiguienteRegistro" disabled="#{controlVigenciasCargos.botonSiguiente}" value=" "  icon="ui-icon-arrow-1-e" actionListener="#{controlVigenciasCargos.siguienteRegistro()}" process="@this" immediate="true" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
                             <p:commandButton id="btnUltimoRegistro" disabled="#{controlVigenciasCargos.botonUltimo}" value=" " icon="ui-icon-arrowstop-1-e" actionListener="#{controlVigenciasCargos.ultimoRegistro()}" process="@this"/>
 
-                            <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; width: 645px"                           
+                            <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; width: 645px"                            
                                          value="#{controlVigenciasCargos.vigenciasCargosEmpleado}" scrollable="true" scrollHeight="150" scrollWidth="645"
                                          filteredValue="#{controlVigenciasCargos.filterVC}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" rows="6"  
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                         editable="true" editMode="cell" >
 
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrar()}"/>
 
@@ -85,13 +83,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="Fecha" />
                                     </f:facet>
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.fechavigencia}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
+                                    
                                             <p:calendar  style="font-size: 10px;" value="#{info.fechavigencia}" id="editFecha"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciasCargos.modificarVC(indice, 'N', info.fechavigencia)}" update="editFecha"/>
@@ -99,9 +91,7 @@
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, '0')}" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
-                                        </f:facet>   
-                                    </p:cellEditor>
-
+                                        
                                     <f:facet name="footer">
                                         <h:outputText value="Fecha" />
                                     </f:facet>
@@ -110,17 +100,13 @@
                                 <p:column headerText="Estructura" sortBy="#{info.estructura.nombre}" filterBy="#{info.estructura.nombre}" filterMatchMode="contains" id="vcEstructura" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header"><h:outputText value="Estructura"/> </f:facet> 
 
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.estructura.nombre}" /></f:facet>  
-                                        <f:facet name="input">
+                                   
                                             <p:inputText value="#{info.estructura.nombre}" id="editEstructura" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(indice, 'ESTRUCTURA', info.estructura.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, '1')}" />
                                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.cargarEstructuras(info.fechavigencia, indice)}"/>
                                             </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
+                                      
                                     <f:facet name="footer">
                                         <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooEstructuras" onclick="estructurasDialog.show();"
                                                          value="Estructura"/>
@@ -130,16 +116,13 @@
                                 <p:column headerText="Motivo" sortBy="#{info.motivocambiocargo.nombre}" filterBy="#{info.motivocambiocargo.nombre}" filterMatchMode="contains"  id="vcMotivo" width="133" filterStyle="display: none; visibility: hidden;" >      
                                     <f:facet name="header"><h:outputText value="Motivo"/></f:facet>
 
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.motivocambiocargo.nombre}" /></f:facet>  
-                                        <f:facet name="input">
+                                  
                                             <p:inputText id="editMotivoC" value="#{info.motivocambiocargo.nombre}" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase">
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(indice, 'MOTIVOC', info.motivocambiocargo.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, '2')}" />
                                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarIndex(indice, '0')}"/>
                                             </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
+                                     
 
 
                                     <f:facet name="footer">
@@ -151,16 +134,13 @@
                                 <p:column headerText="Nombre_Cargo" sortBy="#{info.cargo.nombre}" filterBy="#{info.cargo.nombre}" filterMatchMode="contains" id="vcNombreCargo" width="133" filterStyle="display: none; visibility: hidden;" >                                                              
                                     <f:facet name="header"> <h:outputText value="Nombre Cargo" /></f:facet>
 
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.cargo.nombre}" /></f:facet>  
-                                        <f:facet name="input">
+                                    
                                             <p:inputText value="#{info.cargo.nombre}" id="editNombreCargo" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" >
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(indice, 'NOMBREC', info.cargo.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, '3')}" />
                                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarIndex(indice, '1')}"/>
                                             </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
+                                        
 
                                     <f:facet name="footer">
                                         <p:commandButton style="width: 143px; height: 16px; font-size: 9px; border: none; color: blue" id="fooCargos" onclick="cargosDialog.show();"
@@ -171,32 +151,25 @@
                                 <p:column headerText="Centro_Costo" sortBy="#{info.estructura.centrocosto.nombre}" filterBy="#{info.estructura.centrocosto.nombre}" filterMatchMode="contains" id="vcCentrosC" width="111" filterStyle="display: none; visibility: hidden;" >                                                                                              
                                     <f:facet name="header"><h:outputText value="Centro Costo"/></f:facet>
 
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.estructura.centrocosto.nombre}" /></f:facet>  
-                                        <f:facet name="input">
+                                    
                                             <p:inputText value="#{info.estructura.centrocosto.nombre}" id="editCentroCosto"  style="font-size: 10px; border-radius: 0px; width: 93.5%;">
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(indice)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, '4')}" />
                                             </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
+                                       
                                     <f:facet name="footer"><h:outputText value="Centro Costo" /></f:facet>
                                 </p:column>  
 
                                 <p:column headerText="Nombre_Jefe" sortBy="#{info.empleadojefe.persona.nombreCompleto}" filterBy="#{info.empleadojefe.persona.nombreCompleto}" filterMatchMode="contains" id="vcNombreJefe" width="111" filterStyle="display: none; visibility: hidden;" >                                                              
                                     <f:facet name="header"><h:outputText value="Nombre Jefe"/></f:facet>
 
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.empleadojefe.persona.nombreCompleto}" /></f:facet>  
-                                        <f:facet name="input">
+                                   
                                             <p:inputText value="#{info.empleadojefe.persona.nombreCompleto}" id="editNombreJefe" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase">                                                        
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(indice, 'EMPLEADOJ', info.empleadojefe.persona.nombreCompleto)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, '5')}"  />
                                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarIndex(indice, '2')}" />
                                             </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
+                                       
 
                                     <f:facet name="footer"><h:outputText value="Nombre Jefe" /></f:facet>
                                 </p:column>

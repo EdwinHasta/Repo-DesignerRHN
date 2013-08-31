@@ -445,9 +445,9 @@ public class ControlVigenciasCargos implements Serializable {
 
     public void recibirEmpleado(BigInteger sec) {
         vigenciasCargosEmpleado = null;
-        getVigenciasCargosEmpleado();
         secuencia = sec;
         System.out.println(sec);
+        getVigenciasCargosEmpleado();
         //INICIALIZAR BOTONES NAVEGACION
         if (vigenciasCargosEmpleado != null) {
             if (vigenciasCargosEmpleado.size() == 1) {
@@ -1444,11 +1444,12 @@ public class ControlVigenciasCargos implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             botonPrimero = true;
             botonAnterior = true;
+            registroFoco = "form:datosVCEmpleado:0:editFecha";
+            infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
             context.update("form:btnPrimerRegistro");
             context.update("form:btnAnteriorRegistro");
-            registroFoco = "form:datosVCEmpleado:0:editFecha";
             context.update("form:focoRegistro");
-            infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
+            context.update("form:informacionRegistro");
         }
     }
 
@@ -1458,14 +1459,16 @@ public class ControlVigenciasCargos implements Serializable {
             if (index == 1) {
                 botonPrimero = true;
                 botonAnterior = true;
-                context.update("form:btnPrimerRegistro");
-                context.update("form:btnAnteriorRegistro");
+
             }
             int registro;
             registro = index - 1;
             registroFoco = "form:datosVCEmpleado:" + registro + ":editFecha";
-            context.update("form:focoRegistro");
             infoRegistro = "Registro " + index + " de " + vigenciasCargosEmpleado.size();
+            context.update("form:focoRegistro");
+            context.update("form:btnPrimerRegistro");
+            context.update("form:btnAnteriorRegistro");
+            context.update("form:informacionRegistro");
         }
     }
 
@@ -1475,31 +1478,35 @@ public class ControlVigenciasCargos implements Serializable {
             if (index == (vigenciasCargosEmpleado.size() - 2)) {
                 botonUltimo = true;
                 botonSiguiente = true;
-                context.update("form:btnSiguienteRegistro");
-                context.update("form:btnUltimoRegistro");
+
             }
             int registro;
             registro = index + 1;
             registroFoco = "form:datosVCEmpleado:" + registro + ":editFecha";
-            context.update("form:focoRegistro");
             int numeroRegistro;
             numeroRegistro = registro + 1;
             infoRegistro = "Registro " + numeroRegistro + " de " + vigenciasCargosEmpleado.size();
+            context.update("form:focoRegistro");
+            context.update("form:btnSiguienteRegistro");
+            context.update("form:btnUltimoRegistro");
+            context.update("form:informacionRegistro");
         }
     }
 
     public void ultimoRegistro() {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
-            botonUltimo = true;
-            botonSiguiente = true;
-            context.update("form:btnSiguienteRegistro");
-            context.update("form:btnUltimoRegistro");
+            //botonUltimo = true;
+            ///botonSiguiente = true;
             int registro;
             registro = vigenciasCargosEmpleado.size() - 1;
             registroFoco = "form:datosVCEmpleado:" + registro + ":editFecha";
-            context.update("form:focoRegistro");
             infoRegistro = "Registro " + vigenciasCargosEmpleado.size() + " de " + vigenciasCargosEmpleado.size();
+            context.update("form:btnSiguienteRegistro");
+            context.update("form:btnUltimoRegistro");
+            context.update("form:focoRegistro");
+            context.update("form:informacionRegistro");
+            context.execute("{PrimeFaces.focus('" + registroFoco + "');}");
         }
     }
     //CREAR VC
