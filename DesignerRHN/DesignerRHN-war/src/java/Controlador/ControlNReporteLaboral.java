@@ -15,7 +15,10 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -48,6 +51,8 @@ public class ControlNReporteLaboral implements Serializable {
     private Cargos cargoSeleccionado;
     private String cargoActual;
     private boolean permitirIndex;
+    private Calendar fechaDesdeParametroL, fechaHastaParametroL;
+    private InputText empleadoDesdeParametroL, empleadoHastaParametroL, cargoParametroL, empresaParametroL;
 
     public ControlNReporteLaboral() {
 
@@ -73,6 +78,7 @@ public class ControlNReporteLaboral implements Serializable {
             casilla = i;
             if (casilla == 5) {
                 cargoActual = parametroDeInforme.getCargo().getNombre();
+                System.out.println("Cargo actual :" + cargoActual);
             }
         }
         System.out.println("Casilla : " + casilla);
@@ -129,6 +135,7 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void mostrarDialogoGenerarReporte() {
+        defaultPropiedadesParametrosReporte();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formDialogos:reporteAGenerar");
         context.execute("reporteAGenerar.show()");
@@ -165,7 +172,6 @@ public class ControlNReporteLaboral implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            System.out.println("Desactivar");
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -182,6 +188,7 @@ public class ControlNReporteLaboral implements Serializable {
         parametroModificacion = null;
         listaIRRespaldo = null;
         casilla = -1;
+        cargoSeleccionado = null;
     }
 
     public void actualizarSeleccionInforeporte() {
@@ -207,13 +214,13 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void actualizarSeleccionCargo() {
-        listaIR = new ArrayList<Inforeportes>();
-        listaIR.add(inforreporteSeleccionado);
-        filtrarListInforeportesUsuario = null;
-        inforreporteSeleccionado = new Inforeportes();
-        aceptar = true;
+        defaultPropiedadesParametrosReporte();
+        parametroDeInforme.setCargo(cargoSeleccionado);
+        cargoSeleccionado = new Cargos();
+        filtrarListCargos = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:reportesNomina");
+        context.update("form:cargoParametroL");
+
     }
 
     public void cancelarSeleccionCargo() {
@@ -223,7 +230,6 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void autocompletarCargo(String valorConfirmar) {
-        System.out.println("Valor Confirmas : " + valorConfirmar);
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -238,7 +244,7 @@ public class ControlNReporteLaboral implements Serializable {
         if (coincidencias == 1) {
             parametroDeInforme.setCargo(listCargos.get(indiceUnicoElemento));
             listCargos.clear();
-            getListCargos();
+            listCargos = getListCargos();
         } else {
             permitirIndex = false;
             context.update("form:CargoDialogo");
@@ -248,16 +254,15 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void mostrarTodos() {
-        System.out.println("Muestra todos los reportes");
+        defaultPropiedadesParametrosReporte();
         listaIR = null;
-        System.out.println("Lista IR " + listaIR);
         getListaIR();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:reportesNomina");
     }
 
     public void refrescarParametros() {
-        System.out.println("Refrescar Parametros");
+        defaultPropiedadesParametrosReporte();
         parametroDeInforme = null;
         parametroDeInforme = administrarNReporteLaboral.parametrosDeReporte();
         if (parametroDeInforme.getCargo() == null) {
@@ -274,9 +279,7 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void activarCtrlF11() {
-        System.out.println("Filtrado Tabla VigenciaLocalizacion");
         if (bandera == 0) {
-            System.out.println("Activar");
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -287,7 +290,7 @@ public class ControlNReporteLaboral implements Serializable {
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
+            defaultPropiedadesParametrosReporte();
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -317,6 +320,65 @@ public class ControlNReporteLaboral implements Serializable {
         System.out.println("Posicion del reporte : " + i);
     }
 
+    public void defaultPropiedadesParametrosReporte() {
+
+
+        fechaDesdeParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametroL");
+        fechaDesdeParametroL.setStyleClass("ui-datepicker, myClass");
+        RequestContext.getCurrentInstance().update("form:fechaDesdeParametroL");
+
+        fechaHastaParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametroL");
+        fechaHastaParametroL.setStyleClass("ui-datepicker, myClass");
+        RequestContext.getCurrentInstance().update("form:fechaHastaParametroL");
+
+        empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametroL");
+        empleadoDesdeParametroL.setStyle("position: absolute; top: 50px; left: 90px;font-size: 11px;height: 10px;width: 90px;");
+        RequestContext.getCurrentInstance().update("form:empleadoDesdeParametroL");
+
+        empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametroL");
+        empleadoHastaParametroL.setStyle("position: absolute; top: 50px; left: 270px;font-size: 11px;height: 10px;width: 90px;");
+        RequestContext.getCurrentInstance().update("form:empleadoHastaParametroL");
+
+    }
+    
+     public void modificarParametroInforme() {
+        System.out.println("Se modifico el parametro de informe");
+        parametroModificacion = parametroDeInforme;
+    }
+
+
+    public void resaltoParametrosParaReporte(int i) {
+        Inforeportes reporteS = new Inforeportes();
+        reporteS = listaIR.get(i);
+        defaultPropiedadesParametrosReporte();
+        if (reporteS.getFecdesde().equals("SI")) {
+            requisitosReporte = requisitosReporte + "- Fecha Desde -";
+            fechaDesdeParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametroL");
+            fechaDesdeParametroL.setStyleClass("ui-datepicker, myClass3");
+            RequestContext.getCurrentInstance().update("form:fechaDesdeParametroL");
+
+        }
+        if (reporteS.getFechasta().equals("SI")) {
+            requisitosReporte = requisitosReporte + "- Fecha Hasta -";
+            fechaHastaParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametroL");
+            fechaHastaParametroL.setStyleClass("ui-datepicker, myClass3");
+            RequestContext.getCurrentInstance().update("form:fechaHastaParametroL");
+
+        }
+        if (reporteS.getEmdesde().equals("SI")) {
+            requisitosReporte = requisitosReporte + "- Empleado Desde -";
+            empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametroL");
+            empleadoDesdeParametroL.setStyle("position: absolute; top: 50px; left: 90px;font-size: 11px;height: 10px;width: 90px;text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("form:empleadoDesdeParametroL");
+        }
+        if (reporteS.getEmhasta().equals("SI")) {
+            requisitosReporte = requisitosReporte + "- Empleado Hasta -";
+            empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametroL");
+            empleadoHastaParametroL.setStyle("position: absolute; top: 50px; left: 270px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("form:empleadoHastaParametroL");
+        }
+    }
+
     public void parametrosDeReporte(int i) {
         System.out.println("Parametro posicionado : " + i);
         Inforeportes reporteS = new Inforeportes();
@@ -334,23 +396,7 @@ public class ControlNReporteLaboral implements Serializable {
             System.out.println("Cambio");
         }
         if (reporteS.getEmhasta().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Empleado Desde -";
-            System.out.println("Cambio");
-        }
-        if (reporteS.getGrupo().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Grupo -";
-            System.out.println("Cambio");
-        }
-        if (reporteS.getLocalizacion().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Ubicacion Geofrafica -";
-            System.out.println("Cambio");
-        }
-        if (reporteS.getTrabajador().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Tipo Trabajador -";
-            System.out.println("Cambio");
-        }
-        if (reporteS.getTercero().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Tercero -";
+            requisitosReporte = requisitosReporte + "- Empleado Hasta -";
             System.out.println("Cambio");
         }
         if (!requisitosReporte.isEmpty()) {

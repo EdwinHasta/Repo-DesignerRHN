@@ -40,7 +40,7 @@ a:link:hover, a:visited:hover  {
     top: 45px;
     left: 477px;
     text-align: left;
-    
+
 }
 
 .ui-datagrid .ui-paginator .ui-paginator-next,
@@ -58,6 +58,20 @@ a:link:hover, a:visited:hover  {
 .myClass2 input {
     width: 83px;
     height: 15px
+}
+
+.myClass3 input {
+    width: 81px;
+    border-radius: 0px;
+    height: 15px;
+    text-decoration: underline;
+    color: red !important;
+    border: 20px;
+}
+
+.selectOneMenuNReporteN .ui-selectonemenu-label { 
+    color: red;
+    text-decoration: underline;
 }
 
 /*pantalla EmpleadoPersonal*/

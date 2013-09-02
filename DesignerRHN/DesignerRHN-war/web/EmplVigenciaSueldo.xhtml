@@ -11,7 +11,7 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos de Sueldos" style=" font-size: 12px; position: absolute; width: 740px; height: 555px; left: 300px; top: 100px;text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Históricos de Sueldos" style=" font-size: 12px; position: absolute; width: 740px; height: 540px; text-align: left" >  
                         <h:outputText style="position: absolute; left: 500px; top: 50px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlVigenciaSueldo.empleado.persona.primerapellido} #{controlVigenciaSueldo.empleado.persona.segundoapellido} #{controlVigenciaSueldo.empleado.persona.nombre}">
                         </h:outputText>
                         <h:outputText id="totalConsultarActual" value="Total $ " style="position: absolute; top: 75px;left: 500px; visibility: #{controlVigenciaSueldo.visibilidadTotal()};" >
@@ -306,7 +306,7 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <fieldset style="position: absolute; top: 516px;height: 24px;width: 320px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; top: 500px;height: 24px;width: 320px; border-radius: 10px; text-align: left">
                             <p:commandButton style="font-size: 11px;position: absolute; top: 2px;left: 12px" value="Consultar Sueldo Actual" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" >
                             </p:commandButton>
                             <p:commandButton style="font-size: 11px;position: absolute; top: 2px;left: 200px" value="Consultar Todos" actionListener="#{controlVigenciaSueldo.cambioConsultaGlobal()}">
@@ -449,9 +449,9 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 570px; top: 520px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 400px; top: 520px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 660px; top: 520px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 570px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 400px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 660px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

@@ -12,13 +12,13 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Reportes Datos Personales" style=" font-size: 12px; position: absolute; width: 730px; height: 520px; left: 300px;top: 130px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Reportes Datos Personales" style=" font-size: 12px; position: absolute; width: 730px; height: 520px; text-align: left" >  
 
                         <p:commandButton style="position: absolute; left: 655px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="nomina" actionListener="#{controlNReporteLaboral.salir()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 515px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="Mostrar Todos"  process="@this" actionListener="#{controlNReporteLaboral.mostrarTodos()}" update=":form:reportesNomina"/>
                         <p:commandButton style="position: absolute; left: 400px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARREPORTE" value="Buscar Reporte"   process="@this" actionListener="#{controlNReporteLaboral.mostrarDialogoBuscarReporte()}" update=":form:reportesNomina"/>
                         <p:commandButton style="position: absolute; left: 140px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlNReporteLaboral.refrescarParametros()}" process="@this"/>
-                        <p:commandButton style="position: absolute; left: 10px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="Envio por Correo"   process="@this" oncomplete="EnvioCorreoDialogo.show()"/>
+                        <p:commandButton style="position: absolute; left: 10px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="Envio por Correo"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteLaboral.defaultPropiedadesParametrosReporte()}"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 186px;height: 260px;width: 85px; border-radius: 10px;">
                             <h:outputText id="btn" style="position: absolute; left: 1px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:100px ;height:230px; background-repeat: no-repeat; background-size: 100% 100%; "/>
@@ -33,7 +33,7 @@
                                          editable="true" editMode="cell" paginator="true" rows="5"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                                <p:column style="padding: 0px" id="codigoIR" headerText="Código" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="padding: 0px; text-align: center" id="codigoIR" headerText="Código" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <h:outputText value="#{info.codigo}" >
                                     </h:outputText>
                                 </p:column>
@@ -45,6 +45,7 @@
                                             <p:inputText value="#{info.nombre}" id="editarReporteIR" style="width:260px; font-size: 11px; border-radius: 0px; width: 99%;" >
                                                 <p:ajax event="dblclick" listener="#{controlNReporteLaboral.parametrosDeReporte(indice)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlNReporteLaboral.reporteModificado(indice)}" process="@this"/>
+                                                <p:ajax event="click" listener="#{controlNReporteLaboral.resaltoParametrosParaReporte(indice)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -60,7 +61,7 @@
                                     </p:selectOneMenu>
                                 </p:column>
 
-                                <p:column style="padding: 0px" width="110" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="padding: 0px; text-align: center" width="110" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:commandButton value="Generar Reporte" style="alignment-adjust: central;width: 100px; border-radius: 0px" actionListener="#{controlNReporteLaboral.generarReporte(indice)}" process="@this"/>
                                 </p:column>
                             </p:dataTable>
@@ -114,13 +115,18 @@
                             <p:calendar  value="#{controlNReporteLaboral.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" style="position: absolute; top: 13px; left: 90px;font-size: 11px;" 
                                          styleClass="ui-datepicker, myClass"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
                                          autocomplete="true" onclick="select();">    
-                                <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(1)}" process="@this"/> 
+                                <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(1)}" process="@this"/>
+                                <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" process="@this" update="fechaDesdeParametroL"/>
+                                <p:ajax event="dateSelect" listener="#{controlNReporteLaboral.modificarParametroInforme()}" update="fechaDesdeParametroL"/>
+
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
 
                             <h:outputText value="Empleado desde" style="position: absolute; top: 55px; left: 10px;font-size: 11px;"/>
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 50px; left: 90px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(2)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
+
                             </p:inputText>
 
 
@@ -130,11 +136,15 @@
                                         autocomplete="true" onclick="select();">                                         
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(3)}" process="@this"/> 
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
+                                <p:ajax event="dateSelect" listener="#{controlNReporteLaboral.modificarParametroInforme()}" update="fechaHastaParametroL"/>
+
                             </p:calendar>
 
-                            <h:outputText value="hasta" style="position: absolute; top: 55px; left: 210px;font-size: 11px;"/>
+                            <h:outputText value="hasta" style="position: absolute; top: 55px; left: 210px;font-size: 11px"/>
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 50px; left: 270px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(4)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" process="@this" update="empleadoHastaParametroL"/>
                             </p:inputText>
 
                             <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 70px;width: 1px;top: 5px;left: 380px "/>  
@@ -143,9 +153,9 @@
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.cargo.nombre}" id="cargoParametroL" style="position: absolute; top: 12px; left: 430px;font-size: 11px;height: 10px;width: 250px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(5)}" process="@this"/> 
                                 <p:ajax event="change" update="cargoParametroL" listener="#{controlNReporteLaboral.autocompletarCargo(controlNReporteLaboral.parametroDeInforme.cargo.nombre)}" process="@this"/>
-                                <p:ajax event="dblclick" listener="#{controlNReporteLaboral.mostrarDialogoCargos()}"  process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReporteLaboral.mostrarDialogoCargos()}" process="@this"/>
                             </p:inputText>
-                            
+
                             <h:outputText value="Personal" style="position: absolute; top: 50px; left: 390px;font-size: 11px;"/>
                             <p:selectOneMenu value="#{controlNReporteLaboral.parametroDeInforme.tipopersonal}" id="tipoPersonalParametroL" style="position: absolute; top: 43px; left: 435px;font-size: 11px;width: 132px;width: 85px;">  
                                 <f:selectItem itemLabel="Activo" itemValue="Activo" />  
@@ -158,14 +168,14 @@
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.empresa.nombre}" id="empresaParametroL" style="position: absolute; top: 45px; left: 580px;font-size: 11px;height: 10px;width: 100px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(6)}" process="@this"/> 
                             </p:inputText>
-                            
-                            
+
+
 
                         </fieldset> 
                     </p:panel>
-                    
+
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlNReporteLaboral.activarCtrlF11()}" process="@this"/> 
-                    
+
                     <p:dialog header="Reportes" widgetVar="ReportesDialogo" draggable="false" resizable="false" closable="false" id="ReportesDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovReportesDialogo" style="font-size: 11px; width: 430px" var="reportes" value="#{controlNReporteLaboral.listaIR}" rowKey="#{reportes.secuencia}"
@@ -204,7 +214,7 @@
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <p:dialog header="Cargos" widgetVar="CargoDialogo" draggable="false" resizable="false" closable="false" id="CargoDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovCargoDialogo" style="font-size: 11px; width: 430px" var="cargo" value="#{controlNReporteLaboral.listCargos}" rowKey="#{cargo.secuencia}"
@@ -262,7 +272,7 @@
                     </p:dialog>
                 </h:form>
                 <h:form id="formDialogos">
-                    
+
                     <p:dialog id="editarFechaDesde" header="Fecha Desde Parametrización" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReporteLaboral.parametroDeInforme.fechadesde}" id="editFechaDesdeCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
@@ -275,7 +285,7 @@
                         <p:commandButton id="cancelarEmpleadoDesde" value="Atras" onclick="empleadoDesde.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                   <p:dialog id="editarFechaHasta" header="Fecha Hasta Parametrización" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaHasta" header="Fecha Hasta Parametrización" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReporteLaboral.parametroDeInforme.fechahasta}" id="editFechaHastaCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -296,17 +306,17 @@
                         <p:inputTextarea value="#{controlNReporteLaboral.parametroDeInforme.cargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCargo" value="Atras" onclick="cargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    
+
                     <p:dialog id="reporteAGenerar" header="Reporte a Generar" widgetVar="reporteAGenerar" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <h:outputText value="#{controlNReporteLaboral.reporteGenerar}" style="overflow: auto; width: 200px; height: 40px"/>
                         <p:commandButton id="cancelarReporteSeleccionado" value="Atras" onclick="reporteAGenerar.hide();" actionListener="#{controlNReporteLaboral.cancelarGenerarReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    
+
                     <p:dialog id="requisitosReporte" header="Requisitos Reporte" widgetVar="requisitosReporte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <h:outputText value="#{controlNReporteLaboral.requisitosReporte}" style="overflow: auto; width: 200px; height: 40px"/>
                         <p:commandButton id="cancelarRequisitoReporte" value="Atras" onclick="requisitosReporte.hide();" actionListener="#{controlNReporteLaboral.cancelarRequisitosReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    
+
                 </h:form>
             </ui:define>
         </ui:composition>

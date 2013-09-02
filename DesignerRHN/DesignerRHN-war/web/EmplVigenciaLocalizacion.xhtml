@@ -12,10 +12,10 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Históricos de Localizaciones" style=" font-size: 12px; position: absolute; width: 740px; height: 555px; left: 300px; top: 100px;text-align: left" >  
-                        <h:outputText style="position: absolute; left: 500px; top: 60px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlVigenciaLocalizacion.empleado.persona.primerapellido} #{controlVigenciaLocalizacion.empleado.persona.segundoapellido} #{controlVigenciaLocalizacion.empleado.persona.nombre}">
+                        <h:outputText style="position: absolute; left: 500px; top: 45px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlVigenciaLocalizacion.empleado.persona.primerapellido} #{controlVigenciaLocalizacion.empleado.persona.segundoapellido} #{controlVigenciaLocalizacion.empleado.persona.nombre}">
                         </h:outputText>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaLocalizacion.guardadoGeneral()}" process="@this" />
@@ -58,11 +58,11 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 700px; height: 222px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; left: 10px; top: 75px; font-size: 10px; width: 700px; height: 222px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Localización del Empleado</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
-                            <p:dataTable id="datosVJEmpleado" var="infoDVL" rowKey="#{infoDVL.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 700px"   
+                            <p:dataTable id="datosVLEmpleado" var="infoDVL" rowKey="#{infoDVL.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 700px"   
                                          value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}" scrollable="true" scrollHeight="85" scrollWidth="700"
                                          filteredValue="#{controlVigenciaLocalizacion.filtrarVL}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="true" rows="3"  
@@ -70,7 +70,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha" sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Fecha" sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVL.fechavigencia}" >
@@ -159,12 +159,15 @@
                                 </p:column>
                             </p:dataTable>  
                         </fieldset>
-
-                        <fieldset style="position: absolute;top: 327px;left: 10px;height: 180px;width: 335px; border-radius: 10px; text-align: left">
+  
+                        <fieldset style="position: absolute;top: 312px;left: 10px;height: 200px;width: 335px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 10px; color: blue"><strong>Prorrateo por Centros de Costo</strong></legend>
-                            <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosVigencia}" 
-                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosVigencia}" editable="true" editMode="cell" rows="3" 
-                                         scrollable="true" scrollHeight="100" scrollWidth="335" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width:">
+                            
+                            <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" 
+                                         value="#{controlVigenciaLocalizacion.vigenciasProrrateosVigencia}" style="font-size: 10px; border: 1px;width:"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosVigencia}" emptyMessage="No se encontrarón resultados para la búsqueda" 
+                                         scrollable="true" editable="true" editMode="cell" rows="2" scrollHeight="65" scrollWidth="335"   paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:column headerText="Centro de Costos" sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="vPCentroCosto" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
                                     <p:cellEditor>  
@@ -182,7 +185,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="P(%)" sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="vCTComentario" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
+                                <p:column headerText="P(%)" sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="vPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.porcentaje}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
@@ -197,7 +200,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vCTFechaInicial"
+                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vPFechaInicial"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -220,7 +223,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vCTFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechafinal}" style="width: 100px; font-size: 11px">
@@ -277,11 +280,12 @@
                         </fieldset>
 
 
-                        <fieldset style="position: absolute;top: 327px;left: 375px;height: 180px;width: 335px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 312px;left: 375px;height: 200px;width: 335px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 10px; color: blue"><strong>Prorrateo por Proyecto</strong></legend>
                             <p:dataTable id="datosVPPVigencia" var="info2" rowKey="#{info2.secuencia}" rowIndexVar="indiceVPP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectosVigencia}" 
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosProyectosVigencia}" editable="true" editMode="cell" rows="3"
-                                         scrollable="true" scrollHeight="100" scrollWidth="335" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width:">
+                                         scrollable="true" scrollHeight="65" scrollWidth="335" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width:"  paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:column headerText="Proyecto" sortBy="#{info2.proyecto.nombreproyecto}" filterBy="#{info2.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 100px; font-size: 11px">
                                     <p:cellEditor>  
@@ -390,7 +394,7 @@
                                     <h:outputText value="#{localizacion.centrocosto.empresa.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarL" style="position: relative; left: 450px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="LocalizacionDialogo.hide(), lovLocalizacion.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" update="lovLocalizacion, aceptarL, datosVJEmpleado" process="@this">
+                            <p:commandButton id="aceptarL" style="position: relative; left: 450px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="LocalizacionDialogo.hide(), lovLocalizacion.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" update="lovLocalizacion, aceptarL, datosVLEmpleado" process="@this">
                                 <p:resetInput target=":form:lovLocalizacion:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasL" style="position: relative; left: 500px" value="Atras" onclick="LocalizacionDialogo.hide(), lovLocalizacion.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioEstructura()}" update="lovLocalizacion" process="@this">
@@ -422,7 +426,7 @@
                                     <h:outputText value="#{motivo.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarM" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" update="lovMotivo, aceptarM, datosVJEmpleado" process="@this">
+                            <p:commandButton id="aceptarM" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" update="lovMotivo, aceptarM, datosVLEmpleado" process="@this">
                                 <p:resetInput target=":form:lovMotivo:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasM" style="position: relative; left: 250px" value="Atras" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioMotivoLocalizacion()}" update="lovMotivo" process="@this">
@@ -460,7 +464,7 @@
                                     <h:outputText value="#{proyecto.empresa.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarP" style="position: relative; left: 350px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="ProyectosDialogo.hide(), lovProyectos.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" update="lovProyectos, aceptarP, datosVJEmpleado" process="@this">
+                            <p:commandButton id="aceptarP" style="position: relative; left: 350px" value="Aceptar" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="ProyectosDialogo.hide(), lovProyectos.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" update="lovProyectos, aceptarP, datosVLEmpleado" process="@this">
                                 <p:resetInput target=":form:lovProyectos:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasP" style="position: relative; left: 400px" value="Atras" onclick="ProyectosDialogo.hide(), lovProyectos.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyecto()}" update="lovProyectos" process="@this">
@@ -584,10 +588,10 @@
                         </p:dialog>
 
 
-                        <p:commandButton style="position: absolute; left: 510px; top: 527px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVJEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 200px; top: 527px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 626px; top: 527px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this" />
-                        <p:commandButton style="position: absolute; left: 20px; top: 527px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ARCHIVOPLANO" value="Archivo Plano Prorrateos" process="@this" />
+                        <p:commandButton style="position: absolute; left: 510px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVLEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 200px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 626px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ARCHIVOPLANO" value="Archivo Plano Prorrateos" process="@this" />
 
                     </p:panel>
 
@@ -1037,7 +1041,7 @@
 
                 </h:form>
                 <h:form id="formExportarVL">
-                    <p:dataTable id="datosVJEmpleadoExportar" var="infoVL" style="visibility: hidden; display: none;"                           
+                    <p:dataTable id="datosVLEmpleadoExportar" var="infoVL" style="visibility: hidden; display: none;"                           
                                  value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}"> 
                         <!--COLUMNAS TABLA DATOS VIGENCIAS LOCALIZACIONES DE UN EMPLEADO --> 
                         <p:column>  
