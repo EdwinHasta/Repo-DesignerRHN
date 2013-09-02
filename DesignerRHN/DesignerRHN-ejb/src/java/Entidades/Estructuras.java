@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
 public class Estructuras implements Serializable {
     @OneToMany(mappedBy = "estructura")
+    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
+    @OneToMany(mappedBy = "estructura")
     private Collection<Encargaturas> encargaturasCollection;
 
     @OneToMany(mappedBy = "estructura")
@@ -237,5 +239,13 @@ public class Estructuras implements Serializable {
 
     public void setEncargaturasCollection(Collection<Encargaturas> encargaturasCollection) {
         this.encargaturasCollection = encargaturasCollection;
+    }
+
+    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
+        return evalconvocatoriasCollection;
+    }
+
+    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
+        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
     }
 }

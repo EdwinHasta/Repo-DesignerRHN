@@ -14,9 +14,10 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public List<Ciudades> ciudades() {
         try {
-            Query query = em.createQuery("SELECT c FROM Ciudades c ORDER BY c.codigo");
+            Query query = em.createQuery("SELECT c FROM Ciudades c ORDER BY c.nombre");
             List<Ciudades> ciudades = query.getResultList();
             return ciudades;
         } catch (Exception e) {

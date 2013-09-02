@@ -42,6 +42,8 @@ public class Empresas implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private Collection<TiposAsociaciones> tiposasociacionesCollection;
     @OneToMany(mappedBy = "empresa")
+    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
+    @OneToMany(mappedBy = "empresa")
     private Collection<Proyectos> proyectosCollection;
     @OneToMany(mappedBy = "empresa")
     private Collection<Direcciones> direccionesCollection;
@@ -1072,6 +1074,14 @@ public class Empresas implements Serializable {
 
     public void setTiposasociacionesCollection(Collection<TiposAsociaciones> tiposasociacionesCollection) {
         this.tiposasociacionesCollection = tiposasociacionesCollection;
+    }
+
+    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
+        return this.evalconvocatoriasCollection;
+    }
+
+    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
+        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
     }
     
 }

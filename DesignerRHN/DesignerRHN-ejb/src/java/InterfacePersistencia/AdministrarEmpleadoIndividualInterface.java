@@ -1,8 +1,11 @@
 package InterfacePersistencia;
 
+import Entidades.Cargos;
+import Entidades.Ciudades;
 import Entidades.Demandas;
 import Entidades.Direcciones;
 import Entidades.Encargaturas;
+import Entidades.EvalResultadosConv;
 import Entidades.Familiares;
 import Entidades.HVHojasDeVida;
 import Entidades.HvEntrevistas;
@@ -11,6 +14,7 @@ import Entidades.HvReferencias;
 import Entidades.IdiomasPersonas;
 import Entidades.InformacionesAdicionales;
 import Entidades.Telefonos;
+import Entidades.TiposDocumentos;
 import Entidades.VigenciasAficiones;
 import Entidades.VigenciasDeportes;
 import Entidades.VigenciasDomiciliarias;
@@ -20,6 +24,7 @@ import Entidades.VigenciasFormales;
 import Entidades.VigenciasIndicadores;
 import Entidades.VigenciasProyectos;
 import java.math.BigInteger;
+import java.util.List;
 
 public interface AdministrarEmpleadoIndividualInterface {
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secPersona);
@@ -42,4 +47,8 @@ public interface AdministrarEmpleadoIndividualInterface {
     public VigenciasIndicadores indicadoresPersona(BigInteger secEmpl);
     public Demandas demandasPersona(BigInteger secEmpl);
     public VigenciasDomiciliarias visitasDomiciliariasPersona(BigInteger secPersona);
+    public EvalResultadosConv pruebasAplicadasPersona(BigInteger secEmpleado);
+    public List<TiposDocumentos> tiposDocumentos();
+    public List<Ciudades> ciudades();
+    public List<Cargos> cargos();
 }

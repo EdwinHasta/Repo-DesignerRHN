@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cargos.findAll", query = "SELECT c FROM Cargos c")})
 public class Cargos implements Serializable {
     @OneToMany(mappedBy = "cargo")
+    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
+    @OneToMany(mappedBy = "cargo")
     private Collection<Encargaturas> encargaturasCollection;
     @OneToMany(mappedBy = "pryCargoproyecto")
     private Collection<VigenciasProyectos> vigenciasProyectosCollection;
@@ -287,5 +289,13 @@ public class Cargos implements Serializable {
 
     public void setVigenciasProyectosCollection(Collection<VigenciasProyectos> vigenciasProyectosCollection) {
         this.vigenciasProyectosCollection = vigenciasProyectosCollection;
+    }
+
+    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
+        return evalconvocatoriasCollection;
+    }
+
+    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
+        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
     }
 }
