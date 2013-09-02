@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -46,7 +47,7 @@ public class HVHojasDeVida implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 1000)
     @Column(name = "PERFILPROFESIONAL")
     private String perfilprofesional;
@@ -71,15 +72,15 @@ public class HVHojasDeVida implements Serializable {
     public HVHojasDeVida() {
     }
 
-    public HVHojasDeVida(BigDecimal secuencia) {
+    public HVHojasDeVida(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

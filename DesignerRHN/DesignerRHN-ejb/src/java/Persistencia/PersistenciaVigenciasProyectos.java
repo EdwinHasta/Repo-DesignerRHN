@@ -1,4 +1,4 @@
-package InterfacePersistencia;
+package Persistencia;
 
 import Entidades.VigenciasProyectos;
 import InterfaceAdministrar.PersistenciaVigenciasProyectosInterface;
@@ -22,7 +22,7 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
-                Query queryFinal = em.createQuery("SELECT vpf FROM VigenciasProyectos vp WHERE vp.empleado.secuencia = :secuenciaEmpleado and vp.fechainicial = (SELECT MAX(vpr.fechainicial) FROM VigenciasProyectos vpr WHERE vpr.empleado.secuencia = :secuenciaEmpleado)");
+                Query queryFinal = em.createQuery("SELECT vp FROM VigenciasProyectos vp WHERE vp.empleado.secuencia = :secuenciaEmpleado and vp.fechainicial = (SELECT MAX(vpr.fechainicial) FROM VigenciasProyectos vpr WHERE vpr.empleado.secuencia = :secuenciaEmpleado)");
                 queryFinal.setParameter("secuenciaEmpleado", secuenciaEmpleado);
                 List<VigenciasProyectos> listaVigenciasProyectos = queryFinal.getResultList();
                 return listaVigenciasProyectos;
