@@ -1,8 +1,11 @@
 package Administrar;
 
+import Entidades.Cargos;
+import Entidades.Ciudades;
 import Entidades.Demandas;
 import Entidades.Direcciones;
 import Entidades.Encargaturas;
+import Entidades.EvalResultadosConv;
 import Entidades.Familiares;
 import Entidades.HVHojasDeVida;
 import Entidades.HvEntrevistas;
@@ -11,6 +14,7 @@ import Entidades.HvReferencias;
 import Entidades.IdiomasPersonas;
 import Entidades.InformacionesAdicionales;
 import Entidades.Telefonos;
+import Entidades.TiposDocumentos;
 import Entidades.VigenciasAficiones;
 import Entidades.VigenciasDeportes;
 import Entidades.VigenciasDomiciliarias;
@@ -21,9 +25,12 @@ import Entidades.VigenciasIndicadores;
 import Entidades.VigenciasProyectos;
 import InterfaceAdministrar.PersistenciaVigenciasProyectosInterface;
 import InterfacePersistencia.AdministrarEmpleadoIndividualInterface;
+import InterfacePersistencia.PersistenciaCargosInterface;
+import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDemandasInterface;
 import InterfacePersistencia.PersistenciaDireccionesInterface;
 import InterfacePersistencia.PersistenciaEncargaturasInterface;
+import InterfacePersistencia.PersistenciaEvalResultadosConvInterface;
 import InterfacePersistencia.PersistenciaFamiliaresInterface;
 import InterfacePersistencia.PersistenciaHVHojasDeVidaInterface;
 import InterfacePersistencia.PersistenciaHvEntrevistasInterface;
@@ -39,6 +46,7 @@ import InterfacePersistencia.PersistenciaVigenciasEventosInterface;
 import InterfacePersistencia.PersistenciaVigenciasFormalesInterface;
 import InterfacePersistencia.PersistenciaVigenciasIndicadoresInterface;
 import InterfacePersistencia.PersistenciaHvReferenciasInterface;
+import InterfacePersistencia.PersistenciaTiposDocumentosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -85,6 +93,14 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     PersistenciaDemandasInterface persistenciaDemandas;
     @EJB
     PersistenciaVigenciasDomiciliariasInterface persistenciaVigenciasDomiciliarias;
+    @EJB
+    PersistenciaEvalResultadosConvInterface persistenciaEvalResultadosConv;
+    @EJB
+    PersistenciaTiposDocumentosInterface persistenciaTiposDocumentos;
+    @EJB
+    PersistenciaCiudadesInterface persistenciaCiudades;
+    @EJB
+    PersistenciaCargosInterface persistenciaCargos;
 
     @Override
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secPersona) {
@@ -298,5 +314,36 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         } else {
             return null;
         }
+    }
+
+    @Override
+    public EvalResultadosConv pruebasAplicadasPersona(BigInteger secEmpleado) {
+        List<EvalResultadosConv> listaPruebasAplicadas;
+        listaPruebasAplicadas = persistenciaEvalResultadosConv.pruebasAplicadasPersona(secEmpleado);
+        if (listaPruebasAplicadas != null) {
+            return listaPruebasAplicadas.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    //LOVS
+    @Override
+    public List<TiposDocumentos> tiposDocumentos() {
+        List<TiposDocumentos> listaTiposDocumentos;
+        listaTiposDocumentos = persistenciaTiposDocumentos.tiposDocumentos();
+        return listaTiposDocumentos;
+    }
+    
+    public List<Ciudades> ciudades() {
+        List<Ciudades> listaCiudades;
+        listaCiudades = persistenciaCiudades.ciudades();
+        return listaCiudades;
+    }
+    
+    public List<Cargos> cargos() {
+        List<Cargos> listaCargos;
+        listaCargos = persistenciaCargos.buscarCargos();
+        return listaCargos;
     }
 }

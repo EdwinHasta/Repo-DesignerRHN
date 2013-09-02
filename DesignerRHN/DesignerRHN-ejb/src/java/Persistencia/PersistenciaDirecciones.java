@@ -71,7 +71,7 @@ public class PersistenciaDirecciones implements PersistenciaDireccionesInterface
             query.setParameter("secuenciaPersona", secuenciaPersona);
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
-                Query queryFinal = em.createQuery("SELECT d FROM Direcciones d WHERE d.persona.secuencia = :secuenciaPersona and d.fechavigencia = (SELECT MAX(di.fechavigencia) FROM Telefonos di WHERE di.persona.secuencia = :secuenciaPersona) ");
+                Query queryFinal = em.createQuery("SELECT d FROM Direcciones d WHERE d.persona.secuencia = :secuenciaPersona and d.fechavigencia = (SELECT MAX(di.fechavigencia) FROM Direcciones di WHERE di.persona.secuencia = :secuenciaPersona) ");
                 queryFinal.setParameter("secuenciaPersona", secuenciaPersona);
                 List<Direcciones> listaDirecciones = queryFinal.getResultList();
                 return listaDirecciones;

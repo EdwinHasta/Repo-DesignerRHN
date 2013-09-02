@@ -41,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<EvalResultadosConv> evalResultadosConvCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<VigenciasIndicadores> vigenciasIndicadoresCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<Demandas> demandasCollection;
@@ -576,5 +578,13 @@ public class Empleados implements Serializable {
 
     public void setVigenciasEventosCollection(Collection<VigenciasEventos> vigenciasEventosCollection) {
         this.vigenciasEventosCollection = vigenciasEventosCollection;
+    }
+
+    public Collection<EvalResultadosConv> getEvalResultadosConvCollection() {
+        return evalResultadosConvCollection;
+    }
+
+    public void setEvalResultadosConvCollection(Collection<EvalResultadosConv> evalResultadosConvCollection) {
+        this.evalResultadosConvCollection = evalResultadosConvCollection;
     }
 }

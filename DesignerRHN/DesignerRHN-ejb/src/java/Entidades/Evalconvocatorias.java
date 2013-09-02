@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -44,6 +45,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Evalconvocatorias.findByConclusiones", query = "SELECT e FROM Evalconvocatorias e WHERE e.conclusiones = :conclusiones"),
     @NamedQuery(name = "Evalconvocatorias.findByAgrupado", query = "SELECT e FROM Evalconvocatorias e WHERE e.agrupado = :agrupado")})
 public class Evalconvocatorias implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evalconvocatoria")
+    private Collection<EvalResultadosConv> evalResultadosConvCollection;
     @OneToMany(mappedBy = "convocatoria")
     private Collection<ParametrosInformes> parametrosinformesCollection;
    
@@ -266,6 +269,14 @@ public class Evalconvocatorias implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Evalconvocatorias[ secuencia=" + secuencia + " ]";
+    }
+
+    public Collection<EvalResultadosConv> getEvalResultadosConvCollection() {
+        return evalResultadosConvCollection;
+    }
+
+    public void setEvalResultadosConvCollection(Collection<EvalResultadosConv> evalResultadosConvCollection) {
+        this.evalResultadosConvCollection = evalResultadosConvCollection;
     }
 
    
