@@ -32,3 +32,12 @@ PrimeFaces.widget.Dialog.prototype.applyFocus = function() {
     }
 };
 
+/*function triggerHiddenEvent() {
+ //alert("triggerHiddenEvent is trigger");
+ document.getElementById(":form:datosVCEmpleado:ATRAS").click();
+ }*/
+/*function triggerHiddenEvent() {
+    //alert("Hola :$$");
+    ("form:ATRAS").trigger('click');
+};*/
+
