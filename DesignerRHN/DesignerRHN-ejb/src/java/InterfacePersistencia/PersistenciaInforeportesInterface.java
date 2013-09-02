@@ -39,6 +39,11 @@ public interface PersistenciaInforeportesInterface {
      * 
      * @return 
      */
-    public List<Inforeportes> buscarInforeportesUsuario();
+    public List<Inforeportes> buscarInforeportesUsuarioNomina();
+    /**
+     * 
+     * @return 
+     */
+    public List<Inforeportes> buscarInforeportesUsuarioLaboral();
     
 }

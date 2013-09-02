@@ -4,10 +4,18 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.Asociaciones;
+import Entidades.Empleados;
 import Entidades.Empresas;
+import Entidades.Estructuras;
 import Entidades.GruposConceptos;
 import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
+import Entidades.Procesos;
+import Entidades.Terceros;
+import Entidades.TiposAsociaciones;
+import Entidades.TiposTrabajadores;
+import Entidades.UbicacionesGeograficas;
 import java.util.List;
 
 /**
@@ -41,5 +49,42 @@ public interface AdministrarReportesInterface {
      * @param parametroInforme 
      */
     public void modificarParametrosInformes(ParametrosInformes parametroInforme);
+    
+    public List<Asociaciones> listAsociaciones();
+    /**
+     * 
+     * @return 
+     */
+    public List<Procesos> listProcesos();
+    /**
+     * 
+     * @return 
+     */
+    public List<Terceros> listTerceros();
+    /**
+     * 
+     * @return 
+     */
+    public List<TiposTrabajadores> listTiposTrabajadores();
+    /**
+     * 
+     * @return 
+     */
+    public List<Estructuras> listEstructuras();
+    /**
+     * 
+     * @return 
+     */
+    public List<TiposAsociaciones> listTiposAsociaciones();
+    /**
+     * 
+     * @return 
+     */
+    public List<UbicacionesGeograficas> listUbicacionesGeograficas();
+    /**
+     * 
+     * @return 
+     */
+    public List<Empleados> listEmpleados();
     
 }

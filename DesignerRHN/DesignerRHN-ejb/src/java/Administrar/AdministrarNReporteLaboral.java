@@ -51,7 +51,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Inforeportes> listInforeportesUsuario() {
         try {
-            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuario();
+            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioLaboral();
             System.out.println("Tamaño: " + listInforeportes.size());
             return listInforeportes;
         } catch (Exception e) {

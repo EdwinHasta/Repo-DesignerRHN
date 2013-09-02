@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,17 +29,17 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author user
  */
 @Entity
-@Table(name = "ASOCIACIONES")
+@Table(name = "TIPOSASOCIACIONES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Asociaciones.findAll", query = "SELECT a FROM Asociaciones a"),
-    @NamedQuery(name = "Asociaciones.findBySecuencia", query = "SELECT a FROM Asociaciones a WHERE a.secuencia = :secuencia"),
-    @NamedQuery(name = "Asociaciones.findByCodigo", query = "SELECT a FROM Asociaciones a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Asociaciones.findByDescripcion", query = "SELECT a FROM Asociaciones a WHERE a.descripcion = :descripcion")})
-public class Asociaciones implements Serializable {
-    @OneToMany(mappedBy = "asociacion")
+    @NamedQuery(name = "TiposAsociaciones.findAll", query = "SELECT t FROM TiposAsociaciones t"),
+    @NamedQuery(name = "TiposAsociaciones.findBySecuencia", query = "SELECT t FROM TiposAsociaciones t WHERE t.secuencia = :secuencia"),
+    @NamedQuery(name = "TiposAsociaciones.findByCodigo", query = "SELECT t FROM TiposAsociaciones t WHERE t.codigo = :codigo"),
+    @NamedQuery(name = "TiposAsociaciones.findByDescripcion", query = "SELECT t FROM TiposAsociaciones t WHERE t.descripcion = :descripcion")})
+public class TiposAsociaciones implements Serializable { 
+    @OneToMany(mappedBy = "tipoasociacion")
     private Collection<ParametrosInformes> parametrosinformesCollection;
-   
+    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -55,19 +56,21 @@ public class Asociaciones implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    
-    @JoinColumn(name = "TIPOASOCIACION", referencedColumnName = "SECUENCIA")
+    @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private TiposAsociaciones tipoasociacion;
+    private Empresas empresa;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoasociacion")
+    private Collection<Asociaciones> asociacionesCollection;
 
-    public Asociaciones() {
+    public TiposAsociaciones() {
     }
 
-    public Asociaciones(BigInteger secuencia) {
+    public TiposAsociaciones(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Asociaciones(BigInteger secuencia, BigInteger codigo, String descripcion) {
+    public TiposAsociaciones(BigInteger secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -100,6 +103,14 @@ public class Asociaciones implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Empresas getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresas empresa) {
+        this.empresa = empresa;
+    }
+
     @XmlTransient
     public Collection<ParametrosInformes> getParametrosinformesCollection() {
         return parametrosinformesCollection;
@@ -109,12 +120,13 @@ public class Asociaciones implements Serializable {
         this.parametrosinformesCollection = parametrosinformesCollection;
     }
 
-    public TiposAsociaciones getTipoasociacion() {
-        return tipoasociacion;
+    @XmlTransient
+    public Collection<Asociaciones> getAsociacionesCollection() {
+        return asociacionesCollection;
     }
 
-    public void setTipoasociacion(TiposAsociaciones tipoasociacion) {
-        this.tipoasociacion = tipoasociacion;
+    public void setAsociacionesCollection(Collection<Asociaciones> asociacionesCollection) {
+        this.asociacionesCollection = asociacionesCollection;
     }
 
     @Override
@@ -127,10 +139,10 @@ public class Asociaciones implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Asociaciones)) {
+        if (!(object instanceof TiposAsociaciones)) {
             return false;
         }
-        Asociaciones other = (Asociaciones) object;
+        TiposAsociaciones other = (TiposAsociaciones) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -139,11 +151,11 @@ public class Asociaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Asociaciones[ secuencia=" + secuencia + " ]";
+        return "Entidades.Tiposasociaciones[ secuencia=" + secuencia + " ]";
     }
 
     
 
-    
+   
     
 }

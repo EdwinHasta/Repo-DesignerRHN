@@ -4,16 +4,32 @@
  */
 package Administrar;
 
+import Entidades.Asociaciones;
+import Entidades.Empleados;
 import Entidades.Empresas;
+import Entidades.Estructuras;
 import Entidades.GruposConceptos;
 import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
+import Entidades.Procesos;
+import Entidades.Terceros;
+import Entidades.TiposAsociaciones;
+import Entidades.TiposTrabajadores;
+import Entidades.UbicacionesGeograficas;
 import InterfaceAdministrar.AdministrarReportesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
+import InterfacePersistencia.PersistenciaAsociacionesInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
+import InterfacePersistencia.PersistenciaEstructurasInterface;
 import InterfacePersistencia.PersistenciaGruposConceptosInterface;
 import InterfacePersistencia.PersistenciaInforeportesInterface;
 import InterfacePersistencia.PersistenciaParametrosInformesInterface;
+import InterfacePersistencia.PersistenciaProcesosInterface;
+import InterfacePersistencia.PersistenciaTercerosInterface;
+import InterfacePersistencia.PersistenciaTiposAsociacionesInterface;
+import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
+import InterfacePersistencia.PersistenciaUbicacionesGeograficasInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -35,11 +51,38 @@ public class AdministrarNReportesNomina implements AdministrarReportesInterface 
     PersistenciaEmpresasInterface persistenciaEmpresas;
     @EJB
     PersistenciaGruposConceptosInterface persistenciaGruposConceptos;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
+    @EJB
+    PersistenciaUbicacionesGeograficasInterface  persistenciaUbicacionesGeograficas;
+    @EJB
+    PersistenciaEstructurasInterface persistenciaEstructuras;
+    @EJB
+    PersistenciaTiposTrabajadoresInterface persistenciaTiposTrabajadores;
+    @EJB
+    PersistenciaTercerosInterface persistenciaTerceros;
+    @EJB
+    PersistenciaTiposAsociacionesInterface persistenciaTiposAsociaciones;
+    @EJB
+    PersistenciaProcesosInterface persistenciaProcesos;
+    @EJB
+    PersistenciaAsociacionesInterface persistenciaAsociaciones;
+    
     List<Inforeportes> listInforeportes;
     ParametrosInformes parametroReporte;
     String usuarioActual;
+    /////////Lista de valores
     List<Empresas> listEmpresas;
     List<GruposConceptos> listGruposConceptos;
+    List<Empleados> listEmpleados;
+    List<UbicacionesGeograficas> listUbicacionesGeograficas;
+    List<TiposAsociaciones> listTiposAsociaciones;
+    List<Estructuras> listEstructuras;
+    List<TiposTrabajadores> listTiposTrabajadores;
+    List<Terceros> listTerceros;
+    List<Procesos> listProcesos;
+    List<Asociaciones> listAsociaciones;
+    
 
     @Override
     public ParametrosInformes parametrosDeReporte() {
@@ -56,7 +99,7 @@ public class AdministrarNReportesNomina implements AdministrarReportesInterface 
     @Override
     public List<Inforeportes> listInforeportesUsuario() {
         try {
-            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuario();
+            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioNomina();
             System.out.println("Tamaño: " + listInforeportes.size());
             return listInforeportes;
         } catch (Exception e) {
@@ -64,7 +107,16 @@ public class AdministrarNReportesNomina implements AdministrarReportesInterface 
             return null;
         }
     }
-
+    
+    @Override
+    public void modificarParametrosInformes(ParametrosInformes parametroInforme){
+        try{
+            persistenciaParametrosInformes.editar(parametroInforme);
+        }catch(Exception e){
+            System.out.println("Error modificarParametrosInformes : "+e.toString());
+        }
+    }
+    
     @Override
     public List<Empresas> listEmpresas() {
         try {
@@ -88,11 +140,90 @@ public class AdministrarNReportesNomina implements AdministrarReportesInterface 
     }
     
     @Override
-    public void modificarParametrosInformes(ParametrosInformes parametroInforme){
+    public List<Empleados> listEmpleados(){
         try{
-            persistenciaParametrosInformes.editar(parametroInforme);
+            listEmpleados = persistenciaEmpleado.buscarEmpleados();
+            return listEmpleados;
         }catch(Exception e){
-            System.out.println("Error modificarParametrosInformes : "+e.toString());
+            System.out.println("Error listEmpleados : "+e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<UbicacionesGeograficas> listUbicacionesGeograficas(){
+        try{
+            listUbicacionesGeograficas = persistenciaUbicacionesGeograficas.buscarUbicacionesGeograficas();
+            return listUbicacionesGeograficas;
+        }catch(Exception e){
+            System.out.println("Error listUbicacionesGeograficas : "+e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<TiposAsociaciones> listTiposAsociaciones(){
+        try{
+            listTiposAsociaciones = persistenciaTiposAsociaciones.buscarTiposAsociaciones();
+            return listTiposAsociaciones;
+        }catch(Exception e){
+            System.out.println("Error listTiposAsociaciones : "+e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Estructuras> listEstructuras(){
+        try{
+            listEstructuras = persistenciaEstructuras.buscarEstructuras();
+            return listEstructuras;
+        }catch(Exception e){
+            System.out.println("Error listEstructuras : "+e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<TiposTrabajadores> listTiposTrabajadores(){
+        try{
+            listTiposTrabajadores = persistenciaTiposTrabajadores.buscarTiposTrabajadores();
+            return listTiposTrabajadores;
+        }catch(Exception e){
+            System.out.println("Error listTiposTrabajadores : "+e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Terceros> listTerceros(){
+        try{
+            listTerceros = persistenciaTerceros.buscarTerceros();
+            return listTerceros;
+        }catch(Exception e){
+            System.out.println("Error listTerceros : "+e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Procesos> listProcesos(){
+        try{
+            listProcesos = persistenciaProcesos.buscarProcesos();
+            return listProcesos;
+        }catch(Exception e){
+            System.out.println("Error listProcesos : "+e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Asociaciones> listAsociaciones(){
+        try{
+            listAsociaciones = persistenciaAsociaciones.buscarAsociaciones();
+            return listAsociaciones;
+        }catch(Exception e){
+            System.out.println("Error listAsociaciones : "+e.toString());
+            return null;
         }
     }
 }

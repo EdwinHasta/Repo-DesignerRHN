@@ -66,11 +66,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface{
     @Override
     public List<Contratos> buscarContratos() {
 
-        //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        /*CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-         cq.select(cq.from(Empleados.class));
-         return em.createQuery(cq).getResultList();
-         */
+
         List<Contratos> contratoLista = (List<Contratos>) em.createNamedQuery("Contratos.findAll")
                 .getResultList();
         return contratoLista;

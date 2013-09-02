@@ -171,7 +171,7 @@ public class ParametrosInformes implements Serializable {
     private TiposEducaciones niveleducativo;
     @JoinColumn(name = "TIPOASOCIACION", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Tiposasociaciones tipoasociacion;
+    private TiposAsociaciones tipoasociacion;
     @JoinColumn(name = "TERCERO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Terceros tercero;
@@ -535,11 +535,11 @@ public class ParametrosInformes implements Serializable {
         this.niveleducativo = niveleducativo;
     }
 
-    public Tiposasociaciones getTipoasociacion() {
+    public TiposAsociaciones getTipoasociacion() {
         return tipoasociacion;
     }
 
-    public void setTipoasociacion(Tiposasociaciones tipoasociacion) {
+    public void setTipoasociacion(TiposAsociaciones tipoasociacion) {
         this.tipoasociacion = tipoasociacion;
     }
 

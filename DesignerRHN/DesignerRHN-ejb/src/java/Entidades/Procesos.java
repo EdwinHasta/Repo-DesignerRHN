@@ -48,7 +48,7 @@ public class Procesos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -98,21 +98,21 @@ public class Procesos implements Serializable {
     public Procesos() {
     }
 
-    public Procesos(BigDecimal secuencia) {
+    public Procesos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Procesos(BigDecimal secuencia, short codigo, String descripcion) {
+    public Procesos(BigInteger secuencia, short codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -125,6 +125,9 @@ public class Procesos implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = "·";
+        }
         return descripcion;
     }
 

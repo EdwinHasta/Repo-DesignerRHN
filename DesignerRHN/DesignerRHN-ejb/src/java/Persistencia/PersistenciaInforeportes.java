@@ -71,9 +71,22 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public List<Inforeportes> buscarInforeportesUsuario() {
+    public List<Inforeportes> buscarInforeportesUsuarioNomina() {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'NOM' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
+            List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
+            System.out.println("Size : "+inforeportes.size());
+            return inforeportes;
+        } catch (Exception e) {
+            System.out.println("Error en buscarInforeportesUsuario " + e);
+            return null;
+        }
+    }
+    
+     @Override
+    public List<Inforeportes> buscarInforeportesUsuarioLaboral() {
+        try {
+            Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'LBL' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             System.out.println("Size : "+inforeportes.size());
             return inforeportes;
