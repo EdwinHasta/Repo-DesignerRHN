@@ -30,19 +30,24 @@
                             <p:inputText id="segundoNombre" value="#{controlEmpleadoIndividual.empleado.persona.segundonombre}" style="position: absolute; left: 685px; top: 11px; width: 150px"/>
 
                             <h:outputText value="Identificación" style="position: absolute; left: 146px; font-weight: bold; color: #14388B; top: 40px" />
-                            <p:inputText id="tipo" value="#{controlEmpleadoIndividual.empleado.persona.tipodocumento.nombrecorto}" style="position: absolute; left: 223px; top: 36px; width: 22px; top: 36px" maxlength="3"/>
+                            <p:inputText id="tipo" value="#{controlEmpleadoIndividual.empleado.persona.tipodocumento.nombrecorto}" style="position: absolute; left: 223px; top: 36px; width: 22px; top: 36px" maxlength="3">
+                                <p:ajax event="dblclick" onstart="TiposDocumentosDialogo.show()"/>
+                            </p:inputText>
                             <p:watermark for="tipo" value="Tipo" />
                             <p:inputText id="Identificacion" value="#{controlEmpleadoIndividual.empleado.persona.numerodocumento}" style="position: absolute; left: 256px; top: 36px; width: 100px"/>
                             <p:watermark for="Identificacion" value="Identificación" />
                             <h:outputText id="txtDigito" value="Digito Verif." style="position: absolute; left: 368px; font-weight: bold; color: #14388B; top: 40px" />
                             <p:tooltip for="txtDigito" value="Digito de verificación del documento."/>
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.digitoverificaciondocumento}" style="position: absolute; left: 435px; top: 36px; width: 15px; top: 36px" maxlength="1"/>
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudaddocumento.nombre}" id="lugarExpedicion" style="position: absolute; left: 461px; top: 36px; width: 140px"/>
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudaddocumento.nombre}" id="lugarExpedicion" style="position: absolute; left: 461px; top: 36px; width: 140px">
+                                <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad('0')}"/>
+                            </p:inputText>
                             <p:watermark for="lugarExpedicion" value="Lugar de expedición" />
                             <h:outputText value="Edad (Años)" style="position: absolute; left: 615px; font-weight: bold; color: #14388B; top: 40px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.edad}" style="position: absolute; left: 685px; top: 36px; width: 12px" maxlength="2"/>
                             <h:outputText value="Sexo" style="position: absolute; left: 712px; font-weight: bold; color: #14388B; top: 40px" />
                             <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.sexo}" id="sexo" style="position: absolute; top: 36px; left: 743px; width: 100px">  
+                                <f:selectItem itemLabel="" itemValue="" />  
                                 <f:selectItem itemLabel="MASCULINO" itemValue="M" />  
                                 <f:selectItem itemLabel="FEMENINO" itemValue="F" />
                                 <p:ajax update="@this" />
@@ -55,7 +60,9 @@
                             </p:calendar>
                             <p:watermark for="fechaNacimiento" value="Fecha Nac." />
                             <h:outputText value="Ciudad" style="position: absolute; left: 292px; font-weight: bold; color: #14388B; top: 67px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudadnacimiento.nombre}" id="lugarNacimiento" style="position: absolute; left: 334px; top: 62px; width: 83px"/>
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudadnacimiento.nombre}" id="lugarNacimiento" style="position: absolute; left: 334px; top: 62px; width: 83px">
+                                <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad('1')}"/>
+                            </p:inputText>
                             <p:watermark for="lugarNacimiento" value="Lugar de Nac." />
 
                             <h:outputText id="grupoS" value="Grupo S." style="position: absolute; left: 429px; font-weight: bold; color: #14388B; top: 67px" />
@@ -121,7 +128,9 @@
                             <p:watermark for="ruta" value="Ruta" />
 
                             <h:outputText value="Cargo postulado" style="position: absolute; left: 127px; font-weight: bold; color: #14388B; top: 154px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.hojaDeVidaPersona.cargo.nombre}" id="cargoPostulado" style="position: absolute; left: 223px; top: 149px; width: 130px"/>
+                            <p:inputText value="#{controlEmpleadoIndividual.hojaDeVidaPersona.cargo.nombre}" id="cargoPostulado" style="position: absolute; left: 223px; top: 149px; width: 130px">
+                                <p:ajax event="dblclick" onstart="CargosDialogo.show()"/>
+                            </p:inputText>
                             <p:watermark for="cargoPostulado" value="Cargo postulado" />
                             <h:outputText value="Vehículo Empresa" style="position: absolute; left: 368px; font-weight: bold; color: #14388B; top: 154px" />
                             <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.vehiculoempresa}" id="vehiculoEmpresa" style="position: absolute; top: 149px; left: 470px; width: 45px;" panelStyle="font-size: 14px">  
@@ -210,7 +219,7 @@
 
                                 <p:commandButton id="btnPruebasAplicadas" value="" style="background-image: url(Imagenes/g_evaldesempeno.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
                                 <h:outputText value="Pruebas Aplicadas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
-                                <p:inputText id="pruebasAplicadas" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
+                                <p:inputText id="pruebasAplicadas" value="#{controlEmpleadoIndividual.pruebasAplicadasP}" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
 
                                 <p:commandButton id="btnEntrevistas" value="" style="background-image: url(Imagenes/afiliacion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
                                 <h:outputText value="Entrevistas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
@@ -254,6 +263,98 @@
                         <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
+                </h:form>
+
+                <h:form id="formDialogos">
+                    <p:dialog header="Tipos de documentos" widgetVar="TiposDocumentosDialogo" draggable="false" resizable="false" closable="false" id="TiposDocumentosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 12px;">
+                        <p:dataTable id="lovTiposDocumentos" style="font-size: 11px; width: 430px" var="tipoDocumento" value="#{controlEmpleadoIndividual.listaTiposDocumentos}" rowKey="#{tipoDocumento.secuencia}"
+                                     selection="#{controlEmpleadoIndividual.seleccionTipoDocumento}" selectionMode="single" widgetVar="lovTiposDocumentos" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlEmpleadoIndividual.filtradoListaTiposDocumentos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarTD"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}" onstart="lovTiposDocumentos.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar tipo documento: "  style="position: absolute; left: 27px; top: 16px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTiposDocumentos.filter();" style="width:150px; position: relative; left: 15px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tipoDocumento.nombrecorto}" width="200"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre Corto" />
+                                </f:facet>
+                                <h:outputText value="#{tipoDocumento.nombrecorto}" />
+                            </p:column>
+                            <p:column filterBy="#{tipoDocumento.nombrelargo}"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre Largo" />
+                                </f:facet>
+                                <h:outputText value="#{tipoDocumento.nombrelargo}" />
+                            </p:column> 
+                        </p:dataTable>
+                        <p:commandButton id="aceptarTD" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}"  onclick="lovTiposDocumentos.clearFilters();" update="aceptarTD" process="@this">
+                            <p:resetInput target=":formDialogos:lovTiposDocumentos:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTD" style="position: relative; left: 303px" value="Atras" onclick="TiposDocumentosDialogo.hide(), lovTiposDocumentos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionTipoDocumento()}" update="aceptarTD, lovTiposDocumentos" process="@this">
+                            <p:resetInput target=":formDialogos:lovTiposDocumentos:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="#{controlEmpleadoIndividual.cabezeraDialogoCiudad}" widgetVar="CiudadesDialogo" draggable="false" resizable="false" closable="false" id="CiudadesDialogo"  
+                              showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 12px;">
+                        <p:dataTable id="lovCiudades" style="font-size: 11px; width: 430px" var="ciudad" value="#{controlEmpleadoIndividual.listaCiudades}" rowKey="#{ciudad.secuencia}"
+                                     selection="#{controlEmpleadoIndividual.seleccionCiudades}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlEmpleadoIndividual.filtradoListaCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarC"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCiudad()}" onstart="lovCiudades.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar ciudad: "  style="position: absolute; left: 27px; top: 16px; font-size: 12px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: -30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{ciudad.nombre}" width="200"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{ciudad.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{ciudad.departamento.nombre}"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Departamento" />
+                                </f:facet>
+                                <h:outputText value="#{ciudad.departamento.nombre}" />
+                            </p:column> 
+                        </p:dataTable>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCiudad()}"  onclick="lovCiudades.clearFilters();" update="aceptarC" process="@this">
+                            <p:resetInput target=":formDialogos:lovCiudades:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasC" style="position: relative; left: 303px" value="Atras" onclick="CiudadesDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCiudad()}" update="aceptarC, lovCiudades" process="@this">
+                            <p:resetInput target=":formDialogos:lovCiudades:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog> 
+
+                    <p:dialog header="Cargo postulado" widgetVar="CargosDialogo" draggable="false" resizable="false" closable="false" id="CargosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 12px;">
+                        <p:dataTable id="lovCargos" style="font-size: 11px; width: 430px" var="cargo" value="#{controlEmpleadoIndividual.listaCargos}" rowKey="#{cargo.secuencia}"
+                                     selection="#{controlEmpleadoIndividual.seleccionCargo}" selectionMode="single" widgetVar="lovCargos" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlEmpleadoIndividual.filtradoListaCargos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarCA"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCargo()}" onstart="lovCargos.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar cargo: "  style="position: absolute; left: 27px; top: 16px; font-size: 12px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCargos.filter();" style="width:150px; position: relative; left: -30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{cargo.nombre}" width="200"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{cargo.nombre}" />
+                            </p:column> 
+                        </p:dataTable>
+                        <p:commandButton id="aceptarCA" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCargo()}"  onclick="lovCargos.clearFilters();" update="aceptarCA" process="@this">
+                            <p:resetInput target=":formDialogos:lovCargos:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasCA" style="position: relative; left: 303px" value="Atras" onclick="CargosDialogo.hide(), lovCargos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCargo()}" update="aceptarCA, lovCargos" process="@this">
+                            <p:resetInput target=":formDialogos:lovCargos:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog> 
                 </h:form>
             </ui:define>
         </ui:composition>

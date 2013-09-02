@@ -1,9 +1,12 @@
 package Controlador;
 
+import Entidades.Cargos;
+import Entidades.Ciudades;
 import Entidades.Demandas;
 import Entidades.Direcciones;
 import Entidades.Empleados;
 import Entidades.Encargaturas;
+import Entidades.EvalResultadosConv;
 import Entidades.Familiares;
 import Entidades.HVHojasDeVida;
 import Entidades.HvEntrevistas;
@@ -12,6 +15,7 @@ import Entidades.HvReferencias;
 import Entidades.IdiomasPersonas;
 import Entidades.InformacionesAdicionales;
 import Entidades.Telefonos;
+import Entidades.TiposDocumentos;
 import Entidades.VigenciasAficiones;
 import Entidades.VigenciasDeportes;
 import Entidades.VigenciasDomiciliarias;
@@ -24,9 +28,12 @@ import InterfacePersistencia.AdministrarEmpleadoIndividualInterface;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @SessionScoped
@@ -55,6 +62,7 @@ public class ControlEmpleadoIndividual implements Serializable {
     private VigenciasIndicadores vigenciaIndicador;
     private Demandas demandas;
     private VigenciasDomiciliarias vigenciaDomiciliaria;
+    private EvalResultadosConv pruebasAplicadas;
     //CAMPOS A MOSTRAR EN LA PAGINA
     private String telefonoP, direccionP, estadoCivilP,
             informacionAdicionalP, reemplazoP, educacionP,
@@ -65,9 +73,26 @@ public class ControlEmpleadoIndividual implements Serializable {
             visitasDomiciliariasP, pruebasAplicadasP;
     //CONVERTIR FECHA
     private SimpleDateFormat formatoFecha;
+    //LISTAS DE VALORES
+    private List<TiposDocumentos> listaTiposDocumentos;
+    private List<TiposDocumentos> filtradoListaTiposDocumentos;
+    private TiposDocumentos seleccionTipoDocumento;
+    private List<Ciudades> listaCiudades;
+    private List<Ciudades> filtradoListaCiudades;
+    private Ciudades seleccionCiudad;
+    private List<Cargos> listaCargos;
+    private List<Cargos> filtradoListaCargos;
+    private Cargos seleccionCargo;
+    private boolean aceptar;
+    private int modificacionCiudad;
+    private String cabezeraDialogoCiudad;
 
     public ControlEmpleadoIndividual() {
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        listaTiposDocumentos = null;
+        filtradoListaTiposDocumentos = new ArrayList<TiposDocumentos>();
+        seleccionTipoDocumento = new TiposDocumentos();
+        aceptar = true;
     }
 
     public void recibirEmpleado(Empleados empl) {
@@ -189,9 +214,103 @@ public class ControlEmpleadoIndividual implements Serializable {
         if (vigenciaDomiciliaria != null) {
             visitasDomiciliariasP = "VISITADO EL:  " + formatoFecha.format(vigenciaDomiciliaria.getFecha());
         } else {
-            visitasDomiciliariasP = "NO VISITADO";
+            visitasDomiciliariasP = "SIN REGISTRAR";
+        }
+        pruebasAplicadas = administrarEmpleadoIndividual.pruebasAplicadasPersona(secEmpleado);
+        if (pruebasAplicadas != null) {
+            pruebasAplicadasP = pruebasAplicadas.getNombreprueba() + " -> " + pruebasAplicadas.getPuntajeobtenido() + "%";
+        } else {
+            pruebasAplicadasP = "SIN REGISTRAR";
+        }
+        listaTiposDocumentos = null;
+        listaCiudades = null;
+        listaCargos = null;
+    }
+
+    public void activarAceptar() {
+        aceptar = false;
+    }
+
+    //METODOS LOVS
+    public void seleccionarTipoDocumento() {
+        if (seleccionTipoDocumento != null && empleado != null) {
+            empleado.getPersona().setTipodocumento(seleccionTipoDocumento);
+            seleccionTipoDocumento = null;
+            filtradoListaTiposDocumentos = null;
+            aceptar = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tipo");
+            context.execute("TiposDocumentosDialogo.hide()");
+            context.reset("formDialogos:lovTiposDocumentos:globalFilter");
+            context.update("formDialogos:lovTiposDocumentos");
         }
     }
+
+    public void cancelarSeleccionTipoDocumento() {
+        filtradoListaTiposDocumentos = null;
+        seleccionTipoDocumento = null;
+        aceptar = true;
+    }
+
+    public void dialogoCiudad(int modificacion) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        modificacionCiudad = modificacion;
+        if (modificacionCiudad == 0) {
+            cabezeraDialogoCiudad = "Ciudad documento";
+        } else {
+            cabezeraDialogoCiudad = "Ciudad nacimiento";
+        }
+        context.update("formDialogos:CiudadesDialogo");
+        context.execute("CiudadesDialogo.show()");
+    }
+
+    public void seleccionarCiudad() {
+        if (seleccionCiudad != null && empleado != null) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (modificacionCiudad == 0) {
+                empleado.getPersona().setCiudaddocumento(seleccionCiudad);
+                context.update("form:lugarExpedicion");
+            } else {
+                empleado.getPersona().setCiudadnacimiento(seleccionCiudad);
+                context.update("form:lugarNacimiento");
+            }
+            seleccionCiudad = null;
+            filtradoListaCiudades = null;
+            aceptar = true;
+            context.execute("CiudadesDialogo.hide()");
+            context.reset("formDialogos:lovCiudades:globalFilter");
+            context.update("formDialogos:lovCiudades");
+            modificacionCiudad = -1;
+        }
+    }
+
+    public void cancelarSeleccionCiudad() {
+        seleccionCiudad = null;
+        filtradoListaCiudades = null;
+        aceptar = true;
+        modificacionCiudad = -1;
+    }
+
+    public void seleccionarCargo() {
+        if (seleccionCargo != null && hojaDeVidaPersona != null) {
+            hojaDeVidaPersona.setCargo(seleccionCargo);
+            seleccionCargo = null;
+            filtradoListaCargos = null;
+            aceptar = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:cargoPostulado");
+            context.execute("CargosDialogo.hide()");
+            context.reset("formDialogos:lovCargos:globalFilter");
+            context.update("formDialogos:lovCargos");
+        }
+    }
+
+    public void cancelarSeleccionCargo() {
+        filtradoListaCargos = null;
+        seleccionCargo = null;
+        aceptar = true;
+    }
+    //GETTER AND SETTER
 
     public Empleados getEmpleado() {
         return empleado;
@@ -285,6 +404,10 @@ public class ControlEmpleadoIndividual implements Serializable {
         this.vigenciaDomiciliaria = vigenciaDomiciliaria;
     }
 
+    public void setPruebasAplicadas(EvalResultadosConv pruebasAplicadas) {
+        this.pruebasAplicadas = pruebasAplicadas;
+    }
+
     public HVHojasDeVida getHojaDeVidaPersona() {
         return hojaDeVidaPersona;
     }
@@ -367,5 +490,95 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     public String getPruebasAplicadasP() {
         return pruebasAplicadasP;
+    }
+
+    //LISTAS DE VALORES
+    public List<TiposDocumentos> getListaTiposDocumentos() {
+        if (listaTiposDocumentos == null) {
+            listaTiposDocumentos = administrarEmpleadoIndividual.tiposDocumentos();
+        }
+        return listaTiposDocumentos;
+    }
+
+    public void setListaTiposDocumentos(List<TiposDocumentos> listaTiposDocumentos) {
+        this.listaTiposDocumentos = listaTiposDocumentos;
+    }
+
+    public List<TiposDocumentos> getFiltradoListaTiposDocumentos() {
+        return filtradoListaTiposDocumentos;
+    }
+
+    public void setFiltradoListaTiposDocumentos(List<TiposDocumentos> filtradoListaTiposDocumentos) {
+        this.filtradoListaTiposDocumentos = filtradoListaTiposDocumentos;
+    }
+
+    public TiposDocumentos getSeleccionTipoDocumento() {
+        return seleccionTipoDocumento;
+    }
+
+    public void setSeleccionTipoDocumento(TiposDocumentos seleccionTipoDocumento) {
+        this.seleccionTipoDocumento = seleccionTipoDocumento;
+    }
+
+    public List<Ciudades> getListaCiudades() {
+        if (listaCiudades == null) {
+            listaCiudades = administrarEmpleadoIndividual.ciudades();
+        }
+        return listaCiudades;
+    }
+
+    public void setListaCiudades(List<Ciudades> listaCiudades) {
+        this.listaCiudades = listaCiudades;
+    }
+
+    public List<Ciudades> getFiltradoListaCiudades() {
+        return filtradoListaCiudades;
+    }
+
+    public void setFiltradoListaCiudades(List<Ciudades> filtradoListaCiudades) {
+        this.filtradoListaCiudades = filtradoListaCiudades;
+    }
+
+    public Ciudades getSeleccionCiudades() {
+        return seleccionCiudad;
+    }
+
+    public void setSeleccionCiudades(Ciudades seleccionCiudades) {
+        this.seleccionCiudad = seleccionCiudades;
+    }
+
+    public List<Cargos> getListaCargos() {
+        if(listaCargos == null){
+            listaCargos = administrarEmpleadoIndividual.cargos();
+        }
+        return listaCargos;
+    }
+
+    public void setListaCargos(List<Cargos> listaCargos) {
+        this.listaCargos = listaCargos;
+    }
+
+    public List<Cargos> getFiltradoListaCargos() {
+        return filtradoListaCargos;
+    }
+
+    public void setFiltradoListaCargos(List<Cargos> filtradoListaCargos) {
+        this.filtradoListaCargos = filtradoListaCargos;
+    }
+
+    public Cargos getSeleccionCargo() {
+        return seleccionCargo;
+    }
+
+    public void setSeleccionCargo(Cargos seleccionCargo) {
+        this.seleccionCargo = seleccionCargo;
+    }
+
+    public String getCabezeraDialogoCiudad() {
+        return cabezeraDialogoCiudad;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
     }
 }

@@ -1506,7 +1506,10 @@ public class ControlVigenciasCargos implements Serializable {
             context.update("form:btnUltimoRegistro");
             context.update("form:focoRegistro");
             context.update("form:informacionRegistro");
-            context.execute("{PrimeFaces.focus('" + registroFoco + "');}");
+            //context.execute("('" + registroFoco + "').trigger('click'); return false;");
+            context.execute("$('form:ATRAS').trigger('click');");
+
+           //context.execute("{PrimeFaces.focus('" + registroFoco + "');}");
         }
     }
     //CREAR VC
