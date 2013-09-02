@@ -86,7 +86,7 @@
 
                             <p:dataTable id="tempNovedades"  var="tNovedades" style="font-size: 11px; width: 670px; table-layout: fixed;" value="#{cargarArchivoPlano.listTempNovedades}"
                                          scrollable="true" scrollHeight="140" scrollWidth="690" emptyMessage="No se encontrarón registros." widgetVar="tempNovedades"
-                                         rowKey="#{tNovedades.concepto}" rowIndexVar="pos" styleClass="ui-datatable" 
+                                         rowKey="#{tNovedades.concepto}" rowIndexVar="pos" styleClass="ui-datatable"  liveScroll="true" scrollRows="30"
                                          editable="true" editMode="cell" rowStyleClass="#{tNovedades.estadovalidacion eq 'I' ? 'red' : null}">
 
                                 <p:column width="25" style="padding: 0px;" exportable="false" sortBy="#{tNovedades.estadovalidacion}"> 

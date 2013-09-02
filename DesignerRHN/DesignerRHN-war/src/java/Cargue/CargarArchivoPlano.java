@@ -25,6 +25,7 @@ import java.math.BigInteger;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -80,10 +81,12 @@ public class CargarArchivoPlano implements Serializable {
     private DualListModel<String> documentosSoportes;
     private List<String> documentosEscogidos;
     private ResultadoBorrarTodoNovedades resultadoProceso;
+    //ACTUALIZAR COLLECTION
+    Collection<String> elementosActualizar;
 
     public CargarArchivoPlano() {
         tNovedades = new TempNovedades();
-        listTempNovedades = new ArrayList<TempNovedades>();
+        //listTempNovedades = new ArrayList<TempNovedades>();
         hs = new HashSet();
         listErrores = new ArrayList<ErroresNovedades>();
         erroresNovedad = new ErroresNovedades();
@@ -97,6 +100,8 @@ public class CargarArchivoPlano implements Serializable {
         documentosSoportes = null;
         documentosEscogidos = new ArrayList<String>();
         resultadoProceso = new ResultadoBorrarTodoNovedades();
+        elementosActualizar = new ArrayList<String>();
+
     }
 
     public void cargarArchivo(FileUploadEvent event) throws IOException {
@@ -142,9 +147,11 @@ public class CargarArchivoPlano implements Serializable {
             BufferedReader bf = new BufferedReader(fr);
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
             String sCadena;
+            RequestContext context = RequestContext.getCurrentInstance();
 
-            listTempNovedades = new ArrayList<TempNovedades>();
-
+            listTempNovedades.clear();
+            listErrores.clear();
+            
             while ((sCadena = bf.readLine()) != null) {
                 tNovedades = new TempNovedades();
 
@@ -155,7 +162,6 @@ public class CargarArchivoPlano implements Serializable {
                         BigInteger concepto = new BigInteger(sConcepto);
                         tNovedades.setConcepto(concepto);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("1" + e);
@@ -171,7 +177,6 @@ public class CargarArchivoPlano implements Serializable {
                         BigInteger empleado = new BigInteger(sEmpleado);
                         tNovedades.setEmpleado(empleado);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("2");
@@ -190,7 +195,6 @@ public class CargarArchivoPlano implements Serializable {
                         Date FechaInicial = formato.parse(fechaInicial);
                         tNovedades.setFechainicial(FechaInicial);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("3");
@@ -209,7 +213,6 @@ public class CargarArchivoPlano implements Serializable {
                         Date FechaFinal = formato.parse(fechaFinal);
                         tNovedades.setFechafinal(FechaFinal);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("4");
@@ -228,7 +231,6 @@ public class CargarArchivoPlano implements Serializable {
                         Date FechaReporte = formato.parse(fechaReporte);
                         tNovedades.setFechareporte(FechaReporte);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("5");
@@ -243,7 +245,6 @@ public class CargarArchivoPlano implements Serializable {
                     try {
                         tNovedades.setDocumentosoporte(DocumentoSoporte);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("6");
@@ -263,7 +264,6 @@ public class CargarArchivoPlano implements Serializable {
                         BigDecimal Valor = new BigDecimal(sValor);
                         tNovedades.setValortotal(Valor);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("7");
@@ -279,7 +279,6 @@ public class CargarArchivoPlano implements Serializable {
                         BigInteger Periodicidad = new BigInteger(sPeriocidad);
                         tNovedades.setPeriodicidad(Periodicidad);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("8");
@@ -295,7 +294,6 @@ public class CargarArchivoPlano implements Serializable {
                         BigInteger Tercero = new BigInteger(tercero);
                         tNovedades.setTercero(Tercero);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("9");
@@ -314,7 +312,6 @@ public class CargarArchivoPlano implements Serializable {
                         BigDecimal Saldo = new BigDecimal(saldo);
                         tNovedades.setSaldo(Saldo);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("10");
@@ -330,7 +327,6 @@ public class CargarArchivoPlano implements Serializable {
                         Integer UnidadEntera = Integer.parseInt(uniE);
                         tNovedades.setUnidadesparteentera(UnidadEntera);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("11");
@@ -347,7 +343,6 @@ public class CargarArchivoPlano implements Serializable {
                         UnidadFraccion = Integer.parseInt(unF);
                         tNovedades.setUnidadespartefraccion(UnidadFraccion);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("12" + e);
@@ -362,7 +357,6 @@ public class CargarArchivoPlano implements Serializable {
                     try {
                         tNovedades.setTipo(sTipo);
                     } catch (Exception e) {
-                        RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:errorArchivo");
                         context.execute("errorArchivo.show()");
                         System.out.println("13");
@@ -394,23 +388,36 @@ public class CargarArchivoPlano implements Serializable {
                 tNovedades.setSecuencia(BigInteger.valueOf(1));
                 //AGREGAR NOVEDAD A LA LISTA
                 listTempNovedades.add(tNovedades);
+                tNovedades = null;
             }
             administrarCargueArchivos.borrarRegistrosTempNovedades(UsuarioBD.getAlias());
+            System.out.println("Termino de borrar los registros no cargados");
             insertarNovedadTempNovedades();
-            listTempNovedades.clear();
+            System.out.println("Termino de Insertar");
+            listTempNovedades = null;
             listTempNovedades = administrarCargueArchivos.listaTempNovedades(UsuarioBD.getAlias());
+            System.out.println("Termino de traer las tempNovedades para validarlas");
             subTotal = new BigDecimal(0);
             validarNovedades();
-            if (!listTempNovedades.isEmpty()) {
+            System.out.println("Termino de validar!");
+            if (listTempNovedades != null) {
                 botones = true;
                 cargue = false;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:tempNovedades");
-                context.update("form:FileUp");
-                context.update("form:nombreArchivo");
-                context.update("form:formula");
-                context.update("form:usoFormulaC");
-                context.update("form:cargar");
+                /*context.update("form:tempNovedades");
+                 System.out.println("Actualizo tabla");
+                 context.update("form:FileUp");
+                 context.update("form:nombreArchivo");
+                 context.update("form:formula");
+                 context.update("form:usoFormulaC");
+                 context.update("form:cargar");*/
+                elementosActualizar.add("form:tempNovedades");
+                elementosActualizar.add("form:FileUp");
+                elementosActualizar.add("form:nombreArchivo");
+                elementosActualizar.add("form:formula");
+                elementosActualizar.add("form:usoFormulaC");
+                elementosActualizar.add("form:cargar");
+                context.update(elementosActualizar);
+                elementosActualizar.clear();
             }
         } catch (Exception e) {
             System.out.println("Excepcion: (leerTxt) " + e);
@@ -419,7 +426,6 @@ public class CargarArchivoPlano implements Serializable {
 
     public void validarNovedades() {
         boolean validacion = false;
-        listErrores = new ArrayList<ErroresNovedades>();
         List<String> erroresN;
         documentosSoporteCargados = administrarCargueArchivos.obtenerDocumentosSoporteCargados(UsuarioBD.getAlias());
         BigInteger secEmpresa = administrarCargueArchivos.empresaParametros(UsuarioBD.getAlias());
@@ -689,6 +695,8 @@ public class CargarArchivoPlano implements Serializable {
                 context.update("form:subtotal");
             }
             listErrores.add(errorNovedad);
+            errorNovedad = null;
+            erroresN = null;
         }
         /*for (int i = 0; i < listErrores.size(); i++) {
          System.out.println("\nSecuencia: " + listErrores.get(i).getSecNovedad() + "\nError: " + listErrores.get(i).getMensajeError());
@@ -697,9 +705,15 @@ public class CargarArchivoPlano implements Serializable {
     }
 
     public void revisarNovedad(BigInteger secnovedad) {
+        BigInteger secuencia;
+        System.out.println("secuencia novedad : " + secnovedad);
+        System.out.println("tamaño lista: " + listErrores.size());
         for (int i = 0; i < listErrores.size(); i++) {
-            if (listErrores.get(i).getSecNovedad() == secnovedad) {
+            secuencia = listErrores.get(i).getSecNovedad();
+            System.out.println("secuencia: " + secuencia);
+            if (secuencia.compareTo(secnovedad) == 0) {
                 erroresNovedad = listErrores.get(i);
+                i = listErrores.size();
             }
         }
         if (erroresNovedad != null) {
@@ -867,6 +881,7 @@ public class CargarArchivoPlano implements Serializable {
 
     public void borrarRegistrosNoCargados() {
         administrarCargueArchivos.borrarRegistrosTempNovedades(UsuarioBD.getAlias());
+        listTempNovedades = null;
         listTempNovedades = administrarCargueArchivos.listaTempNovedades(UsuarioBD.getAlias());
         nombreArchivoPlano = null;
         subTotal = new BigDecimal(0);

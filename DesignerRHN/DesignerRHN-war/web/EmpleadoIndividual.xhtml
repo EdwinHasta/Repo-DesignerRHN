@@ -139,7 +139,7 @@
                             <p:commandButton value="Anteriores Contratos" style="position: absolute; top: 146px; left: 700px; "/>
                         </fieldset>
 
-                        <p:scrollPanel style="position: absolute; top: 250px; width: 855px; height: 243px; font-size: 11px; left: 10px;">  
+                        <p:scrollPanel style="position: absolute; top: 250px; width: 855px; height: 243px; font-size: 11px; left: 10px; border: none">  
                             <fieldset style="position: relative; width: 817px; height: 75px; border-radius: 7px; left: -2px ">
 
                                 <h:outputText value="Perfil Profesional" style="position: absolute; left: 10px; font-weight: bold; color: #14388B;" />
@@ -164,7 +164,7 @@
                                 <p:inputText id="estadoCivil" value="#{controlEmpleadoIndividual.estadoCivilP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px" readonly="true"/>
 
                                 <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/relacione.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this"/>
-                                <h:outputText value="Información Ad." style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
+                                <h:outputText value="Información Adicional" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
                                 <p:inputText id="informacionAdicional" value="#{controlEmpleadoIndividual.informacionAdicionalP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 165px" readonly="true"/>
 
                                 <p:commandButton id="btnReemplazos" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" process="@this"/>
@@ -177,15 +177,15 @@
 
                                 <p:commandButton id="btnEducacion" value="" style="background-image: url(Imagenes/niveleducativo.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
                                 <h:outputText value="Educación" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
-                                <p:inputText id="educacion" value="#{controlEmpleadoIndividual.educacionP}" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
+                                <p:inputText id="educacion" value="#{controlEmpleadoIndividual.educacionP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
 
                                 <p:commandButton id="btnIdiomas" value="" style="background-image: url(Imagenes/idioma.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
                                 <h:outputText value="Idiomas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
-                                <p:inputText id="idiomas" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
+                                <p:inputText id="idiomas" value="#{controlEmpleadoIndividual.idiomasP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
 
                                 <p:commandButton id="btnProyectos" value="" style="background-image: url(Imagenes/proyecto.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
                                 <h:outputText value="Proyectos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
-                                <p:inputText id="proyectos" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
+                                <p:inputText id="proyectos" value="#{controlEmpleadoIndividual.proyectosP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
                             </fieldset>
 
                             <fieldset style="position: absolute; width: 187px; height: 136px; border-radius: 7px; left: 418px; top: 91px ">
@@ -193,15 +193,15 @@
 
                                 <p:commandButton id="btnReferenciaLaboral" value="" style="background-image: url(Imagenes/tipotrabajador.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
                                 <h:outputText value="Referencia Laboral" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
-                                <p:inputText id="referenciaLaboral" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
+                                <p:inputText id="referenciaLaboral" value="#{controlEmpleadoIndividual.referenciasPersonalesP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
 
                                 <p:commandButton id="btnReferenciaFamiliar" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
                                 <h:outputText value="Referencia Familiar" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
-                                <p:inputText id="referenciaFamiliar" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
+                                <p:inputText id="referenciaFamiliar" value="#{controlEmpleadoIndividual.referenciasFamiliaresP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
 
                                 <p:commandButton id="btnExperienciaLaboral" value="" style="background-image: url(Imagenes/comprobante.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
                                 <h:outputText value="Experiencia Laboral" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
-                                <p:inputText id="experienciaLaboral" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
+                                <p:inputText id="experienciaLaboral" value="#{controlEmpleadoIndividual.experienciaLaboralP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
 
                             </fieldset>
 
@@ -214,19 +214,19 @@
 
                                 <p:commandButton id="btnEntrevistas" value="" style="background-image: url(Imagenes/afiliacion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
                                 <h:outputText value="Entrevistas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
-                                <p:inputText id="entrevistas" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
+                                <p:inputText id="entrevistas" value="#{controlEmpleadoIndividual.entrevistasP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
 
                                 <p:commandButton id="btnCensos" value="" style="background-image: url(Imagenes/indicadorgestion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
                                 <h:outputText value="Censos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
-                                <p:inputText id="censos" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
+                                <p:inputText id="censos" value="#{controlEmpleadoIndividual.indicadoresP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
 
                                 <p:commandButton id="btnDemandas" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this"/>
                                 <h:outputText value="Demandas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
-                                <p:inputText id="demandas" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 165px"/>
+                                <p:inputText id="demandas" value="#{controlEmpleadoIndividual.demandasP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 165px"/>
 
                                 <p:commandButton id="btnVisitasDomiciliarias" value="" style="background-image: url(Imagenes/familiar.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" process="@this"/>
                                 <h:outputText value="Visitas domiciliarias" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 195px" />
-                                <p:inputText id="visitasDomiciliarias" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 210px"/>
+                                <p:inputText id="visitasDomiciliarias" value="#{controlEmpleadoIndividual.visitasDomiciliariasP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 210px"/>
                             </fieldset>
 
 
@@ -234,18 +234,18 @@
                                 <legend style="font-size: 11px; color: blue"><strong>Actividades de bienestar y familiares</strong></legend>
                                 <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/evento.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px " process="@this"/>
                                 <h:outputText value="Eventos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 10px" />
-                                <p:inputText id="eventos" style="position: absolute; left: 45px; top: 23px; width: 140px"/>
+                                <p:inputText id="eventos" value="#{controlEmpleadoIndividual.eventosP}" readonly="true" style="position: absolute; left: 45px; top: 23px; width: 140px"/>
                                 <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/deporte.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; " process="@this"/>
                                 <h:outputText value="Deporte" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 50px" />
-                                <p:inputText id="deporte" style="position: absolute; left: 45px; top: 63px; width: 140px"/>
+                                <p:inputText id="deporte" value="#{controlEmpleadoIndividual.deportesP}" readonly="true" style="position: absolute; left: 45px; top: 63px; width: 140px"/>
 
                                 <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/aficion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px; left: 218px " process="@this"/>
                                 <h:outputText value="Aficiones" style="position: absolute; left: 258px; font-weight: bold; color: #14388B; top: 10px;" />
-                                <p:inputText id="aficiones" style="position: absolute; left: 256px; top: 23px; width: 140px"/>
+                                <p:inputText id="aficiones" value="#{controlEmpleadoIndividual.aficionesP}" readonly="true" style="position: absolute; left: 256px; top: 23px; width: 140px"/>
 
                                 <p:commandButton id="btnFamiliares" value="" style="background-image: url(Imagenes/familiar.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; left: 218px " process="@this"/>
                                 <h:outputText value="Familiares" style="position: absolute; left: 258px; font-weight: bold; color: #14388B; top: 50px" />
-                                <p:inputText id="familiares" style="position: absolute; left: 256px; top: 63px; width: 140px"/>
+                                <p:inputText id="familiares" value="#{controlEmpleadoIndividual.familiaresP}" readonly="true" style="position: absolute; left: 256px; top: 63px; width: 140px"/>
                             </fieldset>
                         </p:scrollPanel>
 

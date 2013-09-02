@@ -61,7 +61,7 @@ public class ControlEmpleadoIndividual implements Serializable {
             idiomasP, proyectosP, referenciasPersonalesP,
             referenciasFamiliaresP, experienciaLaboralP,
             eventosP, deportesP, aficionesP, familiaresP,
-            entrevistasP, indicadoresP, demandasP, 
+            entrevistasP, indicadoresP, demandasP,
             visitasDomiciliariasP, pruebasAplicadasP;
     //CONVERTIR FECHA
     private SimpleDateFormat formatoFecha;
@@ -75,6 +75,7 @@ public class ControlEmpleadoIndividual implements Serializable {
         BigInteger secPersona = empleado.getPersona().getSecuencia();
         BigInteger secEmpleado = empleado.getSecuencia();
         hojaDeVidaPersona = administrarEmpleadoIndividual.hvHojaDeVidaPersona(secPersona);
+        BigInteger secHv = hojaDeVidaPersona.getSecuencia();
         telefono = administrarEmpleadoIndividual.primerTelefonoPersona(secPersona);
         if (telefono != null) {
             telefonoP = telefono.getTipotelefono().getNombre() + " :  " + telefono.getNumerotelefono();
@@ -123,6 +124,73 @@ public class ControlEmpleadoIndividual implements Serializable {
         } else {
             proyectosP = "SIN REGISTRAR";
         }
+        hvReferenciasPersonales = administrarEmpleadoIndividual.referenciasPersonalesPersona(secHv);
+        if (hvReferenciasPersonales != null) {
+            referenciasPersonalesP = hvReferenciasPersonales.getNombrepersona();
+        } else {
+            referenciasPersonalesP = "SIN REGISTRAR";
+        }
+
+        hvReferenciasFamiliares = administrarEmpleadoIndividual.referenciasFamiliaresPersona(secHv);
+        if (hvReferenciasFamiliares != null) {
+            referenciasFamiliaresP = hvReferenciasFamiliares.getNombrepersona();
+        } else {
+            referenciasFamiliaresP = "SIN REGISTRAR";
+        }
+        experienciaLaboral = administrarEmpleadoIndividual.experienciaLaboralPersona(secHv);
+        if (experienciaLaboral != null) {
+            experienciaLaboralP = experienciaLaboral.getEmpresa() + "  " + formatoFecha.format(experienciaLaboral.getFechadesde());
+        } else {
+            experienciaLaboralP = "SIN REGISTRAR";
+        }
+        vigenciaEvento = administrarEmpleadoIndividual.eventosPersona(secEmpleado);
+        if (vigenciaEvento != null) {
+            eventosP = vigenciaEvento.getEvento().getDescripcion() + "  " + formatoFecha.format(vigenciaEvento.getFechainicial());
+        } else {
+            eventosP = "SIN REGISTRAR";
+        }
+        vigenciaDeporte = administrarEmpleadoIndividual.deportesPersona(secPersona);
+        if (vigenciaDeporte != null) {
+            deportesP = vigenciaDeporte.getDeporte().getNombre() + "  " + formatoFecha.format(vigenciaDeporte.getFechainicial());
+        } else {
+            deportesP = "SIN REGISTRAR";
+        }
+        vigenciaAficion = administrarEmpleadoIndividual.aficionesPersona(secPersona);
+        if (vigenciaAficion != null) {
+            aficionesP = vigenciaAficion.getAficion().getDescripcion() + "  " + formatoFecha.format(vigenciaAficion.getFechainicial());
+        } else {
+            aficionesP = "SIN REGISTRAR";
+        }
+        familiares = administrarEmpleadoIndividual.familiaresPersona(secPersona);
+        if (familiares != null) {
+            familiaresP = familiares.getTipofamiliar().getTipo() + "  " + familiares.getPersona().getPrimerapellido() + "  " + familiares.getPersona().getNombre();
+        } else {
+            familiaresP = "SIN REGISTRAR";
+        }
+        entrevistas = administrarEmpleadoIndividual.entrevistasPersona(secHv);
+        if (entrevistas != null) {
+            entrevistasP = entrevistas.getNombre() + "  " + formatoFecha.format(entrevistas.getFecha());
+        } else {
+            entrevistasP = "SIN REGISTRAR";
+        }
+        vigenciaIndicador = administrarEmpleadoIndividual.indicadoresPersona(secEmpleado);
+        if (vigenciaIndicador != null) {
+            indicadoresP = vigenciaIndicador.getIndicador().getDescripcion() + "  " + formatoFecha.format(vigenciaIndicador.getFechainicial());
+        } else {
+            indicadoresP = "SIN REGISTRAR";
+        }
+        demandas = administrarEmpleadoIndividual.demandasPersona(secEmpleado);
+        if (demandas != null) {
+            demandasP = demandas.getMotivo().getDescripcion();
+        } else {
+            demandasP = "SIN REGISTRAR";
+        }
+        vigenciaDomiciliaria = administrarEmpleadoIndividual.visitasDomiciliariasPersona(secPersona);
+        if (vigenciaDomiciliaria != null) {
+            visitasDomiciliariasP = "VISITADO EL:  " + formatoFecha.format(vigenciaDomiciliaria.getFecha());
+        } else {
+            visitasDomiciliariasP = "NO VISITADO";
+        }
     }
 
     public Empleados getEmpleado() {
@@ -167,6 +235,10 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     public void setVigenciaProyecto(VigenciasProyectos vigenciaProyecto) {
         this.vigenciaProyecto = vigenciaProyecto;
+    }
+
+    public HvReferencias getHvReferenciasPersonales() {
+        return hvReferenciasPersonales;
     }
 
     public void setHvReferenciasPersonales(HvReferencias hvReferenciasPersonales) {
