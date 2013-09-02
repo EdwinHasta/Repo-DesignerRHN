@@ -98,6 +98,15 @@ public class ControlVigenciasCargos implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
+    //ACTIVAR  - DESACTIVAR BOTONES ULTIMO Y PRIMER REGISTRO
+    private boolean botonPrimero;
+    private boolean botonAnterior;
+    private boolean botonSiguiente;
+    private boolean botonUltimo;
+    //REGISTRO QUE TENDRA EL FOCO
+    private String registroFoco;
+    //INFORMACION DEL REGISTRO QUE TIENE EL FOCO
+    private String infoRegistro;
     //------------------------------------------------------------------------------------------
     //CONSTRUCTOR(ES)
     //------------------------------------------------------------------------------------------
@@ -146,6 +155,9 @@ public class ControlVigenciasCargos implements Serializable {
         permitirIndex = true;
         //RASTRO
         secRegistro = null;
+        //INICIALIZAR FOCO PARA EL PRIMER REGISTRO
+        registroFoco = "form:datosVCEmpleado:editFecha";
+
     }
 //------------------------------------------------------------------------------------------
     //METODOS GETTER'S AND SETTER'S
@@ -403,14 +415,63 @@ public class ControlVigenciasCargos implements Serializable {
         this.secRegistro = secRegistro;
     }
 
+    public boolean isBotonPrimero() {
+        return botonPrimero;
+    }
+
+    public boolean isBotonAnterior() {
+        return botonAnterior;
+    }
+
+    public boolean isBotonSiguiente() {
+        return botonSiguiente;
+    }
+
+    public boolean isBotonUltimo() {
+        return botonUltimo;
+    }
+
+    public String getRegistroFoco() {
+        return registroFoco;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
     //------------------------------------------------------------------------------------------
     //METODOS DE MANEJO DE INFORMACION
     //------------------------------------------------------------------------------------------
     //VIGENCIASCARGOS----------------------------------------------------
+
     public void recibirEmpleado(BigInteger sec) {
         vigenciasCargosEmpleado = null;
         secuencia = sec;
         System.out.println(sec);
+        getVigenciasCargosEmpleado();
+        //INICIALIZAR BOTONES NAVEGACION
+        if (vigenciasCargosEmpleado != null) {
+            if (vigenciasCargosEmpleado.size() == 1) {
+                botonPrimero = true;
+                botonAnterior = true;
+                botonSiguiente = true;
+                botonUltimo = true;
+                //INFORMACION REGISTRO
+                infoRegistro = "Registro 1 de 1";
+            } else if (vigenciasCargosEmpleado.size() > 1) {
+                botonPrimero = true;
+                botonAnterior = true;
+                botonSiguiente = false;
+                botonUltimo = false;
+                //INFORMACION REGISTRO
+                infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
+            }
+        } else {
+            botonPrimero = true;
+            botonAnterior = true;
+            botonSiguiente = true;
+            botonUltimo = true;
+            infoRegistro = "No hay registros";
+        }
     }
 
     /*
@@ -1377,7 +1438,79 @@ public class ControlVigenciasCargos implements Serializable {
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
+    //PRIMER REGISTRO
+    public void primerRegistro() {
+        if (index >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            botonPrimero = true;
+            botonAnterior = true;
+            registroFoco = "form:datosVCEmpleado:0:editFecha";
+            infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
+            context.update("form:btnPrimerRegistro");
+            context.update("form:btnAnteriorRegistro");
+            context.update("form:focoRegistro");
+            context.update("form:informacionRegistro");
+        }
+    }
+
+    public void anteriorRegistro() {
+        if (index >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (index == 1) {
+                botonPrimero = true;
+                botonAnterior = true;
+
+            }
+            int registro;
+            registro = index - 1;
+            registroFoco = "form:datosVCEmpleado:" + registro + ":editFecha";
+            infoRegistro = "Registro " + index + " de " + vigenciasCargosEmpleado.size();
+            context.update("form:focoRegistro");
+            context.update("form:btnPrimerRegistro");
+            context.update("form:btnAnteriorRegistro");
+            context.update("form:informacionRegistro");
+        }
+    }
+
+    public void siguienteRegistro() {
+        if (index >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (index == (vigenciasCargosEmpleado.size() - 2)) {
+                botonUltimo = true;
+                botonSiguiente = true;
+
+            }
+            int registro;
+            registro = index + 1;
+            registroFoco = "form:datosVCEmpleado:" + registro + ":editFecha";
+            int numeroRegistro;
+            numeroRegistro = registro + 1;
+            infoRegistro = "Registro " + numeroRegistro + " de " + vigenciasCargosEmpleado.size();
+            context.update("form:focoRegistro");
+            context.update("form:btnSiguienteRegistro");
+            context.update("form:btnUltimoRegistro");
+            context.update("form:informacionRegistro");
+        }
+    }
+
+    public void ultimoRegistro() {
+        if (index >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            //botonUltimo = true;
+            ///botonSiguiente = true;
+            int registro;
+            registro = vigenciasCargosEmpleado.size() - 1;
+            registroFoco = "form:datosVCEmpleado:" + registro + ":editFecha";
+            infoRegistro = "Registro " + vigenciasCargosEmpleado.size() + " de " + vigenciasCargosEmpleado.size();
+            context.update("form:btnSiguienteRegistro");
+            context.update("form:btnUltimoRegistro");
+            context.update("form:focoRegistro");
+            context.update("form:informacionRegistro");
+            context.execute("{PrimeFaces.focus('" + registroFoco + "');}");
+        }
+    }
     //CREAR VC
+
     public void agregarNuevaVC() {
         boolean pasa = false;
         mensajeValidacion = "";

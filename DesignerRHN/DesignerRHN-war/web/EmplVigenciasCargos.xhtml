@@ -65,12 +65,16 @@
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue"><strong>Cargos del empleado</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
+                            <h:outputText id="informacionRegistro" value="#{controlVigenciasCargos.infoRegistro}"/>
+                            <p:commandButton id="btnPrimerRegistro" disabled="#{controlVigenciasCargos.botonPrimero}" value=" " icon="ui-icon-arrowstop-1-w" actionListener="#{controlVigenciasCargos.primerRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
+                            <p:commandButton id="btnAnteriorRegistro" disabled="#{controlVigenciasCargos.botonAnterior}" value=" " icon="ui-icon-arrow-1-w" actionListener="#{controlVigenciasCargos.anteriorRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
+                            <p:commandButton id="btnSiguienteRegistro" disabled="#{controlVigenciasCargos.botonSiguiente}" value=" "  icon="ui-icon-arrow-1-e" actionListener="#{controlVigenciasCargos.siguienteRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
+                            <p:commandButton id="btnUltimoRegistro" disabled="#{controlVigenciasCargos.botonUltimo}" value=" " icon="ui-icon-arrowstop-1-e" actionListener="#{controlVigenciasCargos.ultimoRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
 
-                            <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; width: 645px"                           
+                            <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; width: 645px"                            
                                          value="#{controlVigenciasCargos.vigenciasCargosEmpleado}" scrollable="true" scrollHeight="150" scrollWidth="645"
                                          filteredValue="#{controlVigenciasCargos.filterVC}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" rows="6"  
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                         editable="true" editMode="cell" >
 
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrar()}"/>
 

@@ -7,16 +7,21 @@
     <h:head>
     </h:head> 
     <h:body>
-        <h:form>
-            <p:tree id="docTree" value="#{pruebaComponetesUnitarios.arbolEstructuras}" style="width: 500px; font-size: 12px;" var="estructura" animate="true"
-                    selectionMode="single">  
-                <p:treeNode expandedIcon="ui-icon-bullet"  
-                            collapsedIcon="ui-icon-bullet">  
-                    <h:outputText value="#{estructura.nombre}"/>
-                </p:treeNode>   
-            </p:tree>
-            <p:commandButton value="Acción" actionListener="#{pruebaComponetesUnitarios.valoresEscogidos()}"/>
+        <h:form id="form">
+            <p:focus for=":form:tablaEjemplo:input3" />
+            <p:commandButton id="superBoton" value="Asignar foco" actionListener="#{pruebaComponetesUnitarios.probarFocusDinamico()}" oncomplete="{PrimeFaces.focus('#{pruebaComponetesUnitarios.inputFoco}');}"/>
+            <p:inputText id="input1" widgetVar="input1" />
+            <p:inputText id="input2" widgetVar="input2" />
+            
+            <p:dataTable id="tablaEjemplo" value="#{pruebaComponetesUnitarios.listaPrueb}" var="item">
+                <p:column>
+                    <p:inputText id="input3" value="#{item}"/>
+                </p:column>
+            </p:dataTable>
+            
         </h:form>
     </h:body>
 </html>
+
+
 
