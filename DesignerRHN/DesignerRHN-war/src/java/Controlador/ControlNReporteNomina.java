@@ -42,7 +42,7 @@ public class ControlNReporteNomina implements Serializable {
     @EJB
     AdministrarReportesInterface administrarReportes;
     private ParametrosInformes parametroDeInforme;
-    private ParametrosInformes nuevoParametroInforme;
+    private ParametrosInformes nuevoParametroInforme; 
     private List<Inforeportes> listaIR;
     private List<Inforeportes> filtrarListInforeportesUsuario;
     private List<Inforeportes> listaIRRespaldo;

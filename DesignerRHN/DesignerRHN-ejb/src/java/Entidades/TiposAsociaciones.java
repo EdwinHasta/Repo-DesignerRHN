@@ -5,44 +5,39 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author user
  */
 @Entity
-@Table(name = "ASOCIACIONES")
-@XmlRootElement
+@Table(name = "TIPOSASOCIACIONES")
 @NamedQueries({
-    @NamedQuery(name = "Asociaciones.findAll", query = "SELECT a FROM Asociaciones a"),
-    @NamedQuery(name = "Asociaciones.findBySecuencia", query = "SELECT a FROM Asociaciones a WHERE a.secuencia = :secuencia"),
-    @NamedQuery(name = "Asociaciones.findByCodigo", query = "SELECT a FROM Asociaciones a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Asociaciones.findByDescripcion", query = "SELECT a FROM Asociaciones a WHERE a.descripcion = :descripcion")})
-public class Asociaciones implements Serializable {
-    @OneToMany(mappedBy = "asociacion")
-    private Collection<ParametrosInformes> parametrosinformesCollection;
-   
+    @NamedQuery(name = "TiposAsociaciones.findAll", query = "SELECT t FROM TiposAsociaciones t"),
+    @NamedQuery(name = "TiposAsociaciones.findBySecuencia", query = "SELECT t FROM TiposAsociaciones t WHERE t.secuencia = :secuencia"),
+    @NamedQuery(name = "TiposAsociaciones.findByCodigo", query = "SELECT t FROM TiposAsociaciones t WHERE t.codigo = :codigo"),
+    @NamedQuery(name = "TiposAsociaciones.findByDescripcion", query = "SELECT t FROM TiposAsociaciones t WHERE t.descripcion = :descripcion")})
+public class TiposAsociaciones implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigInteger secuencia;
+    private BigDecimal secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -52,27 +47,28 @@ public class Asociaciones implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    
-    
+    @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Empresas empresa;
 
-    public Asociaciones() {
+    public TiposAsociaciones() {
     }
 
-    public Asociaciones(BigInteger secuencia) {
+    public TiposAsociaciones(BigDecimal secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Asociaciones(BigInteger secuencia, BigInteger codigo, String descripcion) {
+    public TiposAsociaciones(BigDecimal secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigInteger getSecuencia() {
+    public BigDecimal getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigInteger secuencia) {
+    public void setSecuencia(BigDecimal secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -85,9 +81,6 @@ public class Asociaciones implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 
@@ -95,16 +88,13 @@ public class Asociaciones implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosinformesCollection() {
-        return parametrosinformesCollection;
+    public Empresas getEmpresa() {
+        return empresa;
     }
 
-    public void setParametrosinformesCollection(Collection<ParametrosInformes> parametrosinformesCollection) {
-        this.parametrosinformesCollection = parametrosinformesCollection;
+    public void setEmpresa(Empresas empresa) {
+        this.empresa = empresa;
     }
-
-   
 
     @Override
     public int hashCode() {
@@ -116,10 +106,10 @@ public class Asociaciones implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Asociaciones)) {
+        if (!(object instanceof TiposAsociaciones)) {
             return false;
         }
-        Asociaciones other = (Asociaciones) object;
+        TiposAsociaciones other = (TiposAsociaciones) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -128,11 +118,7 @@ public class Asociaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Asociaciones[ secuencia=" + secuencia + " ]";
+        return "Entidades.TiposAsociaciones[ secuencia=" + secuencia + " ]";
     }
-
-    
-
-    
     
 }
