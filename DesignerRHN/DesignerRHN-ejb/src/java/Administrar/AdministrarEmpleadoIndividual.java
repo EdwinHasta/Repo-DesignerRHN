@@ -4,6 +4,7 @@ import Entidades.Cargos;
 import Entidades.Ciudades;
 import Entidades.Demandas;
 import Entidades.Direcciones;
+import Entidades.Empleados;
 import Entidades.Encargaturas;
 import Entidades.EvalResultadosConv;
 import Entidades.Familiares;
@@ -13,6 +14,7 @@ import Entidades.HvExperienciasLaborales;
 import Entidades.HvReferencias;
 import Entidades.IdiomasPersonas;
 import Entidades.InformacionesAdicionales;
+import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposDocumentos;
 import Entidades.VigenciasAficiones;
@@ -29,6 +31,7 @@ import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDemandasInterface;
 import InterfacePersistencia.PersistenciaDireccionesInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaEncargaturasInterface;
 import InterfacePersistencia.PersistenciaEvalResultadosConvInterface;
 import InterfacePersistencia.PersistenciaFamiliaresInterface;
@@ -46,6 +49,7 @@ import InterfacePersistencia.PersistenciaVigenciasEventosInterface;
 import InterfacePersistencia.PersistenciaVigenciasFormalesInterface;
 import InterfacePersistencia.PersistenciaVigenciasIndicadoresInterface;
 import InterfacePersistencia.PersistenciaHvReferenciasInterface;
+import InterfacePersistencia.PersistenciaPersonasInterface;
 import InterfacePersistencia.PersistenciaTiposDocumentosInterface;
 import java.math.BigInteger;
 import java.util.List;
@@ -101,6 +105,10 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     PersistenciaCiudadesInterface persistenciaCiudades;
     @EJB
     PersistenciaCargosInterface persistenciaCargos;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
+    @EJB
+    PersistenciaPersonasInterface persistenciaPersonas;
 
     @Override
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secPersona) {
@@ -334,16 +342,51 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         listaTiposDocumentos = persistenciaTiposDocumentos.tiposDocumentos();
         return listaTiposDocumentos;
     }
-    
+
     public List<Ciudades> ciudades() {
         List<Ciudades> listaCiudades;
         listaCiudades = persistenciaCiudades.ciudades();
         return listaCiudades;
     }
-    
+
     public List<Cargos> cargos() {
         List<Cargos> listaCargos;
         listaCargos = persistenciaCargos.buscarCargos();
         return listaCargos;
+    }
+
+    public Empleados buscarEmpleado(BigInteger secuencia) {
+        Empleados empleado;
+        try {
+            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
+            return empleado;
+        } catch (Exception e) {
+            empleado = null;
+            return empleado;
+        }
+    }
+
+    public void modificarEmpleado(Empleados empleado) {
+        try {
+            persistenciaEmpleado.editar(empleado);
+        } catch (Exception e) {
+            System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarEmpleado");
+        }
+    }
+
+    public void modificarHojaDeVida(HVHojasDeVida hojaVida) {
+        try {
+            persistenciaHVHojasDeVida.editar(hojaVida);
+        } catch (Exception e) {
+            System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarHojaDeVida");
+        }
+    }
+    
+    public void modificarPersona(Personas personas) {
+        try {
+            persistenciaPersonas.editar(personas);
+        } catch (Exception e) {
+            System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarPersona");
+        }
     }
 }

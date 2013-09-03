@@ -14,4 +14,5 @@ import java.math.BigInteger;
 public interface PersistenciaHVHojasDeVidaInterface {
 
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secuenciaPersona);
+    public void editar(HVHojasDeVida hVHojasDeVida);
 }

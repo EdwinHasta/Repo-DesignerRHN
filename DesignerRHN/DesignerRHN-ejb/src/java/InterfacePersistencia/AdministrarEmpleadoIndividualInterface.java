@@ -4,6 +4,7 @@ import Entidades.Cargos;
 import Entidades.Ciudades;
 import Entidades.Demandas;
 import Entidades.Direcciones;
+import Entidades.Empleados;
 import Entidades.Encargaturas;
 import Entidades.EvalResultadosConv;
 import Entidades.Familiares;
@@ -13,6 +14,7 @@ import Entidades.HvExperienciasLaborales;
 import Entidades.HvReferencias;
 import Entidades.IdiomasPersonas;
 import Entidades.InformacionesAdicionales;
+import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposDocumentos;
 import Entidades.VigenciasAficiones;
@@ -51,4 +53,8 @@ public interface AdministrarEmpleadoIndividualInterface {
     public List<TiposDocumentos> tiposDocumentos();
     public List<Ciudades> ciudades();
     public List<Cargos> cargos();
+    public Empleados buscarEmpleado(BigInteger secuencia);
+    public void modificarEmpleado(Empleados empleado);
+    public void modificarHojaDeVida(HVHojasDeVida hojaVida);
+    public void modificarPersona(Personas personas);
 }

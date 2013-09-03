@@ -197,6 +197,9 @@ public class Personas implements Serializable {
     }
 
     public String getFactorrh() {
+        if (factorrh == null) {
+            factorrh = "";
+        }
         return factorrh;
     }
 
@@ -229,6 +232,9 @@ public class Personas implements Serializable {
     }
 
     public String getGruposanguineo() {
+        if (gruposanguineo == null) {
+            gruposanguineo = "";
+        }
         return gruposanguineo;
     }
 
@@ -284,6 +290,9 @@ public class Personas implements Serializable {
     }
 
     public String getViviendapropia() {
+        if (viviendapropia == null) {
+            viviendapropia = "";
+        }
         return viviendapropia;
     }
 
@@ -380,6 +389,9 @@ public class Personas implements Serializable {
     }
 
     public String getVehiculoempresa() {
+        if (vehiculoempresa == null) {
+            vehiculoempresa = "";
+        }
         return vehiculoempresa;
     }
 

@@ -14,6 +14,13 @@ public class PersistenciaHVHojasDeVida implements PersistenciaHVHojasDeVidaInter
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
     
+    /*
+     *Editar empleado. 
+     */
+    public void editar(HVHojasDeVida hVHojasDeVida) {
+        em.merge(hVHojasDeVida);
+    }
+    
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secuenciaPersona) {
 
         try {
