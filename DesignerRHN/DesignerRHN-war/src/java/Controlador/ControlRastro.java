@@ -94,6 +94,7 @@ public class ControlRastro implements Serializable {
             backUplistaLOVRastros = null;
             btnValor = "Consultar (Insertados - Actualizados)";
             context.update("form:btnConsultar");
+            estadoBtn = 2;
         } else {
             listaRastros = backUplistaLOVRastros;
             backUplistaLOVRastros = null;
@@ -110,6 +111,7 @@ public class ControlRastro implements Serializable {
             backUplistaLOVRastros = null;
             btnValor = "Consultar (Insertados - Actualizados)";
             context.update("form:btnConsultar");
+            estadoBtn = 2;
         } else {
             listaRastros = backUplistaLOVRastros;
             backUplistaLOVRastros = null;
@@ -121,7 +123,6 @@ public class ControlRastro implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (estadoBtn == 1) {
             context.execute("confirmarEliminados.show()");
-            estadoBtn = 2;
         } else {
             System.out.println("Estado : " + estado);
             if (estado == 1) {
