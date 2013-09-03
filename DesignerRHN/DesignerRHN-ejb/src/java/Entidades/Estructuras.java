@@ -40,7 +40,6 @@ public class Estructuras implements Serializable {
     private Collection<Evalconvocatorias> evalconvocatoriasCollection;
     @OneToMany(mappedBy = "estructura")
     private Collection<Encargaturas> encargaturasCollection;
-
     @OneToMany(mappedBy = "estructura")
     private Collection<Solucionesnodos> solucionesnodosCollection;
     @OneToMany(mappedBy = "localizacion")

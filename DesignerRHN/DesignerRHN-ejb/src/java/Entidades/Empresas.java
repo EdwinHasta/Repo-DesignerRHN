@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
@@ -1066,6 +1065,7 @@ public class Empresas implements Serializable {
     public void setProyectosCollection(Collection<Proyectos> proyectosCollection) {
         this.proyectosCollection = proyectosCollection;
     }
+
 
     @XmlTransient
     public Collection<TiposAsociaciones> getTiposasociacionesCollection() {
