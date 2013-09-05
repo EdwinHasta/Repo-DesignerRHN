@@ -398,4 +398,12 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
             System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarPersona");
         }
     }
+
+    public void actualizarFotoPersona(BigInteger identificacion) {
+        try {
+            persistenciaPersonas.actualizarFotoPersona(identificacion);
+        } catch (Exception e) {
+            System.out.println("No se puede actalizar el estado de la Foto.");
+        }
+    }
 }

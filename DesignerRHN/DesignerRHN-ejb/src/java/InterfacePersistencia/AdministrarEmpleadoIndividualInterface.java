@@ -57,4 +57,5 @@ public interface AdministrarEmpleadoIndividualInterface {
     public void modificarEmpleado(Empleados empleado);
     public void modificarHojaDeVida(HVHojasDeVida hojaVida);
     public void modificarPersona(Personas personas);
+    public void actualizarFotoPersona(BigInteger identificacion);
 }
