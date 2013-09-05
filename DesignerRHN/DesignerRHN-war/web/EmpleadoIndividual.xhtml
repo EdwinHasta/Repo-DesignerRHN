@@ -12,6 +12,8 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+
+                    
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Datos Básicos" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
 
@@ -47,10 +49,7 @@
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 11px; width: 835px; height: 165px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>Datos personales</strong></legend>
-
-                       <!--     <p:commandButton id="btnFoto" value="" style="background-image: url(ArchivosCargados/#{controlEmpleadoIndividual.fotoEmpleado}); background-size: 100% 100%; background-repeat: no-repeat; width: 105px; height: 120px " onclick="subirFoto.show();" process="@this"/> -->
-                            <p:commandButton id="btnFoto" value="" style="background-image: url(file:///C:\default.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 105px; height: 120px " onclick="subirFoto.show();" process="@this"/> 
-
+                            <p:commandButton id="btnFoto" value="" style="background-image: url(resources/ArchivosCargados/52784280.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 105px; height: 120px " onclick="subirFoto.show();" process="@this"/>
                             <h:outputText id="apellidosNombres" value="Apellidos y Nomb." style="position: absolute; left: 121px; font-weight: bold; color: #14388B" />
                             <p:tooltip for="apellidosNombres" value="Apellidos y nombres de la persona."/>
                             <p:inputText id="primerApellido" value="#{controlEmpleadoIndividual.empleado.persona.primerapellido}" style="position: absolute; left: 223px; top: 11px; width: 138px; text-transform: uppercase" onclick="select();">
@@ -505,9 +504,9 @@
                     </p:dialog>
 
                     <p:dialog id="subirFoto" header="Subir foto empleado" widgetVar="subirFoto"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
-                        <p:inputText id="nombreArchivo" value="#{cargarArchivoPlano.nombreArchivoPlano}" readonly="true" style="position:  absolute; top: 40px; left: 8px; font-size: 11px; width: 117px; z-index: 1;"/>
+                        <p:inputText id="nombreArchivo" value="" readonly="true" style="position:  absolute; top: 40px; left: 8px; font-size: 11px; width: 117px; z-index: 1;"/>
                         <p:watermark for="nombreArchivo" value="Nombre del Archivo" />
-                        <p:fileUpload  id="FileUp" mode="advanced" style="font-size: 11px;" fileUploadListener="#{cargarArchivoPlano.cargarArchivo}"
+                        <p:fileUpload  id="FileUp" mode="advanced" style="font-size: 11px;" fileUploadListener="#{controlEmpleadoIndividual.subirFotoEmpleado}"
                                        label="Examinar..." auto="true" styleClass="ui-fileupload"/>
                     </p:dialog>
                 </h:form>

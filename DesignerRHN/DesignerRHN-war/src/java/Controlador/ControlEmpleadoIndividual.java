@@ -39,11 +39,14 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
@@ -117,6 +120,12 @@ public class ControlEmpleadoIndividual implements Serializable {
     private boolean guardado;
     //FOTO EMPLEADO
     private String fotoEmpleado;
+    //private String destino = "C:\\glassfish3\\glassfish\\domains\\domain1\\applications\\DesignerRHN\\DesignerRHN-war_war\\resources\\ArchivosCargados\\";
+    private String destino = "C:\\ProyectoDesignerSoftware\\Repo-DesignerRHN\\DesignerRHN\\DesignerRHN-war\\web\\resources\\ArchivosCargados\\";
+    //private String directorioDespliegue = "C:\\\\glassfish3\\\\glassfish\\\\domains\\\\domain1\\\\applications\\\\DesignerRHN\\\\DesignerRHN-war_war";
+    //private String destino = directorioDespliegue + "\\resources\\ArchivosCargados\\";
+    private BigInteger identificacionEmpleado;
+    private String nombreArchivoFoto;
 
     public ControlEmpleadoIndividual() {
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -641,35 +650,63 @@ public class ControlEmpleadoIndividual implements Serializable {
         }
     }
 
-    /*//SUBIR FOTO EMPLEADO
+    //SUBIR FOTO EMPLEADO
     public void subirFotoEmpleado(FileUploadEvent event) throws IOException {
+        RequestContext context = RequestContext.getCurrentInstance();
+        //context.execute("espera.show()");
+        File fichero = new File(destino + "52784280.jpg");
+        if (fichero.delete()) {
+            System.out.println("El fichero ha sido borrado satisfactoriamente");
+        } else {
+            System.out.println("El fichero no puede ser borrado");
+        }
         System.out.println(event.getFile().getFileName());
         transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("Cargar.hide()");
-        context.execute("Exito.show()");
+        nombreArchivoFoto = event.getFile().getFileName();
+        //context.update("form:");
+        context.execute("subirFoto.hide()");
+        context.reset("form:btnFoto");
+        context.update("form:btnFoto");
+        //context.execute("Exito.show()");
+        FacesMessage msg = new FacesMessage("Información", "Archivo cargado");
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.addMessage(null, msg);
+        context.update("form:growl");
+
+        HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
+        
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies. 
+
+        //context.execute("espera.hide()");
     }
 
     public void transformarArchivo(long size, InputStream in) {
         try {
             //extencion = fileName.split("[.]")[1];
-            //System.out.println(extencion);
-
-            OutputStream out = new FileOutputStream(new File(destino + identificacion + ".jpg"));
-            int reader = 0;
-            byte[] bytes = new byte[(int) size];
-            while ((reader = in.read(bytes)) != -1) {
-                out.write(bytes, 0, reader);
+            //System.out.println(extencion); 
+            if (empleado != null) {
+                identificacionEmpleado = empleado.getPersona().getNumerodocumento();
+                System.out.println("1");
+                OutputStream out = new FileOutputStream(new File(destino + identificacionEmpleado + ".jpg"));
+                int reader = 0;
+                byte[] bytes = new byte[(int) size];
+                while ((reader = in.read(bytes)) != -1) {
+                    out.write(bytes, 0, reader);
+                }
+                in.close();
+                out.flush();
+                out.close();
+                administrarEmpleadoIndividual.actualizarFotoPersona(identificacionEmpleado);
+            } else {
+                System.out.println("EMPLEADO NULO");
             }
-            in.close();
-            out.flush();
-            out.close();
-            administrarCarpetaPersonal.actualizarFotoPersona(identificacion);
-            //RequestContext.getCurrentInstance().update("formEncrip:foto");
+            RequestContext.getCurrentInstance().update("form:btnFoto");
         } catch (Exception e) {
-            System.out.println("Pailander");
+            System.out.println("Pailander" + e);
         }
-    }*/
+    }
 //GETTER AND SETTER
 
     public Empleados getEmpleado() {
