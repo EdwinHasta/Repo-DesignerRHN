@@ -12,6 +12,7 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Datos Básicos" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 13px; height: 22px">   
@@ -47,28 +48,29 @@
                         <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 11px; width: 835px; height: 165px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>Datos personales</strong></legend>
 
-                            <p:commandButton id="btnFoto" value="" style="background-image: url(Imagenes/79709849.png); background-size: 100% 100%; background-repeat: no-repeat; width: 105px; height: 120px " process="@this"/>
+                       <!--     <p:commandButton id="btnFoto" value="" style="background-image: url(ArchivosCargados/#{controlEmpleadoIndividual.fotoEmpleado}); background-size: 100% 100%; background-repeat: no-repeat; width: 105px; height: 120px " onclick="subirFoto.show();" process="@this"/> -->
+                            <p:commandButton id="btnFoto" value="" style="background-image: url(file:///C:\default.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 105px; height: 120px " onclick="subirFoto.show();" process="@this"/> 
 
                             <h:outputText id="apellidosNombres" value="Apellidos y Nomb." style="position: absolute; left: 121px; font-weight: bold; color: #14388B" />
                             <p:tooltip for="apellidosNombres" value="Apellidos y nombres de la persona."/>
                             <p:inputText id="primerApellido" value="#{controlEmpleadoIndividual.empleado.persona.primerapellido}" style="position: absolute; left: 223px; top: 11px; width: 138px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="primerApellido" value="Primer apellido" />
                             <p:inputText id="segundoApellido" value="#{controlEmpleadoIndividual.empleado.persona.segundoapellido}" style="position: absolute; left: 373px; top: 11px; width: 138px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="segundoApellido" value="Segundo apellido" />
                             <p:inputText id="primerNombre" value="#{controlEmpleadoIndividual.empleado.persona.nombre}" style="position: absolute; left: 523px; top: 11px; width: 150px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="@this"/>
-                                <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
+                                <p:ajax event="click"  listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
                             </p:inputText>
                             <p:watermark for="primerNombre" value="Primer nombre" />
                             <p:inputText id="segundoNombre" value="#{controlEmpleadoIndividual.empleado.persona.segundonombre}" style="position: absolute; left: 685px; top: 11px; width: 150px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
 
                             <h:outputText value="Identificación" style="position: absolute; left: 146px; font-weight: bold; color: #14388B; top: 40px" />
@@ -80,14 +82,14 @@
                             <p:watermark for="tipo" value="Tipo" />
                             <p:inputText id="Identificacion" value="#{controlEmpleadoIndividual.empleado.persona.numerodocumento}" style="position: absolute; left: 256px; top: 36px; width: 100px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="Identificacion" value="Identificación" /> 
                             <h:outputText id="txtDigito" value="Digito Verif." style="position: absolute; left: 368px; font-weight: bold; color: #14388B; top: 40px" />
                             <p:tooltip for="txtDigito" value="Digito de verificación del documento."/>
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.digitoverificaciondocumento}" style="position: absolute; left: 435px; top: 36px; width: 15px; top: 36px; text-transform: uppercase" onclick="select();" maxlength="1">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudaddocumento.nombre}" id="lugarExpedicion" style="position: absolute; left: 461px; top: 36px; width: 140px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad('0')}"/>
@@ -102,15 +104,16 @@
                                 <f:selectItem itemLabel="" itemValue="" />  
                                 <f:selectItem itemLabel="MASCULINO" itemValue="M" />  
                                 <f:selectItem itemLabel="FEMENINO" itemValue="F" />
-                                <p:ajax update="@this" />
+                                <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
 
                             <h:outputText value="Fecha Nacimiento" style="position: absolute; left: 123px; font-weight: bold; color: #14388B; top: 67px" />
                             <p:calendar value="#{controlEmpleadoIndividual.empleado.persona.fechanacimiento}" style="position: absolute; left: 223px; top: 62px;" onclick="select();" id="fechaNacimiento"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
                                         navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <p:ajax event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:calendar>
                             <p:watermark for="fechaNacimiento" value="Fecha Nac." />
                             <h:outputText value="Ciudad" style="position: absolute; left: 292px; font-weight: bold; color: #14388B; top: 67px" />
@@ -129,19 +132,19 @@
                                 <f:selectItem itemLabel="AB" itemValue="AB" />
                                 <f:selectItem itemLabel="B" itemValue="B" />
                                 <f:selectItem itemLabel="O" itemValue="O" />
-                                <p:ajax update="@this" />
+                                <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
                             <h:outputText value="Factor RH" style="position: absolute; left: 528px; font-weight: bold; color: #14388B; top: 67px" />
                             <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.factorrh}" id="factorRH" style="position: absolute; top: 62px; left: 582px; width: 45px;" panelStyle="font-size: 14px">  
                                 <f:selectItem itemLabel="" itemValue="" />  
                                 <f:selectItem itemLabel="+" itemValue="POSITIVO" />  
                                 <f:selectItem itemLabel="-" itemValue="NEGATIVO" />
-                                <p:ajax update="@this" />
+                                <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
                             <h:outputText value="Email" style="position: absolute; left: 633px; font-weight: bold; color: #14388B; top: 67px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.email}" id="email" style="position: absolute; left: 665px; top: 62px; width: 170px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="email" value="Dirección de correo electrónico" />
 
@@ -150,32 +153,33 @@
                             <h:outputText value="Certificado Judicial" style="position: absolute; left: 115px; font-weight: bold; color: #14388B; top: 98px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.certificadojudicial}" id="certificadoJudicial" style="position: absolute; left: 223px; top: 93px; width: 104px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="certificadoJudicial" value="Nº Certificado Judicial" />
                             <h:outputText value="Fecha Vencimiento" style="position: absolute; left: 339px; font-weight: bold; color: #14388B; top: 98px" />
                             <p:calendar  value="#{controlEmpleadoIndividual.empleado.persona.fechavencimientocertificado}" style="position: absolute; left: 446px; top: 93px;" onclick="select();" id="fechaVencimientoCJ"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
                                          navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <p:ajax event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:calendar> 
                             <p:watermark for="fechaVencimientoCJ" value="Fecha Ven." />
                             <h:outputText value="Libreta Militar" style="position: absolute; left: 514px; font-weight: bold; color: #14388B; top: 98px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.numerolibretamilitar}" id="libretaMilitar" style="position: absolute; left: 592px; top: 93px; width: 80px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="libretaMilitar" value="Nº Libreta Militar"/>
                             <h:outputText value="Distrito Militar" style="position: absolute; left: 685px; font-weight: bold; color: #14388B; top: 98px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.distritomilitar}" style="position: absolute; left: 765px; top: 93px; width: 12px; text-transform: uppercase" onclick="select();" maxlength="2">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <h:outputText value="Clase" style="position: absolute; left: 792px; font-weight: bold; color: #14388B; top: 98px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.claselibretamilitar}" style="position: absolute; left: 826px; top: 93px; width: 8px; text-transform: uppercase" onclick="select();" maxlength="1">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
 
                             <hr width="727" style="position: absolute; left: 115px; top: 114px; border-color: #817E7E"/>
@@ -185,7 +189,7 @@
                                 <f:selectItem itemLabel="" itemValue=""/>
                                 <f:selectItem itemLabel="SI" itemValue="S"/>  
                                 <f:selectItem itemLabel="NO" itemValue="N"/>
-                                <p:ajax update="@this" />
+                                <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
                             <h:outputText value="Vehiculo Propio" style="position: absolute; left: 278px; font-weight: bold; color: #14388B; top: 128px" />
                             <p:selectOneMenu id="vehiculoPropio" style="position: absolute; top: 123px; left: 372px; width: 45px;" panelStyle="font-size: 14px">  
@@ -196,19 +200,19 @@
                             <h:outputText value="Placa" style="position: absolute; left: 425px; font-weight: bold; color: #14388B; top: 128px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.placavehiculo}" id="placa" style="position: absolute; left: 460px; top: 123px; width: 70px; text-transform: uppercase" onclick="select();" maxlength="10">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="placa" value="Placa" />
                             <h:outputText value="Parqueo" style="position: absolute; left: 547px; font-weight: bold; color: #14388B; top: 128px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.parqueadero}" id="parqueo" style="position: absolute; left: 600px; top: 123px; width: 40px; text-transform: uppercase" onclick="select();" maxlength="6">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Empleados')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('E')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="parqueo" value="Nº Parq." />
                             <h:outputText value="Ruta de Transporte" style="position: absolute; left: 660px; font-weight: bold; color: #14388B; top: 128px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.rutatransporte}" id="ruta" style="position: absolute; left: 770px; top: 123px; width: 65px; text-transform: uppercase" onclick="select();" maxlength="6">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Empleados')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('E')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="ruta" value="Ruta" />
 
@@ -224,14 +228,15 @@
                                 <f:selectItem itemLabel="" itemValue="" />
                                 <f:selectItem itemLabel="SI" itemValue="S" />  
                                 <f:selectItem itemLabel="NO" itemValue="N" />
-                                <p:ajax update="@this" />
+                                <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
                             <h:outputText value="Fecha Fallecimiento" style="position: absolute; left: 523px; font-weight: bold; color: #14388B; top: 155px" />
                             <p:calendar value="#{controlEmpleadoIndividual.empleado.persona.fechafallecimiento}" style="position: absolute; left: 633px; top: 149px;" onclick="select();" id="fechaFallecimiento"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
                                         navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <p:ajax event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" update="@this"/>
+                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:calendar>
                             <p:watermark for="fechaFallecimiento" value="Fecha Fall." />
                             <p:commandButton value="Tallas" process="@this" style="position: absolute; top: 140px; left: 10px; font-size: 12px; width: 100px"/>
@@ -242,10 +247,16 @@
                             <fieldset style="position: relative; width: 817px; height: 75px; border-radius: 7px; left: -2px ">
 
                                 <h:outputText value="Perfil Profesional" style="position: absolute; left: 10px; font-weight: bold; color: #14388B;" />
-                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.perfilprofesional}" style="position: relative; top: 18px; width: 395px; height: 50px; overflow: auto"/>
+                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.perfilprofesional}" style="position: relative; top: 18px; width: 395px; height: 50px; overflow: auto">
+                                    <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('HVHojasDeVida')}"/>
+                                    <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('HV')}" update="@this"/>
+                                </p:inputTextarea>
 
                                 <h:outputText value="Informe Ejecutivo" style="position: absolute; left: 420px; font-weight: bold; color: #14388B;" />
-                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.informeejecutivo}" style="position: relative; left: 5px; top: 18px; width: 395px; height: 50px; overflow: auto"/>
+                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.informeejecutivo}" style="position: relative; left: 5px; top: 18px; width: 395px; height: 50px; overflow: auto">
+                                    <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('HVHojasDeVida')}"/>
+                                    <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('HV')}" update="@this"/>
+                                </p:inputTextarea>
 
                             </fieldset>
                             <fieldset style="position: relative; width: 185px; height: 230px; border-radius: 7px; left: -2px; top: 2px ">
@@ -348,7 +359,7 @@
                             </fieldset>
                         </p:scrollPanel>
 
-                        <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" process="@this" />
+                        <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" disabled="#{controlEmpleadoIndividual.guardado}" value="Aceptar" icon="ui-icon-check" process="@this" />
                         <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmpleadoIndividual.refrescar()}"  process="@this" />
                         <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
 
@@ -491,6 +502,13 @@
                     <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla '#{controlEmpleadoIndividual.nombreTabla}' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="subirFoto" header="Subir foto empleado" widgetVar="subirFoto"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <p:inputText id="nombreArchivo" value="#{cargarArchivoPlano.nombreArchivoPlano}" readonly="true" style="position:  absolute; top: 40px; left: 8px; font-size: 11px; width: 117px; z-index: 1;"/>
+                        <p:watermark for="nombreArchivo" value="Nombre del Archivo" />
+                        <p:fileUpload  id="FileUp" mode="advanced" style="font-size: 11px;" fileUploadListener="#{cargarArchivoPlano.cargarArchivo}"
+                                       label="Examinar..." auto="true" styleClass="ui-fileupload"/>
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">

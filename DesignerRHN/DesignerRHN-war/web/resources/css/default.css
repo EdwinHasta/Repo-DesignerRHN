@@ -51,7 +51,7 @@ a:link:hover, a:visited:hover  {
 }
 
 .myClass input {
-    width: 81px;
+    width: 98%;
     border-radius: 0px;
     height: 15px
 }
