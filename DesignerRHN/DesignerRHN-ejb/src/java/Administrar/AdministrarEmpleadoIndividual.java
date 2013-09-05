@@ -381,9 +381,18 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
             System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarHojaDeVida");
         }
     }
-    
+
     public void modificarPersona(Personas personas) {
         try {
+            if (personas.getFactorrh().equals("")) {
+                personas.setFactorrh(null);
+            }
+            if (personas.getGruposanguineo().equals("")) {
+                personas.setGruposanguineo(null);
+            }
+            if (personas.getViviendapropia().equals("")) {
+                personas.setViviendapropia(null);
+            }
             persistenciaPersonas.editar(personas);
         } catch (Exception e) {
             System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarPersona");

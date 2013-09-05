@@ -251,7 +251,7 @@ public class Personas implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getPrimerapellido() {
@@ -263,7 +263,7 @@ public class Personas implements Serializable {
     }
 
     public void setPrimerapellido(String primerapellido) {
-        this.primerapellido = primerapellido;
+        this.primerapellido = primerapellido.toUpperCase();
     }
 
     public String getSegundoapellido() {
@@ -275,7 +275,7 @@ public class Personas implements Serializable {
     }
 
     public void setSegundoapellido(String segundoapellido) {
-        this.segundoapellido = segundoapellido;
+        this.segundoapellido = segundoapellido.toUpperCase();
     }
 
     public String getSexo() {
@@ -361,7 +361,7 @@ public class Personas implements Serializable {
     }
 
     public void setNumeromatriculaprof(String numeromatriculaprof) {
-        this.numeromatriculaprof = numeromatriculaprof;
+        this.numeromatriculaprof = numeromatriculaprof.toUpperCase();
     }
 
     public Date getFechaexpmatricula() {
@@ -385,7 +385,7 @@ public class Personas implements Serializable {
     }
 
     public void setObservacion(String observacion) {
-        this.observacion = observacion;
+        this.observacion = observacion.toUpperCase();
     }
 
     public String getVehiculoempresa() {
@@ -404,7 +404,7 @@ public class Personas implements Serializable {
     }
 
     public void setSegundonombre(String segundonombre) {
-        this.segundonombre = segundonombre;
+        this.segundonombre = segundonombre.toUpperCase();
     }
 
     @XmlTransient
