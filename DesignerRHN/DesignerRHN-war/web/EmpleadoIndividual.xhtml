@@ -12,8 +12,6 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-
-                    
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Datos Básicos" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
 
@@ -191,13 +189,13 @@
                                 <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
                             <h:outputText value="Vehiculo Propio" style="position: absolute; left: 278px; font-weight: bold; color: #14388B; top: 128px" />
-                            <p:selectOneMenu id="vehiculoPropio" style="position: absolute; top: 123px; left: 372px; width: 45px;" panelStyle="font-size: 14px">  
+                            <p:selectOneMenu id="vehiculoPropio" value="#{controlEmpleadoIndividual.vehiculoPropio}" style="position: absolute; top: 123px; left: 372px; width: 45px;" panelStyle="font-size: 14px">  
                                 <f:selectItem itemLabel="SI" itemValue="S" />  
                                 <f:selectItem itemLabel="NO" itemValue="N" />
-                                <p:ajax update="@this" />
+                                <p:ajax listener="#{controlEmpleadoIndividual.estadoVehiculoPropio()}" update="@this" />
                             </p:selectOneMenu>
                             <h:outputText value="Placa" style="position: absolute; left: 425px; font-weight: bold; color: #14388B; top: 128px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.placavehiculo}" id="placa" style="position: absolute; left: 460px; top: 123px; width: 70px; text-transform: uppercase" onclick="select();" maxlength="10">
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.placavehiculo}" id="placa" disabled="#{controlEmpleadoIndividual.estadoVP}" style="position: absolute; left: 460px; top: 123px; width: 70px; text-transform: uppercase" onclick="select();" maxlength="10">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>

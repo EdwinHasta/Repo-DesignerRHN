@@ -969,4 +969,9 @@ public class ControlRemoto implements Serializable {
             numPestaña = 5;
         }
     }
+
+    public void recargar() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:data2");
+    }
 }

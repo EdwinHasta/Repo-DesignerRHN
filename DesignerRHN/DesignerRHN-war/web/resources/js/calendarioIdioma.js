@@ -36,8 +36,14 @@ PrimeFaces.widget.Dialog.prototype.applyFocus = function() {
  //alert("triggerHiddenEvent is trigger");
  document.getElementById(":form:datosVCEmpleado:ATRAS").click();
  }*/
-/*function triggerHiddenEvent() {
-    //alert("Hola :$$");
-    ("form:ATRAS").trigger('click');
+function triggerHiddenEvent() {
+ alert("Hola :$$");
+ //("form:ATRAS").trigger('click');
+ };
+
+/*
+function felipe() {
+    // alert($("div").scrollTop());
+    alert("HOLA");
 };*/
 

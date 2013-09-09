@@ -39,14 +39,12 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
@@ -126,6 +124,9 @@ public class ControlEmpleadoIndividual implements Serializable {
     //private String destino = directorioDespliegue + "\\resources\\ArchivosCargados\\";
     private BigInteger identificacionEmpleado;
     private String nombreArchivoFoto;
+    //VEHICULO PROPIO
+    private boolean estadoVP;
+    private String vehiculoPropio;
 
     public ControlEmpleadoIndividual() {
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -284,6 +285,14 @@ public class ControlEmpleadoIndividual implements Serializable {
             pruebasAplicadasP = pruebasAplicadas.getNombreprueba() + " -> " + pruebasAplicadas.getPuntajeobtenido() + "%";
         } else {
             pruebasAplicadasP = "SIN REGISTRAR";
+        }
+        //VEHICULO PROPIO
+        if (empleado.getPersona().getPlacavehiculo() != null) {
+            estadoVP = false;
+            vehiculoPropio = "S";
+        } else {
+            estadoVP = true;
+            vehiculoPropio = "N";
         }
     }
 
@@ -674,7 +683,7 @@ public class ControlEmpleadoIndividual implements Serializable {
         context.update("form:growl");
 
         HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
-        
+
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         response.setDateHeader("Expires", 0); // Proxies. 
@@ -707,8 +716,22 @@ public class ControlEmpleadoIndividual implements Serializable {
             System.out.println("Pailander" + e);
         }
     }
-//GETTER AND SETTER
 
+    //VEHICULO PROPIO DINAMICO
+    public void estadoVehiculoPropio() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (vehiculoPropio.equals("S")) {
+            estadoVP = false;
+            context.update("form:placa");
+        } else {
+            estadoVP = true;
+            empleado.getPersona().setPlacavehiculo(null);
+            modificarCampo("P");
+            context.update("form:placa");
+        }
+    }
+
+//GETTER AND SETTER
     public Empleados getEmpleado() {
         if (empleado == null) {
             empleado = administrarEmpleadoIndividual.buscarEmpleado(secuencia);
@@ -1004,6 +1027,18 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     public boolean isGuardado() {
         return guardado;
+    }
+
+    public boolean isEstadoVP() {
+        return estadoVP;
+    }
+
+    public String getVehiculoPropio() {
+        return vehiculoPropio;
+    }
+
+    public void setVehiculoPropio(String vehiculoPropio) {
+        this.vehiculoPropio = vehiculoPropio;
     }
 
     public String getFotoEmpleado() {
