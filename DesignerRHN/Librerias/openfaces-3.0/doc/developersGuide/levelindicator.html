@@ -1,0 +1,190 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>LevelIndicator &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>LevelIndicator</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#LevelIndicator-Overview">Overview</A></LI>
+    <LI><A href="#LevelIndicator-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#LevelIndicator-BasicConfiguration">Basic Configuration</A></LI>
+    <LI><A href="#LevelIndicator-TransitionLevelsandColors">Transition Levels and Colors</A></LI>
+    <LI><A href="#LevelIndicator-CustomizingStyles">Customizing Styles</A></LI>
+    <LI><A href="#LevelIndicator-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+
+<H2><A name="LevelIndicator-Overview"></A>Overview</H2>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="70%">
+<P><CITE>LevelIndicator</CITE> is a component that shows a numeric value in graphic style, similar to the LED volume meter and resource meter used in Windows Task Manager.</P></TD>
+<TD valign="top" width="30%">
+<P><IMG src="/download/attachments/19660966/level-indicator-default-horizontal.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/levelindicator.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/levelindicator.html" rel="nofollow">Tag Reference</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="LevelIndicator-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#LevelIndicator-BasicConfiguration">Basic configuration</A></LI>
+	<LI><A href="#LevelIndicator-TransitionLevelsandColors">Transition levels and colors</A></LI>
+	<LI><A href="#LevelIndicator-CustomizingStyles">Extended styling</A></LI>
+</UL>
+
+
+<H2><A name="LevelIndicator-BasicConfiguration"></A>Basic Configuration</H2>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="90%">
+<P>The <SPAN class="attribute">value</SPAN> attribute of <SPAN class="tag">&lt;o:levelIndicator&gt;</SPAN> tag allows specifying the current level displayed by the <CITE>LevelIndicator</CITE> component. This attribute should be specified as a double number in range [0..1], where <SPAN class="code_area_values">0.0</SPAN> corresponds to 0% and <SPAN class="code_area_values">1.0</SPAN> corresponds to 100% display. You can specify the <SPAN class="attribute">value</SPAN> as a inplace literal value such as <SPAN class="code_area_values">&quot;0.5&quot;</SPAN> or as a value binding expression pointing to a property of type double.</P>
+
+<PRE class="code_area">&lt;o:levelIndicator value=<SPAN class="code_area_values">&quot;0.55&quot;</SPAN> /&gt;</PRE>
+
+
+<P>It's possible to flip the orientation of the <CITE>LevelIndicator</CITE> component using the <SPAN class="attribute">orientation</SPAN> attribute, which can be specified as either <SPAN class="code_area_values">&quot;horizontal&quot;</SPAN> (default), or <SPAN class="code_area_values">&quot;vertical&quot;</SPAN>.</P>
+
+<PRE class="code_area">&lt;o:levelIndicator value=<SPAN class="code_area_values">&quot;0.55&quot;</SPAN> orientation=<SPAN class="code_area_values">&quot;vertical&quot;</SPAN>/&gt;</PRE>
+<P>The above code will produce the results that can be seen on the image at the right.</P>
+
+<P>It is possible to customize the direction that should be used to fill the <CITE>LevelIndicator</CITE> component with color segments.<BR>
+It can be done by specifying the <SPAN class="attribute">fillDirection</SPAN> attribute of the <SPAN class="tag">&lt;o:levelIndicator&gt;</SPAN> tag. This attribute can take the following values:</P>
+<UL>
+	<LI><SPAN class="code_area_values">&quot;fromStart&quot;</SPAN> &ndash; the filling of the <CITE>LevelIndicator</CITE> component will be done from the start, which corresponds to left-to-right direction for horizontal <CITE>LevelIndicator</CITE> and bottom-to-top direction for vertical <CITE>LevelIndicator</CITE>.</LI>
+	<LI><SPAN class="code_area_values">&quot;fromEnd&quot;</SPAN> (default) &ndash; the filling of the <CITE>LevelIndicator</CITE> component will be done from the end of the component, the opposite side to the component's label. This corresponds to right-to-left direction for horizontal <CITE>LevelIndicator</CITE> and top-to-bottom direction for vertical <CITE>LevelIndicator</CITE>.</LI>
+</UL>
+
+
+<H2><A name="LevelIndicator-TransitionLevelsandColors"></A>Transition Levels and Colors</H2>
+
+<P>By default <CITE>LevelIndicator</CITE> displays green segments for values lower than 70%, yellow segments for values between 70% and 90%, and red segments for values higher than 90%. These transition levels where the color is changed can be customized using the <SPAN class="attribute">transitionLevels</SPAN> attribute, which can either be specified in-place as a comma-separated list of color transition levels, such as <SPAN class="code_area_values">&quot;0.35, 0.6&quot;</SPAN>, which correspond to 35% and 60% as in the example below, or it can be specified as a value binding expression to any collection or array of double values corresponding to transition levels.</P>
+</TD>
+<TD valign="top" width="10%">
+<P><IMG src="/download/attachments/19660966/level-indicator-default-vertical.png" align="absmiddle" border="0"></P></TD></TR></TBODY></TABLE>
+
+<P>The colors for indicator's segments for different level areas can be customized using the <SPAN class="attribute">colors</SPAN> attribute, which can either be specified in-place as a comma-separated list of color names, or as a binding to a collection/array of color names. </P>
+
+<PRE class="code_area">&lt;o:levelIndicator value=<SPAN class="code_area_values">&quot;0.8&quot;</SPAN> orientation=<SPAN class="code_area_values">&quot;horizontal&quot;</SPAN>
+                      colors=<SPAN class="code_area_values">&quot;blue,orange,violet&quot;</SPAN>
+                      transitionLevels=<SPAN class="code_area_values">&quot;0.35, 0.6&quot;</SPAN>/&gt;</PRE>
+<P>The above code example will produce the following results.</P>
+
+<P><IMG src="/download/attachments/19660966/level-indicator-with-custom-colors.png" align="absmiddle" border="0"></P>
+
+<H2><A name="LevelIndicator-CustomizingStyles"></A>Customizing Styles</H2>
+
+<P>You can change the size and style of the entire component using the <SPAN class="tag">&lt;o:levelIndicator&gt;</SPAN> tag's <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> attributes. Size of a single segment can be customized using the <SPAN class="attribute">segmentSize</SPAN> attribute, as shown on the examples below.</P>
+
+<PRE class="code_area">&lt;o:levelIndicator value=<SPAN class="code_area_values">&quot;0.8&quot;</SPAN> orientation=<SPAN class="code_area_values">&quot;horizontal&quot;</SPAN>
+                      style=<SPAN class="code_area_values">&quot;background-color: #e6e6e6; border: 1px solid #333; width: 350px; height: 40px;&quot;</SPAN>
+                      segmentSize=<SPAN class="code_area_values">&quot;5&quot;</SPAN>
+                      colors=<SPAN class="code_area_values">&quot;blue,orange,violet&quot;</SPAN>
+                      transitionLevels=<SPAN class="code_area_values">&quot;0.35, 0.6&quot;</SPAN>/&gt;</PRE>
+
+<P><IMG src="/download/attachments/19660966/level-indicator-with-custom-css.png" align="absmiddle" border="0"></P>
+
+<P>You can also customize the brightness of the &quot;inactive&quot; segments &ndash; the segments that are currently &quot;turned off&quot; to the right of the currently displayed level. This can be done by specifying the <SPAN class="attribute">inactiveSegmentIntensity</SPAN> attribute as a double value in range [0..1], where <SPAN class="code_area_values">0</SPAN> corresponds to a totally dimmed segments and <SPAN class="code_area_values">1</SPAN> corresponds to the full brightness display like the one that is used for the &quot;active&quot; segments. The default value is <FONT color="">0.2</FONT>, which corresponds to a 20% brightness.</P>
+
+<H2><A name="LevelIndicator-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> getValue() </TD>
+<TD> Returns the currently displayed level in range [0..1] </TD>
+</TR>
+<TR>
+<TD> setValue(level) </TD>
+<TD> Changes the currently displayed level to the passed value, which should be in range [0..1] </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

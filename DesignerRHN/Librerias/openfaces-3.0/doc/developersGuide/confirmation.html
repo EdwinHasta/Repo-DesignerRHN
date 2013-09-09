@@ -1,0 +1,445 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>Confirmation &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>Confirmation</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#Confirmation-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#Confirmation-InvokingtheConfirmation">Invoking the Confirmation</A></LI>
+    <LI><A href="#Confirmation-CustomizingCaptionButtons">Customizing Caption Buttons</A></LI>
+    <LI><A href="#Confirmation-CustomizingtheContentArea">Customizing the Content Area</A></LI>
+<UL>
+    <LI><A href="#Confirmation-CustomizingtheContentwithAttributes">Customizing the Content with Attributes</A></LI>
+    <LI><A href="#Confirmation-CustomizingtheContentwithArbitraryComponents">Customizing the Content with Arbitrary Components</A></LI>
+    <LI><A href="#Confirmation-CustomizingtheContentwithaJavaScriptFunction">Customizing the Content with a JavaScript Function</A></LI>
+</UL>
+    <LI><A href="#Confirmation-ConfiguringthePresentation">Configuring the Presentation</A></LI>
+    <LI><A href="#Confirmation-SettingtheDisplayBehavior">Setting the Display Behavior</A></LI>
+    <LI><A href="#Confirmation-CustomizingStyles">Customizing Styles</A></LI>
+    <LI><A href="#Confirmation-ClientSideEvents">Client-Side Events</A></LI>
+    <LI><A href="#Confirmation-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="40%">
+<P>The <CITE>Confirmation</CITE> component allows users to confirm or reject critical actions before their execution. It is displayed over other page elements like a modal dialog and can be attached to a client-side event of any component or invoked from JavaScript explicitly. The <CITE>Confirmation</CITE> component has a lot of options to customize its appearance and provides a flexible invocation mechanism.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/confirmation.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/window/Confirmation.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/confirmation.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/confirmation/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="Confirmation-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#Confirmation-InvokingtheConfirmation">Flexible invocation mechanism</A></LI>
+	<LI><A href="#Confirmation-CustomizingtheContentArea">Customizable texts, buttons and icon</A></LI>
+	<LI><A href="#Confirmation-ConfiguringthePresentation">Flexible position customization</A></LI>
+	<LI><A href="#Confirmation-Draggable">Draggable</A></LI>
+	<LI><A href="#Confirmation-CustomizingStyles">Flexible style customization</A></LI>
+	<LI><A href="#Confirmation-ClientSideEvents">Standard client-side events</A></LI>
+</UL>
+
+
+<H2><A name="Confirmation-InvokingtheConfirmation"></A>Invoking the Confirmation</H2>
+
+<P>To add the <CITE>Confirmation</CITE> component to the page, use the <SPAN class="tag">&lt;o:confirmation&gt;</SPAN> tag. The most common way of using the <CITE>Confirmation</CITE> component is attaching it to some event of some particular component, which will result a confirmation to be shown prior to executing a handler for the specified event. For example you can attach the <CITE>Confirmation</CITE> component to the <SPAN class="code_area_values">&quot;click&quot;</SPAN> event of a <SPAN class="tag">&lt;h:commandButton&gt;</SPAN> component to show a confirmation before performing that button's action. Note that the event string should be without the <SPAN class="attribute">&quot;on&quot;</SPAN> prefix, for example <SPAN class="code_area_values">&quot;click&quot;</SPAN> instead of <SPAN class="code_area_values">&quot;onclick&quot;</SPAN>.</P>
+
+<P>You can attach the <CITE>Confirmation</CITE> component to another component in two ways. The first way is to place the <SPAN class="tag">&lt;o:confirmation&gt;</SPAN> tag right into a component whose action should be confirmed. The event whose execution should be confirmed can be customized using the <SPAN class="attribute">event</SPAN> attribute. The default value for this attribute is <SPAN class="code_area_values">&quot;onclick&quot;</SPAN>.</P>
+<PRE class="code_area">&lt;h:commandButton value=<SPAN class="code_area_values">&quot;Delete&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;deleteSelectedItems()&quot;</SPAN>&gt;
+  &lt;o:confirmation event=<SPAN class="code_area_values">&quot;click&quot;</SPAN>/&gt;
+&lt;/h:commandButton&gt;</PRE>
+<P>Note that the <SPAN class="attribute">event</SPAN> attribute in this example is declared for demonstration purposes only, and since &quot;onclick&quot; is the default value for this attribute, its declaration can simply be omitted.</P>
+
+<P>The second way of attaching the <CITE>Confirmation</CITE> component is placing the <SPAN class="tag">&lt;o:confirmation&gt;</SPAN> tag besides the component (or tag) whose action should be confirmed, and binding the <CITE>Confirmation</CITE> to that component explicitly using the <SPAN class="attribute">for</SPAN> attribute of the <SPAN class="tag">&lt;o:confirmation&gt;</SPAN> tag. This way can be used for attaching to JSF components as in the first approach, though this way also allows binding to events of arbitrary HTML elements.</P>
+
+<P>The <SPAN class="attribute">for</SPAN> attribute should be assigned with the <SPAN class="attribute">id</SPAN> of a JSF component or <SPAN class="attribute">id</SPAN> of any HTML element, whose event should be listened to:</P>
+<UL>
+	<LI>The first way of specifying this attribute is for referencing JSF components and it is similar to the way of specifying the <SPAN class="attribute">for</SPAN> attribute of the standard <SPAN class="tag">&lt;h:outputLabel&gt;</SPAN> and <SPAN class="tag">&lt;h:message&gt;</SPAN> tags. It can either be an &quot;absolute&quot; identifier that begins with a colon and includes ids of all naming container parents, such as <SPAN class="code_area_values">&quot;:form:button1&quot;</SPAN>, or it can be a relative identifier that refers to another child in the same naming container, for example <SPAN class="code_area_values">&quot;button2&quot;</SPAN>. The formal rules of finding the component by identifier are described in API reference for the <A href="http://java.sun.com/javaee/5/docs/api/javax/faces/component/UIComponent.html#findComponent(java.lang.String)" rel="nofollow">UIComponent.findComponent()</A> method.</LI>
+	<LI>The second way of specifying this attribute is for referring HTML elements rather than JSF components. Referring to HTML elements is similar to referring JSF components with an absolute identifier &ndash; you just need to prepend actual element id with a colon symbol. For example in order to refer a an HTML button tag declared as <SPAN class="attribute">&lt;input id=&quot;myHtmlButton&quot; type=&quot;button&quot; value=&quot;Test&quot;/&gt;</SPAN> you should use the <SPAN class="code_area_values">&quot;:myHtmlButton&quot;</SPAN> value of the <SPAN class="attribute">for</SPAN> attribute.</LI>
+</UL>
+
+
+<P>As for the case with inserting <SPAN class="tag">&lt;o:confirmation&gt;</SPAN> into the associated component, the <SPAN class="attribute">event</SPAN> attribute specifies the event whose execution should be confirmed. Here's an example of attaching to a HTML &quot;span&quot; tag.</P>
+<PRE class="code_area">&lt;span id=<SPAN class="code_area_values">&quot;editData&quot;</SPAN> ondblclick=<SPAN class="code_area_values">&quot;editData()&quot;</SPAN>&gt;...&lt;/span&gt;
+&lt;o:confirmation <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;:editData&quot;</SPAN>
+                event=<SPAN class="code_area_values">&quot;dblclick&quot;</SPAN>/&gt;</PRE>
+<P>In addition to the automatic attaching of the <CITE>Confirmation</CITE> component to another component, it is also possible to invoke <CITE>Confirmation</CITE> programmatically using the client-side API, which allows making a flexible logic for showing confirmation dialogs. When using the <CITE>Confirmation</CITE> component's client-side API you would usually need to turn off automatic attachment mechanism to fully control the behavior with explicit JavaScript invocations. To do this you should declare the <SPAN class="attribute">standalone</SPAN> attribute and assign it the <SPAN class="code_area_values">true</SPAN> value. When you need to call the <CITE>Confirmation</CITE> component from JavaScript code, you can use the <SPAN class="attribute">runConfirmedFunction(func)</SPAN> function. The the <SPAN class="attribute">func</SPAN> is a parameter that specifies a function that should be executed.</P>
+
+<P>In the following example, when the <SPAN class="attribute">onclick</SPAN> event occurs, the <CITE>Confirmation</CITE> component with <SPAN class="code_area_values">&quot;form1:confirmaion&quot;</SPAN> client-side id is called. When the user clicks <STRONG>OK</STRONG>, the <SPAN class="code_area_values">deleteSelectedItems()</SPAN> function is executed.</P>
+<PRE class="code_area">&lt;h:form id=<SPAN class="code_area_values">&quot;form1&quot;</SPAN>&gt;
+  &lt;o:confirmation id=<SPAN class="code_area_values">&quot;confirmation&quot;</SPAN> standalone=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN>/&gt;
+  &lt;input id=<SPAN class="code_area_values">&quot;button1&quot;</SPAN>
+         type=<SPAN class="code_area_values">&quot;button&quot;</SPAN>
+         value=<SPAN class="code_area_values">&quot;Delete&quot;</SPAN>
+         onclick=<SPAN class="code_area_values">&quot;O$('form1:confirmation').runConfirmedFunction(function() {deleteSelectedItems();})&quot;</SPAN>/&gt;
+&lt;/h:form&gt;</PRE>
+
+<H2><A name="Confirmation-CustomizingCaptionButtons"></A>Customizing Caption Buttons</H2>
+
+<P>By default <SPAN class="attribute">Confirmation</SPAN> component displays the close button on the right side of its caption, though a flexible way of customizing caption buttons is provided. Here are some of the scenarios that can be addressed:</P>
+<UL class="alternate" type="square">
+	<LI>changing the appearance of the close button;</LI>
+	<LI>specifying custom caption buttons near the close button;</LI>
+	<LI>moving the caption button(s) to the left side of a caption.</LI>
+</UL>
+
+
+<P>The basis for these customizations is the <SPAN class="tag">&lt;o:captionArea&gt;</SPAN> tag, which can be placed into the <SPAN class="tag">&lt;o:confirmation&gt;</SPAN> tag to customize the set of buttons displayed in the caption. This tag has an <SPAN class="attribute">alignment</SPAN> attribute, which defines the caption side where the area should be placed. It can take two values: <SPAN class="code_area_values">&quot;right&quot;</SPAN> (the default value), and <SPAN class="code_area_values">&quot;left&quot;</SPAN>.</P>
+
+<P>Adding the <SPAN class="tag">&lt;o:captionArea&gt;</SPAN> tag removes the default close button and allows you to customize the set of buttons by placing components inside of this tag. It is possible to place the following components into caption area tags:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="tag">&lt;o:closeWindowButton&gt;</SPAN> tag &ndash; displays the close button and allows customizing its appearance.</LI>
+	<LI><SPAN class="tag">&lt;o:maximizeWindowButton&gt;</SPAN> tag &ndash; displays the window maximizing button and allows customizing its appearance.</LI>
+	<LI><SPAN class="tag">&lt;o:minimizeWindowButton&gt;</SPAN> tag &ndash; displays the window minimizing button and allows customizing its appearance.</LI>
+	<LI><SPAN class="tag">&lt;o:captionButton&gt;</SPAN> tag &ndash; displays a custom caption button that can be configured according to user's needs.</LI>
+	<LI>Any JSF component tags can also be placed into <SPAN class="tag">&lt;o:captionArea&gt;</SPAN>, which adds the flexibility of specifying virtually any controls in caption areas.</LI>
+</UL>
+
+
+<P>All of the button tags listed above have the following common attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute(s) </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">style</SPAN>, <SPAN class="attribute">styleClass</SPAN> </TD>
+<TD> Define the general style applied to the button. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverStyle</SPAN>, <SPAN class="attribute">rolloverClass</SPAN> </TD>
+<TD> Define the style that is applied to the button when mouse cursor moves over it. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmousemove</SPAN> </TD>
+<TD> The standard mouse events. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">hint</SPAN> </TD>
+<TD> Specifies text for the tool tip that appears when mouse hovers over the button </TD>
+</TR>
+</TBODY></TABLE>
+<P>In addition they have the following attributes of their own. </P>
+
+<P>For <SPAN class="tag">&lt;o:maximizeWindowButton&gt;</SPAN>:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute(s) </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">maximizeImageUrl</SPAN>, <SPAN class="attribute">maximizeRolloverImageUrl</SPAN>, <SPAN class="attribute">maximizePressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image when a confirmation window is in normal state: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">restoreImageUrl</SPAN>, <SPAN class="attribute">restoreRolloverImageUrl</SPAN>, <SPAN class="attribute">restorePressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image when a confirmation window is in maximized state: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+</TBODY></TABLE>
+
+<P>For <SPAN class="tag">&lt;o:minimizeWindowButton&gt;</SPAN>:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute(s) </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">minimizeImageUrl</SPAN>, <SPAN class="attribute">minimizeRolloverImageUrl</SPAN>, <SPAN class="attribute">minimizePressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image when a confirmation window is in normal state: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">restoreImageUrl</SPAN>, <SPAN class="attribute">restoreRolloverImageUrl</SPAN>, <SPAN class="attribute">restorePressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image when a confirmation window is in minimized state: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+</TBODY></TABLE>
+
+<P>For <SPAN class="tag">&lt;o:closeWindowButton&gt;</SPAN> and <SPAN class="tag">&lt;o:captionButton&gt;</SPAN> tags:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute(s) </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">imageUrl</SPAN>, <SPAN class="attribute">rolloverImageUrl</SPAN>, <SPAN class="attribute">pressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+</TBODY></TABLE>
+<P>In addition to these attributes, the <SPAN class="tag">&lt;o:captionButton&gt;</SPAN> tag has the <SPAN class="attribute">action</SPAN> attribute that specifies a server action that should be executed when the button is pressed, similar to the <SPAN class="attribute">action</SPAN> attribute of the standard <SPAN class="tag">&lt;h:commandButton&gt;</SPAN> tag or the <SPAN class="tag">&lt;o:commandButton&gt;</SPAN> tag. In addition, like in the <SPAN class="tag">&lt;o:commandButton&gt;</SPAN> tag, it is possible to use built-in Ajax capabilities in the <SPAN class="tag">&lt;o:captionButton&gt;</SPAN> tag with the <SPAN class="attribute">render</SPAN> and <SPAN class="attribute">execute</SPAN> attributes (see the <A href="/display/JSFC/CommandButton" title="CommandButton">CommandButton</A> documentation for details on using these attributes.</P>
+
+<P>Here's an example of specifying a window closing button with a custom image and a hint:</P>
+<PRE class="code_area">&lt;h:commandButton value=<SPAN class="code_area_values">&quot;Delete&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;deleteSelectedItems()&quot;</SPAN>&gt;
+  &lt;o:confirmation event=<SPAN class="code_area_values">&quot;click&quot;</SPAN>&gt;
+    &lt;o:captionArea&gt;
+      &lt;o:closeWindowButton imageUrl=<SPAN class="code_area_values">&quot;close.gif&quot;</SPAN> hint=<SPAN class="code_area_values">&quot;Close&quot;</SPAN>/&gt;
+    &lt;o:captionArea&gt;
+  &lt;/o:confirmation&gt;
+&lt;/h:commandButton&gt;</PRE>
+<P>You can also place more than one <SPAN class="tag">&lt;o:captionArea&gt;</SPAN> tags, which allows specifying custom areas on both caption sides.</P>
+
+<H2><A name="Confirmation-CustomizingtheContentArea"></A>Customizing the Content Area</H2>
+
+
+<H3><A name="Confirmation-CustomizingtheContentwithAttributes"></A>Customizing the Content with Attributes</H3>
+
+<P>By default, the <CITE>Confirmation</CITE> component shows a main instruction, supplementary text below, and an icon with an exclamation mark on the left. The default instruction text is <SPAN class="code_area_values">&quot;Confirm your action&quot;</SPAN>. To change it, use the <SPAN class="attribute">message</SPAN> attribute. If you don't want to show any instruction, set an empty string for this attribute. The text specified in the <SPAN class="attribute">message</SPAN> attribute is bold by default. You can customize a style for the main instruction in the normal and rollover states using the <SPAN class="attribute">messageStyle</SPAN>, <SPAN class="attribute">messageClass</SPAN>, <SPAN class="attribute">rolloverMessageStyle</SPAN>, and <SPAN class="attribute">rolloverMessageClass</SPAN> attributes.</P>
+
+<P>The default supplementary text is <SPAN class="code_area_values">&quot;Press OK to perform the action&quot;</SPAN>. To change it, use the <SPAN class="attribute">details</SPAN> attribute. If you want no supplementary text to be displayed, set an empty string for this attribute. You can specify a style for the supplementary text in the normal and rollover states with the <SPAN class="attribute">detailsStyle</SPAN>, <SPAN class="attribute">detailsClass</SPAN>, <SPAN class="attribute">rolloverDetailsStyle</SPAN>, and <SPAN class="attribute">rolloverDetailsClass</SPAN> attributes.</P>
+<P class="bubble note"><STRONG>Note</STRONG><BR>The text set by the <SPAN class="attribute">message</SPAN> and <SPAN class="attribute">details</SPAN> attributes is not escaped and can contain HTML tags. Any user-entered text should be escaped prior to being used in these attributes.</P>
+<P>To set a different graphic for the icon to the left of the main instuction, use the <SPAN class="attribute">messageIconUrl</SPAN> attribute. You can specify whether the icon is to be displayed using the <SPAN class="attribute">showMessageIcon</SPAN> attribute. By default, this attribute is set to <SPAN class="code_area_values">&quot;true&quot;</SPAN>.</P>
+
+<P>The <CITE>Confirmation</CITE> component has two buttons labeled <SPAN class="code_area_values">&quot;OK&quot;</SPAN> and <SPAN class="code_area_values">&quot;Cancel&quot;</SPAN> by default. You can specify the button texts by using the <SPAN class="attribute">okButtonText</SPAN> and <SPAN class="attribute">cancelButtonText</SPAN> attributes. When the <CITE>Confirmation</CITE> component opens, one of the buttons is always focused. By default, it is the OK button. You can change this setting by using the <SPAN class="attribute">defaultButton</SPAN> attribute. Note that this attribute is an enumeration, where the valid values are <SPAN class="code_area_values">&quot;ok&quot;</SPAN> for the OK button and <SPAN class="code_area_values">&quot;cancel&quot;</SPAN> for the Cancel button. You can customize styles for the OK and Cancel buttons in the normal and rollover states using the following attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Button </TH>
+<TH scope="col"> Attributes </TH>
+</TR>
+<TR>
+<TD> OK </TD>
+<TD> <SPAN class="attribute">okButtonStyle</SPAN>, <SPAN class="attribute">rolloverOkButtonStyle</SPAN>, <SPAN class="attribute">okButtonClass</SPAN>, <SPAN class="attribute">rolloverOkButtonClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Cancel </TD>
+<TD> <SPAN class="attribute">cancelButtonStyle</SPAN>, <SPAN class="attribute">rolloverCancelButtonStyle</SPAN>, <SPAN class="attribute">cancelButtonClass</SPAN>, <SPAN class="attribute">rolloverCancelButtonClass</SPAN> </TD>
+</TR>
+</TBODY></TABLE>
+<P>By default, the <CITE>Confirmation</CITE> component has no title bar. To add it, use the <SPAN class="attribute">caption</SPAN> attribute. You can customize a style for the title with the <SPAN class="attribute">captionStyle</SPAN> and <SPAN class="attribute">captionClass</SPAN> attributes. If you want to have a Close button on the title bar, set the <SPAN class="attribute">showCloseWindowButton</SPAN> attribute to <SPAN class="code_area_values">&quot;true&quot;</SPAN> (by default, it is <SPAN class="code_area_values">&quot;false&quot;</SPAN>). To change the default icon of the Close button, use the <SPAN class="attribute">closeButtonImageUrl</SPAN> attribute.</P>
+
+<P>The following example shows some of the attributes defining the content of the <CITE>Confirmation</CITE> component:</P>
+<PRE class="code_area">&lt;o:confirmation id=<SPAN class="code_area_values">&quot;conf&quot;</SPAN>
+                <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;button1&quot;</SPAN>
+                event=<SPAN class="code_area_values">&quot;click&quot;</SPAN>
+                caption=<SPAN class="code_area_values">&quot;Confirm&quot;</SPAN>
+                message=<SPAN class="code_area_values">&quot;Delete selected items?&quot;</SPAN>
+                details=<SPAN class="code_area_values">&quot;Click Yes to delete selected items&quot;</SPAN>
+                showMessageIcon=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">false</SPAN>&quot;</SPAN>
+                okButtonText=<SPAN class="code_area_values">&quot;Yes&quot;</SPAN>
+                cancelButtonText=<SPAN class="code_area_values">&quot;No&quot;</SPAN>/&gt;
+&lt;input id=<SPAN class="code_area_values">&quot;button1&quot;</SPAN>
+       type=<SPAN class="code_area_values">&quot;button&quot;</SPAN>
+       value=<SPAN class="code_area_values">&quot;Delete&quot;</SPAN>
+       onclick=<SPAN class="code_area_values">&quot;deleteSelectedItems()&quot;</SPAN>/&gt;</PRE>
+
+<H3><A name="Confirmation-CustomizingtheContentwithArbitraryComponents"></A>Customizing the Content with Arbitrary Components</H3>
+
+<P>Another way to customize the content areas of the <CITE>Confirmation</CITE> component is by using facets. There are four facets to configure four <CITE>Confirmation</CITE> areas: <SPAN class="attribute">&quot;message&quot;</SPAN>, <SPAN class="attribute">&quot;details&quot;</SPAN>, <SPAN class="attribute">&quot;icon&quot;</SPAN>, <SPAN class="attribute">&quot;caption&quot;</SPAN>. Here is an example of using all of these facets:</P>
+<PRE class="code_area">&lt;o:confirmation id=<SPAN class="code_area_values">&quot;conf&quot;</SPAN>
+                okButtonText=<SPAN class="code_area_values">&quot;Yes&quot;</SPAN>
+                cancelButtonText=<SPAN class="code_area_values">&quot;No&quot;</SPAN>&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;message&quot;</SPAN>&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;Delete selected items?&quot;</SPAN>/&gt;
+  &lt;/f:facet&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;details&quot;</SPAN>&gt;
+    &lt;h:panelGroup&gt;
+      &lt;h:outputText value=<SPAN class="code_area_values">&quot;Click Yes to delete selected items.&quot;</SPAN>/&gt;
+      &lt;f:verbatim&gt;&lt;br/&gt;&lt;/f:verbatim&gt;
+      &lt;h:outputText value=<SPAN class="code_area_values">&quot;Click No to cancel the action.&quot;</SPAN>/&gt;
+    &lt;/h:panelGroup&gt;
+  &lt;/f:facet&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;caption&quot;</SPAN>&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;Confirm&quot;</SPAN>/&gt;
+  &lt;/f:facet&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;icon&quot;</SPAN>&gt;
+    &lt;h:graphicImage url=<SPAN class="code_area_values">&quot;warningIcon.gif&quot;</SPAN>/&gt;
+  &lt;/f:facet&gt;
+&lt;/o:confirmation&gt;</PRE>
+<P>Note that customizing the Confirmation using facets has a priority over attributes.</P>
+
+<H3><A name="Confirmation-CustomizingtheContentwithaJavaScriptFunction"></A>Customizing the Content with a JavaScript Function</H3>
+
+<P>There is an ability to set text for the main instruction, supplementary details and buttons by using a JavaScript function <SPAN class="attribute">setTexts(messageText, detailsText,okButtonText, cancelButtonText)</SPAN>.</P>
+
+<P>In the example below, the <CITE>Confirmation</CITE> component with the <SPAN class="attribute">id</SPAN> <SPAN class="code_area_values">&quot;conf&quot;</SPAN> uses the default values of the main instruction and buttons. However, when the user clicks the <STRONG>Delete</STRONG> button, the main instruction text and button labels are changed to the values specified in the JavaScript function before the <CITE>Confirmation</CITE> is displayed.</P>
+<PRE class="code_area">&lt;o:confirmation id=<SPAN class="code_area_values">&quot;conf&quot;</SPAN> standalone=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN>/&gt;
+&lt;h:outputLink id=<SPAN class="code_area_values">&quot;linkInvoker&quot;</SPAN> value=&quot;&quot;
+              onclick=&quot;O$('form1:conf').setConfirmationTexts('Delete selected items?',
+
+                                       'Click Yes to delete selected items',
+                                       'Yes', 'No');
+                O$('form1:conf').runConfirmedFunction(function(){deleteSelectedItems();});
+                <SPAN class="code-keyword">return</SPAN> <SPAN class="code-keyword">false</SPAN>;&quot;&gt;
+  &lt;h:outputText value=<SPAN class="code_area_values">&quot;Remove&quot;</SPAN>/&gt;
+&lt;/h:outputLink&gt;</PRE>
+
+<H2><A name="Confirmation-ConfiguringthePresentation"></A>Configuring the Presentation</H2>
+
+<P>To set the size for the <CITE>Confirmation</CITE> component, use the <SPAN class="attribute">width</SPAN> and <SPAN class="attribute">height</SPAN> attributes, which you can set in pixels, centimeters, etc. By default, the <CITE>Confirmation</CITE> component has the width of 275 px and its height is defined by the content.</P>
+
+<P>By default, the <CITE>Confirmation</CITE> component is displayed as a modal window in the center of the visible area of the page. There are a number of ways to specify the location of a <CITE>Confirmation</CITE> component:</P>
+<UL>
+	<LI>Use the <SPAN class="attribute">left</SPAN> and <SPAN class="attribute">top</SPAN> attributes to locate the <CITE>Confirmation</CITE> component relative to the upper-left corner of the document or an absolutely positioned immediate container. You should indicate the number of pixels for both attributes without writing <SPAN class="code_area_values">&quot;px&quot;</SPAN> or similar units. Note that the <CITE>Confirmation</CITE> component has absolute position and its left and top CSS style properties have the same effect as for any HTML element with absolute position.</LI>
+	<LI>Use the <SPAN class="attribute">alignToInvoker</SPAN> boolean attribute to align the <CITE>Confirmation</CITE> component with the component calling it. If the <CITE>Confirmation</CITE> is aligned with the component it was called from (invoker), it is displayed right under this component. Note that if you use the <SPAN class="attribute">alignToInvoker</SPAN> attribute, the <SPAN class="attribute">for</SPAN> and <SPAN class="attribute">event</SPAN> attributes should be specified too. It is important that the invoker and the <CITE>Confirmation</CITE> component should not be placed in different containers with absolute positions.</LI>
+</UL>
+
+
+<H2><A name="Confirmation-SettingtheDisplayBehavior"></A>Setting the Display Behavior</H2>
+
+<P>There are two ways to close the confirmation dialog besides choosing between one of the OK/Cancel buttons or pressing the &quot;close&quot; caption button:</P>
+<UL class="alternate" type="square">
+	<LI>The user can press the Esc button to close the dialog, which is identical to choosing the &quot;Cancel&quot; option. This behavior can be turned off by setting the <SPAN class="attribute">hideOnEsc</SPAN> attribute to <SPAN class="code_area_values">false</SPAN>.</LI>
+	<LI>It is possible to let the user close the dialog (and thus implicitly chosing the &quot;Cancel&quot; option) by clicking outside of the dialog. This behavior is turned off by default, and can be turned on by setting the <SPAN class="attribute">hideOnOuterClick</SPAN> attribute to <SPAN class="code_area_values">&quot;true&quot;</SPAN>.</LI>
+</UL>
+
+
+<P><A name="Confirmation-Draggable"></A><BR>
+The <CITE>Confirmation</CITE> component can be dragged around the page. By default, the dragging feature is turned off. You can enable it with the <SPAN class="attribute">draggable</SPAN> attribute.</P>
+
+<P>In the example below, the <CITE>Confirmation</CITE> component is aligned with the <STRONG>Delete</STRONG> button and has the width of 250 px. It can be dragged by the mouse. If the user clicks outside of the <CITE>Confirmation</CITE> component, it is closed with no action executed.</P>
+<PRE class="code_area">&lt;o:confirmation id=<SPAN class="code_area_values">&quot;conf&quot;</SPAN>
+                <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;button1&quot;</SPAN>
+                width=<SPAN class="code_area_values">&quot;250px&quot;</SPAN>
+                alignToInvoker=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN>
+                draggable=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN>
+                hideOnOuterClick=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN>/&gt;
+&lt;input id=<SPAN class="code_area_values">&quot;button1&quot;</SPAN>
+       type=<SPAN class="code_area_values">&quot;button&quot;</SPAN>
+       value=<SPAN class="code_area_values">&quot;Delete&quot;</SPAN>
+       onclick=<SPAN class="code_area_values">&quot;deleteSelectedItems()&quot;</SPAN>/&gt;</PRE>
+
+<H2><A name="Confirmation-CustomizingStyles"></A>Customizing Styles</H2>
+
+<P>You can define a style for the <CITE>Confirmation</CITE> component when it is in the normal and rollover states with the <SPAN class="attribute">style</SPAN>, <SPAN class="attribute">styleClass</SPAN>, <SPAN class="attribute">rolloverStyle</SPAN>, and <SPAN class="attribute">rolloverStyleClass</SPAN> attributes. If you want to apply styles for a specific of the <CITE>Confirmation</CITE> component, use the following attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Part of Confirmation </TH>
+<TH scope="col"> Attributes </TH>
+</TR>
+<TR>
+<TD> Title bar </TD>
+<TD> <SPAN class="attribute">captionStyle</SPAN>, <SPAN class="attribute">captionClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Area where instructions are located </TD>
+<TD> <SPAN class="attribute">contentStyle</SPAN>, <SPAN class="attribute">rolloverContentStyle</SPAN>, <SPAN class="attribute">contentClass</SPAN>, <SPAN class="attribute">rolloverContentClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Area where the icon is located </TD>
+<TD> <SPAN class="attribute">iconAreaStyle</SPAN>, <SPAN class="attribute">rolloverIconAreaStyle</SPAN>, <SPAN class="attribute">iconAreaClass</SPAN>, <SPAN class="attribute">rolloverIconAreaClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Area where the buttons are located </TD>
+<TD> <SPAN class="attribute">buttonAreaStyle</SPAN>, <SPAN class="attribute">rolloverButtonAreaStyle</SPAN>, <SPAN class="attribute">buttonAreaClass</SPAN>, <SPAN class="attribute">rolloverButtonAreaClass</SPAN> </TD>
+</TR>
+</TBODY></TABLE>
+<P>The following example shows the styles defined for all the parts of the <CITE>Confirmation</CITE> component:</P>
+<PRE class="code_area">captionStyle=<SPAN class="code_area_values">&quot;border:2px solid red;&quot;</SPAN>
+contentStyle=<SPAN class="code_area_values">&quot;border:2px solid blue;&quot;</SPAN>
+iconAreaStyle=<SPAN class="code_area_values">&quot;border:2px solid orange;&quot;</SPAN>
+buttonAreaStyle=<SPAN class="code_area_values">&quot;border:2px solid green;&quot;</SPAN></PRE>
+<P>And here is the result:</P>
+
+<P><IMG src="confirmation.data/Confirmation_areas.gif" align="absmiddle" border="0"></P>
+
+<P>By using the <SPAN class="attribute">modalLayerStyle</SPAN> and <SPAN class="attribute">modalLayerClass</SPAN> attributes, you can also apply a style to the visible part of the page which is not covered by the <CITE>Confirmation</CITE> component.</P>
+
+<H2><A name="Confirmation-ClientSideEvents"></A>Client-Side Events</H2>
+
+<P>The <CITE>Confirmation</CITE> component supports a set of standard client-side events that can be customized to alter the component's behavior. These are <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onkeydown</SPAN>, <SPAN class="attribute">onkeypress</SPAN>, <SPAN class="attribute">onkeyup</SPAN>.</P>
+
+<H2><A name="Confirmation-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>The <CITE>Confirmation</CITE> component supports the following client-side API. All of them are described in the sections <A href="#Confirmation-InvokingtheConfirmation">Invoking the Confirmation</A> and <A href="#Confirmation-CustomizingtheContentArea">Customizing the Content Area</A>:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">runConfirmedFunction(func)</SPAN> </TD>
+<TD> Runs the function that is specified in the <SPAN class="attribute">func</SPAN> parameter. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setTexts(headerText, detailsText, yesButtonText, noButtonText)</SPAN> </TD>
+<TD> Sets the main instruction, supplementary text, buttons text for the <CITE>Confirmation</CITE> component. </TD>
+</TR>
+</TBODY></TABLE>
+<P>In addition to these functions, the <CITE>Confirmation</CITE> component supports all the functions of the <CITE>PopupLayer</CITE> component.</P>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

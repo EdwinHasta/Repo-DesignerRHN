@@ -1,0 +1,127 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>LoadBundle &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>LoadBundle</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#LoadBundle-CreatingtheLoadBundle">Creating the LoadBundle</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The OpenFaces <CITE>LoadBundle</CITE> component is used for loading a resource bundle localized for the Locale of the current view, and expose it (as a Map) in the request attributes of the current request. The <SPAN class="tag">&lt;o:loadBundle&gt;</SPAN> component is similar to the standard <SPAN class="tag">&lt;f:loadBundle&gt;</SPAN> tag it but can be used in the components with Ajax enabled.</P></TD>
+<TD valign="top" width="40%">
+<P><A href="../apiReference/org/openfaces/component/util/LoadBundle.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/loadBundle.html" rel="nofollow">Tag Reference</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="LoadBundle-CreatingtheLoadBundle"></A>Creating the LoadBundle</H2>
+
+<P>The usage of the OpenFaces <CITE>LoadBundle</CITE> component is similar to the same component from the Reference or MyFaces JSF implementation. To add the <CITE>LoadBundle</CITE> component to the page, use the <SPAN class="tag">&lt;o:loadBundle&gt;</SPAN> tag. This tag has only <SPAN class="attribute">var</SPAN> and <SPAN class="attribute">basename</SPAN> attributes. The <SPAN class="attribute">var</SPAN> attribute specifies the name of a request-scope variable under which the resource bundle is available. There are two ways to access keys of the resource bundle:</P>
+<OL>
+	<LI>&#35;{bunble.propertyKey}</LI>
+	<LI>&#35;{bundle['propertyKey']}</LI>
+</OL>
+
+
+<P>The <SPAN class="attribute">basename</SPAN> attribute specifies the path to the resource bundle file. The resource bundle file should be available in the classpath.</P>
+
+<P>Here is an example of the resource bundle in the h:outputText component.</P>
+<PRE class="code_area">&lt;o:loadBundle basename=<SPAN class="code_area_values">&quot;my.resources.TestLoadBundle&quot;</SPAN> <SPAN class="code-keyword">var</SPAN>=<SPAN class="code_area_values">&quot;bundle&quot;</SPAN>/&gt;
+...
+&lt;h:outputText value=<SPAN class="code_area_values">&quot;#{bundle.todayString}&quot;</SPAN>/&gt;</PRE>
+<P>In this example the resource bundle is located in WEB-INF/classes/my/resources directory. And there is a &quot;todayString&quot; property key in the TestLoadBundle resource bundle.</P>
+
+<P>In the following example the resource bundle in located in WEB-INF/classes directory and the &quot;todayString&quot; property key is used.</P>
+<PRE class="code_area">&lt;o:loadBundle basename=<SPAN class="code_area_values">&quot;TestLoadBundle&quot;</SPAN> <SPAN class="code-keyword">var</SPAN>=<SPAN class="code_area_values">&quot;bundle&quot;</SPAN>/&gt;
+...
+&lt;h:outputText value=<SPAN class="code_area_values">&quot;#{bundle['todayString']}&quot;</SPAN>/&gt;</PRE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

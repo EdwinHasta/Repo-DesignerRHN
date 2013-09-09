@@ -1,0 +1,758 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>DayTable &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>DayTable</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#DayTable-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#DayTable-BasicConfiguration">Basic Configuration</A></LI>
+<UL>
+    <LI><A href="#DayTable-ConfiguringDisplayedEvents">Configuring Displayed Events</A></LI>
+    <LI><A href="#DayTable-Specifying%22ReservedTime%22Events">Specifying &quot;Reserved Time&quot; Events</A></LI>
+    <LI><A href="#DayTable-AddingDaySwitcher">Adding Day Switcher</A></LI>
+    <LI><A href="#DayTable-AddingEditingCapability">Adding Editing Capability</A></LI>
+</UL>
+    <LI><A href="#DayTable-ChangingEditingOptions">Changing Editing Options</A></LI>
+    <LI><A href="#DayTable-HandlingLargeDatasets">Handling Large Datasets</A></LI>
+    <LI><A href="#DayTable-ShowingaMultiResourceTimetable">Showing a Multi-Resource Timetable</A></LI>
+    <LI><A href="#DayTable-HeaderandFooter">Header and Footer</A></LI>
+    <LI><A href="#DayTable-NavigationBetweenDays">Navigation Between Days</A></LI>
+<UL>
+    <LI><A href="#DayTable-The%7B%7BDaySwitcher%7D%7DComponent">The <SPAN class="attribute">DaySwitcher</SPAN> Component</A></LI>
+<UL>
+    <LI><A href="#DayTable-SpecifyingDateFormatfor%7B%7BDaySwitcher%7D%7D">Specifying Date Format for <SPAN class="attribute">DaySwitcher</SPAN></A></LI>
+    <LI><A href="#DayTable-CustomizingAppearanceof%7B%7BDaySwitcher%7D%7D">Customizing Appearance of <SPAN class="attribute">DaySwitcher</SPAN></A></LI>
+</UL>
+</UL>
+    <LI><A href="#DayTable-Internationalization">Internationalization</A></LI>
+    <LI><A href="#DayTable-AppearanceCustomization">Appearance Customization</A></LI>
+<UL>
+    <LI><A href="#DayTable-CustomizingTimeScale">Customizing Time Scale</A></LI>
+    <LI><A href="#DayTable-TimeColumnCustomization">Time Column Customization</A></LI>
+    <LI><A href="#DayTable-CustomizingEventAppearance">Customizing Event Appearance</A></LI>
+    <LI><A href="#DayTable-%22ReservedTime%22EventsAppearance">&quot;Reserved Time&quot; Events Appearance</A></LI>
+    <LI><A href="#DayTable-CustomizingEventActionBar">Customizing Event Action Bar</A></LI>
+    <LI><A href="#DayTable-CustomizingEventDeletionConfirmation">Customizing Event Deletion Confirmation</A></LI>
+    <LI><A href="#DayTable-AttachingAdditionalEventAreas">Attaching Additional Event Areas</A></LI>
+    <LI><A href="#DayTable-DisplayingEventPreview">Displaying Event Preview</A></LI>
+    <LI><A href="#DayTable-CustomizingEffects">Customizing Effects</A></LI>
+</UL>
+    <LI><A href="#DayTable-CustomizingEventEditor">Customizing Event Editor</A></LI>
+<UL>
+    <LI><A href="#DayTable-EventEditorDialog">Event Editor Dialog</A></LI>
+    <LI><A href="#DayTable-EventEditorPage">Event Editor Page</A></LI>
+    <LI><A href="#DayTable-CustomEventEditor">Custom Event Editor</A></LI>
+</UL>
+    <LI><A href="#DayTable-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P><CITE>DayTable</CITE> is a component that allows displaying and editing schedule of events for a day. Each event has a start time, end time, event name, description and other fields. Although <CITE>DayTable</CITE> shows events for one day at a time, it is possible to change current day thus making it possible to specify a timetable for an arbitrary period of time. There is also the possibility to show timetable for multiple resources, for example the schedule of tasks for several people.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/daytable.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/timetable/DayTable.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/dayTable.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/daytable/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="DayTable-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI>Editable/read-only mode</LI>
+	<LI>Auto-saving changes with Ajax</LI>
+	<LI>Multi-resource timetables</LI>
+	<LI>Event time and duration editing with drag&amp;drop</LI>
+	<LI>Embedding custom content areas</LI>
+	<LI>Support for custom event actions</LI>
+	<LI>Support for reserved-time events</LI>
+	<LI>Customizable event editors</LI>
+	<LI>Customizable time-scale</LI>
+	<LI>Support for large data sets</LI>
+	<LI>Flexible appearance customization</LI>
+</UL>
+
+
+<H2><A name="DayTable-BasicConfiguration"></A>Basic Configuration</H2>
+
+
+<H3><A name="DayTable-ConfiguringDisplayedEvents"></A>Configuring Displayed Events</H3>
+
+<P>The <CITE>DayTable</CITE> component can be added to a page using the <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. In order to get the simplest <CITE>DayTable</CITE> working you just need to specify the <SPAN class="attribute">events</SPAN> attribute. This attribute should be specified as a value binding expression that refers a collection or array of <A href="../apiReference/org/openfaces/component/timetable/TimetableEvent.html" rel="nofollow"><SPAN class="attribute">TimetableEvent</SPAN></A> instances (or <A href="../apiReference/org/openfaces/component/timetable/ReservedTimeEvent.html" rel="nofollow"><SPAN class="attribute">ReservedTimeEvent</SPAN></A> instances as described in the <A href="#DayTable-Specifying%22ReservedTime%22Events">Specifying &quot;Reserved Time&quot; Events</A> section below). The <A href="../apiReference/org/openfaces/component/timetable/TimetableEvent.html" rel="nofollow"><SPAN class="attribute">TimetableEvent</SPAN></A> class specifies the parameters for a single event in a timetable:</P>
+<UL>
+	<LI><SPAN class="attribute">id: String</SPAN>. This should be a unique value that identifies this event in the whole timetable for all days.</LI>
+	<LI><SPAN class="attribute">resourceId: String</SPAN>. Specifies Id of a resource that this event belongs to if a timetable is set for displaying multiple resources. See <A href="#DayTable-ShowingaMultiResourceTimetable">Showing a Multi&#45;Resource Timetable</A>.</LI>
+	<LI><SPAN class="attribute">start: Date</SPAN>. Event start time. This is a required property.</LI>
+	<LI><SPAN class="attribute">end: Date</SPAN>. Event end time. This is a required property.</LI>
+	<LI><SPAN class="attribute">name: String</SPAN>. Event name. It is displayed in the top row of the appropriate event rectangle in a timetable.</LI>
+	<LI><SPAN class="attribute">description: String</SPAN>. Event description. It is displayed under event name of the appropriate event rectangle.</LI>
+	<LI><SPAN class="attribute">color: Color</SPAN>. Events can be displayed in different colors in order to make it possible to highlight separation onto different event types, priorities, or other characteristics. This property can be <SPAN class="code_area_values">null</SPAN>, which will display the event using a default color (see the <A href="#DayTable-CustomizingEventAppearance">Customizing Event Appearance</A> section).</LI>
+	<LI><SPAN class="attribute">customProperties: Map&lt;String, Object&gt;</SPAN>. Allows adding custom named properties to events for client-side access.</LI>
+</UL>
+
+
+<P>Although <CITE>DayTable</CITE> component displays events for one day at a time, it allows changing the current day thus making it possible to edit timetable for an arbitrary number of days. For this reason you should just provide events for all days through the <SPAN class="attribute">events</SPAN> attribute, and the component will automatically separate these events onto days. It is also possible to avoid loading the whole data in case of dealing with large amounts of data, see the <A href="#DayTable-HandlingLargeDatasets">Handling Large Datasets</A> section for details.</P>
+
+<P>Here's the simplest <CITE>DayTable</CITE> declaration that displays the specified events:</P>
+<PRE class="code_area">&lt;o:dayTable events=<SPAN class="code_area_values">&quot;#{MyBean.timetableEvents}&quot;</SPAN>/&gt;</PRE>
+<P>The backing bean class for <SPAN class="attribute">MyBean</SPAN> should have the following method:</P>
+<PRE class="code_area"><SPAN class="code-keyword">public</SPAN> List getTimetableEvents() {
+  List events = retrieveEvents(); <SPAN class="code-comment">// <SPAN class="code-keyword">this</SPAN> should <SPAN class="code-keyword">return</SPAN> a list of TimetableEvent instances
+</SPAN>  <SPAN class="code-keyword">return</SPAN> events;
+}</PRE>
+<P>This code displays a read-only timetable. In order to make it editable, you should specify the means by which the changes can be saved as described in the <A href="#DayTable-AddingEditingCapability">Adding Editing Capability</A> section below.</P>
+
+<H3><A name="DayTable-Specifying%22ReservedTime%22Events"></A>Specifying &quot;Reserved Time&quot; Events</H3>
+
+<P>Besides the usual events that commonly specify various activities, such as meetings, work periods, etc., there's also a special type of events called reserved time events that doesn't have <SPAN class="attribute">name</SPAN>, <SPAN class="attribute">description</SPAN> and <SPAN class="attribute">color</SPAN> fields and which cannot be edited or removed. These events can be represented with instances of class <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableEvent.html" rel="nofollow">ReservedTimetableEvent</A></SPAN> and they have the following fields: <SPAN class="attribute">id</SPAN>, <SPAN class="attribute">resourceId</SPAN>, <SPAN class="attribute">start</SPAN>, <SPAN class="attribute">end</SPAN>, <SPAN class="attribute">customProperties</SPAN>. These events can be included in the displayed event list along with the usual events, and they are meant to be used for displaying the time intervals that shouldn't normally be occupied by normal events, e.g. launch breaks, etc.</P>
+
+<H3><A name="DayTable-AddingDaySwitcher"></A>Adding Day Switcher</H3>
+
+<P>You can add the interface that allows the user to view and switch the currently displayed day by placing the <SPAN class="tag">&lt;o:daySwitcher&gt;</SPAN> component into the <SPAN class="attribute">&quot;header&quot;</SPAN> facet of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. Here's a simple example:</P>
+
+<PRE class="code_area">&lt;o:dayTable events=<SPAN class="code_area_values">&quot;#{TimeTableBean.events}&quot;</SPAN>&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;header&quot;</SPAN>&gt;
+    &lt;o:daySwitcher/&gt;
+  &lt;/f:facet&gt;
+&lt;/o:dayTable&gt;</PRE>
+
+<P>Please see the details in the <A href="#DayTable-HeaderandFooter">Header and Footer</A> and <A href="#DayTable-NavigationBetweenDays">Navigation Between Days</A> sections below.</P>
+
+<H3><A name="DayTable-AddingEditingCapability"></A>Adding Editing Capability</H3>
+
+<P>The editing capability can be added by specifying the <SPAN class="attribute">timetableChangeListener</SPAN> attribute of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. This attribute should be declared as a value binding expression that refers to a method with one parameter of <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableChangeEvent.html" rel="nofollow">TimetableChangeEvent</A></SPAN> type. This method will be invoked to save changes made by the user. The <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableChangeEvent.html" rel="nofollow">TimetableChangeEvent</A></SPAN> class has the following methods that can be used to identify the changes that need to be saved:</P>
+<UL>
+	<LI><SPAN class="attribute">getAddedEvents()</SPAN> &ndash; returns a non-null array of <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableEvent.html" rel="nofollow">TimetableEvent</A></SPAN> instances that should be added to the database. Note that adding an event to the database will in most cases be accompanied with generating an ID for this event. Be sure to assign these new IDs to the appropriate event instances in the passed collection to ensure the correct functionality of <CITE>DayTable</CITE> component.</LI>
+	<LI><SPAN class="attribute">getEditedEvents()</SPAN> &ndash; returns a non-null array of <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableEvent.html" rel="nofollow">TimetableEvent</A></SPAN> instances whose changes should be updated in the database.</LI>
+	<LI><SPAN class="attribute">getRemovedEventIds()</SPAN> &ndash; returns a non-null array of event Ids that should be removed from the database.
+<P class="bubble note"><STRONG>Note</STRONG><BR>Be sure to assign an ID for all events returned by the <SPAN class="attribute">getAddedEvents()</SPAN> method.</P>
+<P>Here's an example of declaring an editable <CITE>DayTable</CITE> that uses the second approach:</P>
+<PRE class="code_area">&lt;o:dayTable
+    events=<SPAN class="code_area_values">&quot;#{MyBean.timetableEvents}&quot;</SPAN>
+    timetableChangeListener=<SPAN class="code_area_values">&quot;#{MyBean.processTimetableChanges}&quot;</SPAN>/&gt;</PRE>
+<P>And here's how <SPAN class="attribute">processTimetableChanges</SPAN> method is implemented:</P>
+<PRE class="code_area"><SPAN class="code-keyword">public</SPAN> void processTimetableChanges(TimetableChangeEvent tce) {
+  TimetableEvent[] addedEvents = tce.getAddedEvents();
+  <SPAN class="code-keyword">for</SPAN> (TimetableEvent event : addedEvents) {
+    <SPAN class="code-object">String</SPAN> eventId = addEvent(event);
+    event.setId(eventId);
+  }
+
+  TimetableEvent[] editedEvents = tce.getChangedEvents();
+  <SPAN class="code-keyword">for</SPAN> (TimetableEvent event : editedEvents) {
+    updateEvent(event);
+  }
+
+  <SPAN class="code-object">String</SPAN>[] removedEventIds = tce.getRemovedEventIds();
+  <SPAN class="code-keyword">for</SPAN> (<SPAN class="code-object">String</SPAN> eventId : removedEventIds) {
+    removeEvent(eventId);
+  }
+}</PRE>
+<P>The <CITE>DayTable</CITE> component also has an <SPAN class="attribute">editable</SPAN> attribute that specifies whether the editing capability is turned on. This attribute is set to <SPAN class="code_area_values">true</SPAN> by default.</P></LI>
+</UL>
+
+
+<H2><A name="DayTable-ChangingEditingOptions"></A>Changing Editing Options</H2>
+
+<P>It is possible to customize various parameters of event editing behavior by adding a <SPAN class="tag">&lt;o:timetableEditingOptions&gt;</SPAN> tag inside of the <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag.</P>
+
+<P>By default the <CITE>DayTable</CITE> component automatically saves each change on the fly with Ajax. Though this functionality can be changed by specifying the <SPAN class="attribute">autoSaveChanges</SPAN> attribute to <SPAN class="code_area_values">false</SPAN>. Turning auto saving changes off will make the <CITE>DayTable</CITE> handle changes like any other editable component &ndash; the changes will be saved along with the nearest form submission. Regardless of whether auto saving functionality is used or not, the same mechanism for saving the changes is used as described in the previous section.</P>
+
+<P>The default duration for new events is 30 minutes. This default value can be changed by specifying the <SPAN class="attribute">defaultEventDuration</SPAN> attribute. This attribute specifies the number of minutes as an integer number.</P>
+
+<P>It is possible to disable changing event duration by assigning <SPAN class="code_area_values">&quot;false&quot;</SPAN> to the <SPAN class="attribute">eventDurationEditable</SPAN> attribute. In addition, you can disable moving events from one resource to another by assigning <SPAN class="code_area_values">&quot;false&quot;</SPAN> to the <SPAN class="attribute">eventResourceEditable</SPAN> attribute.</P>
+
+<P>By default the user can create any configuration of events even if time spans of events overlap. Though it is possible to disable an ability to create overlapped events by assigning <SPAN class="code_area_values">false</SPAN> to the <SPAN class="attribute">overlappedEventsAllowed</SPAN> attribute. Note that will only prevent creating overlapped events by using the <CITE>DayTable</CITE>'s editing capabilities, but it won't prevent displaying overlapped events if such events are provided through the component's data model.</P>
+
+<H2><A name="DayTable-HandlingLargeDatasets"></A>Handling Large Datasets</H2>
+
+<P>If a component should deal with large sets of data, you can minimize the data loaded by the <CITE>DayTable</CITE> using the <SPAN class="attribute">preloadedEvents</SPAN> attribute. It can take on of the two values:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="code_area_values">&quot;all&quot;</SPAN> (the default value) &ndash; specifies that <CITE>DayTable</CITE> will preload all of the events for all days. Having all events preloaded has a benefit of quick switching between days, since no data should be retrieved from the server when selecting another day. Though this can be a problem in case of very large sets of data since this would require transferring large amounts of data over the network, which would affect page load time.</LI>
+	<LI><SPAN class="code_area_values">&quot;none&quot;</SPAN> &ndash; specifies that only the events that need to be displayed are loaded from the server, which minimizes the page load time and makes it independent from the set of data. The data for other days in loaded with Ajax automatically when the user switches between days.</LI>
+</UL>
+
+
+<P>Since the second mode loads data in portions, some additional logic should be implemented in the data retrieval method &ndash; the method that is bound to the <SPAN class="attribute">events</SPAN> attribute of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. When a <CITE>DayTable</CITE> with <SPAN class="attribute">preloadedEvents</SPAN> of <SPAN class="code_area_values">&quot;none&quot;</SPAN> invokes the data retrieval method, it assigns the two request-scope variables named <SPAN class="attribute">startTime</SPAN> and <SPAN class="attribute">endTime</SPAN> of type <SPAN class="attribute">java.util.Date</SPAN>, which specify the time range for which events should be returned. All events which at least partially intersect the time period specified with these variables should be returned.</P>
+
+<P>Here's a simple example of defining the <CITE>DayTable</CITE> that loads events on demand as the user switches the days:</P>
+<PRE class="code_area">&lt;o:dayTable 
+      events=<SPAN class="code_area_values">&quot;#{MyBean.timetableEvents}&quot;</SPAN>
+      preloadedNodes=<SPAN class="code_area_values">&quot;none&quot;</SPAN> /&gt;
+...
+
+<SPAN class="code-keyword">public</SPAN> List getTimetableEvents() {
+  Date startTime = Faces.<SPAN class="code-keyword">var</SPAN>(<SPAN class="code_area_values">&quot;startTime&quot;</SPAN>, Date.class);
+  Date endTime = Faces.<SPAN class="code-keyword">var</SPAN>(<SPAN class="code_area_values">&quot;endTime&quot;</SPAN>, Date.class);
+  List events = retrieveEventsInRange(startTime, endTime);
+  <SPAN class="code-keyword">return</SPAN> events;
+}</PRE>
+
+<H2><A name="DayTable-ShowingaMultiResourceTimetable"></A>Showing a Multi-Resource Timetable</H2>
+
+<P>It is possible to configure a <CITE>DayTable</CITE> component to display a timetable for multiple resources. In this case the <CITE>DayTable</CITE> is displayed in multiple columns, one column per resource. Each resource has an independent schedule, and this mode can be thought of as multiple schedules for the same day displayed on the same timetable for convenience. As an added benefit it's possible to move events between the resources. The multi-resource mode can be turned on by declaring the <SPAN class="attribute">resources</SPAN> attribute of the <SPAN class="tag">dayTable</SPAN> tag. This attribute should be declared as a value binding expression that refers to a collection or array of <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableResource.html" rel="nofollow">TimetableResource</A></SPAN> instances. The <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableResource.html" rel="nofollow">TimetableResource</A></SPAN> class defines parameters for a single resource displayed in a timetable:</P>
+<UL>
+	<LI><SPAN class="attribute">id: String</SPAN>. This is a unique Id that identifies the resource.</LI>
+	<LI><SPAN class="attribute">name: String</SPAN>. The resource name displayed in <CITE>DayTable</CITE>'s headers and editors.</LI>
+	<LI><SPAN class="attribute">object: String</SPAN>. An optional resource object that can be helpful when configuring custom resource header components.</LI>
+</UL>
+
+
+<P>It is possible to specify the custom resource header components by specifying the <SPAN class="attribute">&quot;resourceHeader&quot;</SPAN> facet for the <SPAN class="tag">dayTable</SPAN> tag. The component specified in this facet will be rendered in the resource column header cells. The declaration of the &quot;resourceHeader&quot; component can use the &quot;resource&quot; request-scope variable that refers to an instance of <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableResource.html" rel="nofollow">TimetableResource</A></SPAN> that corresponds to the currently rendered resource header.</P>
+
+<P>Here's an example of defining the multi-resource <CITE>DayTable</CITE> with custom resource headers displayed with a <CITE>GraphicText</CITE> component.</P>
+<PRE class="code_area">&lt;o:dayTable events=<SPAN class="code_area_values">&quot;#{MyBean.timetableEvents}&quot;</SPAN>&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;resourceHeader&quot;</SPAN>&gt;
+    &lt;o:graphicText direction=<SPAN class="code_area_values">&quot;15&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{resource.name}&quot;</SPAN> style=<SPAN class="code_area_values">&quot;font-family: Arial; font-size: 14pt;&quot;</SPAN>/&gt;
+  &lt;/f:facet&gt;
+&lt;/o:dayTable/&gt;</PRE>
+
+<H2><A name="DayTable-HeaderandFooter"></A>Header and Footer</H2>
+
+<P>The DayTable component has the header and footer areas that are displayed as the top and the bottom of the day table. The content of these areas can be specified with the <SPAN class="attribute">&quot;header&quot;</SPAN> and <SPAN class="attribute">&quot;footer&quot;</SPAN> facets of the <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. The styles for these areas can also be customized using corresponding <SPAN class="attribute">headerStyle</SPAN>/<SPAN class="attribute">headerClass</SPAN> and <SPAN class="attribute">footerStyle</SPAN>/<SPAN class="attribute">footerClass</SPAN> attributes.</P>
+
+<P>As described in the <A href="#DayTable-ShowingaMultiResourceTimetable">Showing a Multi&#45;Resource Timetable</A> section, the <CITE>DayTable</CITE> can also contain an additional header row that displays resource names. The style for this row can be customized with the <SPAN class="attribute">resourceHeadersRowStyle</SPAN>/<SPAN class="attribute">resourceHeadersRowClass</SPAN> attributes, and the style of the line that separates resource header row from events area can be specified with the <SPAN class="attribute">resourceHeadersRowSeparator</SPAN> attribute, which is specified as the CSS <SPAN class="attribute">border</SPAN> property but without the <SPAN class="attribute">&quot;border:&quot;</SPAN> prefix, for example <SPAN class="code_area_values">&quot;1px solid gray&quot;</SPAN>.</P>
+
+<H2><A name="DayTable-NavigationBetweenDays"></A>Navigation Between Days</H2>
+
+<P>The DayTable component provides interface for switching the selected day. The navigation can be implemented using the exposed client side API that contains functions to swicth DayTable to next/previous day, for today or on any particular date (please refer to <A href="#DayTable-ClientSideAPI">Client&#45;Side API</A> section for more information). <BR>
+Another way to enable navigation in the <CITE>DayTable</CITE> is <CITE>DaySwitcher</CITE> component.</P>
+
+<H3><A name="DayTable-The%7B%7BDaySwitcher%7D%7DComponent"></A>The <SPAN class="attribute">DaySwitcher</SPAN> Component</H3>
+
+<P>The <CITE>DaySwitcher</CITE> component is denoted by the <SPAN class="tag">&lt;o:daySwitcher&gt;</SPAN> tag. It can be placed within the <CITE>DayTable</CITE> component, inside its <SPAN class="attribute">&quot;header&quot;</SPAN> and <SPAN class="attribute">&quot;footer&quot;</SPAN> facets or somewhere else on the page.</P>
+<PRE class="code_area">&lt;o:dayTable id=<SPAN class="code_area_values">&quot;conferenceSchedule&quot;</SPAN> events=<SPAN class="code_area_values">&quot;#{TimeTableBean.events}&quot;</SPAN>&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;header&quot;</SPAN>&gt;
+    &lt;o:daySwitcher/&gt;
+  &lt;/f:facet&gt;
+&lt;/o:dayTable&gt;</PRE>
+<P>The code above will produce the following output in the browser:<BR>
+<IMG src="daytable.data/daySwictherDefault.gif" align="absmiddle" border="0"></P>
+
+<P>In case when <SPAN class="tag">&lt;o:daySwitcher&gt;</SPAN> specified outside of day table the <SPAN class="attribute">for</SPAN> attribute should point to id of the corresponding <SPAN class="tag">&lt;o:dayTable&gt;</SPAN>.</P>
+<PRE class="code_area">&lt;o:daySwitcher <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;conferenceSchedule&quot;</SPAN>/&gt;</PRE>
+
+<H6><A name="DayTable-SpecifyingDateFormatfor%7B%7BDaySwitcher%7D%7D"></A>Specifying Date Format for <SPAN class="attribute">DaySwitcher</SPAN></H6>
+
+<P>The <CITE>DaySwitcher</CITE> component provides ability to specify date format to display selected date. <BR>
+The <SPAN class="attribute">pattern</SPAN> attribute specifies the date format with the pattern similar to that in the <SPAN class="attribute">java.text.SimpleDateFormat</SPAN> class. Note that the <CITE>DaySwitcher</CITE> component supports only <SPAN class="code_area_values">&quot;d&quot;</SPAN>, <SPAN class="code_area_values">&quot;M&quot;</SPAN>, <SPAN class="code_area_values">&quot;y&quot;</SPAN> and <SPAN class="code_area_values">&quot;E&quot;</SPAN> pattern letters, which represent the components of the date. If an empty string is specified as pattern the corresponding text won't be displayed.<BR>
+If no pattern is specified the <SPAN class="attribute">dateFormat</SPAN> attribute can be used to set day format. It can take the following values: <SPAN class="code_area_values">&quot;short&quot;</SPAN>, <SPAN class="code_area_values">&quot;medium&quot;</SPAN>, <SPAN class="code_area_values">&quot;long&quot;</SPAN>, <SPAN class="code_area_values">&quot;full&quot;</SPAN> and defines which of the predefined date formats should be used (default value is &quot;long&quot;).<BR>
+Similar attributes <SPAN class="attribute">upperPattern</SPAN> and <SPAN class="attribute">upperDateFormat</SPAN> for upper text format customization.</P>
+
+<P>Here's examples of defining date format for <CITE>DaySwitcher</CITE>.</P>
+<PRE class="code_area">&lt;o:daySwitcher <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;dayTable&quot;</SPAN> pattern=<SPAN class="code_area_values">&quot;MMMM, dd&quot;</SPAN> upperPattern=<SPAN class="code_area_values">&quot;yyyy&quot;</SPAN>/&gt;
+&lt;o:daySwitcher <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;dayTable&quot;</SPAN> dateFormat=<SPAN class="code_area_values">&quot;medium&quot;</SPAN> upperPattern=&quot;&quot;/&gt;</PRE>
+
+<H6><A name="DayTable-CustomizingAppearanceof%7B%7BDaySwitcher%7D%7D"></A>Customizing Appearance of <SPAN class="attribute">DaySwitcher</SPAN></H6>
+
+<P>Besides the standard <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> attributes <CITE>DaySwitcher</CITE> provides ability to set <SPAN class="attribute">rolloverStyle</SPAN> and <SPAN class="attribute">rolloverClass</SPAN> attributes. It is also possible to customize appearance of buttons and text using the following attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> <STRONG>Next</STRONG> button attributes </TH>
+<TH scope="col"> <STRONG>Previous</STRONG> button attributes </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">nextButtonStyle</SPAN>/<SPAN class="attribute">nextButtonClass</SPAN></TD>
+<TD> <SPAN class="attribute">previousButtonStyle</SPAN>/<SPAN class="attribute">previousButtonClass</SPAN></TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">nextButtonRolloverStyle</SPAN>/<SPAN class="attribute">nextButtonRolloverStyle</SPAN> </TD>
+<TD> <SPAN class="attribute">previousButtonRolloverStyle</SPAN>/<SPAN class="attribute">previousButtonRolloverClass</SPAN></TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">nextButtonPressedStyle</SPAN>/<SPAN class="attribute">nextButtonPressedClass</SPAN> </TD>
+<TD> <SPAN class="attribute">previousButtonPressedStyle</SPAN>/<SPAN class="attribute">previousButtonPressedClass</SPAN></TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">nextButtonImageUrl</SPAN> </TD>
+<TD> <SPAN class="attribute">previousButtonImageUrl</SPAN> </TD>
+</TR>
+<TR>
+<TH scope="col">Text attributes</TH>
+<TH scope="col">Upper text attributes</TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">textStyle</SPAN>/<SPAN class="attribute">textClass</SPAN> </TD>
+<TD> <SPAN class="attribute">upperTextStyle</SPAN>/<SPAN class="attribute">upperTextClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">textRolloverStyle</SPAN>/<SPAN class="attribute">textRolloverClass</SPAN> </TD>
+<TD> <SPAN class="attribute">upperTextRolloverStyle</SPAN>/<SPAN class="attribute">upperTextRolloverClass</SPAN></TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="DayTable-Internationalization"></A>Internationalization</H2>
+
+<P>The <CITE>DayTable</CITE> allows specifying the locale used for displaying time strings using the <SPAN class="attribute">locale</SPAN> attribute of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. If not specified, the application's default locale is used, that is the locale returned by <SPAN class="attribute">UIViewRoot</SPAN>'s <SPAN class="attribute">getLocale()</SPAN> method.</P>
+
+<P>All <SPAN class="attribute">Date</SPAN> instances that a <CITE>DayTable</CITE> is working on, e.g. event start and end dates are interpreted in a time zone specified with the <SPAN class="attribute">timeZone</SPAN> attribute of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. If not specified explicitly, the server's default time zone as defined by the <SPAN class="attribute">TimeZone.getDefault()</SPAN> method is used.</P>
+
+<P>It is also possible to customize all of the auxiliary texts and displayed by the component and its parts (day switcher, event editor, etc.), and patterns for formatting dates and times displayed in the component. Please refer to the <A href="#DayTable-AppearanceCustomization">Appearance Customization</A>, <A href="#DayTable-EventEditorDialog">Event Editor Dialog</A>, and <A href="#DayTable-The%7B%7BDaySwitcher%7D%7DComponent">The <SPAN class="attribute">DaySwitcher</SPAN> Component</A> sections for details.</P>
+
+<H2><A name="DayTable-AppearanceCustomization"></A>Appearance Customization</H2>
+
+<P>Like any other component, the style for the entire <CITE>DayTable</CITE> component can be customized with its <SPAN class="attribute">style</SPAN>/<SPAN class="attribute">styleClass</SPAN> attributes. Note that if the <SPAN class="attribute">height</SPAN> CSS attribute is specified using these attributes then the <CITE>DayTable</CITE> component's scrollable mode is turned on automatically, which allows scrolling through the &quot;invisible&quot; part of the timeline using the vertical scrollbar.</P>
+
+<H3><A name="DayTable-CustomizingTimeScale"></A>Customizing Time Scale</H3>
+
+<P>It is possible to restrict the range of the displayed time range using the <SPAN class="attribute">startTime</SPAN> and <SPAN class="attribute">endTime</SPAN> attributes of the <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. Thes attributes should be specified in the &quot;HH:mm&quot; format, for example <SPAN class="code_area_values">&quot;16:00&quot;</SPAN>. Each of these attributes is optional, and if both of them are omitted then the whole time range from 00:00 to 24:00 is displayed. There's also the <SPAN class="attribute">scrollTime</SPAN> attribute, works only for the scrollable <CITE>DayTable</CITE> (when it's height is specified), and it specifies the scroll position as the time in format &quot;HH:mm&quot; at the top component's border. For example, if <SPAN class="code_area_values">&quot;10:00&quot;</SPAN> is specified, then the <CITE>DayTable</CITE> will be loaded to visually start from 10:00am though the user will be able to scroll the view to reveal the events before that time. The <SPAN class="attribute">scrollTime</SPAN> attribute supports a two-side binding, which means that you can bind it to your backing bean to save the scroll position that might have been changted by the user.</P>
+
+<P class="bubble note"><STRONG>Note</STRONG><BR>All date/time formats are specified with the standard Java notation as specified by the <SPAN class="attribute"><A href="http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html" rel="nofollow">SimpleDateFormat</A></SPAN> class.</P>
+
+<P>The time scale represented by the <CITE>DayTable</CITE> compnent has a two-fold subdivision: there are major time intervals, and each major time interval is separated onto minor time intervals. These time intervals are displayed as the table rows on top of which the events are displayed. By default, the major time interval corresponds to one hour, and a minor one corresponds to half an hour, which results in two minor intervals per one major one by default. The size of these intervals can be customized using the <SPAN class="attribute">majorTimeInterval</SPAN> and <SPAN class="attribute">minorTimeInterval</SPAN> attributes of the <SPAN class="attribute">&lt;o:dayTable&gt;</SPAN> tag respectively. These attributes should be specified as an integer number specifying the interval's duration in minutes, and the default values are <SPAN class="code_area_values">60</SPAN> and <SPAN class="code_area_values">30</SPAN> respectively. Note that the value of <SPAN class="attribute">majorTimeInterval</SPAN> should be a multiple of <SPAN class="attribute">minorTimeInterval</SPAN> value.</P>
+
+<P>The separators displayed at major and minor intervals have different styles and they can be customized with the <SPAN class="attribute">primaryRowSeparator</SPAN> and <SPAN class="attribute">secondaryRowSeparator</SPAN> attributes, whose values are specified as the CSS <SPAN class="attribute">border</SPAN> attribute value, but without the <SPAN class="attribute">&quot;border:&quot;</SPAN> prefix, for example, <SPAN class="code_area_values">&quot;1px solid gray&quot;</SPAN>.</P>
+
+<P>The height and background CSS attributes of the time slot rows can be customized with the <SPAN class="attribute">rowStyle</SPAN>/<SPAN class="attribute">rowClass</SPAN> attributes of the <SPAN class="attribute">&lt;o:dayTable&gt;</SPAN> tag.</P>
+
+<H3><A name="DayTable-TimeColumnCustomization"></A>Time Column Customization</H3>
+
+<P>The style for the time column can be specified using the <SPAN class="attribute">timeColumnStyle</SPAN>/<SPAN class="attribute">timeColumnClass</SPAN> attributes. The style of the line that separates time column from the events are can be customized using the <SPAN class="attribute">timeColumnSeparator</SPAN> attribute, which is specified in the same format as the <SPAN class="attribute">primaryRowSeparator</SPAN> and <SPAN class="attribute">secondaryRowSeparator</SPAN> attributes described above (for example <SPAN class="code_area_values">&quot;1px solid gray&quot;</SPAN>).</P>
+
+<P>By default, the time strings in the time column are displayed in the <SPAN class="attribute">H mm</SPAN> pattern, with the minute part being displayed as a superscript. Technically, the time string consists of two parts, displayed beside each other, where each part has its own time pattern and a style, which allows to display the minutes as superscript in the default display. The patterns for the first and the second part are specified with the <SPAN class="attribute">timePattern</SPAN> and <SPAN class="attribute">timeSuffixPattern</SPAN> attributes, which have the default values of <SPAN class="code_area_values">&quot;H&quot;</SPAN> and <SPAN class="code_area_values">&quot;mm&quot;</SPAN> respectively. The main part of time text, specified by the <SPAN class="attribute">timePattern</SPAN> is displayed with the style inherited from the column class, as defined by the <SPAN class="attribute">columnStyle</SPAN>/<SPAN class="attribute">columnClass</SPAN> attributes. The style for the &quot;time suffix&quot; part of time string can be customized using the <SPAN class="attribute">timeSuffixStyle</SPAN>/<SPAN class="attribute">timeSuffixClass</SPAN> attributes.</P>
+
+<P>The horizontal time slot separators within the time column can be customized using the <SPAN class="attribute">timeColumnPrimaryRowSeparator</SPAN> and <SPAN class="attribute">timeColumnSecondaryRowSeparator</SPAN> attributes, which specify the style of grid lines for the primary time intervals and secondary time intervals respectively.</P>
+
+<P>As was mentioned in the <A href="#DayTable-CustomizingTimeScale">Customizing Time Scale</A> seciton, there are horizontal and minor time intervals. By default, the time column displays time only for the major intervals. You can turn on displaying time for the minor intervals by specifying the <SPAN class="attribute">showTimeForMinorIntervals</SPAN> attribute with a value of <SPAN class="code_area_values">true</SPAN>. The styles for major and minor time texts can be customized individually with the <SPAN class="attribute">majorTimeStyle</SPAN>/<SPAN class="attribute">majorTimeClass</SPAN> and <SPAN class="attribute">minorTimeStyle</SPAN>/<SPAN class="attribute">minorTimeClass</SPAN> attributes respectively.</P>
+
+<P>By default, the time text is displayed under the grid-line that marks the appropriate time. It is change the time text position so that it be displayed right against the appropriate grid-line. This can be done by specifying the <SPAN class="attribute">timeTextPosition</SPAN> attribute with a value of <SPAN class="code_area_values">&quot;againstMark&quot;</SPAN> (the default value is <SPAN class="code_area_values">&quot;underMark&quot;</SPAN>.</P>
+
+<H3><A name="DayTable-CustomizingEventAppearance"></A>Customizing Event Appearance</H3>
+
+<P>As it was mentioned in the <A href="#DayTable-ConfiguringDisplayedEvents">Configuring Displayed Events</A> section, each event can be displayed with its individual color according to the <SPAN class="attribute">color</SPAN> field of the event object. Though the value of  the <SPAN class="attribute">color</SPAN> field is optional and if it is not specified (has a value of <SPAN class="code_area_values">null</SPAN>) then the appropriate event is displayed with the default event color. This color can be customized using the <SPAN class="attribute">defaultEventColor</SPAN> attribute of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag.</P>
+
+<P>There's a range of settings that define various aspects of how events are displayed and behaving in the <SPAN class="tag">&lt;o:timetableEvent&gt;</SPAN> tag, which should be placed inside of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag.</P>
+
+<P>Event's border and background color is calculated automatically based on the event's <SPAN class="attribute">color</SPAN> field.</P>
+
+<P>The CSS style for the events can be customized with the <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> attributes of the <SPAN class="tag">&lt;o:timetableEvent&gt;</SPAN> tag. The border is displayed in the unchanged event's color, and the background color is displayed in the same color but of less intensity. The level of color intensity for event's background can be customized with the <SPAN class="attribute">backgroundIntensity</SPAN>, which is specified as a <SPAN class="attribute">double</SPAN> number in range <SPAN class="attribute">0..1</SPAN>. <SPAN class="attribute">0</SPAN> corresponds to the least-intense color &ndash; white, and <SPAN class="attribute">1</SPAN> corresponds to a fully intense color &ndash; a color specified for this event (the same color as used for displaying event's borders). The default value is <SPAN class="code_area_values">0.25</SPAN> to ensure good reading contrast while still displaying the event color. Note that the behavior of automatic border and background calculation can be overridden by explicit specification of <SPAN class="attribute">border</SPAN> and/or <SPAN class="attribute">background</SPAN> CSS attributes in the <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> attributes.</P>
+
+<P>The event's background also has a certain degree of transparency, which can be customized with the <SPAN class="attribute">backgroundTransparency</SPAN> attribute, which is also specified as a <SPAN class="attribute">double</SPAN> value in range <SPAN class="attribute">0..1</SPAN> where <SPAN class="attribute">0</SPAN> corresponds to fully opaque background and <SPAN class="attribute">1</SPAN> means fully transparent one (the default value is <SPAN class="code_area_values">0.2</SPAN>).</P>
+
+<P>The style for the rollover event (the event located under the mouse pointer) can be customized using the <SPAN class="attribute">rolloverStyle</SPAN>/<SPAN class="attribute">rolloverClass</SPAN> attributes of the <SPAN class="tag">&lt;o:timetableEvent&gt;</SPAN> tag.</P>
+
+<P>By default, any HTML formatting characters contained in the event's name and description strings are escaped to show the pure textual representation as defined by the strings, which makes it impossible to use HTML constructs for example to highlight certain portions of name or description. The escaping behavior can be turned off by assigning <SPAN class="code_area_values">false</SPAN> to the <SPAN class="attribute">escapeName</SPAN> and/or <SPAN class="attribute">escapeDescription</SPAN> attribute of the <SPAN class="tag">&lt;o:timetableEvent&gt;</SPAN> tag.<BR>
+The style for the whole name and description strings can be customized separately using the <SPAN class="attribute">nameStyle</SPAN>/<SPAN class="attribute">nameClass</SPAN> and <SPAN class="attribute">descriptionStyle</SPAN>/<SPAN class="attribute">descriptionClass</SPAN> attributes respectively.</P>
+
+<P>The <SPAN class="tag">&lt;o:timetableEvent&gt;</SPAN> tag also has a set of attributes allowing to specify client-side event handlers for the HTML element that displays the timetable event: <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>. There's also an additional timetable-event-specific <SPAN class="attribute">oncreate</SPAN> event, which is when a client-side representation element is created for each individual event. Each of these events receive the usual <SPAN class="attribute">event</SPAN> variable, though this <SPAN class="attribute">event</SPAN> variable has an additional field named <SPAN class="attribute">timetableEvent</SPAN>, which refers to the client-side timetable event object for which the event is triggered. See the <A href="#DayTable-ClientSideAPI">Client Side API</A> section for details on this object. This allows adding custom interactions for the event's HTML representation elements.</P>
+
+<H3><A name="DayTable-%22ReservedTime%22EventsAppearance"></A>&quot;Reserved Time&quot; Events Appearance</H3>
+
+<P>As it was mentioned in the <A href="#DayTable-ConfiguringDisplayedEvents">Configuring Displayed Events</A> section, there's a special type of events called &quot;reserved events&quot; and specified with <A href="../apiReference/org/openfaces/component/timetable/ReservedTimeEvent.html" rel="nofollow"><SPAN class="attribute">ReservedTimeEvent</SPAN></A> instances in the event list. These events are displayed in a special way: they don't have a name and description and have a separate set of attributes that customize their appearance:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="attribute">reservedTimeEventColor</SPAN> &ndash; the <A href="../apiReference/org/openfaces/component/timetable/ReservedTimeEvent.html" rel="nofollow"><SPAN class="attribute">ReservedTimeEvent</SPAN></A> class doesn't have the <SPAN class="attribute">color</SPAN> field, and all of the reserved time events are displayed with the color specified in this attribute.</LI>
+	<LI><SPAN class="attribute">reservedTimeEventStyle</SPAN>/<SPAN class="attribute">reservedTimeEventClass</SPAN> &ndash; specify the CSS style for all reserved time events. In particular, the <SPAN class="attribute">background</SPAN> CSS attribute will often be used to specify custom shading images.</LI>
+</UL>
+
+
+<H3><A name="DayTable-CustomizingEventActionBar"></A>Customizing Event Action Bar</H3>
+
+<P>The event action bar is an area that appears on the event's bottom side when hovering a mouse over the event element. It contains an auxiliary text that notifies of the &quot;click on edit&quot; behavior, and contains the event deletion button by default. The contents of the event action bar can be customized using the <SPAN class="tag">&lt;o:eventActionBar&gt;</SPAN> tag, which should be placed into the <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag.</P>
+
+<P>Like background color of the event element, background color of the event action bar and its buttons is calculated using the event's color. The intensity of the action bar's background color can be customized using the <SPAN class="attribute">backgroundIntensity</SPAN> attribute, and intensity for the various states of action bar's buttons is specified with the <SPAN class="attribute">actionRolloverBackgroundIntensity</SPAN>/<SPAN class="attribute">actionPressedBackgroundIntensity</SPAN> attributes. As usual, the style of the event action bar itself can be customized with the <SPAN class="attribute">style</SPAN>/<SPAN class="attribute">styleClass</SPAN> attributes.</P>
+
+<P>The text displayed in the action bar can be changed using the <SPAN class="attribute">noteText</SPAN> attribute. </P>
+
+<P>And the main feature of the action bar is an ability to specify event-specific actions. By default, it just contains the &quot;delete event&quot; action, but you can add more events and/or remove the default one by placing one of the following tags inside of the <SPAN class="tag">&lt;o:eventActionBar&gt;<FONT color="tag"></SPAN>:<BR>
+- <SPAN class="tag"></SPAN>deleteEventAction</FONT> &ndash; the standard event deletion action, which can be specified explicitly to customize its appearance or remove it at all (see below);</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="tag">eventAction</SPAN> &ndash; allows adding custom event actions.</LI>
+</UL>
+
+
+<P>When at least one action tag is added inside of <SPAN class="tag">&lt;o:eventActionBar&gt;</SPAN>, the default set of buttons (or just the &quot;delete&quot; button actually) is removed and replaced with the explicitly specified set of actions. In order to remove the default &quot;delete&quot; button you should place the <SPAN class="tag">deleteEventAction</SPAN> tag and specify its <SPAN class="attribute">rendered</SPAN> attribute with a value of <SPAN class="code_area_values">false</SPAN>. Each of the action tags has a set of attributes that specify its appearance: <SPAN class="attribute">style</SPAN>/<SPAN class="attribute">styleClass</SPAN>, <SPAN class="attribute">roilloverStyle</SPAN>/<SPAN class="attribute">rolloverClass</SPAN>, <SPAN class="attribute">pressedStyle</SPAN>/<SPAN class="attribute">pressedClass</SPAN> &ndash; for customizing the styles, and <SPAN class="attribute">imageUrl</SPAN>/<SPAN class="attribute">rolloverImageUrl</SPAN>/<SPAN class="attribute">pressedImageUrl</SPAN> for customizing action button's images in various state. There's also the <SPAN class="attribute">hint</SPAN> attribute, which specifies the tool tip text for the action button.</P>
+
+<P>The <SPAN class="tag">&lt;o:deleteEventAction&gt;</SPAN> tag has the <SPAN class="attribute">showConfirmation</SPAN> attribute, which as the name says defines whether the event deletion confirmation will be shown when pressing the action button.</P>
+
+<P>The <SPAN class="tag">&lt;o:eventAction&gt;</SPAN> tag has the usual attributes that are normally available for all button tags: <SPAN class="tag">acitonListener</SPAN> and <SPAN class="attribute">onclick</SPAN> for implementing server-side and client-side event handlers appropriately.</P>
+
+<H3><A name="DayTable-CustomizingEventDeletionConfirmation"></A>Customizing Event Deletion Confirmation</H3>
+
+<P>The appearance of the event deletion confirmation (if not turned off as described in the <A href="#DayTable-CustomizingEventActionBar">Customizing Event Action Bar</A> section above) can be customized by adding the <SPAN class="tag">&lt;o:confirmation&gt;</SPAN> tag to the <SPAN class="attribute">&quot;deleteEventConfirmation&quot;</SPAN> facet of the <SPAN class="tag">&lt;o:dayTable}</SPAN> tag and customizing its attributes appropriately. Here's an example:</P>
+<PRE class="code_area">&lt;o:dayTable ...&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;deleteEventConfirmation&quot;</SPAN>&gt;
+    &lt;o:confirmation message=<SPAN class="code_area_values">&quot;Removing event&quot;</SPAN> details=<SPAN class="code_area_values">&quot;Proceed with removing?&quot;</SPAN> okButtonText=<SPAN class="code_area_values">&quot;YES&quot;</SPAN> cancelButtonText=<SPAN class="code_area_values">&quot;NO&quot;</SPAN>/&gt;
+  &lt;/f:facet/&gt;
+  ...
+&lt;/o:dayTable&gt;</PRE>
+
+<H3><A name="DayTable-AttachingAdditionalEventAreas"></A>Attaching Additional Event Areas</H3>
+
+<P>If the standard output displayed in the event elements (name, description, action bar, etc.) is not enough, it is possible to attach custom output areas to event elements. This can be done by placing one or more <SPAN class="tag">&lt;o:eventArea&gt;</SPAN> tags inside of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. Each <SPAN class="tag">&lt;o:eventArea&gt;</SPAN> defines an area that should be attached to each event element. Here's a simple example:</P>
+<PRE class="code_area">&lt;o:dayTable id=<SPAN class="code_area_values">&quot;dayTable&quot;</SPAN> eventVar=<SPAN class="code_area_values">&quot;event&quot;</SPAN> ...&gt;
+  &lt;o:eventArea verticalAlignment=<SPAN class="code_area_values">&quot;above&quot;</SPAN>&gt;
+    &lt;o:commandLink render=<SPAN class="code_area_values">&quot;dayTable&quot;</SPAN> actionListener=<SPAN class="code_area_values">&quot;#{MyBean.postpone}&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Postpone #{event.name}&quot;</SPAN>/&gt;
+  &lt;/o:eventArea&gt;
+  ...
+&lt;/o:dayTable&gt;
+...
+
+<SPAN class="code-keyword">public</SPAN> void postpone(ActionEvent actionEvent) {
+  TimetableEvent event = Faces.<SPAN class="code-keyword">var</SPAN>(<SPAN class="code_area_values">&quot;event&quot;</SPAN>, TimetableEvent.class);
+  ...
+}</PRE>
+
+<P>As you can see in the example, you can place any components into the <SPAN class="tag">&lt;o:eventArea&gt;</SPAN> tag and those components can use the request-scope variable whose name is specified in the <SPAN class="attribute">eventVar</SPAN> attribute of the <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. This variable refers to the to the <SPAN class="attribute">TimetableEvent</SPAN> whose event area is currently being rendered. Similarly, you can use the same variable in the event handler code to discover the <SPAN class="attribute">TimetableEvent</SPAN> on which for which server-side event has been triggered. The <SPAN class="tag">&lt;o:eventArea&gt;</SPAN> tag has the following two attributes that define where the area is to be positioned relative to the event's rectangle: <SPAN class="attribute">horizontalAlignment</SPAN> and <SPAN class="attribute">verticalAlignment</SPAN>. The <SPAN class="attribute">horizontalAlignment</SPAN> attribute can take one of the following values:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="code_area_values">&quot;leftOutside&quot;</SPAN> &ndash; makes an area to be displayed to the left of an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;left&quot;</SPAN> &ndash; makes the left edge of an area to be algined with the left edge of an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;center&quot;</SPAN> &ndash; makes an area centered horizontally relative to an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;right&quot;</SPAN> &ndash; makes the right edge of an area to be algined with the right edge of an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;rightOutside&quot;</SPAN> &ndash; makes an area to be displayed to the right of an event rectangle rectangle.</LI>
+</UL>
+
+
+<P>And the <SPAN class="attribute">verticalAlignment</SPAN> attribute can take the following values:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="code_area_values">&quot;above&quot;</SPAN> &ndash; makes an area to be displayed above an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;top&quot;</SPAN> &ndash; makes the top edge of an area to be algined with the top edge of an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;center&quot;</SPAN> &ndash; makes an area centered vertically relative to an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;bottom&quot;</SPAN> &ndash; makes the bottom edge of an area to be algined with the bottom edge of an event rectangle.</LI>
+	<LI><SPAN class="code_area_values">&quot;below&quot;</SPAN> &ndash; makes an area to be displayed below an event rectangle.</LI>
+</UL>
+
+
+<P>The event area doesn't have any style of its own by default, though you can specify one using the <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> attributes. As usual, there's also the client-side event handler attributes: <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>.</P>
+
+<P>It is possible to attach several event areas by specifying several <SPAN class="attribute">&lt;o:eventArea&gt;</SPAN> tags.</P>
+
+<H3><A name="DayTable-DisplayingEventPreview"></A>Displaying Event Preview</H3>
+
+<P>In certain application scenarios, event description can be quite a long one and since event height is identified by event's duration it might not be possible to read the full description in some cases. This can be solved by displaying the &quot;event preview&quot; area when the mouse hovers over an event for some time. This functionality can be turned on by placing the <SPAN class="tag">&lt;o:eventPreview&gt;</SPAN> tag to the <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. </P>
+
+<P>Adding this tag will make the event preview rectangle to be displayed above the element automatically when the mouse hovers over the event for a while. The event preview area will show the full event name and description. The delay after which the preview is shown can be customized by specifying the appropriate number of milliseconds in the <SPAN class="attribute">showingDelay</SPAN> tag of the <SPAN class="tag">&lt;o:eventPreview&gt;</SPAN> tag. The position relative to the event rectangle is customized with the <SPAN class="attribute">horizontalAlignment</SPAN> and <SPAN class="attribute">verticalAlignment</SPAN> attributes, which have the same values as the analogous attributes of the <SPAN class="attribute">eventArea</SPAN> tag described in the <A href="#DayTable-AttachingAdditionalEventAreas">Attaching Additional Event Areas</A> section above. In addition to the alignment attributes, it's also possible to specify the distance between the event rectangle and the event preview rectangle using the <SPAN class="attribute">horizontalDistance</SPAN> and <SPAN class="attribute">verticalDistance</SPAN> attributes. The event preview is automatically hidden when the user moves the mouse pointer out of the event rectangle.</P>
+
+<P>The style for the event preview itself can be customized with the <SPAN class="attribute">style</SPAN>/<SPAN class="attribute">styleClass</SPAN> attributes, and the style for event name and description with the <SPAN class="attribute">eventNameStyle</SPAN>/<SPAN class="attribute">eventNameClass</SPAN> and <SPAN class="attribute">eventDescriptionStyle</SPAN>/<SPAN class="attribute">eventDescriptionClass</SPAN> respectively.</P>
+
+<H3><A name="DayTable-CustomizingEffects"></A>Customizing Effects</H3>
+
+<P>The <CITE>DayTable</CITE> component smoothens transition between time-slots when using event drag&amp;drop. That is, when a user drags an event to another time slot, the event doesn't &quot;jump&quot; to the new position instantaneously but is gradually moved to the new position. The speed of this transition can be customized with the <SPAN class="attribute">dragAndDropTransitionPeriod</SPAN> attribute which accepts the transition duration as a number in milliseconds. The default value is <SPAN class="code_area_values">70</SPAN>. You can turn off smooth transition by specifying <SPAN class="code_area_values">0</SPAN> as the value for this attribute. </P>
+
+<P>When time-overlapping events are disabled with the <SPAN class="attribute">overlappedEventsAllowed</SPAN> attribute of the <SPAN class="tag">&lt;o:timetableEditingOptions&gt;</SPAN> tag, and the user is trying to drag an event over another event or resize it so that it becomes overlapped with some other event, the <CITE>DayTable</CITE> returns the event to its original position as it was before moving/resizing. This is also done by gradual transition of event's rectangle instead of just &quot;jumping&quot; to the original place, and the duration for this transition is customizible with the <SPAN class="attribute">dragAndDropCancelingPeriod</SPAN>. </P>
+
+<P>In addition, while a user is dragging an event and it is an &quot;undroppable&quot; position (that is over another event), the <CITE>DayTable</CITE> makes the dragged event semitransparent to let the user know of this situation. The transparency level for the &quot;undroppable&quot; state can be customized with the <SPAN class="attribute">undroppableEventTransparency</SPAN> attribute (as a double number in range <SPAN class="attribute">0..1</SPAN>), and the gradual transition period to and from &quot;undroppable&quot; state is customizible with the <SPAN class="attribute">undroppableStateTransitionPeriod</SPAN> attribute.</P>
+
+<H2><A name="DayTable-CustomizingEventEditor"></A>Customizing Event Editor</H2>
+
+<P>When a user clicks an event of an editable DayTable or clicks an empty area to create a new event, the event editor is shown. The default behavior is showing a dialog for event editing, though the kind of event editor and its appearance can be customized using the <SPAN class="attribute">&quot;eventEditor&quot;</SPAN> facet of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. There are two kinds of event editors that can be specified in this facet:</P>
+<UL class="alternate" type="square">
+	<LI>Event editor dialog, which is specified by the <SPAN class="tag">&lt;o:eventEditorDialog&gt;</SPAN> tag. This is the default kind of event editor, though you use this tag explicitly to customize the dialog.</LI>
+	<LI>Event editor page, which is specified by the <SPAN class="tag">&lt;o:eventEditorPage&gt;</SPAN> tag. Displays a custom event editor page instead of the dialog when a user clicks on an event.</LI>
+</UL>
+
+
+<H3><A name="DayTable-EventEditorDialog"></A>Event Editor Dialog</H3>
+
+<P>You can customize the default event editor dialog by placing the <SPAN class="tag">&lt;o:eventEditorDialog&gt;</SPAN> tag into the <SPAN class="attribute">&quot;eventEditor&quot;</SPAN> facet of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. </P>
+
+<P>Event editor dialog is displayed as a modal window, so most of the customization settings available for the Window component are available for the EventEditorDialog component as well. That is you can customize window options with the following attributes: </P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="attribute">draggable</SPAN> and <SPAN class="attribute">draggableByContent</SPAN> for customizing if and how an editor window can be dragged around on the page (by default, <SPAN class="attribute">draggable</SPAN> is <SPAN class="code_area_values">true</SPAN> and <SPAN class="attribute">draggableByContent</SPAN> is <SPAN class="code_area_values">false</SPAN>, which means that the window can be dragged by window's caption);</LI>
+	<LI><SPAN class="attribute">resizable</SPAN> for specifying whether the window is resizable (<SPAN class="code_area_values">true</SPAN> by default);</LI>
+	<LI><SPAN class="attribute">left</SPAN>/<SPAN class="attribute">top</SPAN> for customizing the default position of the editor window;</LI>
+	<LI><SPAN class="attribute">style</SPAN>/<SPAN class="attribute">styleClass</SPAN>, <SPAN class="attribute">rolloverStyle</SPAN>/<SPAN class="attribute">rolloverClass</SPAN> for customizing style for the entire window;</LI>
+	<LI><SPAN class="attribute">width</SPAN>/<SPAN class="attribute">height</SPAN> and <SPAN class="attribute">minWidth</SPAN>/<SPAN class="attribute">minHeight</SPAN> for customizing the default size and the minimal size for the editor window respectively;</LI>
+	<LI><SPAN class="attribute">modalLayerStyle</SPAN>/<SPAN class="attribute">modalLayerClass</SPAN> for customizing the style of the background layer that covers the page when the window is shown;</LI>
+	<LI><SPAN class="attribute">captionStyle</SPAN>/<SPAN class="attribute">captionClass</SPAN> and <SPAN class="attribute">contentStyle</SPAN>/<SPAN class="attribute">contentClass</SPAN> for customizing styles for window's caption area content areas respectively.</LI>
+</UL>
+
+
+<P>The window's caption can be customized with the <SPAN class="attribute">createEventCaption</SPAN> and <SPAN class="attribute">editEventCaption</SPAN> attributes which specify a caption text to be shown in an editor window in case of creating a new event and editing an existing event respectively.</P>
+
+<P>The texts for field labels and buttons in the editor dialog can be customized with the following attributes: <SPAN class="attribute">nameLabel</SPAN>, <SPAN class="attribute">resourceLabel</SPAN>, <SPAN class="attribute">startLabel</SPAN>, <SPAN class="attribute">endLabel</SPAN>, <SPAN class="attribute">descriptionLabel</SPAN>, <SPAN class="attribute">okButtonText</SPAN>, <SPAN class="attribute">cancelButtonText</SPAN>, and <SPAN class="attribute">deleteButtonText</SPAN>.</P>
+
+<P>Style for the labels can be customized using the <SPAN class="attribute">labelStyle</SPAN>/<SPAN class="attribute">labelClass</SPAN> attributes. Button styles are customizeable using the following attributes: <SPAN class="attribute">okButtonStyle</SPAN>/<SPAN class="attribute">okButtonClass</SPAN>, <SPAN class="attribute">cancelButtonStyle</SPAN>/<SPAN class="attribute">cancelButtonClass</SPAN>, <SPAN class="attribute">deleteButtonStyle</SPAN>/<SPAN class="attribute">deleteButtonClass</SPAN>.</P>
+
+<P>You can customize the style and appearance of all editing fields by placing the properly customized components into the appropriate facets as shown below. Note that no data-specific configuration should be performed when declaring the components because the data is managed by the dialog automatically. Instead, you can specify the style and appearance-related attributes to make these components look in an application-specific manner.</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="attribute">&quot;nameField&quot;</SPAN> facet. Accepts <SPAN class="tag">&lt;h:inputText&gt;</SPAN> or <SPAN class="tag">&lt;o:inputText&gt;</SPAN> components.</LI>
+	<LI><SPAN class="attribute">&quot;resourceField&quot;</SPAN> facet. Accepts <SPAN class="tag">&lt;o:dropDownField&gt;</SPAN> component.</LI>
+	<LI><SPAN class="attribute">&quot;startDateField&quot;</SPAN> and <SPAN class="attribute">&quot;endDateField&quot;</SPAN> facets. Accept <SPAN class="tag">&lt;o:dateChooser&gt;</SPAN> components.</LI>
+	<LI><SPAN class="attribute">&quot;startTimeField&quot;</SPAN> and <SPAN class="attribute">&quot;endTimeField&quot;</SPAN> facets. Accept <SPAN class="tag">&lt;h:inputText&gt;</SPAN> or <SPAN class="tag">&lt;o:inputText&gt;</SPAN> components.</LI>
+	<LI><SPAN class="attribute">&quot;descriptionArea&quot;</SPAN> facet. Accepts <SPAN class="tag">&lt;h:inputTextarea&gt;</SPAN> or <SPAN class="tag">&lt;o:inputTextarea&gt;</SPAN> components.</LI>
+</UL>
+
+
+<P>Here's an example that demonstrates customizing editor dialog's caption, labels and some of the editor fields:</P>
+<PRE class="code_area">&lt;o:dayTable ...&gt;
+  &lt;f:facet name=<SPAN class="code_area_values">&quot;eventEditor&quot;</SPAN>&gt;
+    &lt;o:eventEditorDialog labelStyle=<SPAN class="code_area_values">&quot;font: normal 10pt Tahoma, Arial; color: darkgrey&quot;</SPAN> 
+            captionStyle=<SPAN class="code_area_values">&quot;font: normal 12pt Tahoma, Arial; color: darkgrey&quot;</SPAN>
+            deleteButtonStyle=<SPAN class="code_area_values">&quot;color: red;&quot;</SPAN>&gt;
+      &lt;f:facet name=<SPAN class="code_area_values">&quot;nameField&quot;</SPAN>&gt;
+        &lt;h:inputText style=<SPAN class="code_area_values">&quot;color: blue&quot;</SPAN>/&gt;
+      &lt;/f:facet&gt;
+      &lt;f:facet name=<SPAN class="code_area_values">&quot;startDateField&quot;</SPAN>&gt;
+        &lt;o:dateChooser fieldStyle=<SPAN class="code_area_values">&quot;color: blue&quot;</SPAN> calendarStyle=<SPAN class="code_area_values">&quot;border: 1px solid blue&quot;</SPAN>/&gt;
+      &lt;/f:facet&gt;
+      &lt;f:facet name=<SPAN class="code_area_values">&quot;descriptionArea&quot;</SPAN>&gt;
+        &lt;o:inputTextarea promptText=<SPAN class="code_area_values">&quot;Enter event description here&quot;</SPAN>/&gt;
+      &lt;/f:facet&gt;
+    &lt;/o:eventEditorDialog&gt;
+  &lt;/f:facet&gt;
+  ...
+&lt;/o:dayTable&gt;</PRE>
+<P>Like the ordinary Window component, the event editor dialog has all of the standard events (<SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onkeydown</SPAN>, <SPAN class="attribute">onkeyup</SPAN>, <SPAN class="attribute">onhkeypress</SPAN>), and two custom events <SPAN class="attribute">onshow</SPAN> and <SPAN class="attribute">onhide</SPAN> that are fired when the window is shown and hidden respectively.</P>
+
+<H3><A name="DayTable-EventEditorPage"></A>Event Editor Page</H3>
+
+<P>You can replace the standard event editor dialog with a custom page for editing an event by placing the <SPAN class="tag">&lt;o:eventEditorPage&gt;</SPAN> tag into the <SPAN class="attribute">&quot;eventEditor&quot;</SPAN> facet of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag.</P>
+
+<P>You can specify the actual event editor page in two ways:</P>
+<UL>
+	<LI>using the <SPAN class="attribute">url</SPAN> attribute where you should specify a url of the editor page just like you would specify in an output link, or</LI>
+	<LI>using the <SPAN class="attribute">action</SPAN> attribute that allows executing an action on the server before showing the editor page. This attribute should be specified in the same way as the action attribute of <SPAN class="tag">&lt;h:commandLink&gt;</SPAN> tag, which means that the backing bean method should return a proper navigation string that will lead to the actual editor page.</LI>
+</UL>
+
+
+<P>All of the parameters of the edited (or created) event are passed in the following request parameters:</P>
+<UL>
+	<LI>&quot;mode&quot; parameter. Specifies the kind of editing that the user has requested &ndash; event creation (&quot;create&quot; value), or event * editing (&quot;update&quot; value). (&#42;)</LI>
+	<LI>&quot;eventId&quot; parameter. Applicable only for the &quot;update&quot; mode, e.g. when the user is editing an event. Specifies id of the event that should be edited. (&#42;)</LI>
+	<LI>&quot;eventStart&quot; parameter. Applicable only for the &quot;create&quot; mode, e.g. when the user is creating an event. Specifies the start time of the created event according to the user's click in the &quot;dd/MM/yyyy HH:mm&quot; format.(&#42;&#42;)</LI>
+	<LI>&quot;eventEnd&quot; parameter. Applicable only for the &quot;create&quot; mode, e.g. when the user is creating an event. Specifies the end time of the created event according to the user's click in the &quot;dd/MM/yyyy HH:mm&quot; format.(&#42;&#42;)</LI>
+	<LI>&quot;resourceId&quot; parameter. Applicable only for the &quot;create&quot; mode, e.g. when the user is creating an event. Specifies the resource id for the created event according to the user's click. You can ingnore this parameter for DayTables where resource separation is not used. (&#42;)</LI>
+</UL>
+
+
+<P>(&#42;) You can simplify retrieving the request parameters by using the <SPAN class="attribute">org.openfaces.util.Faces.var(String varName)</SPAN> function.<BR>
+(&#42;&#42;) You can simplify retrieving the request parameters formatted as date in the mentioned format by using the <SPAN class="attribute">org.openfaces.util.Faces.requestParam(String paramName, Class&lt;T&gt; expectedType)</SPAN> function, e.g. <SPAN class="attribute">Faces.requestParam(&quot;eventStart&quot;, Date.class)</SPAN>.</P>
+
+<P>Note that these are passed as request parameters to the first request of the specified page and are not resubmitted automatically upon with a next request, so you'll need to save them in a &quot;session&quot; or another appropriate scope to save these parameters between requests.</P>
+
+<P>Your custom editor page should process these parameters and configure the editing components appropriately. You can use the provided eventId for retrieval of all data data for the edited event.</P>
+
+<P>Upon pressing on the &quot;Save&quot; button (or any analog on your page) you should manually update the underlying data storage for the DayTable component (or add a new event in case of event creation) and navigate back to the DayTable page.</P>
+
+<H3><A name="DayTable-CustomEventEditor"></A>Custom Event Editor</H3>
+
+<P>You can create a custom event editor by placing the <SPAN class="tag">&lt;o:customEventEditor&gt;</SPAN> tag into the <SPAN class="attribute">&quot;eventEditor&quot;</SPAN> facet of <SPAN class="tag">&lt;o:dayTable&gt;</SPAN> tag. This tag has the following two attributes:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="attribute">oncreate</SPAN>: specifies the JavaScript code that should show the event editor for creating a new event according to the passed parameters.</LI>
+	<LI><SPAN class="attribute">onedit</SPAN>: specifies the JavaScript code that should show the event editor for editing an existing event according to the passed parameters.</LI>
+</UL>
+
+
+<P>In both cases the code specified in these attributes has access to following variables</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="attribute">timetable</SPAN>: a reference to the <CITE>DayTable</CITE> component for which the editor is invoked.</LI>
+	<LI><SPAN class="attribute">timetableEvent</SPAN>: a reference to the timetable event object that should be edited. In case of event editing it contains the current data of the appropriate event, and in case of event creation this object contains just the start and end times according to user's click.</LI>
+</UL>
+
+
+<P>The custom event editor should update the passed <SPAN class="attribute">timetableEvent</SPAN> instance and invoke the following client-side methods of <CITE>DayTable</CITE> component depending on situation:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="attribute">addEvent(event)</SPAN> when editing is finished on adding a new event and event should actually be created. This method will update event presentation and save data to the server if required by the current editing settings.</LI>
+	<LI><SPAN class="attribute">cancelEventCreation(event)</SPAN> when event creation is canceled within the custom editor. This method should be invoked to hide the temporary event presentation that was shown when a user clicked on a timetable to create an event. This method shouldn't be invoked when editor is shown for an existing event, or when a user confirms editing.</LI>
+	<LI><SPAN class="attribute">updateEvent(event)</SPAN> when editing for an existing event is completed and the appropriate timetable event fields are updated. This method will update event presentation and save data to the server if required by the current editing settings.</LI>
+	<LI><SPAN class="attribute">deleteEvent(event)</SPAN> if an event should be deleted.</LI>
+</UL>
+
+
+<P>See the <A href="#DayTable-ClientSideAPI">Client&#45;Side API</A> section for the description of all <CITE>DayTable</CITE>'s client-side methods and event object fields.</P>
+
+<H2><A name="DayTable-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods for the <CITE>DayTable</CITE> component are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getDay()</SPAN> </TD>
+<TD> Returns a <SPAN class="attribute">Date</SPAN> object that defines a day currently selected in the <CITE>DayTable</CITE> component. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setDay(day)</SPAN> </TD>
+<TD> Switches the currently displayed day for the <CITE>DayTable</CITE> component. The <SPAN class="attribute">day</SPAN> parameter should be a JavaScript <SPAN class="attribute">Date</SPAN> object. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">nextDay()</SPAN> </TD>
+<TD> Switches the currently displayed day in the <CITE>DayTable</CITE> component to the next day. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">previousDay()</SPAN> </TD>
+<TD> Switches the currently displayed day in the <CITE>DayTable</CITE> component to the previous day. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">today()</SPAN> </TD>
+<TD> Switches the currently displayed day in the <CITE>DayTable</CITE> component to today. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">updateLayout()</SPAN> </TD>
+<TD> Updates layout for visible events in the <CITE>DayTable</CITE> component. This function can be useful in case of page layout changes where the size of <CITE>DayTable</CITE> is affected, and thus events might need a relayout. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">saveChanges()</SPAN> </TD>
+<TD> Sends all unsaved changes to the server and updates all events for the current day. This can particularly be useful for ??DayTable??s with <SPAN class="attribute">autoSaveChanges</SPAN> set to <SPAN class="code_area_values">false</SPAN> in <SPAN class="tag">&lt;o:timetableEditingOptions&gt;</SPAN>. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">refreshEvents(serverAction)</SPAN> </TD>
+<TD> Reloads the displayed events from the server and invokes the specified server action as part of the request. The <SPAN class="attribute">serverAction</SPAN> parameter should be specified in the <SPAN class="code_area_values">&quot;Bean.methodName&quot;</SPAN> format. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getEventById(eventId)</SPAN> </TD>
+<TD>&nbsp;</TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">addEvent(event)</SPAN> </TD>
+<TD> Adds a timetable event as specified by the passed event object (see below). The added event is also asynchronously saved in case when <SPAN class="attribute">autoSaveChanges</SPAN> attribute of <SPAN class="tag">&lt;o:timetableEditingOptions&gt;</SPAN> is set to <SPAN class="code_area_values">true</SPAN>. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">updateEvent(event)</SPAN> </TD>
+<TD> Accepts a timetable event object that exists in a timetable though contains some unsaved modifications. This method makes the changes in the passed event to be picked up and displayed appropriately. This method also asynchronously sends the modifications to the server if <SPAN class="attribute">autoSaveChanges</SPAN> attribute of <SPAN class="tag">&lt;o:timetableEditingOptions&gt;</SPAN> is set to <SPAN class="code_area_values">true</SPAN>. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">deleteEvent(event)</SPAN> </TD>
+<TD> Deletes the specified event from a timetable. This method asynchronously sends this modification to the server if <SPAN class="attribute">autoSaveChanges</SPAN> attribute of <SPAN class="tag">&lt;o:timetableEditingOptions&gt;</SPAN> is set to <SPAN class="code_area_values">true</SPAN>. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">cancelEventCreation(event)</SPAN> </TD>
+<TD> This method should be invoked when canceling an event creation in a custom event editor to remove the temporary event presentation. </TD>
+</TR>
+</TBODY></TABLE>
+
+<P>The client-side timetable event objects manipulated by the methods mentioned above are direct counterparts of server-side <SPAN class="attribute"><A href="../apiReference/org/openfaces/component/timetable/TimetableEvent.html" rel="nofollow">TimetableEvent</A></SPAN> instances. The timetable event objects have the following structure:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Member </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">id</SPAN> </TD>
+<TD> String identifier of this event. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">id</SPAN> attribute. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">name</SPAN> </TD>
+<TD> Event name. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">name</SPAN> attribute. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">description</SPAN> </TD>
+<TD> Event description. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">description</SPAN> attribute. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">resourceId</SPAN> </TD>
+<TD> If specified, defines string identifier of a resource to which this event is assigned. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">resourceId</SPAN> attribute. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">start</SPAN> </TD>
+<TD> Event start time as a JavaScript <SPAN class="attribute">Date</SPAN> object. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">start</SPAN> attribute.  </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">end</SPAN> </TD>
+<TD> Event end time as a JavaScript <SPAN class="attribute">Date</SPAN> object. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">end</SPAN> attribute. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">color</SPAN> </TD>
+<TD> An optional event color string as a hexadecimal value in a form <SPAN class="attribute">#RRGGBB</SPAN>, e.g.<SPAN class="code_area_values">&quot;#80FFB0&quot;</SPAN>. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">color</SPAN> attribute. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">customProperties</SPAN> </TD>
+<TD> Associative JavaScript array of custom event's custom properties. This field can be undefined if an event has no custom properties. Counterpart of <SPAN class="attribute">TimetableEvent</SPAN>'s <SPAN class="attribute">customProperties</SPAN> attribute. Note that changes made in the custom properties array on the client-side are not sent back to the server as part of the saved data. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">type</SPAN> </TD>
+<TD> Defines the type of an event. It is equal to <SPAN class="code_area_values">&quot;reserved&quot;</SPAN> for reserved time events and is undefined for ordinary events. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">mainElement</SPAN> </TD>
+<TD> A reference to a DOM element that displays this event. This variable can be undefined if a corresponding event is not being shown on the currently displayed day. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">backgroundElement</SPAN> </TD>
+<TD> A reference to an additional DOM element that displays a background this event. This variable can be undefined if a corresponding event is not being shown on the currently displayed day. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">updatePresentation()</SPAN> </TD>
+<TD> Updates presentation for this event according to the current state of this event's fields. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

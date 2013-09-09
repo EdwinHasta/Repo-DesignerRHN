@@ -1,0 +1,305 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>BorderLayoutPanel &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>BorderLayoutPanel</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#BorderLayoutPanel-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#BorderLayoutPanel-DefiningtheContent">Defining the Content</A></LI>
+<UL>
+    <LI><A href="#BorderLayoutPanel-PositioningSidePanels">Positioning Side Panels</A></LI>
+    <LI><A href="#BorderLayoutPanel-Resizing">Resizing</A></LI>
+</UL>
+    <LI><A href="#BorderLayoutPanel-SidePanelPlacementRules">SidePanel Placement Rules</A></LI>
+    <LI><A href="#BorderLayoutPanel-Nested%3F%3FBorderLayoutPanel%3F%3Fs">Nested ??BorderLayoutPanel??s</A></LI>
+    <LI><A href="#BorderLayoutPanel-CustomizingtheAppearance">Customizing the Appearance</A></LI>
+    <LI><A href="#BorderLayoutPanel-ClientSideEvents">Client-Side Events</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>BorderLayoutPanel</CITE> component is a container used to layout groups of components by container's edges. The separators between component groups can either be fixed to introduce a static layout, or can be made draggable and/or collapsible to make a dynamic layout.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/borderlayout.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/panel/BorderLayoutPanel.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/borderLayoutPanel.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/borderlayoutpanel/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="BorderLayoutPanel-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI>Static border layout</LI>
+	<LI>Side panel resizing</LI>
+	<LI>Side panel collapsing</LI>
+	<LI>Side panel captions</LI>
+	<LI>Nesting BorderLayoutPanels for complex layouts</LI>
+</UL>
+
+
+<H2><A name="BorderLayoutPanel-DefiningtheContent"></A>Defining the Content</H2>
+
+<P>The <SPAN class="tag">&lt;o:borderLayoutPanel&gt;</SPAN> tag can be used to add the <CITE>BorderLayoutPanel</CITE> component to a page. You can create a group of components aligned within a <CITE>BorderLayoutPanel</CITE> component using a <CITE>SidePanel</CITE>.</P>
+
+<P><CITE>SidePanel</CITE> is a container that can be placed inside of <CITE>BorderLayoutPanel</CITE> to layout one or more components near one of <CITE>BorderLayoutPanel's</CITE> edges. The user can change <CITE>SidePanel</CITE>'s size by dragging its splitter if <CITE>SidePanel</CITE> is configured to be resizable (see the <A href="#BorderLayoutPanel-Resizing">Resizing</A> section below). A <CITE>SidePanel</CITE> is created by placing the <SPAN class="tag">&lt;o:sidePanel&gt;</SPAN> tag inside of the <SPAN class="tag">&lt;o:borderLayoutPanel&gt;</SPAN> tag and specifying its <SPAN class="attribute">alignment</SPAN> attribute to specify the <CITE>BorderLayoutPanel</CITE>'s edge where this panel should be placed. It is possible to place several ??SidePanel??s with the same alignment, which will result placing these components side by side in the specified alignment area (see <A href="#BorderLayoutPanel-SidePanelPlacementRules">SidePanel Placement Rules</A> section below).</P>
+
+<P>You can also add any content to the area in the center of <CITE>BorderLayoutPanel</CITE> that is not occupied by any ??SidePanel??s by adding child components right into the <SPAN class="tag">&lt;o:borderLayputPanel&gt;</SPAN> tag.</P>
+
+<P>In the example below, the <CITE>BorderLayoutPanel</CITE> component is split into two parts by placing one <CITE>SidePanel</CITE> and specifying child components of <CITE>BorderLayoutPanel</CITE> component.</P>
+<PRE class="code_area">&lt;o:borderLayoutPanel&gt;
+
+  &lt;o:sidePanel alignment=<SPAN class="code_area_values">&quot;left&quot;</SPAN> size=<SPAN class="code_area_values">&quot;50%&quot;</SPAN>&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;Left side content area&quot;</SPAN>/&gt;
+  &lt;/o:sidePanel&gt;
+
+  &lt;h:outputText value=<SPAN class="code_area_values">&quot;Right side content area&quot;</SPAN>/&gt;
+
+&lt;/o:borderLayoutPanel&gt;</PRE>
+<P>You can specify the caption of <CITE>SidePanel</CITE> component using by using the <SPAN class="attribute">caption</SPAN> attribute for text caption or <SPAN class="attribute">&quot;caption&quot;</SPAN> facet for more complex caption content.</P>
+<PRE class="code_area">&lt;o:sidePanel caption=<SPAN class="code_area_values">&quot;SidePanel caption&quot;</SPAN>&gt;
+
+  &lt;h:outputText value=<SPAN class="code_area_values">&quot;SidePanel content&quot;</SPAN>&gt;
+
+&lt;/o:sidePanel&gt;</PRE>
+
+<H3><A name="BorderLayoutPanel-PositioningSidePanels"></A>Positioning Side Panels</H3>
+
+<P>The <SPAN class="tag">&lt;o:sidePanel&gt;</SPAN> tag has two special attributes: <SPAN class="attribute">alignment</SPAN> and <SPAN class="attribute">size</SPAN>.<BR>
+The <SPAN class="attribute">alignment</SPAN> attribute specifies an edge of <CITE>BorderLayoutPanel</CITE> to which this <CITE>SidePanel</CITE> should be aligned. It can take one of the following values: <SPAN class="code_area_values">&quot;left&quot;</SPAN>, <SPAN class="code_area_values">&quot;right&quot;</SPAN>, <SPAN class="code_area_values">&quot;top&quot;</SPAN> or <SPAN class="code_area_values">&quot;bottom&quot;</SPAN>. By default, it is set to <SPAN class="code_area_values">&quot;left&quot;</SPAN>.<BR>
+The <SPAN class="attribute">size</SPAN> attribute specifies width of <CITE>SidePanel</CITE> when its <SPAN class="attribute">alignment</SPAN> is <SPAN class="code_area_values">&quot;left&quot;</SPAN> or <SPAN class="code_area_values">&quot;right&quot;</SPAN> or height when its <SPAN class="attribute">alignment</SPAN> is <SPAN class="code_area_values">&quot;top&quot;</SPAN> or <SPAN class="code_area_values">&quot;bottom&quot;</SPAN>. You can specify <SPAN class="attribute">size</SPAN> attribute in any CSS units including percent values. The <CITE>SidePanel</CITE>'s size can also be limited using <SPAN class="attribute">minSize</SPAN> or <SPAN class="attribute">maxSize</SPAN> attributes, which is useful for resizable panels (see the <A href="#BorderLayoutPanel-Resizing">Resizing</A> section below). By default, <SPAN class="attribute">size</SPAN> is set to <SPAN class="code_area_values">&quot;50%&quot;</SPAN>, <SPAN class="attribute">maxSize</SPAN> is set to <SPAN class="code_area_values">&quot;100%&quot;</SPAN> and <SPAN class="attribute">minSize</SPAN> is equal to zero.</P>
+
+<P>Here's an example of using these attributes:</P>
+<PRE class="code_area">&lt;o:borderLayoutPanel&gt;
+
+  &lt;o:sidePanel alignment=<SPAN class="code_area_values">&quot;top&quot;</SPAN> size=<SPAN class="code_area_values">&quot;150px&quot;</SPAN> minSize=<SPAN class="code_area_values">&quot;300px&quot;</SPAN> maxSize=<SPAN class="code_area_values">&quot;50%&quot;</SPAN>&gt;
+   ...
+  &lt;/o:sidePanel&gt;
+
+&lt;/o:borderLayoutPanel&gt;</PRE>
+
+<H3><A name="BorderLayoutPanel-Resizing"></A>Resizing</H3>
+
+<P>Each <CITE>SidePanel</CITE> can optionally be configured to have resizing capability by dragging the panel's separator, and/or expanding/collapsing capability by clicking on the separator.</P>
+
+<P>By default, resizing capability is turned on, so no additional actions are required if you intend to make a dynamic layout. Though if you're creating a static layout, you can disable the resizing capability by setting the <CITE>SidePanel</CITE>'s <SPAN class="attribute">resizable</SPAN> attribute to <SPAN class="code_area_values">&quot;false&quot;</SPAN>.<BR>
+The expanding/collapsing capability is turned on by default as well. Though you can disable this feature by specifying the <CITE>SidePanel</CITE>'s <SPAN class="attribute">collapsible</SPAN> attribute to <SPAN class="code_area_values">&quot;false&quot;</SPAN>.</P>
+
+<P>Here's an example of how to create &quot;collapsible only&quot; and &quot;fixed size&quot; ??SidePanel??s:</P>
+<PRE class="code_area">&lt;o:borderLayoutPanel&gt;
+
+  &lt;o:sidePanel resizable=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">false</SPAN>&quot;</SPAN>&gt;
+    This is a collapsible, but non-resizable SidePanel
+  &lt;/o:sidePanel&gt;
+
+  &lt;o:sidePanel resizable=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">false</SPAN>&quot;</SPAN> collapsible=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">false</SPAN>&quot;</SPAN>&gt;
+    This is a fixed size SidePanel
+  &lt;/o:sidePanel&gt;
+&lt;/o:borderLayoutPanel&gt;</PRE>
+
+<H2><A name="BorderLayoutPanel-SidePanelPlacementRules"></A>SidePanel Placement Rules</H2>
+
+<P>The <CITE>BorderLayoutPanel</CITE> is a container for <CITE>SidePanel</CITE> components, and here are the <CITE>SidePanel</CITE> placement rules:</P>
+<UL>
+	<LI>Any <CITE>BorderLayoutPanel</CITE> can contain any number of ??SidePanel??s.</LI>
+	<LI><SPAN class="code_area_values">&quot;top&quot;</SPAN> and <SPAN class="code_area_values">&quot;bottom&quot;</SPAN> aligned <CITE>SidePanel</CITE> components have a priority over the <SPAN class="code_area_values">&quot;left&quot;</SPAN> and <SPAN class="code_area_values">&quot;right&quot;</SPAN> aligned ones, so they occupy 100% of <CITE>BorderLayoutPanel</CITE> inner width, whereas <SPAN class="code_area_values">&quot;left&quot;</SPAN> or <SPAN class="code_area_values">&quot;right&quot;</SPAN> aligned <CITE>SidePanel</CITE> components will occupy <CITE>BorderLayoutPanel</CITE>'s space that remained after placing the top and bottom-aligned areas.</LI>
+	<LI>In a case when several <CITE>SidePanel</CITE> components with the same alignment were placed into the same <CITE>BorderLayoutPanel</CITE> the <CITE>SidePanel</CITE> that are declared earlier in the list of <CITE>BorderLayoutPanel</CITE> children will be placed closer to the appropriate edge of the <CITE>BorderLayoutPanel</CITE> component.</LI>
+</UL>
+
+
+<H2><A name="BorderLayoutPanel-Nested%3F%3FBorderLayoutPanel%3F%3Fs"></A>Nested ??BorderLayoutPanel??s</H2>
+
+<P>The <CITE>BorderLayoutPanel</CITE> component provides an ability to create quite common kind of layouts where components are aligned by container's edges, though in some cases this basic layout is not enough. An example is a typical layout of desktop mail reading applications, where a screen is separated onto three parts: the left area contains the list of mail folders, and the right area is vertically separated onto two areas, where the the top one lists e-mails in the current folder, and the bottom one displays the selected e-mail. These use cases can be addressed using the feature of nested <CITE>BorderLayoutPanel</CITE> components.</P>
+
+<P>Here's an example demonstrating the E-mail reader layout described above:</P>
+<PRE class="code_area">&lt;o:borderLayoutPanel&gt;
+
+  &lt;o:sidePanel id=<SPAN class="code_area_values">&quot;folderList&quot;</SPAN> alignment=<SPAN class="code_area_values">&quot;left&quot;</SPAN> size=<SPAN class="code_area_values">&quot;35%&quot;</SPAN>&gt;
+    ...
+  &lt;/o:sidePanel&gt;
+
+  &lt;o:borderLayoutPanel&gt;
+    &lt;o:sidePanel id=<SPAN class="code_area_values">&quot;emilList&quot;</SPAN> alignment=<SPAN class="code_area_values">&quot;top&quot;</SPAN>&gt;
+      ...
+    &lt;/o:sidePanel&gt;
+
+    &lt;f:panelGroup id=<SPAN class="code_area_values">&quot;emailPreview&quot;</SPAN>&gt;
+      ...
+    &lt;/f:panelGroup&gt;
+  &lt;/o:borderLayoutPanel&gt;
+
+&lt;/o:borderLayoutPanel&gt;</PRE>
+<P>This way you can place <SPAN class="tag">&lt;o:borderLayoutPanel&gt;</SPAN> tags inside of <CITE>SidePanel??s to make an arbitrary hierarchy of ??BorderLayoutPanel</CITE> components.</P>
+
+<H2><A name="BorderLayoutPanel-CustomizingtheAppearance"></A>Customizing the Appearance</H2>
+
+<P>You can customize a style for any element of <CITE>SidePanel</CITE> or <CITE>BorderLayoutPanel</CITE> using the following attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> <CITE>BorderLayoutPanel</CITE> attributes </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> </TD>
+<TD> A style used for theentire BorderLayoutPanel. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverStyle</SPAN> and <SPAN class="attribute">rolloverClass</SPAN> </TD>
+<TD> A style used for the entire <CITE>BorderLayoutPanel</CITE> in the rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">contentStyle</SPAN> and <SPAN class="attribute">contentClass</SPAN> </TD>
+<TD> A style used for a content area &ndash; an area not occupied by the ??SidePanel??s. </TD>
+</TR>
+</TBODY></TABLE>
+
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> <CITE>SidePanel</CITE> Attributes </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> </TD>
+<TD> A style used for the <CITE>SidePanel</CITE>. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverStyle</SPAN> and <SPAN class="attribute">rolloverClass</SPAN> </TD>
+<TD> A style used for a <CITE>SidePanel</CITE> in a rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">splitterStyle</SPAN> and <SPAN class="attribute">splitterClass</SPAN> </TD>
+<TD> A style used for a <CITE>SidePanel</CITE>'s splitter. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">splitterRolloverStyle</SPAN> and <SPAN class="attribute">splitterRolloverClass</SPAN> </TD>
+<TD> A style used for a splitter in a rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">captionStyle</SPAN> and <SPAN class="attribute">captionClass</SPAN> </TD>
+<TD> A style used for the <CITE>SidePanel</CITE>'s caption area. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">contentStyle</SPAN> and <SPAN class="attribute">contentClass</SPAN> </TD>
+<TD> A style used for the <CITE>SidePanel</CITE>'s content area. </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="BorderLayoutPanel-ClientSideEvents"></A>Client-Side Events</H2>
+
+<P>The both of <CITE>SidePanel</CITE> and <CITE>BorderLayoutPanel</CITE> components support the following standard client-side events: <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onkeydown</SPAN>, <SPAN class="attribute">onkeyup</SPAN>, <SPAN class="attribute">onkeypress</SPAN>. In additional it provides follow component-specific events:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> <CITE>BorderLayoutPanel</CITE> Event </TH>
+<TH scope="col"> Discription </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">oncontentresize</SPAN> </TD>
+<TD> Occurs when the <CITE>BorderLayoutPanel</CITE>'s content size is changed, i.e. when entire <CITE>BorderLayoutPanel</CITE> or one of its <CITE>SidePanels</CITE> is resized. </TD>
+</TR>
+</TBODY></TABLE>
+
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> <CITE>SidePanel</CITE> Event </TH>
+<TH scope="col"> Discription </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">onresize</SPAN> </TD>
+<TD> Occurs when the <CITE>SidePanel</CITE>'s splitter is dragging by user. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">oncollapse</SPAN> </TD>
+<TD> Occurs when the <CITE>SidePanel</CITE> is collapsed. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">onrestore</SPAN> </TD>
+<TD> Occurs when the <CITE>SidePanel</CITE> is restored from a collapsed state. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

@@ -1,0 +1,300 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>TabSet &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>TabSet</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#TabSet-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#TabSet-SpecifyingtheTabs">Specifying the Tabs</A></LI>
+    <LI><A href="#TabSet-CustomizingtheAppearance">Customizing the Appearance</A></LI>
+    <LI><A href="#TabSet-CustomizingStyles">Customizing Styles</A></LI>
+    <LI><A href="#TabSet-KeyboardSupport">Keyboard Support</A></LI>
+    <LI><A href="#TabSet-ClientSideEvents">Client-Side Events</A></LI>
+    <LI><A href="#TabSet-ServerSideEventListeners">Server-Side Event Listeners</A></LI>
+    <LI><A href="#TabSet-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>TabSet</CITE> is a component that displays a set of tabs that look like the ones used in the <CITE>TabbedPane</CITE> component. As opposed to <CITE>TabbedPane</CITE>, the <CITE>TabSet</CITE> component is not a container and doesn't display any data when the user switches the tab. Instead it just serves as a selector that can be used to introduce a content switching on pages where <CITE>TabbedPane</CITE> can't be used because of special layout or some other reason. The <CITE>TabSet</CITE> component provides means for configuring tabs, their content, placement and appearance.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/tabSet.gif" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/select/TabSet.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/tabSet.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/tabset/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="TabSet-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#TabSet-CustomizingtheAppearance">Customizable tabs placement</A></LI>
+	<LI><A href="#TabSet-SpecifyingtheTabs">Ability to embed JSF components into tabs</A></LI>
+	<LI><A href="#TabSet-CustomizingStyles">Flexible style customization</A></LI>
+	<LI><A href="#TabSet-KeyboardSupport">Keyboard support</A></LI>
+</UL>
+
+
+<H2><A name="TabSet-SpecifyingtheTabs"></A>Specifying the Tabs</H2>
+
+<P>To add the <CITE>TabSet</CITE> component to a page, use the <SPAN class="tag">&lt;o:tabSet&gt;</SPAN> tag. There are two ways of specifying the tabs for the <CITE>TabSet</CITE> component:</P>
+<UL>
+	<LI>To define a fixed set of tabs, use the <SPAN class="tag">&lt;o:tabSetItem&gt;</SPAN> tag for representing one tab. Child components of the <SPAN class="tag">&lt;o:tabSetItem&gt;</SPAN> tag are rendered as the tab contents.</LI>
+</UL>
+
+
+<P>The following example shows a four-tab <CITE>TabSet</CITE> component:</P>
+<PRE class="code_area">&lt;o:tabSet&gt;
+  &lt;o:tabSetItem&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;Client&quot;</SPAN> /&gt;
+  &lt;/o:tabSetItem&gt;
+  &lt;o:tabSetItem&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;Server&quot;</SPAN> /&gt;
+  &lt;/o:tabSetItem&gt;
+  &lt;o:tabSetItem&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;Custom&quot;</SPAN> /&gt;
+  &lt;/o:tabSetItem&gt;
+  &lt;o:tabSetItem&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;Default&quot;</SPAN> /&gt;
+  &lt;/o:tabSetItem&gt;
+&lt;/o:tabSet&gt;</PRE>
+<UL>
+	<LI>To dynamically change the set of tabs, use the <SPAN class="tag">&lt;o:tabSetItems&gt;</SPAN> tag. The <SPAN class="attribute">value</SPAN> attribute of the <SPAN class="tag">&lt;o:tabSetItems&gt;</SPAN> tag should be specified as a value-binding expression that references a list of items of one of the following types:
+	<UL>
+		<LI><CITE>TabSetItem</CITE> component - Its children will be rendered as the tab content.</LI>
+		<LI>JSF component - The component will be rendered as the tab content.</LI>
+		<LI>Object - The tab content will be set to a string retrieved by the <SPAN class="attribute">toString()</SPAN> method of the object.</LI>
+	</UL>
+	</LI>
+</UL>
+
+
+<P>The following example shows the tabs specified through binding:</P>
+<PRE class="code_area">&lt;o:tabSet&gt;
+  &lt;o:tabSetItems value=<SPAN class="code_area_values">&quot;#{TabSetBean.items}&quot;</SPAN>/&gt;
+&lt;/o:tabSet&gt;</PRE>
+<P>By using the <SPAN class="attribute">selectedIndex</SPAN> integer attribute, you can set a currently selected tab. By default, it is <SPAN class="code_area_values">&quot;0&quot;</SPAN>, which means that the first tab will be selected on page load. The <SPAN class="attribute">selectedIndex</SPAN> attribute can be specified as a constant or a value-binding expression.</P>
+
+<P>In the following example, the second tab is selected when the page is loaded.</P>
+<PRE class="code_area">&lt;o:tabSet selectedIndex=<SPAN class="code_area_values">&quot;1&quot;</SPAN>&gt;</PRE>
+<P>Note, that <CITE>TabSet</CITE> tabs are indexed regardless of the <SPAN class="attribute">rendered</SPAN> attribute. It means that the <SPAN class="attribute">selectedIndex</SPAN> attribute refers to the tabs specified in the <CITE>TabSet</CITE> component, not only visible tabs.</P>
+
+<P>Given the fact that the <CITE>TabSet</CITE> extends the <CITE>UIInput</CITE> class, it has <SPAN class="attribute">value</SPAN> attribute. This attribute should refer to the value of the selected tab. And the <CITE>TabSetItem</CITE> component has <SPAN class="attribute">itemValue</SPAN> attribute which should refer to the object associated with this item.</P>
+
+<P>Like the JSF <CITE>UIInput</CITE> component, the <CITE>TabSet</CITE> supports the standard <SPAN class="attribute">validator</SPAN>, and <SPAN class="attribute">immediate</SPAN> attributes. For more details about these attributes, see JavaServer Faces specification (section &quot;EditableValueHolder&quot;).</P>
+
+<H2><A name="TabSet-CustomizingtheAppearance"></A>Customizing the Appearance</H2>
+
+<P>By default, the tabs appear at the top of the <CITE>TabSet</CITE> component. To specify the position of the tabs relative to the components they switch, set the <SPAN class="attribute">placement</SPAN> attribute to one of these values: <SPAN class="code_area_values">&quot;top&quot;</SPAN> (default), <SPAN class="code_area_values">&quot;left&quot;</SPAN>, <SPAN class="code_area_values">&quot;bottom&quot;</SPAN> and <SPAN class="code_area_values">&quot;right&quot;</SPAN>. Also, by setting the <SPAN class="attribute">alignment</SPAN> attribute to <SPAN class="code_area_values">&quot;topOrLeft&quot;</SPAN> (default) or <SPAN class="code_area_values">&quot;bottomOrRight&quot;</SPAN>, you can define the alignment of the tabs. The interval between the tabs is defined in pixels by the <SPAN class="attribute">gapWidth</SPAN> integer attribute. By default, it is set to <SPAN class="code_area_values">&quot;2&quot;</SPAN>. The size of individual tabs depends on what is displayed in them. If necessary, you can set their size with appropriate styles (see the section <A href="#TabSet-CustomizingStyles">Customizing Styles</A> below).<BR>
+The following example shows a <CITE>TabSet</CITE> whose tabs are placed on the left and aligned to the bottom and are spaced 5 pixels apart.</P>
+<PRE class="code_area">&lt;o:tabSet gapWidth=<SPAN class="code_area_values">&quot;5&quot;</SPAN>
+          placement=<SPAN class="code_area_values">&quot;left&quot;</SPAN>
+          alignment=<SPAN class="code_area_values">&quot;bottomOrRight&quot;</SPAN>&gt;
+  &lt;o:tabSetItems value=<SPAN class="code_area_values">&quot;#{TabSetBean.items}&quot;</SPAN> /&gt;
+&lt;/o:tabSet&gt;</PRE>
+
+<H2><A name="TabSet-CustomizingStyles"></A>Customizing Styles</H2>
+
+<P>The <CITE>TabSet</CITE> component provides a number of styles enabling you to customize the appearance of the entire component and its individual parts, both in the normal and rollover states. The following table lists all style-related attributes.</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attributes </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">tabStyle</SPAN> and <SPAN class="attribute">tabClass</SPAN> </TD>
+<TD> A style applied to each tab of the <CITE>TabSet</CITE> component. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverTabStyle</SPAN> and <SPAN class="attribute">rolloverTabClass</SPAN> </TD>
+<TD> A style applied to each <CITE>TabSet</CITE> tab in the rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">selectedTabStyle</SPAN> and <SPAN class="attribute">selectedTabClass</SPAN> </TD>
+<TD> A style for a selected tab. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverSelectedTabStyle</SPAN> and <SPAN class="attribute">rolloverSelectedTabClass</SPAN> </TD>
+<TD> A style for a selected tab in the rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">emptySpaceStyle</SPAN> and <SPAN class="attribute">emptySpaceClass</SPAN> </TD>
+<TD> A style applied to the spaces before, after, and between the tabs of the <CITE>TabSet</CITE>. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">frontBorderStyle</SPAN> </TD>
+<TD> A border style for a selected tab and the <CITE>TabSet</CITE> component. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">backBorderStyle</SPAN> </TD>
+<TD> A border style for not selected tabs. </TD>
+</TR>
+</TBODY></TABLE>
+<P><BR clear="all"></P>
+<P class="bubble note"><STRONG>Note</STRONG><BR>You should specify the <SPAN class="attribute">frontBorderStyle</SPAN> and <SPAN class="attribute">backBorderStyle</SPAN> attributes in the same way as the CSS border property but without the &quot;border:&quot; prefix.</P>
+<P>For example,
+<BR clear="all"></P>
+<PRE class="code_area">frontBorderStyle=<SPAN class="code_area_values">&quot;2px solid red&quot;</SPAN>
+backBorderStyle=<SPAN class="code_area_values">&quot;2px solid blue&quot;</SPAN></PRE>
+<P><BR clear="all">
+And here is the result:</P>
+
+<P><IMG src="tabset.data/tabSetBorders.gif" align="absmiddle" border="0"></P>
+
+<H2><A name="TabSet-KeyboardSupport"></A>Keyboard Support</H2>
+
+<P>The user can switch the selected tab with the the Left/Right/Up/Down keys when the <CITE>TabSet</CITE> has the keyboard focus. The <CITE>TabSet</CITE> can be made non-focusable and thus not having keyboard control by assigning <SPAN class="code_area_values">false</SPAN> to its <SPAN class="attribute">focusable</SPAN> attribute. </P>
+
+<P>The <CITE>TabSet</CITE> has the following attributes that allow customizing its look in the focused state:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusedStyle</SPAN>/<SPAN class="attribute">focusedClass</SPAN> </TD>
+<TD> A style for the entire <CITE>TabSet</CITE> in the focused state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusedTabStyle</SPAN>/<SPAN class="attribute">focusedTabClass</SPAN> </TD>
+<TD> A style for the <CITE>TabSet</CITE>'s caption in the focused state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusAreaStyle</SPAN>/<SPAN class="attribute">focusAreaClass</SPAN> </TD>
+<TD> A style for the focus area inside of the focused tab. A focus area is an area inside a tab that contains tab text. </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="TabSet-ClientSideEvents"></A>Client-Side Events</H2>
+
+<P>The <CITE>TabSet</CITE> component supports a set of the standard client-side events that allow you to alter the behavior of the component. These are <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onchange</SPAN> events.</P>
+
+<H2><A name="TabSet-ServerSideEventListeners"></A>Server-Side Event Listeners</H2>
+
+<P>To enable you to handle tab selection change on the server side, the <CITE>TabSet</CITE> provides the <SPAN class="attribute">selectionChangeListener</SPAN> attribute. This attribute is <SPAN class="attribute">MethodBinding</SPAN> that must point to the method that accepts a <SPAN class="attribute">org.openfaces.event.SelectionChangeEvent</SPAN>. <SPAN class="attribute">SelectionChangeEvent</SPAN> extending <SPAN class="attribute">javax.faces.event.FacesEvent</SPAN> and adds the <SPAN class="attribute">oldIndex</SPAN> and <SPAN class="attribute">newIndex</SPAN> properties to it. The specified method will be called during the Process Validations phase of the request processing lifecycle when tab selection in the <CITE>TabSet</CITE> is changed.</P>
+
+<P>The following example shows the use of the <SPAN class="attribute">selectionChangeListener</SPAN> attribute:</P>
+<PRE class="code_area">&lt;o:tabSet selectionChangeListener=<SPAN class="code_area_values">&quot;#{TSBean.selChanged}&quot;</SPAN> /&gt;</PRE>
+<P>You can also add a selection change listener (which is the implementation of <SPAN class="attribute">org.openfaces.event.SelectionChangeListener</SPAN> interface) to the <CITE>TabSet</CITE> component by using the <SPAN class="tag">&lt;o:selectionChangeListener&gt;</SPAN> tag:</P>
+<PRE class="code_area">&lt;o:tabSet&gt;
+  &lt;o:selectionChangeListener
+     type=<SPAN class="code_area_values">&quot;my.MySelectionChangeListener&quot;</SPAN>/&gt;
+&lt;/o:tabSet&gt;</PRE>
+<P>Given the fact that the <CITE>TabSet</CITE> is actually a <CITE>UIInput</CITE> component, it fires <SPAN class="attribute">javax.faces.event.ValueChangeEvent</SPAN> just like the <CITE>HTMLInputText</CITE> component does. The <SPAN class="attribute">valueChangeListener</SPAN> attribute should be used to handle a value change event on the server side in the same way as for the <CITE>HTMLInputText</CITE>. You can also add a value change listener to the component by using the <SPAN class="tag">&lt;f:valueChangeListener&gt;</SPAN> tag.</P>
+
+<H2><A name="TabSet-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods of the <CITE>TabSet</CITE> component are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getTabCount()</SPAN> </TD>
+<TD> Returns the number of tabs in the <CITE>TabSet</CITE> component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getSelectedIndex()</SPAN> </TD>
+<TD> Returns a zero-based index of a selected tab from the <CITE>TabSet</CITE> component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setSelectedIndex(index)</SPAN> </TD>
+<TD> Sets a selected tab for the <CITE>TabSet</CITE> component on which this method is invoked. The <SPAN class="attribute">index</SPAN> parameter is a zero-based index of a tab to be selected. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focus()</SPAN> </TD>
+<TD> Gives the keyboard focus to the component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">blur()</SPAN> </TD>
+<TD> Removes the keyboard focus from the component on which this method is invoked. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

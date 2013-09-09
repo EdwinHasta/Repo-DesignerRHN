@@ -1,0 +1,272 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>DateChooser &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>DateChooser</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#DateChooser-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#DateChooser-CreatingtheDateChooser">Creating the DateChooser</A></LI>
+    <LI><A href="#DateChooser-SpecifyingtheDateFormat">Specifying the Date Format</A></LI>
+    <LI><A href="#DateChooser-CustomizingtheAppearance">Customizing the Appearance</A></LI>
+    <LI><A href="#DateChooser-UsingStyles">Using Styles</A></LI>
+    <LI><A href="#DateChooser-KeyboardSupport">Keyboard Support</A></LI>
+    <LI><A href="#DateChooser-ClientSideEvents">Client-Side Events</A></LI>
+    <LI><A href="#DateChooser-ServerSideEventListeners">Server-Side Event Listeners</A></LI>
+    <LI><A href="#DateChooser-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>DateChooser</CITE> component enables the user to enter a date either by typing it in the text field or selecting it from the drop-down calendar. With internationalization support, a selected date can be displayed in different date formats and languages. The appearance of virtually every element of the <CITE>DateChooser</CITE> component can be customized.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/dateChooser_closed.gif" align="absmiddle" border="0"></P>
+
+<P><IMG src="components-index.data/dateChooser.gif" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/input/DateChooser.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/dateChooser.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/datechooser/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="DateChooser-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#DateChooser-CustomizingtheAppearance">Built-in <CITE>Calendar</CITE></A></LI>
+	<LI><A href="#DateChooser-SpecifyingtheDateFormat">i18n support</A></LI>
+	<LI><A href="#DateChooser-SpecifyingtheDateFormat">Various date formats</A></LI>
+	<LI>Flexible <A href="#DateChooser-UsingStyles">style</A> and <A href="#DateChooser-CustomizingtheAppearance">appearance</A> customization</LI>
+	<LI><A href="#DateChooser-KeyboardSupport">Keyboard support</A></LI>
+</UL>
+
+
+<H2><A name="DateChooser-CreatingtheDateChooser"></A>Creating the DateChooser</H2>
+
+<P>To add the <CITE>DateChooser</CITE> component to the page, use the <SPAN class="tag">&lt;o:dateChooser&gt;</SPAN> tag. This tag has the <SPAN class="attribute">value</SPAN> attribute that controls a currently selected date. The attribute must be a value-binding expression that references a <SPAN class="attribute">java.util.Date</SPAN> instance.</P>
+
+<P>Like the JSF <CITE>UIInput</CITE> component, the <CITE>DateChooser</CITE> supports the <SPAN class="attribute">validator</SPAN>, <SPAN class="attribute">required</SPAN>, <SPAN class="attribute">immediate</SPAN> and <SPAN class="attribute">disabled</SPAN> attributes. However, it does not support <SPAN class="attribute">converter</SPAN> attribute. For more details about these attributes, see JavaServer Faces  specification (section &quot;EditableValueHolder&quot;).</P>
+
+<P>It's possible to implement a scenario, when a date can be selected only from drop-down calendar using <SPAN class="attribute">typingAllowed</SPAN> attribute. By default it has a value of <SPAN class="code_area_values">&quot;true&quot;</SPAN>. To disable the possibility of manual date entering directly into <CITE>DateChooser</CITE>'s input field just set <SPAN class="attribute">typingAllowed</SPAN> attribute to <SPAN class="code_area_values">&quot;false&quot;</SPAN>.</P>
+
+<P><CITE>DateChooser</CITE> component supports the <SPAN class="attribute">timeZone</SPAN> attribute that can be used to specify the time zone in which to interpret the time information in the date.<BR>
+The <SPAN class="attribute">timeZone</SPAN> attribute can be specified as value binding:</P>
+<PRE class="code_area">&lt;o:dateChooser value=<SPAN class="code_area_values">&quot;#{DateManager.toDate}&quot;</SPAN>  timeZone=<SPAN class="code_area_values">&quot;#{DateManager.timeZone}&quot;</SPAN>/&gt;</PRE>
+<P>You can also specify the <SPAN class="attribute">timeZone</SPAN> attribute as a String that is a timezone ID as described in the javadocs for <SPAN class="attribute">java.util.TimeZone.getTimeZone()</SPAN>.</P>
+<PRE class="code_area">&lt;o:dateChooser value=<SPAN class="code_area_values">&quot;#{DateManager.toDate}&quot;</SPAN> timeZone=<SPAN class="code_area_values">&quot;GMT&quot;</SPAN>/&gt;</PRE>
+<P>Please note that when the <CITE>DateChooser</CITE>'s value is saved on the server, the selected date is used and time is set to 00:00:00 in the time zone specified with the <SPAN class="attribute">timeZone</SPAN> attribute(the server time zone is used by default).</P>
+
+<H2><A name="DateChooser-SpecifyingtheDateFormat"></A>Specifying the Date Format</H2>
+
+<P>The <CITE>DateChooser</CITE> component uses a specific date format to display dates. It is also assumed that the same date format is used by the user when typing a date. The date format can either be specified by the <SPAN class="attribute">pattern</SPAN> attribute or be derived from the <SPAN class="attribute">locale</SPAN> and <SPAN class="attribute">dateFormat</SPAN> attributes.</P>
+
+<P>The <SPAN class="attribute">pattern</SPAN> string attribute specifies the date format with the pattern similar to that in the <SPAN class="attribute">java.text.SimpleDateFormat</SPAN> class. Note that the <CITE>DateChooser</CITE> component supports only <SPAN class="code_area_values">&quot;d&quot;</SPAN>, <SPAN class="code_area_values">&quot;M&quot;</SPAN>, <SPAN class="code_area_values">&quot;y&quot;</SPAN> and <SPAN class="code_area_values">&quot;E&quot;</SPAN> pattern letters, which represent the components of the date. Please also note that in order for the <CITE>DateChooser</CITE> component to work correctly you should specify day, month and year parameters in the <SPAN class="attribute">pattern</SPAN> attribute.</P>
+
+<P>The following example shows a pattern according to which a date, for example, 11 June 2005 will be formatted to <SPAN class="code_area_values">&quot;6/11/05, Sat&quot;</SPAN> (if the default locale is U.S.):</P>
+<PRE class="code_area">&lt;o:dateChooser value=<SPAN class="code_area_values">&quot;#{DateManager.toDate}&quot;</SPAN>
+    pattern=<SPAN class="code_area_values">&quot;M/d/yy, EEE&quot;</SPAN>/&gt;</PRE>
+<P>If no pattern is specified, the date format is derived from the locale used by the <CITE>DateChooser</CITE> based on the <SPAN class="attribute">dateFormat</SPAN> attribute. By default, the <CITE>DateChooser</CITE> uses the client's locale, but it can also be explicitly specified by the <SPAN class="attribute">locale</SPAN> attribute. You must specify it as a value-binding expression that references a <SPAN class="attribute">java.util.Locale</SPAN> instance or as a String in &quot;ll_CC_vv&quot; format, where:</P>
+<UL>
+	<LI>ll specify the language - lowercase two-letter ISO-639 code</LI>
+	<LI>CC specify the country - uppercase two-letter ISO-3166 code (optional)</LI>
+	<LI>vv specify the variant - vendor and browser specific code (optional)</LI>
+</UL>
+
+
+<P>The <SPAN class="attribute">dateFormat</SPAN> attribute defines which of the predefined date formats for a given locale should be used. It can take the following values: <SPAN class="code_area_values">&quot;short&quot;</SPAN>, <SPAN class="code_area_values">&quot;medium&quot;</SPAN>, <SPAN class="code_area_values">&quot;long&quot;</SPAN>, <SPAN class="code_area_values">&quot;full&quot;</SPAN>. The default value is <SPAN class="code_area_values">&quot;medium&quot;</SPAN>.</P>
+
+<P>In this example, the date format for the <CITE>DateChooser</CITE> is set to <SPAN class="code_area_values">&quot;full&quot;</SPAN>, which means that if the locale is U.S., the date format is <SPAN class="code_area_values">&quot;dddd, MMMM dd, yyyy&quot;</SPAN>.</P>
+<PRE class="code_area">&lt;o:dateChooser value=<SPAN class="code_area_values">&quot;#{DateManager.toDate}&quot;</SPAN>
+    dateFormat=<SPAN class="code_area_values">&quot;full&quot;</SPAN>/&gt;</PRE>
+<P>If the user enters an invalid value, the <CITE>DateChooser</CITE> component shows a validation error message. Conversion is triggered on the <SPAN class="attribute">onchange</SPAN> event and failed conversion does not block page submission. The error message is shown with the <CITE>FloatingIconMessage</CITE> component by default. You can add your own component, for example a OpenFaces-supplied <CITE>Message</CITE> component. For more information about validation messages, see <A href="validation-framework.html" title="Validation Framework">Validation Framework</A> documentation). At the moment, convertion errors are shown only if the client-side validation is turned on.</P>
+
+<P>You can use the <CITE>javax.faces.convert.DateTimeConverter.CONVERSION</CITE> property from Messages.properties to localize a conversion error message. For more details about message bundles, see <A href="validation-framework.html" title="Validation Framework">Validation Framework</A> documentation.</P>
+
+<H2><A name="DateChooser-CustomizingtheAppearance"></A>Customizing the Appearance</H2>
+
+<P>You can customize the appearance of any part of the <CITE>DateChooser</CITE> component. For example, to change the image of the button that opens the drop-down calendar, use the <SPAN class="attribute">buttonImageUrl</SPAN> attribute. If you want to change the appearance of the calendar, use the attributes that are passed to the inner <CITE>Calendar</CITE> component. The <SPAN class="attribute">firstDayOfWeek</SPAN> attribute lets you define the first day of the week within the calendar.</P>
+
+<P>Also, you can change the default <STRONG>Today</STRONG> and <STRONG>None</STRONG> labels by using the <SPAN class="attribute">todayText</SPAN> and <STRONG>noneText</STRONG> attributes. In addition, you can specify whether&nbsp;to show the&nbsp;<CITE>Calendar's</CITE> footer by using a&nbsp;boolean <SPAN class="attribute">showFooter</SPAN> attribute. For more details about the <CITE>Calendar</CITE> component, see <A href="calendar.html" title="Calendar">Calendar documentation</A>.</P>
+
+<P>In this example, the first day of the week is Sunday. French is used as a local language and France is used as a local country for the calendar.</P>
+<PRE class="code_area">&lt;o:dateChooser value=<SPAN class="code_area_values">&quot;#{DateManager.toDate}&quot;</SPAN>
+    buttonImageUrl=<SPAN class="code_area_values">&quot;/customButton.gif&quot;</SPAN>
+    firstDayOfWeek=<SPAN class="code_area_values">&quot;1&quot;</SPAN>
+    locale=<SPAN class="code_area_values">&quot;fr_FR&quot;</SPAN>
+    todayText=<SPAN class="code_area_values">&quot;Aujourd'hui&quot;</SPAN>
+    noneText=<SPAN class="code_area_values">&quot;Aucun&quot;</SPAN>/&gt;</PRE>
+<P>Like the HTML &lt;input&gt; tag, <SPAN class="tag">&lt;o:dateChooser&gt;</SPAN> supports the <SPAN class="attribute">title</SPAN>, <SPAN class="attribute">tabindex</SPAN> and <SPAN class="attribute">accesskey</SPAN> attributes. These attributes are rendered for a nested input field of the <CITE>DateChooser</CITE> component.</P>
+
+<H2><A name="DateChooser-UsingStyles"></A>Using Styles</H2>
+
+<P>You can define styles for the entire <CITE>DateChooser</CITE> component and its individual parts. To apply a style for the <CITE>DateChooser</CITE>, use the <SPAN class="attribute">style</SPAN>, <SPAN class="attribute">styleClass</SPAN>, <SPAN class="attribute">focusedStyle</SPAN>, <SPAN class="attribute">focusedClass</SPAN>, <SPAN class="attribute">rolloverStyle</SPAN>, and <SPAN class="attribute">rolloverClass</SPAN> attributes. To customize a style for the drop-down button in the normal, rollover, and pressed states, use the <SPAN class="attribute">buttonStyle</SPAN>, <SPAN class="attribute">buttonClass</SPAN>, <SPAN class="attribute">rolloverButtonStyle</SPAN>, <SPAN class="attribute">rolloverButtonClass</SPAN>, <SPAN class="attribute">pressedButtonStyle</SPAN>, and <SPAN class="attribute">pressedButtonClass</SPAN> attributes, respectively. To customize a style for the text field in the normal and rollover states, use the <SPAN class="attribute">fieldStyle</SPAN>, <SPAN class="attribute">fieldClass</SPAN>, <SPAN class="attribute">rolloverFieldStyle</SPAN>, and <SPAN class="attribute">rolloverFieldClass</SPAN> attributes, respectively. To change the icon of the button, use the <SPAN class="attribute">buttonImageUrl</SPAN> attribute.</P>
+
+<P>Styles for the calendar within the <CITE>DateChooser</CITE> component are defined the same way as for the <CITE>Calendar</CITE> component. The table below lists all the style attributes for customizing the appearance of the calendar, selected and current dates, weekends, etc.</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Part of calendar </TH>
+<TH scope="col"> Style attributes </TH>
+<TH scope="col"> Rollover style attributes </TH>
+</TR>
+<TR>
+<TD> Entire calendar </TD>
+<TD> <SPAN class="attribute">calendarStyle</SPAN> and <SPAN class="attribute">calendarClass</SPAN> </TD>
+<TD> &#45; </TD>
+</TR>
+<TR>
+<TD> Calendar header (and the drop-down list) </TD>
+<TD> <SPAN class="attribute">headerStyle</SPAN> and <SPAN class="attribute">headerClass</SPAN> </TD>
+<TD> &#45; </TD>
+</TR>
+<TR>
+<TD> Calendar footer </TD>
+<TD> <SPAN class="attribute">footerStyle</SPAN> and <SPAN class="attribute">footerClass</SPAN> </TD>
+<TD> &#45; </TD>
+</TR>
+<TR>
+<TD> Row with weekday names </TD>
+<TD> <SPAN class="attribute">daysHeaderStyle</SPAN> and <SPAN class="attribute">daysHeaderClass</SPAN> </TD>
+<TD> &#45; </TD>
+</TR>
+<TR>
+<TD> All dates </TD>
+<TD> <SPAN class="attribute">dayStyle</SPAN> and <SPAN class="attribute">dayClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverDayStyle</SPAN> and <SPAN class="attribute">rolloverDayClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Dates of the inactive month </TD>
+<TD> <SPAN class="attribute">inactiveMonthDayStyle</SPAN> and <SPAN class="attribute">inactiveMonthDayClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverInactiveMonthDayStyle</SPAN> and <SPAN class="attribute">rolloverInactiveMonthDayClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Selected date </TD>
+<TD> <SPAN class="attribute">selectedDayStyle</SPAN> and <SPAN class="attribute">selectedDayClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverSelectedDayStyle</SPAN> and <SPAN class="attribute">rolloverSelectedDayClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Current date </TD>
+<TD> <SPAN class="attribute">todayStyle</SPAN> and <SPAN class="attribute">todayClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverTodayStyle</SPAN> and <SPAN class="attribute">rolloverTodayClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Weekends </TD>
+<TD> <SPAN class="attribute">weekendDayStyle</SPAN> and <SPAN class="attribute">weekendDayClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverWeekendDayStyle</SPAN> and <SPAN class="attribute">rolloverWeekendDayClass</SPAN> </TD>
+</TR>
+</TBODY></TABLE>
+<P>Because of the variety of styles for calendar of the <CITE>DateChooser</CITE> component, some style definitions may overlap. To avoid any style conflict, please keep in mind that <SPAN class="attribute">selectedDayStyle</SPAN> has the highest priority, followed by <SPAN class="attribute">todayStyle</SPAN>, <SPAN class="attribute">inactiveMonthDayStyle</SPAN>, <SPAN class="attribute">weekendDayStyle</SPAN>, and <SPAN class="attribute">dayStyle</SPAN> having the lowest priority.</P>
+
+<H2><A name="DateChooser-KeyboardSupport"></A>Keyboard Support</H2>
+
+<P>When using the <CITE>DateChooser</CITE> component with keyboard, besides just typing in the desired date, you can open the drop-down calendar by pressing the Down key and selecting  the date with the Left/Right/Up/Down keys to move the selection within a month and PgUp/PgDown keys to move the selection between months. When the selection is done, you can press the Enter key to apply the selection into the <CITE>DateChooser</CITE>'s field, or the Esc key to close the calendar popup without applyng the selected date. The look of <CITE>DateChooser</CITE> in the focused state can be customized with the <SPAN class="attribute">focusedStyle</SPAN>/<SPAN class="attribute">focusedClass</SPAN> attributes.</P>
+
+<H2><A name="DateChooser-ClientSideEvents"></A>Client-Side Events</H2>
+
+<P>The <CITE>DateChoser</CITE> component supports the following standard client-side events: <SPAN class="attribute">onkeypress</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onfocus</SPAN>, <SPAN class="attribute">onblur</SPAN>, <SPAN class="attribute">onkeydown</SPAN>, <SPAN class="attribute">onkeyup</SPAN> and <SPAN class="attribute">onchange</SPAN> event which occurs when the user changes a date.</P>
+
+<H2><A name="DateChooser-ServerSideEventListeners"></A>Server-Side Event Listeners</H2>
+
+<P>The <CITE>DateChooser</CITE> component has the <SPAN class="attribute">valueChangeListener</SPAN> attribute. This attribute is a method-binding expression that must reference a method that accepts the <SPAN class="attribute">javax.faces.event.ValueChangeEvent parameter</SPAN>. <SPAN class="attribute">ValueChangeListener</SPAN> for the <CITE>DateChooser</CITE> works the same way as for the standard <CITE>UIInput</CITE> components. You can also add a value change listener to the component by using the <SPAN class="tag">&lt;f:valueChangeListener&gt;</SPAN> tag.</P>
+
+<H2><A name="DateChooser-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods for the <CITE>DateChooser</CITE> component are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getSelectedDate()</SPAN> </TD>
+<TD> Gets a selected date from the <CITE>DateChooser</CITE> component on which this method is invoked. This function returns a JavaScript object of <SPAN class="attribute">Date</SPAN> type. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setSelectedDate(date)</SPAN> </TD>
+<TD> Sets a date for the <CITE>DateChooser</CITE> component on which this method is invoked. The <SPAN class="attribute">date</SPAN> parameter is a JavaScript object of <SPAN class="attribute">Date</SPAN> type. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

@@ -1,0 +1,203 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>SelectBooleanCheckbox &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>SelectBooleanCheckbox</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#SelectBooleanCheckbox-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#SelectBooleanCheckbox-BasicConfiguration">Basic Configuration</A></LI>
+    <LI><A href="#SelectBooleanCheckbox-TriStateMode">Tri-State Mode</A></LI>
+    <LI><A href="#SelectBooleanCheckbox-CustomizingCheckboxStyleAndImages">Customizing Checkbox Style And Images</A></LI>
+    <LI><A href="#SelectBooleanCheckbox-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>SelectBooleanCheckbox</CITE> component is an extended version of the standard <SPAN class="tag">&lt;h:selectBooleanCheckbox&gt;</SPAN> component that adds such possibilities as tri-state support, customizing checkbox images and state-dependent styles.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/selectbooleancheckbox.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/select/SelectBooleanCheckbox.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/selectBooleanCheckbox.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/selectbooleancheckbox/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="SelectBooleanCheckbox-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI>All features of the standard <SPAN class="tag">&lt;h:selectBooleanCheckbox&gt;</SPAN> component.</LI>
+	<LI>Tri-state mode that allows support for the third &quot;undefined&quot; state.</LI>
+	<LI>Customizing state list and toggle order when in tr-state mode.</LI>
+	<LI>Customizing checkbox appearance with images.</LI>
+	<LI>Customizing state-dependent styles for rollover, focused and disabled states.</LI>
+</UL>
+
+
+<H2><A name="SelectBooleanCheckbox-BasicConfiguration"></A>Basic Configuration</H2>
+
+<P>The <CITE>SelectBooleanCheckbox</CITE> component can be added to a page using the <SPAN class="tag">&lt;o:selectBooleanCheckbox&gt;</SPAN> tag. This tag is just an extended version of the standard <SPAN class="tag">&lt;h:selectBooleanCheckbox&gt;</SPAN> tag. Therefore, you can safely replace the standard SelectBooleanCheckbox components with OpenFaces SelectBooleanCheckbox components which gives you an additional functionality. Similar to the standard <SPAN class="tag">&lt;h:selectBooleanCheckbox&gt;</SPAN> you can use the <SPAN class="attribute">value</SPAN> attribute to specify the current state of the checkbox and use <SPAN class="tag">&lt;h:outputLabel&gt;</SPAN> tag to show a label for the checkbox.</P>
+
+<P>Here's an example that shows a definition of a simple <CITE>SelectBooleanCheckbox</CITE> with a label and its <SPAN class="attribute">value</SPAN> attribute bound to a backing bean.</P>
+<PRE class="code_area">&lt;o:selectBooleanCheckbox id=<SPAN class="code_area_values">&quot;rememberMe&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{CheckboxBean.rememberMe}&quot;</SPAN> /&gt;
+&lt;h:outputLabel <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;rememberMe&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Remember me&quot;</SPAN>/&gt;</PRE>
+
+<P><A name="SelectBooleanCheckbox-tristate"></A></P>
+<H2><A name="SelectBooleanCheckbox-TriStateMode"></A>Tri-State Mode</H2>
+
+<P>The <CITE>SelectBooleanCheckbox</CITE> supports the tri-state mode where a third &quot;undefined&quot; state is added to the standard &quot;selected&quot; and &quot;unselected&quot; states. This mode can be turned on by specifying the <SPAN class="attribute">triSateAllowed</SPAN> attribute with a value of <SPAN class="code_area_values">true</SPAN>. In case of the third &quot;undefined&quot; state the property bound to the <SPAN class="attribute">value</SPAN> attribute receives the <SPAN class="code_area_values">null</SPAN> value to indicate this state.</P>
+
+<P>By default the user is allowed to cycle only through &quot;selected&quot; and &quot;unselected&quot; states.<BR>
+It's possible to change the default behabiour and specify a set and an order of <CITE>SelectBooleanCheckbox</CITE> states in the tri-state mode to cycle through. The <SPAN class="attribute">stateList</SPAN> attribute should be specified as a list of checkbox states in the desired toggle order. When specifying a literal attribute value, it should be a space-separated value of the following strings <SPAN class="code_area_values">&quot;selected&quot;</SPAN>, <SPAN class="code_area_values">&quot;unselected&quot;</SPAN> and <SPAN class="code_area_values">&quot;undefined&quot;</SPAN>.<BR>
+The examples below shows tri-state checkboxes with a customized <SPAN class="attribute">stateList</SPAN> attribute.</P>
+
+<PRE class="code_area">&lt;o:selectBooleanCheckbox triStateAllowed=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN> stateList=<SPAN class="code_area_values">&quot;undefined selected&quot;</SPAN> value=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">false</SPAN>&quot;</SPAN>/&gt;
+
+&lt;o:selectBooleanCheckbox triStateAllowed=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN> stateList=<SPAN class="code_area_values">&quot;#{CheckboxTest.states}&quot;</SPAN> values=<SPAN class="code_area_values">&quot;#{CheckboxTest.state}&quot;</SPAN>/&gt;</PRE>
+
+<H2><A name="SelectBooleanCheckbox-CustomizingCheckboxStyleAndImages"></A>Customizing Checkbox Style And Images</H2>
+
+<P>It's possible to apply a style and rollover style for the checkbox using the <SPAN class="attribute">style</SPAN>/<SPAN class="attribute">styleClass</SPAN> and <SPAN class="attribute">rolloverStyle</SPAN>/<SPAN class="attribute">rolloverClass</SPAN> attributes. In addition, there are the following attributes that are applied for selected, unselected and undefined checkbox: <SPAN class="attribute">selectedStyle</SPAN>/<SPAN class="attribute">selectedClass</SPAN>, <SPAN class="attribute">unselectedStyle</SPAN>/<SPAN class="attribute">unselectedClass</SPAN>, <SPAN class="attribute">undefinedStyle</SPAN>/<SPAN class="attribute">undefinedClass</SPAN>.</P>
+
+<P>By default, the <SPAN class="tag">&lt;o:selectBooleanCheckbox&gt;</SPAN> displays the native client operating system checkboxes just like the standard <SPAN class="tag">&lt;h:selectBooleanCheckbox&gt;</SPAN> component. Though the <SPAN class="tag">&lt;o:selectBooleanCheckbox&gt;</SPAN> component allows overriding the default checkbox appearance with images corresponding to all checkbox's states so it's possible to apply an arbitrary design to the component.</P>
+
+<P>The minimum set of attributes that should be defined for changing the look of <CITE>SelectBooleanCheckbox</CITE> are the <SPAN class="attribute">selectedImageUrl</SPAN>, <SPAN class="attribute">unselectedImageUrl</SPAN>, and optionally the <SPAN class="attribute">undefinedImageUrl</SPAN> in case of tri-state mode. Though it's also possible to change some apearance aspects in component's rollover, pressed and disabled states, which is possible using the following attributes:</P>
+
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attributes </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverSelectedImageUrl</SPAN>, <SPAN class="attribute">rolloverUnselectedImageUrl</SPAN>, <SPAN class="attribute">rolloverUndefinedImageUrl</SPAN> </TD>
+<TD> These images will be applied when a mouse hovers over the component. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">pressedSelectedImageUrl</SPAN>, <SPAN class="attribute">pressedUnselectedImageUrl</SPAN>, <SPAN class="attribute">pressedUndefinedImageUrl</SPAN> </TD>
+<TD> These images will be applied when a checkbox is pressed. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">disabledSelectedImageUrl</SPAN>, <SPAN class="attribute">disabledUnselectedImageUrl</SPAN>, <SPAN class="attribute">disabledUndefinedImageUrl</SPAN> </TD>
+<TD> These images will be applied when a checkbox is disabled. </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="SelectBooleanCheckbox-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods for the <CITE>SelectBooleanCheckbox</CITE> component are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">isSelected()</SPAN> </TD>
+<TD> Returns <SPAN class="code_area_values">true</SPAN> if the checkbox is checked and <SPAN class="code_area_values">false</SPAN> otherwise. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setSelected(selected)</SPAN> </TD>
+<TD> Checks or unchecks the checkbox when <SPAN class="code_area_values">true</SPAN> or <SPAN class="code_area_values">false</SPAN> is passed for the <SPAN class="attribute">selected</SPAN> parameter appropriately. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">isDefined()</SPAN> </TD>
+<TD> Returns <SPAN class="code_area_values">true</SPAN> if the checkbox is not in the &quot;undefined&quot; state, which is possible only in the tri-state mode. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setDefined(defined)</SPAN> </TD>
+<TD> Allows switching the checkbox into the &quot;undefined&quot; state if this function is called with a <SPAN class="code_area_values">false</SPAN> value for the <SPAN class="attribute">defined</SPAN> parameter. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getDisabled()</SPAN> </TD>
+<TD> Returns <SPAN class="code_area_values">true</SPAN> if the checkbox is disabled and <SPAN class="code_area_values">false</SPAN> otherwise. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setDisabled(selected)</SPAN> </TD>
+<TD> Disables or enables the checkbox when <SPAN class="code_area_values">true</SPAN> or <SPAN class="code_area_values">false</SPAN> is passed for the <SPAN class="attribute">selected</SPAN> parameter appropriately. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

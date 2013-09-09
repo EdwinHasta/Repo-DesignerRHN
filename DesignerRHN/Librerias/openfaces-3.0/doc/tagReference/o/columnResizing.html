@@ -1,0 +1,138 @@
+<html xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>columnResizing
+          (OpenFaces 3.0.0 Tag Library Documentation)
+        </title>
+<meta name="keywords" content="$title">
+<link rel="stylesheet" type="text/css" href="../stylesheet.css" title="Style">
+</head>
+<script>
+            function asd()
+            {
+            parent.document.title="columnResizing (OpenFaces 3.0.0 Tag Library Documentation)";
+            }
+          </script>
+<body bgcolor="white" onload="asd();">
+<a name="navbar_top"></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td COLSPAN="3" BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><a NAME="navbar_top_firstrow"></a>
+<table BORDER="0" CELLPADDING="0" CELLSPACING="3">
+<tr ALIGN="center" VALIGN="top">
+<td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="../overview-summary.html"><font CLASS="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="tld-summary.html"><font CLASS="NavBarFont1"><b>Library</b></font></a>&nbsp;</td><td BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<font CLASS="NavBarFont1Rev">&nbsp;Tag&nbsp;</font>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a HREF="../help-doc.html"><font CLASS="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+</tr>
+</table>
+</td><td ALIGN="right" VALIGN="top" ROWSPAN="3"><em></em></td>
+</tr>
+<tr>
+<td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2"></font></td><td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2">
+                &nbsp;<a HREF="../index.html" TARGET="_top"><b>FRAMES</b></a>&nbsp;
+                &nbsp;<a href="columnResizing.html" target="_top"><b>NO FRAMES</b></a>&nbsp;
+                <script></script>
+<noscript>
+<a HREF="../alltags-noframe.html" TARGET=""><b>All Tags</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<hr>
+<h2>
+<font size="-1">o</font>
+<br>
+            Tag columnResizing</h2>
+<hr>Adding this tag as a child tag for the <a href="dataTable.html">dataTable</a> or <a href="treeTable.html">treeTable</a> component turns on the column resizing feature for the appropriate DataTable or TreeTable.<br>
+<p></p>
+<hr>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+<td colspan="2"><font size="+2"><b>Tag Information</b></font></td>
+</tr>
+<tr>
+<td>Tag Class</td><td>org.openfaces.taglib.jsp.table.ColumnResizingJspTag</td>
+</tr>
+<tr>
+<td>TagExtraInfo Class</td><td><i>None</i></td>
+</tr>
+<tr>
+<td>Body Content</td><td>empty</td>
+</tr>
+<tr>
+<td>Display Name</td><td><i>None</i></td>
+</tr>
+</table>
+<br>
+<p></p>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+<td colspan="6"><font size="+2"><b>Attributes</b></font></td>
+</tr>
+<tr>
+<td><b>Name</b></td><td><b>Required</b></td><td><b>Binding Type</b></td><td><b>EL</b></td><td><b>Default</b></td><td><b>Description</b></td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">autoSaveState</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>true</td><td>Specifies whether the resizingState binding will automatically be updated with a background Ajax call when the user resizes a column. By default, the value of this attribute is true, which means that the auto-saving behavior is turned on. Setting the value to false will turn off on-the-fly column resizing state saving, and this state will only be saved along with the nearest form submission (or upon DataTable/TreeTable component submission with Ajax).</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">minColWidth</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>"10px"</td><td>Minimal width that a column can take as a result of resizing. Can be specified in any CSS units except percent. Example: "50px".</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">resizeHandleWidth</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>"9px"</td><td>Width of the area near column headers separator that can be dragged in order to resize columns. Can be specified in any CSS units except percent. Example: "5px".</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">resizingState</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.Object</code>)
+                    </td><td>only</td><td>null</td><td>Defines the table's resizing state. This attribute can be used for saving resizing state between different visits of an appropriate page.</td>
+</tr>
+</table>
+<br>
+<p></p>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+<td colspan="5"><font size="+2"><b>Variables</b></font></td>
+</tr>
+<td colspan="2"><i>No Variables Defined.</i></td>
+</table>
+<br>
+<p></p>
+<a name="navbar_bottom"></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td COLSPAN="3" BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><a NAME="navbar_bottom_firstrow"></a>
+<table BORDER="0" CELLPADDING="0" CELLSPACING="3">
+<tr ALIGN="center" VALIGN="top">
+<td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="../overview-summary.html"><font CLASS="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="tld-summary.html"><font CLASS="NavBarFont1"><b>Library</b></font></a>&nbsp;</td><td BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<font CLASS="NavBarFont1Rev">&nbsp;Tag&nbsp;</font>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a HREF="../help-doc.html"><font CLASS="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+</tr>
+</table>
+</td><td ALIGN="right" VALIGN="top" ROWSPAN="3"><em></em></td>
+</tr>
+<tr>
+<td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2"></font></td><td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2">
+                &nbsp;<a HREF="../index.html" TARGET="_top"><b>FRAMES</b></a>&nbsp;
+                &nbsp;<a href="columnResizing.html" target="_top"><b>NO FRAMES</b></a>&nbsp;
+                <script></script>
+<noscript>
+<a HREF="../alltags-noframe.html" TARGET=""><b>All Tags</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<hr>
+<small><i>
+            Output Generated by
+            <a href="http://taglibrarydoc.dev.java.net/" target="_blank">Tag Library Documentation Generator</a>.
+            Java, JSP, and JavaServer Pages are trademarks or
+            registered trademarks of Sun Microsystems, Inc. in the US and other
+            countries.  Copyright 2002-4 Sun Microsystems, Inc.
+            4150 Network Circle
+            Santa Clara, CA 95054, U.S.A.
+            All Rights Reserved.
+            </i></small>
+</body>
+</html>

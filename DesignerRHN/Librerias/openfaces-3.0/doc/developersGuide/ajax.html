@@ -1,0 +1,298 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>Ajax &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>Ajax</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#Ajax-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#Ajax-AttachingtoaComponent">Attaching to a Component</A></LI>
+    <LI><A href="#Ajax-InvokingServerActionDuringanAjaxRequest">Invoking Server Action During an Ajax Request</A></LI>
+    <LI><A href="#Ajax-ControllingPhaseofActionExecution">Controlling Phase of Action Execution</A></LI>
+    <LI><A href="#Ajax-SubmittingComponentsData">Submitting Components Data</A></LI>
+    <LI><A href="#Ajax-AvoidingFrequentRequests">Avoiding Frequent Requests</A></LI>
+    <LI><A href="#Ajax-AttachingtoAnyComponentSpecificEvents">Attaching to Any Component-Specific Events</A></LI>
+    <LI><A href="#Ajax-AjaxStateEvents">Ajax State Events</A></LI>
+    <LI><A href="#Ajax-LoadingDatawithAjax">Loading Data with Ajax</A></LI>
+    <LI><A href="#Ajax-StandaloneMode">Standalone Mode</A></LI>
+    <LI><A href="#Ajax-PureJavaScriptAPI">Pure JavaScript API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P><CITE>Ajax</CITE> component is a non-visual component that makes it possible to submit and reload any JSF components with Ajax and perform server actions without reloading the whole page.</P></TD>
+<TD valign="top" width="40%">
+<P><A href="../apiReference/org/openfaces/component/ajax/Ajax.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/ajax.html" rel="nofollow">Tag Reference</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="Ajax-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#Ajax-AttachingtoaComponent">Reloading components with Ajax</A></LI>
+	<LI><A href="#Ajax-InvokingServerActionDuringanAjaxRequest">Invoking server action during an Ajax request</A></LI>
+	<LI><A href="#Ajax-LoadingDatawithAjax">Loading data from the server during an Ajax request</A></LI>
+	<LI><A href="#Ajax-SubmittingComponentsData">Controlling submitted data</A></LI>
+	<LI><A href="#Ajax-AvoidingFrequentRequests">Avoiding frequent requests</A></LI>
+	<LI><A href="#Ajax-AjaxStateEvents">Ajax state events</A></LI>
+	<LI><A href="#Ajax-StandaloneMode">Standalone mode</A></LI>
+	<LI><A href="#Ajax-PureJavaScriptAPI">Pure JavaScript API</A></LI>
+</UL>
+
+
+<H2><A name="Ajax-AttachingtoaComponent"></A>Attaching to a Component</H2>
+
+<P>The common use-case for implementing interactive Ajax features is when there's a component on a page that triggers some action that requires an Ajax call to the server. For this purpose, the <CITE>Ajax</CITE> component has a feature of attaching it to the &quot;invoker&quot; component, or a component that initiates the Ajax action. For example it is possible to attach the <CITE>Ajax</CITE> component to a button component, and even more, it is possible to attach to arbitrary HTML tags that are not JSF components.</P>
+
+<P>There are two ways of attaching to a component:</P>
+<UL class="alternate" type="square">
+	<LI>It can be placed right into the invoker component's tag. This way is simpler for most cases when you need to attach to a JSF component. Here's an example:
+<PRE class="code_area">&lt;h:inputText&gt;
+  &lt;o:ajax event=<SPAN class="code_area_values">&quot;keypress&quot;</SPAN> render=<SPAN class="code_area_values">&quot;ajaxOutput&quot;</SPAN>/&gt;
+&lt;/h:inputText&gt;</PRE></LI>
+	<LI>You can place a component anywhere and specify its <SPAN class="attribute">for</SPAN> attribute that refers to a component that <CITE>Ajax</CITE> component should be attached to. This way can be used to attach not just to a JSF component as in the previous point, but to an arbitrary HTML element by its client identifier, see below. Here's an example of attaching to a <SPAN class="code_area_values">&quot;click&quot;</SPAN> event of the HTML <SPAN class="tag">&lt;button&gt;</SPAN> tag:
+<PRE class="code_area">&lt;button id=<SPAN class="code_area_values">&quot;editData&quot;</SPAN>&gt;Test&lt;/button&gt;
+&lt;o:ajax <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;:editData&quot;</SPAN> render=<SPAN class="code_area_values">&quot;ajaxOutput&quot;</SPAN>/&gt;</PRE></LI>
+</UL>
+
+
+<P>In both cases you can use the <SPAN class="attribute">event</SPAN> attribute to specify the attached component's event that will determine when <CITE>Ajax</CITE> request should be executed. The default value for this attribute is <SPAN class="code_area_values">&quot;click&quot;</SPAN>, which means that <CITE>Ajax</CITE> request will be initiated when a user clicks on the attached component. Note that the event string should be without the <SPAN class="attribute">&quot;on&quot;</SPAN> prefix, for example you should use <SPAN class="code_area_values">&quot;dblclick&quot;</SPAN> instead of <SPAN class="code_area_values">&quot;ondblclick&quot;</SPAN>.</P>
+
+<P>The <SPAN class="attribute">render</SPAN> attribute should specify ids for all components that should be reloaded during the Ajax request. A value expression should evaluate to a <SPAN class="attribute">Iterable</SPAN> of <SPAN class="attribute">String</SPAN>, if a literal is specified the identifiers must be space delimited.</P>
+
+<P>The <SPAN class="attribute">for</SPAN> attribute mentioned in the second point should be assigned with the <SPAN class="attribute">id</SPAN> of a JSF component or <SPAN class="attribute">id</SPAN> of any HTML element, whose event should be listened to:</P>
+<UL>
+	<LI>The first way of specifying this attribute is for referencing JSF components and it is similar to the way of specifying the <SPAN class="attribute">for</SPAN> attribute of the standard <SPAN class="tag">&lt;h:outputLabel&gt;</SPAN> and <SPAN class="tag">&lt;h:message&gt;</SPAN> tags. It can either be an &quot;absolute&quot; identifier that begins with a colon and includes ids of all naming container parents, such as <SPAN class="code_area_values">&quot;:form:button1&quot;</SPAN>, or it can be a relative identifier that refers to another child in the same naming container, for example <SPAN class="code_area_values">&quot;button2&quot;</SPAN>. The formal rules of finding the component by identifier are described in API reference for the <A href="http://java.sun.com/javaee/5/docs/api/javax/faces/component/UIComponent.html#findComponent(java.lang.String)" rel="nofollow">UIComponent.findComponent()</A> method.</LI>
+	<LI>The second way of specifying this attribute is for referring HTML elements rather than JSF components. Referring to HTML elements is similar to referring JSF components with an absolute identifier &ndash; you just need to prepend actual element id with a colon symbol. For example in order to refer a an HTML button tag declared as <SPAN class="attribute">&lt;input id=&quot;myHtmlButton&quot; type=&quot;button&quot; value=&quot;Test&quot;/&gt;</SPAN> you should use the <SPAN class="code_area_values">&quot;:myHtmlButton&quot;</SPAN> value of the <SPAN class="attribute">for</SPAN> attribute.</LI>
+</UL>
+
+
+<P class="bubble note"><STRONG>Note</STRONG><BR>Note that it is not possible to change the <SPAN class="attribute">rendered</SPAN> attribute of the reloaded component(s) since that change cannot not be applied during the Ajax request. This limitation is applicable only to the components specified for reloading directly and not to their child components. So this issue can be solved by wrapping the component whose <SPAN class="attribute">rendered</SPAN> attribute is being changed into any container (for example the <SPAN class="tag">&lt;h:panelGroup&gt;</SPAN> component) and reloading that container instead.</P>
+
+
+<H2><A name="Ajax-InvokingServerActionDuringanAjaxRequest"></A>Invoking Server Action During an Ajax Request</H2>
+
+<P>There is a possibility of invoking a server action during an Ajax request. This can be made using the <SPAN class="attribute">listener</SPAN> attribute. This attribute should be specified as a method binding expression pointing at an action listener to be invoked. The phase when the action is invoked depends on the value of the <SPAN class="attribute">immediate</SPAN> attribute (see the <A href="#Ajax-ControllingPhaseofActionExecution">Controlling Phase of Action Execution</A> section below). The referred method should receive one parameter of type <SPAN class="attribute">javax.faces.event.ActionEvent</SPAN>.</P>
+
+<H2><A name="Ajax-ControllingPhaseofActionExecution"></A>Controlling Phase of Action Execution</H2>
+
+<P>Phase of action listener notification is controlling by the <SPAN class="attribute">immediate</SPAN> attribute. If attribute is equal to <SPAN class="code_area_values">true</SPAN>, than action will be invoke during Apply Request Values phase. If attribute equals <SPAN class="code_area_values">false</SPAN> (the default value), than action will be invoked in Invoke Application phase.</P>
+
+<H2><A name="Ajax-SubmittingComponentsData"></A>Submitting Components Data</H2>
+
+<P>Any Ajax action performed using the <CITE>Ajax</CITE> component will usually need some data entered on the page to be submitted to the server for processing.</P>
+
+<P>Here are the rules that are used to determine the components whose data should be submitted and processed on the server:</P>
+<UL class="alternate" type="square">
+	<LI>All reloaded components specified in the <SPAN class="attribute">render</SPAN> attribute are submitted to the server (unless the <SPAN class="attribute">executeRenderedComponents</SPAN> attribute is set to <SPAN class="code_area_values">false</SPAN> as described below).</LI>
+	<LI>If <CITE>Ajax</CITE> component is attached to some component (i.e. not configured as using a stand-alone mode, see below), then the attached component is submitted in addition to all other submitted components, though this component won't be reloaded unless it is included into the <SPAN class="attribute">render</SPAN> attribute explicitly.</LI>
+	<LI>It is possible to specify the list of components that should be submitted in addition to the ones mentioned above by explicitly specifying their ids in the <SPAN class="attribute">execute</SPAN> attribute. These components will be submitted to the server for processing their data, but they won't be reloaded as a result of Ajax request. This feature is useful for a quite common case when the reloaded components and/or the executed action depends on the data entered elsewhere on the page.</LI>
+</UL>
+
+
+<P>Here is an example where a button reloads an <SPAN class="tag">&lt;h:outputText&gt;</SPAN> component with the text entered in an <SPAN class="tag">&lt;h:inputText&gt;</SPAN> component without reloading the input component.</P>
+<PRE class="code_area">&lt;h:inputText id=<SPAN class="code_area_values">&quot;input1&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{requestScope['text1']}&quot;</SPAN>&gt;
+  &lt;o:ajax event=<SPAN class="code_area_values">&quot;keypress&quot;</SPAN> render=<SPAN class="code_area_values">&quot;ot1&quot;</SPAN> execute=<SPAN class="code_area_values">&quot;it1&quot;</SPAN>/&gt;
+&lt;/h:inputText&gt;
+&lt;h:commandButton value=<SPAN class="code_area_values">&quot;Test&quot;</SPAN>&gt;
+  &lt;o:ajax render=<SPAN class="code_area_values">&quot;input1&quot;</SPAN> execute=<SPAN class="code_area_values">&quot;output1&quot;</SPAN>/&gt;
+&lt;/h:commandButton&gt;
+&lt;h:outputText id=<SPAN class="code_area_values">&quot;output1&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{requestScope['text1']}&quot;</SPAN>/&gt;</PRE>
+
+<P>Note that by default all components specified in the <SPAN class="attribute">render</SPAN> attribute undergo the &quot;execute&quot; lifecycle as well, just as if they are implicitly included into the <SPAN class="attribute">execute</SPAN> attribute. This means that their Restore View, Apply Request Values, Process Validations and Update Model Values phases are being executed. You can prevent this behavior <SPAN class="attribute">executeRenderedComponents</SPAN> attribute to <SPAN class="attribute">false</SPAN>, so these components will just be re-rendered without validation and saving their data to backing bean.</P>
+
+<H2><A name="Ajax-AvoidingFrequentRequests"></A>Avoiding Frequent Requests</H2>
+
+<P>In some cases the Ajax component event can be attached to an event that might occur quite frequently, and it becomes reasonable to make fewer requests in such cases. For example consider an input field that triggers Ajax reload when the user types a key. It is possible to configure the <SPAN class="attribute">Ajax</SPAN> component to send a request once the user stops typing in a text field for a while. The <SPAN class="attribute">delay</SPAN> attribute specifies a delay in milliseconds that should elapse after an event before starting an actual request. Subsequent request during this delay will make the request to be postponed until the specified delay elapses after the last such event.</P>
+
+<P>Below is an example of using the <SPAN class="attribute">delay</SPAN> attribute to send a request every time the user stops typing in a text field for one second.</P>
+<PRE class="code_area">&lt;h:inputText&gt;
+  &lt;o:ajax event=<SPAN class="code_area_values">&quot;keypress&quot;</SPAN> render=<SPAN class="code_area_values">&quot;reloadedComponent&quot;</SPAN> delay=<SPAN class="code_area_values">&quot;1000&quot;</SPAN>/&gt;
+&lt;/h:inputText&gt;</PRE>
+
+<H2><A name="Ajax-AttachingtoAnyComponentSpecificEvents"></A>Attaching to Any Component-Specific Events</H2>
+
+<P>Tag supports all events of components &ndash; the standard ones, such as <SPAN class="code_area_values">onclick</SPAN>, <SPAN class="code_area_values">onmouseup</SPAN> etc., and component-specific, such as <SPAN class="code_area_values">onadd</SPAN> for <CITE>TwoListSelection</CITE> or <SPAN class="code_area_values">onchange</SPAN> for <CITE>DataTable</CITE>'s selection. The usage is the same in both cases, though please note that attaching to custom component events are not supported when <CITE>Ajax</CITE> component is attached to the &quot;invoker&quot; component with the <SPAN class="attribute">for</SPAN> attribute. Therefore you should either attach a component by embedding it into the appropriate tag, or use client-side API (see below) if you need to use <CITE>Ajax</CITE> reloading for component-specific events. Here's an example:</P>
+<PRE class="code_area">&lt;o:twoListSelection&gt;
+  &lt;f:selectItems value=<SPAN class="code_area_values">&quot;#{SomeExampleBean.items}&quot;</SPAN>/&gt;
+  &lt;o:ajax event=<SPAN class="code_area_values">&quot;add&quot;</SPAN> render=<SPAN class="code_area_values">&quot;selectedOutput&quot;</SPAN>/&gt;
+&lt;/o:twoListSelection&gt;</PRE>
+
+<H2><A name="Ajax-AjaxStateEvents"></A>Ajax State Events</H2>
+
+<P>There is a possibility to receive notifications of various conditions of the Ajax request using the following event attributes of the <SPAN class="tag">&lt;o:ajax&gt;</SPAN> tag:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="attribute">onevent</SPAN> &ndash; specifies a JavaScript code that should be executed when event specified in the <SPAN class="attribute">event</SPAN> attribute occurred.</LI>
+	<LI><SPAN class="attribute">onajaxstart</SPAN> &ndash; specifies a JavaScript code that should be executed before Ajax request is sent.</LI>
+	<LI><SPAN class="attribute">onajaxend</SPAN> &ndash; specifies a JavaScript code that should be executed after successful receiving of Ajax response. The <SPAN class="attribute">event</SPAN> pparameter for this event has an additional <SPAN class="attribute">ajaxResult</SPAN> property, which is described in the <A href="#Ajax-LoadingDatawithAjax">LoadingData with Ajax</A> section below.</LI>
+	<LI><SPAN class="attribute">onerror</SPAN> &ndash; specifies a JavaScript code that should be executed when any error has occurred during execution of Ajax request.</LI>
+</UL>
+
+
+<H2><A name="Ajax-LoadingDatawithAjax"></A>Loading Data with Ajax</H2>
+
+<P>Besides executing a server action and reloading components during the Ajax request, it is also possible to send data from the server as part of the Ajax request. The data that should be sent to the client can be specified by the Ajax event listener in two ways:</P>
+<UL class="alternate" type="square">
+	<LI>You can to declare the <CITE>Ajax</CITE> action listener method with the <SPAN class="attribute"><A href="../apiReference/org/openfaces/event/AjaxActionEvent.html" rel="nofollow">AjaxActionEvent</A></SPAN> parameter (instead of the usual <SPAN class="attribute"><A href="http://java.sun.com/javaee/javaserverfaces/1.2/docs/api/javax/faces/event/ActionEvent.html" rel="nofollow">ActinEvent</A></SPAN> type which is also allowed when declaring Ajax action listener method), and specify the required value by invoking its <SPAN class="attribute">setAjaxResult</SPAN> method.</LI>
+	<LI>You can specify the desired value in the <SPAN class="attribute">ajaxResult</SPAN> property of the <SPAN class="attribute"><A href="../apiReference/org/openfaces/ajax/AjaxRequest.html" rel="nofollow">AjaxRequest</A></SPAN> class.</LI>
+</UL>
+
+
+<P>The value specified using these methods, or the &quot;ajaxResult&quot; value, can be of one of the following types:</P>
+<UL class="alternate" type="square">
+	<LI>any primitive type wrapper (<SPAN class="attribute">java.lang.Integer</SPAN>, <SPAN class="attribute">java.lang.Boolean</SPAN>, etc...);</LI>
+	<LI><SPAN class="attribute">java.lang.String</SPAN>;</LI>
+	<LI>a collection or an array of any of the types listed here;</LI>
+	<LI>a map with string keys and values of any of the types listed here.</LI>
+</UL>
+
+
+<P>The &quot;ajaxResult&quot; value will be available in the <SPAN class="attribute">ajaxResult</SPAN> property of the <SPAN class="attribute">onajaxend</SPAN> event of the corresponding Ajax request. The primitive and string types will be represented with their JavaScript analogs, collections and arrays will be represented as JavaScript arrays, and maps will be represented with JavaScript objects, where each key/value pair will be represented with an appropriate object's field.</P>
+
+<H2><A name="Ajax-StandaloneMode"></A>Standalone Mode</H2>
+
+<P>There are use cases when <CITE>Ajax</CITE> component shouldn't be bound to a component explicitly, but should be available for explicit invocation from a JavaScript code. This can for example be needed when the same Ajax request should be executed when receiving events from several components on a page, or when it should be executed upon a specific condition that can only be detected with JavaScript.</P>
+
+<P>Such use cases can be addressed by adding the <SPAN class="attribute">standalone</SPAN> attribute with a value of <SPAN class="code_area_values">true</SPAN> to the <SPAN class="tag">&lt;o:ajax&gt;</SPAN> tag, and specifying its <SPAN class="attribute">id</SPAN> attribute to be able to refer this component from a JavaScript code. The <SPAN class="tag">&lt;o:ajax&gt;</SPAN> tag itself in this case can reside in any part of the page like any other JSF component, though as a non-visual component it won't affect page rendering and will just be available through the JavaScript code. The functionality of the <CITE>Ajax</CITE> component in this case can be activated by invoking the <SPAN class="attribute">run()</SPAN> JavaScript function on the <CITE>Ajax</CITE> component instance.</P>
+
+<P>Here's an example that invokes the same <CITE>Ajax</CITE> component upon different events of several components:</P>
+<PRE class="code_area">&lt;h:form id=<SPAN class="code_area_values">&quot;form&quot;</SPAN>&gt;
+  &lt;h:inputText id=<SPAN class="code_area_values">&quot;textField&quot;</SPAN> onkeypress=<SPAN class="code_area_values">&quot;O$('form:updateImage').run()&quot;</SPAN> .../&gt;
+  &lt;h:selectOneMenu id=<SPAN class="code_area_values">&quot;colorField&quot;</SPAN> onchange=<SPAN class="code_area_values">&quot;O$('form:updateImage').run()&quot;</SPAN> ...&gt; ... &lt;/h:selectOneMenu&gt;
+  &lt;o:dropDownField id=<SPAN class="code_area_values">&quot;fontSizeField&quot;</SPAN> onchange=<SPAN class="code_area_values">&quot;O$('form:updateImage').run()&quot;</SPAN> ...&gt; ... &lt;/o:dropDownField&gt;
+
+  &lt;o:ajax id=<SPAN class="code_area_values">&quot;updateImage&quot;</SPAN>
+          standalone=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN>
+          render=<SPAN class="code_area_values">&quot;dynamicImage&quot;</SPAN>
+          execute=<SPAN class="code_area_values">&quot;textField colorField fontSizeField&quot;</SPAN>
+          requestDelay=<SPAN class="code_area_values">&quot;500&quot;</SPAN>/&gt;
+
+  &lt;o:dynamicImage id=<SPAN class="code_area_values">&quot;dynamicImage&quot;</SPAN> .../&gt;
+&lt;/h:form&gt;</PRE>
+
+<H2><A name="Ajax-PureJavaScriptAPI"></A>Pure JavaScript API</H2>
+
+<P>The standalone mode described in the previous section allows invoking <CITE>Ajax</CITE> component functionality explicitly from the JavaScript, though it requires the <CITE>Ajax</CITE> component to be present and configured on the page. In addition to this facility, it is possible to invoke the functionality of the <CITE>Ajax</CITE> component purely with JavaScript code, without declaring the component on a page. This can be achieved using the <SPAN class="attribute">O$.ajax.request(source, event, options)</SPAN> JavaScript function, which provides a functionality identical to the <SPAN class="tag">&lt;o:ajax&gt;</SPAN> tag right from JavaScript.</P>
+
+<P>The function receives the following arguments:</P>
+<UL>
+	<LI>source &ndash; a string identifier or a reference to the element that invokes this request.</LI>
+	<LI>event (optional) &ndash; an event object that triggered this request.</LI>
+	<LI>options &ndash; (optional) an object, which consist of:
+	<UL>
+		<LI>render &ndash; (required) a space separated list of component client id(s) that should be reloaded.</LI>
+		<LI>execute &ndash; (optional) a space separated list of component client id(s) for components whose processDecodes-&gt;...-&gt;processUpdates phases should be executed in addition to the component being reloaded.</LI>
+		<LI>executeRenderedComponents &ndash; (optional) a boolean parameter with a default value of <SPAN class="code_area_values">true</SPAN> specifying whether the &quot;execute&quot; portion of lifecycle should be executed for the reloaded component(s).</LI>
+		<LI>listener &ndash; (optional) server action listener in the form of EL, which should be executed during this Ajax request. It is written in a convention <SPAN class="attribute">BeanName.functionName</SPAN>, similar to the <SPAN class="attribute">listener</SPAN> attribute of <SPAN class="tag">&lt;o:ajax&gt;</SPAN> tag, though without the <SPAN class="attribute">&#35;{</SPAN> and <SPAN class="attribute">}</SPAN> parts.</LI>
+		<LI>immediate &ndash; (optional) true means that the serverAction should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase.</LI>
+		<LI>delay &ndash; (optional) an analog of the <SPAN class="attribute">delay</SPAN> attribute of<BR>
+<SPAN class="tag">&lt;o:ajax&gt;</SPAN> tag. Specifies a delay in milliseconds that allows minimizing sending frequent Ajax requests as described in the <A href="#Ajax-AvoidingFrequentRequests">Avoiding Frequent Requests</A> section.</LI>
+		<LI>onajaxstart &ndash; (optional) the function that should be invoked before Ajax request is started.</LI>
+		<LI>onajaxend &ndash; (optional) the function that should be invoked when Ajax request is fully processed.</LI>
+		<LI>onerror &ndash; (optional) the function that should be invoked when Ajax request fails to complete successfully for some reason.</LI>
+		<LI>params &ndash; (optional) an object containing the additional request parameters</LI>
+	</UL>
+	</LI>
+</UL>
+
+
+<P>Here's an example:</P>
+<PRE class="code_area">&lt;h:outputText id=<SPAN class="code_area_values">&quot;ajaxOutput1&quot;</SPAN>  value=<SPAN class="code_area_values">&quot;#{SomeBean.outputText1}&quot;</SPAN>/&gt;
+&lt;h:outputText id=<SPAN class="code_area_values">&quot;ajaxOutput2&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{SomeBean.outputText2}&quot;</SPAN>/&gt;
+&lt;h:inputText  id=<SPAN class="code_area_values">&quot;ajaxInput&quot;</SPAN> onkeypress=&quot;O$.ajax.request(<SPAN class="code-keyword">this</SPAN>, event, {
+                                             render: 'form1:ajaxOutput1 form1:ajaxOutput2',
+                                             execute: 'form1:ajaxInput',
+                                             listener: 'SomeBean.someAction',
+                                             onajaxend: function() {alert('Success!')}
+                                             })&quot;/&gt;</PRE>
+<P>Note that all components should be located in the same form.</P>
+
+<P>If you're using the <SPAN class="attribute">O$.ajax.request</SPAN> function and there are no other Ajax-capable OpenFaces components on the page, you'll need to place the <SPAN class="tag">&lt;o:ajaxSettings/&gt;</SPAN> component on the page for JavaScript library where the <SPAN class="attribute">O$.ajax.request</SPAN> function is defined to be available on the page.</P>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

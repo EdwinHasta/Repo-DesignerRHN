@@ -1,0 +1,260 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>PopupMenu &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>PopupMenu</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#PopupMenu-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#PopupMenu-BasicUsage">Basic Usage</A></LI>
+    <LI><A href="#PopupMenu-TheThreeInvocationModes">The Three Invocation Modes</A></LI>
+    <LI><A href="#PopupMenu-CustomizingMenuAppearance">Customizing Menu Appearance</A></LI>
+    <LI><A href="#PopupMenu-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P><CITE>PopupMenu</CITE> is a component that displays a set of actions in a pop-up box for a user to choose from, and is often used as a context menu. The <CITE>PopupMenu</CITE> component can be attached to any component to appear when any particular event occurs in that component. A <CITE>PopupMenu</CITE> can be configured to have sub-menus to represent complex hierarchies of actions. A user can either use keyboard or a mouse to select an item in a <CITE>PopupMenu</CITE>.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/popupmenu.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/action/PopupMenu.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/popupMenu.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/popupMenu/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="PopupMenu-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#PopupMenu-TheThreeInvocationModes">Flexible invocation mechanism</A></LI>
+	<LI><A href="#PopupMenu-BasicUsage">Client-side and Ajax event handlers</A></LI>
+	<LI><A href="#PopupMenu-BasicUsage">Keyboard support</A></LI>
+	<LI><A href="#PopupMenu-BasicUsage">Embedding JSF components</A></LI>
+	<LI><A href="#PopupMenu-CustomizingMenuAppearance">Customizible appearance</A></LI>
+</UL>
+
+
+<H2><A name="PopupMenu-BasicUsage"></A>Basic Usage</H2>
+
+<P>The simplest way to create a PopupMenu component is to place the <SPAN class="tag">&lt;o:popupMenu&gt;</SPAN> tag into a component to which the PopupMenu should be attached. This will make the PopupMenu to be shown when the user clicks the right mouse button over the parent component (that is the menu is attached to the parent's <SPAN class="attribute">&quot;contextmenu&quot;</SPAN> event by default). The parent component's event which should invoke the popup menu can be customized using the <SPAN class="attribute">event</SPAN> attribute of the <SPAN class="tag">&lt;o:popupMenu&gt;</SPAN> tag. Popup menu's items are specified by placing one or more <SPAN class="tag">&lt;o:menuItem&gt;</SPAN> tags into the <SPAN class="tag">&lt;o:popupMenu&gt;</SPAN> tag.</P>
+
+<P>Here's a simple example of declaring the PopupMenu component for a <SPAN class="tag">&lt;h:panelGroup&gt;</SPAN> component:</P>
+<PRE class="code_area">&lt;h:panelGroup id=<SPAN class="code_area_values">&quot;itemView&quot;</SPAN> ...&gt;
+  &lt;o:popupMenu&gt;
+    &lt;o:menuItem value=<SPAN class="code_area_values">&quot;Select Item&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;selectItem();&quot;</SPAN>/&gt;
+    &lt;o:menuItem value=<SPAN class="code_area_values">&quot;Unselect Item&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;unselectItem();&quot;</SPAN>/&gt;
+    &lt;o:menuSeparator/&gt;
+    &lt;o:menuItem value=<SPAN class="code_area_values">&quot;Update This View&quot;</SPAN> action=<SPAN class="code_area_values">&quot;#{MyBean.updateView}&quot;</SPAN> render=<SPAN class="code_area_values">&quot;itemView&quot;</SPAN>/&gt;
+    &lt;o:menuSeparator/&gt;
+    &lt;o:menuItem value=<SPAN class="code_area_values">&quot;Show Main View&quot;</SPAN> action=<SPAN class="code_area_values">&quot;#{MyBean.showMainView}&quot;</SPAN>/&gt;
+  &lt;/o:popupMenu&gt;
+  ...
+&lt;/h:panelGroup&gt;</PRE>
+
+<P>As you can see from the example above, using <SPAN class="tag">&lt;o:menuItem&gt;</SPAN> is very similar to using ordinary command components such as <SPAN class="tag">&lt;h:commandButton&gt;</SPAN> or <SPAN class="tag">&lt;h:commandLink&gt;</SPAN> &ndash; the text displayed in the item is specified with the <SPAN class="attribute">value</SPAN> attribute, and you can define the menu item activation event handler in different ways:</P>
+<UL class="alternate" type="square">
+	<LI>Pure client-side event handling using the <SPAN class="attribute">onclick</SPAN> attribute.</LI>
+	<LI>Ajax event handling using the built-in <SPAN class="attribute">render</SPAN> and <SPAN class="attribute">execute</SPAN> attributes.</LI>
+	<LI>Server-side event handler with form submission using the <SPAN class="tag">action</SPAN> attribute.</LI>
+</UL>
+
+
+<P>You can turn on the Ajax mode and configure the button to reload the specified set of components instead of reloading the whole page by specifying its <SPAN class="attribute">render</SPAN> attribute. This attribute is specified as a space-separated list of component Ids in the same way as the <SPAN class="attribute">render</SPAN> attribute of the <CITE><A href="/display/JSFC/Ajax" title="Ajax">Ajax</A></CITE> component. Specifying this attribute will also make <SPAN class="attribute">action</SPAN> and/or <SPAN class="attribute">actionListener</SPAN> specified for the button to be executed during the Ajax request as well. If the Ajax mode is turned on for the button it doesn't submit data for form's components for processing on the server by default, so if you'd like to include some particular components into the Ajax request, for their data to be available during action execution or be saved through bindings, you can specify the <SPAN class="attribute">execute</SPAN> attribute. Like the <SPAN class="attribute">action</SPAN> attribute, this attribute is specified as a space-delimited list of component Ids in the same way as for the <CITE><A href="/display/JSFC/Ajax" title="Ajax">Ajax</A></CITE> component.</P>
+
+<P>The separator between menu items can be specified with the <SPAN class="tag">&lt;o:menuSeparator&gt;</SPAN> tag.</P>
+
+<P>Besides using the <CITE>PopupMenu</CITE> component with mouse, it allows item navigation with Up/Down keys, sub-menu navigation with Left/Right keys and item selection with the Enter key.</P>
+
+<P>Among the other frequently-used ways of customizing the <CITE>PopupMenu</CITE> are the possibilities to add sub-menus, place the icon besides a menu icon, and specify a non-text item content. Sub-menu can be added just by placing another <SPAN class="tag">&lt;o:popupMenu&gt;</SPAN> tag inside of the appropriate <SPAN class="tag">&lt;o:menuItem&gt;</SPAN> tag. The <SPAN class="attribute">iconUrl</SPAN> attribute specified for the <SPAN class="tag">&lt;o:menuItem&gt;</SPAN> tag lets you specify the icon that should be displayed in the menu's indent area to the left of the menu item. And finally, in cases when you need to specify a more sophisticated item's content than just plain text, which might be required to fulfill some specific design requirements, you can skip using the <SPAN class="attribute">value</SPAN> attribute, and specify any components that should be displayed in a menu item as child tags for the <SPAN class="tag">&lt;o:menuItem&gt;</SPAN> tag. Here's an example that shows declaring a menu with sub-menus, icons besides menu items, and the content of the root items displayed with images instead of text.</P>
+<PRE class="code_area">&lt;o:popupMenu&gt;
+  &lt;o:menuItem&gt;
+    &lt;o:graphicImage url=<SPAN class="code_area_values">&quot;icons/<SPAN class="code-keyword">new</SPAN>.png&quot;</SPAN>&gt;
+    &lt;o:popupMenu&gt;
+      &lt;o:menuItem iconUrl=<SPAN class="code_area_values">&quot;icons/newItem.png&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Item&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;newItem();&quot;</SPAN>/&gt;
+      &lt;o:menuItem iconUrl=<SPAN class="code_area_values">&quot;icons/newCategory.png&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Category&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;newCategory();&quot;</SPAN>/&gt;
+    &lt;/o:popupMenu&gt;
+  &lt;/o:menuItem&gt;
+  &lt;o:menuItem&gt;
+    &lt;o:graphicImage url=<SPAN class="code_area_values">&quot;icons/edit.png&quot;</SPAN>&gt;
+    &lt;o:popupMenu&gt;
+      &lt;o:menuItem iconUrl=<SPAN class="code_area_values">&quot;icons/cut.png&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Cut&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;cut();&quot;</SPAN>/&gt;
+      &lt;o:menuItem iconUrl=<SPAN class="code_area_values">&quot;icons/copy.png&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Copy&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;copy();&quot;</SPAN>/&gt;
+      &lt;o:menuItem iconUrl=<SPAN class="code_area_values">&quot;icons/paste.png&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Paste&quot;</SPAN> onclick=<SPAN class="code_area_values">&quot;paste();&quot;</SPAN>/&gt;
+    &lt;/o:popupMenu&gt;
+  &lt;/o:menuItem&gt;
+  &lt;o:menuSeparator/&gt;
+  &lt;o:menuItem&gt;
+    &lt;o:graphicImage url=<SPAN class="code_area_values">&quot;icons/editItem.png&quot;</SPAN>&gt; 
+  &lt;/o:menuItem&gt;
+  &lt;o:menuItem&gt;
+    &lt;o:graphicImage url=<SPAN class="code_area_values">&quot;icons/deleteItem.png&quot;</SPAN>&gt; 
+  &lt;/o:menuItem&gt;
+&lt;/o:popupMenu&gt;</PRE>
+
+<P>There are also some attributes that define certain aspects of <CITE>PopupMenu</CITE>'s behavior. The <SPAN class="attribute">disabled</SPAN> attribute of <SPAN class="tag">&lt;o:menuItem&gt;</SPAN> tag allows disabling a menu item so that it cannot be activated by the user. The <SPAN class="attribute">submenuShowDelay</SPAN> and <SPAN class="attribute">submenuHideDelay</SPAN> attributes of <SPAN class="tag">&lt;o:popupMenu&gt; tag allow customizing the period between mouse movement over (or out) the parent menu item and automatic menu showing (or hiding). These values are specified in milliseconds and the default value for both is <SPAN class="code_area_values"></SPAN>500</SPAN>, which corresponds to a half of a second. You can turn off automatic sub-menu showing and/or hiding by specifying <SPAN class="code_area_values">-1</SPAN> in the appropriate attribute(s).</P>
+
+<H2><A name="PopupMenu-TheThreeInvocationModes"></A>The Three Invocation Modes</H2>
+
+<P>As it was described in the previous section, the simplest way of invoking the <CITE>PopupMenu</CITE> is binding it for automatic invocation by placing it into a component for which it should be invoked. By default, the <CITE>PopupMenu</CITE> will be invoked when <SPAN class="attribute">&quot;contextmenu&quot;</SPAN> event is triggered into the parent component, which basically means showing the <CITE>PopupMenu</CITE> on right mouse click (or via ctrl-click in Opera browser where right mouse click cannot be intercepted). The event to which the <CITE>PopupMenu</CITE> is attached can be customized with the <SPAN class="attribute">event</SPAN> attribute of <SPAN class="tag">&lt;o:popupMenu&gt;</SPAN> tag. Be sure to specify the event name without the &quot;on&quot; prefix, for example you should use the &quot;click&quot; value instead of &quot;onclick&quot;, like this:</P>
+<PRE class="code_area">&lt;h:panelGroup ...&gt;
+  &lt;o:popupMenu event=<SPAN class="code_area_values">&quot;click&quot;</SPAN>&gt;
+    ...
+  &lt;/o:popupMenu&gt;
+  ...
+&lt;/panelGroup&gt;</PRE>
+<P>Albeit simple, the first approch of automatic <CITE>PopupMenu</CITE> binding by adding it inside of a component works only for JSF components and can't be used if you need to bind a <CITE>PopupMenu</CITE> to an HTML tag that is just part of page's markup and is not a JSF component.</P>
+
+<P>The second way of how <CITE>PopupMenu</CITE> invocation can be configured is placing the <SPAN class="tag">&lt;popupMenu&gt;</SPAN> tag outisde of the component or HTML element to which it should be attached, and referring that component/element by declaring the <SPAN class="attribute">for</SPAN> attribute of the <SPAN class="tag">&lt;popupMenu&gt;</SPAN> tag. The for attribute should be assigned with the id of a JSF component or id of any HTML element, whose event should be listened to. Here's a formal description of how this attribute should be defined:</P>
+<UL class="alternate" type="square">
+	<LI>The first way of specifying this attribute is for referencing JSF components and it is similar to the way of specifying the <SPAN class="attribute">for</SPAN> attribute of the standard <SPAN class="tag">&lt;h:outputLabel&gt;</SPAN> and <SPAN class="tag">&lt;h:message&gt;</SPAN> tags. It can either be an &quot;absolute&quot; identifier that begins with a colon and includes ids of all naming container parents, such as <SPAN class="code_area_values">&quot;:form:button1&quot;</SPAN>, or it can be a relative identifier that refers to another child in the same naming container, for example <SPAN class="code_area_values">&quot;button2&quot;</SPAN>. The formal rules of finding the component by identifier are described in API reference for the <SPAN class="attribute">UIComponent.findComponent()</SPAN> method.</LI>
+	<LI>The second way of specifying this attribute is for referring HTML elements rather than JSF components. Referring to HTML elements is similar to referring JSF components with an absolute identifier &ndash; you just need to prepend actual element id with a colon symbol. For example in order to refer a an HTML button tag declared as <SPAN class="attribute">&lt;input id=&quot;myHtmlButton&quot; type=&quot;button&quot; value=&quot;Test&quot;/&gt;</SPAN> you should use the <SPAN class="code_area_values">&quot;:myHtmlButton&quot;</SPAN> value of the for attribute.</LI>
+</UL>
+
+
+<P>And finally, there's one more way of invoking the <CITE>PopupMenu</CITE> component called a &quot;standalone&quot; invocation mode, where a <CITE>PopupLayer</CITE> can be declared anywhere on the page and then shown programmatically using client-side API, which provides the full control over how and when the <CITE>PopupLayer</CITE> should be shown and/or hidden. This mode is turned on by declaring the <SPAN class="attribute">standalone</SPAN> attribute with a value of <SPAN class="code_area_values">&quot;true&quot;</SPAN>. Doing so turns off automatic <CITE>PopupMenu</CITE> binding to a parent component (or a component referred to by the <SPAN class="attribute">for</SPAN> attribute). The <CITE>PopupMenu</CITE> in the standalone mode can be shown using one of the following methods: <SPAN class="attribute">show()</SPAN>, <SPAN class="attribute">showAtXY(x, y)</SPAN>, or <SPAN class="attribute">showForEvent(event)</SPAN>. You can choose the method that suits the desired <CITE>PopupMenu</CITE> positioning algorithm (see the <A href="#PopupMenu-ClientSideAPI">Client&#45;Side API</A> section for the description of these methods). Regardless of the mode, the <CITE>PopupMenu</CITE> is hidden automatically when a menu item is chosen, Esc pressed, or mouse clicked outside of the <CITE>PopupMenu</CITE>, and it's also possible to hide the <CITE>PopupMenu</CITE> programmatically with the client-side <SPAN class="attribute">hide()</SPAN> function. Study the <A href="#PopupMenu-ClientSideAPI">Client&#45;Side API</A> section for the full list of methods that can be used to inspect and manipulate the state of the <CITE>PopupMenu</CITE> component.</P>
+
+<H2><A name="PopupMenu-CustomizingMenuAppearance"></A>Customizing Menu Appearance</H2>
+
+<P>By default, a <CITE>PopupMenu</CITE> displays an indent area on the left of the menu for menu item icons. Visibility for the indent area can be customized using the <SPAN class="attribute">indentVisible</SPAN> attribute of the <SPAN class="tag">&lt;o:popupMenu&gt;</SPAN> tag, and its style is customized with the <SPAN class="attribute">indentStyle</SPAN>/<SPAN class="attribute">indentClass</SPAN> attributes.</P>
+
+<P>You can learn the full set of customization options by reading the <A href="http://openfaces.org/documentation/tagReference/index.html" rel="nofollow">tag library documentation</A> for <SPAN class="tag"><A href="http://openfaces.org/documentation/tagReference/o/popupMenu.html" rel="nofollow">&lt;o:popupMenu&gt;</A></SPAN>, <SPAN class="tag"><A href="http://openfaces.org/documentation/tagReference/o/menuItem.html" rel="nofollow">&lt;o:menuItem&gt;</A></SPAN> and <SPAN class="tag"><A href="http://openfaces.org/documentation/tagReference/o/menuSeparator.html" rel="nofollow">&lt;o:menuSeparator&gt;</A></SPAN>.</P>
+
+<H2><A name="PopupMenu-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">show()</SPAN> </TD>
+<TD> Displays the <CITE>PopupMenu</CITE> at its current position as defined by the component's placement in the page's source code or the position specified explicitly with <SPAN class="attribute">setLeft</SPAN> and <SPAN class="attribute">setTop</SPAN> methods. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">showAtXY(x, y)</SPAN> </TD>
+<TD> Displays the <CITE>PopupMenu</CITE> component at the specified absolute <SPAN class="attribute">x</SPAN> and <SPAN class="attribute">y</SPAN> coordinates </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">showForEvent(event)</SPAN> </TD>
+<TD> Displays the <CITE>PopupMenu</CITE> component at the current mouse coordinates according to the passed <SPAN class="attribute">event</SPAN> object. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">hide()</SPAN> </TD>
+<TD> Hides the <CITE>PopupMenu</CITE> component. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setLeft&#40;x)</SPAN> </TD>
+<TD> Sets the integer <SPAN class="attribute">x</SPAN> coordinate in pixels that will be used by the <SPAN class="attribute">show()</SPAN> function. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setTop&#40;y)</SPAN> </TD>
+<TD> Sets the integer <SPAN class="attribute">y</SPAN> coordinate in pixels that will be used by the <SPAN class="attribute">show()</SPAN> function. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">isVisible()</SPAN> </TD>
+<TD> Returns <SPAN class="code_area_values">true</SPAN> if the <CITE>PopupMenu</CITE> is visible. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getLeft()</SPAN> </TD>
+<TD> Returns the <SPAN class="attribute">x</SPAN> coordinate of the top-left corner of the <CITE>PopupMenu</CITE> in pixels. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getTop()</SPAN> </TD>
+<TD> Returns the <SPAN class="attribute">y</SPAN> coordinate of the top-left corner of the <CITE>PopupMenu</CITE> in pixels. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focus()</SPAN> </TD>
+<TD> Gives the keyboard focus to the <CITE>PopupMenu</CITE> component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">blur()</SPAN> </TD>
+<TD> Removes the keyboard focus from the <CITE>PopupMenu</CITE> component on which this method is invoked. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

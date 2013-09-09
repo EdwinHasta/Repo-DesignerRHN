@@ -1,0 +1,347 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>CompositeFilter &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>CompositeFilter</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#CompositeFilter-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#CompositeFilter-BasicConfiguration">Basic Configuration</A></LI>
+<UL>
+    <LI><A href="#CompositeFilter-CustomizingFilterType">Customizing Filter Type</A></LI>
+    <LI><A href="#CompositeFilter-CustomizingEditors">Customizing Editors</A></LI>
+</UL>
+    <LI><A href="#CompositeFilter-ProcessingFilterCriteria">Processing Filter Criteria</A></LI>
+    <LI><A href="#CompositeFilter-AttachingtoDataTable%2FTreeTableComponents">Attaching to DataTable/TreeTable Components</A></LI>
+    <LI><A href="#CompositeFilter-i18nSupport">i18n Support</A></LI>
+    <LI><A href="#CompositeFilter-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>CompositeFilter</CITE> component allows user to build complex filter criteria with various filter conditions. It provides its own criteria API that can be easily adapted for different use-cases. There are two ready-to-use solutions for in memory filtering over collections and building Hibernate criteria. Also, <CITE>CompositeFilter</CITE> can be integrated with <CITE>DataTable</CITE> and <CITE>TreeTable</CITE> components and serve as an external filter in addition to column filtering options.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/compositefilter.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/filter/CompositeFilter.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/compositeFilter.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/compositeFilter/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="CompositeFilter-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#CompositeFilter-CustomizingFilterType">Type-specific editors</A></LI>
+	<LI><A href="#CompositeFilter-ProcessingFilterCriteria">In-memory collections filtering</A></LI>
+	<LI><A href="#CompositeFilter-ProcessingFilterCriteria">Hibernate Criteria builder</A></LI>
+	<LI><A href="#CompositeFilter-AttachingtoDataTable%2FTreeTableComponents">DataTable and TreeTable integration</A></LI>
+	<LI><A href="#CompositeFilter-i18nSupport">i18n support</A></LI>
+</UL>
+
+
+<H2><A name="CompositeFilter-BasicConfiguration"></A>Basic Configuration</H2>
+<P>The <CITE>CompositeFilter</CITE> component can be defined using the <SPAN class="tag">&lt;o:compositeFilter&gt;</SPAN> tag with a set of <SPAN class="tag">&lt;o:filterProperty&gt;</SPAN> tags inside. Each <SPAN class="tag">&lt;o:filterProperty&gt;</SPAN> tag defines one property that will be available to the user when building filter criteria. Here's a simple example:</P>
+<PRE class="code_area">&lt;o:compositeFilter id=<SPAN class="code_area_values">&quot;filter&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{CompositeFilterBean.criteria}&quot;</SPAN>&gt;
+    &lt;o:filterProperty value=<SPAN class="code_area_values">&quot;Artist&quot;</SPAN> name=<SPAN class="code_area_values">&quot;artist&quot;</SPAN>/&gt;
+    &lt;o:filterProperty value=<SPAN class="code_area_values">&quot;Album&quot;</SPAN> name=<SPAN class="code_area_values">&quot;album&quot;</SPAN>/&gt;
+    &lt;o:filterProperty value=<SPAN class="code_area_values">&quot;Kind&quot;</SPAN> name=<SPAN class="code_area_values">&quot;kind&quot;</SPAN>/&gt;
+&lt;/o:compositeFilter&gt;</PRE>
+<P>The <SPAN class="attribute">value</SPAN> attribute of <SPAN class="tag">&lt;o:filterProperty&gt;</SPAN> defines property title as it will be represented in property selector. The <SPAN class="attribute">name</SPAN> attribute is used to specify property name and corresponds to name of the field in the data class or column name in the database.</P>
+
+<H3><A name="CompositeFilter-CustomizingFilterType"></A>Customizing Filter Type</H3>
+
+<P>The <CITE>CompositeFilter</CITE> component supports different types of filter properties. The <SPAN class="attribute">type</SPAN> attribute of <SPAN class="tag">&lt;o:filterProperty&gt;</SPAN> tag defines which of the predefined filter types should be used. It can take the following values: <SPAN class="code_area_values">&quot;text&quot;</SPAN>, <SPAN class="code_area_values">&quot;number&quot;</SPAN>, <SPAN class="code_area_values">&quot;select&quot;</SPAN>, and <SPAN class="code_area_values">&quot;date&quot;</SPAN>. The default value is <SPAN class="code_area_values">&quot;text&quot;</SPAN>. The type determines a set of operations for the property and the kind of parameter editor.</P>
+
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Filter Type </TH>
+<TH scope="col"> Operations </TH>
+<TH scope="col"> Editor </TH>
+</TR>
+<TR>
+<TD><SPAN class="code_area_values">&quot;text&quot;</SPAN> </TD>
+<TD> <SPAN class="attribute">equals</SPAN>, <SPAN class="attribute">contains</SPAN>, <SPAN class="attribute">beginsWith</SPAN>, <SPAN class="attribute">endsWith</SPAN> </TD>
+<TD> <CITE>HtmlInputText</CITE> </TD>
+</TR>
+<TR>
+<TD><SPAN class="code_area_values">&quot;number&quot;</SPAN> </TD>
+<TD> <SPAN class="attribute">equals</SPAN>, <SPAN class="attribute">lessOrEqual</SPAN>, <SPAN class="attribute">greaterOrEqual</SPAN>, <SPAN class="attribute">less</SPAN>, <SPAN class="attribute">greater</SPAN>, <SPAN class="attribute">between</SPAN> </TD>
+<TD> <CITE>Spinner</CITE></TD>
+</TR>
+<TR>
+<TD><SPAN class="code_area_values">&quot;select&quot;</SPAN> </TD>
+<TD> <SPAN class="attribute">equals</SPAN> </TD>
+<TD> <CITE>DropDownField</CITE> </TD>
+</TR>
+<TR>
+<TD><SPAN class="code_area_values">&quot;date&quot;</SPAN> </TD>
+<TD> <SPAN class="attribute">equals</SPAN>, <SPAN class="attribute">lessOrEqual</SPAN>, <SPAN class="attribute">greaterOrEqual</SPAN>, <SPAN class="attribute">less</SPAN>, <SPAN class="attribute">greater</SPAN>, <SPAN class="attribute">between</SPAN> </TD>
+<TD> <CITE>DateChooser</CITE> </TD>
+</TR>
+</TBODY></TABLE>
+
+<H3><A name="CompositeFilter-CustomizingEditors"></A>Customizing Editors</H3>
+
+<P>The <SPAN class="tag">&lt;o:filterProperty&gt;</SPAN> tag provides additional attributes for editor customizations:</P>
+
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Filter Type </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD><SPAN class="attribute">converter</SPAN></TD>
+<TD>all filter types</TD>
+<TD> The converter instance to be registered for this component</TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">dataProvider</SPAN></TD>
+<TD>text, select </TD>
+<TD> List of possible values list that will be displayed in drop down</TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">maxValue</SPAN></TD>
+<TD>number</TD>
+<TD> Maximum value for <CITE>Spinner</CITE> editor </TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">minValue</SPAN></TD>
+<TD>number</TD>
+<TD> Minimum value for <CITE>Spinner</CITE> editor </TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">step</SPAN></TD>
+<TD>number</TD>
+<TD> The amount by which the value is increased/decreased</TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">timeZone</SPAN></TD>
+<TD>date</TD>
+<TD> Time zone in which to interpret the time information in the date </TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">pattern</SPAN></TD>
+<TD>date</TD>
+<TD> Date pattern similar to that in the <SPAN class="attribute">java.text.SimpleDateFormat</SPAN> class</TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">caseSensitive</SPAN></TD>
+<TD>text</TD>
+<TD> Whether search is case sensitive </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="CompositeFilter-ProcessingFilterCriteria"></A>Processing Filter Criteria</H2>
+
+<P><A href="../apiReference/org/openfaces/component/filter/FilterCriterion.html" rel="nofollow"><SPAN class="attribute">FilterCriterion</SPAN></A> class is designed to represent a model for the <CITE>CompositeFilter</CITE> component. The <SPAN class="attribute">value</SPAN> attribute of the <SPAN class="tag">&lt;o:compositeFilter&gt;</SPAN> tag is used to the specify initial set of filter criteria and a value holder for the result of user's input. The <CITE>CompositeFilter</CITE> provides the following utility classes &ndash; <A href="../apiReference/org/openfaces/component/filter/PredicateBuilder.html" rel="nofollow"><SPAN class="attribute">PredicateBuilder</SPAN></A> for in memory filtering over collections and <A href="../apiReference/org/openfaces/component/filter/HibernateCriterionBuilder.html" rel="nofollow"><SPAN class="attribute">HibernateCriterionBuilder</SPAN></A> for building Hibernate criteria. The example below demostrates two ways of filtering using <SPAN class="attribute">FilterCriterion</SPAN>.</P>
+<PRE class="code_area">&lt;o:compositeFilter id=<SPAN class="code_area_values">&quot;cf&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{CompositeFilterBean.criteria}&quot;</SPAN> &gt;
+  &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;firstName&quot;</SPAN> value=<SPAN class="code_area_values">&quot;First Name&quot;</SPAN> type=<SPAN class="code_area_values">&quot;text&quot;</SPAN>/&gt;
+  &lt;o:filterProperty value=<SPAN class="code_area_values">&quot;age&quot;</SPAN> type=<SPAN class="code_area_values">&quot;number&quot;</SPAN>/&gt;
+  &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;dateOfBirth&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Date Of Birth&quot;</SPAN> type=<SPAN class="code_area_values">&quot;date&quot;</SPAN>
+                    pattern=<SPAN class="code_area_values">&quot;dd-MM-yyyy&quot;</SPAN> timeZone=<SPAN class="code_area_values">&quot;GMT&quot;</SPAN>/&gt;
+  &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;placeOfBirth.country&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Country&quot;</SPAN> type=<SPAN class="code_area_values">&quot;select&quot;</SPAN>
+                    dataProvider=<SPAN class="code_area_values">&quot;#{CompositeFilterBean.countries}&quot;</SPAN>
+                    converter=<SPAN class="code_area_values">&quot;#{CompositeFilterBean.countryConverter}&quot;</SPAN>/&gt;
+&lt;/o:compositeFilter&gt;</PRE>
+<PRE class="code_area"><SPAN class="code-keyword">import</SPAN> org.apache.commons.collections.CollectionUtils;
+<SPAN class="code-keyword">import</SPAN> org.apache.commons.collections.Predicate;
+<SPAN class="code-keyword">import</SPAN> org.hibernate.criterion.Criterion;
+...
+<SPAN class="code-keyword">public</SPAN> class CompositeFilterBean {
+
+   <SPAN class="code-keyword">private</SPAN> List&lt;User&gt; customers;
+   <SPAN class="code-keyword">private</SPAN> List&lt;User&gt; filteredCustomers;
+   <SPAN class="code-keyword">private</SPAN> List&lt;User&gt; employees;
+   <SPAN class="code-keyword">private</SPAN> CompositeFilterCriterion criteria;
+
+   ...
+
+   <SPAN class="code-keyword">public</SPAN> void setCriteria(CompositeFilterCriterion criteria) {
+        <SPAN class="code-keyword">this</SPAN>.criteria = criteria;
+
+        Predicate predicate = PredicateBuilder.build(criteria);
+        filteredCustomers = <SPAN class="code-keyword">new</SPAN> ArrayList&lt;User&gt;(customers);
+        CollectionUtils.filter(filteredCustomers, predicate);
+
+	Criterion criterion = HibernateCriterionBuilder.build(criteria);
+        employees = userService.findByCriterion(criterion);
+        <SPAN class="code-keyword">return</SPAN> result;
+   }
+
+   ...
+}</PRE>
+<PRE class="code_area"><SPAN class="code-keyword">public</SPAN> class UserService <SPAN class="code-keyword">extends</SPAN> HibernateDaoSupport{
+
+   <SPAN class="code-keyword">public</SPAN> Collection&lt;User&gt; findByCriterion(Criterion criterion) {
+        Criteria criteria = getSession().createCriteria(User.class);
+        criteria.add(criterion);
+        <SPAN class="code-keyword">return</SPAN> (List&lt;User&gt;) criteria.list();
+   }
+}</PRE>
+
+<H2><A name="CompositeFilter-AttachingtoDataTable%2FTreeTableComponents"></A>Attaching to DataTable/TreeTable Components</H2>
+
+<P>The <CITE>CompositeFilter</CITE> component can be attached to the <CITE>DataTable</CITE> or <CITE>TreeTable</CITE> component using the <SPAN class="attribute">for</SPAN> attribute of <SPAN class="tag">&lt;o:compositeFilter&gt;</SPAN> tag. This means that the data in the <CITE>DataTable</CITE> (or <CITE>TreeTable</CITE>) will be automatically filtered with criteria defined by user using the <CITE>CompositeFilter</CITE>. Furthermore the <CITE>CompositeFilter</CITE> will automatically detect table columns and provide them to a user as a basis for filters construction, which removes the need to specify the <SPAN class="tag">&lt;o:filterProperty&gt;</SPAN> tags when <CITE>CompositeFilter</CITE> is bound to a <CITE>DataTable</CITE> or <CITE>TreeTable</CITE>. This autodetection mode can be turned off by by assigning <SPAN class="code_area_values">false</SPAN> to the <SPAN class="attribute">autoDetect</SPAN> attribute (the default value is <SPAN class="code_area_values">true</SPAN>), which makes it possible to customize the list of fields available for filtering or their parameters.</P>
+
+<P>It's possible to attach <CITE>CompositeFilter</CITE> to a <CITE>DataTable</CITE>/<CITE>TreeTable</CITE> component even if that component already has other filters attached.</P>
+
+<P>The example below shows two composite filter components attached to the same <CITE>DataTable</CITE> in both modes (with auto detection mode on and off). Both components will have the same appearance and behavior, and the same set of properties with the same types.</P>
+<PRE class="code_area">&lt;o:compositeFilter id=<SPAN class="code_area_values">&quot;filter1&quot;</SPAN> <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;banks&quot;</SPAN>/&gt;
+
+&lt;o:compositeFilter id=<SPAN class="code_area_values">&quot;filter2&quot;</SPAN> <SPAN class="code-keyword">for</SPAN>=<SPAN class="code_area_values">&quot;banks&quot;</SPAN> autoDetect=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">false</SPAN>&quot;</SPAN>&gt;
+  &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;institutionName&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Institution Name&quot;</SPAN> type=<SPAN class="code_area_values">&quot;text&quot;</SPAN>/&gt;
+  &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;state&quot;</SPAN> value=<SPAN class="code_area_values">&quot;State&quot;</SPAN> type=<SPAN class="code_area_values">&quot;select&quot;</SPAN>
+                    dataProvider=<SPAN class="code_area_values">&quot;#{StateList.values}&quot;</SPAN> converter=<SPAN class="code_area_values">&quot;#{StatesList.converter}&quot;</SPAN>/&gt;
+  &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;foundationDate&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Founded&quot;</SPAN> type=<SPAN class="code_area_values">&quot;date&quot;</SPAN>&gt;
+     &lt;f:convertDateTime pattern=<SPAN class="code_area_values">&quot;MM/yyyy&quot;</SPAN>/&gt;
+  &lt;/o:filterProperty&gt;
+&lt;/o:compositeFilter&gt;
+
+&lt;o:dataTable id=<SPAN class="code_area_values">&quot;banks&quot;</SPAN> <SPAN class="code-keyword">var</SPAN>=<SPAN class="code_area_values">&quot;bank&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{BanksList.banks}&quot;</SPAN>&gt;
+  &lt;o:column id=<SPAN class="code_area_values">&quot;institutionName&quot;</SPAN>&gt;
+    &lt;f:facet name=<SPAN class="code_area_values">&quot;header&quot;</SPAN>&gt;
+      &lt;h:outputText value=<SPAN class="code_area_values">&quot;Institution Name&quot;</SPAN>/&gt;
+    &lt;/f:facet&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;#{bank.institutionName}&quot;</SPAN>/&gt;
+  &lt;/o:column&gt;
+  &lt;o:column id=<SPAN class="code_area_values">&quot;state&quot;</SPAN> header=<SPAN class="code_area_values">&quot;State&quot;</SPAN>&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;#{bank.state}&quot;</SPAN> converter=<SPAN class="code_area_values">&quot;#{StatesList.converter}&quot;</SPAN>/&gt;
+  &lt;/o:column&gt;
+  &lt;o:column id=<SPAN class="code_area_values">&quot;foundationDate&quot;</SPAN>&gt;
+    &lt;f:facet name=<SPAN class="code_area_values">&quot;header&quot;</SPAN>&gt;
+      &lt;h:outputText value=<SPAN class="code_area_values">&quot;Founded&quot;</SPAN>/&gt;
+    &lt;/f:facet&gt;
+    &lt;h:outputText value=<SPAN class="code_area_values">&quot;#{bank.foundationDate}&quot;</SPAN>&gt;
+      &lt;f:convertDateTime pattern=<SPAN class="code_area_values">&quot;MM/yyyy&quot;</SPAN>/&gt;
+    &lt;/h:outputText&gt;
+  &lt;/o:column&gt;
+&lt;/o:dataTable&gt;</PRE>
+
+<P>When the <CITE>CompositeFilter</CITE> component is bound to a <CITE>DataTable</CITE> (or <CITE>TreeTable</CITE>) component, it displays the &quot;Apply&quot; button, which allows filtering the attached <CITE>DataTable</CITE> (or <CITE>TreeTable</CITE>). The text and appearance of this button can be customized by using the <SPAN class="attribute">&quot;applyButton&quot;</SPAN> facet. You can place any <CITE>UICommand</CITE> component in this facet, for example <SPAN class="tag">&lt;h:commandButton&gt;</SPAN> or <SPAN class="tag">&lt;h:commandLink&gt;</SPAN> and configure their attributes according to your needs.</P>
+
+<H2><A name="CompositeFilter-i18nSupport"></A>i18n Support</H2>
+<P><CITE>CompositeFilter</CITE> provides ability to easily localize operation labels by specifying <SPAN class="attribute">labels</SPAN> attribute <SPAN class="tag">&lt;o:compositeFilter&gt;</SPAN> tag and providing proper message bundle. The resource bundle should contain messages for each operation and have the following form:</P>
+<PRE class="code_area">org.openfaces.filter.condition.equals=Equals
+org.openfaces.filter.condition.contains=Contains
+org.openfaces.filter.condition.beginsWith=Begins with
+org.openfaces.filter.condition.endsWith=Ends with
+org.openfaces.filter.condition.lessOrEqual=&lt;=
+org.openfaces.filter.condition.greaterOrEqual=&gt;=
+org.openfaces.filter.condition.greater=&gt;
+org.openfaces.filter.condition.less=&lt;
+org.openfaces.filter.condition.between=Between</PRE> 
+<PRE class="code_area">&lt;o:loadBundle basename=<SPAN class="code_area_values">&quot;com.mycompany.testapp.filter.MessageResources&quot;</SPAN> <SPAN class="code-keyword">var</SPAN>=<SPAN class="code_area_values">&quot;messages&quot;</SPAN>/&gt;
+
+&lt;o:compositeFilter id=<SPAN class="code_area_values">&quot;compositeFilter&quot;</SPAN> value=<SPAN class="code_area_values">&quot;#{CompositeFilterBean.criteria}&quot;</SPAN> labels=<SPAN class="code_area_values">&quot;#{messages}&quot;</SPAN>&gt;
+    &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;title&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Book Title&quot;</SPAN> type=<SPAN class="code_area_values">&quot;text&quot;</SPAN>/&gt;
+    &lt;o:filterProperty name=<SPAN class="code_area_values">&quot;published&quot;</SPAN> value=<SPAN class="code_area_values">&quot;Date&quot;</SPAN> type=<SPAN class="code_area_values">&quot;date&quot;</SPAN> pattern=<SPAN class="code_area_values">&quot;yyyy&quot;</SPAN>/&gt;
+&lt;/o:compositeFilter&gt;</PRE>
+
+<H2><A name="CompositeFilter-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods for the <CITE>CompositeFilter</CITE> component are listed below:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col">Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD><SPAN class="attribute">add()</SPAN> </TD>
+<TD> Adds new filter row for <CITE>CompositeFilter</CITE> component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">remove(index)</SPAN> </TD>
+<TD> Removes filter row with specified index from <CITE>CompositeFilter</CITE> component on which this method is invoked.  </TD>
+</TR>
+<TR>
+<TD><SPAN class="attribute">clear()</SPAN> </TD>
+<TD> Removes all filter rows from <CITE>CompositeFilter</CITE> component on which this method is invoked. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

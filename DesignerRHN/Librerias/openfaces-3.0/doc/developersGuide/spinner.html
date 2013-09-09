@@ -1,0 +1,255 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>Spinner &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>Spinner</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#Spinner-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#Spinner-BasicConfiguration">Basic Configuration</A></LI>
+    <LI><A href="#Spinner-SpecifyingtheNumberFormat">Specifying the Number Format</A></LI>
+    <LI><A href="#Spinner-CustomizingAppearance">Customizing Appearance</A></LI>
+    <LI><A href="#Spinner-ClientSideEvents">Client-Side Events</A></LI>
+    <LI><A href="#Spinner-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>Spinner</CITE> component is an input field for entering numbers, which consists of a text field and the attached increase/decrease buttons.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/spinner.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/input/Spinner.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/spinner.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/spinner/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="Spinner-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#Spinner-BasicConfiguration">Integer and floating point numbers support</A></LI>
+	<LI><A href="#Spinner-SpecifyingtheNumberFormat">Customizing number formatting options</A></LI>
+	<LI><A href="#Spinner-BasicConfiguration">Specifing allowed range and step</A></LI>
+	<LI><A href="#Spinner-BasicConfiguration">Displaying prompt text</A></LI>
+	<LI><A href="#Spinner-CustomizingAppearance">Flexible style and appearance customization</A></LI>
+	<LI><A href="#Spinner-BasicConfiguration">Keyboard support</A></LI>
+</UL>
+
+
+<H2><A name="Spinner-BasicConfiguration"></A>Basic Configuration</H2>
+
+<P>To add the Spinner component to the page, use the <SPAN class="tag">&lt;o:spinner&gt;</SPAN> tag. The API for this tag is very similar to that of the standard <SPAN class="tag">&lt;h:inputText&gt;</SPAN> component. The edited value can be specified using the <SPAN class="attribute">value</SPAN> attribute that corresponds to selected number, which can either be specified as a literal number value, or be as a value binding expression that references a <SPAN class="attribute">java.lang.Number</SPAN> type value or one any of its subtypes, as well as the primitive number types (<SPAN class="attribute">int</SPAN>, <SPAN class="attribute">float</SPAN>, <SPAN class="attribute">double</SPAN>, etc.) Here's a simple example of defining the spinner component:</P>
+<PRE class="code_area">&lt;o:spinner value=<SPAN class="code_area_values">&quot;#{SpinnerBean.quantity}&quot;</SPAN> /&gt;</PRE>
+
+<P>This displays a <SPAN class="attribute">Spinner</SPAN> component where the user can enter a number manually, and use the increase/decrease buttons on the field's right or press Up/Down keys to increase or decrease the currently entered value. By default, the step by which the value is increased and decreased is <SPAN class="code_area_values">1</SPAN> though it can be changed using the <SPAN class="attribute">step</SPAN> attribute. By default, the field doesn't restrict the range of numbers that can be specified in the <CITE>Spinner</CITE> component. Though you can specify minimum and/or maximum values using the <SPAN class="attribute">minValue</SPAN> and <SPAN class="attribute">maxValue</SPAN> attributes respectively.</P>
+
+<P>Here's an example of declaring a <CITE>Spinner</CITE> field that allows specifying a floating point number in range 0..1 with a step of 0.1:</P>
+<PRE class="code_area">&lt;o:spinner value=<SPAN class="code_area_values">&quot;#{AjaxSettings.transparency}&quot;</SPAN> minValue=<SPAN class="code_area_values">&quot;0&quot;</SPAN> maxValue=<SPAN class="code_area_values">&quot;1&quot;</SPAN> step=<SPAN class="code_area_values">&quot;0.1&quot;</SPAN>/&gt;</PRE>
+
+<P>If minimum/maximum values are specified, it's possible to turn on the &quot;cycled&quot; mode for the <CITE>Spinner</CITE> by assigning <SPAN class="code_area_values">true</SPAN> to the <SPAN class="attribute">cycled</SPAN> attribute, which means that if the value reaches the specified minimum/maximum and an attempt to decrease/increase the value is made, the value &quot;flips&quot; to the other end of the range, e.g. maximum value is selected when decreasing a minimal value.</P>
+
+<P>It's possible to allow the user change <CITE>Spinner</CITE> field's value only by using the increase/decrease buttons (or Up/Down keys) and prohibit the expclicit value typing by assigning <SPAN class="code_area_values">false</SPAN> to the <SPAN class="attribute">typingAllowed</SPAN> attribute.</P>
+
+<P>You can specify the prompt text for the <CITE>Spinner</CITE> component using the <SPAN class="attribute">promptText</SPAN> attribute.<BR>
+The prompt text is a label or short instruction displayed inside the <CITE>Spinner</CITE> component. The specified text will be shown to the user while the value of the <CITE>Spinner</CITE> component is empty and disappear once user types something into the <CITE>SuggestionField</CITE> or it gets input focus. You can customize the styles of the prompt text by using the <SPAN class="attribute">promptTextStyle</SPAN> and <SPAN class="attribute">promptTextClass</SPAN> attributes.</P>
+
+<P>Like any JSF <CITE>UIInput</CITE> component, the <CITE>Spinner</CITE> component supports the standard <SPAN class="attribute">validator</SPAN>, <SPAN class="attribute">required</SPAN>, <SPAN class="attribute">immediate</SPAN> and <SPAN class="attribute">disabled</SPAN> attributes. For more information about them, see JavaServer Faces specification (section &quot;EditableValueHolder&quot;).</P>
+
+<H2><A name="Spinner-SpecifyingtheNumberFormat"></A>Specifying the Number Format</H2>
+
+<P>The <CITE>Spinner</CITE> component supports configuring number format to display a number. It is also assumed that the same number format is used by the user when typing a number.<BR>
+To specify the number format for the <CITE>Spinner</CITE> component the stardard JSF <SPAN class="tag">&lt;f:convertNumber&gt;</SPAN> tag can be used (please refer to the <A href="http://java.sun.com/javaee/javaserverfaces/1.2/docs/api/javax/faces/convert/NumberConverter.html" rel="nofollow"><SPAN class="attribute">NumberConverter</SPAN></A> class documentation for more information).</P>
+
+<P>The <SPAN class="tag">&lt;f:convertNumber&gt;</SPAN> tag provides a range of options for customizing the appearance of numeric data, for instance it allows to specify number pattern using the syntax rules specified by <SPAN class="attribute">java.text.DecimalFormat</SPAN>.<BR>
+The following examples demonstrate formating number using the <SPAN class="attribute">pattern</SPAN> and <SPAN class="attribute">type</SPAN> attribues:</P>
+<PRE class="code_area">&lt;o:spinner value=<SPAN class="code_area_values">&quot;#{SpinnerBean.discount}&quot;</SPAN> step=<SPAN class="code_area_values">&quot;0.5&quot;</SPAN> maxValue=<SPAN class="code_area_values">&quot;500&quot;</SPAN>
+    minValue=<SPAN class="code_area_values">&quot;0&quot;</SPAN> style=<SPAN class="code_area_values">&quot;width: 80px;&quot;</SPAN>&gt;
+   &lt;f:convertNumber pattern=<SPAN class="code_area_values">&quot;&euro; 00.000&quot;</SPAN> locale=<SPAN class="code_area_values">&quot;de&quot;</SPAN>/&gt;
+&lt;/o:spinner&gt;</PRE>
+<P>The result spinner will look as follows: <IMG src="spinner.data/currencyPattern.gif" align="absmiddle" border="0"></P>
+
+<PRE class="code_area">&lt;o:spinner value=<SPAN class="code_area_values">&quot;#{SpinnerBean.rate}&quot;</SPAN> step=<SPAN class="code_area_values">&quot;0.01&quot;</SPAN> 
+    maxValue=<SPAN class="code_area_values">&quot;1&quot;</SPAN> minValue=<SPAN class="code_area_values">&quot;0&quot;</SPAN> style=<SPAN class="code_area_values">&quot;width: 60px;&quot;</SPAN>&gt;
+    &lt;f:convertNumber locale=<SPAN class="code_area_values">&quot;en&quot;</SPAN> type=<SPAN class="code_area_values">&quot;percent&quot;</SPAN>/&gt;
+&lt;/o:spinner&gt;</PRE> 
+<P>The browser will display it as follows: <IMG src="spinner.data/percentType.gif" align="absmiddle" border="0"></P>
+
+<P>Please note that <SPAN class="attribute">maxFractionDigits</SPAN>, <SPAN class="attribute">maxIntegerDigits</SPAN>, <SPAN class="attribute">minFractionDigits</SPAN>, <SPAN class="attribute">minIntegerDigits</SPAN> attributes are not supported currently. Only an instance of <SPAN class="attribute">NumberFormat</SPAN> can be specified as a converter for the spinner.</P>
+
+<H2><A name="Spinner-CustomizingAppearance"></A>Customizing Appearance</H2>
+
+<P>The <SPAN class="attribute">buttonAlignment</SPAN> attribute lets you specify whether the increase/decrease buttons are positioned to the right or to the left of the component. This attribute can take the <SPAN class="code_area_values">&quot;right&quot;</SPAN> or <SPAN class="code_area_values">&quot;left&quot;</SPAN> values only. The default location of the button is to the right of the input field.</P>
+
+<P>You can apply styles for any part of the <CITE>Spinner</CITE> component, both when it's in the normal and rollover states. The table below lists all of the styling attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Part of component </TH>
+<TH scope="col"> Style/class attributes </TH>
+<TH scope="col"> Rollover style/class attributes </TH>
+<TH scope="col"> Focused style/class attributes </TH>
+</TR>
+<TR>
+<TD> The entire <CITE>Spinner</CITE> component </TD>
+<TD> <SPAN class="attribute">style</SPAN>/<SPAN class="attribute">styleClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverStyle</SPAN>/<SPAN class="attribute">rolloverClass</SPAN> </TD>
+<TD> <SPAN class="attribute">focusedStyle</SPAN>/<SPAN class="attribute">focusedClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Input field </TD>
+<TD> <SPAN class="attribute">fieldStyle</SPAN>/<SPAN class="attribute">fieldClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverFieldStyle</SPAN>/<SPAN class="attribute">rolloverFieldClass</SPAN> </TD>
+<TD> &#45; </TD>
+</TR>
+<TR>
+<TD> Increase/decrease buttons </TD>
+<TD> <SPAN class="attribute">buttonStyle</SPAN>/<SPAN class="attribute">buttonClass</SPAN> </TD>
+<TD> <SPAN class="attribute">rolloverButtonStyle</SPAN>/<SPAN class="attribute">rolloverButtonClass</SPAN> </TD>
+<TD> &#45; </TD>
+</TR>
+<TR>
+<TD> Pressed increase/decrease button </TD>
+<TD> <SPAN class="attribute">pressedButtonStyle</SPAN>/<SPAN class="attribute">pressedButtonClass</SPAN> </TD>
+<TD> N/A </TD>
+<TD> N/A </TD>
+</TR>
+<TR>
+<TD> <CITE>Spinner</CITE> in disabled state </TD>
+<TD> <SPAN class="attribute">disabledStyle</SPAN>/<SPAN class="attribute">disabledClass</SPAN> </TD>
+<TD> N/A </TD>
+<TD> N/A </TD>
+</TR>
+</TBODY></TABLE>
+
+<P>The following attributes allow customizing the button images:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">increaseButtonImageUrl</SPAN> , <SPAN class="attribute">decreaseButtonImageUrl</SPAN> </TD>
+<TD> Images for increase/decrease buttons. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">disabledIncreaseButtonImageUrl</SPAN>, <SPAN class="attribute">disabledDecreaseButtonImageUrl</SPAN> </TD>
+<TD> Buttons for increase/decrease buttons in case of disabled <CITE>Spinner</CITE>. </TD>
+</TR>
+</TBODY></TABLE>
+
+<P>Like the HTML &lt;input&gt; tag, <SPAN class="tag">&lt;o:spinner&gt;</SPAN> supports the <SPAN class="attribute">title</SPAN>, <SPAN class="attribute">tabindex</SPAN>, and <SPAN class="attribute">accesskey</SPAN> attributes. These attributes are rendered for a nested input field of the <CITE>DropDownField</CITE> component.</P>
+
+<H2><A name="Spinner-ClientSideEvents"></A>Client-Side Events</H2>
+
+<P>The <CITE>Spinner</CITE> component supports all of the usual client-side event attributes applicable for all field components like the standard <SPAN class="tag">&lt;h:inputText/&gt;</SPAN>, such as <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onkeypress</SPAN>, <SPAN class="attribute">onfocus</SPAN>, etc. Note that besides the standard functionality of the <SPAN class="attribute">onchange</SPAN> attribute of being fired when the changed field loses focus, the <SPAN class="attribute">onchange</SPAN> attribute is also fired when the value is incremented/decremented with <CITE>Spinner</CITE>'s buttons or keyboard Up/Down keys.</P>
+
+<H2><A name="Spinner-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods for the <CITE>Spinner</CITE> component are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getValue()</SPAN> </TD>
+<TD> Returns the currently edited value or <SPAN class="code_area_values">null</SPAN> if no number is currently entered. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setValue(value)</SPAN> </TD>
+<TD> Sets the current value for the Spinner component. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">increaseValue()</SPAN> </TD>
+<TD> Increases the current <CITE>Spinner</CITE>'s value by the current <SPAN class="attribute">step</SPAN> value, which is identical to pressing the increase button. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">decreaseValue()</SPAN> </TD>
+<TD> Increases the current <CITE>Spinner</CITE>'s value by the current <SPAN class="attribute">step</SPAN> value, which is identical to pressing the decrease button. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

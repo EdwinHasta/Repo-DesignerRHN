@@ -1,0 +1,277 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>Installation and Configuration &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>Installation and Configuration</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#InstallationandConfiguration-Installation">Installation</A></LI>
+    <LI><A href="#InstallationandConfiguration-UsingwithMaven">Using with Maven</A></LI>
+    <LI><A href="#InstallationandConfiguration-ThirdPartyLibraries">Third-Party Libraries</A></LI>
+    <LI><A href="#InstallationandConfiguration-Redistribution">Redistribution</A></LI>
+    <LI><A href="#InstallationandConfiguration-UsingOpenFacesLibrary">Using OpenFaces Library</A></LI>
+    <LI><A href="#InstallationandConfiguration-ApplicationContextParameters">Application Context Parameters</A></LI>
+    <LI><A href="#InstallationandConfiguration-SettingUpaLocalCopyofOpenFacesDemoApplication">Setting Up a Local Copy of OpenFaces Demo Application</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+
+<H2><A name="InstallationandConfiguration-Installation"></A>Installation</H2>
+
+<P>Provided that you already have a JSF application, the following steps will allow you to use OpenFaces components in your application:</P>
+<OL>
+	<LI>Add openfaces.jar to the application libraries.</LI>
+	<LI>Add the following libraries found in the distribution under the <B>lib</B> folder to the application:
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Library </TH>
+<TH scope="col"> Distribution file name </TH>
+<TH scope="col"> Notes </TH>
+</TR>
+<TR>
+<TD> CSS Parser </TD>
+<TD> cssparser.jar </TD>
+<TD> Version 0.9.5. You can skip adding it if it's already available for the application. </TD>
+</TR>
+<TR>
+<TD> SAC: The Simple API for CSS </TD>
+<TD> sac.jar </TD>
+<TD> Version 1.3. You can skip adding it if it's already available for the application. </TD>
+</TR>
+<TR>
+<TD> JCommon </TD>
+<TD> jcommon.jar </TD>
+<TD> Version 1.0.16. You can skip adding it if it's already available for the application. </TD>
+</TR>
+<TR>
+<TD> JFreeChart </TD>
+<TD> jfreechart.jar </TD>
+<TD> Version 1.0.13. You can skip adding it if it's already available for the application. </TD>
+</TR>
+<TR>
+<TD> Commons-Collections</TD>
+<TD> commons-collections.jar </TD>
+<TD> Version 3.1. You can skip adding it if it's already available for the application. </TD>
+</TR>
+</TBODY></TABLE></LI>
+</OL>
+
+
+<OL>
+	<LI>(Optional) If you want to turn on automatic client-side validation for all pages, add the following lines to the WEB-INF/web.xml file (see <A href="validation-framework.html" title="Validation Framework">Validation Framework</A> documentation for more information):
+<PRE class="code_area">&lt;context-param&gt;
+    &lt;param-name&gt;org.openfaces.validation.clientValidation&lt;/param-name&gt;
+    &lt;param-value&gt;onSubmit&lt;/param-value&gt;
+  &lt;/context-param&gt;</PRE></LI>
+</OL>
+
+
+<H2><A name="InstallationandConfiguration-UsingwithMaven"></A>Using with Maven</H2>
+
+<P>The following repositories should be added to the <SPAN class="attribute">&lt;repositories&gt;</SPAN> tag in your <SPAN class="attribute">pom.xml</SPAN> file to make OpenFaces itself and its dependencies (such as JFreeChart) to be available:</P>
+<PRE class="code_area">&lt;repository&gt;
+  &lt;id&gt;org.openfaces&lt;/id&gt;
+  &lt;url&gt;http:<SPAN class="code-comment">//repository.openfaces.org/repository&lt;/url&gt;
+</SPAN>&lt;/repository&gt;
+&lt;repository&gt;
+  &lt;id&gt;jfree&lt;/id&gt;
+  &lt;url&gt;http:<SPAN class="code-comment">//www.ibiblio.org/maven/jfree/&lt;/url&gt;
+</SPAN>&lt;/repository&gt;</PRE>
+
+<P>Here's a dependency for the OpenFaces library itself:</P>
+<PRE class="code_area">&lt;dependency&gt;
+      &lt;groupId&gt;org.openfaces&lt;/groupId&gt;
+      &lt;artifactId&gt;openfaces&lt;/artifactId&gt;
+      &lt;version&gt;3.0&lt;/version&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;</PRE>
+
+<P>And here are the dependencies required for OpenFaces at runtime:</P>
+<PRE class="code_area">&lt;dependency&gt;
+  &lt;groupId&gt;commons-collections&lt;/groupId&gt;
+  &lt;artifactId&gt;commons-collections&lt;/artifactId&gt;
+  &lt;version&gt;3.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;jfree&lt;/groupId&gt;
+  &lt;artifactId&gt;jcommon&lt;/artifactId&gt;
+  &lt;version&gt;1.0.16&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;jfree&lt;/groupId&gt;
+  &lt;artifactId&gt;jfreechart&lt;/artifactId&gt;
+  &lt;version&gt;1.0.13&lt;/version&gt;
+&lt;/dependency&gt;</PRE>
+
+<H2><A name="InstallationandConfiguration-ThirdPartyLibraries"></A>Third-Party Libraries</H2>
+
+<P>The OpenFaces library uses software developed by the <A href="http://www.jfree.org/jfreechart/" rel="nofollow">JFreeChart library</A>, <A href="http://www.jfree.org/jcommon/" rel="nofollow">JCommon class library</A>, <A href="http://cssparser.sourceforge.net/" rel="nofollow">CSS Parser library</A> and parts of code from <A href="http://myfaces.apache.org/" rel="nofollow">Apache MyFaces Project</A>, <A href="http://jakarta.apache.org/commons/codec/" rel="nofollow">Apache Commons codec</A> and <A href="http://www.json.org/" rel="nofollow">JSON software</A>.</P>
+
+<H2><A name="InstallationandConfiguration-Redistribution"></A>Redistribution</H2>
+
+<P>When distributing your application, please make sure to:</P>
+<UL>
+	<LI>Include the following libraries to your project:
+	<UL>
+		<LI>openfaces.jar (OpenFaces library)</LI>
+		<LI>Third-party libraries used by the OpenFaces library: jcommon.jar, jfreechart.jar, ss_css2.jar (for more details, see the section <A href="#InstallationandConfiguration-ThirdPartyLibraries">Third&#45;Party Libraries</A>)</LI>
+	</UL>
+	</LI>
+	<LI>Include a copy of the LGPL license.</LI>
+	<LI>Include a copy of the Apache License.</LI>
+</UL>
+
+
+<H2><A name="InstallationandConfiguration-UsingOpenFacesLibrary"></A>Using OpenFaces Library</H2>
+
+<P>To use components of the OpenFaces library, you should declare &quot;http://openfaces.org/&quot; namespace with &quot;o&quot; prefix. To do it, add the following piece of code to the JSP application:</P>
+<PRE class="code_area">&lt;%@taglib uri=<SPAN class="code_area_values">&quot;http:<SPAN class="code-comment">//openfaces.org/&quot;</SPAN> prefix=<SPAN class="code_area_values">&quot;o&quot;</SPAN> %&gt;</SPAN></PRE>
+<P>Or add the following parameter to the <CITE>&lt;HTML&gt;</CITE> tag to the Facelets application:</P>
+<PRE class="code_area">xmlns:o=<SPAN class="code_area_values">&quot;http:<SPAN class="code-comment">//openfaces.org/&quot;</SPAN></SPAN></PRE>
+
+<H2><A name="InstallationandConfiguration-ApplicationContextParameters"></A>Application Context Parameters</H2>
+
+<P>All application context parameters are summarized in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Parameter </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.ajax.sessionExpiration</SPAN> </TD>
+<TD> The application-wide setting that specifies the way session expiration is handled. Property has two possible values <SPAN class="code_area_values">&quot;default&quot;</SPAN> (default value) and <SPAN class="code_area_values">&quot;silent&quot;</SPAN>. For more details see <A href="ajax-framework.html" title="Ajax Framework">Ajax Framework</A> documentation. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.validation.clientValidation</SPAN> </TD>
+<TD> The application-wide settings of the OpenFaces validation framework. For more details see <A href="validation-framework.html#ValidationFramework-ApplicationSettings">Validation Framework</A> documentation. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">torg.openfaces.validation.disabled</SPAN> </TD>
+<TD> The flag that indicates whether or not the OpenFaces validation for all application is disabled. Default is <SPAN class="code_area_values">&quot;false&quot;</SPAN>. If <SPAN class="attribute">org.openfaces.validation.disabled</SPAN> property is set to <SPAN class="code_area_values">&quot;true&quot;</SPAN> all OpenFaces validation features are turned off. This property can be used for debugging purposes. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.validation.useDefaultClientPresentation</SPAN> </TD>
+<TD> The flag that indicates whether or not validatable components use the default presentation if no validation or conversion error presentation is set for these components. This property is relevant when client-side validation is turned on for the application. For more details see <A href="validation-framework.html#ValidationFramework-ApplicationSettings">Validation Framework</A> documentation. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.validation.useDefaultServerPresentation</SPAN> </TD>
+<TD> The flag that indicates whether or not validatable components use the default presentation if no validation or conversion error presentation is set for these components. This property is relevant when client-side validation is turned off for the application. For more details see <A href="validation-framework.html#ValidationFramework-ApplicationSettings">Validation Framework</A> documentation. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.validation.defaultPresentationClass</SPAN> </TD>
+<TD> The full class name of the component that will be used as a default validation presentation component. The component should extend the UIMessage class. If this parameter is omitted, the <CITE>FloatingIconMessage</CITE> component is used as a default validation presentation component. Parameters for the validation presentation component are specified as application-scope context parameters in the web.xml file, with the name that contains preceding validation presentation component's class name without package specification, following dot &quot;.&quot; and component's attribute name. For more details see <A href="validation-framework.html#ValidationFramework-ApplicationSettings">Validation Framework</A> documentation. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.ajaxMessageHTML</SPAN> </TD>
+<TD> Specifies the message that appears when any Ajax request is in progress. This parameter should be specified as portion of HTML that will be shown in the upper-right corner upon an Ajax request. For more details see <A href="ajax-framework.html" title="Ajax Framework">Ajax Framework</A> section in the OpenFaces Developers Guide. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.autoSaveFocus</SPAN> </TD>
+<TD> The flag that indicates whether or not focus is saved between form submissions for all application pages. For more details see <A href="focus.html" title="Focus">Focus Component</A> documentation. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">org.openfaces.autoSaveScrollPos</SPAN> </TD>
+<TD> The flag that indicates whether or not the scroll position is tracked for all application pages. For more details see <A href="scrollposition.html" title="ScrollPosition">Scroll Position Component</A> documentation. </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="InstallationandConfiguration-SettingUpaLocalCopyofOpenFacesDemoApplication"></A>Setting Up a Local Copy of OpenFaces Demo Application</H2>
+
+<P>The binary and source distribution of OpenFaces demo application can be found in the <A href="http://www.openfaces.org/downloads/" rel="nofollow">OpenFaces downloads page</A>. There are two versions of the demo, both having the same functionality but based on different view technologies: the Facelets-based, and the JSP-based one. The demo package is bundled with Mojarra 2.0. OpenFaces demo can run on Tomcat 6.0 and GlassFish v3 application servers without any changes. Running on other servers might require a different set of libraries and appropriate changes in web.xml.</P>
+
+<P>To run OpenFaces demo on the local machine, follow these steps:</P>
+<OL>
+	<LI>Unzip <SPAN class="attribute">OpenFaces-&lt;version&gt;&#45;demo&#45;facelets.zip</SPAN> package.</LI>
+	<LI>Copy <SPAN class="attribute">openfaces-demo-facelets.war</SPAN> to the <SPAN class="attribute">webapps</SPAN> directory of the Tomcat 6.0.x server (or <SPAN class="attribute">autodeploy</SPAN> direcotry of Glassifsh v3 server).</LI>
+	<LI>Run the server.</LI>
+	<LI>In your browser, open <SPAN class="attribute"><A href="http://ServerName:PortNumber/openfaces-facelets-demo/" rel="nofollow">http://ServerName:PortNumber/openfaces-facelets-demo/</A></SPAN> .</LI>
+</OL>
+
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

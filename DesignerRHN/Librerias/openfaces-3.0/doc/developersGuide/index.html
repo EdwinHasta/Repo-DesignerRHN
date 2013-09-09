@@ -1,0 +1,211 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>OpenFaces Developer&rsquo;s Guide &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>OpenFaces Developer&rsquo;s Guide</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL>
+    <LI><A href="#Index-Overview">Overview</A></LI>
+    <LI><A href="#Index-SupportedEnvironments">Supported Environments</A></LI>
+<UL>
+    <LI><A href="#Index-SupportedBrowsers">Supported Browsers</A></LI>
+    <LI><A href="#Index-JDKVersions">JDK Versions</A></LI>
+    <LI><A href="#Index-JSFVersion">JSF Version</A></LI>
+    <LI><A href="#Index-ApplicationServers">Application Servers</A></LI>
+    <LI><A href="#Index-Facelets%2FJSPViewDefinitionLanguagesSupport">Facelets/JSP View Definition Languages Support</A></LI>
+</UL>
+    <LI><A href="#Index-DocumentationConventions">Documentation Conventions</A></LI>
+    <LI><A href="#Index-KnownIssues">Known Issues</A></LI>
+</UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+The OpenFaces Developer's Guide consists of the following:</P>
+<UL>
+	<LI>Documentation Home (this document) providing the overview, supported environments and general characteristics of the OpenFaces components.</LI>
+	<LI><A href="installation-and-configuration.html#InstallationandConfiguration-Installation" title="Installation and Configuration">Installation and Configuration</A> providing getting-started information, installation steps, usage and OpenFaces-specific application context parameters.</LI>
+	<LI><A href="common-concepts.html" title="Common Concepts">Common Concepts</A> introductory material, which describes the main aspects of OpenFaces design, information common for all components, and it gives you the general understanding of the OpenFaces library.</LI>
+	<LI><A href="components-index.html" title="Components Index">Components Index</A> listing all the OpenFaces components with their short descriptions and screenshots.</LI>
+	<LI>Documentation on individual OpenFaces components describing their features, configuration, and code samples (see the sidebar for the components list).</LI>
+	<LI>Documentation on the OpenFaces <A href="ajax-framework.html" title="Ajax Framework">Ajax Framework</A> providing the information on the Ajax support features and the Ajax related configuration settings.</LI>
+	<LI>Documentation on the OpenFaces <A href="validation-framework.html" title="Validation Framework">Validation Framework</A> providing the overview, features, configuration, detailed API description, and code samples.</LI>
+</UL>
+
+
+<H2><A name="Index-Overview"></A>Overview</H2>
+
+<P>The OpenFaces library includes an extended set of JSF components for building rich Web user interfaces and a validation framework that shifts the traditional JSF validation logic to the client side.</P>
+
+<P>The standard JSF UI components are not enough to create a feature-rich and responsive Web application. The OpenFaces library extends this set with such advanced components as <CITE>DataTable</CITE>, <CITE>TreeTable</CITE>, <CITE>Calendar</CITE>, <CITE>DateChooser</CITE>, <CITE>Chart</CITE>, <CITE>TwoListSelection</CITE> (and many others) and provides richer client-side functionality for them. Thanks to such features as Ajax support and keyboard navigation, the OpenFaces library not only simplifies development of Web applications but as a result, makes them highly interactive and user-friendly.</P>
+
+<P>With the OpenFaces validation framework, you can now use standard JSF validators on the client side by assigning them to any input component, both from JSF and OpenFaces library. Or, by the same token, use additionally provided OpenFaces validators that work equally well on the client and server side. The OpenFaces validation framework supports a variety of usage scenarios where data should be validated, ensuring that validation rules are met and data types are correct already on the client, promptly notifying the user of any possible errors. In addition, it provides a flexible mechanism to configure the default validation errors presentation in many different ways.</P>
+
+<H2><A name="Index-SupportedEnvironments"></A>Supported Environments</H2>
+
+
+<H3><A name="Index-SupportedBrowsers"></A>Supported Browsers</H3>
+
+<P>All the OpenFaces components support the latest versions of the following browsers:</P>
+<UL>
+	<LI>Microsoft Internet Explorer (6.0 and later)</LI>
+	<LI>Mozilla Firefox (2.0 and later)</LI>
+	<LI>Opera (9.6 and later)</LI>
+	<LI>Apple Safari (3.0 and later)</LI>
+	<LI>Google Chrome</LI>
+</UL>
+
+
+<P>The OpenFaces components operate well in quirks and standards-compliant browser modes. Please also note that the OpenFaces library requires enabled JavaScript in the client browser.</P>
+
+<H3><A name="Index-JDKVersions"></A>JDK Versions</H3>
+
+<P>The OpenFaces components require JDK 1.5 or later on the server.</P>
+
+<H3><A name="Index-JSFVersion"></A>JSF Version</H3>
+
+<P>The OpenFaces library requires the JavaServer Faces implementation conforming to the specification version 2.0. This version of the OpenFaces has been tested with Mojarra version 2.0.3.</P>
+
+<H3><A name="Index-ApplicationServers"></A>Application Servers</H3>
+
+<P>The current version of OpenFaces has been tested to work with the following application servers:</P>
+<UL>
+	<LI>Apache Tomcat 6.0</LI>
+	<LI>GlassFish v3</LI>
+</UL>
+
+
+<H3><A name="Index-Facelets%2FJSPViewDefinitionLanguagesSupport"></A>Facelets/JSP View Definition Languages Support</H3>
+
+<P>OpenFaces 3.0 and later can be used with both view definition languages supported by JSF 2.0: Facelets and JSP.</P>
+
+<H2><A name="Index-DocumentationConventions"></A>Documentation Conventions</H2>
+
+<P>The documentation on the OpenFaces components uses the following markup conventions:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Element name </TH>
+<TH scope="col"> Example </TH>
+</TR>
+<TR>
+<TD> Class names </TD>
+<TD> <SPAN class="attribute">java.util.Date</SPAN> </TD>
+</TR>
+<TR>
+<TD> Attribute and property names </TD>
+<TD> <SPAN class="attribute">onclick</SPAN> </TD>
+</TR>
+<TR>
+<TD> Value constants </TD>
+<TD> <SPAN class="code_area_values">ajax</SPAN> </TD>
+</TR>
+<TR>
+<TD> UI elements </TD>
+<TD> <STRONG>Add All</STRONG> </TD>
+</TR>
+<TR>
+<TD> Component names </TD>
+<TD> <CITE>TreeTable</CITE> </TD>
+</TR>
+<TR>
+<TD> Tag names </TD>
+<TD> <SPAN class="tag">&lt;o:dynamicImage&gt;</SPAN> </TD>
+</TR>
+</TBODY></TABLE>
+<P>Please also note that whenever &quot;list&quot; and &quot;collection&quot; terms are used, <SPAN class="attribute">java.util.List</SPAN> and <SPAN class="attribute">java.util.Collection</SPAN> are meant.</P>
+
+<H2><A name="Index-KnownIssues"></A>Known Issues</H2>
+
+<UL class="alternate" type="square">
+	<LI>State saving during OpenFaces Ajax requests has some problems, which results in some issues with built-in Ajax capabilities in certain OpenFaces components. For example DataTable paginator's &quot;next&quot; button can't be used twice and there are certain problems when using the Ajax node folding in TreeTable (however client-side TreeTable node folding with preloadedNodes=&quot;all&quot; works fine now).</LI>
+	<LI>The CompositeFilter component doesn't work in this version.</LI>
+</UL>
+
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

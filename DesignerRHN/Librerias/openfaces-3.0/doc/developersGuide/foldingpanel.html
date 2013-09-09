@@ -1,0 +1,336 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>FoldingPanel &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>FoldingPanel</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#FoldingPanel-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#FoldingPanel-DefiningtheContent">Defining the Content</A></LI>
+    <LI><A href="#FoldingPanel-CustomizingCaptionButtons">Customizing Caption Buttons</A></LI>
+    <LI><A href="#FoldingPanel-UsingDynamicLoading">Using Dynamic Loading</A></LI>
+    <LI><A href="#FoldingPanel-CustomizingStyles">Customizing Styles</A></LI>
+    <LI><A href="#FoldingPanel-KeyboardSupport">Keyboard Support</A></LI>
+    <LI><A href="#FoldingPanel-SpecifyingUserEvents">Specifying User Events</A></LI>
+    <LI><A href="#FoldingPanel-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>FoldingPanel</CITE> component is a container for other components that can be collapsed or expanded by the user. It consists of a bar displaying the caption, an expandable/collapsible container, and a toggle button allowing the user to switch between the states.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/foldingPanel.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/panel/FoldingPanel.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/foldingPanel.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/foldingpanel/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="FoldingPanel-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#FoldingPanel-UsingDynamicLoading">Dynamic content loading (using Ajax)</A></LI>
+	<LI><A href="#FoldingPanel-DefiningtheContent">Customizable caption content</A> &amp; <A href="#FoldingPanel-CustomizingCaptionButtons">toggle button</A></LI>
+	<LI><A href="#FoldingPanel-DefiningtheContent">Different folding directions</A></LI>
+	<LI><A href="#FoldingPanel-CustomizingStyles">Flexible styles customization</A></LI>
+	<LI><A href="#FoldingPanel-KeyboardSupport">Keyboard support</A></LI>
+</UL>
+
+
+<H2><A name="FoldingPanel-DefiningtheContent"></A>Defining the Content</H2>
+
+<P>To add the <CITE>FoldingPanel</CITE> component to a page, use the <SPAN class="tag">&lt;o:foldingPanel&gt;</SPAN> tag. You can add any child components inside the <CITE>FoldingPanel</CITE> component to display them in the container. To specify the caption for the <CITE>FoldingPanel</CITE> component, use either the <SPAN class="attribute">caption</SPAN> attribute to set caption text or the <SPAN class="attribute">&quot;caption&quot;</SPAN> facet if you'd like to create a more complex caption content specified with components.</P>
+
+<P>In the example below, the <CITE>FoldingPanel</CITE> component has a caption and the <CITE>DropDownField</CITE> component as its child component.</P>
+<PRE class="code_area">&lt;o:foldingPanel caption=<SPAN class="code_area_values">&quot;A panel <SPAN class="code-keyword">for</SPAN> color selection&quot;</SPAN>&gt;
+  &lt;h:outputText value=<SPAN class="code_area_values">&quot;Select color:&quot;</SPAN>/&gt;
+  &lt;o:dropDownField&gt;
+    &lt;o:dropDownItems value=<SPAN class="code_area_values">&quot;#{ColorBean.items}&quot;</SPAN>/&gt;
+  &lt;/o:dropDownField&gt;
+&lt;/o:foldingPanel&gt;</PRE>
+<P>The state of the <CITE>FoldingPanel</CITE> component is specified by the boolean <SPAN class="attribute">expanded</SPAN> attribute. By default, its value is set to <SPAN class="code_area_values">&quot;true&quot;</SPAN>, which displays the <CITE>FoldingPanel</CITE> component in the expanded state, where all its child components are visible. In the collapsed state, only the caption of the <CITE>FoldingPanel</CITE> component is visible.</P>
+
+<P>By default, the <CITE>FoldingPanel</CITE> component expands downwards. However, you can specify different folding directions by using the <SPAN class="attribute">foldingDirection</SPAN> attribute. It can take one of the following values: <SPAN class="code_area_values">&quot;up&quot;</SPAN>, <SPAN class="code_area_values">&quot;down&quot;</SPAN>, <SPAN class="code_area_values">&quot;left&quot;</SPAN> or <SPAN class="code_area_values">&quot;right&quot;</SPAN>. Currently, in case of left-hand and right-hand folding directions, the component displays only the toggle button to expand the container.</P>
+
+<H2><A name="FoldingPanel-CustomizingCaptionButtons"></A>Customizing Caption Buttons</H2>
+
+<P>By default <SPAN class="attribute">FoldingPanel</SPAN> component displays the toggle button on the right side of its caption, though a flexible way of customizing caption buttons is provided. Here are some of the scenarios that can be addressed:</P>
+<UL class="alternate" type="square">
+	<LI>changing the appearance of the toggle button;</LI>
+	<LI>specifying custom caption buttons near the toggle button;</LI>
+	<LI>moving the caption button(s) to the left side of a caption.</LI>
+</UL>
+
+
+<P>The basis for these customizations is the <SPAN class="tag">&lt;o:captionArea&gt;</SPAN> tag, which can be placed into the <SPAN class="tag">&lt;o:foldingPanel&gt;</SPAN> tag to customize the set of buttons displayed in the caption. This tag has an <SPAN class="attribute">alignment</SPAN> attribute, which defines the caption side where the area should be placed. It can take two values: <SPAN class="code_area_values">&quot;right&quot;</SPAN> (the default value), and <SPAN class="code_area_values">&quot;left&quot;</SPAN>.</P>
+
+<P>Adding the <SPAN class="tag">&lt;o:captionArea&gt;</SPAN> tag removes the default toggle button and allows you to customize the set of buttons by placing components inside of this tag. It is possible to place the following components into caption area tags:</P>
+<UL class="alternate" type="square">
+	<LI><SPAN class="tag">&lt;o:expansionToggleButton/&gt;</SPAN> tag &ndash; displays the FoldingPanel's expansion toggle and allows customizing its appearance.</LI>
+	<LI><SPAN class="tag">&lt;o:captionButton/&gt;</SPAN> tag &ndash; displays a custom caption button that can be configured according to user's needs.</LI>
+	<LI>Any JSF component tags can also be placed into <SPAN class="tag">&lt;o:captionArea&gt;</SPAN>, which adds the flexibility of specifying virtually any controls in caption areas.</LI>
+</UL>
+
+
+<P>Both <SPAN class="tag">&lt;o:expansionToggleButton/&gt;</SPAN> and <SPAN class="tag">&lt;o:captionButton/&gt;</SPAN> components support the following common attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute(s) </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">style</SPAN>, <SPAN class="attribute">styleClass</SPAN> </TD>
+<TD> Define the general style applied to the button. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverStyle</SPAN>, <SPAN class="attribute">rolloverClass</SPAN> </TD>
+<TD> Define the style that is applied to the button when mouse cursor moves over it. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmousemove</SPAN> </TD>
+<TD> The standard mouse events. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">hint</SPAN> </TD>
+<TD> Specifies text for the tool tip that appears when mouse hovers over the button </TD>
+</TR>
+</TBODY></TABLE>
+<P>In addition they have the following attributes of their own. For <SPAN class="tag">&lt;o:expansionToggleButton/&gt;</SPAN>:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute(s) </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">expandedImageUrl</SPAN>, <SPAN class="attribute">expandedRolloverImageUrl</SPAN>, <SPAN class="attribute">expandedPressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image when <SPAN class="attribute">FoldingPanel</SPAN> is in expanded state: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">collapsedImageUrl</SPAN>, <SPAN class="attribute">collapsedRolloverImageUrl</SPAN>, <SPAN class="attribute">collapsedPressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image when <SPAN class="attribute">FoldingPanel</SPAN> is in collapsed state: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+</TBODY></TABLE>
+<P>For <SPAN class="tag">&lt;o:captionButton/&gt;</SPAN> tag:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute(s) </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">action</SPAN> </TD>
+<TD> Server action that should be executed when the button is pressed. Similar to the <SPAN class="attribute">action</SPAN> attribute of the standard <SPAN class="tag">&lt;h:commandButton&gt;</SPAN> component. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">render</SPAN> </TD>
+<TD> Specifies which component(s) should be reloaded with Ajax when the button is clicked. If the <SPAN class="attribute">action</SPAN> attribute is also specified, then the action is also executed in the Ajax request instead of form submission. This attribute is similar to the <SPAN class="attribute">render</SPAN> attribute of the </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">execute</SPAN> </TD>
+<TD> This attribute is effective only when the <SPAN class="attribute">render</SPAN> attribute is specified. The <SPAN class="attribute">execute</SPAN> attribute allows specifying the set of components whose data should be submitted for processing to the server during the Ajax request. This attribute is similar to the <SPAN class="attribute">render</SPAN> attribute of the <SPAN class="tag">&lt;o:commandButton&gt;</SPAN> tag (see the <A href="/display/JSFC/CommandButton" title="CommandButton">CommandButton</A> documentation for details). </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">imageUrl</SPAN>, <SPAN class="attribute">rolloverImageUrl</SPAN>, <SPAN class="attribute">pressedUrl</SPAN> </TD>
+<TD> Specify URLs for button's image: the general image, image that is shown when mouse hovers over the button, and image that is shown when mouse is pressed over the button but not released yet. </TD>
+</TR>
+</TBODY></TABLE>
+<P>Here's an example of moving the customized expansion toggle button to the left caption side and placing an additional caption button besides:</P>
+<PRE class="code_area">&lt;o:foldingPanel caption=<SPAN class="code_area_values">&quot;Caption&quot;</SPAN>&gt;
+  &lt;o:captionArea alignment=<SPAN class="code_area_values">&quot;left&quot;</SPAN>&gt;
+    &lt;o:expansionToggleButton
+        collapsedImageUrl=<SPAN class="code_area_values">&quot;/custom_collapsed.png&quot;</SPAN>
+        collapsedPressedImageUrl=<SPAN class="code_area_values">&quot;/custom_collapsed_pressed.png&quot;</SPAN>
+        collapsedRolloverImageUrl=<SPAN class="code_area_values">&quot;/custom_collapsed_rollover.png&quot;</SPAN>
+        expandedImageUrl=<SPAN class="code_area_values">&quot;/custom_expanded.png&quot;</SPAN>
+        expandedPressedImageUrl=<SPAN class="code_area_values">&quot;/custom_expanded_pressed.png&quot;</SPAN>
+        expandedRolloverImageUrl=<SPAN class="code_area_values">&quot;/custom_expanded_rollover.png&quot;</SPAN>
+        hint=<SPAN class="code_area_values">&quot;Click here to fold/unfold the panel&quot;</SPAN>&gt;
+    /&gt;
+    &lt;o:captionButton action=<SPAN class="code_area_values">&quot;#{BackingBean.customAction}&quot;</SPAN> imageUrl=<SPAN class="code_area_values">&quot;customAction.gif&quot;</SPAN>/&gt;
+  &lt;/o:captionArea&gt;
+  ...
+&lt;/o:foldingPanel&gt;</PRE>
+<P>You can also place more than one <SPAN class="tag">&lt;o:captionArea&gt;</SPAN> tags, which allows specifying custom areas on both caption sides.</P>
+
+<H2><A name="FoldingPanel-UsingDynamicLoading"></A>Using Dynamic Loading</H2>
+
+<P>It is possible to control how the <CITE>FoldingPanel</CITE> component loads its child components from the server when it needs to be expanded. If the <CITE>FoldingPanel</CITE> component is loaded in the expanded state for the first time, it can be collapsed and expanded again on the client side without making any requests to the server. However, if it is initially loaded in the collapsed state, then a request to the server occurs when the user expands the <CITE>FoldingPanel</CITE> component. The <SPAN class="attribute">loadingMode</SPAN> attribute specifies the way that <CITE>FoldingPanel</CITE>'s content is loaded in this case. This attribute can take the following values:</P>
+<UL>
+	<LI><SPAN class="code_area_values">&quot;client&quot;</SPAN> &#45; makes <CITE>FoldingPanel</CITE>'s content to be preloaded when the page is loaded so that expanding the <CITE>FoldingPanel</CITE> shows the preloaded content without additional server requests.</LI>
+	<LI><SPAN class="code_area_values">&quot;ajaxLazy&quot;</SPAN> (default) - loads the embedded content from the server with Ajax request. Once loaded, it will be cached on the client and shown without additional server requests on further expansions.</LI>
+	<LI><SPAN class="code_area_values">&quot;ajaxAlways&quot;</SPAN> - loads the embedded content from the server with Ajax request. Unlike the <SPAN class="code_area_values">&quot;ajaxLazy&quot;</SPAN> mode, this mode doesn't cache the loaded content and reloads the content each time the <CITE>FoldingPanel</CITE> is expanded.</LI>
+	<LI><SPAN class="code_area_values">&quot;server&quot;</SPAN> &#45; the FoldingPanel component submits the page to re-render itself in the expanded state.</LI>
+</UL>
+
+
+<H2><A name="FoldingPanel-CustomizingStyles"></A>Customizing Styles</H2>
+
+<P>You can customize a style for the entire <CITE>FoldingPanel</CITE> component, its caption and/or container by using the following attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Part of component </TH>
+<TH scope="col"> Attributes </TH>
+</TR>
+<TR>
+<TD> Entire component </TD>
+<TD> <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Caption </TD>
+<TD> <SPAN class="attribute">captionStyle</SPAN> and <SPAN class="attribute">captionClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Container </TD>
+<TD> <SPAN class="attribute">contentStyle</SPAN> and <SPAN class="attribute">contentClass</SPAN> </TD>
+</TR>
+</TBODY></TABLE>
+<P>To set an explicit height to the <CITE>FoldingPanel</CITE> component, split it into two parts and set the one part to the <SPAN class="attribute">captionStyle</SPAN> attribute and the other to the <SPAN class="attribute">contentStyle</SPAN> attribute or declare these parts in the <SPAN class="attribute">captionClass</SPAN> and <SPAN class="attribute">contentClass</SPAN> classes. Setting the height to the <CITE>FoldingPanel</CITE>'s <SPAN class="attribute">style</SPAN> or <SPAN class="attribute">styleClass</SPAN> attributes may have an unpleasant effect. The same rule is true for the width when the <CITE>FoldingPanel</CITE> component has the <SPAN class="code_area_values">&quot;left&quot;</SPAN> or <SPAN class="code_area_values">&quot;right&quot;</SPAN> folding direction. In this case, set the width only for the <SPAN class="attribute">contentStyle</SPAN> or <SPAN class="attribute">contentClass</SPAN> attributes.</P>
+
+<P>To set the <SPAN class="attribute">text-align</SPAN> property for the caption of the <CITE>FoldingPanel</CITE> component, you should specify it in the <SPAN class="attribute">captionStyle</SPAN> attribute. If you specify it in the <SPAN class="attribute">style</SPAN> attribute, it will affect only the container. But if the container consists of another HTML <CITE>&lt;table&gt;</CITE> element, you should set text alignment in the <SPAN class="attribute">contentStyle</SPAN> attribute instead. Text alignment will not work properly if it is declared in classes (<SPAN class="attribute">styleClass</SPAN>, <SPAN class="attribute">captionClass</SPAN>, <SPAN class="attribute">contentClass</SPAN>).</P>
+
+<H2><A name="FoldingPanel-KeyboardSupport"></A>Keyboard Support</H2>
+
+<P>The expansion state of the <CITE>FoldingPanel</CITE> component can be controlled with keyboard when it has a keyboard focus with the +/- keys (to expand and collapse the <CITE>FoldingPanel</CITE> respectively), and the spacebar key (to toggle the expansion state). The <CITE>FoldingPanel</CITE> can be made non-focusable and thus not having keyboard control by assigning <SPAN class="code_area_values">false</SPAN> to its <SPAN class="attribute">focusable</SPAN> attribute. Note that disabling focusability affects only the <CITE>FoldingPanel</CITE> itself, but not its children, which retain their usual keyboard support in any case.</P>
+
+<P>The <CITE>FoldingPanel</CITE> has the following attributes that allow customizing its look in the focused state:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusedStyle</SPAN>/<SPAN class="attribute">focusedClass</SPAN> </TD>
+<TD> A style for the entire <CITE>FoldingPanel</CITE> in the focused state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusedCaptionStyle</SPAN>/<SPAN class="attribute">focusedCaptionClass</SPAN> </TD>
+<TD> A style for the <CITE>FoldingPanel</CITE>'s caption in the focused state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusedContentStyle</SPAN>/<SPAN class="attribute">focusedContentClass</SPAN> </TD>
+<TD> A style for the <CITE>FoldingPanel</CITE>'s content area in the focused state. </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="FoldingPanel-SpecifyingUserEvents"></A>Specifying User Events</H2>
+
+<P>The <CITE>FoldingPanel</CITE> component supports the following standard client-side events: <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onfocus</SPAN>, <SPAN class="attribute">onblur</SPAN>, <SPAN class="attribute">onkeydown</SPAN>, <SPAN class="attribute">onkeyup</SPAN>, <SPAN class="attribute">onkeypress</SPAN>. In addition, the <CITE>FoldingPanel</CITE> provides one component-specific event called <SPAN class="attribute">onstatechange</SPAN>. This event occurs when the <CITE>FoldingPanel</CITE>'s state is changed, i.e. when it is collapsed or expanded by the user.</P>
+
+<H2><A name="FoldingPanel-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">expand()</SPAN> </TD>
+<TD> Expands the <CITE>FoldingPanel</CITE> component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">collapse()</SPAN> </TD>
+<TD> Collapses the <CITE>FoldingPanel</CITE> component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">isExpanded()</SPAN> </TD>
+<TD> Returns <SPAN class="code_area_values">true</SPAN> if the <SPAN class="attribute">FoldingPanel</SPAN> is expanded. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setExpanded(expanded)</SPAN> </TD>
+<TD> Sets expansion state of the <CITE>FoldingPanel</CITE> according to the boolean <SPAN class="attribute">expanded</SPAN> parameter. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focus()</SPAN> </TD>
+<TD> Gives the keyboard focus to the component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">blur()</SPAN> </TD>
+<TD> Removes the keyboard focus from the component on which this method is invoked. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

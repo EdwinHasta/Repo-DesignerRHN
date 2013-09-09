@@ -1,0 +1,265 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>SelectOneRadio &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>SelectOneRadio</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#SelectOneRadio-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#SelectOneRadio-BasicConfiguration">Basic Configuration</A></LI>
+    <LI><A href="#SelectOneRadio-CustomizingStyles">Customizing Styles</A></LI>
+    <LI><A href="#SelectOneRadio-ClientSideEvents">Client-Side Events</A></LI>
+    <LI><A href="#SelectOneRadio-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>SelectOneRadio</CITE> component supports all of the features of the standard JSF RadioButton component and extends it with some additional features like customizing radio button images, rollover and focused styles and so on.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/selectoneradio.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/select/SelectOneRadio.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/selectOneRadio.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/selectoneradio/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="SelectOneRadio-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#SelectOneRadio-BasicConfiguration">All features of the standard SelectOneRadio component</A></LI>
+	<LI><A href="#SelectOneRadio-BasicConfiguration">Customizing appearance of radio buttons with images</A></LI>
+	<LI><A href="#SelectOneRadio-CustomizingStyles">Extended styling</A></LI>
+</UL>
+
+
+<H2><A name="SelectOneRadio-BasicConfiguration"></A>Basic Configuration</H2>
+
+<P>The <CITE>SelectOneRadio</CITE> component can be added to a page using the <SPAN class="tag">&lt;o:selectOneRadio&gt;</SPAN> tag. This tag is just an extended version of the standard <SPAN class="tag">&lt;h:selectOneRadio&gt;</SPAN> tag. Therefore, you can safely replace the standard SelectOneRadio components with OpenFaces SeledctOneRadio components which provide you an additional functionality. Just like in the standard <SPAN class="tag">&lt;h:selectOneRadio&gt;</SPAN> the value attribute lets you specify the current value of the component.</P>
+
+<P>The following example shows a definition of a simple <CITE>SelectOneRadio</CITE> component with three items.</P>
+<PRE class="code_area">&lt;o:selectOneRadio value=<SPAN class="code_area_values">&quot;#{RadioPanel.radioGroupExample}&quot;</SPAN>&gt;
+  &lt;f:selectItem value=<SPAN class="code_area_values">&quot;1&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;Option 1&quot;</SPAN>/&gt;
+  &lt;f:selectItem value=<SPAN class="code_area_values">&quot;2&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;Option 2&quot;</SPAN>/&gt;
+  &lt;f:selectItem value=<SPAN class="code_area_values">&quot;3&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;Option 3&quot;</SPAN>/&gt;
+&lt;/o:selectOneRadio&gt;</PRE>
+<P>It is possible to can customize the look of component's radio buttons with images. This can be done using the following attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">selectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to a selected radio button. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">unselectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to an unselected radio button. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverSelectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to a selected radio button in the rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverUnselectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to an unselected radio button in the rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">pressedSelectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to a selected radio button in the pressed state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">pressedUnselectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to an unselected radio button in the pressed state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">disabledSelectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to a selected radio button in the disabled state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">disabledUnselectedImageUrl</SPAN> </TD>
+<TD> URL of the image file corresponding to an unselected radio button in the disabled state. </TD>
+</TR>
+</TBODY></TABLE>
+
+<P>When you click on any of the options its view changes appropriately depending on its state.<BR>
+You can also specify a custom style for this component as described below.</P>
+
+<H2><A name="SelectOneRadio-CustomizingStyles"></A>Customizing Styles</H2>
+
+<P>You can apply styles for the <CITE>SelectOneRadio</CITE> when it is in the enabled or disabled state, selected or unselected state, focused or rollover state.</P>
+
+<P>The table below lists all style attributes:</P>
+
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">enabledStyle</SPAN> and <SPAN class="attribute">enabledClass</SPAN> </TD>
+<TD> A style is applied to the entire <CITE>SelectOneRadio</CITE> component in the enabled state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">disabledStyle</SPAN> and <SPAN class="attribute">disabledClass</SPAN> </TD>
+<TD> A style is applied to the entire <CITE>SelectOneRadio</CITE> component in the disabled state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusedStyle</SPAN> and <SPAN class="attribute">focusedClass</SPAN> </TD>
+<TD> A style is applied to the entire <CITE>SelectOneRadio</CITE> component when it is focused. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverStyle</SPAN> and <SPAN class="attribute">rolloverClass</SPAN> </TD>
+<TD> A style is applied to the entire <CITE>SelectOneRadio</CITE> component in the rollover state. </TD>
+</TR>
+</TBODY></TABLE>
+
+<P>The following example demonstrates the usage of style-related attributes of the <CITE>SelectOneRadio</CITE> component:
+<BR clear="all"></P>
+<PRE class="code_area">&lt;o:selectOneRadio id=<SPAN class="code_area_values">&quot;selectOneRadioStyled&quot;</SPAN>
+                  value=<SPAN class="code_area_values">&quot;#{RadioPanel.radioGroupExample}&quot;</SPAN>
+       enabledClass=<SPAN class="code_area_values">&quot;enClass&quot;</SPAN> enabledStyle=<SPAN class="code_area_values">&quot;background-color: #B0AFFF;&quot;</SPAN>
+       disabledClass=<SPAN class="code_area_values">&quot;desClass&quot;</SPAN> disabledStyle=<SPAN class="code_area_values">&quot;background-color: #6F6F6F;&quot;</SPAN>
+       selectedClass=<SPAN class="code_area_values">&quot;selClass&quot;</SPAN> selectedStyle=<SPAN class="code_area_values">&quot;border: 1px solid #7FD2FF;&quot;</SPAN>
+       unselectedClass=<SPAN class="code_area_values">&quot;unselClass&quot;</SPAN> unselectedStyle=<SPAN class="code_area_values">&quot;border: 1px solid #FF4F56;&quot;</SPAN>
+       focusedClass=<SPAN class="code_area_values">&quot;focClass&quot;</SPAN> focusedStyle=<SPAN class="code_area_values">&quot;border: 1px solid #DDDF29;&quot;</SPAN>
+       rolloverClass=<SPAN class="code_area_values">&quot;rollovClass&quot;</SPAN> rolloverStyle=<SPAN class="code_area_values">&quot;border: 1px solid #33DF29;&quot;</SPAN>&gt;
+  &lt;f:selectItem value=<SPAN class="code_area_values">&quot;1&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;Option 1&quot;</SPAN>/&gt;
+  &lt;f:selectItem value=<SPAN class="code_area_values">&quot;2&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;Option 2&quot;</SPAN>/&gt;
+  &lt;f:selectItem value=<SPAN class="code_area_values">&quot;3&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;Option 3&quot;</SPAN>/&gt;
+&lt;/o:selectOneRadio&gt;</PRE>
+
+<P>You can also apply styles to the labels of the <CITE>SelectOneRadio</CITE> items. You can specify their view in the focused, selected, rollover, and pressed state.</P>
+
+<P>The table below lists all style attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">focusedItemStyle</SPAN> and <SPAN class="attribute">focusedItemClass</SPAN> </TD>
+<TD> A style is applied to the label of the given item of the <CITE>SelectOneRadio</CITE> component when it is in a focused state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">selectedItemStyle</SPAN> and <SPAN class="attribute">selectedItemClass</SPAN> </TD>
+<TD> A style is applied to the label of the given item of the <CITE>SelectOneRadio</CITE> component when it is selected. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">rolloverItemStyle</SPAN> and <SPAN class="attribute">rolloverItemClass</SPAN> </TD>
+<TD> A style is applied to the label of the given item of the <CITE>SelectOneRadio</CITE> component when it is in a rollover state. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">pressedItemStyle</SPAN> and <SPAN class="attribute">pressedItemClass</SPAN> </TD>
+<TD> A style is applied to the label of the given item of the <CITE>SelectOneRadio</CITE> component when it is pressed. </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="SelectOneRadio-ClientSideEvents"></A>Client-Side Events</H2>
+
+<P>The <CITE>SelectOneRadio</CITE> component supports a set of standard client-side events such as <SPAN class="attribute">onclick</SPAN>, <SPAN class="attribute">ondblclick</SPAN>, <SPAN class="attribute">onmousedown</SPAN>, <SPAN class="attribute">onmouseover</SPAN>, <SPAN class="attribute">onmouseup</SPAN>, <SPAN class="attribute">onmouseout</SPAN>, <SPAN class="attribute">onmousemove</SPAN>, <SPAN class="attribute">onselect</SPAN>, <SPAN class="attribute">onchange</SPAN>, <SPAN class="attribute">onfocus</SPAN>, <SPAN class="attribute">onblur</SPAN>, <SPAN class="attribute">onkeyup</SPAN>, <SPAN class="attribute">onkeydown</SPAN>, <SPAN class="attribute">onkeypress</SPAN>.</P>
+
+<H2><A name="SelectOneRadio-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>All client-side API methods for the <CITE>SelectOneRadio</CITE> component are listed in the following table:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getValue()</SPAN> </TD>
+<TD> Returns a value currently entered in the <CITE>SelectOneRadio</CITE> component on which this function is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setValue(text)</SPAN> </TD>
+<TD> Sets a value for the <CITE>SelectOneRadio</CITE> component. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

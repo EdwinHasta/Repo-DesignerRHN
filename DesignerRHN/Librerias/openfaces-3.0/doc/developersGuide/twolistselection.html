@@ -1,0 +1,335 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>TwoListSelection &mdash; OpenFaces documentation</TITLE>
+<LINK href="styles/style.css" rel="stylesheet" type="text/css">
+<LINK rel="icon" href="favicon.ico" type="image/x-icon">
+<LINK rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</HEAD>
+
+<BODY>
+<DIV id="logo"><A href="index.html"><IMG src="images/documentation_logo.gif" alt="OpenFaces Documentation" border="0"></A><BR><SPAN style="margin-top:0;">Version 3.0.0</SPAN></DIV>
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+  <TR>
+    <TD width="240px" align="right" valign="bottom" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+    <TD height="30px" style="border-bottom:1px solid #CCCCCC;">&nbsp;</TD>
+  </TR>
+  <TR>
+    <TD colspan="2" valign="top"><H1>TwoListSelection</H1></TD>
+  </TR>
+  <TR>
+    <TD valign="top" style="background: url(images/line.gif) #fbfbfc repeat-y right; padding:0px 0px 0px 0px; width:240px; margin: 0px 0px 0px 0px;">
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+	<TR>
+	<TD>
+        <DIV class="contents index" style="background-color:#FFFFFF; width:260px;"><UL><LI><A href="#TwoListSelection-KeyFeatures">Key Features</A></LI>
+    <LI><A href="#TwoListSelection-BasicAttributes">Basic Attributes</A></LI>
+    <LI><A href="#TwoListSelection-SpecifyingItems">Specifying Items</A></LI>
+    <LI><A href="#TwoListSelection-CustomizingAppearance">Customizing Appearance</A></LI>
+    <LI><A href="#TwoListSelection-CustomizingButtons">Customizing Buttons</A></LI>
+    <LI><A href="#TwoListSelection-Sorting">Sorting</A></LI>
+    <LI><A href="#TwoListSelection-ReorderingSelectedItems">Reordering Selected Items</A></LI>
+    <LI><A href="#TwoListSelection-CustomizingStyles">Customizing Styles</A></LI>
+    <LI><A href="#TwoListSelection-ClientSideEvents">Client-Side Events</A></LI>
+    <LI><A href="#TwoListSelection-ServerSideEventListeners">Server-Side Event Listeners</A></LI>
+    <LI><A href="#TwoListSelection-ClientSideAPI">Client-Side API</A></LI></UL></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+	<DIV class="components_links">
+				<A href="index.html">Developer&rsquo;s Guide Home</A><BR>
+		  <A href="installation-and-configuration.html">Installation and Configuration</A><BR>
+		  <A href="common-concepts.html">Common Concepts</A><BR>
+          <A href="components-index.html" style="padding-bottom:0.5em;">Components Index</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="borderlayoutpanel.html">Border Layout Panel</A><BR>
+                    <A href="calendar.html">Calendar</A><BR>
+                    <A href="chart.html">Chart</A><BR>
+                    <A href="commandbutton.html">Command Button</A><BR>
+                    <A href="commandlink.html">Command Link</A><BR>
+                    <A href="compositefilter.html">Composite Filter</A><BR>
+                    <A href="confirmation.html">Confirmation</A><BR>
+                    <A href="datatable.html">Data Table</A><BR>
+                    <A href="datechooser.html">Date Chooser</A><BR>
+                    <A href="daytable.html">Day Table</A><BR>
+                    <A href="dropdownfield.html">Drop Down Field</A><BR>
+                    <A href="dynamicimage.html">Dynamic Image</A><BR>
+                    <A href="foldingpanel.html">Folding Panel</A><BR>
+                    <A href="foreach.html">For Each</A><BR>
+                    <A href="graphictext.html">Graphic Text</A><BR>
+                    <A href="hintlabel.html">Hint Label</A><BR>
+                    <A href="inputtext.html">Input Text</A><BR>
+                    <A href="inputtextarea.html">Input Textarea</A><BR>
+                    <A href="layeredpane.html">Layered Pane</A><BR>
+                    <A href="levelindicator.html">Level Indicator</A><BR>
+                    <A href="popuplayer.html">Popup Layer</A><BR>
+                    <A href="popupmenu.html">Popup Menu</A><BR>
+                    <A href="selectbooleancheckbox.html">Select Boolean Checkbox</A><BR>
+                    <A href="selectmanycheckbox.html">Select Many Checkbox</A><BR>
+                    <A href="selectoneradio.html">Select One Radio</A><BR>
+                    <A href="spinner.html">Spinner</A><BR>
+		            <A href="suggestionfield.html">Suggestion Field</A><BR>
+                    <A href="tabbedpane.html">Tabbed Pane</A><BR>
+                    <A href="tabset.html">Tab Set</A><BR>
+                    <A href="treetable.html">Tree Table</A><BR>
+                    <A href="twolistselection.html">Two List Selection</A><BR>
+                    <A href="window.html" style="padding-bottom:0.5em;">Window</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="focus.html">Focus</A><BR>
+                    <A href="loadbundle.html">Load Bundle</A><BR>
+                    <A href="scrollposition.html" style="padding-bottom:0.5em;">Scroll Position</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="ajax-framework.html">Ajax Framework</A>
+                    <UL>
+                        <LI><A href="ajax.html">Ajax Component</A><BR></LI>
+                        <LI><A href="ajax-framework.html#AjaxFramework-PageWideConfiguration">Ajax Settings Component</A><BR></LI>
+                    </UL>
+                    <A href="validation-framework.html">Validation Framework</A>
+                    <HR noshade="noshade" size="1px" color="#d5d6d7" width="85%">
+                    <A href="../tagReference/index.html">Tag Reference</A><BR>
+                    <A href="../apiReference/index.html">API Reference</A>
+	<DIV style=" width:240px; height:0px; padding: 0px; margin:0px;"></DIV>
+		</DIV>
+	</TD>
+
+		<TD style="padding-bottom:1em; padding-left:2em;"><P>
+<TABLE  border="0" cellpadding="5" cellspacing="0" width="100%"><TBODY><TR>
+<TD valign="top" width="60%">
+<P>The <CITE>TwoListSelection</CITE> component provides an alternative interface for selecting a list of items. It displays two lists of data and allows the user moving items between them thus constructing a list of selected items in one of them. As opposed to the ordinary selection components such as the standard <SPAN class="attribute">HtmlSelectManyListbox</SPAN> it also allows the user to reorder the selected items.</P></TD>
+<TD valign="top" width="40%">
+<P><IMG src="components-index.data/twoListSelection.png" align="absmiddle" border="0"><BR>
+<A href="../apiReference/org/openfaces/component/select/TwoListSelection.html" rel="nofollow">API Reference</A> &#124; <A href="../tagReference/o/twoListSelection.html" rel="nofollow">Tag Reference</A><BR>
+<A href="http://www.openfaces.org/demo/twolistselection/" rel="nofollow">Online Demo</A></P></TD></TR></TBODY></TABLE>
+
+<H2><A name="TwoListSelection-KeyFeatures"></A>Key Features</H2>
+
+<UL>
+	<LI><A href="#TwoListSelection-ReorderingSelectedItems">Reordering of selected items</A></LI>
+	<LI><A href="#TwoListSelection-Sorting">Sorting of selected items</A></LI>
+	<LI><A href="#TwoListSelection-CustomizingAppearance">Customizable appearance</A></LI>
+	<LI><A href="#TwoListSelection-CustomizingStyles">Flexible styles customization</A></LI>
+	<LI><A href="#TwoListSelection-ClientSideEvents">Component-specific client-side events</A></LI>
+</UL>
+
+
+<H2><A name="TwoListSelection-BasicAttributes"></A>Basic Attributes</H2>
+
+<P>Being an input component, the TwoListSelection supports the tabindex attribute. Tabindex is rendered for all nested input fields of the TwoListSelection component (list boxes and buttons).</P>
+
+<H2><A name="TwoListSelection-SpecifyingItems"></A>Specifying Items</H2>
+
+<P>Selection items for the <CITE>TwoListSelection</CITE> component are specified in almost the same way as for the standard selection components, i.e. using the standard <SPAN class="tag">&lt;f:selectItem&gt;</SPAN> and <SPAN class="tag">&lt;f:selectItems&gt;</SPAN> tags.</P>
+<UL>
+	<LI>The <CITE>UISelectItem</CITE> component represents a single list item which you can specify using the following attributes:</LI>
+</UL>
+
+
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Attribute </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">itemLabel</SPAN> </TD>
+<TD> The label of the item that is actually displayed for the user. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">itemValue</SPAN> </TD>
+<TD> An object associated with this item. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">itemDisabled</SPAN> </TD>
+<TD> Indicates whether the item is disabled. If an item is disabled, the user cannot move it to the other list. Note that disabled items can be present in both lists. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">value</SPAN> </TD>
+<TD> Delegates storing of the item's data to another item. Must be a <SPAN class="attribute">SelectItem</SPAN> object (or a value-binding expression for a <SPAN class="attribute">SelectItem</SPAN> object). Note that if this property is set, <SPAN class="attribute">itemLabel</SPAN> and <SPAN class="attribute">itemValue</SPAN> are not used. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">itemDescription</SPAN> </TD>
+<TD> Standard attribute. Not used. </TD>
+</TR>
+</TBODY></TABLE>
+<UL>
+	<LI>The <CITE>UISelectItems</CITE> component represents a collection of list items which you should assign through the <SPAN class="attribute">value</SPAN> attribute as a value-binding expression that references an array or collection of <SPAN class="attribute">SelectItem</SPAN> instances, or a Map.</LI>
+</UL>
+
+
+<P>Note that <CITE>UISelectItem</CITE> and <CITE>UISelectItems</CITE> are invisible components and should be specified as child components within the <CITE>TwoListSelection</CITE>. You can combine them in any order you want.</P>
+
+<P>Selected items are specified in the <SPAN class="attribute">value</SPAN> attribute of the <SPAN class="tag">&lt;o:twoListSelection&gt;</SPAN> tag, which must be bound to a list or an array of objects that correspond to the <SPAN class="attribute">itemValue</SPAN> property of <CITE>UISelectItem</CITE> components. The following example demonstrates two ways of specifying list items in the <CITE>TwoListSelection</CITE> component.</P>
+<PRE class="code_area">&lt;o:twoListSelection value=<SPAN class="code_area_values">&quot;#{TLSBean.selectedItems}&quot;</SPAN>&gt;
+    &lt;f:selectItems value=<SPAN class="code_area_values">&quot;#{TLSBean.items}&quot;</SPAN>/&gt;
+    &lt;f:selectItem itemValue=<SPAN class="code_area_values">&quot;#ff0000&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;red&quot;</SPAN>/&gt;
+    &lt;f:selectItem itemValue=<SPAN class="code_area_values">&quot;#0000ff&quot;</SPAN> itemLabel=<SPAN class="code_area_values">&quot;blue&quot;</SPAN>/&gt;
+&lt;/o:twoListSelection&gt;</PRE>
+<P>Like the JSF <CITE>UIInput</CITE> component, the <CITE>TwoListSelection</CITE> has the <SPAN class="attribute">validator</SPAN>, <SPAN class="attribute">converter</SPAN>, <SPAN class="attribute">required</SPAN>, <SPAN class="attribute">immediate</SPAN> and <SPAN class="attribute">disabled</SPAN> attributes. For more information about these attributes, see JavaServer Faces specification (section &quot;EditableValueHolder&quot;).</P>
+
+<H2><A name="TwoListSelection-CustomizingAppearance"></A>Customizing Appearance</H2>
+
+<P>By default, the lists of the <CITE>TwoListSelection</CITE> have no labels. You can specify them using the <SPAN class="attribute">leftListboxHeader</SPAN> and <SPAN class="attribute">rightListboxHeader</SPAN> attributes. By default, each list of the <CITE>TwoListSelection</CITE> component allows viewing a maximum of 10 items at a time. You can change this number by specifying the <SPAN class="attribute">size</SPAN> attribute. If there are more items than can fit in the list, the scrollbar will appear.</P>
+
+<P>The following example demonstrates the use of these attributes:</P>
+<PRE class="code_area">&lt;o:twoListSelection leftListboxHeader=<SPAN class="code_area_values">&quot;Available items&quot;</SPAN>
+       rightListboxHeader=<SPAN class="code_area_values">&quot;Selected items&quot;</SPAN>
+       size=<SPAN class="code_area_values">&quot;15&quot;</SPAN>&gt;
+    &lt;f:selectItems value=<SPAN class="code_area_values">&quot;#{TLSBean.items}&quot;</SPAN>/&gt;
+&lt;/o:twoListSelection&gt;</PRE>
+
+<H2><A name="TwoListSelection-CustomizingButtons"></A>Customizing Buttons</H2>
+
+<P>By default, the <CITE>TwoListSelection</CITE> component has four buttons to move items between the lists (<STRONG>Add</STRONG>, <STRONG>Add All</STRONG>, <STRONG>Remove</STRONG>, <STRONG>Remove All</STRONG>) and two buttons (<STRONG>Up</STRONG> and <STRONG>Down</STRONG>) to the right of the selected list to reorder its items. Note that it is impossible to change the arrangement and location of the buttons.</P>
+
+<P>The <STRONG>Add All</STRONG> and <STRONG>Remove All</STRONG> buttons are often treated as optional. You can hide them by setting <SPAN class="attribute">allowAddRemoveAll</SPAN> attribute to <SPAN class="code_area_values">&quot;false&quot;</SPAN>.</P>
+
+<P>By default, the buttons in the <CITE>TwoListSelection</CITE> component display arrows indicating the direction in which items are to be added and ordered. If necessary, you can set text and tool tip for each of the buttons by using the following attributes:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Button </TH>
+<TH scope="col"> Text </TH>
+<TH scope="col"> Tool tip </TH>
+</TR>
+<TR>
+<TD> Add </TD>
+<TD> <SPAN class="attribute">addText</SPAN> </TD>
+<TD> <SPAN class="attribute">addHint</SPAN> </TD>
+</TR>
+<TR>
+<TD> Add All </TD>
+<TD> <SPAN class="attribute">addAllText</SPAN> </TD>
+<TD> <SPAN class="attribute">addAllHint</SPAN> </TD>
+</TR>
+<TR>
+<TD> Remove </TD>
+<TD> <SPAN class="attribute">removeText</SPAN> </TD>
+<TD> <SPAN class="attribute">removeHint</SPAN> </TD>
+</TR>
+<TR>
+<TD> Remove All </TD>
+<TD> <SPAN class="attribute">removeAllText</SPAN> </TD>
+<TD> <SPAN class="attribute">removeAllHint</SPAN> </TD>
+</TR>
+<TR>
+<TD> Up </TD>
+<TD> <SPAN class="attribute">moveUpText</SPAN> </TD>
+<TD> <SPAN class="attribute">moveUpHint</SPAN> </TD>
+</TR>
+<TR>
+<TD> Down </TD>
+<TD> <SPAN class="attribute">moveDownText</SPAN> </TD>
+<TD> <SPAN class="attribute">moveDownHint</SPAN> </TD>
+<TD> <P class="bubble note"><STRONG>Note</STRONG><BR>An item can also be moved to the other list by double-clicking on it.</P> </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="TwoListSelection-Sorting"></A>Sorting</H2>
+
+<P>An item added to either list of the <CITE>TwoListSelection</CITE> component always appears last in that list. To enable the user to quickly find an item in the selected list, you can provide the sorting capability. By default, it is turned off. To turn sorting on, you should first specify the text to be displayed in the header of the selected list and then set the <SPAN class="attribute">allowSorting</SPAN> attribute to <SPAN class="code_area_values">&quot;true&quot;</SPAN>. Subsequent clicks on the header changes the sort order from ascending to descending, and vice versa.</P>
+
+<P>Note that sorting affects both the presentation and the order in which the items are saved to the backing bean.</P>
+
+<P>The following example shows a sortable <CITE>TwoListSelection</CITE> component:</P>
+<PRE class="code_area">&lt;o:twoListSelection leftListboxHeader=<SPAN class="code_area_values">&quot;Available items&quot;</SPAN>
+                    rightListboxHeader=<SPAN class="code_area_values">&quot;Selected items&quot;</SPAN>
+                    allowSorting=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">true</SPAN>&quot;</SPAN>&gt;
+  &lt;f:selectItems value=<SPAN class="code_area_values">&quot;#{TLSBean.items}&quot;</SPAN>/&gt;
+&lt;/o:twoListSelection&gt;</PRE>
+
+<H2><A name="TwoListSelection-ReorderingSelectedItems"></A>Reordering Selected Items</H2>
+
+<P>The <CITE>TwoListSelection</CITE> component lets the user change the order of selected items. This can be done by selecting one or more contiguous items and clicking the <STRONG>Up</STRONG> and <STRONG>Down</STRONG> buttons to move those items by one row up or down respectively. By default, this feature is turned on. To turn it off, set the <SPAN class="attribute">allowItemsOrdering</SPAN> attribute to <SPAN class="code_area_values">&quot;false&quot;</SPAN>. In this case, the <STRONG>Up</STRONG> and <STRONG>Down</STRONG> buttons will be unavailable.</P>
+
+<P>Note that items are saved to the backing bean in the order they are arranged.</P>
+
+<P>The following example demonstrates&nbsp;the <CITE>TwoListSelection</CITE> component in which ordering is turned off.</P>
+<PRE class="code_area">&lt;o:twoListSelection allowItemsOrdering=<SPAN class="code_area_values">&quot;<SPAN class="code-keyword">false</SPAN>&quot;</SPAN>&gt;
+  &lt;f:selectItems value=<SPAN class="code_area_values">&quot;#{TLSBean.items}&quot;</SPAN>/&gt;
+&lt;/o:twoListSelection&gt;</PRE>
+
+<H2><A name="TwoListSelection-CustomizingStyles"></A>Customizing Styles</H2>
+
+<P>You can customize styles for any part of the <CITE>TwoListSelection</CITE> component such as list boxes, list headers and command buttons by using the following attributes.</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Part of TwoListSelection </TH>
+<TH scope="col"> Attributes </TH>
+</TR>
+<TR>
+<TD> Entire component </TD>
+<TD> <SPAN class="attribute">style</SPAN> and <SPAN class="attribute">styleClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> List boxes </TD>
+<TD> <SPAN class="attribute">listStyle</SPAN> and <SPAN class="attribute">listClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> List headers </TD>
+<TD> <SPAN class="attribute">headerStyle</SPAN> and <SPAN class="attribute">headerClass</SPAN> </TD>
+</TR>
+<TR>
+<TD> Command buttons </TD>
+<TD> <SPAN class="attribute">buttonStyle</SPAN> and <SPAN class="attribute">buttonClass</SPAN> </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="TwoListSelection-ClientSideEvents"></A>Client-Side Events</H2>
+
+<P>The <CITE>TwoListSelection</CITE> component supports the following specific client-side events:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Event name </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">onadd</SPAN> </TD>
+<TD> Occurs when an item(s) is added to the selected list. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">onremove</SPAN> </TD>
+<TD> Occurs when an item(s) is removed from the selected list. </TD>
+</TR>
+</TBODY></TABLE>
+
+<H2><A name="TwoListSelection-ServerSideEventListeners"></A>Server-Side Event Listeners</H2>
+
+<P>Like the <CITE>UIInput</CITE> component, the <CITE>TwoListSelection</CITE> has the <SPAN class="attribute">valueChangeListener</SPAN> attribute. This attribute is a method-binding expression that must point to the method that accepts a <SPAN class="attribute">javax.faces.event.ValueChangeEvent</SPAN>. <SPAN class="attribute">ValueChangeListener</SPAN> for the <CITE>TwoListSelection</CITE> works the same way as for the standard <CITE>UIInput</CITE> component. You can also add a value change listener to the component by using the <SPAN class="tag">&lt;f:valueChangeListener&gt;</SPAN> tag.</P>
+
+<H2><A name="TwoListSelection-ClientSideAPI"></A>Client-Side API</H2>
+
+<P>The <CITE>TwoListSelection</CITE> component has the following public client API methods:</P>
+<TABLE class="Table"><TBODY>
+<TR>
+<TH scope="col"> Method </TH>
+<TH scope="col"> Description </TH>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">getValue()</SPAN> </TD>
+<TD> Returns the value as an array of string values from the <CITE>TwoListSelection</CITE> component on which this method is invoked. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">setValue(value)</SPAN> </TD>
+<TD> Sets the value for the <CITE>TwoListSelection</CITE> component on which this method is invoked. The <SPAN class="attribute">value</SPAN> parameter is an array of string values. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">selectAll()</SPAN> </TD>
+<TD> Selects all items, which results in all items on the left to be moved to the right list. </TD>
+</TR>
+<TR>
+<TD> <SPAN class="attribute">unselectAll()</SPAN> </TD>
+<TD> Unselects all items, which results in all items on the right to be moved to the left list. </TD>
+</TR>
+</TBODY></TABLE>
+    </TD>
+
+  </TR>
+
+  <TR>
+    <TD height="50" align="left" class="copyright" style="border-top:1px solid #CCCCCC;">&copy; 2010 <A href="http://www.teamdev.com/">TeamDev Ltd</A>.</TD>
+    <TD height="50" align="right" style="border-top:1px solid #CCCCCC;"><A style="border-bottom: none;" href="http://www.openfaces.org"><IMG src="images/logo.gif" alt="OpenFaces" width="124" height="28" border="0"></A></TD>
+  </TR>
+</TABLE>
+</BODY>
+
+</HTML>

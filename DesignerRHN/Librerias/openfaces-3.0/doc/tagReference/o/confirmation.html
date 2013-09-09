@@ -1,0 +1,468 @@
+<html xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>confirmation
+          (OpenFaces 3.0.0 Tag Library Documentation)
+        </title>
+<meta name="keywords" content="$title">
+<link rel="stylesheet" type="text/css" href="../stylesheet.css" title="Style">
+</head>
+<script>
+            function asd()
+            {
+            parent.document.title="confirmation (OpenFaces 3.0.0 Tag Library Documentation)";
+            }
+          </script>
+<body bgcolor="white" onload="asd();">
+<a name="navbar_top"></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td COLSPAN="3" BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><a NAME="navbar_top_firstrow"></a>
+<table BORDER="0" CELLPADDING="0" CELLSPACING="3">
+<tr ALIGN="center" VALIGN="top">
+<td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="../overview-summary.html"><font CLASS="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="tld-summary.html"><font CLASS="NavBarFont1"><b>Library</b></font></a>&nbsp;</td><td BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<font CLASS="NavBarFont1Rev">&nbsp;Tag&nbsp;</font>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a HREF="../help-doc.html"><font CLASS="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+</tr>
+</table>
+</td><td ALIGN="right" VALIGN="top" ROWSPAN="3"><em></em></td>
+</tr>
+<tr>
+<td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2"></font></td><td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2">
+                &nbsp;<a HREF="../index.html" TARGET="_top"><b>FRAMES</b></a>&nbsp;
+                &nbsp;<a href="confirmation.html" target="_top"><b>NO FRAMES</b></a>&nbsp;
+                <script></script>
+<noscript>
+<a HREF="../alltags-noframe.html" TARGET=""><b>All Tags</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<hr>
+<h2>
+<font size="-1">o</font>
+<br>
+            Tag confirmation</h2>
+<hr>The Confirmation component is a DHTML modal window containing a main instruction and two buttons using which the user can confirm or reject execution of some operation.<br>
+<p></p>
+<hr>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+<td colspan="2"><font size="+2"><b>Tag Information</b></font></td>
+</tr>
+<tr>
+<td>Tag Class</td><td>org.openfaces.taglib.jsp.window.ConfirmationJspTag</td>
+</tr>
+<tr>
+<td>TagExtraInfo Class</td><td><i>None</i></td>
+</tr>
+<tr>
+<td>Body Content</td><td>JSP</td>
+</tr>
+<tr>
+<td>Display Name</td><td><i>None</i></td>
+</tr>
+</table>
+<br>
+<p></p>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+<td colspan="6"><font size="+2"><b>Attributes</b></font></td>
+</tr>
+<tr>
+<td><b>Name</b></td><td><b>Required</b></td><td><b>Binding Type</b></td><td><b>EL</b></td><td><b>Default</b></td><td><b>Description</b></td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">alignToInvoker</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>false</td><td>A flag that indicates whether or not to align the Confirmation component with the component that calls it. If the Confirmation is aligned with the component it was called from, it is displayed right under this component.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">binding</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>org.openfaces.component.window.Confirmation</code>)
+                    </td><td>only</td><td>null</td><td>A value-binding expression that associates the Confirmation component with a backing bean property.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">buttonAreaClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the area where the buttons are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">buttonAreaStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the area where the buttons are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">cancelButtonClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the Cancel button.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">cancelButtonStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the Cancel button.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">cancelButtonText</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>"Cancel"</td><td>Text for the Cancel button.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">caption</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>The text that should be displayed in the caption. This is a convenient alternative for using the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the facet is used.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">captionClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the Confirmation title.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">captionStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the Confirmation title.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">contentClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the area where the instructions are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">contentStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the area where the instructions are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">defaultButton</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.Object</code>)
+                    </td><td>true</td><td>"ok"</td><td>Defines which of the two buttons has focus when the Confirmation component opens. <br/> Available values are: <br/><b>"ok"</b> &mdash; the "OK" button is focused when the Confirmation is opened<br/> <b>"cancel"</b> &mdash; the "Cancel" button is focused when the Confirmation is opened<br/></td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">details</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>"Press OK to perform the action"</td><td>The supplementary text following the main instruction.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">detailsClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the supplementary text.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">detailsStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the supplementary text.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">draggable</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>false</td><td>A flag that indicates whether or not the user can move the confirmation window by dragging its title.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">draggableByContent</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>true</td><td>A flag that indicates whether the confirmation window can be dragged by its content area in addition to the usual dragging by window caption. This attribute is only applicable if draggable attribute is set to "true".</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">event</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>The name of a JavaScript function or event that should be confirmed before execution.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">for</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>ID of the JSF component or of any HTML element whose event is listened to. It should be defined in the same way as the "for" property of the standard HTMLOutputLabel component.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">height</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>The height of the Confirmation component. Can be specified in any units (px, mm, em, etc.).</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">hideOnEsc</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>true</td><td>A flag that indicates whether or not the Confirmation component is automatically dismissed when the user presses Esc.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">hideOnOuterClick</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>false</td><td>A flag that indicates whether or not to close the Confirmation component when the user clicks anywhere outside it.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">iconAreaClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the area where the icon is located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">iconAreaStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the area where the icon is located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">id</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>false</td><td>null</td><td>The component identifier.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">left</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>The x coordinate of the component's upper-left corner relative to the upper-left corner of the document or an absolutely positioned immediate container of the Confirmation component. Note that the "left" attribute should indicate the number of pixels, without the postfix "px".</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">message</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>"Confirm your action"</td><td>The main instruction text.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">messageClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the main instruction.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">messageIconUrl</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>URL of the image file that is used to render the iconto the left of the main instruction.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">messageStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the main instruction.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">modalLayerClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the visible part of the page which is not covered by a Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">modalLayerStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the visible part of the page which is not covered by the Confirmation component.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">okButtonClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the OK button.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">okButtonStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the OK button.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">okButtonText</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>"OK"</td><td>Text for the OK button.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onclick</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed on the client when the user clicks the left mouse button over the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">oncontextmenu</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user presses right mouse button over the component (or performs the other context menu invocation action depending on the platform).</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">ondblclick</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed on the client when the user double-clicks the left mouse button over the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onkeydown</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user presses a key over the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onkeypress</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed on the client when the user presses and releases a key over the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onkeyup</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user releases a key over the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onmousedown</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user clicks over the Confirmation with either mouse button.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onmousemove</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user moves the mouse pointer over the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onmouseout</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user moves the mouse pointer away from the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onmouseover</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user moves the mouse pointer onto the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">onmouseup</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>JavaScript code that should be executed when the user releases the mouse button over the Confirmation.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rendered</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>false</td><td>A flag that indicates whether or not the component is visible.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverButtonAreaClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the area where the buttons in the rollover state are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverButtonAreaStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the area where the buttons in the rollover state are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverCancelButtonClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the Cancel button in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverCancelButtonStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the Cancel button in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the entire Confirmation component.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverContentClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the area where the instructions in the rollover state are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverContentStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the area where the instructions in the rollover state are located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverDetailsClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the supplementary text in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverDetailsStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the supplementary text in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverIconAreaClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the area where the icon in the rollover state is located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverIconAreaStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the area where the icon in the rollover state is located.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverMessageClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the main instruction in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverMessageStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the main instruction in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverOkButtonClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the OK button in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverOkButtonStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the OK button in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">rolloverStyle</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the entire Confirmation component in the rollover state.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">showMessageIcon</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>true</td><td>A flag that indicates whether or not to show the icon to the left of the main instruction.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">standalone</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>boolean</code>)
+                    </td><td>true</td><td>true</td><td>Turns on the "standalone" mode where the Confirmation is not attached to other component automatically, and can be used via the public API instead. The default value is false, which means that the component is attached to the parent component, or a component referred to by the "for" attribute if it is specified.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">style</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A style for the entire Confirmation component.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">styleClass</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>A CSS class name for the entire Confirmation component.</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">top</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>null</td><td>The y coordinate of the component's upper-left corner relative to the upper-left corner of the document or an absolutely positioned immediate container of the Confirmation component Note that the "top" attribute should indicate the number of pixels, without the postfix "px".</td>
+</tr>
+<tr valign="top">
+<td><A name="javaee:name">width</A></td><td>false</td><td><code>javax.el.ValueExpression</code>
+<br>(<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td>true</td><td>"275 px"</td><td>The width of the Confirmation component. Can be specified in any units (px, mm, em, etc.).</td>
+</tr>
+</table>
+<br>
+<p></p>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+<td colspan="5"><font size="+2"><b>Variables</b></font></td>
+</tr>
+<td colspan="2"><i>No Variables Defined.</i></td>
+</table>
+<br>
+<p></p>
+<a name="navbar_bottom"></a>
+<table border="0" width="100%" cellpadding="1" cellspacing="0">
+<tr>
+<td COLSPAN="3" BGCOLOR="#EEEEFF" CLASS="NavBarCell1"><a NAME="navbar_bottom_firstrow"></a>
+<table BORDER="0" CELLPADDING="0" CELLSPACING="3">
+<tr ALIGN="center" VALIGN="top">
+<td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="../overview-summary.html"><font CLASS="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a href="tld-summary.html"><font CLASS="NavBarFont1"><b>Library</b></font></a>&nbsp;</td><td BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<font CLASS="NavBarFont1Rev">&nbsp;Tag&nbsp;</font>&nbsp;</td><td BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    &nbsp;<a HREF="../help-doc.html"><font CLASS="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
+</tr>
+</table>
+</td><td ALIGN="right" VALIGN="top" ROWSPAN="3"><em></em></td>
+</tr>
+<tr>
+<td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2"></font></td><td BGCOLOR="white" CLASS="NavBarCell2"><font SIZE="-2">
+                &nbsp;<a HREF="../index.html" TARGET="_top"><b>FRAMES</b></a>&nbsp;
+                &nbsp;<a href="confirmation.html" target="_top"><b>NO FRAMES</b></a>&nbsp;
+                <script></script>
+<noscript>
+<a HREF="../alltags-noframe.html" TARGET=""><b>All Tags</b></a>
+</noscript>
+</font></td>
+</tr>
+</table>
+<hr>
+<small><i>
+            Output Generated by
+            <a href="http://taglibrarydoc.dev.java.net/" target="_blank">Tag Library Documentation Generator</a>.
+            Java, JSP, and JavaServer Pages are trademarks or
+            registered trademarks of Sun Microsystems, Inc. in the US and other
+            countries.  Copyright 2002-4 Sun Microsystems, Inc.
+            4150 Network Circle
+            Santa Clara, CA 95054, U.S.A.
+            All Rights Reserved.
+            </i></small>
+</body>
+</html>
