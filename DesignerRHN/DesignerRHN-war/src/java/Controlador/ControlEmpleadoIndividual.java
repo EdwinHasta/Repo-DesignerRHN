@@ -28,7 +28,7 @@ import Entidades.VigenciasProyectos;
 import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
-import InterfacePersistencia.AdministrarEmpleadoIndividualInterface;
+import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
