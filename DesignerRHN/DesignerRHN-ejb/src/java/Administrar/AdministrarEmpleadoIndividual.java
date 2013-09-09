@@ -26,7 +26,7 @@ import Entidades.VigenciasFormales;
 import Entidades.VigenciasIndicadores;
 import Entidades.VigenciasProyectos;
 import InterfaceAdministrar.PersistenciaVigenciasProyectosInterface;
-import InterfacePersistencia.AdministrarEmpleadoIndividualInterface;
+import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDemandasInterface;

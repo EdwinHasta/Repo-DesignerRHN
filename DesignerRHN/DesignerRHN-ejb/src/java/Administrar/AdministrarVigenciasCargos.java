@@ -27,6 +27,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
+    
     private List<VigenciasCargos> vigenciasCargos;
     public List<VWActualesTiposTrabajadores> tipoEmpleadoLista;
     private VigenciasCargos vc;

@@ -9,7 +9,7 @@ public interface PersistenciaEmpleadoInterface {
     public void crear(Empleados empleados);
     public void editar(Empleados empleados);
     public void borrar(Empleados empleados);
-    public Empleados buscarEmpleado(Object id);
+    public Empleados buscarEmpleado(BigInteger id);
     public List<Empleados> buscarEmpleados();
     public Empleados buscarEmpleadoSecuencia(BigInteger secuencia);
     public boolean verificarCodigoEmpleado_Empresa(BigInteger codigoEmpleado, BigInteger secEmpresa);

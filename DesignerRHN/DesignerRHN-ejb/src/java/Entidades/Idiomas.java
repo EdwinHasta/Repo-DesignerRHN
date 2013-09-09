@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -37,7 +38,7 @@ public class Idiomas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
     @Basic(optional = false)
@@ -51,20 +52,20 @@ public class Idiomas implements Serializable {
     public Idiomas() {
     }
 
-    public Idiomas(BigDecimal secuencia) {
+    public Idiomas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Idiomas(BigDecimal secuencia, String nombre) {
+    public Idiomas(BigInteger secuencia, String nombre) {
         this.secuencia = secuencia;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

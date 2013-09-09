@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaTelefonos implements PersistenciaTelefonosInterface{
+public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -78,7 +78,20 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface{
             }
             return null;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaTelefonos.telefonoPersona"+ e);
+            System.out.println("Error PersistenciaTelefonos.telefonoPersona" + e);
+            return null;
+        }
+    }
+    //METODO PARA TRAER LOS TELEFONOS DE UNA PERSONA
+
+    public List<Telefonos> telefonosPersona(BigInteger secuenciaPersona) {
+        try {
+            Query query = em.createQuery("SELECT t FROM Telefonos t WHERE t.persona.secuencia = :secuenciaPersona ORDER BY t.fechavigencia DESC");
+            query.setParameter("secuenciaPersona", secuenciaPersona);
+            List<Telefonos> listaTelefonos = query.getResultList();
+            return listaTelefonos;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTelefonos.telefonoPersona" + e);
             return null;
         }
     }
