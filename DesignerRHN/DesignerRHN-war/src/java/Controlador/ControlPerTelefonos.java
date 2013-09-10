@@ -50,10 +50,10 @@ public class ControlPerTelefonos implements Serializable {
     //private boolean cambioEditor, aceptarEditar;
     //duplicar
     //private VigenciasCargos duplicarVC;
-    
 
     public ControlPerTelefonos() {
         secuenciaPersona = BigInteger.valueOf(10668967);
+        aceptar = true;
     }
 
     public void recibirPersona(BigInteger secPersona) {
@@ -64,10 +64,12 @@ public class ControlPerTelefonos implements Serializable {
         getListaTelefonos();
         listaTiposTelefonos = null;
         getListaTiposTelefonos();
+        aceptar = true;
     }
 
     public void refrescar() {
         listaTelefonos = null;
+        aceptar = true;
         getListaTelefonos();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosTelefonosPersona");
@@ -82,11 +84,11 @@ public class ControlPerTelefonos implements Serializable {
             context.execute("tiposTelefonosDialogo.show()");
         } else if (dlg == 1) {
             /*tipoActualizacion = 0;
-            context.update("form:cargosDialog");
-            context.execute("cargosDialog.show()");*/
-        } 
+             context.update("form:cargosDialog");
+             context.execute("cargosDialog.show()");*/
+        }
     }
-    
+
     public void actualizarTiposTelefonos() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
@@ -116,27 +118,37 @@ public class ControlPerTelefonos implements Serializable {
             context.update("form:datosVCEmpleado");
         } else if (tipoActualizacion == 1) {
             /*nuevaVigencia.setMotivocambiocargo(motivoSeleccionado);
-            context.update("formularioDialogos:nuevaVC");*/
+             context.update("formularioDialogos:nuevaVC");*/
         } else if (tipoActualizacion == 2) {
             /*duplicarVC.setMotivocambiocargo(motivoSeleccionado);
-            context.update("formularioDialogos:duplicarVC");*/
+             context.update("formularioDialogos:duplicarVC");*/
         }
         /*filterMotivos = null;
-        motivoSeleccionado = null;
+         motivoSeleccionado = null;
+         aceptar = true;
+         index = -1;
+         secRegistro = null;
+         tipoActualizacion = -1;
+         cualCelda = -1;
+         context.execute("motivosDialog.hide()");
+         context.reset("form:motivosCambCargo:globalFilter");
+         context.update("form:motivosCambCargo");*/
+    }
+
+    /*public void cancelarCambioCargo() {
+        cargosFilter = null;
+        cargoSeleccionado = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        cualCelda = -1;
-        context.execute("motivosDialog.hide()");
-        context.reset("form:motivosCambCargo:globalFilter");
-        context.update("form:motivosCambCargo");*/
-    }
+        permitirIndex = true;
+    }*/
 
     public void activarAceptar() {
         aceptar = false;
     }
-    
+
     //EVENTO FILTRAR
     public void eventoFiltrar() {
         if (tipoLista == 0) {

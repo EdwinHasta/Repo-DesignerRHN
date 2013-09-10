@@ -9,16 +9,15 @@
             .hide-column-names table thead tr {
                 display: none;
             }
-
             .hide-row-names table td {
                 display: none;
             }
         </style>
         <script type="text/javascript">
             function initScroll() {
-                var leftDiv = document.getElementById('d');
-                var rightDiv = document.getElementById('d2');
-                var topDiv = document.getElementById('d3');
+                var leftDiv = document.getElementById('inferiorIzquierda');
+                var rightDiv = document.getElementById('inferiorDerecha');
+                var topDiv = document.getElementById('superiorDerecha');
                 rightDiv.onscroll = function() {
                     leftDiv.scrollTop = rightDiv.scrollTop;
                     topDiv.scrollLeft = rightDiv.scrollLeft;
@@ -32,80 +31,58 @@
     <h:body onload="initScroll();">
         <h:form id="form">
 
-            <p:dataTable id="data3" var="modulo" style="font-size: 11px; width: 283px; position: relative; top: 18px;" value="#{controlRemoto.listModulos}"
-                         rowKey="#{modulo.secuencia}" widgetVar="data1" styleClass="hide-row-names" emptyMessage="No se encontrarón coincidencias.">
-                <p:column id="moduloCodigo" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
-                    <f:facet name="header">  
-                        <h:outputText value="Codigo" />   
-                    </f:facet> 
-                    <h:outputText value="#{modulo.nombrecorto}" />  
-                </p:column>  
+            <p:dataTable id="tablaSuperiorIzquierda" var="modulo" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlRemoto.listModulos}"
+                         rowKey="#{modulo.secuencia}" widgetVar="tablaSuperiorIzquierda" styleClass="hide-row-names" filteredValue="#{controlRemoto.filtradolistModulos}">
+                <p:ajax event="sort" listener="#{controlRemoto.recargar()}" />
+                 <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/>
+                 
+                <p:column id="moduloCodigo1" headerText="Codigo" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
             </p:dataTable>
 
-            <div id="d" style="height: 200px; width: 300px; overflow-y: scroll; position: absolute; top: 50px">
-                <p:dataTable id="data1" var="modulo" style="font-size: 11px;" value="#{controlRemoto.listModulos}"
-                             rowKey="#{modulo.secuencia}" selection="#{controlRemoto.selectModulo}" selectionMode="single"
-                             widgetVar="data1" styleClass="hide-column-names"
+            <div id="inferiorIzquierda" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: 50px" >
+                <p:dataTable id="tablaInferiorIzquierda" var="modulo" style="font-size: 11px;" value="#{controlRemoto.listModulos}"
+                             rowKey="#{modulo.secuencia}" 
+                             widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names"
                              filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">
 
-                    <p:column id="moduloCodigo" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
-                        <f:facet name="header">  
-                            <h:outputText value="Codigo" />  
-                        </f:facet> 
+                    <p:column id="moduloCodigo2" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                         <h:outputText value="#{modulo.nombrecorto}" />  
                     </p:column>  
                 </p:dataTable>
             </div>
 
-            <div id="d2" style="height: 220px; width: 320px; overflow: scroll; position: absolute; left: 290px; top: 50px;" >
-                <p:dataTable id="data2" var="modulo" style="font-size: 11px; width: 600px;" value="#{controlRemoto.listModulos}"
-                             rowKey="#{modulo.secuencia}" selection="#{controlRemoto.selectModulo}" selectionMode="single"
-                             widgetVar="data1" styleClass="hide-column-names"
+            <div id="inferiorDerecha" style="height: 220px; width: 320px; overflow: scroll; position: absolute; left: 307px; top: 50px;" >
+                <p:dataTable id="tablaInferiorDerecha" var="modulo" style="font-size: 11px; width: 600px;" value="#{controlRemoto.listModulos}"
+                             rowKey="#{modulo.secuencia}" 
+                             widgetVar="tablaInferiorDerecha" styleClass="hide-column-names"
                              filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">
 
-                    <p:column id="moduloNombre" headerText="Nombre_Modulo" sortBy="#{modulo.nombre}" style="width: 300px" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                        <f:facet name="header">  
-                            <h:outputText value="Nombre Módulo" />  
-                        </f:facet> 
-                        <h:outputText value="#{modulo.nombre}" />  
+                    <p:column id="moduloNombre1" sortBy="#{modulo.nombre}" style="width: 300px" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                        <h:outputText value="#{modulo.nombre}"/>  
                     </p:column>  
 
-                    <p:column id="moduloObs" sortBy="#{modulo.observacion}" style="width: 300px" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                        <f:facet name="header">  
-                            <h:outputText value="Observacion" />  
-                        </f:facet> 
+                    <p:column id="moduloObs1" sortBy="#{modulo.observacion}" style="width: 300px" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                         <h:outputText value="#{modulo.observacion}" />  
                     </p:column>
-
                 </p:dataTable>
             </div>
 
-
-        </h:form>
-        <h:form>
-            <div id="d3" style="height: 26px; width: 305px; overflow-x: hidden; position: absolute; left: 290px; top: 26px;" >
-                <p:dataTable id="data4" var="modulo" style="font-size: 11px; width: 600px; position: relative; top: 0px;" value="#{controlRemoto.listModulos}"
-                             rowKey="#{modulo.secuencia}" selection="#{controlRemoto.selectModulo}" selectionMode="single"
-                             widgetVar="data1" styleClass="hide-row-names"
+            <div id="superiorDerecha" style="height: 50px; width: 305px; overflow-x: hidden; position: absolute; left: 307px; top: 2px;" >
+                <p:dataTable id="tablaSuperiorDerecha" var="modulo" style="font-size: 11px; width: 600px; position: relative; top: 24px;" value="#{controlRemoto.listModulos}"
+                             widgetVar="tablaSuperiorDerecha" styleClass="hide-row-names"
                              filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">
 
-                    <p:ajax event="sort" listener="#{controlRemoto.recargar()}" />  
+                    <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
+                    <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/>
 
-                    <p:column id="moduloNombre" headerText="Nombre_Modulo" sortBy="#{modulo.nombre}" style="width: 310px" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                        <f:facet name="header">  
-                            <h:outputText value="Nombre Módulo" />  
-                        </f:facet>
-                    </p:column>  
+                    <p:column id="moduloNombre2" headerText="Nombre Módulo" sortBy="#{modulo.nombre}" style="width: 310px" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
 
-                    <p:column id="moduloObs" sortBy="#{modulo.observacion}" style="width: 300px" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                        <f:facet name="header">  
-                            <h:outputText value="Observacion" />  
-                        </f:facet> 
-                    </p:column>  
+                    <p:column id="moduloObs2" headerText="Observación" sortBy="#{modulo.observacion}" style="width: 300px" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
                 </p:dataTable>
             </div> 
+            
+            <p:commandButton value="Activar Filtros" style="position: absolute; top: 270px; font-size: 11px"  actionListener="#{controlRemoto.activarFiltro()}" process="@this"/>
         </h:form>
-
     </h:body>
 </html>
 
