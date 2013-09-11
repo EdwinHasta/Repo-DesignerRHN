@@ -1,11 +1,13 @@
 package Controlador;
 
+import Entidades.Ciudades;
 import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposTelefonos;
 import InterfaceAdministrar.AdministrarTelefonosInterface;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -24,10 +26,14 @@ public class ControlPerTelefonos implements Serializable {
     //LISTA TELEFONOS
     private List<Telefonos> listaTelefonos;
     private List<Telefonos> filtradosListaTelefonos;
-    //TIPOS TELEFONOS
+    //L.O.V TIPOS TELEFONOS
     private List<TiposTelefonos> listaTiposTelefonos;
     private List<TiposTelefonos> filtradoslistaTiposTelefonos;
     private TiposTelefonos seleccionTipoTelefono;
+    //L.O.V CIUDADES
+    private List<Ciudades> listaCiudades;
+    private List<Ciudades> filtradoslistaCiudades;
+    private Ciudades seleccionCiudades;
     //OTROS
     private boolean aceptar;
     private int index;
@@ -50,10 +56,16 @@ public class ControlPerTelefonos implements Serializable {
     //private boolean cambioEditor, aceptarEditar;
     //duplicar
     //private VigenciasCargos duplicarVC;
+    //RASTRO
+    private BigInteger secRegistro;
 
     public ControlPerTelefonos() {
         secuenciaPersona = BigInteger.valueOf(10668967);
         aceptar = true;
+        tipoLista = 0;
+        listaTelefonosBorrar = new ArrayList<Telefonos>();
+        listaTelefonosCrear = new ArrayList<Telefonos>();
+        listaTelefonosModificar = new ArrayList<Telefonos>();
     }
 
     public void recibirPersona(BigInteger secPersona) {
@@ -83,9 +95,9 @@ public class ControlPerTelefonos implements Serializable {
             context.update("formularioDialogos:tiposTelefonosDialogo");
             context.execute("tiposTelefonosDialogo.show()");
         } else if (dlg == 1) {
-            /*tipoActualizacion = 0;
-             context.update("form:cargosDialog");
-             context.execute("cargosDialog.show()");*/
+            tipoActualizacion = 0;
+            context.update("formularioDialogos:ciudadesDialogo");
+            context.execute("ciudadesDialogo.show()");
         }
     }
 
@@ -115,7 +127,7 @@ public class ControlPerTelefonos implements Serializable {
                 guardado = false;
             }
             //permitirIndex = true;
-            context.update("form:datosVCEmpleado");
+            context.update("form:datosTelefonosPersona");
         } else if (tipoActualizacion == 1) {
             /*nuevaVigencia.setMotivocambiocargo(motivoSeleccionado);
              context.update("formularioDialogos:nuevaVC");*/
@@ -123,27 +135,86 @@ public class ControlPerTelefonos implements Serializable {
             /*duplicarVC.setMotivocambiocargo(motivoSeleccionado);
              context.update("formularioDialogos:duplicarVC");*/
         }
-        /*filterMotivos = null;
-         motivoSeleccionado = null;
+         filtradoslistaTiposTelefonos = null;
+         seleccionTipoTelefono = null;
          aceptar = true;
          index = -1;
          secRegistro = null;
          tipoActualizacion = -1;
          cualCelda = -1;
-         context.execute("motivosDialog.hide()");
-         context.reset("form:motivosCambCargo:globalFilter");
-         context.update("form:motivosCambCargo");*/
+         context.execute("tiposTelefonosDialogo.hide()");
+         context.reset("formularioDialogos:LOVTiposTelefonos:globalFilter");
+         context.update("formularioDialogos:LOVTiposTelefonos");
     }
 
-    /*public void cancelarCambioCargo() {
-        cargosFilter = null;
-        cargoSeleccionado = null;
-        aceptar = true;
-        index = -1;
-        secRegistro = null;
-        tipoActualizacion = -1;
-        permitirIndex = true;
-    }*/
+    public void cancelarCambioTiposTelefonos() {
+     filtradoslistaTiposTelefonos = null;
+     seleccionTipoTelefono = null;
+     aceptar = true;
+     index = -1;
+     secRegistro = null;
+     tipoActualizacion = -1;
+     cualCelda = -1;
+     //permitirIndex = true;
+     }
+    
+    //METODOS L.O.V CIUDADES
+     public void actualizarCiudad() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoActualizacion == 0) {
+            if (tipoLista == 0) {
+                listaTelefonos.get(index).setCiudad(seleccionCiudades);
+                if (!listaTelefonosCrear.contains(listaTelefonos.get(index))) {
+                    if (listaTelefonosModificar.isEmpty()) {
+                        listaTelefonosModificar.add(listaTelefonos.get(index));
+                    } else if (!listaTelefonosModificar.contains(listaTelefonos.get(index))) {
+                        listaTelefonosModificar.add(listaTelefonos.get(index));
+                    }
+                }
+            } else {
+                filtradosListaTelefonos.get(index).setCiudad(seleccionCiudades);
+                if (!listaTelefonosCrear.contains(filtradosListaTelefonos.get(index))) {
+                    if (listaTelefonosModificar.isEmpty()) {
+                        listaTelefonosModificar.add(filtradosListaTelefonos.get(index));
+                    } else if (!listaTelefonosModificar.contains(filtradosListaTelefonos.get(index))) {
+                        listaTelefonosModificar.add(filtradosListaTelefonos.get(index));
+                    }
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+            }
+            //permitirIndex = true;
+            context.update("form:datosTelefonosPersona");
+        } else if (tipoActualizacion == 1) {
+            /*nuevaVigencia.setMotivocambiocargo(motivoSeleccionado);
+             context.update("formularioDialogos:nuevaVC");*/
+        } else if (tipoActualizacion == 2) {
+            /*duplicarVC.setMotivocambiocargo(motivoSeleccionado);
+             context.update("formularioDialogos:duplicarVC");*/
+        }
+         filtradoslistaCiudades = null;
+         seleccionCiudades = null;
+         aceptar = true;
+         index = -1;
+         secRegistro = null;
+         tipoActualizacion = -1;
+         cualCelda = -1;
+         context.execute("ciudadesDialogo.hide()");
+         context.reset("formularioDialogos:LOVCiudades:globalFilter");
+         context.update("formularioDialogos:LOVCiudades");
+    }
+
+    public void cancelarCambioCiudad() {
+     filtradoslistaCiudades = null;
+     seleccionCiudades = null;
+     aceptar = true;
+     index = -1;
+     secRegistro = null;
+     tipoActualizacion = -1;
+     cualCelda = -1;
+     //permitirIndex = true;
+     }
 
     public void activarAceptar() {
         aceptar = false;
@@ -213,4 +284,34 @@ public class ControlPerTelefonos implements Serializable {
     public boolean isAceptar() {
         return aceptar;
     }
+
+    public List<Ciudades> getListaCiudades() {
+        if (listaCiudades == null) {
+            listaCiudades = administrarTelefonos.lovCiudades();
+        }
+        
+        return listaCiudades;
+    }
+
+    public void setListaCiudades(List<Ciudades> listaCiudades) {
+        this.listaCiudades = listaCiudades;
+    }
+
+    public List<Ciudades> getFiltradoslistaCiudades() {
+        return filtradoslistaCiudades;
+    }
+
+    public void setFiltradoslistaCiudades(List<Ciudades> filtradoslistaCiudades) {
+        this.filtradoslistaCiudades = filtradoslistaCiudades;
+    }
+
+    public Ciudades getSeleccionCiudades() {
+        return seleccionCiudades;
+    }
+
+    public void setSeleccionCiudades(Ciudades seleccionCiudades) {
+        this.seleccionCiudades = seleccionCiudades;
+    }
+    
+    
 }

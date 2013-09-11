@@ -88,6 +88,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{telefono.ciudad.nombre}" id="editarCiudad" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select"/>
+                                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 1)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -103,8 +104,10 @@
 
                     </p:panel> 
                 </h:form>
+
                 <h:form id="formularioDialogos">
-                    
+
+                    <!--DIALOGO TIPOS DE TELEFONOS-->    
                     <p:dialog header="Tipos de Telefonos" widgetVar="tiposTelefonosDialogo" draggable="false" resizable="false" id="tiposTelefonosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
 
@@ -113,13 +116,13 @@
                                       filteredValue="#{controlPerTelefonos.filtradoslistaTiposTelefonos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{tipoTelefono.secuencia}" selection="#{controlPerTelefonos.seleccionTipoTelefono}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPerTelefonos.activarAceptar()}" update=":formularioDialogos:aceptarTT"/>
-                            <p:ajax event="rowDblselect" process="@this" onstart="LOVTiposTelefonos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPerTelefonos.actualizarTiposTelefonos()}" process="@this" onstart="LOVTiposTelefonos.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Tipo de Telefono: "  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposTelefonos.filter();" style="width:100px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{tipoTelefono.codigo}" width="50" filterMatchMode="contains" filterStyle="width: 40px;" > 
+                            <p:column  filterBy="#{tipoTelefono.codigo}" width="50" filterMatchMode="contains" filterStyle="width: 40px;" > 
                                 <f:facet name="header">
                                     <h:outputText value="Código" />
                                 </f:facet>
@@ -133,11 +136,40 @@
                                 <h:outputText value="#{tipoTelefono.nombre}" />  
                             </p:column>
                         </p:dataTable>                         
-                        <p:commandButton id="aceptarTT" value="Aceptar" disabled="#{controlPerTelefonos.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" onclick="LOVTiposTelefonos.clearFilters();" update="aceptarTT" process="@this">
+                        <p:commandButton id="aceptarTT" value="Aceptar" disabled="#{controlPerTelefonos.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" actionListener="#{controlPerTelefonos.actualizarTiposTelefonos()}" onclick="LOVTiposTelefonos.clearFilters();" update="aceptarTT" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTiposTelefonos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTT" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="tiposTelefonosDialogo.hide(), LOVTiposTelefonos.clearFilters();" update="LOVTiposTelefonos, aceptarTT" process="@this">
+                        <p:commandButton id="atrasTT" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="tiposTelefonosDialogo.hide(), LOVTiposTelefonos.clearFilters();" actionListener="#{controlPerTelefonos.cancelarCambioTiposTelefonos()}" update="LOVTiposTelefonos, aceptarTT" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTiposTelefonos:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    <!--DIALOGO CIUDADES-->    
+                    <p:dialog header="Ciudades" widgetVar="ciudadesDialogo" draggable="false" resizable="false" id="ciudadesDialogo" closable="false"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
+
+                        <p:dataTable  id="LOVCiudades" style="font-size: 11px; width: 300px" var="ciudad" value="#{controlPerTelefonos.listaCiudades}"
+                                      scrollable="true" scrollHeight="117" scrollWidth="315" liveScroll="true" scrollRows="8" widgetVar="LOVCiudades" 
+                                      filteredValue="#{controlPerTelefonos.filtradoslistaCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{ciudad.secuencia}" selection="#{controlPerTelefonos.seleccionCiudades}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlPerTelefonos.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPerTelefonos.actualizarCiudad()}" process="@this" onstart="LOVCiudades.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 15px"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVCiudades.filter();" style="width:100px; position: relative; left: 60px;" />  
+                            </f:facet>
+
+                            <p:column  filterBy="#{ciudad.nombre}" width="50" filterMatchMode="contains" filterStyle="width: 40px;" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{ciudad.nombre}" />  
+                            </p:column>  
+                        </p:dataTable>                         
+                        <p:commandButton id="aceptarC" value="Aceptar" disabled="#{controlPerTelefonos.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" actionListener="#{controlPerTelefonos.actualizarCiudad()}" onclick="LOVCiudades.clearFilters();" update="aceptarC" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasC" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="ciudadesDialogo.hide(), LOVCiudades.clearFilters();" actionListener="#{controlPerTelefonos.cancelarCambioCiudad()}" update="LOVCiudades, aceptarC" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
