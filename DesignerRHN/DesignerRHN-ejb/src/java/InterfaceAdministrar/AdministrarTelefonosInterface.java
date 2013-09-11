@@ -4,6 +4,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.Ciudades;
 import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposTelefonos;
@@ -18,4 +19,5 @@ public interface AdministrarTelefonosInterface {
     public List<Telefonos> telefonosPersona(BigInteger secPersona);
     public Personas encontrarPersona(BigInteger secPersona);
     public List<TiposTelefonos>  lovTiposTelefonos();
+    public List<Ciudades>  lovCiudades();
 }

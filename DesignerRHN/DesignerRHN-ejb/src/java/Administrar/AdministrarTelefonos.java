@@ -1,9 +1,11 @@
 package Administrar;
 
+import Entidades.Ciudades;
 import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposTelefonos;
 import InterfaceAdministrar.AdministrarTelefonosInterface;
+import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaPersonasInterface;
 import InterfacePersistencia.PersistenciaTelefonosInterface;
 import InterfacePersistencia.PersistenciaTiposTelefonosInterface;
@@ -21,6 +23,8 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     PersistenciaPersonasInterface persistenciaPersonas;
     @EJB
     PersistenciaTiposTelefonosInterface persistenciaTiposTelefonos;
+    @EJB
+    PersistenciaCiudadesInterface PersistenciaCiudades;
 
     @Override
     public List<Telefonos> telefonosPersona(BigInteger secPersona) {
@@ -42,5 +46,10 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     @Override
     public List<TiposTelefonos>  lovTiposTelefonos(){
         return persistenciaTiposTelefonos.tiposTelefonos();
+    }
+    
+    @Override
+    public List<Ciudades>  lovCiudades(){
+        return PersistenciaCiudades.ciudades();
     }
 }
