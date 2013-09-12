@@ -6,7 +6,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>NominaF</title>
     </h:head>
     <h:body>
 
@@ -27,7 +26,7 @@
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 26px; height: 22px; position: absolute; left: 697px; top: 48px; z-index: 1;" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="Editar" /> 
-                                
+
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 48px; z-index: 1;"  actionListener="#{controlVigenciasUbicaciones.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
 
@@ -391,219 +390,233 @@
 
                                     <p:commandButton id="CargoDesempeñado11" value="" style="position: absolute; background-image: url(Imagenes/Designer.GIF); width: 200px; height: 42px; top: 423px; background-repeat: no-repeat; background-size: 100% 100%; left: 643px;" />
 
-                                    <em><h:outputText style="position: absolute; top: 472px; font-size: 11px; left: 17px" value="Bienvenido(a):"/></em>
+                                    <em><h:outputText style="position: absolute; top: 472px; font-size: 12px; left: 17px" value="Bienvenido(a):"/></em>
 
-                                    <strong><h:outputText id="Usuario" style="position: absolute; top: 473px; left: 90px; font-size: 10px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+                                    <strong><h:outputText id="Usuario" style="position: absolute; top: 473px; left: 105px; font-size: 11px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
 
-                                    <strong><h:outputText id="Empresa"  style="position: absolute; top: 473px; left: 280px; font-size: 10px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+                                    <strong><h:outputText id="Empresa"  style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
 
                                 </p:panel>
                             </p:tab>  
 
                             <p:tab title="Nomina" id="Nomina">  
 
-                                <h:outputText id="fechas2" style="position: absolute; left: 170px; top: 35px; width: 475px; text-align: right;" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
+                                <h:outputText style="position: absolute; font-size: 11px; font-weight: bold; left: 365px; top: 30px; width: 475px; text-align: right; color: #BF1A1A" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
 
-                                <fieldset style="position: absolute; border-radius: 10px; width: 610px; height: 110px; top: 50px">
-                                    <legend style="color:#009; font-size:12px">Propiedades de Nómina</legend>
 
-                                    <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 25px; top: 100px; font-size: 11px" value="Novedades de Nómina"/>
-                                    <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 185px; top: 100px; font-size: 11px"  value="Conceptos de Nómina"/>
-                                    <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 338px; top: 100px; font-size: 11px"  value="Formulas de Liquidación"/>
-                                    <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 506px; top: 100px; font-size: 11px"  value="Legislación Laboral"/>
+                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 120px; top: 40px">
+                                    <legend style="font-size: 12px; font-weight: bold; color: #00F;">Propiedades de Nómina</legend>
 
-                                    <p:commandButton id="NovedadesNomina" value="" style="position: absolute; left: 39px; top: 15px; width: 80px; height: 80px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="novedadPlano"/>
+                                    <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 35px; top: 112px; font-size: 11px; font-weight: bold;" value="Novedades de Nómina"/>
+                                    <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 241px; top: 112px; font-size: 11px; font-weight: bold;"  value="Conceptos de Nómina"/>
+                                    <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 444px; top: 112px; font-size: 11px; font-weight: bold;"  value="Formulas de Liquidación"/>
+                                    <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 665px; top: 112px; font-size: 11px; font-weight: bold;"  value="Legislación Laboral"/>
 
-                                    <hr style="float: left; height: 110px; position: absolute; left: 474px; top: 2px;"/>
+                                    <p:commandButton id="NovedadesNomina" value="" style="position: absolute; left: 50px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="novedadPlano"/>
 
-                                    <p:commandButton id="ConceptosNomina" value="" style="position: absolute; left: 197px; top: 15px; width: 80px; height: 80px;  background-image: url(Imagenes/nom_hojaconcepto.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <hr style="float: left; height: 120px; position: absolute; left: 200px; top: 2px;"/>
 
-                                    <hr style="float: left; height: 110px; position: absolute; left: 316px; top: 2px;"/>
+                                    <p:commandButton id="ConceptosNomina" value="" style="position: absolute; left: 255px; top: 15px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_hojaconcepto.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                    <p:commandButton id="FormulasLiquidacion" value="" style="position: absolute; left: 355px; top: 15px; width: 80px; height: 80px;  background-image: url(Imagenes/nom_formulas.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <hr style="float: left; height: 120px; position: absolute; left: 405px; top: 2px;"/>
 
-                                    <hr style="float: left; height: 110px; position: absolute; left: 158px; top: 2px;"/>
+                                    <p:commandButton id="FormulasLiquidacion" value="" style="position: absolute; left: 465px; top: 15px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_formulas.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 513px; top: 15px; width: 80px; height: 80px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <hr style="float: left; height: 120px; position: absolute; left: 615px; top: 2px;"/>
+
+                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 670px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; border-radius: 10px; width: 610px; height: 280px; top: 175px;">
-                                    <legend style="color:#009; font-size:12px">Opciones de Liquidación</legend>
+                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 280px; top: 175px;">
+                                    <legend style="font-size: 12px; font-weight: bold; color: #00F;">Opciones de Liquidación</legend>
 
-                                    <fieldset style="position: absolute; border-radius: 10px; width: 160px; height: 130px; top: 20px;">
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 130px; top: 20px;">
 
-                                        <p:selectOneRadio id="options" style="font-size: 11px;" layout="pageDirection">  
-                                            <f:selectItem itemLabel="Pagos Automáticos" itemValue="1" />  
+                                        <p:selectOneRadio id="options" value="#{controlRemoto.pago}" style="font-size: 11px; font-weight: bold; position: absolute; top: -2px" layout="pageDirection" >  
+                                            <f:selectItem itemLabel="Pagos Automáticos" itemValue="1"/>  
                                             <f:selectItem itemLabel="Pagos NO Automáticos" itemValue="2" />
+                                            <p:ajax update="@this" listener="#{controlRemoto.cambiarFormaPago()}"/>
                                         </p:selectOneRadio> 
 
-                                        <hr style="position: absolute; top: 55px; width: 160px; left: 5px;"/>
+                                        <hr style="position: absolute; top: 50px; width: 254px; left: 5px;"/>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 35px; top: 65px;" value="Pagos Automaticos"/></strong>
-                                        <h:outputText style=" font-size: 11px; overflow: auto; position: absolute; left: 9px; top: 80px; width: 160px; height: 53px;" value="Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla." />
-
-                                    </fieldset>
-
-                                    <fieldset style="position: absolute; border-radius: 10px; width: 160px; height: 100px; top: 170px;">
-
-                                        <strong><h:outputText  value="Estadisticas" style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 9px;"/></strong>
-
-                                        <h:outputText  style="font-size: 11px; position: absolute; left: 70px; top: 25px; width: 110px;" value="Facilita analizar los datos generados por la nómina acorde a parámetros seleccionados."/>
-
-                                        <p:commandButton value=" " id="LegislacionLaboral1" style="position: absolute; left: 5px; top: 8px; width: 60px; height: 90px; background-image: url(Imagenes/interrogante.gif);  background-repeat: no-repeat; background-size: 100% 100%; " />
+                                        <center><strong><h:outputText id="tipoPago" style="font-size: 11px; color: #00F; position: relative; top: 55px;" value="#{controlRemoto.tituloPago}"/></strong></center>
+                                        
+                                        <h:outputText id="mensajePago" style=" font-size: 11px; overflow: auto; position: absolute; left: 9px; top: 80px; width: 250px; height: 53px; text-align: justify" value="#{controlRemoto.mensajePagos}" />
 
                                     </fieldset>
 
-                                    <fieldset style="position: absolute; border-radius: 10px; width: 392px; height: 250px; top: 20px; left: 200px;">
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 100px; top: 170px;">
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 5px;" value="Parámetros de Liquidación"/></strong>
+                                        <strong><h:outputText  value="Estadisticas" style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 9px;"/></strong>
 
-                                        <h:outputText style="font-size: 11px; position: absolute; left: 70px; top: 25px; width: 140px; text-align: justify" value="Ingresar los parámetros por centro de costo a liquidar y fecha de liquidación."/>
+                                        <h:outputText  style="font-size: 11px; position: absolute; left: 100px; top: 25px; width: 160px; text-align: justify" value="Facilita analizar los datos generados por la nómina acorde a parámetros seleccionados."/>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 175px;" value="Generar Liquidación"/></strong>
+                                        <p:commandButton value=" " id="btnEstadisticas" style="position: absolute; left: 5px; top: 8px; width: 90px; height: 90px; background-image: url(Imagenes/interrogante.gif);  background-repeat: no-repeat; background-size: 100% 100%; " />
 
-                                        <h:outputText style="font-size: 11px; position: absolute; left: 70px; top: 110px; width: 140px;" value="Ejecuta la liquidación acorde a los parametros establecidos con anterioridad."/>
+                                    </fieldset>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 70px; top: 90px;" value="Comprobantes de Pago"/></strong>
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 500px; height: 250px; top: 20px; left: 284px;">
 
-                                        <h:outputText style="font-size: 11px; position: absolute; left: 70px; top: 195px; width: 140px; text-align: justify" value="Muestra los resultados de la liquidación por empleado."/>
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 5px;" value="Parámetros de Liquidación"/></strong>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 290px; top: 5px;" value="Borrar Liquidación"/></strong>
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 100px; top: 25px; width: 150px; text-align: justify" value="Ingresar los parámetros por centro de costo a liquidar y fecha de liquidación."/>
 
-                                        <h:outputText style="font-size: 11px; position: absolute; left: 290px; top: 25px; width: 110px; text-align: justify" value="Elimina la liquidación actual para permitir correcciones."/>
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 175px;" value="Generar Liquidación"/></strong>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 290px; top: 90px;" value="Cerrar Liquidación"/></strong>
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 100px; top: 110px; width: 150px; text-align: justify" value="Ejecuta la liquidación acorde a los parametros establecidos con anterioridad."/>
 
-                                        <h:outputText style="font-size: 11px; position: absolute; left: 290px; top: 110px; width: 110px; text-align: justify" value="Proceso que deja en firme la liquidación y actualiza acumulados."/>
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 90px;" value="Comprobantes de Pago"/></strong>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 290px; top: 175px;" value="Reportes de Nómina"/></strong>
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 100px; top: 195px; width: 150px; text-align: justify" value="Muestra los resultados de la liquidación por empleado."/>
 
-                                        <h:outputText style="font-size: 11px; position: absolute; left: 290px; top: 195px; width: 110px;" value="Genera reportes predefinidos referentes a la nómina."/>
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 360px; top: 5px;" value="Borrar Liquidación"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 360px; top: 25px; width: 130px; text-align: justify" value="Elimina la liquidación actual para permitir correcciones."/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 360px; top: 90px;" value="Cerrar Liquidación"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 360px; top: 110px; width: 130px; text-align: justify" value="Proceso que deja en firme la liquidación y actualiza acumulados."/>
+
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 360px; top: 175px;" value="Reportes de Nómina"/></strong>
+
+                                        <h:outputText style="font-size: 11px; position: absolute; left: 360px; top: 195px; width: 150px;" value="Genera reportes predefinidos referentes a la nómina."/>
 
 
-                                        <p:commandButton value=" " id="LegislacionLaboral2" style="position: absolute; left: 5px; top: 5px; width: 60px; height: 80px; background-image: url(Imagenes/nom_parametros.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnParametrosLiquidacion" style="position: absolute; left: 10px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_parametros.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="LegislacionLaboral3" style="position: absolute; left: 5px; top: 175px; width: 60px; height: 80px; background-image: url(Imagenes/nom_liquidar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnComprobantesPago" style="position: absolute; left: 10px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_comprobante.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="LegislacionLaboral4" style="position: absolute; left: 5px; top: 90px; width: 60px; height: 80px; background-image: url(Imagenes/nom_comprobante.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnGenerarLiquidacion" style="position: absolute; left: 10px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/nom_liquidar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <hr style="float: left; height: 250px; position: absolute; left: 220px; top: 0px;"/>
+                                        <hr style="float: left; height: 250px; position: absolute; left: 270px; top: 0px;"/>
 
-                                        <p:commandButton value=" " id="LegislacionLaboral5" style="position: absolute; left: 225px; top: 5px; width: 60px; height: 80px; background-image: url(Imagenes/nom_borrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnBorrarLiquidacion" style="position: absolute; left: 275px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_borrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="LegislacionLaboral6" style="position: absolute; left: 225px; top: 175px; width: 60px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteNomina"/>
+                                        <p:commandButton value=" " id="btnCerrarLiquidacion" style="position: absolute; left: 275px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/reportesboton.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="LegislacionLaboral7" style="position: absolute; left: 225px; top: 90px; width: 60px; height: 80px; background-image: url(Imagenes/reportesboton.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnReportesNomina" style="position: absolute; left: 275px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteNomina"/>
 
                                     </fieldset>
 
                                 </fieldset>
 
-                                <em><h:outputText style="position: absolute; top: 472px; font-size: 11px; left: 17px" value="Bienvenido(a):"/></em>
+                                <em><h:outputText style="position: absolute; top: 472px; font-size: 12px; left: 17px" value="Bienvenido(a):"/></em>
 
-                                <strong><h:outputText id="Usuario2" style="position: absolute; top: 473px; left: 90px; font-size: 10px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+                                <strong><h:outputText style="position: absolute; top: 473px; left: 105px; font-size: 11px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
 
-                                <strong><h:outputText id="Empresa2" style="position: absolute; top: 473px; left: 280px; font-size: 10px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+                                <strong><h:outputText style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
 
 
                             </p:tab>  
 
                             <p:tab title="Integración" id="Integracion">  
 
-                                <h:outputText id="fechas3" style="position: absolute; left: 170px; top: 35px; width: 475px; text-align: right;" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
+                                <h:outputText style="position: absolute; font-size: 11px; font-weight: bold; left: 365px; top: 30px; width: 475px; text-align: right; color: #BF1A1A" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
 
 
-                                <fieldset style="width: 300px; height: 400px; position: absolute; top: 50px; border-radius: 10px; left: 5px;">
-                                    <legend style="font-size: 12px; color: blue;">Herramientas Contables</legend>
+                                <fieldset style="width: 390px; height: 400px; position: absolute; top: 50px; border-radius: 10px; left: 5px;">
+                                    <legend style="font-size: 13px; font-weight: bold; color: #00F;">Herramientas Contables</legend>
 
-                                    <p:commandButton id="btnPUC" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
-                                    <p:commandButton id="btnCC"  value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 120px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnTerceros" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 220px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnRepCont" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <h:outputText value="Plan de cuentas PUC" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 15px; color:blue; font-size:11px; font-weight: bold" />
+                                    <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
+                                    <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnTerceros" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnRepCont" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <h:outputText value="Plan de cuentas PUC" style="width: 199px; height: 12px; position: absolute; left: 110px; top: 18px; color:blue; font-size:11px; font-weight: bold" />
                                     <h:outputText value="Registra el código y el nombre de las cuentas contables que son afectadas con los movimientos
-                                                  de pago y descuento de cada uno de los conceptos de nómina." style="width: 215px; height: 35px; position: absolute; left: 80px; top: 32px; font-size:11px" />                            
-                                    <h:outputText value="Centros de costos y tipo centro costo" style="width: 215px; height: 12px; position: absolute; left: 80px; top: 120px; color: blue; font-size: 11px; font-weight: bold" />                            
+                                                  de pago y descuento de cada uno de los conceptos de nómina." style="width: 280px; height: 35px; position: absolute; left: 110px; top: 35px; font-size:11px; text-align: justify" />                            
+                                    <h:outputText value="Centros de costos y tipo centro costo" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: blue; font-size: 11px; font-weight: bold" />                            
                                     <h:outputText value="Registra el código y nombre de cada uno de los Centros de Costos de la compañía a donde
-                                                  van a ser registrados los movimientos de pago y descuento de cada uno de los conceptos." style="width: 215px; height: 12px; position: absolute; left: 80px; top: 140px; font-size: 11px" />
-                                    <h:outputText value="Informacion de cada Tercero y su NIT" style=" height: 12px; position: absolute; left: 80px; top: 220px; color: blue; font-size: 11px; font-weight: bold" />
+                                                  van a ser registrados los movimientos de pago y descuento de cada uno de los conceptos." style="width: 280px; height: 12px; position: absolute; left: 110px; top: 140px; font-size: 11px; text-align: justify" />
+                                    <h:outputText value="Informacion de cada Tercero y su NIT" style=" height: 12px; position: absolute; left: 110px; top: 220px; color: blue; font-size: 11px; font-weight: bold" />
                                     <h:outputText value="Registra el número de NIT y el Nombre de cada uno de los Terceros vinculados con la nómina,
-                                                  como EPS, Fondos de Pensiones, ARP, Cajas de Compensación entre otros." style="width: 215px; height: 12px; position: absolute; left: 80px; top: 240px; font-size: 11px" />
-                                    <h:outputText value="Reportes Contables Historicos De Nomina" style="height: 12px; position: absolute; left: 80px; top: 310px; color: blue; font-size: 11px; font-weight: bold" />                    
+                                                  como EPS, Fondos de Pensiones, ARP, Cajas de Compensación entre otros." style="width: 280px; height: 12px; position: absolute; left: 110px; top: 240px; font-size: 11px; text-align: justify" />
+                                    <h:outputText value="Reportes Contables Historicos De Nomina" style="height: 12px; position: absolute; left: 110px; top: 310px; color: blue; font-size: 11px; font-weight: bold" />                    
                                     <h:outputText value="Contiene los informes contables generados por el aplicativo de nómina con el fin de soportar las
-                                                  contabilizaciones efectuadas por la nómina." style="width: 215px; height: 12px; position: absolute; left: 80px; top: 330px; font-size: 11px;"/>
+                                                  contabilizaciones efectuadas por la nómina." style="width: 280px; height: 12px; position: absolute; left: 110px; top: 330px; font-size: 11px; text-align: justify"/>
                                 </fieldset>
 
-                                <fieldset style="width: 303px; height: 400px; position: absolute; left: 330px; top: 50px; border-radius: 10px;" >
-                                    <legend style="font-size: 12px; color: blue;">Herramientas De Integracion</legend>
+                                <fieldset style="width: 390px; height: 400px; position: absolute; left: 420px; top: 50px; border-radius: 10px;" >
+                                    <legend style="font-size: 13px; font-weight: bold; color: #00F;">Herramientas De Integracion</legend>
 
-                                    <p:commandButton id="btnPILA" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 20px; background-image: url(Imagenes/IntPILA.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
-                                    <p:commandButton id="btnPresup" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 120px; background-image: url(Imagenes/IntPresupuesto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnTersoreria" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 220px; background-image: url(Imagenes/IntTesoreria.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnContabi" value=" " style="width: 60px; height: 80px; position: absolute; left: 5px; top: 310px; background-image: url(Imagenes/IntContabilidad.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <h:outputText value="Integracion con PILA" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 15px; color: blue; font-size: 11px; font-weight: bold" />
+                                    <p:commandButton id="btnPILA" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPILA.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
+                                    <p:commandButton id="btnPresup" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntPresupuesto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnTersoreria" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntTesoreria.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnContabi" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/IntContabilidad.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <h:outputText value="Integracion con PILA" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 15px; color: blue; font-size: 11px; font-weight: bold" />
                                     <h:outputText value="Proceso de la Planilla Integrada de Liquidación de Aportes con el fìn de generar un archivo único para 
                                                   la presentación y pago de los aportes a la seguridad Social y Parafiscales de la empresa, ante operadores
-                                                  como SOI, miplanilla,etc." style="width: 230px; height: 12px; position: absolute; left: 80px; top: 32px; font-size: 11px" />
-                                    <h:outputText value="Integracion con Presupuesto" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 120px; color: blue; font-size: 11px; font-weight: bold"/>
+                                                  como SOI, miplanilla,etc." style="width: 280px; height: 12px; position: absolute; left: 110px; top: 32px; font-size: 11px; text-align: justify" />
+                                    <h:outputText value="Integracion con Presupuesto" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: blue; font-size: 11px; font-weight: bold"/>
                                     <h:outputText value="Genera una integración acorde a los parametros preestablecidos con presupuesto y de acuerdo con
-                                                  la prenómina y los saldos." style="width: 199px; height: 12px; position: absolute; left: 80px; top: 140px; font-size: 11px" />
-                                    <h:outputText value="Integracion con Tesoreria" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 220px; color: blue; font-size: 11px; font-weight: bold" />                
+                                                  la prenómina y los saldos." style="width: 280px; height: 12px; position: absolute; left: 110px; top: 140px; font-size: 11px; text-align: justify" />
+                                    <h:outputText value="Integracion con Tesoreria" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 220px; color: blue; font-size: 11px; font-weight: bold" />                
                                     <h:outputText value="Genera una integración acorde a los parametros
-                                                  preestablecidos con Tesorería." style="width: 199px; height: 12px; position: absolute; left: 80px; top: 240px; font-size: 11px" />
-                                    <h:outputText value="Integracion con Contabilidad" style="width: 199px; height: 12px; position: absolute; left: 80px; top: 310px; color: blue; font-size: 11px; font-weight: bold" />
+                                                  preestablecidos con Tesorería." style="width: 280px; height: 12px; position: absolute; left: 110px; top: 240px; font-size: 11px; text-align: justify" />
+                                    <h:outputText value="Integracion con Contabilidad" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 310px; color: blue; font-size: 11px; font-weight: bold" />
                                     <h:outputText value="Genera una integración acorde a los parametros
-                                                  preestablecidos con Contabilidad." style="width: 199px; height: 12px; position: absolute; left: 80px; top: 330px; font-size: 11px" />
+                                                  preestablecidos con Contabilidad." style="width: 280px; height: 12px; position: absolute; left: 110px; top: 330px; font-size: 11px; text-align: justify" />
                                 </fieldset>
 
-                                <em><h:outputText style="position: absolute; top: 472px; font-size: 11px; left: 17px" value="Bienvenido(a):"/></em>
+                                <em><h:outputText style="position: absolute; top: 472px; font-size: 12px; left: 17px" value="Bienvenido(a):"/></em>
 
-                                <strong><h:outputText id="Usuario3" style="position: absolute; top: 473px; left: 90px; font-size: 10px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+                                <strong><h:outputText style="position: absolute; top: 473px; left: 105px; font-size: 11px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
 
-                                <strong><h:outputText id="Empresa3" style="position: absolute; top: 473px; left: 280px; font-size: 10px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+                                <strong><h:outputText  style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
 
 
                             </p:tab> 
 
                             <p:tab title="Gerencial" id="Gerencial" > 
 
+                                <h:outputText style="position: absolute; font-size: 11px; font-weight: bold; left: 365px; top: 30px; width: 475px; text-align: right; color: #BF1A1A" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
 
-                                <fieldset style="position:absolute; width:600px; height: 400px; border-radius: 10px; top: 50px;">
-                                    <legend style="color: blue; font-size: 12px">Herramientas Gerenciales</legend>
+                                <fieldset style="position:absolute; width: 790px; height: 400px; border-radius: 10px; top: 50px;">
+                                    <legend style="font-size: 13px; font-weight: bold; color: #00F;">Herramientas Gerenciales</legend>
 
-                                    <p:commandButton id="btnGRepor" value=" " style="position: absolute; width: 80px; height: 80px; left: 40px; top: 20px; background-image: url(Imagenes/GereGeneradorRepor.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnEstrucOrgan" value=" " style="position: absolute; width: 80px; height: 80px; left: 192px; top: 20px; background-image: url(Imagenes/GereEstructuraOrgan.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="estructura"/>
-                                    <p:commandButton id="btnSaludOcu" value=" " style="position: absolute; width: 80px; height: 80px; left: 344px; top: 20px; background-image: url(Imagenes/GereSaludOcupacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnConcepJuridicos" value=" " style="position: absolute; width: 80px; height: 80px; left: 494px; top: 20px; background-image: url(Imagenes/GereNormativo.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 40px; top:102px; text-align:center" value="Generador de Reportes..."/></strong>
-                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 191px; top:102px; text-align:center" value="Estructura Organizacional"/></strong>
-                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 345px; top:102px; text-align:center" value="Salud Ocupacional"/></strong>
-                                    <strong><h:outputText style="width:120px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 474px; top:102px; text-align:center" value="Conceptos Juridicos y Normatividad..."/></strong>
-                                    <hr style="width:560px; top:133.3px; position:absolute; height:0px" />
+                                    <p:commandButton id="btnGRepor" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 15px; background-image: url(Imagenes/GereGeneradorRepor.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnEstrucOrgan" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 15px; background-image: url(Imagenes/GereEstructuraOrgan.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="estructura"/>
+                                    <p:commandButton id="btnSaludOcu" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 15px; background-image: url(Imagenes/GereSaludOcupacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnConcepJuridicos" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 15px; background-image: url(Imagenes/GereNormativo.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 55px; top:117px; text-align:center" value="Generador de Reportes"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 240px; top:117px; text-align:center" value="Estructura Organizacional"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 424px; top:117px; text-align:center" value="Salud Ocupacional"/></strong>
+                                    <strong><h:outputText style="width:198px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 580px; top:117px; text-align:center" value="Conceptos Juridicos y Normatividad"/></strong>
+                                    <hr style="width:785px; top:133.3px; position:absolute; height:0px" />
 
-                                    <p:commandButton id="btnAnalisisCargos" value=" " style="position: absolute; width: 80px; height: 80px; left: 40px; top: 153.3px; background-image: url(Imagenes/GereAnalisisCargos.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnGPlanGestion" value=" " style="position: absolute; width: 80px; height: 80px; left: 192px; top: 153.3px; background-image: url(Imagenes/GerePlanGestion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnEvaluacionComp" value=" " style="position: absolute; width: 80px; height: 80px; left: 344px; top: 153.3px; background-image: url(Imagenes/GereEvaluacionComp.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnEvaluacionDesemp" value=" " style="position: absolute; width: 80px; height: 80px; left: 494px; top: 153.3px; background-image: url(Imagenes/GereEvalDesempenho.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 40px; top:235.3px; text-align:center" value="Analisis de Cargos..."/></strong>
-                                    <strong><h:outputText style="width:80px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 192px; top:235.3px; text-align:center" value="Plan de Gestion..."/></strong>
-                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 335px; top:235.3px; text-align:center" value="Evaluación Competencias..."/></strong>
-                                    <strong><h:outputText style="width:110px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 480px; top:235.3px; text-align:center" value="Evaluación Desempeño..."/></strong>
-                                    <hr style="width:560px; top:266.6px; position:absolute; height:0px" />
+                                    <p:commandButton id="btnAnalisisCargos" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 150px; background-image: url(Imagenes/GereAnalisisCargos.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnGPlanGestion" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 150px; background-image: url(Imagenes/GerePlanGestion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnEvaluacionComp" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 150px; background-image: url(Imagenes/GereEvaluacionComp.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnEvaluacionDesemp" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 150px; background-image: url(Imagenes/GereEvalDesempenho.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 55px; top:252px; text-align:center" value="Analisis de Cargos"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 240px; top:252px; text-align:center" value="Plan de Gestion"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 425px; top:252px; text-align:center" value="Evaluación Competencias"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 606px; top:252px; text-align:center" value="Evaluación Desempeño"/></strong>
+                                    <hr style="width:785px; top:266.6px; position:absolute; height:0px" />
 
-                                    <p:commandButton id="btnEvaluacionSeleccion" value=" " style="position: absolute; width: 80px; height: 80px; left: 40px; top: 286.6px; background-image: url(Imagenes/GereEvalSeleccion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnCapacitacion" value=" " style="position: absolute; width: 80px; height: 80px; left: 192px; top: 286.6px; background-image: url(Imagenes/GereCapacitacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 80px; height: 80px; left: 344px; top: 286.6px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnProyecciones" value=" " style="position: absolute; width: 80px; height: 80px; left: 494px; top: 286.6px; background-image: url(Imagenes/GereProyeccion1.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 32px; top:368.6px; text-align:center" value="Evaluacion Selección..."/></strong>
-                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 182px; top:368.6px; text-align:center" value="Capacitacion..."/></strong>
-                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 334px; top:368.6px; text-align:center" value="Bienestar..."/></strong>
-                                    <strong><h:outputText style="width:100px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 484px; top:368.6px; text-align:center" value="Proyecciones"/></strong>
+                                    <p:commandButton id="btnEvaluacionSeleccion" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 281px; background-image: url(Imagenes/GereEvalSeleccion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnCapacitacion" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 281px; background-image: url(Imagenes/GereCapacitacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 281px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnProyecciones" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 281px; background-image: url(Imagenes/GereProyeccion1.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 54px; top:383px; text-align:center" value="Evaluacion Selección"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 240px; top:383px; text-align:center" value="Capacitacion"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 425px; top:383px; text-align:center" value="Bienestar"/></strong>
+                                    <strong><h:outputText style="width:150px; height:12px ;position:absolute ;color: blue; font-size: 11px; font-weight: bold; left: 605px; top:383px; text-align:center" value="Proyecciones"/></strong>
                                 </fieldset>
+
+                                <em><h:outputText style="position: absolute; top: 472px; font-size: 12px; left: 17px" value="Bienvenido(a):"/></em>
+
+                                <strong><h:outputText style="position: absolute; top: 473px; left: 105px; font-size: 11px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+
+                                <strong><h:outputText  style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+
 
                             </p:tab>
 
                             <p:tab title="Designer" id="Designer">
+
+                                <h:outputText style="position: absolute; font-size: 11px; font-weight: bold; left: 365px; top: 30px; width: 475px; text-align: right; color: #BF1A1A" value="PERIODO EN EL TIEMPO DESDE: #{controlRemoto.fechaDesde} HASTA:#{controlRemoto.fechaHasta} CORTE AL: #{controlRemoto.fechaSistema}"/>
+
 
                                 <h:commandLink  style="position: absolute; left: 605px; top: 100px">  
                                     <p:graphicImage value="Imagenes/XML.jpg"  width="30" height="30"/>  
@@ -615,14 +628,14 @@
                                     <p:dataExporter type="xls" target="#{controlRemoto.tablaExportar}" fileName="Modulos"/> 
                                 </h:commandLink>
 
-                                <p:commandButton id="AcercaDe" value=" " style="position: absolute; width: 120px; height: 120px; background-image: url(Imagenes/b_designer.gif); background-repeat: no-repeat; background-size: 100% 100%;"/>
+                                <p:commandButton id="AcercaDe" value=" " style="position: absolute; width: 130px; height: 130px; background-image: url(Imagenes/b_designer.gif); background-repeat: no-repeat; background-size: 100% 100%;"/>
 
-                                <fieldset id="contModulos"  style="position:absolute; width:440px; border-radius: 10px; left: 140px; top: 35px;">
+                                <fieldset id="contModulos"  style="position:absolute; width:650px; border-radius: 10px; left: 160px; top: 36px;">
                                     <legend style="color: blue; font-size: 12px;"><strong>Módulos</strong></legend>
 
-                                    <p:dataTable id="data1" var="modulo" style="font-size: 11px; width: 370px; " value="#{controlRemoto.listModulos}"
+                                    <p:dataTable id="data1" var="modulo" style="font-size: 11px;" value="#{controlRemoto.listModulos}"
                                                  rowKey="#{modulo.secuencia}" selection="#{controlRemoto.selectModulo}" selectionMode="single"
-                                                 scrollable="true" scrollHeight="70" scrollWidth="446" widgetVar="data1"
+                                                 scrollable="true" scrollHeight="70" widgetVar="data1"
                                                  filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">   
 
                                         <p:ajax event="rowSelect" update=":form:tabMenu:Tablas"  listener="#{controlRemoto.cambiarTablas}" />  
@@ -641,7 +654,7 @@
                                             <h:outputText value="#{modulo.nombre}" />  
                                         </p:column>  
 
-                                        <p:column id="moduloObs" sortBy="#{modulo.observacion}" width="160" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:column id="moduloObs" sortBy="#{modulo.observacion}" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                             <f:facet name="header">  
                                                 <h:outputText value="Observacion" />  
                                             </f:facet> 
@@ -652,12 +665,12 @@
                                 </fieldset>
 
 
-                                <fieldset id="contTablas"  style="position:absolute; border-radius: 10px; top: 180px; width: 600px; height: 280px">
+                                <fieldset id="contTablas"  style="position:absolute; border-radius: 10px; top: 180px; width: 795px; height: 270px">
                                     <legend style="color: blue; font-size: 12px;"><strong>Tablas del Sistema</strong></legend>
 
                                     <p:dataTable id="Tablas"  var="tablas" style="font-size: 11px;" value="#{controlRemoto.listTablas}"
                                                  rowKey="#{tablas.secuencia}" selection="#{controlRemoto.selectTabla}" selectionMode="single"
-                                                 scrollable="true" scrollHeight="220" emptyMessage="No se encontraron registros para la selección"
+                                                 scrollable="true" scrollHeight="210" emptyMessage="No se encontraron registros para la selección"
                                                  filteredValue="#{controlRemoto.filterListTablas}" widgetVar="tabl" >   
 
                                         <p:ajax event="rowSelect" listener="#{controlRemoto.exportarTabla}" />
@@ -686,11 +699,14 @@
                                     </p:dataTable>
                                 </fieldset>
 
+                                <em><h:outputText style="position: absolute; top: 472px; font-size: 12px; left: 17px" value="Bienvenido(a):"/></em>
+
+                                <strong><h:outputText style="position: absolute; top: 473px; left: 105px; font-size: 11px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+
+                                <strong><h:outputText  style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+
                             </p:tab>
                         </p:tabView>  
-
-
-
                     </p:panel>
 
                     <p:dialog id="alerta" header="No hay datos" widgetVar="alerta"  resizable="false" draggable="false" modal="true" height="95" width="285px" style="font-size: 12px" closable="false">  

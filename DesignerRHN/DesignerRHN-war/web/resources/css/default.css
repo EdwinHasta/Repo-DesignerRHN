@@ -50,8 +50,13 @@ a:link:hover, a:visited:hover  {
 }
 
 .myClass input {
-    width: 98%;
+    width: 96%;
     border-radius: 0px;
+    height: 15px
+}
+/*CALENDARIO NREPORTES*/
+.calendarioReportes input {
+    width: 55px;
     height: 15px
 }
 .myClass2 input {
@@ -177,7 +182,11 @@ a:link:hover, a:visited:hover  {
     background-image:none;
 }
 
-/*888888888888888888888888888888888888*/
+.ui-growl{
+    position: absolute;
+    top: 90%;
+    left: 0px;
+}
 
 
 

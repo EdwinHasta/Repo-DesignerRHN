@@ -1,4 +1,4 @@
-package InterfacePersistencia;
+package InterfaceAdministrar;
 
 import Entidades.Cargos;
 import Entidades.Ciudades;

@@ -19,4 +19,5 @@ public interface PersistenciaTelefonosInterface {
     public Telefonos buscarTelefono(BigInteger id);
     public List<Telefonos> buscarTelefonos();
     public List<Telefonos> telefonoPersona(BigInteger secuenciaPersona);
+    public List<Telefonos> telefonosPersona(BigInteger secuenciaPersona);
 }

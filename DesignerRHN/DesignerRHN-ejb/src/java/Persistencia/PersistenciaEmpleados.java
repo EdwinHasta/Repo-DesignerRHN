@@ -39,7 +39,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      *Encontrar un empleado. 
      */
-    public Empleados buscarEmpleado(Object id) {
+    public Empleados buscarEmpleado(BigInteger id) {
         try {
             BigInteger secuencia = new BigInteger(id.toString());
             //return em.find(Empleados.class, id);
@@ -66,16 +66,15 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     public Empleados buscarEmpleadoSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
+            System.out.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e);
+            return null;
         }
-        Empleados empleado = null;
-        return empleado;
     }
 
     public boolean verificarCodigoEmpleado_Empresa(BigInteger codigoEmpleado, BigInteger secEmpresa) {

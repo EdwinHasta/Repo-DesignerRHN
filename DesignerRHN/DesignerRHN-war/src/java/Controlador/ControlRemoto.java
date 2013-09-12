@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datagrid.DataGrid;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -100,6 +101,9 @@ public class ControlRemoto implements Serializable {
     private BigInteger secuenciaMod;
     //PESTAÑA ACTUAL
     private int numPestaña;
+    //SELECT ONE RADIO
+    private String mensajePagos, tituloPago;
+    private int pago;
 
     public ControlRemoto() {
         vwActualesCargos = new VWActualesCargos();
@@ -137,6 +141,9 @@ public class ControlRemoto implements Serializable {
         System.out.println("Se creo un nuevo BakingBean de NominaF");
         //Inicializar pestaña en 0
         numPestaña = 0;
+        pago = 1;
+        tituloPago = "PAGOS AUTOMATICOS";
+        mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
     }
 
     public void cancelarModificacion() {
@@ -864,6 +871,22 @@ public class ControlRemoto implements Serializable {
         this.emplSeleccionado = emplSeleccionado;
     }
 
+    public String getMensajePagos() {
+        return mensajePagos;
+    }
+
+    public String getTituloPago() {
+        return tituloPago;
+    }
+
+    public int getPago() {
+        return pago;
+    }
+
+    public void setPago(int pago) {
+        this.pago = pago;
+    }
+
     public List<VWActualesTiposTrabajadores> getBusquedaRapida() {
         try {
             if (busquedaRapida == null) {
@@ -966,12 +989,49 @@ public class ControlRemoto implements Serializable {
         } else if (pestaña.getId().equals("Gerencial")) {
             numPestaña = 3;
         } else if (pestaña.getId().equals("Designer")) {
-            numPestaña = 5;
+            numPestaña = 4;
         }
     }
 
     public void recargar() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:data2");
+        context.update("form:tablaInferiorDerecha");
+        context.update("form:tablaInferiorIzquierda");
+    }
+
+    public void activarFiltro() {
+        Column columna;
+        Column columna2;
+        Column columna3;
+        DataTable tabla;
+        DataTable tabla2;
+        tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorDerecha");
+        tabla2 = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorIzquierda");
+        columna = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorDerecha:moduloNombre2");
+        columna2 = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorDerecha:moduloObs2");
+        columna3 = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorIzquierda:moduloCodigo1");
+        tabla.setStyle("font-size: 11px; width: 600px; position: relative;");
+        tabla2.setStyle("font-size: 11px; width: 300px; position: relative; top: -6px;");
+        columna.setFilterStyle("");
+        columna2.setFilterStyle("");
+        columna3.setFilterStyle("");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tablaSuperiorDerecha");
+        context.update("form:tablaSuperiorIzquierda");
+    }
+
+    public void cambiarFormaPago() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (pago == 1) {
+            tituloPago = "PAGOS AUTOMATICOS";
+            mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
+            context.update("form:tabMenu:tipoPago");
+            context.update("form:tabMenu:mensajePago");
+        } else {
+            tituloPago = "PAGOS POR FUERA DE NÓMINA";
+            mensajePagos = "Genere pagos por fuera de nómina cuando necesite liquidar vacaciones por anticipado, viaticos, entre otros. esta liquidaciones se pueden efectuar por estructura o por empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
+            context.update("form:tabMenu:tipoPago");
+            context.update("form:tabMenu:mensajePago");
+        }
     }
 }
