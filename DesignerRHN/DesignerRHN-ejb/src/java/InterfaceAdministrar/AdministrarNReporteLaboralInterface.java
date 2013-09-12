@@ -5,6 +5,8 @@
 package InterfaceAdministrar;
 
 import Entidades.Cargos;
+import Entidades.Empleados;
+import Entidades.Empresas;
 import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
 import java.util.List;
@@ -29,5 +31,10 @@ public interface AdministrarNReporteLaboralInterface {
      * @return Lista de Cargos
      */
     public List<Cargos> listCargos();
+    
+    public void modificarParametrosInformes(ParametrosInformes parametroInforme);
+    
+    public List<Empleados> listEmpleados();
+    public List<Empresas> listEmpresas();
     
 }

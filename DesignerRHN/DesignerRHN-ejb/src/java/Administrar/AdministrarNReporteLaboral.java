@@ -5,11 +5,15 @@
 package Administrar;
 
 import Entidades.Cargos;
+import Entidades.Empleados;
+import Entidades.Empresas;
 import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
 import InterfaceAdministrar.AdministrarNReporteLaboralInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaCargosInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaInforeportesInterface;
 import InterfacePersistencia.PersistenciaParametrosInformesInterface;
 import java.util.List;
@@ -31,10 +35,16 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     @EJB
     PersistenciaCargosInterface persistenciaCargos;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
+    @EJB
+    PersistenciaEmpresasInterface persistenciaEmpresas;
     List<Inforeportes> listInforeportes;
     ParametrosInformes parametroReporte;
     String usuarioActual;
     List<Cargos> listCargos;
+    List<Empresas> listEmpresas;
+    List<Empleados> listEmpleados;
 
     @Override
     public ParametrosInformes parametrosDeReporte() {
@@ -61,12 +71,41 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     }
     
     @Override
+    public void modificarParametrosInformes(ParametrosInformes parametroInforme){
+        try{
+            persistenciaParametrosInformes.editar(parametroInforme);
+        }catch(Exception e){
+            System.out.println("Error modificarParametrosInformes : "+e.toString());
+        }
+    }
+    
+    @Override
     public List<Cargos> listCargos(){
         try{
             listCargos = persistenciaCargos.buscarCargos();
             return listCargos;
         }catch(Exception e){
             System.out.println("Error en listCargos Administrar: "+e.toString());
+            return null;
+        }
+    }
+    
+    public List<Empleados> listEmpleados(){
+        try{
+            listEmpleados = persistenciaEmpleado.buscarEmpleados();
+            return listEmpleados;
+        }catch(Exception e){
+            System.out.println("Error listEmpleados : "+e.toString());
+            return null;
+        }
+    }
+    
+    public List<Empresas> listEmpresas() {
+        try {
+            listEmpresas = persistenciaEmpresas.buscarEmpresas();
+            return listEmpresas;
+        } catch (Exception e) {
+            System.out.println("Error listEmpresas Administrar : " + e.toString());
             return null;
         }
     }
