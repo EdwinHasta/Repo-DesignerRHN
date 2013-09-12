@@ -116,7 +116,7 @@
                             <legend style="font-size: 11px; color: blue;text-align:left"><strong>Parametros</strong></legend>
 
                             <h:outputText value="Fecha desde" style="position: absolute; top: 15px; left: 10px;font-size: 11px;"/>
-                            <p:calendar  value="#{controlNReporteNomina.parametroDeInforme.fechadesde}" id="fechaDesdeParametro" style="position: absolute; top: 7px; left: 90px;font-size: 11px;" styleClass="ui-datepicker, myClass"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
+                            <p:calendar  value="#{controlNReporteNomina.parametroDeInforme.fechadesde}" id="fechaDesdeParametro" style="position: absolute; top: 7px; left: 90px;font-size: 11px;width: 92px" styleClass="ui-datepicker, myClass"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
                                          autocomplete="true" onclick="select();">    
                                 <p:ajax event="dateSelect" listener="#{controlNReporteNomina.modificarParametroInforme()}" update="fechaDesdeParametro"/>
                                 <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(1)}" process="@this"/> 
@@ -157,7 +157,7 @@
                             </p:inputText>
 
                             <h:outputText value="hasta" style="position: absolute; top: 15px; left: 210px;font-size: 11px;"/>
-                            <p:calendar value="#{controlNReporteNomina.parametroDeInforme.fechahasta}" id="fechaHastaParametro" style="position: absolute; top: 7px; left: 270px;font-size: 11px;" 
+                            <p:calendar value="#{controlNReporteNomina.parametroDeInforme.fechahasta}" id="fechaHastaParametro" style="position: absolute; top: 7px; left: 270px;font-size: 11px;width: 92px" 
                                         styleClass="ui-datepicker, myClass"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
                                         autocomplete="true" onclick="select();">                                         
                                 <p:ajax event="dateSelect" listener="#{controlNReporteNomina.modificarParametroInforme()}" update="fechaHastaParametro"/>
