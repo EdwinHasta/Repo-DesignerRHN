@@ -16,8 +16,8 @@ public interface PersistenciaConceptosInterface {
     public void crear(Conceptos concepto);
     public void editar(Conceptos concepto);
     public void borrar(Conceptos concepto);
-    public Conceptos buscarPersona(Object id);
-    public List<Conceptos> buscarPersonas();
+    public Conceptos buscarConcepto(Object id);
+    public List<Conceptos> buscarConceptos();
     public void revisarConcepto(int codigoConcepto);
     public boolean verificarCodigoConcepto(BigInteger codigoConcepto);
     public Conceptos validarCodigoConcepto(BigInteger codigoConcepto, BigInteger secEmpresa);

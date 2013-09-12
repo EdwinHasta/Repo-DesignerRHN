@@ -134,11 +134,11 @@ public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<Comprobantes> comprobantesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<Soaccidentes> soaccidentesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Cortesprocesos> cortesprocesosCollection;
+    private Collection<CortesProcesos> cortesprocesosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<Novedades> novedadesCollection;
     @OneToMany(mappedBy = "representantecir")
@@ -466,11 +466,11 @@ public class Empleados implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 
@@ -484,11 +484,11 @@ public class Empleados implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Cortesprocesos> getCortesprocesosCollection() {
+    public Collection<CortesProcesos> getCortesprocesosCollection() {
         return cortesprocesosCollection;
     }
 
-    public void setCortesprocesosCollection(Collection<Cortesprocesos> cortesprocesosCollection) {
+    public void setCortesprocesosCollection(Collection<CortesProcesos> cortesprocesosCollection) {
         this.cortesprocesosCollection = cortesprocesosCollection;
     }
 

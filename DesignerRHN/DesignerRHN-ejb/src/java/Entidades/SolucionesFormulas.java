@@ -37,7 +37,7 @@ public class SolucionesFormulas implements Serializable {
     private BigDecimal secuencia;
     @JoinColumn(name = "SOLUCIONNODO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private Solucionesnodos solucionnodo;
+    private SolucionesNodos solucionnodo;
     @JoinColumn(name = "PROCESODEPENDIENTE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private ProcesosDependientes procesodependiente;
@@ -66,11 +66,11 @@ public class SolucionesFormulas implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Solucionesnodos getSolucionnodo() {
+    public SolucionesNodos getSolucionnodo() {
         return solucionnodo;
     }
 
-    public void setSolucionnodo(Solucionesnodos solucionnodo) {
+    public void setSolucionnodo(SolucionesNodos solucionnodo) {
         this.solucionnodo = solucionnodo;
     }
 

@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -42,7 +43,7 @@ public class Comprobantes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA")
@@ -69,29 +70,29 @@ public class Comprobantes implements Serializable {
     @ManyToOne(optional = false)
     private Empleados empleado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comprobante")
-    private Collection<Cortesprocesos> cortesprocesosCollection;
+    private Collection<CortesProcesos> cortesprocesosCollection;
     @OneToMany(mappedBy = "anulacion")
     private Collection<Novedades> novedadesCollection;
 
     public Comprobantes() {
     }
 
-    public Comprobantes(BigDecimal secuencia) {
+    public Comprobantes(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Comprobantes(BigDecimal secuencia, Date fecha, long numero, BigDecimal valor) {
+    public Comprobantes(BigInteger secuencia, Date fecha, long numero, BigDecimal valor) {
         this.secuencia = secuencia;
         this.fecha = fecha;
         this.numero = numero;
         this.valor = valor;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -152,11 +153,11 @@ public class Comprobantes implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Cortesprocesos> getCortesprocesosCollection() {
+    public Collection<CortesProcesos> getCortesprocesosCollection() {
         return cortesprocesosCollection;
     }
 
-    public void setCortesprocesosCollection(Collection<Cortesprocesos> cortesprocesosCollection) {
+    public void setCortesprocesosCollection(Collection<CortesProcesos> cortesprocesosCollection) {
         this.cortesprocesosCollection = cortesprocesosCollection;
     }
 

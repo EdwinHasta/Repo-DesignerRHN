@@ -41,9 +41,9 @@ public class Estructuras implements Serializable {
     @OneToMany(mappedBy = "estructura")
     private Collection<Encargaturas> encargaturasCollection;
     @OneToMany(mappedBy = "estructura")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(mappedBy = "localizacion")
-    private Collection<Solucionesnodos> solucionesnodosCollection1;
+    private Collection<SolucionesNodos> solucionesnodosCollection1;
     @OneToMany(mappedBy = "estructura")
     private Collection<ParametrosEstructuras> parametrosestructurasCollection;
     private static final long serialVersionUID = 1L;
@@ -214,20 +214,20 @@ public class Estructuras implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection1() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection1() {
         return solucionesnodosCollection1;
     }
 
-    public void setSolucionesnodosCollection1(Collection<Solucionesnodos> solucionesnodosCollection1) {
+    public void setSolucionesnodosCollection1(Collection<SolucionesNodos> solucionesnodosCollection1) {
         this.solucionesnodosCollection1 = solucionesnodosCollection1;
     }
 

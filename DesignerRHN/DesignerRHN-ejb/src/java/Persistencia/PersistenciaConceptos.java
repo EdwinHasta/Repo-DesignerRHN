@@ -41,16 +41,16 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     /*
-     *Encontrar una persona. 
+     *Encontrar un concepto. 
      */
-    public Conceptos buscarPersona(Object id) {
+    public Conceptos buscarConcepto(Object id) {
         return em.find(Conceptos.class, id);
     }
 
     /*
-     *Encontrar todas las personas. 
+     *Encontrar todos los conceptos. 
      */
-    public List<Conceptos> buscarPersonas() {
+    public List<Conceptos> buscarConceptos() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Conceptos.class));
         return em.createQuery(cq).getResultList();

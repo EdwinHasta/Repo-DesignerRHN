@@ -6,7 +6,9 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +19,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -27,71 +30,61 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Administrator
  */
 @Entity
-@Table(name = "NODOS")
+@Table(name = "CORTESPROCESOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Nodos.findAll", query = "SELECT n FROM Nodos n")})
-public class Nodos implements Serializable {
+    @NamedQuery(name = "CortesProcesos.findAll", query = "SELECT c FROM CortesProcesos c")})
+public class CortesProcesos implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "POSICION")
-    private short posicion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Size(max = 400)
-    @Column(name = "FORMULA")
-    private String formula;
-    @OneToMany(mappedBy = "nodo")
+    private BigInteger secuencia;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CORTE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date corte;
+    @OneToMany(mappedBy = "corteproceso")
     private Collection<SolucionesNodos> solucionesnodosCollection;
-    @JoinColumn(name = "OPERANDO", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private Operandos operando;
-    @JoinColumn(name = "OPERADOR", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private Operadores operador;
-    @JoinColumn(name = "HISTORIAFORMULA", referencedColumnName = "SECUENCIA")
+    @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private Historiasformulas historiaformula;
+    private Procesos proceso;
+    @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Empleados empleado;
+    @JoinColumn(name = "COMPROBANTE", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Comprobantes comprobante;
 
-    public Nodos() {
+    public CortesProcesos() {
     }
 
-    public Nodos(BigDecimal secuencia) {
+    public CortesProcesos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Nodos(BigDecimal secuencia, short posicion) {
+    public CortesProcesos(BigInteger secuencia, Date corte) {
         this.secuencia = secuencia;
-        this.posicion = posicion;
+        this.corte = corte;
     }
 
-    public short getPosicion() {
-        return posicion;
-    }
-
-    public void setPosicion(short posicion) {
-        this.posicion = posicion;
-    }
-
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public String getFormula() {
-        return formula;
+    public Date getCorte() {
+        return corte;
     }
 
-    public void setFormula(String formula) {
-        this.formula = formula;
+    public void setCorte(Date corte) {
+        this.corte = corte;
     }
 
     @XmlTransient
@@ -103,28 +96,28 @@ public class Nodos implements Serializable {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 
-    public Operandos getOperando() {
-        return operando;
+    public Procesos getProceso() {
+        return proceso;
     }
 
-    public void setOperando(Operandos operando) {
-        this.operando = operando;
+    public void setProceso(Procesos proceso) {
+        this.proceso = proceso;
     }
 
-    public Operadores getOperador() {
-        return operador;
+    public Empleados getEmpleado() {
+        return empleado;
     }
 
-    public void setOperador(Operadores operador) {
-        this.operador = operador;
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
     }
 
-    public Historiasformulas getHistoriaformula() {
-        return historiaformula;
+    public Comprobantes getComprobante() {
+        return comprobante;
     }
 
-    public void setHistoriaformula(Historiasformulas historiaformula) {
-        this.historiaformula = historiaformula;
+    public void setComprobante(Comprobantes comprobante) {
+        this.comprobante = comprobante;
     }
 
     @Override
@@ -137,10 +130,10 @@ public class Nodos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Nodos)) {
+        if (!(object instanceof CortesProcesos)) {
             return false;
         }
-        Nodos other = (Nodos) object;
+        CortesProcesos other = (CortesProcesos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -149,7 +142,7 @@ public class Nodos implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Nodos[ secuencia=" + secuencia + " ]";
+        return "Entidades.Cortesprocesos[ secuencia=" + secuencia + " ]";
     }
     
 }

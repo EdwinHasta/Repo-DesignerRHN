@@ -75,7 +75,7 @@ public class Parametrospresupuestos implements Serializable {
     @Column(name = "EMPRESA_CODIGO")
     private Short empresaCodigo;
     @OneToMany(mappedBy = "parametropresupuesto")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @JoinColumn(name = "TIPOTRABAJADOR", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private TiposTrabajadores tipotrabajador;
@@ -178,11 +178,11 @@ public class Parametrospresupuestos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 

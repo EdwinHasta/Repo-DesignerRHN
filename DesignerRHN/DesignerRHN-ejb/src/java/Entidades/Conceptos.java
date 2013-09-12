@@ -146,7 +146,7 @@ public class Conceptos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<FormulasConceptos> formulasconceptosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<Novedades> novedadesCollection;
     public Conceptos() {
@@ -438,11 +438,11 @@ public class Conceptos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 

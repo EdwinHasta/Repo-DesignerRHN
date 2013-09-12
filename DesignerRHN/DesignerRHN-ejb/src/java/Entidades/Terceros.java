@@ -52,7 +52,7 @@ public class Terceros implements Serializable {
     @OneToMany(mappedBy = "tercero")
     private Collection<NovedadesSistema> novedadessistemaCollection;
     @OneToMany(mappedBy = "nit")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(mappedBy = "tercero")
     private Collection<Novedades> novedadesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tercero")
@@ -339,11 +339,11 @@ public class Terceros implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 
