@@ -47,7 +47,7 @@ public class Nodos implements Serializable {
     @Column(name = "FORMULA")
     private String formula;
     @OneToMany(mappedBy = "nodo")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @JoinColumn(name = "OPERANDO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Operandos operando;
@@ -95,11 +95,11 @@ public class Nodos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 

@@ -79,7 +79,7 @@ public class Formulas implements Serializable {
     @Column(name = "PERIODICIDADINDEPENDIENTE")
     private String periodicidadindependiente;
     @OneToMany(mappedBy = "formula")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
     private Collection<Novedades> novedadesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
@@ -165,11 +165,11 @@ public class Formulas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 

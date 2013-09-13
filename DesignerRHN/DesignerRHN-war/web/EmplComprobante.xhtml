@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true"/> 
+                    <p:panel  id="PanelTotal" header="Comprobantes" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
+                        <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 11px; width: 200px; height: 55px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
+                            <p:commandButton id="btnComprobante" value="" style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/birrete1.gif);  top: 15px; width: 45px; height: 45px; background-repeat: no-repeat;" />
+                        </fieldset>
+
+                        <fieldset style="position: absolute; left: 250px; top: 65px; font-size: 11px; width: 270px; height: 124px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Comprobantes</legend>
+
+                            <p:dataTable id="datosComprobantes" var="comprobante" value="#{controlComprobantes.listaComprobantes}"
+                                         rowKey="#{comprobante.secuencia}" rowIndexVar="indiceComprobante" style="font-size: 10px; border: 1px; text-align: left"                           
+                                         scrollable="true" scrollHeight="44.5" filteredValue="#{controlComprobantes.filtradolistaComprobantes}" liveScroll="true" scrollRows="3" 
+                                         emptyMessage="No se encontrarón datos" editable="true" editMode="cell">
+
+                             <!--   <p:ajax event="filter" listener="#{controlPerTelefonos.eventoFiltrar()}"/>  -->
+
+                                <p:column headerText="#Compr." sortBy="#{comprobante.numero}" filterBy="#{comprobante.numero}" filterMatchMode="contains"  width="40" id="numeroComprobanteC" filterStyle="display: none; visibility: hidden;">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{comprobante.numero}"/>
+                                        </f:facet>   
+                                        <f:facet name="input">
+                                            <p:inputText value="#{comprobante.numero}" id="editarNumero" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" />
+                                                <p:ajax event="select" />
+                                            </p:inputText>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="#Compr." />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha" sortBy="#{comprobante.fecha}" filterBy="#{comprobante.fecha}" filterMatchMode="contains"  width="60" id="fechaC" filterStyle="display: none; visibility: hidden;" >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{comprobante.fecha}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{comprobante.fecha}" id="editarFecha"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect"  update="@this"/>
+                                                <p:ajax event="change" />
+                                                <p:ajax event="select"/>
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Entregado" sortBy="#{comprobante.fechaentregado}" filterBy="#{comprobante.fechaentregado}" filterMatchMode="contains"  width="60" id="fechaEntregaC" filterStyle="display: none; visibility: hidden;" >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{comprobante.fechaentregado}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{comprobante.fechaentregado}" id="editarFechaEntregado"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect"  update="@this"/>
+                                                <p:ajax event="change" />
+                                                <p:ajax event="select"/>
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Entregado" />
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>
+                        </fieldset>
+
+                        <fieldset style="position: absolute; left: 550px; top: 65px; font-size: 11px; width: 270px; height: 124px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Procesos</legend>
+
+                            <p:dataTable id="datosCortesProcesos" var="corteProceso" value="#{controlComprobantes.listaCortesProcesos}"
+                                         rowKey="#{corteProceso.secuencia}" rowIndexVar="indiceCorteProceso" style="font-size: 10px;"
+                                         scrollable="true" scrollHeight="44.5" filteredValue="#{controlComprobantes.filtradolistaCortesProcesos}" liveScroll="true" scrollRows="3" 
+                                         emptyMessage="No se encontrarón datos" editable="true" editMode="cell">
+
+                             <!--   <p:ajax event="filter" listener="#{controlPerTelefonos.eventoFiltrar()}"/>  -->
+
+                                <p:column headerText="Fecha Corte" sortBy="#{corteProceso.corte}" width="60" filterBy="#{corteProceso.corte}" filterMatchMode="contains" id="fechaCorteCP" filterStyle="display: none; visibility: hidden;" >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{corteProceso.corte}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{corteProceso.corte}" id="editarFechaCorte"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect"  update="@this"/>
+                                                <p:ajax event="change" />
+                                                <p:ajax event="select"/>
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha" />
+                                    </f:facet>
+                                </p:column>
+                                
+                                <p:column headerText="Proceso" sortBy="#{corteProceso.proceso.descripcion}" filterBy="#{corteProceso.proceso.descripcion}" filterMatchMode="contains"  width="120" id="procesoCP" filterStyle="display: none; visibility: hidden;">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{corteProceso.proceso.descripcion}"/>
+                                        </f:facet>   
+                                        <f:facet name="input">
+                                            <p:inputText value="#{corteProceso.proceso.descripcion}" id="editarProceso" style="font-size: 10px;  width: 93.5%; border-radius: 0px; height: 11px; text-transform: uppercase"> 
+                                                <p:ajax event="change" />
+                                                <p:ajax event="select" />
+                                            </p:inputText>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Proceso" />
+                                    </f:facet>
+                                </p:column>
+                            </p:dataTable>
+                        </fieldset>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -63,10 +63,6 @@ public class Personas implements Serializable {
     private String gruposanguineo;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "NUMERODOCUMENTO")
-    private BigInteger numerodocumento;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "NOMBRE")
     private String nombre;
@@ -120,6 +116,10 @@ public class Personas implements Serializable {
     @Size(max = 30)
     @Column(name = "SEGUNDONOMBRE")
     private String segundonombre;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUMERODOCUMENTO")
+    private BigInteger numerodocumento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
     private Collection<Empleados> empleadosCollection;
     @JoinColumn(name = "TIPODOCUMENTO", referencedColumnName = "SECUENCIA")

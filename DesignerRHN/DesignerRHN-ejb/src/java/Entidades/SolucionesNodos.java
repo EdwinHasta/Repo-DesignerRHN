@@ -7,10 +7,8 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,14 +16,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,12 +28,23 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "SOLUCIONESNODOS")
-@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Solucionesnodos.findAll", query = "SELECT s FROM Solucionesnodos s")})
-public class Solucionesnodos implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solucionnodo")
-    private Collection<SolucionesFormulas> solucionesFormulasCollection;
+    @NamedQuery(name = "SolucionesNodos.findAll", query = "SELECT s FROM SolucionesNodos s"),
+    @NamedQuery(name = "SolucionesNodos.findBySecuencia", query = "SELECT s FROM SolucionesNodos s WHERE s.secuencia = :secuencia"),
+    @NamedQuery(name = "SolucionesNodos.findByEstado", query = "SELECT s FROM SolucionesNodos s WHERE s.estado = :estado"),
+    @NamedQuery(name = "SolucionesNodos.findByAjuste", query = "SELECT s FROM SolucionesNodos s WHERE s.ajuste = :ajuste"),
+    @NamedQuery(name = "SolucionesNodos.findByTipo", query = "SELECT s FROM SolucionesNodos s WHERE s.tipo = :tipo"),
+    @NamedQuery(name = "SolucionesNodos.findByValor", query = "SELECT s FROM SolucionesNodos s WHERE s.valor = :valor"),
+    @NamedQuery(name = "SolucionesNodos.findByUnidades", query = "SELECT s FROM SolucionesNodos s WHERE s.unidades = :unidades"),
+    @NamedQuery(name = "SolucionesNodos.findByUltimamodificacion", query = "SELECT s FROM SolucionesNodos s WHERE s.ultimamodificacion = :ultimamodificacion"),
+    @NamedQuery(name = "SolucionesNodos.findByFechadesde", query = "SELECT s FROM SolucionesNodos s WHERE s.fechadesde = :fechadesde"),
+    @NamedQuery(name = "SolucionesNodos.findByFechahasta", query = "SELECT s FROM SolucionesNodos s WHERE s.fechahasta = :fechahasta"),
+    @NamedQuery(name = "SolucionesNodos.findByParciales", query = "SELECT s FROM SolucionesNodos s WHERE s.parciales = :parciales"),
+    @NamedQuery(name = "SolucionesNodos.findBySaldo", query = "SELECT s FROM SolucionesNodos s WHERE s.saldo = :saldo"),
+    @NamedQuery(name = "SolucionesNodos.findByFechapago", query = "SELECT s FROM SolucionesNodos s WHERE s.fechapago = :fechapago"),
+    @NamedQuery(name = "SolucionesNodos.findByValorincremento", query = "SELECT s FROM SolucionesNodos s WHERE s.valorincremento = :valorincremento"),
+    @NamedQuery(name = "SolucionesNodos.findByParametrotesoreria", query = "SELECT s FROM SolucionesNodos s WHERE s.parametrotesoreria = :parametrotesoreria")})
+public class SolucionesNodos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -117,7 +123,7 @@ public class Solucionesnodos implements Serializable {
     private Conceptos concepto;
     @JoinColumn(name = "CORTEPROCESO", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Cortesprocesos corteproceso;
+    private CortesProcesos corteproceso;
     @JoinColumn(name = "CUENTAD", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Cuentas cuentad;
@@ -139,17 +145,15 @@ public class Solucionesnodos implements Serializable {
     @JoinColumn(name = "NODO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Nodos nodo;
-    @OneToMany(mappedBy = "ajuste")
-    private Collection<Novedades> novedadesCollection;
 
-    public Solucionesnodos() {
+    public SolucionesNodos() {
     }
 
-    public Solucionesnodos(BigDecimal secuencia) {
+    public SolucionesNodos(BigDecimal secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Solucionesnodos(BigDecimal secuencia, BigDecimal valor, Date fechadesde, Date fechahasta) {
+    public SolucionesNodos(BigDecimal secuencia, BigDecimal valor, Date fechadesde, Date fechahasta) {
         this.secuencia = secuencia;
         this.valor = valor;
         this.fechadesde = fechadesde;
@@ -348,11 +352,11 @@ public class Solucionesnodos implements Serializable {
         this.concepto = concepto;
     }
 
-    public Cortesprocesos getCorteproceso() {
+    public CortesProcesos getCorteproceso() {
         return corteproceso;
     }
 
-    public void setCorteproceso(Cortesprocesos corteproceso) {
+    public void setCorteproceso(CortesProcesos corteproceso) {
         this.corteproceso = corteproceso;
     }
 
@@ -412,15 +416,6 @@ public class Solucionesnodos implements Serializable {
         this.nodo = nodo;
     }
 
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -431,10 +426,10 @@ public class Solucionesnodos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Solucionesnodos)) {
+        if (!(object instanceof SolucionesNodos)) {
             return false;
         }
-        Solucionesnodos other = (Solucionesnodos) object;
+        SolucionesNodos other = (SolucionesNodos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -443,16 +438,7 @@ public class Solucionesnodos implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Solucionesnodos[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<SolucionesFormulas> getSolucionesFormulasCollection() {
-        return solucionesFormulasCollection;
-    }
-
-    public void setSolucionesFormulasCollection(Collection<SolucionesFormulas> solucionesFormulasCollection) {
-        this.solucionesFormulasCollection = solucionesFormulasCollection;
+        return "Entidades.SolucionesNodos[ secuencia=" + secuencia + " ]";
     }
     
 }

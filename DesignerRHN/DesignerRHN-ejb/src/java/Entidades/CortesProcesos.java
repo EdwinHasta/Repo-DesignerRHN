@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,8 +22,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,24 +29,25 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CORTESPROCESOS")
-@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cortesprocesos.findAll", query = "SELECT c FROM Cortesprocesos c")})
-public class Cortesprocesos implements Serializable {
+    @NamedQuery(name = "CortesProcesos.findAll", query = "SELECT c FROM CortesProcesos c"),
+    @NamedQuery(name = "CortesProcesos.findBySecuencia", query = "SELECT c FROM CortesProcesos c WHERE c.secuencia = :secuencia"),
+    @NamedQuery(name = "CortesProcesos.findByCorte", query = "SELECT c FROM CortesProcesos c WHERE c.corte = :corte")})
+public class CortesProcesos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CORTE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date corte;
     @OneToMany(mappedBy = "corteproceso")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesNodosCollection;
     @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Procesos proceso;
@@ -58,23 +58,23 @@ public class Cortesprocesos implements Serializable {
     @ManyToOne(optional = false)
     private Comprobantes comprobante;
 
-    public Cortesprocesos() {
+    public CortesProcesos() {
     }
 
-    public Cortesprocesos(BigDecimal secuencia) {
+    public CortesProcesos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Cortesprocesos(BigDecimal secuencia, Date corte) {
+    public CortesProcesos(BigInteger secuencia, Date corte) {
         this.secuencia = secuencia;
         this.corte = corte;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -86,13 +86,12 @@ public class Cortesprocesos implements Serializable {
         this.corte = corte;
     }
 
-    @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
+    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
+        return solucionesNodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
+    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
+        this.solucionesNodosCollection = solucionesNodosCollection;
     }
 
     public Procesos getProceso() {
@@ -129,10 +128,10 @@ public class Cortesprocesos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cortesprocesos)) {
+        if (!(object instanceof CortesProcesos)) {
             return false;
         }
-        Cortesprocesos other = (Cortesprocesos) object;
+        CortesProcesos other = (CortesProcesos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -141,7 +140,7 @@ public class Cortesprocesos implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Cortesprocesos[ secuencia=" + secuencia + " ]";
+        return "Entidades.CortesProcesos[ secuencia=" + secuencia + " ]";
     }
     
 }

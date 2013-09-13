@@ -38,7 +38,7 @@ public class TiposContratos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocontrato")
     private Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection;
     @OneToMany(mappedBy = "tipocontrato")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -156,11 +156,11 @@ public class TiposContratos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 

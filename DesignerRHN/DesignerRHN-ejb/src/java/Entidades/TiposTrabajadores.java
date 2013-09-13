@@ -99,7 +99,7 @@ public class TiposTrabajadores implements Serializable {
     @OneToMany(mappedBy = "tipotrabajadorretiro")
     private Collection<MotivosRetiros> motivosretirosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipotrabajador")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(mappedBy = "tipotrabajador")
     private Collection<Parametrospresupuestos> parametrospresupuestosCollection;
     @OneToMany(mappedBy = "tipotrabajador")
@@ -329,11 +329,11 @@ public class TiposTrabajadores implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 

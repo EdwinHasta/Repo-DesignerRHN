@@ -123,7 +123,7 @@ public class Novedades implements Serializable {
     private Periodicidades periodicidad;
     @JoinColumn(name = "AJUSTE", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Solucionesnodos ajuste;
+    private SolucionesNodos ajuste;
     @JoinColumn(name = "TERCERO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Terceros tercero;
@@ -348,11 +348,11 @@ public class Novedades implements Serializable {
         this.periodicidad = periodicidad;
     }
 
-    public Solucionesnodos getAjuste() {
+    public SolucionesNodos getAjuste() {
         return ajuste;
     }
 
-    public void setAjuste(Solucionesnodos ajuste) {
+    public void setAjuste(SolucionesNodos ajuste) {
         this.ajuste = ajuste;
     }
 

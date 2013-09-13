@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ReformasLaborales.findByNombre", query = "SELECT r FROM ReformasLaborales r WHERE r.nombre = :nombre"),
     @NamedQuery(name = "ReformasLaborales.findByIntegral", query = "SELECT r FROM ReformasLaborales r WHERE r.integral = :integral")})
 public class ReformasLaborales implements Serializable {
+    @OneToMany(mappedBy = "reformalaboral")
+    private Collection<SolucionesNodos> solucionesNodosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -137,6 +139,14 @@ public class ReformasLaborales implements Serializable {
     @Override
     public String toString() {
         return "Entidades.ReformasLaborales[ secuencia=" + secuencia + " ]";
+    }
+
+    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
+        return solucionesNodosCollection;
+    }
+
+    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
+        this.solucionesNodosCollection = solucionesNodosCollection;
     }
     
 }

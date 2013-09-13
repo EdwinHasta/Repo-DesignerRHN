@@ -44,7 +44,7 @@ public class Cargos implements Serializable {
     private Collection<HVHojasDeVida> hVHojasDeVidaCollection;
 
     @OneToMany(mappedBy = "cargo")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(mappedBy = "cargofirmaconstancia")
     private Collection<DetallesEmpresas> detallesempresasCollection;
     private static final long serialVersionUID = 1L;
@@ -256,11 +256,11 @@ public class Cargos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 

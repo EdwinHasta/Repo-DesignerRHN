@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")})
 public class Cuentas implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentad")
-    private Collection<Solucionesnodos> solucionesnodosCollection;
+    private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentac")
-    private Collection<Solucionesnodos> solucionesnodosCollection1;
+    private Collection<SolucionesNodos> solucionesnodosCollection1;
     @OneToMany(mappedBy = "cuentad")
     private Collection<Novedades> novedadesCollection;
     @OneToMany(mappedBy = "cuentac")
@@ -386,20 +386,20 @@ public class Cuentas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
         return solucionesnodosCollection;
     }
 
-    public void setSolucionesnodosCollection(Collection<Solucionesnodos> solucionesnodosCollection) {
+    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
         this.solucionesnodosCollection = solucionesnodosCollection;
     }
 
     @XmlTransient
-    public Collection<Solucionesnodos> getSolucionesnodosCollection1() {
+    public Collection<SolucionesNodos> getSolucionesnodosCollection1() {
         return solucionesnodosCollection1;
     }
 
-    public void setSolucionesnodosCollection1(Collection<Solucionesnodos> solucionesnodosCollection1) {
+    public void setSolucionesnodosCollection1(Collection<SolucionesNodos> solucionesnodosCollection1) {
         this.solucionesnodosCollection1 = solucionesnodosCollection1;
     }
 
