@@ -112,6 +112,9 @@ public class Telefonos implements Serializable {
     }
 
     public Ciudades getCiudad() {
+        if(ciudad == null){
+            ciudad = new Ciudades();
+        }
         return ciudad;
     }
 

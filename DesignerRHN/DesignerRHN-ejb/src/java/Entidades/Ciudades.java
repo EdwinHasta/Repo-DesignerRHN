@@ -104,7 +104,7 @@ public class Ciudades implements Serializable {
             nombre = " ";
             return nombre;
         } else {
-            return nombre;
+            return nombre.toUpperCase();
         }
     }
 

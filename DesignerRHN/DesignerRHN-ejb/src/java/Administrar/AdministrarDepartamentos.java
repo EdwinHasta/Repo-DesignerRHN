@@ -17,10 +17,15 @@ public class AdministrarDepartamentos implements AdministrarDepartamentosInterfa
     @EJB
     PersistenciaDepartamentosInterface persistenciaDepartamentos;
     
+    @Override
     public List<Departamentos> Departamentos(){
         List<Departamentos> listaDepartamentos;
         listaDepartamentos = persistenciaDepartamentos.departamentos();
         return listaDepartamentos;
     }
 
+    @Override
+    public List<Departamentos>  lovDepartamentos(){
+        return persistenciaDepartamentos.departamentos();
+    }
 }
