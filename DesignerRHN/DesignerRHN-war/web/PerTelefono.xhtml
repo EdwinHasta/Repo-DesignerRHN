@@ -55,8 +55,8 @@
                                         <f:facet name="output"><h:outputText value="#{telefono.tipotelefono.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{telefono.tipotelefono.nombre}" id="editarTipoTelefono" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="change" />
-                                                <p:ajax event="select" />
+                                                <p:ajax event="change" listener="#{controlPerTelefonos.modificarTelefonos(indice, 'TIPOTELEFONO', telefono.tipotelefono.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlPerTelefonos.cambiarIndice(indice, 1)}" />
                                                 <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 0)}"/>
                                             </p:inputText>
                                         </f:facet>  
@@ -87,7 +87,8 @@
                                         <f:facet name="output"><h:outputText value="#{telefono.ciudad.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{telefono.ciudad.nombre}" id="editarCiudad" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
-                                                <p:ajax event="select"/>
+                                                <p:ajax event="change" listener="#{controlPerTelefonos.modificarTelefonos(indice, 'CIUDAD', telefono.ciudad.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlPerTelefonos.cambiarIndice(indice, 3)}" />
                                                 <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 1)}"/>
                                             </p:inputText>
                                         </f:facet>  
