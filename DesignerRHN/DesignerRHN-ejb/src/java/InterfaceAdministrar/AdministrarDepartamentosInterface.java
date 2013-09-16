@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface AdministrarDepartamentosInterface {
     public List<Departamentos> Departamentos();
+    public List<Departamentos>  lovDepartamentos();
 }

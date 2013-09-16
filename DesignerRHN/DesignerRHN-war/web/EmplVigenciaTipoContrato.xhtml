@@ -543,7 +543,7 @@
                         <p:calendar  style="font-size: 10px" value="#{controlVigenciasTiposContratos.editarVTC.fechavigencia}" id="editFechaCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" actionListener="#{ctrlVigenciasCargos.reiniciarEditar()}" />
+                        <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarMotivoContrato" header="Motivo Contrato" widgetVar="editarMotivoContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  

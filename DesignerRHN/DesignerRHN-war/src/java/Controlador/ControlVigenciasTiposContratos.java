@@ -62,6 +62,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
     private List<VigenciasTiposContratos> listVTCCrear;
     private BigInteger l;
     private int k;
+    private String mensajeValidacion;
     //borrar VC
     private List<VigenciasTiposContratos> listVTCBorrar;
     //editar celda
@@ -72,7 +73,6 @@ public class ControlVigenciasTiposContratos implements Serializable {
     private VigenciasTiposContratos duplicarVTC;
     //AUTOCOMPLETAR
     private String Motivo, TipoContrato, Ciudad;
-    private String mensajeValidacion;
     //RASTRO
     private BigInteger secRegistro;
 

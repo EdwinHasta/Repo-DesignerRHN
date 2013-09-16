@@ -5,21 +5,24 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
+    <h:head>        
+    </h:head>
+    <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">
-                    <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
-                        <p:panel  id="PanelCiudades" header="Ciudades" style=" font-size: 12px;width: 685px; height: 575px;  text-align: left" >
-                            <p:dataTable id="Ciudad" var="ciudades" rowKey="#{ciudades.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"                           
+                    <p:panel  id="PanelTotal" header="Ciudades" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
+
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Ciudades</strong></legend>
+
+                            <p:dataTable id="datosCiudades" var="ciudades" rowKey="#{ciudades.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"                           
                                          value="#{controlCiudades.listaCiudades}" scrollable="true" liveScroll="true" scrollRows="20" scrollHeight="150" 
                                          filteredValue="#{controlCiudades.filtradoListaCiudades}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell"   
-                                         >
+                                         editable="true" editMode="cell" >
                                 <p:ajax event="filter"/>
 
-
-                                <p:column headerText="Codigo" sortBy="#{ciudades.codigo}" filterBy="#{ciudades.codigo}" filterMatchMode="contains"  width="72" id="vcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Codigo" sortBy="#{ciudades.codigo}" filterBy="#{ciudades.codigo}" filterMatchMode="contains"  width="72" id="ciudadesCodigos" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{ciudades.codigo}" >
@@ -27,6 +30,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{ciudades.codigo}" id="editarCodigosCiudades" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 0)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.codigo)}" update="@this"/>
                                             </p:inputText> 
                                         </f:facet>   
                                     </p:cellEditor>
@@ -39,11 +44,13 @@
                                 <p:column headerText="Nombre de la Ciudad" sortBy="#{ciudades.nombre}" filterBy="#{ciudades.nombre}" filterMatchMode="contains"  width="72" id="ciudadesNombres" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{ciudades.nombre}" >
+                                            <h:outputText value="#{ciudades.nombre}"  style="text-transform: uppercase">
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{ciudades.nombre}" id="editarNombresCiudades" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.nombre)}" update="@this" />
                                             </p:inputText> 
                                         </f:facet>   
                                     </p:cellEditor>
@@ -55,12 +62,12 @@
 
                                 <p:column headerText="Departamento" sortBy="#{ciudades.departamento.nombre}" filterBy="#{ciudades.departamento.nombre}" filterMatchMode="contains" id="nombresDepartamentos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{ciudades.departamento.nombre}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{ciudades.departamento.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{ciudades.departamento.nombre}" id="editarContrato" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"   > 
-                                                <p:ajax event="change" />
-                                                <p:ajax event="select" />
-                                                <p:ajax event="dblclick" oncomplete="departamentosDialogo.show();"/>
+                                            <p:inputText value="#{ciudades.departamento.nombre}" id="editarDepartamentos" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'DEPARTAMENTOS', ciudades.departamento.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlCiudades.asignarIndex(indice)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -74,9 +81,8 @@
                                         <f:facet name="output"><h:outputText value="#{ciudades.codigoalternativo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{ciudades.codigoalternativo}" id="editarCodigosAlternativos" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"  > 
-                                                <p:ajax event="change"/>
-                                                <p:ajax event="select" />
-                                                <p:ajax event="dblclick"/>
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 3)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.codigoalternativo)}" update="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -85,22 +91,115 @@
                                         <h:outputText value="Codigos Alternativos" />
                                     </f:facet>
                                 </p:column>
-                            </p:dataTable>     
-                        </p:panel>
-                    </fieldset>
+                            </p:dataTable>
+                        </fieldset>
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasTiposContratos.exportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.limpiarNuevaVTC()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosVTCEmpleadoExportar" fileName="VigenciasTiposContratosXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroCiudad.show()" update=":formularioDialogos:nuevaCiudad" process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Ciudad" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.borrarCiudades()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Ciudad" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.duplicarVigenciaC()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Tipo Contrato" />
+
+                                <p:separator /> 
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.verificarRastro()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+
+                    </p:panel>
+
                 </h:form>
                 <h:form id="formularioDialogos" >
+                    <p:dialog id="NuevoRegistroCiudad" header="Nuevo Registro" widgetVar="NuevoRegistroCiudad" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar una nueva Ciudad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaCiudad" style="border: none;">
+                            <strong><h:outputText value="Código:" style="font-size: 12px; position: absolute; top: 90px" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlCiudades.nuevaCiudad.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 85px; text-transform: uppercase" onclick="select();">
+                                
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                           
+                            <strong><h:outputText value="Nombre de la Ciudad " style="font-size: 12px; position: absolute; top: 122px" /></strong>
+                            <p:inputText id="nuevoNombreCiudad" value="#{controlCiudades.nuevaCiudad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 118px; text-transform: uppercase" onclick="select();">
+                            <p:ajax event="change" update="@this"/>
+                            </p:inputText> 
+                                
+                            
+
+                            <strong><h:outputText value="Departamento:" style="font-size: 12px; position: absolute; top: 160px" /></strong>
+                            <p:inputText id="nuevoDepartamento" value="#{controlCiudades.nuevaCiudad.departamento.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 153px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlCiudades.valoresBackupAutocompletar(1)}" />
+                                <p:ajax event="change" listener="#{controlCiudades.autocompletarNuevoyDuplicado(controlCiudades.nuevaCiudad.departamento.nombre,'1')}"/>
+                                <p:ajax event="dblclick" listener="#{controlCiudades.asignarIndex(indice, '1', '1')}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 153px;  " id="btnNuevoDepartamento" icon="ui-icon-search" process="@this"  actionListener="#{controlCiudades.llamarLovDepartamento(1)}"/>
+                            
+                           
+                            <strong><h:outputText value="Código Alternativo:" style="font-size: 12px; position: absolute; top: 194px" /></strong>
+                            <p:inputText id="nuevoCodigoAlternativo" value="#{controlCiudades.nuevaCiudad.codigoalternativo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 188px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            
+                           
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" process="@this"/>
+                            <p:commandButton id="agregarC" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  actionListener="#{controlCiudades.agregarNuevaCiudad()}" process="@this"/>
+                            <p:commandButton id="cancelarC" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" onclick="NuevoRegistroCiudad.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+                    
+                    <p:dialog id="validacionNuevaCiudad" header="ATENCIÓN...!" widgetVar="validacioNuevaCiudad"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar una nueva ciudad es necesario adicionar: #{controlCiudades.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaCiudad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
                     <!-- DIALOGO L.O.V ESTATICO DE CIUDADES -->
                     <p:dialog header="Departamentos" widgetVar="departamentosDialogo" draggable="false" resizable="false" closable="false" id="departamentosDialogo"  
                               showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovDepartamentos" style="font-size: 11px; width: 430px" var="departamentos" value="#{controlCiudades.listaDepartamentos}" rowKey="#{departamentos.secuencia}"
-                                     selection="#{controlCiudades.seleccionDepartamento}" selectionMode="single" widgetVar="lovDepartamentos" scrollable="true" scrollWidth="445" scrollHeight="250"
+                        <p:dataTable id="LOVDepartamentos" style="font-size: 11px; width: 430px" var="departamentos" value="#{controlCiudades.listaDepartamentos}" rowKey="#{departamentos.secuencia}"
+                                     selection="#{controlCiudades.seleccionDepartamento}" selectionMode="single" widgetVar="LOVDepartamentos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlCiudades.filtradoListaDepatartamentos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
-                            <!-- <p:ajax event="rowSelect" listener="#{controlVigenciasTiposContratos.activarAceptar()}" update=":form:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlVigenciasTiposContratos.actualizarCiudad()}" process="@this" onstart="lovDepartamentos.clearFilters()"/>-->
+                            <p:ajax event="rowSelect" listener="#{controlCiudades.activarAceptar()}" update=":formularioDialogos:aceptarD"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCiudades.actualizarDepartamentos()}" process="@this" onstart="LOVDepartamentos.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Departamento:"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovDepartamentos.filter();" style="width:150px; position: relative; left: -30px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVDepartamentos.filter();" style="width:150px; position: relative; left: 8px;" />  
                             </f:facet>
                             <p:column filterBy="#{departamentos.nombre}" width="200"  filterMatchMode="contains">
                                 <f:facet name="header">
@@ -109,19 +208,38 @@
                                 <h:outputText value="#{departamentos.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarD" style="position: relative; left: 303px" value="Aceptar"  update="aceptarD" process="@this">
-                            <p:resetInput target=":form:lovDepartamentos:globalFilter"/>
+                        <p:commandButton id="aceptarD" value="Aceptar" disabled="#{controlCiudades.aceptar}" style="position: absolute; top: 336px; left: 232px; font-size: 12px" actionListener="#{controlCiudades.actualizarDepartamentos()}" onclick="LOVDepartamentos.clearFilters();" update="aceptarD" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVDepartamentos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasD" style="position: relative; left: 303px" value="Atras" onclick="departamentosDialogo.hide(), lovDepartamentos.clearFilters();"  update="lovDepartamentos" process="@this">
-                            <p:resetInput target=":form:lovDepartamentos:globalFilter"/>
+                        <p:commandButton id="atrasD" style="position: relative; left: 303px; font-size: 12px" value="Atras" actionListener="#{controlCiudades.cancelarCambioDepartamentos()}" onclick="departamentosDialogo.hide(), LOVDepartamentos.clearFilters();"  update="LOVDepartamentos" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVDepartamentos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
+                    <!-- DIALOGOS EDITAR -->
+
+                    <p:dialog id="editarCodigos" header="Codigo de la Ciudad" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:inputTextarea value="#{controlCiudades.editarCiudad.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCodigos" value="Atras" onclick="editarCodigos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarNombresCiudades" header="Motivo Contrato" widgetVar="editarNombresCiudades" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlCiudades.editarCiudad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarNombresCiudades" value="Atras" onclick="editarNombresCiudades.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarDepartamentos" header="Tipo Contrato" widgetVar="editarDepartamentos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlCiudades.editarCiudad.departamento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarDepartamentos" value="Atras" onclick="editarDepartamentos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarCodigosAlternativos" header="Ciudad" widgetVar="editarCodigosAlternativos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px" >  
+                        <p:inputTextarea value="#{controlCiudades.editarCiudad.codigoalternativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCodigosAlternativos" value="Atras" onclick="editarCodigosAlternativos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog> 
                 </h:form>
+                
             </ui:define>
         </ui:composition>
-    </h:head>
-    <h:body>
-
     </h:body>
 </html>
 
