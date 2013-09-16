@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @SessionScoped
@@ -64,7 +65,7 @@ public class ControlComprobantes implements Serializable{
     public List<CortesProcesos> getListaCortesProcesos() {
         if (listaComprobantes != null) {
             if (listaCortesProcesos == null) {
-                listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(listaComprobantes.get(0).getSecuencia());
+                listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(listaComprobantes.get(2).getSecuencia());
             }
         }
         return listaCortesProcesos;
@@ -82,7 +83,7 @@ public class ControlComprobantes implements Serializable{
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
         if (listaCortesProcesos != null) {
             if (listaSolucionesNodosEmpleador == null) {
-                listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
+                listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
             }
         }
         return listaSolucionesNodosEmpleador;
@@ -138,5 +139,10 @@ public class ControlComprobantes implements Serializable{
 
     public void setEmpleado(Empleados empleado) {
         this.empleado = empleado;
+    }
+    
+    public void actualiza(){
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosComprobantes");
     }
 }

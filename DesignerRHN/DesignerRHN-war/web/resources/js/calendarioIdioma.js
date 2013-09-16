@@ -32,18 +32,39 @@ PrimeFaces.widget.Dialog.prototype.applyFocus = function() {
     }
 };
 
-/*function triggerHiddenEvent() {
- //alert("triggerHiddenEvent is trigger");
- document.getElementById(":form:datosVCEmpleado:ATRAS").click();
- }*/
-function triggerHiddenEvent() {
- alert("Hola :$$");
- //("form:ATRAS").trigger('click');
- };
+function comprobantesScroll() {
+    datosComprobantes.scrollOffset = 3;
+}
 
-/*
-function felipe() {
-    // alert($("div").scrollTop());
-    alert("HOLA");
-};*/
+function cortesProcesosScroll() {
+    datosComprobantes.scrollOffset = 3;
+}
+/*SCROLL DINAMICOS TABLAS CON COLUMNA FIJA*/
+function iniciarScrollEmpleado() {
+    var leftDiv = document.getElementById('inferiorIzquierda');
+    var rightDiv = document.getElementById('inferiorDerecha');
+    var topDiv = document.getElementById('superiorDerecha');
+
+    rightDiv.onscroll = function() {
+        leftDiv.scrollTop = rightDiv.scrollTop;
+        topDiv.scrollLeft = rightDiv.scrollLeft;
+    };
+    leftDiv.onscroll = function() {
+        rightDiv.scrollTop = leftDiv.scrollTop;
+    };
+}
+
+function iniciarScrollEmpleador() {
+    var leftDiv = document.getElementById('inferiorIzquierdaEM');
+    var rightDiv = document.getElementById('inferiorDerechaEM');
+    var topDiv = document.getElementById('superiorDerechaEM');
+
+    rightDiv.onscroll = function() {
+        leftDiv.scrollTop = rightDiv.scrollTop;
+        topDiv.scrollLeft = rightDiv.scrollLeft;
+    };
+    leftDiv.onscroll = function() {
+        rightDiv.scrollTop = leftDiv.scrollTop;
+    };
+}
 

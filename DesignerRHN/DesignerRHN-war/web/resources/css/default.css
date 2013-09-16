@@ -59,6 +59,12 @@ a:link:hover, a:visited:hover  {
     width: 55px;
     height: 15px
 }
+
+.calendarioComprobantes input {
+    width: 89.5%;
+    height: 11px
+}
+
 .myClass2 input {
     width: 83px;
     height: 15px
@@ -186,6 +192,14 @@ a:link:hover, a:visited:hover  {
     position: absolute;
     top: 90%;
     left: 0px;
+}
+
+/*TABLAS CON COLUMNA FIJA*/
+.hide-column-names table thead tr {
+    display: none;
+}
+.hide-row-names table td {
+    display: none;
 }
 
 
