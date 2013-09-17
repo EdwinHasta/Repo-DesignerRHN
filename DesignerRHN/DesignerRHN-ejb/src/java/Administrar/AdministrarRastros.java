@@ -27,7 +27,7 @@ public class AdministrarRastros implements AdministrarRastrosInterface {
     PersistenciaRastrosValoresInterface persistenciaRastrosValores;
 
     //1 = EL NOMBRE DE LA TABLA NO EXISTE EN OBJETOSDB
-    //2 = RASTROS DETECTADOS
+    //2 = RASTROS DETECTADOS PARA EL REGISTRO
     //3 = EL REGISTRO DE LA TABLA NO TIENE RASTROS
     //4 = LA TABLA NO EXISTE EN RASTROS TABLAS PERO TIENE REGISTROS EN RASTROS.
     //5 = LA TABLA NO EXISTE EN RASTROS TABLAS Y NO TIENE REGISTROS EN RASTROS.

@@ -16,6 +16,7 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
     PersistenciaCiudadesInterface persistenciaCiudades;
     @EJB
     PersistenciaDepartamentosInterface persistenciaDepartamentos;
+    private Ciudades c;
 
     public List<Departamentos> Departamentos() {
         List<Departamentos> listaDepartamentos;
@@ -23,9 +24,32 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
         return listaDepartamentos;
     }
 
+    @Override
     public List<Ciudades> Ciudades() {
         List<Ciudades> listaCiudades;
         listaCiudades = persistenciaCiudades.ciudades();
         return listaCiudades;
+    }
+
+    @Override
+    public void modificarCiudad(List<Ciudades> listaCiudadesModificar) {
+        for (int i = 0; i < listaCiudadesModificar.size(); i++) {
+            System.out.println("Modificando...");
+            if (listaCiudadesModificar.get(i).getDepartamento().getSecuencia() == null) {
+                listaCiudadesModificar.get(i).setDepartamento(null);
+                c = listaCiudadesModificar.get(i);
+            } else {
+                c = listaCiudadesModificar.get(i);
+            }
+            persistenciaCiudades.editar(c);
+        }
+    }
+
+    public void borrarCiudad(Ciudades ciudades) {
+        persistenciaCiudades.borrar(ciudades);
+    }
+
+    public void crearCiudad(Ciudades ciudades) {
+        persistenciaCiudades.crear(ciudades);
     }
 }

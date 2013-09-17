@@ -13,4 +13,7 @@ import java.util.List;
  */
 public interface PersistenciaCiudadesInterface {
     public List<Ciudades> ciudades();
+    public void crear(Ciudades ciudades);
+    public void editar(Ciudades ciudades);
+    public void borrar(Ciudades ciudades);
 }
