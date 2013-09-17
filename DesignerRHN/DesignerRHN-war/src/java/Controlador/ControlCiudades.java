@@ -50,7 +50,7 @@ public class ControlCiudades implements Serializable {
     private int cualCelda;
     //Activo/Desactivo Crtl + F11
     private int bandera;
-    //Columnas Tabla VC
+    //Columnas Tabla Ciudades
     private Column ciudadesCodigos, ciudadesNombres, nombresDepartamentos, ciudadesCodigosAlternativos;
     //Modificar Ciudades
     private List<Ciudades> listaCiudadesModificar;
@@ -339,8 +339,10 @@ public class ControlCiudades implements Serializable {
     }
 
     public void activarCtrlF11() {
+        System.out.println("TipoLista= " + tipoLista);
         if (bandera == 0) {
             System.out.println("Activar");
+            System.out.println("TipoLista= " + tipoLista);
             ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("width: 60px");
             ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
@@ -351,8 +353,10 @@ public class ControlCiudades implements Serializable {
             ciudadesCodigosAlternativos.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 1;
+            tipoLista = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
+            System.out.println("TipoLista= " + tipoLista);
             ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
             ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
@@ -361,9 +365,9 @@ public class ControlCiudades implements Serializable {
             nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
             ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
             ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 0;
             filtradoListaCiudades = null;
-            RequestContext.getCurrentInstance().update("form:datosCiudades");
             tipoLista = 0;
         }
     }
@@ -512,13 +516,16 @@ public class ControlCiudades implements Serializable {
                 for (int i = 0; i < listaCiudadesBorrar.size(); i++) {
                     System.out.println("Borrando...");
                     if (listaCiudadesBorrar.get(i).getDepartamento().getSecuencia() == null) {
+                        
                         listaCiudadesBorrar.get(i).setDepartamento(null);
                         administrarCiudades.borrarCiudad(listaCiudadesBorrar.get(i));
                     } else {
+                        
                         administrarCiudades.borrarCiudad(listaCiudadesBorrar.get(i));
                     }
 
                 }
+                System.out.println("Entra");
                 listaCiudadesBorrar.clear();
             }
             if (!listaCiudadesCrear.isEmpty()) {
@@ -690,6 +697,7 @@ public class ControlCiudades implements Serializable {
                 }
                 listaCiudades.remove(index);
             }
+            
             if (tipoLista == 1) {
                 if (!listaCiudadesModificar.isEmpty() && listaCiudadesModificar.contains(filtradoListaCiudades.get(index))) {
                     int modIndex = listaCiudadesModificar.indexOf(filtradoListaCiudades.get(index));
@@ -704,6 +712,7 @@ public class ControlCiudades implements Serializable {
                 int CIndex = listaCiudades.indexOf(filtradoListaCiudades.get(index));
                 listaCiudades.remove(CIndex);
                 filtradoListaCiudades.remove(index);
+                System.out.println("Realizado");
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
