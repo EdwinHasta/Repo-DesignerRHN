@@ -80,6 +80,9 @@ public class TiposTelefonos implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = " ";
+        }
         return nombre;
     }
 
