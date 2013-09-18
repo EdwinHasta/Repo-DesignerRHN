@@ -10,6 +10,7 @@ import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarCiudadesInterface;
 import InterfaceAdministrar.AdministrarDepartamentosInterface;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -32,6 +33,8 @@ public class ControlCiudades implements Serializable {
     AdministrarCiudadesInterface administrarCiudades;
     @EJB
     AdministrarDepartamentosInterface administrarDepartamentos;
+    @EJB
+    AdministrarRastrosInterface administrarRastros;
     //Listas
     private List<Departamentos> listaDepartamentos;
     private List<Departamentos> filtradoListaDepatartamentos;
@@ -47,10 +50,8 @@ public class ControlCiudades implements Serializable {
     private int cualCelda;
     //Activo/Desactivo Crtl + F11
     private int bandera;
-    //Columnas Tabla VC
+    //Columnas Tabla Ciudades
     private Column ciudadesCodigos, ciudadesNombres, nombresDepartamentos, ciudadesCodigosAlternativos;
-    //RASTRO
-    private BigInteger secRegistro;
     //Modificar Ciudades
     private List<Ciudades> listaCiudadesModificar;
     private boolean guardado, guardarOk;
@@ -60,13 +61,17 @@ public class ControlCiudades implements Serializable {
     private BigInteger l;
     private int k;
     private String mensajeValidacion;
-    //borrar VC
+    //Borrar Ciudad
     private List<Ciudades> listaCiudadesBorrar;
     //AUTOCOMPLETAR
     private String Departamento;
     //editar celda
     private Ciudades editarCiudad;
     private boolean cambioEditor, aceptarEditar;
+    //DUPLICAR
+    private Ciudades duplicarCiudad;
+    //RASTRO
+    private BigInteger secRegistro;
 
     public ControlCiudades() {
         permitirIndex = true;
@@ -86,7 +91,7 @@ public class ControlCiudades implements Serializable {
         nuevaCiudad = new Ciudades();
         nuevaCiudad.setDepartamento(new Departamentos());
         nuevaCiudad.getDepartamento().setNombre(" ");
-
+        secRegistro = null;
     }
 
     public void asignarIndex(Integer indice) {
@@ -101,11 +106,76 @@ public class ControlCiudades implements Serializable {
         if (tipoN == 1) {
             tipoActualizacion = 1;
         } else if (tipoN == 2) {
-            tipoActualizacion = 1;
+            tipoActualizacion = 2;
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:departamentosDialogo");
         context.execute("departamentosDialogo.show()");
+    }
+
+    //DUPLICAR CIUDAD
+    public void duplicarC() {
+        if (index >= 0) {
+            duplicarCiudad = new Ciudades();
+            k++;
+            l = BigInteger.valueOf(k);
+
+            if (tipoLista == 0) {
+                duplicarCiudad.setSecuencia(l);
+                duplicarCiudad.setCodigo(listaCiudades.get(index).getCodigo());
+                duplicarCiudad.setNombre(listaCiudades.get(index).getNombre());
+                duplicarCiudad.setDepartamento(listaCiudades.get(index).getDepartamento());
+                duplicarCiudad.setCodigoalternativo(listaCiudades.get(index).getCodigoalternativo());
+            }
+            if (tipoLista == 1) {
+                duplicarCiudad.setSecuencia(l);
+                duplicarCiudad.setCodigo(filtradoListaCiudades.get(index).getCodigo());
+                duplicarCiudad.setNombre(filtradoListaCiudades.get(index).getNombre());
+                duplicarCiudad.setDepartamento(filtradoListaCiudades.get(index).getDepartamento());
+                duplicarCiudad.setCodigoalternativo(filtradoListaCiudades.get(index).getCodigoalternativo());
+            }
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:duplicarCiudad");
+            context.execute("DuplicarRegistroCiudad.show()");
+            index = -1;
+            secRegistro = null;
+        }
+    }
+
+    public void confirmarDuplicar() {
+
+        listaCiudades.add(duplicarCiudad);
+        listaCiudadesCrear.add(duplicarCiudad);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosCiudades");
+        index = -1;
+        secRegistro = null;
+        if (guardado == true) {
+            guardado = false;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+        }
+        if (bandera == 1) {
+            System.out.println("Desactivar");
+            ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+            ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
+            ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+            ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
+            nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+            nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
+            ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+            ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+            bandera = 0;
+            filtradoListaCiudades = null;
+            RequestContext.getCurrentInstance().update("form:datosCiudades");
+            tipoLista = 0;
+        }
+        duplicarCiudad = new Ciudades();
+    }
+    //LIMPIAR DUPLICAR
+
+    public void limpiarduplicarCiudad() {
+        duplicarCiudad = new Ciudades();
     }
 
     //Ubicacion Celda.
@@ -269,8 +339,10 @@ public class ControlCiudades implements Serializable {
     }
 
     public void activarCtrlF11() {
+        System.out.println("TipoLista= " + tipoLista);
         if (bandera == 0) {
             System.out.println("Activar");
+            System.out.println("TipoLista= " + tipoLista);
             ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("width: 60px");
             ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
@@ -281,8 +353,10 @@ public class ControlCiudades implements Serializable {
             ciudadesCodigosAlternativos.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 1;
+            tipoLista = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
+            System.out.println("TipoLista= " + tipoLista);
             ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
             ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
@@ -291,9 +365,9 @@ public class ControlCiudades implements Serializable {
             nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
             ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
             ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 0;
             filtradoListaCiudades = null;
-            RequestContext.getCurrentInstance().update("form:datosCiudades");
             tipoLista = 0;
         }
     }
@@ -303,7 +377,6 @@ public class ControlCiudades implements Serializable {
         boolean pasa = false;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Valor de nombre: " + nuevaCiudad.getNombre());
         if (nuevaCiudad.getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " * Nombre de la Ciudad \n";
             pasa = false;
@@ -347,8 +420,8 @@ public class ControlCiudades implements Serializable {
             context.update("form:datosCiudades");
             if (guardado == true) {
                 guardado = false;
-               
-                //  RequestContext.getCurrentInstance().update("form:aceptar");
+
+                RequestContext.getCurrentInstance().update("form:aceptar");
             }
             context.execute("NuevoRegistroCiudad.hide()");
             index = -1;
@@ -368,53 +441,182 @@ public class ControlCiudades implements Serializable {
         secRegistro = null;
     }
 
-    
+    //EXPORTAR
+    public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCiudadesExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "CiudadesPDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
+    }
+
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCiudadesExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "CiudadesXLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
+    }
+
     public void valoresBackupAutocompletar(int tipoNuevo) {
 
-            if (tipoNuevo == 1) {
-                Departamento = nuevaCiudad.getDepartamento().getNombre();
-            } else if (tipoNuevo == 2) {
-//                Departamento = duplicarVTC.getMotivocontrato().getNombre();
-            }
-     }
-public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
+        if (tipoNuevo == 1) {
+            Departamento = nuevaCiudad.getDepartamento().getNombre();
+        } else if (tipoNuevo == 2) {
+            Departamento = duplicarCiudad.getDepartamento().getNombre();
+        }
+    }
+
+    public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-              if (tipoNuevo == 1) {
-                nuevaCiudad.getDepartamento().setNombre(Departamento);
-            } else if (tipoNuevo == 2) {
-             //   duplicarVTC.getMotivocontrato().setNombre(Motivo);
-            }
-            for (int i = 0; i < listaDepartamentos.size(); i++) {
-                if (listaDepartamentos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoNuevo == 1) {
-                    nuevaCiudad.setDepartamento(listaDepartamentos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevoDepartamento");
-                } else if (tipoNuevo == 2) {
-                    //duplicarVTC.setMotivocontrato(listaMotivosContratos.get(indiceUnicoElemento));
-                    //context.update("formularioDialogos:duplicarMotivoContrato");
-                }
-                listaDepartamentos.clear();
-                getListaDepartamentos();
-            } else {
-                context.update("form:departamentosDialogo");
-                context.execute("departamentosDialogo.show()");
-                tipoActualizacion = tipoNuevo;
-                if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevoDepartamento");
-                } else if (tipoNuevo == 2) {
-                  //  context.update("formularioDialogos:duplicarMotivoContrato");
-                }
+        if (tipoNuevo == 1) {
+            nuevaCiudad.getDepartamento().setNombre(Departamento);
+        } else if (tipoNuevo == 2) {
+            duplicarCiudad.getDepartamento().setNombre(Departamento);
+        }
+        for (int i = 0; i < listaDepartamentos.size(); i++) {
+            if (listaDepartamentos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                indiceUnicoElemento = i;
+                coincidencias++;
             }
         }
+        if (coincidencias == 1) {
+            if (tipoNuevo == 1) {
+                nuevaCiudad.setDepartamento(listaDepartamentos.get(indiceUnicoElemento));
+                context.update("formularioDialogos:nuevoDepartamento");
+            } else if (tipoNuevo == 2) {
+                duplicarCiudad.setDepartamento(listaDepartamentos.get(indiceUnicoElemento));
+                context.update("formularioDialogos:duplicarDepartamento");
+            }
+            listaDepartamentos.clear();
+            getListaDepartamentos();
+        } else {
+            context.update("form:departamentosDialogo");
+            context.execute("departamentosDialogo.show()");
+            tipoActualizacion = tipoNuevo;
+            if (tipoNuevo == 1) {
+                context.update("formularioDialogos:nuevoDepartamento");
+            } else if (tipoNuevo == 2) {
+                context.update("formularioDialogos:duplicarDepartamento");
+            }
+        }
+    }
 
-    
+    //GUARDAR
+    public void guardarCambiosCiudad() {
+        if (guardado == false) {
+            System.out.println("Realizando Operaciones Ciudades");
+            if (!listaCiudadesBorrar.isEmpty()) {
+                for (int i = 0; i < listaCiudadesBorrar.size(); i++) {
+                    System.out.println("Borrando...");
+                    if (listaCiudadesBorrar.get(i).getDepartamento().getSecuencia() == null) {
+                        
+                        listaCiudadesBorrar.get(i).setDepartamento(null);
+                        administrarCiudades.borrarCiudad(listaCiudadesBorrar.get(i));
+                    } else {
+                        
+                        administrarCiudades.borrarCiudad(listaCiudadesBorrar.get(i));
+                    }
+
+                }
+                System.out.println("Entra");
+                listaCiudadesBorrar.clear();
+            }
+            if (!listaCiudadesCrear.isEmpty()) {
+                for (int i = 0; i < listaCiudadesCrear.size(); i++) {
+                    System.out.println("Creando...");
+                    if (listaCiudadesCrear.get(i).getDepartamento().getSecuencia() == null) {
+                        listaCiudadesCrear.get(i).setDepartamento(null);
+                        administrarCiudades.crearCiudad(listaCiudadesCrear.get(i));
+                    } else {
+                        administrarCiudades.crearCiudad(listaCiudadesCrear.get(i));
+                    }
+                }
+                listaCiudadesCrear.clear();
+            }
+            if (!listaCiudadesModificar.isEmpty()) {
+                administrarCiudades.modificarCiudad(listaCiudadesModificar);
+                listaCiudadesModificar.clear();
+            }
+            System.out.println("Se guardaron los datos con exito");
+            listaCiudades = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosCiudades");
+            guardado = true;
+            permitirIndex = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+        }
+        index = -1;
+        secRegistro = null;
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+            ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
+            ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+            ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
+            nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+            nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
+            ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+            ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosCiudades");
+            bandera = 0;
+            filtradoListaCiudades = null;
+            tipoLista = 0;
+
+        }
+
+        listaCiudadesBorrar.clear();
+        listaCiudadesCrear.clear();
+        listaCiudadesModificar.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listaCiudades  = null;
+        guardado = true;
+        permitirIndex = true;
+
+    }
+
+    public void cancelarModificacion() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+            ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
+            ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+            ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
+            nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+            nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
+            ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+            ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosCiudades");
+            bandera = 0;
+            filtradoListaCiudades = null;
+            tipoLista = 0;
+
+        }
+
+        listaCiudadesBorrar.clear();
+        listaCiudadesCrear.clear();
+        listaCiudadesModificar.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listaCiudades = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosCiudades");
+    }
+
     //METODOS L.O.V CIUDADES
     public void actualizarDepartamentos() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -445,10 +647,11 @@ public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
             context.update("form:datosCiudades");
         } else if (tipoActualizacion == 1) {
             nuevaCiudad.setDepartamento(seleccionDepartamento);
-             context.update("formularioDialogos:nuevoDepartamento");
+            context.update("formularioDialogos:nuevoDepartamento");
         } else if (tipoActualizacion == 2) {
-            /*duplicarVC.setMotivocambiocargo(motivoSeleccionado);
-             context.update("formularioDialogos:duplicarVC");*/
+            System.out.println(seleccionDepartamento.getNombre());
+            duplicarCiudad.setDepartamento(seleccionDepartamento);
+            context.update("formularioDialogos:duplicarDepartamento");
         }
         filtradoListaDepatartamentos = null;
         seleccionDepartamento = null;
@@ -494,6 +697,7 @@ public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
                 }
                 listaCiudades.remove(index);
             }
+            
             if (tipoLista == 1) {
                 if (!listaCiudadesModificar.isEmpty() && listaCiudadesModificar.contains(filtradoListaCiudades.get(index))) {
                     int modIndex = listaCiudadesModificar.indexOf(filtradoListaCiudades.get(index));
@@ -508,6 +712,7 @@ public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
                 int CIndex = listaCiudades.indexOf(filtradoListaCiudades.get(index));
                 listaCiudades.remove(CIndex);
                 filtradoListaCiudades.remove(index);
+                System.out.println("Realizado");
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -517,7 +722,7 @@ public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:aceptar");
             }
         }
     }
@@ -527,38 +732,48 @@ public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
             if (tipoNuevo == 1) {
                 Departamento = nuevaCiudad.getDepartamento().getNombre();
             } else if (tipoNuevo == 2) {
-                //   Motivo = duplicarVTC.getMotivocontrato().getNombre();
+                Departamento = duplicarCiudad.getDepartamento().getNombre();
             }
         }
 
     }
-    
-    //EXPORTAR
-        
-    public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCiudadesExportar");
-        FacesContext context = FacesContext.getCurrentInstance();
-        Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "CiudadesXLS", false, false, "UTF-8", null, null);
-        context.responseComplete();
-        index = -1;
-        secRegistro = null;
-    }
-    
-        public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCiudadesExportar");
-        FacesContext context = FacesContext.getCurrentInstance();
-        Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "CiudadesPDF", false, false, "UTF-8", null, null);
-        context.responseComplete();
-        index = -1;
-        secRegistro = null;
-    }
 
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("lol");
+        if (!listaCiudades.isEmpty()) {
+            if (secRegistro != null) {
+                System.out.println("lol 2");
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "CIUDADES");
+                System.out.println("resultado: " + resultado);
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("CIUDADES")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+
+        }
+        index = -1;
+    }
 //GETTER AND SETTER
+
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
-//            listAficiones = administrarCarpetaDesigner.buscarAficiones();
             listaCiudades = administrarCiudades.Ciudades();
             return listaCiudades;
         } else {
@@ -629,11 +844,27 @@ public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
         return nuevaCiudad;
     }
 
+    public Ciudades getDuplicarCiudad() {
+        return duplicarCiudad;
+    }
+
+    public void setDuplicarCiudad(Ciudades duplicarCiudad) {
+        this.duplicarCiudad = duplicarCiudad;
+    }
+
     public void setNuevaCiudad(Ciudades nuevaCiudad) {
         this.nuevaCiudad = nuevaCiudad;
     }
 
     public String getMensajeValidacion() {
         return mensajeValidacion;
+    }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
     }
 }

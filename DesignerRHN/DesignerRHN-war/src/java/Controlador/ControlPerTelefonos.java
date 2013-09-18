@@ -4,14 +4,22 @@ import Entidades.Ciudades;
 import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposTelefonos;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarTelefonosInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -34,6 +42,8 @@ public class ControlPerTelefonos implements Serializable {
     private List<Ciudades> listaCiudades;
     private List<Ciudades> filtradoslistaCiudades;
     private Ciudades seleccionCiudades;
+    //Columnas Tabla VC
+    private Column tFecha, tTipoTelefono, tNumero, tCiudad;
     //OTROS
     private boolean aceptar;
     private int index;
@@ -54,11 +64,11 @@ public class ControlPerTelefonos implements Serializable {
     //borrar VC
     private List<Telefonos> listaTelefonosBorrar;
     //editar celda
-    //private VigenciasCargos editarVC;
+    private Telefonos editarTelefono;
+    private boolean cambioEditor, aceptarEditar;
     private int cualCelda, tipoLista;
-    //private boolean cambioEditor, aceptarEditar;
-    //duplicar
-    //private VigenciasCargos duplicarVC;
+    //Duplicar
+    private Telefonos duplicarTelefono;
     //RASTRO
     private BigInteger secRegistro;
 
@@ -73,6 +83,19 @@ public class ControlPerTelefonos implements Serializable {
         //INICIALIZAR LOVS
         listaTiposTelefonos = new ArrayList<TiposTelefonos>();
         listaCiudades = new ArrayList<Ciudades>();
+        secRegistro = null;
+        //editar
+        editarTelefono = new Telefonos();
+        cambioEditor = false;
+        aceptarEditar = true;
+        cualCelda = -1;
+        tipoLista = 0;
+         //Crear VC
+        nuevoTelefono = new Telefonos();
+        nuevoTelefono.setTipotelefono(new TiposTelefonos());
+        nuevoTelefono.setCiudad(new Ciudades());
+        secRegistro = null;
+        permitirIndex = true;
     }
 
     public void recibirPersona(BigInteger secPersona) {
@@ -136,8 +159,8 @@ public class ControlPerTelefonos implements Serializable {
             permitirIndex = true;
             context.update("form:datosTelefonosPersona");
         } else if (tipoActualizacion == 1) {
-            /*nuevaVigencia.setMotivocambiocargo(motivoSeleccionado);
-             context.update("formularioDialogos:nuevaVC");*/
+            nuevoTelefono.setTipotelefono(seleccionTipoTelefono);
+            context.update("formularioDialogos:nuevoTelefono");
         } else if (tipoActualizacion == 2) {
             /*duplicarVC.setMotivocambiocargo(motivoSeleccionado);
              context.update("formularioDialogos:duplicarVC");*/
@@ -163,6 +186,236 @@ public class ControlPerTelefonos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+    }
+    
+//MOSTRAR DATOS CELDA
+    public void editarCelda() {
+        if (index >= 0) {
+            if (tipoLista == 0) {
+                editarTelefono = listaTelefonos.get(index);
+            }
+            if (tipoLista == 1) {
+                editarTelefono = filtradosListaTelefonos.get(index);
+            }
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            System.out.println("Entro a editar... valor celda: " + cualCelda);
+            if (cualCelda == 0) {
+                context.update("formularioDialogos:editarFecha");
+                context.execute("editarFecha.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 1) {
+                context.update("formularioDialogos:editarTipoTelefono");
+                context.execute("editarTipoTelefono.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 2) {
+                context.update("formularioDialogos:editarNumeroTelefono");
+                context.execute("editarNumeroTelefono.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 3) {
+                context.update("formularioDialogos:editarCiudad");
+                context.execute("editarCiudad.show()");
+                cualCelda = -1;
+            }
+        }
+        index = -1;
+        secRegistro = null;
+    }
+
+    //LISTA DE VALORES DINAMICA
+    public void listaValoresBoton() {
+        if (index >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (cualCelda == 1) {
+                context.update("formularioDialogos:tiposTelefonosDialogo");
+                context.execute("tiposTelefonosDialogo.show()");
+                tipoActualizacion = 0;
+            }else if(cualCelda == 3){
+                context.update("formularioDialogos:ciudadesDialogo");
+                context.execute("ciudadesDialogo.show()");
+                tipoActualizacion = 0;
+            }
+        }
+    }
+    
+    //BORRAR CIUDADES
+    public void borrarTelefonos() {
+
+        if (index >= 0) {
+            if (tipoLista == 0) {
+                if (!listaTelefonosModificar.isEmpty() && listaTelefonosModificar.contains(listaTelefonos.get(index))) {
+                    int modIndex = listaTelefonosModificar.indexOf(listaTelefonos.get(index));
+                    listaTelefonosModificar.remove(modIndex);
+                    listaTelefonosBorrar.add(listaTelefonos.get(index));
+                } else if (!listaTelefonosCrear.isEmpty() && listaTelefonosCrear.contains(listaTelefonos.get(index))) {
+                    int crearIndex = listaTelefonosCrear.indexOf(listaTelefonos.get(index));
+                    listaTelefonosCrear.remove(crearIndex);
+                } else {
+                    listaTelefonosBorrar.add(listaTelefonos.get(index));
+                }
+                listaTelefonos.remove(index);
+            }
+            
+            if (tipoLista == 1) {
+                if (!listaTelefonosModificar.isEmpty() && listaTelefonosModificar.contains(filtradosListaTelefonos.get(index))) {
+                    int modIndex = listaTelefonosModificar.indexOf(filtradosListaTelefonos.get(index));
+                    listaTelefonosModificar.remove(modIndex);
+                    listaTelefonosBorrar.add(filtradosListaTelefonos.get(index));
+                } else if (!listaTelefonosCrear.isEmpty() && listaTelefonosCrear.contains(filtradosListaTelefonos.get(index))) {
+                    int crearIndex = listaTelefonosCrear.indexOf(filtradosListaTelefonos.get(index));
+                    listaTelefonosCrear.remove(crearIndex);
+                } else {
+                    listaTelefonosBorrar.add(filtradosListaTelefonos.get(index));
+                }
+                int CIndex = listaTelefonos.indexOf(filtradosListaTelefonos.get(index));
+                listaTelefonos.remove(CIndex);
+                filtradosListaTelefonos.remove(index);
+                System.out.println("Realizado");
+            }
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosTelefonosPersona");
+            index = -1;
+            secRegistro = null;
+
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+        }
+    }
+    
+    //EXPORTAR
+    public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTelefonosExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "TelefonosPDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
+    }
+
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTelefonosExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "TelefonosXLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
+    }
+        //LIMPIAR NUEVO REGISTRO
+
+        public void limpiarNuevoTelefono() {
+        nuevoTelefono = new Telefonos();
+        nuevoTelefono.setTipotelefono(new TiposTelefonos());
+        nuevoTelefono.setCiudad(new Ciudades());
+        index = -1;
+        secRegistro = null;
+    }
+    //FILTRADO
+     public void activarCtrlF11() {
+        System.out.println("TipoLista= " + tipoLista);
+        if (bandera == 0) {
+            System.out.println("Activar");
+            System.out.println("TipoLista= " + tipoLista);
+            tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+            tFecha.setFilterStyle("width: 60px");
+            tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+            tTipoTelefono.setFilterStyle("");
+            tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+            tNumero.setFilterStyle("");
+            tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+            tCiudad.setFilterStyle("width: 60px");
+            RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
+            bandera = 1;
+            
+        } else if (bandera == 1) {
+            System.out.println("Desactivar");
+            System.out.println("TipoLista= " + tipoLista);
+            tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+            tFecha.setFilterStyle("display: none; visibility: hidden;");
+            tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+            tTipoTelefono.setFilterStyle("display: none; visibility: hidden;");
+            tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+            tNumero.setFilterStyle("display: none; visibility: hidden;");
+            tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+            tCiudad.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
+            bandera = 0;
+            filtradosListaTelefonos = null;
+            tipoLista = 0;
+        }
+    }
+     
+    //CREAR TELEFONO
+    public void agregarNuevoTelefono() {
+        boolean pasa = false;
+        mensajeValidacion = "";
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (nuevoTelefono.getFechavigencia()== null) {
+            mensajeValidacion = " * Fecha \n";
+            pasa = false;
+        } else {
+            pasa = true;
+        }
+        if (nuevoTelefono.getTipotelefono().getSecuencia() == null) {
+            mensajeValidacion = mensajeValidacion + " * Tipo de Telefono\n";
+            pasa = false;
+        } else {
+            pasa = true;
+        }
+        if (nuevoTelefono.getNumerotelefono() == 0) {
+            mensajeValidacion = mensajeValidacion + " * Tipo de Telefono\n";
+            pasa = false;
+        } else {
+            pasa = true;
+        }
+        if (pasa == true) {
+            if (bandera == 1) {
+                //CERRAR FILTRADO
+            //System.out.println("Desactivar");
+            //System.out.println("TipoLista= " + tipoLista);
+            tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+            tFecha.setFilterStyle("display: none; visibility: hidden;");
+            tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+            tTipoTelefono.setFilterStyle("display: none; visibility: hidden;");
+            tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+            tNumero.setFilterStyle("display: none; visibility: hidden;");
+            tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+            tCiudad.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
+            bandera = 0;
+            filtradosListaTelefonos = null;
+         
+            }
+            //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+            k++;
+            l = BigInteger.valueOf(k);
+            nuevoTelefono.setSecuencia(l);
+            nuevoTelefono.setPersona(persona);
+            if (nuevoTelefono.getCiudad().getSecuencia() == null) {
+                nuevoTelefono.setCiudad(null);
+            }
+            listaTelefonosCrear.add(nuevoTelefono);
+
+            listaTelefonos.add(nuevoTelefono);
+            nuevoTelefono = new Telefonos();
+            nuevoTelefono.setTipotelefono(new TiposTelefonos());
+            nuevoTelefono.setCiudad(new Ciudades());
+            context.update("form:datosTelefonosPersona");
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+            context.execute("NuevoRegistroTelefono.hide()");
+            index = -1;
+            secRegistro = null;
+        } else {
+            context.update("form:validacionNuevaVigencia");
+            context.execute("validacionNuevaVigencia.show()");
+        }
     }
 
     //METODOS L.O.V CIUDADES
@@ -194,8 +447,8 @@ public class ControlPerTelefonos implements Serializable {
             //permitirIndex = true;
             context.update("form:datosTelefonosPersona");
         } else if (tipoActualizacion == 1) {
-            /*nuevaVigencia.setMotivocambiocargo(motivoSeleccionado);
-             context.update("formularioDialogos:nuevaVC");*/
+            nuevoTelefono.setCiudad(seleccionCiudades);
+            context.update("formularioDialogos:nuevoTelefono");
         } else if (tipoActualizacion == 2) {
             /*duplicarVC.setMotivocambiocargo(motivoSeleccionado);
              context.update("formularioDialogos:duplicarVC");*/
@@ -365,6 +618,122 @@ public class ControlPerTelefonos implements Serializable {
     public void activarAceptar() {
         aceptar = false;
     }
+    
+    public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
+        if (Campo.equals("TIPOT")) {
+            if (tipoNuevo == 1) {
+                TipoTelefono = nuevoTelefono.getTipotelefono().getNombre();
+            } else if (tipoNuevo == 2) {
+                //TipoTelefono = duplicarVTC.getMotivocontrato().getNombre();
+            }
+        }  else if (Campo.equals("CIUDAD")) {
+            if (tipoNuevo == 1) {
+                Ciudad = nuevoTelefono.getCiudad().getNombre();
+            } else if (tipoNuevo == 2) {
+                //Ciudad = duplicarVTC.getCiudad().getNombre();
+            }
+        }
+    }
+    
+    public void autocompletarNuevoyDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (confirmarCambio.equalsIgnoreCase("TIPOT")) {
+            if (tipoNuevo == 1) {
+                nuevoTelefono.getTipotelefono().setNombre(TipoTelefono);
+            } else if (tipoNuevo == 2) {
+//                duplicarVTC.getMotivocontrato().setNombre(Motivo);
+            }
+            for (int i = 0; i < listaTiposTelefonos.size(); i++) {
+                if (listaTiposTelefonos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                if (tipoNuevo == 1) {
+                    nuevoTelefono.setTipotelefono(listaTiposTelefonos.get(indiceUnicoElemento));
+                    context.update("formularioDialogos:nuevoTipoTelefono");
+                } else if (tipoNuevo == 2) {
+                //    duplicarVTC.setMotivocontrato(listaMotivosContratos.get(indiceUnicoElemento));
+                //    context.update("formularioDialogos:duplicarMotivoContrato");
+                }
+                listaTiposTelefonos.clear();
+                getListaTiposTelefonos();
+            } else {
+                context.update("form:tiposTelefonosDialogo");
+                context.execute("tiposTelefonosDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+                if (tipoNuevo == 1) {
+                    context.update("formularioDialogos:nuevoTipoTelefono");
+                } else if (tipoNuevo == 2) {
+                 //   context.update("formularioDialogos:duplicarMotivoContrato");
+                }
+            }
+        } else if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
+            if (tipoNuevo == 1) {
+                nuevoTelefono.getCiudad().setNombre(Ciudad);
+            } else if (tipoNuevo == 2) {
+                //duplicarVTC.getCiudad().setNombre(Ciudad);
+            }
+            for (int i = 0; i < listaCiudades.size(); i++) {
+                if (listaCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                if (tipoNuevo == 1) {
+                    nuevoTelefono.setCiudad(listaCiudades.get(indiceUnicoElemento));
+                    context.update("formularioDialogos:nuevaCiudad");
+                } else if (tipoNuevo == 2) {
+                   // duplicarVTC.setCiudad(listaCiudades.get(indiceUnicoElemento));
+                    context.update("formularioDialogos:duplicarCiudad");
+                }
+                listaCiudades.clear();
+                getListaCiudades();
+            } else {
+                context.update("form:ciudadesDialogo");
+                context.execute("ciudadesDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+                if (tipoNuevo == 1) {
+                    context.update("formularioDialogos:nuevaCiudad");
+                } else if (tipoNuevo == 2) {
+                    //context.update("formularioDialogos:duplicarCiudad");
+                }
+            }
+        }
+    }
+    
+     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
+
+    public void asignarIndex(Integer indice, int dlg, int LND) {
+        index = indice;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (LND == 0) {
+            tipoActualizacion = 0;
+        } else if (LND == 1) {
+            tipoActualizacion = 1;
+            index = -1;
+            secRegistro = null;
+            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
+        } else if (LND == 2) {
+            index = -1;
+            secRegistro = null;
+            tipoActualizacion = 2;
+        }
+        if (dlg == 0) {
+            context.update("form:tiposTelefonosDialogo");
+            context.execute("tiposTelefonosDialogo.show()");
+        } else if (dlg == 1) {
+            context.update("form:ciudadesDialogo");
+            context.execute("ciudadesDialogo.show()");
+        }
+
+    }
+    
+    
 
     //EVENTO FILTRAR
     public void eventoFiltrar() {
@@ -458,4 +827,23 @@ public class ControlPerTelefonos implements Serializable {
     public void setSeleccionCiudades(Ciudades seleccionCiudades) {
         this.seleccionCiudades = seleccionCiudades;
     }
+
+    public Telefonos getEditarTelefono() {
+        return editarTelefono;
+    }
+
+    public void setEditarTelefono(Telefonos editarTelefono) {
+        this.editarTelefono = editarTelefono;
+    }
+
+    public Telefonos getNuevoTelefono() {
+        return nuevoTelefono;
+    }
+
+    public void setNuevoTelefono(Telefonos nuevoTelefono) {
+        this.nuevoTelefono = nuevoTelefono;
+    }
+    
+    
+    
 }

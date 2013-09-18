@@ -101,7 +101,6 @@ public class ControlRastro implements Serializable {
             context.execute("errorEliminados.show()");
         }
     }
-
     public void historicosTablaEliminadosEmpleado() {
         RequestContext context = RequestContext.getCurrentInstance();
         backUplistaLOVRastros = listaRastros;

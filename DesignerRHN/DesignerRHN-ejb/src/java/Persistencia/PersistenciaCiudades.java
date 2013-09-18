@@ -19,6 +19,7 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
      public void crear(Ciudades ciudades) {
         try {
             em.merge(ciudades);
@@ -27,11 +28,14 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
             throw new EntityExistsException(ex);
         }
     }
-        /*
-         *Editar ciudades. 
-         */
+       
+     
+     /*
+      *Editar ciudades. 
+      */
     
 
+    @Override
     public void editar(Ciudades ciudades) {
         em.merge(ciudades);
     }
@@ -39,6 +43,7 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     /*
      *Borrar Ciudades.
      */
+    @Override
     public void borrar(Ciudades ciudades) {
         em.remove(em.merge(ciudades));
     }
@@ -46,13 +51,7 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     /*
      *Encontrar una ciudad. 
      */
-    public Ciudades buscarAficion(BigInteger id) {
-        return em.find(Ciudades.class, id);
-    }
 
-    /*
-     *Encontrar todas las aficiónes.
-     */
     public List<Ciudades> buscarCiudades() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Ciudades.class));

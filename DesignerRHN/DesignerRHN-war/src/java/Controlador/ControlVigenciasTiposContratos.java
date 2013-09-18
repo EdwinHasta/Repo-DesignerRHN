@@ -766,6 +766,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
             vtcObservacion.setFilterStyle("");
             RequestContext.getCurrentInstance().update("form:datosVTCEmpleado");
             bandera = 1;
+            
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             vtcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcFecha");

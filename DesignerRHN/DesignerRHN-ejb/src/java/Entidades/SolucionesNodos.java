@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -45,6 +46,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "SolucionesNodos.findByValorincremento", query = "SELECT s FROM SolucionesNodos s WHERE s.valorincremento = :valorincremento"),
     @NamedQuery(name = "SolucionesNodos.findByParametrotesoreria", query = "SELECT s FROM SolucionesNodos s WHERE s.parametrotesoreria = :parametrotesoreria")})
 public class SolucionesNodos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -145,6 +147,14 @@ public class SolucionesNodos implements Serializable {
     @JoinColumn(name = "NODO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Nodos nodo;
+    @Transient
+    private BigDecimal pago;
+    @Transient
+    private BigDecimal descuento;
+    @Transient
+    private BigDecimal pasivo;
+    @Transient
+    private BigDecimal gasto;
 
     public SolucionesNodos() {
     }
@@ -416,6 +426,50 @@ public class SolucionesNodos implements Serializable {
         this.nodo = nodo;
     }
 
+    public BigDecimal getPago() {
+        if (tipo.equals("PAGO")) {
+            pago = valor;
+        }
+        return pago;
+    }
+
+    public void setPago(BigDecimal pago) {
+        this.pago = pago;
+    }
+
+    public BigDecimal getDescuento() {
+        if (tipo.equals("DESCUENTO")) {
+            descuento = valor;
+        }
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public BigDecimal getPasivo() {
+        if (tipo.equals("PASIVO")) {
+            descuento = valor;
+        }
+        return pasivo;
+    }
+
+    public void setPasivo(BigDecimal pasivo) {
+        this.pasivo = pasivo;
+    }
+
+    public BigDecimal getGasto() {
+        if (tipo.equals("GASTO")) {
+            descuento = valor;
+        }
+        return gasto;
+    }
+
+    public void setGasto(BigDecimal gasto) {
+        this.gasto = gasto;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -440,5 +494,4 @@ public class SolucionesNodos implements Serializable {
     public String toString() {
         return "Entidades.SolucionesNodos[ secuencia=" + secuencia + " ]";
     }
-    
 }
