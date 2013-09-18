@@ -35,9 +35,9 @@
                                         <f:facet name="input">
                                             <p:calendar  style="font-size: 10px; width: 10px" value="#{organigrama.fecha}" id="editFecha"   styleClass="ui-datepicker, calendarEstructura"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlEstructura.modificarOrganigrama(indice, 'N')}" update="editFecha"/>
-                                                <p:ajax event="change" listener="#{controlEstructura.modificarOrganigrama(indice, 'N')}" update="@this" />
-                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, '0')}" />
+                                                <p:ajax event="dateSelect" listener="#{controlEstructura.modificarOrganigrama(indice, 'N', organigrama.fecha)}" update="editFecha"/>
+                                                <p:ajax event="change" listener="#{controlEstructura.modificarOrganigrama(indice, 'N', organigrama.fecha)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, 0)}" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -52,8 +52,8 @@
                                         <f:facet name="output"><h:outputText value="#{organigrama.codigo}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{organigrama.codigo}" id="editarCodigo" style="font-size: 10px; border-radius: 0px; width: 82%; text-transform: uppercase" >
-                                                <p:ajax event="change" listener="#{controlEstructura.modificarOrganigrama(indice, 'N')}" update="@this"/>
-                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, '1')}" />
+                                                <p:ajax event="change" listener="#{controlEstructura.modificarOrganigrama(indice, 'N', organigrama.fecha)}" update="@this"/>
+                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, 1)}" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor> 
@@ -68,8 +68,8 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{organigrama.empresa.nombre}" id="editarEmpresa" style="font-size: 10px; border-radius: 0px; width: 95.5%; text-transform: uppercase" >
                                                 <p:ajax event="change" listener="#{controlEstructura.modificarOrganigrama(indice, 'EMPRESA', organigrama.empresa.nombre)}" />
-                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, '2')}" />
-                                                <p:ajax event="dblclick" listener="#{controlEstructura.asignarIndex(indice, '0')}" />
+                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlEstructura.asignarIndex(indice, 0)}" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor> 
@@ -83,7 +83,7 @@
                                         <f:facet name="output"><h:outputText value="#{organigrama.empresa.nit}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{organigrama.empresa.nit}" id="editarNit" style="font-size: 10px; border-radius: 0px; width: 92.5%; text-transform: uppercase" >
-                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, '3')}" />
+                                                <p:ajax event="select" listener="#{controlEstructura.cambiarIndice(indice, 3)}" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>  
@@ -99,7 +99,7 @@
                                             <p:selectOneMenu id="editEstadoOrganigrama" value="#{organigrama.estadoOrg}" style="font-size: 11px; width: 99%; font-weight: bold;" panelStyle="width: 115px" >  
                                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO" />  
                                                 <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO" />
-                                                <p:ajax listener="#{controlEstructura.seleccionarEstado(organigrama.estadoOrg, indice, '4')}" update="@this" />
+                                                <p:ajax listener="#{controlEstructura.seleccionarEstado(organigrama.estadoOrg, indice, 4)}" update="@this" />
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor> 
@@ -237,12 +237,12 @@
 
                             <strong><h:outputText value="Empresa: " style="font-size: 12px; position: absolute; top: 153px" /></strong>
                             <p:inputText id="nuevaEmpresa" value="#{controlEstructura.nuevoOrganigrama.empresa.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 100px; top: 150px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlEstructura.valoresBackupAutocompletar('1')}" />
-                                <p:ajax event="change" listener="#{controlEstructura.autocompletarNuevoyDuplicado(controlEstructura.nuevoOrganigrama.empresa.nombre, '1')}" />
-                                <p:ajax event="dblclick" listener="#{controlEstructura.asignarIndex(indice, '1')}" />
+                                <p:ajax event="click" listener="#{controlEstructura.valoresBackupAutocompletar(1)}" />
+                                <p:ajax event="change" listener="#{controlEstructura.autocompletarNuevoyDuplicado(controlEstructura.nuevoOrganigrama.empresa.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlEstructura.asignarIndex(indice, 1)}" />
                             </p:inputText>
                             <p:watermark for="nuevaEmpresa" value="Empresa" />
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 231px; top: 150px; " id="btnNuevaEmpresa" process="@this" icon="ui-icon-search" actionListener="#{controlEstructura.asignarIndex(indice, '1')}"/>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 231px; top: 150px; " id="btnNuevaEmpresa" process="@this" icon="ui-icon-search" actionListener="#{controlEstructura.asignarIndex(indice, 1)}"/>
 
                             <strong><h:outputText value="Nit: " style="font-size: 12px; position: absolute; top: 188px" /></strong>
                             <p:inputText id="nuevoNit" value="#{controlEstructura.nuevoOrganigrama.empresa.nit}" style="font-size: 12px; width: 122px; position: absolute; left: 100px; top: 185px; text-transform: uppercase" onclick="select();">                                
@@ -254,7 +254,7 @@
                             <p:selectOneMenu id="nuevoEstadoOrganigrama" value="#{controlEstructura.nuevoOrganigrama.estadoOrg}" style="font-size: 11px; width: 120px; font-weight: bold; position: absolute; top: 220px; left: 100px;" panelStyle="width: 115px" >  
                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO" />  
                                 <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO" />
-                                <p:ajax listener="#{controlEstructura.seleccionarEstadoNuevoOrganigrama(controlEstructura.nuevoOrganigrama.estadoOrg, '1')}" update="@this" />
+                                <p:ajax listener="#{controlEstructura.seleccionarEstadoNuevoOrganigrama(controlEstructura.nuevoOrganigrama.estadoOrg, 1)}" update="@this" />
                             </p:selectOneMenu>
 
                             <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 10px; top: 250px;" actionListener="#{controlEstructura.limpiarNuevoOrganigrama()}" update="nuevoOrganigrama" process="@this"/>
@@ -283,12 +283,12 @@
 
                             <strong><h:outputText value="Empresa: " style="font-size: 12px; position: absolute; top: 153px" /></strong>
                             <p:inputText id="duplicarEmpresa" value="#{controlEstructura.duplicarOrganigrama.empresa.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 100px; top: 150px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlEstructura.valoresBackupAutocompletar('2')}" />
-                                <p:ajax event="change" listener="#{controlEstructura.autocompletarNuevoyDuplicado(controlEstructura.nuevoOrganigrama.empresa.nombre, '2')}" />
-                                <p:ajax event="dblclick" listener="#{controlEstructura.asignarIndex(indice, '2')}" />
+                                <p:ajax event="click" listener="#{controlEstructura.valoresBackupAutocompletar(2)}" />
+                                <p:ajax event="change" listener="#{controlEstructura.autocompletarNuevoyDuplicado(controlEstructura.nuevoOrganigrama.empresa.nombre, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlEstructura.asignarIndex(indice, 2)}" />
                             </p:inputText>
                             <p:watermark for="duplicarEmpresa" value="Empresa" />
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 231px; top: 150px; " id="btnDuplicarEmpresa" process="@this" icon="ui-icon-search" actionListener="#{controlEstructura.asignarIndex(indice, '2')}"/>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 231px; top: 150px; " id="btnDuplicarEmpresa" process="@this" icon="ui-icon-search" actionListener="#{controlEstructura.asignarIndex(indice, 2)}"/>
 
                             <strong><h:outputText value="Nit: " style="font-size: 12px; position: absolute; top: 188px" /></strong>
                             <p:inputText id="duplicarNit" value="#{controlEstructura.duplicarOrganigrama.empresa.nit}" style="font-size: 12px; width: 122px; position: absolute; left: 100px; top: 185px; text-transform: uppercase" onclick="select();">
@@ -300,7 +300,7 @@
                             <p:selectOneMenu id="duplicarEstadoOrganigrama" value="#{controlEstructura.duplicarOrganigrama.estadoOrg}" style="font-size: 11px; width: 120px; font-weight: bold; position: absolute; top: 220px; left: 100px;" panelStyle="width: 115px" > 
                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO" />  
                                 <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO" />
-                                <p:ajax listener="#{controlEstructura.seleccionarEstado(controlEstructura.duplicarOrganigrama.estadoOrg, '2')}" update="@this" />
+                                <p:ajax listener="#{controlEstructura.seleccionarEstadoNuevoOrganigrama(controlEstructura.duplicarOrganigrama.estadoOrg, 2)}" update="@this" />
                             </p:selectOneMenu>
 
                             <p:commandButton id="limpiarDuplicadoOrganigrama" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 10px; top: 250px;" actionListener="#{controlEstructura.limpiarduplicarVTC()}" update="duplicarOrganigrama" process="@this"/>

@@ -30,41 +30,63 @@
         </script>
     </h:head> 
     <h:body onload="initScroll();">
-        <ui:composition template="/Template.xhtml">
-            <ui:define name="body">       
+       
                 <h:form id="form">
                     <p:panel  id="PanelTotal" header="Comprobantes" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
-                        <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 200px" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
-                                     rowKey="#{solucionNodoEmpleador.secuencia}" editable="true" editMode="cell"
-                                     widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names" scrollable="true" scrollWidth="200"
-                                     filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="No se encontrarón datos.">
+                        <div id="superiorIzquierdo" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: 50px" >
+                            <p:dataTable id="tablaSuperiorIzquierda" var="modulo" style="font-size: 11px; width: 300px; position: relative; top: 0px;" value="#{controlRemoto.listModulos}"
+                                         rowKey="#{modulo.secuencia}" widgetVar="tablaSuperiorIzquierda" styleClass="hide-row-names" filteredValue="#{controlRemoto.filtradolistModulos}">
+                                <p:ajax event="sort" listener="#{controlRemoto.recargar()}" />
+                                <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/>
 
-                            <p:column id="codigoSNEM" headerText="Codigo" sortBy="#{solucionNodoEmpleador.concepto.codigo}" width="40"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
-                                <p:cellEditor>  
-                                    <f:facet name="output">
-                                        <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />  
-                                    </f:facet>  
-                                    <f:facet name="input">
-                                        <p:inputText value="#{solucionNodoEmpleador.concepto.codigo}" /> 
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column>  
+                                <p:column id="moduloCodigo1" headerText="Codigo" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                            </p:dataTable>
+                        </div>
+                        <div id="inferiorIzquierda" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: 50px" >
+                            <p:dataTable id="tablaInferiorIzquierda" var="modulo" style="font-size: 11px;" value="#{controlRemoto.listModulos}"
+                                         rowKey="#{modulo.secuencia}" 
+                                         widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names"
+                                         filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">
 
-                            <p:column id="descripcionSNEM" headerText="Descripción" width="100"  sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
-                                <p:cellEditor>  
-                                    <f:facet name="output">
-                                        <h:outputText value="#{solucionNodoEmpleador.concepto.descripcion}" />
-                                    </f:facet>  
-                                    <f:facet name="input">
-                                        <p:inputText value="#{solucionNodoEmpleador.concepto.descripcion}" /> 
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column>  
-                        </p:dataTable>    
+                                <p:column id="moduloCodigo2" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                    <h:outputText value="#{modulo.nombrecorto}" />  
+                                </p:column>  
+                            </p:dataTable>
+                        </div>
+
+                        <div id="inferiorDerecha" style="height: 220px; width: 320px; overflow: scroll; position: absolute; left: 307px; top: 50px;" >
+                            <p:dataTable id="tablaInferiorDerecha" var="modulo" style="font-size: 11px; width: 600px;" value="#{controlRemoto.listModulos}"
+                                         rowKey="#{modulo.secuencia}" 
+                                         widgetVar="tablaInferiorDerecha" styleClass="hide-column-names"
+                                         filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">
+
+                                <p:column id="moduloNombre1" sortBy="#{modulo.nombre}" style="width: 300px" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <h:outputText value="#{modulo.nombre}"/>  
+                                </p:column>  
+
+                                <p:column id="moduloObs1" sortBy="#{modulo.observacion}" style="width: 300px" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <h:outputText value="#{modulo.observacion}" />  
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+
+                        <div id="superiorDerecha" style="height: 50px; width: 305px; overflow-x: hidden; position: absolute; left: 307px; top: 2px;" >
+                            <p:dataTable id="tablaSuperiorDerecha" var="modulo" style="font-size: 11px; width: 600px; position: relative; top: 24px;" value="#{controlRemoto.listModulos}"
+                                         widgetVar="tablaSuperiorDerecha" styleClass="hide-row-names"
+                                         filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="No se encontrarón coincidencias.">
+
+                                <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
+                                <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/>
+
+                                <p:column id="moduloNombre2" headerText="Nombre Módulo" sortBy="#{modulo.nombre}" style="width: 310px" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+
+                                <p:column id="moduloObs2" headerText="Observación" sortBy="#{modulo.observacion}" style="width: 300px" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                            </p:dataTable>
+                        </div> 
+
+                        <p:commandButton value="Activar Filtros" style="position: absolute; top: 270px; font-size: 11px"  actionListener="#{controlRemoto.activarFiltro()}" process="@this"/>
                     </p:panel>
                 </h:form>
-            </ui:define>
-        </ui:composition>
     </h:body>
 </html>
 

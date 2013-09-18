@@ -89,7 +89,7 @@
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudaddocumento.nombre}" id="lugarExpedicion" style="position: absolute; left: 461px; top: 36px; width: 140px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad('0')}"/>
+                                <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad(0)}"/>
                                 <p:ajax event="select" listener="#{controlEmpleadoIndividual.valoresBackupAutocompletar('CIUDADDOCUMENTO')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.autocompletar('CIUDAD', controlEmpleadoIndividual.empleado.persona.ciudaddocumento.nombre)}"/>
                             </p:inputText>
@@ -115,7 +115,7 @@
                             <p:watermark for="fechaNacimiento" value="Fecha Nac." />
                             <h:outputText value="Ciudad" style="position: absolute; left: 292px; font-weight: bold; color: #14388B; top: 67px" />
                             <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.ciudadnacimiento.nombre}" id="lugarNacimiento" style="position: absolute; left: 334px; top: 62px; width: 83px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad('1')}"/>
+                                <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad(1)}"/>
                                 <p:ajax event="select" listener="#{controlEmpleadoIndividual.valoresBackupAutocompletar('CIUDADNACIMIENTO')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.autocompletar('CIUDAD', controlEmpleadoIndividual.empleado.persona.ciudadnacimiento.nombre)}"/>
                             </p:inputText>
