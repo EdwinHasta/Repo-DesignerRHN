@@ -3,11 +3,13 @@ package Administrar;
 import Entidades.Comprobantes;
 import Entidades.CortesProcesos;
 import Entidades.Empleados;
+import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import InterfaceAdministrar.AdministrarComprobantesInterface;
 import InterfacePersistencia.PersistenciaComprobantesInterface;
 import InterfacePersistencia.PersistenciaCortesProcesosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import java.math.BigInteger;
 import java.util.List;
@@ -25,6 +27,8 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    @EJB
+    PersistenciaProcesosInterface persistenciaProcesos;
 
     @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
@@ -56,5 +60,10 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     @Override
     public List<SolucionesNodos> solucionesNodosCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         return persistenciaSolucionesNodos.solucionNodoCorteProcesoEmpleador(secuenciaCorteProceso, secuenciaEmpleado);
+    }
+    
+    @Override
+    public List<Procesos> lovProcesos() {
+        return persistenciaProcesos.lovProcesos();
     }
 }

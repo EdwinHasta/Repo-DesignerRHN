@@ -7,6 +7,7 @@ package InterfaceAdministrar;
 import Entidades.Comprobantes;
 import Entidades.CortesProcesos;
 import Entidades.Empleados;
+import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import java.math.BigInteger;
 import java.util.List;
@@ -21,4 +22,5 @@ public interface AdministrarComprobantesInterface {
     public List<CortesProcesos> cortesProcesosComprobante(BigInteger secuenciaComprobante);
     public List<SolucionesNodos> solucionesNodosCorteProcesoEmpleado(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado);
     public List<SolucionesNodos> solucionesNodosCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado);
+    public List<Procesos> lovProcesos();
 }
