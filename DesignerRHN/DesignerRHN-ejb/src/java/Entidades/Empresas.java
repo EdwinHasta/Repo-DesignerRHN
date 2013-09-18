@@ -38,6 +38,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
+    @OneToMany(mappedBy = "empresa")
+    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
+    @OneToMany(mappedBy = "empresa")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
+    @OneToMany(mappedBy = "empresa")
+    private Collection<Evalplanillas> evalplanillasCollection;
+    @OneToMany(mappedBy = "empresa")
+    private Collection<Pdgestrategias> pdgestrategiasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private Collection<TiposAsociaciones> tiposAsociacionesCollection;
     
@@ -1074,6 +1082,42 @@ public class Empresas implements Serializable {
 
     public void setTiposAsociacionesCollection(Collection<TiposAsociaciones> tiposAsociacionesCollection) {
         this.tiposAsociacionesCollection = tiposAsociacionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
+        return evalconvocatoriasCollection;
+    }
+
+    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
+        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Evalplanillas> getEvalplanillasCollection() {
+        return evalplanillasCollection;
+    }
+
+    public void setEvalplanillasCollection(Collection<Evalplanillas> evalplanillasCollection) {
+        this.evalplanillasCollection = evalplanillasCollection;
+    }
+
+    @XmlTransient
+    public Collection<Pdgestrategias> getPdgestrategiasCollection() {
+        return pdgestrategiasCollection;
+    }
+
+    public void setPdgestrategiasCollection(Collection<Pdgestrategias> pdgestrategiasCollection) {
+        this.pdgestrategiasCollection = pdgestrategiasCollection;
     }
     
 

@@ -90,6 +90,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
         }
     }
     
+    @Override
     public List<Empleados> listEmpleados(){
         try{
             listEmpleados = persistenciaEmpleado.buscarEmpleados();
@@ -100,6 +101,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
         }
     }
     
+    @Override
     public List<Empresas> listEmpresas() {
         try {
             listEmpresas = persistenciaEmpresas.buscarEmpresas();

@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -30,13 +30,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Bancos.findAll", query = "SELECT b FROM Bancos b")})
 public class Bancos implements Serializable {
+    @OneToMany(mappedBy = "banco")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -72,21 +74,21 @@ public class Bancos implements Serializable {
     public Bancos() {
     }
 
-    public Bancos(BigDecimal secuencia) {
+    public Bancos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Bancos(BigDecimal secuencia, short codigo, String nombre) {
+    public Bancos(BigInteger secuencia, short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -107,6 +109,9 @@ public class Bancos implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -194,6 +199,15 @@ public class Bancos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Bancos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
     
 }

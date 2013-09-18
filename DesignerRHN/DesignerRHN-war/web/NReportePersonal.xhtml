@@ -1,0 +1,784 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Reportes Predefinidos - Datos Personales" style=" font-size: 12px; position: absolute; width: 874px; height: 545px; text-align: left" >  
+
+                        <p:commandButton style="position: absolute; left: 655px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="individual" actionListener="#{controlNReportePersonal.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 515px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="Mostrar Todos"  process="@this" actionListener="#{controlNReportePersonal.mostrarTodos()}" update=":form:reportesPersonal"/>
+                        <p:commandButton style="position: absolute; left: 400px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARREPORTE" value="Buscar Reporte"   process="@this" actionListener="#{controlNReportePersonal.mostrarDialogoBuscarReporte()}" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="Envio por Correo"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReportePersonal.defaultPropiedadesParametrosReporte()}"/>
+
+
+
+                        <fieldset style="position: absolute; left: 10px; top: 272px;height: 230px;width: 85px; border-radius: 10px;">
+                            <h:outputText id="btn" style="position: absolute; left: 1px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:100px ;height:230px; background-repeat: no-repeat; background-size: 100% 100%; "/>
+                        </fieldset>
+
+                        <fieldset style="position: absolute; left: 120px; top: 265px; font-size: 10px; width: 730px; height: 240px; border-radius: 10px; ">
+                            <legend style="font-size: 11px; color: blue;text-align:left"><strong>Reportes Predefinidos - Nómina</strong></legend>
+
+                            <p:dataTable id="reportesPersonal" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 710px"                           
+                                         value="#{controlNReportePersonal.listaIR}" scrollable="true" scrollHeight="118" scrollWidth="730"
+                                         filteredValue="#{controlNReportePersonal.filtrarListInforeportesUsuario}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="4"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:column style="padding: 0px; text-align: center" id="codigoIR" headerText="Código" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
+                                    <h:outputText value="#{info.codigo}" >
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column  id="reporteIR" headerText="Reporte" width="298" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" style="height: 20px" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor >  
+                                        <f:facet name="output"><h:outputText style="width:260px" value="#{info.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.nombre}" id="editarReporteIR" style="width:260px; font-size: 11px; border-radius: 0px; width: 99%;" >
+                                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.parametrosDeReporte(indice)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlNReportePersonal.reporteModificado(indice)}" process="@this"/>
+                                                <p:ajax event="click" listener="#{controlNReportePersonal.resaltoParametrosParaReporte(indice)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="tipoIR" headerText="Tipo" width="102" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px" >                                  
+                                    <p:selectOneMenu value="#{info.tipo}"  style="width: 99%; font-weight: bold; "  panelStyle="width: 115px">  
+                                        <f:selectItem itemLabel="Acrobat" itemValue="Acrobat" />  
+                                        <f:selectItem itemLabel="HTML" itemValue="HTML" />  
+                                        <f:selectItem itemLabel="XML" itemValue="XML" />  
+                                        <f:selectItem itemLabel="EXCEL" itemValue="EXCEL" />  
+                                        <f:selectItem itemLabel="Hoja Electronica" itemValue="Hoja Electronic" />
+                                        <f:selectItem itemLabel="RTF" itemValue="RTF" />
+                                    </p:selectOneMenu>
+                                </p:column>
+
+                                <p:column style="padding: 0px;text-align: center" width="110" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:commandButton value="Generar Reporte" style="alignment-adjust: central;width: 100px; border-radius: 0px" actionListener="#{controlNReportePersonal.generarReporte(indice)}" process="@this"/>
+                                </p:column>
+                            </p:dataTable>
+
+                        </fieldset>
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 30px; left: 10px;">  
+                            <p:toolbarGroup align="left"> 
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNReportePersonal.guardarCambios()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" actionListener="#{controlNReportePersonal.editarCelda()}"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" actionListener="#{controlNReportePersonal.listaValoresBoton()}" />
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" actionListener="#{controlNReportePersonal.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " >
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   /> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro" />
+
+                            </p:toolbarGroup>  
+                        </p:toolbar>
+
+                        <fieldset id="parametrosInforme" style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 840px; height: 182px; border-radius: 10px; ">
+                            <legend style="font-size: 11px; color: blue;text-align:left"><strong>Parametros</strong></legend>
+
+                            <h:outputText value="Fecha desde" style="position: absolute; top: 15px; left: 10px;font-size: 11px;"/>
+                            <p:calendar  value="#{controlNReportePersonal.parametroDeInforme.fechadesde}" id="fechaDesdeParametro" style="position: absolute; top: 7px; left: 90px;font-size: 11px;" styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
+                                         autocomplete="true" onclick="select();">    
+                                <p:ajax event="dateSelect" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="fechaDesdeParametro"/>
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(1)}" update="fechaDesdeParametro" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this"/>
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+
+                            <h:outputText value="Empleado desde" style="position: absolute; top: 38px; left: 10px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametro" style="position: absolute; top: 33px; left: 90px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(2)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="empleadoDesdeParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(2)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Solicitud" style="position: absolute; top: 60px; left: 10px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.observaciones}" id="solicitudParametro" style="position: absolute; top: 54px; left: 90px;font-size: 11px;height: 10px;width: 270px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(3)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="solicitudParametro" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Estado Civil" style="position: absolute; top: 82px; left: 10px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.estadocivil.descripcion}" id="estadoCivilParametro" style="position: absolute; top: 75px; left: 90px;font-size: 11px;height: 10px;width: 120px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(4)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('ESTADOCIVIL', controlNReportePersonal.parametroDeInforme.estadocivil.descripcion)}" update="estadoCivilParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(4)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Tipo Telefono" style="position: absolute; top: 102px; left: 10px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.tipotelefono.nombre}" id="tipoTelefonoParametro" style="position: absolute; top: 96px; left: 90px;font-size: 11px;height: 10px;width: 120px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(5)}" process="@this"/> 
+                                <p:ajax event="change" update="tipoTelefonoParametro" listener="#{controlNReportePersonal.autocompletarGeneral('TIPOTELEFONO',controlNReportePersonal.parametroDeInforme.tipotelefono.nombre)}" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(5)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Jefe Division RH" style="position: absolute; top: 124px; left: 10px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.nombregerente.persona.nombreCompleto}" id="jefeDivisionParametro" style="position: absolute; top: 117px; left: 90px;font-size: 11px;height: 10px;width: 270px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(6)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('JEFEDIV', controlNReportePersonal.parametroDeInforme.nombregerente.persona.nombreCompleto)}" update="jefeDivisionParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(6)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Rodamiento" style="position: absolute; top: 144px; left: 10px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.rodamineto}" id="rodamientoParametro" style="position: absolute; top: 138px; left: 90px;font-size: 11px;height: 10px;width: 270px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(7)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="rodamientoParametro" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Fondo Cumpleaños" style="position: absolute; top: 165px; left: 10px;font-size: 11px;"/>
+                            <p:selectOneMenu value="#{controlNReportePersonal.parametroDeInforme.fondocumpleanos}" id="fondoCumpleParametro" style="position: absolute; top: 159px; left: 105px;font-size: 11px;width: 265px;">  
+                                <f:selectItem itemLabel="" itemValue="null" />  
+                                <f:selectItem itemLabel="Conejo te deseo lo mejor" itemValue="cumple" />  
+                                <f:selectItem itemLabel="Gatico con bombas" itemValue="cumple2" />  
+                                <f:selectItem itemLabel="Memo con bombas" itemValue="cumple3" />  
+                                <f:selectItem itemLabel="Vaquita - Estoy feliz por tu cumpleaños" itemValue="cumple4" />  
+                                <f:selectItem itemLabel="Memo - Cuenta siempre conmigo" itemValue="cumple5" />  
+                                <f:selectItem itemLabel="Niña - Feliz Dia" itemValue="cumple6" />  
+                                <f:selectItem itemLabel="Todos - Ahora si te llego el dìa" itemValue="cumple7" />  
+                                <f:selectItem itemLabel="Jirafa - Que tengas un dulce cumpleaños" itemValue="cumple8" />  
+                                <f:selectItem itemLabel="Vaquita - En tu cumpleaños dejate querer" itemValue="cumple9" />  
+                                <f:selectItem itemLabel="Memo - Si sigues haciendo esto nos vamos a envejecer" itemValue="cumple10" />  
+                                <f:selectItem itemLabel="Conejo - Estoy de fiesta por ti" itemValue="cumple11" />  
+                                <f:selectItem itemLabel="Marciano - Feliz cumpleaños" itemValue="cumple12" />  
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this"/>
+                            </p:selectOneMenu>
+
+                            <h:outputText value="hasta" style="position: absolute; top: 15px; left: 210px;font-size: 11px;"/>
+                            <p:calendar value="#{controlNReportePersonal.parametroDeInforme.fechahasta}" id="fechaHastaParametro" style="position: absolute; top: 7px; left: 270px;font-size: 11px;" 
+                                        styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
+                                        autocomplete="true" onclick="select();">                                         
+                                <p:ajax event="dateSelect" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="fechaHastaParametro"/>
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(8)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this"/>
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+
+                            <h:outputText value="hasta" style="position: absolute; top: 38px; left: 210px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametro" style="position: absolute; top: 33px; left: 270px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(9)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(9)}" process="@this"/>
+                            </p:inputText>
+
+                            <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 175px;width: 1px;top: 5px;left: 400px "/>  
+
+                            <h:outputText value="Estructura" style="position: absolute; top: 15px; left: 430px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.localizacion.nombre}" id="estructuraParametro" style="position: absolute; top: 10px; left: 510px;font-size: 11px;height: 10px;width: 280px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(10)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('ESTRUCTURA', controlNReportePersonal.parametroDeInforme.localizacion.nombre)}" update="estructuraParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(10)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Trabajador" style="position: absolute; top: 37px; left: 430px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.tipotrabajador.nombre}" id="tipoTrabajadorParametro" style="position: absolute; top: 31px; left: 510px;font-size: 11px;height: 10px;width: 280px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(11)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('TIPOTRABAJADOR', controlNReportePersonal.parametroDeInforme.tipotrabajador.nombre)}" update="tipoTrabajadorParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(11)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Ciudad" style="position: absolute; top: 58px; left: 430px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.ciudad.nombre}" id="ciudadParametro" style="position: absolute; top: 52px; left: 510px;font-size: 11px;height: 10px;width: 280px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(12)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('CIUDAD', controlNReportePersonal.parametroDeInforme.ciudad.nombre)}" update="ciudadParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(12)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Deporte" style="position: absolute; top: 78px; left: 430px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.deporte.nombre}" id="deporteParametro" style="position: absolute; top: 73px; left: 510px;font-size: 11px;height: 10px;width: 280px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(13)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('DEPORTE', controlNReportePersonal.parametroDeInforme.deporte.nombre)}" update="deporteParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(13)}" process="@this"/>
+                            </p:inputText>
+
+
+                            <h:outputText value="Afición" style="position: absolute; top: 100px; left: 430px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.aficion.descripcion}" id="aficionParametro" style="position: absolute; top: 94px; left: 510px;font-size: 11px;height: 10px;width: 280px" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(14)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('AFICION', controlNReportePersonal.parametroDeInforme.asociacion.descripcion)}" update="aficionParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(14)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Idioma" style="position: absolute; top: 121px; left: 430px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.idioma.nombre}" id="idiomaParametro" style="position: absolute; top: 115px; left: 510px;font-size: 11px;height: 10px;width: 280px" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(15)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('IDIOMA', controlNReportePersonal.parametroDeInforme.idioma.nombre)}" update="idiomaParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(15)}" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="Personal" style="position: absolute; top: 144px; left: 430px;font-size: 11px;"/>
+                            <p:selectOneMenu value="#{controlNReportePersonal.parametroDeInforme.tipopersonal}" id="personalParametro" style="position: absolute; top: 136px; left: 510px;font-size: 11px;width: 190px;">  
+                                <f:selectItem itemLabel="" itemValue="null" />  
+                                <f:selectItem itemLabel="Activo" itemValue="Activo" />  
+                                <f:selectItem itemLabel="Pensionado" itemValue="Pensionado" />  
+                                <f:selectItem itemLabel="Retirado" itemValue="Retirado" />  
+                                <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this"/>
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Empresa" style="position: absolute; top: 165px; left: 430px;font-size: 11px;"/>
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.empresa.nombre}" id="empresaParametro" style="position: absolute; top: 161px; left: 510px;font-size: 11px;height: 10px;width: 180px" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(16)}" process="@this"/> 
+                                <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('EMPRESA', controlNReportePersonal.parametroDeInforme.empresa.nombre)}" update="empresaParametro" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(16)}" process="@this"/>
+                            </p:inputText>
+
+                            <p:commandButton value="Refrescar" id="REFRESCAR" icon="ui-icon-refresh" style="position: absolute; top: 150px; left: 750px;font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 85px" actionListener="#{controlNReportePersonal.refrescarParametros()}" process="@this"/>
+
+                        </fieldset> 
+                    </p:panel>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlNReportePersonal.activarCtrlF11()}" process="@this"/> 
+
+                    <p:dialog header="Reportes" widgetVar="ReportesDialogo" draggable="false" resizable="false" closable="false" id="ReportesDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovReportesDialogo" style="font-size: 11px; width: 430px" var="reportes" value="#{controlNReportePersonal.listaIR}" rowKey="#{reportes.secuencia}"
+                                     selection="#{controlNReportePersonal.inforreporteSeleccionado}" selectionMode="single" widgetVar="lovReportesDialogo" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListInforeportesUsuario}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarR"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Reporte: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column  filterBy="#{reportes.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                <f:facet name="header">
+                                    <h:outputText  value="Codigo" />
+                                </f:facet>
+                                <h:outputText style="text-align: center" value="#{reportes.codigo}" />
+                            </p:column>
+
+                            <p:column filterBy="#{reportes.nombre}" width="180"  filterMatchMode="contains" filterStyle="width: 160px">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{reportes.nombre}" />
+                            </p:column>
+
+                            <p:column filterBy="#{reportes.tipo}" width="40"  filterMatchMode="contains" filterStyle="width: 30px">
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo" />
+                                </f:facet>
+                                <h:outputText value="#{reportes.tipo}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarR" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReportePersonal.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesPersonal" process="@this">
+                            <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasR" style="position: relative; left: 150px" value="Atras" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReportePersonal.cancelarSeleccionInforeporte()}" process="@this">
+                            <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Envío por Correo" widgetVar="EnvioCorreoDialogo" draggable="false" resizable="false" closable="false" id="EnvioCorreoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" height="320" modal="true" style="font-size: 11px;">
+
+                        <h:outputText style="position: absolute;top: 20px; left: 10px; text-align: left" value="Esta pantalla permite el envío de reportes de nómina vía email, debe tener en cuenta que la generación de cualquier reporte depende de los parametros de nómina que usted halla configurado. Recuerde que la dirección de envío debe ser del dominio de la Empresa." />
+                        <h:outputText style="position: absolute; top: 70px; left: 10px;font-weight: bold;color: darkblue" value="Reporte"/>
+                        <h:outputText style="position: absolute; top: 90px; left: 10px;font-weight: bold;" value="Tipo Educacion Formal -secundaria, universitaria etc. (Grafico)"/>
+
+                        <fieldset  style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 400px; height: 150px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 11px; color: blue;text-align: left"><strong>Envío Por Correo</strong></legend>
+                            <h:outputText value="De: " style="position: absolute; left: 10px; top: 25px;font-size: 12px"/>
+                            <p:inputText value="nomina@designer.com.co" style="position: absolute; left: 80px; top: 20px;font-size: 12px;width: 300px"/>
+                            <h:outputText value="Para: " style="position: absolute; left: 10px; top: 60px;font-size: 12px"/>
+                            <p:inputText style="position: absolute; left: 80px; top: 55px;font-size: 12px;width: 300px"/>
+                            <h:outputText value="Cc: " style="position: absolute; left: 10px; top: 95px;font-size: 12px"/>
+                            <p:inputText style="position: absolute; left: 80px; top: 90px;font-size: 12px;width: 300px"/>
+                            <h:outputText value="Asunto: " style="position: absolute; left: 10px; top: 130px;font-size: 12px"/>
+                            <p:inputText style="position: absolute; left: 80px; top: 125px;font-size: 12px;width: 300px"/>
+
+                        </fieldset>
+                        <p:commandButton id="registroEnvio" style="position: absolute; left: 220px; top: 280px;" value="Registro de Envíos"  onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
+                        <p:commandButton id="atras" style="position: absolute; left: 360px; top: 280px" value="Atras" onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
+
+                    </p:dialog>
+
+                    <p:dialog header="Codigo Empleado Desde" widgetVar="EmpleadoDesdeDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoDesdeDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEmpleadoDesde" style="font-size: 11px; width: 430px" var="empleadoDesde" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{empleadoDesde.secuencia}"
+                                     selection="#{controlNReportePersonal.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarED"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpleadoDesde.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{empleadoDesde.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 45px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo Empleado" />
+                                </f:facet>
+                                <h:outputText  value="#{empleadoDesde.codigoempleado}" />
+                            </p:column>
+                            <p:column filterBy="#{empleadoDesde.persona.nombreCompleto}" width="200"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre Empleado" />
+                                </f:facet>
+                                <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarED" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED, empleadoDesdeParametro" process="@this">
+                            <p:resetInput target=":form:llovEmpleadoDesde:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasED" style="position: relative; left: 150px" value="Atras" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
+                            <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Codigo Empleado Hasta" widgetVar="EmpleadoHastaDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoHastaDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEmpleadoHasta" style="font-size: 11px; width: 430px" var="empleadoHasta" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{empleadoHasta.secuencia}"
+                                     selection="#{controlNReportePersonal.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEH"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpleadoHasta.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{empleadoHasta.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 45px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo Empleado" />
+                                </f:facet>
+                                <h:outputText  value="#{empleadoHasta.codigoempleado}" />
+                            </p:column>
+                            <p:column filterBy="#{empleadoHasta.persona.nombreCompleto}" width="200"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre Empleado" />
+                                </f:facet>
+                                <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarEH" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH, empleadoHastaParametro" process="@this">
+                            <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasEH" style="position: relative; left: 150px" value="Atras" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
+                            <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Empresa" widgetVar="EmpresaDialogo" draggable="false" resizable="false" closable="false" id="EmpresaDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEmpresa" style="font-size: 11px; width: 430px" var="empresa" value="#{controlNReportePersonal.listEmpresas}" rowKey="#{empresa.secuencia}"
+                                     selection="#{controlNReportePersonal.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEmp"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Empresa: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpresa.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{empresa.nit}" width="60" filterMatchMode="contains" filterStyle="width: 45px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="NIT" />
+                                </f:facet>
+                                <h:outputText  value="#{empresa.nit}" />
+                            </p:column>
+                            <p:column filterBy="#{empresa.nombre}" width="200"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{empresa.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarEmp" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmpresa()}" update="lovEmpresa, aceptarEmp, empresaParametro" process="@this">
+                            <p:resetInput target=":form:lovEmpresa:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasEmp" style="position: relative; left: 150px" value="Atras" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEmpresa()}" update="lovEmpresa" process="@this">
+                            <p:resetInput target=":form:lovEmpresa:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                    <p:dialog header="Estructura" widgetVar="EstructuraDialogo" draggable="false" resizable="false" closable="false" id="EstructuraDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEstructura" style="font-size: 11px; width: 430px" var="estructura" value="#{controlNReportePersonal.listEstructuras}" rowKey="#{estructura.secuencia}"
+                                     selection="#{controlNReportePersonal.estructuraSeleccionada}" selectionMode="single" widgetVar="lovEstructura" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListEstructuras}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEST"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Estructura: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEstructura.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{estructura.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo" />
+                                </f:facet>
+                                <h:outputText  value="#{estructura.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{estructura.nombre}" width="170"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{estructura.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{estructura.centrocosto.empresa.nombre}" width="110" filterStyle="width: 80px" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Empresa" />
+                                </f:facet>
+                                <h:outputText value="#{estructura.centrocosto.empresa.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarEST" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEstructura()}" update="lovEstructura, aceptarEST, estructuraParametro" process="@this">
+                            <p:resetInput target=":form:lovEstructura:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasEST" style="position: relative; left: 150px" value="Atras" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEstructura()}" update="lovEstructura" process="@this">
+                            <p:resetInput target=":form:lovEstructura:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Tipo Trabajador" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovTipoTrabajador" style="font-size: 11px; width: 430px" var="tipo" value="#{controlNReportePersonal.listTiposTrabajadores}" rowKey="#{tipo.secuencia}"
+                                     selection="#{controlNReportePersonal.tipoTSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListTiposTrabajadores}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarTT"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Tipo Trabajador: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tipo.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo" />
+                                </f:facet>
+                                <h:outputText  value="#{tipo.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{tipo.nombre}" width="210"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{tipo.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{tipo.tipo}" width="90" filterStyle="width: 70px"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo" />
+                                </f:facet>
+                                <h:outputText value="#{tipo.tipo}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarTT" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlNReportePersonal.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT, tipoTrabajadorParametro" process="@this">
+                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTT" style="position: relative; left: 150px" value="Atras" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlNReportePersonal.cancelarTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
+                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Estado Civil" widgetVar="EstadoCivilDialogo" draggable="false" resizable="false" closable="false" id="EstadoCivilDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEstadoCivil" style="font-size: 11px; width: 430px" var="estado" value="#{controlNReportePersonal.listEstadosCiviles}" rowKey="#{estado.secuencia}"
+                                     selection="#{controlNReportePersonal.estadoCivilSeleccionado}" selectionMode="single" widgetVar="lovEstadoCivil" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListEstadosCiviles}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEC"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Estado Civil: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEstadoCivil.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>                            
+                            <p:column filterBy="#{estado.descripcion}" width="210"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripción" />
+                                </f:facet>
+                                <h:outputText value="#{estado.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarEC" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="EstadoCivilDialogo.hide(), lovEstadoCivil.clearFilters();" actionListener="#{controlNReportePersonal.actualizarTipoTrabajador()}" update="lovEstadoCivil, aceptarEC, estadoCivilParametro" process="@this">
+                            <p:resetInput target=":form:lovEstadoCivil:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasEC" style="position: relative; left: 150px" value="Atras" onclick="EstadoCivilDialogo.hide(), lovEstadoCivil.clearFilters();" actionListener="#{controlNReportePersonal.cancelarTipoTrabajador()}" update="lovEstadoCivil" process="@this">
+                            <p:resetInput target=":form:lovEstadoCivil:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Tipo Telefono" widgetVar="TipoTelefonoDialogo" draggable="false" resizable="false" closable="false" id="TipoTelefonoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovTipoTelefono" style="font-size: 11px; width: 430px" var="telefono" value="#{controlNReportePersonal.listTiposTelefonos}" rowKey="#{telefono.secuencia}"
+                                     selection="#{controlNReportePersonal.tipoTelefonoSeleccionado}" selectionMode="single" widgetVar="lovTipoTelefono" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListTiposTelefonos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarTTEL"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Tipo Telefono: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoTelefono.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>                            
+                            <p:column filterBy="#{telefono.nombre}" width="210"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo Telefono" />
+                                </f:facet>
+                                <h:outputText value="#{telefono.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarTTEL" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="TipoTelefonoDialogo.hide(), lovTipoTelefono.clearFilters();" actionListener="#{controlNReportePersonal.actualizarTipoTrabajador()}" update="lovTipoTelefono, aceptarTTEL, tipoTelefonoParametro" process="@this">
+                            <p:resetInput target=":form:lovTipoTelefono:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTTEL" style="position: relative; left: 150px" value="Atras" onclick="TipoTelefonoDialogo.hide(), lovTipoTelefono.clearFilters();" actionListener="#{controlNReportePersonal.cancelarTipoTrabajador()}" update="lovTipoTelefono" process="@this">
+                            <p:resetInput target=":form:lovTipoTelefono:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Ciudades" widgetVar="CiudadDialogo" draggable="false" resizable="false" closable="false" id="CiudadDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovCiudades" style="font-size: 11px; width: 430px" var="ciudad" value="#{controlNReportePersonal.listCiudades}" rowKey="#{ciudad.secuencia}"
+                                     selection="#{controlNReportePersonal.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarCiu"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{ciudad.nombre}" width="90" filterMatchMode="contains" filterStyle="width: 70px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Nombre Ciudad" />
+                                </f:facet>
+                                <h:outputText  value="#{ciudad.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarCiu" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="CiudadDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlNReportePersonal.actualizarCiudad()}" update="lovCiudades, aceptarCiu, ciudadParametro" process="@this">
+                            <p:resetInput target=":form:lovCiudades:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasCiu" style="position: relative; left: 150px" value="Atras" onclick="CiudadDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCiudad()}" update="lovCiudades" process="@this">
+                            <p:resetInput target=":form:lovCiudades:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Deportes" widgetVar="DeportesDialogo" draggable="false" resizable="false" closable="false" id="DeportesDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovDeportes" style="font-size: 11px; width: 430px" var="deporte" value="#{controlNReportePersonal.listDeportes}" rowKey="#{deporte.secuencia}"
+                                     selection="#{controlNReportePersonal.deporteSeleccionado}" selectionMode="single" widgetVar="lovDeportes" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListDeportes}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarDep"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovDeportes.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{deporte.nombre}" width="90" filterMatchMode="contains" filterStyle="width: 70px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Descripcion" />
+                                </f:facet>
+                                <h:outputText  value="#{deporte.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarDep" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlNReportePersonal.actualizarCiudad()}" update="lovDeportes, aceptarDep, deporteParametro" process="@this">
+                            <p:resetInput target=":form:lovDeportes:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasDep" style="position: relative; left: 150px" value="Atras" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCiudad()}" update="lovDeportes" process="@this">
+                            <p:resetInput target=":form:lovDeportes:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Aficiones" widgetVar="AficionesDialogo" draggable="false" resizable="false" closable="false" id="AficionesDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovAficiones" style="font-size: 11px; width: 430px" var="aficion" value="#{controlNReportePersonal.listAficiones}" rowKey="#{aficion.secuencia}"
+                                     selection="#{controlNReportePersonal.aficionSeleccionada}" selectionMode="single" widgetVar="lovAficiones" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListAficiones}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarAfi"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Aficion: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovAficiones.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{aficion.descripcion}" width="90" filterMatchMode="contains" filterStyle="width: 70px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Aficion" />
+                                </f:facet>
+                                <h:outputText  value="#{aficion.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarAfi" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlNReportePersonal.actualizarAficion()}" update="lovAficiones, aceptarAfi, aficionParametro" process="@this">
+                            <p:resetInput target=":form:lovAficiones:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasAfi" style="position: relative; left: 150px" value="Atras" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlNReportePersonal.cancelarAficion()}" update="lovAficiones" process="@this">
+                            <p:resetInput target=":form:lovAficiones:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Idiomas" widgetVar="IdiomasDialogo" draggable="false" resizable="false" closable="false" id="IdiomasDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovIdiomas" style="font-size: 11px; width: 430px" var="idioma" value="#{controlNReportePersonal.listIdiomas}" rowKey="#{idioma.secuencia}"
+                                     selection="#{controlNReportePersonal.idiomaSeleccionado}" selectionMode="single" widgetVar="lovIdiomas" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListIdiomas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarId"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Idioma: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovIdiomas.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{idioma.nombre}" width="90" filterMatchMode="contains" filterStyle="width: 70px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Nombre" />
+                                </f:facet>
+                                <h:outputText  value="#{idioma.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarId" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlNReportePersonal.actualizarIdioma()}" update="lovIdiomas, aceptarId, idiomaParametro" process="@this">
+                            <p:resetInput target=":form:lovIdiomas:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasId" style="position: relative; left: 150px" value="Atras" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlNReportePersonal.cancelarIdioma()}" update="lovIdiomas" process="@this">
+                            <p:resetInput target=":form:lovIdiomas:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:dialog header="Jefe Division de Recursos Humanos" widgetVar="JefeDivisionDialogo" draggable="false" resizable="false" closable="false" id="JefeDivisionDialogo"  
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovJefeD" style="font-size: 11px; width: 430px" var="jefe" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{jefe.secuencia}"
+                                     selection="#{controlNReportePersonal.empleadoSeleccionado}" selectionMode="single" widgetVar="lovJefeD" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     filteredValue="#{controlNReportePersonal.filtrarListEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarJD"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Jefe: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovJefeD.filter();" style="width:150px; position: relative; left: 30px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{jefe.secuencia}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Secuencia" />
+                                </f:facet>
+                                <h:outputText  value="#{jefe.secuencia}" />
+                            </p:column>
+                            <p:column filterBy="#{jefe.persona.nombreCompleto}" width="130" filterMatchMode="contains" filterStyle="width: 100px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Jefe Division" />
+                                </f:facet>
+                                <h:outputText  value="#{jefe.persona.nombreCompleto}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarJD" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.actualizarIdioma()}" update="lovJefeD, aceptarJD, jefeDivisionParametro" process="@this">
+                            <p:resetInput target=":form:lovJefeD:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasJD" style="position: relative; left: 150px" value="Atras" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.cancelarIdioma()}" update="lovJefeD" process="@this">
+                            <p:resetInput target=":form:lovJefeD:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                </h:form>
+                <h:form id="formDialogos">
+
+                    <p:dialog id="editarFechaDesde" header="Fecha Desde Parametrización" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReportePersonal.parametroDeInforme.fechadesde}" id="editFechaDesdeCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaDesde" value="Atras" onclick="editarFechaDesde.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="empleadoDesde" header="Empleado Desde Parametrización" widgetVar="empleadoDesde" resizable="false" draggable="false" modal="true" height="93" width="250" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.codigoempleadodesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEmpleadoDesde" value="Atras" onclick="empleadoDesde.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+
+                    <p:dialog id="editarFechaHasta" header="Fecha Hasta Parametrización" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReportePersonal.parametroDeInforme.fechahasta}" id="editFechaHastaCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaHasta" value="Atras" onclick="editarFechaHasta.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="empleadoHasta" header="Empleado Hasta Parametrización" widgetVar="empleadoHasta" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.codigoempleadohasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEmpleadoHasta" value="Atras" onclick="empleadoHasta.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="empresa" header="Empresa Parametrización" widgetVar="empresa" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.empresa.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEmpresa" value="Atras" onclick="empresa.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="estructura" header="Estructura Parametrización" widgetVar="estructura" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.localizacion.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEstructura" value="Atras" onclick="estructura.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="tipoTrabajador" header="Tipo Trabajador Parametrización" widgetVar="tipoTrabajador" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTipoTrabajador" value="Atras" onclick="tipoTrabajador.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="tipoTelefono" header="Tipo Telefono Parametrización" widgetVar="tipoTelefono" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.tipotelefono.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTipoTelefono" value="Atras" onclick="tipoTelefono.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="jefeDivision" header="Jefe Division Parametrización" widgetVar="jefeDivision" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.nombregerente.persona.nombreCompleto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarJefeDivision" value="Atras" onclick="jefeDivision.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="estadoCivil" header="Estado Civil Parametrización" widgetVar="estadoCivil" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.estadocivil.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEstadoCivil" value="Atras" onclick="estadoCivil.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="ciudad" header="Ciudad Parametrización" widgetVar="ciudad" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.ciudad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCiudad" value="Atras" onclick="ciudad.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="deporte" header="Deporte Parametrización" widgetVar="deporte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.deporte.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarDeporte" value="Atras" onclick="deporte.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="aficion" header="Aficion Parametrización" widgetVar="aficion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.aficion.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarAficion" value="Atras" onclick="aficion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="idioma" header="Idioma Parametrización" widgetVar="idioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.idioma.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarIdioma" value="Atras" onclick="idioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="rodamiento" header="Rodamiento Parametrización" widgetVar="rodamiento" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.rodamineto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarRodamiento" value="Atras" onclick="rodamiento.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="solicitud" header="Solicitud Parametrización" widgetVar="solicitud" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.observaciones}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarSolicitud" value="Atras" onclick="solicitud.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="reporteAGenerar" header="Reporte a Generar" widgetVar="reporteAGenerar" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <h:outputText value="#{controlNReportePersonal.reporteGenerar}" style="overflow: auto; width: 200px; height: 40px"/>
+                        <p:commandButton id="cancelarReporteSeleccionado" value="Atras" onclick="reporteAGenerar.hide();" actionListener="#{controlNReportePersonal.cancelarGenerarReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="requisitosReporte" header="Reporte a Generar" widgetVar="requisitosReporte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <h:outputText value="#{controlNReportePersonal.requisitosReporte}" style="overflow: auto; width: 200px; height: 40px"/>
+                        <p:commandButton id="cancelarRequisitoReporte" value="Atras" onclick="requisitosReporte.hide();" actionListener="#{controlNReportePersonal.cancelarRequisitosReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

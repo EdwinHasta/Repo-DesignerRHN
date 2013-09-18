@@ -197,7 +197,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarVS(int indice) {
-        System.out.println("Entro a modificarVS");
         if (tipoLista == 0) {
             if (!listVSCrear.contains(listVigenciasSueldos.get(indice))) {
                 if (listVSModificar.isEmpty()) {
@@ -238,7 +237,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @param indice Fila en la cual se realizo el cambio
      */
     public void modificarVS(int indice, String confirmarCambio, String valorConfirmar) {
-        System.out.println("Valor Confirmas : " + valorConfirmar);
         index = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -283,7 +281,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                System.out.println("Coindicencias = 1");
                 if (tipoLista == 0) {
                     listVigenciasSueldos.get(indice).setTiposueldo(listTiposSueldos.get(indiceUnicoElemento));
                 } else {
@@ -292,7 +289,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 listTiposSueldos.clear();
                 getListTiposSueldos();
             } else {
-                System.out.println("Coindicencias != 1");
                 permitirIndex = false;
                 context.update("form:TipoSueldoDialogo");
                 context.execute("TipoSueldoDialogo.show()");
@@ -379,7 +375,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @param indice Fila en la cual se realizo el cambio
      */
     public void modificarVA(int indice, String confirmarCambio, String valorConfirmar) {
-        System.out.println("valorConfirmar : " + valorConfirmar);
         indexVA = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -693,9 +688,7 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
-            System.out.println("1");
             if (cambioVigenciaA == false) {
-                System.out.println("2");
                 cualCelda = celda;
                 index = indice;
                 indexAuxVS = indice;
@@ -704,11 +697,9 @@ public class ControlVigenciaSueldo implements Serializable {
                 } else if (cualCelda == 2) {
                     tiposSueldos = listVigenciasSueldos.get(index).getTiposueldo().getDescripcion();
                 }
-                System.out.println("Va a cargar getListVigenciasAfiliaciones");
                 getListVigenciasAfiliaciones();
             }
             if (cambioVigenciaA == true) {
-                System.out.println("DIALOGO guardarCambiosVigenciasAfiliaciones");
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("formularioDialogos:guardarCambiosVigenciasAfiliaciones");
                 context.execute("guardarCambiosVigenciasAfiliaciones.show()");
@@ -716,9 +707,7 @@ public class ControlVigenciaSueldo implements Serializable {
             }
         }
 
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
         if (banderaVA == 1) {
-            System.out.println("Desactiva");
             vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
             vAFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
@@ -755,9 +744,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 tiposEntidades = listVigenciasAfiliaciones.get(indexVA).getTipoentidad().getNombre();
             }
         }
-        System.out.println("Vigencias Afiliaciones Indice: " + indexVA + " , Celda: " + cualCeldaVA);
         if (bandera == 1) {
-            System.out.println("Desactivar");
 
             vSFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVSEmpleado:vSFechaVigencia");
             vSFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
@@ -801,10 +788,8 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void guardarCambiosVS() {
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!listVSBorrar.isEmpty()) {
                 for (int i = 0; i < listVSBorrar.size(); i++) {
-                    System.out.println("Borrando...");
                     if (listVSBorrar.get(i).getMotivocambiosueldo().getSecuencia() == null) {
                         listVSBorrar.get(i).setMotivocambiosueldo(null);
                     }
@@ -817,7 +802,6 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (!listVSCrear.isEmpty()) {
                 for (int i = 0; i < listVSCrear.size(); i++) {
-                    System.out.println("Creando...");
                     if (listVSCrear.get(i).getMotivocambiosueldo().getSecuencia() == null) {
                         listVSCrear.get(i).setMotivocambiosueldo(null);
                     }
@@ -832,7 +816,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 administrarVigenciasSueldos.modificarVS(listVSModificar);
                 listVSModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
             listVigenciasSueldos = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVSEmpleado");
@@ -848,10 +831,8 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void guardarCambiosVA() {
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Vigencias Prorrateo");
             if (!listVABorrar.isEmpty()) {
                 for (int i = 0; i < listVABorrar.size(); i++) {
-                    System.out.println("Borrando Vigencias Afiliaciones...");
                     if (listVABorrar.get(i).getTipoentidad().getSecuencia() == null) {
                         listVABorrar.get(i).setTipoentidad(null);
                     }
@@ -864,7 +845,6 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (!listVACrear.isEmpty()) {
                 for (int i = 0; i < listVACrear.size(); i++) {
-                    System.out.println("Creando Vigencias Prorrateo...");
                     if (listVACrear.get(i).getTipoentidad().getSecuencia() == null) {
                         listVACrear.get(i).setTipoentidad(null);
                     }
@@ -932,16 +912,12 @@ public class ControlVigenciaSueldo implements Serializable {
         }
         listVSBorrar.clear();
         listVABorrar.clear();
-        System.out.println("Limpia Borrar");
         listVSCrear.clear();
         listVACrear.clear();
-        System.out.println("Limpia Crear");
         listVSModificar.clear();
         listVAModificar.clear();
-        System.out.println("Limpia Modificar");
         index = -1;
         indexVA = -1;
-        System.out.println("Limpia Focos");
         k = 0;
         listVigenciasSueldos = null;
         listVigenciasAfiliaciones = null;
@@ -961,7 +937,6 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void cancelarModificacionVA() {
         if (banderaVA == 1) {
-            System.out.println("Desactiva filtrado vigencia prorrateo");
             vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
             vAFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
@@ -995,9 +970,7 @@ public class ControlVigenciaSueldo implements Serializable {
      * la lista filtrada y a la columna
      */
     public void editarCelda() {
-        System.out.println("Editar Celda");
         if (index >= 0) {
-            System.out.println("Vigencia Salario");
             if (tipoLista == 0) {
                 editarVS = listVigenciasSueldos.get(index);
             }
@@ -1006,39 +979,32 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
-                System.out.println("cualCelda = 0");
                 context.update("formularioDialogos:editarFechaVigenciaD");
                 context.execute("editarFechaVigenciaD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 1) {
-                System.out.println("cualCelda = 1");
                 context.update("formularioDialogos:editarMotivoCambioSueldoD");
                 context.execute("editarMotivoCambioSueldoD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 2) {
-                System.out.println("cualCelda = 2");
                 context.update("formularioDialogos:editarTipoSueldoD");
                 context.execute("editarTipoSueldoD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 4) {
-                System.out.println("cualCelda = 3");
                 context.update("formularioDialogos:editarVigenciaRetroactivo");
                 context.execute("editarVigenciaRetroactivo.show()");
                 cualCelda = -1;
             } else if (cualCelda == 5) {
-                System.out.println("cualCelda = 5");
                 context.update("formularioDialogos:editarValorD");
                 context.execute("editarValorD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 6) {
-                System.out.println("cualCelda = 6");
                 context.update("formularioDialogos:editarObservacionesD");
                 context.execute("editarObservacionesD.show()");
                 cualCelda = -1;
             }
         }
         if (indexVA >= 0) {
-            System.out.println("Vigencias Afiliaciones");
             if (tipoListaVA == 0) {
                 editarVA = listVigenciasAfiliaciones.get(indexVA);
             }
@@ -1047,28 +1013,23 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCeldaVA == 0) {
-                System.out.println("cualCeldaVA == 0");
                 context.update("formularioDialogos:editarFechaInicialVAD");
                 context.execute("editarFechaInicialVAD.show()");
                 cualCeldaVA = -1;
             } else if (cualCeldaVA == 1) {
-                System.out.println("cualCeldaVA == 1");
                 context.update("formularioDialogos:editarFechaFinalVAD");
                 context.execute("editarFechaFinalVAD.show()");
                 cualCeldaVA = -1;
             } else if (cualCeldaVA == 2) {
-                System.out.println("cualCeldaVA == 2");
                 context.update("formularioDialogos:editarTerceroVAD");
                 context.execute("editarTerceroVAD.show()");
                 cualCeldaVA = -1;
             } else if (cualCeldaVA == 3) {
-                System.out.println("cualCeldaVA == 3");
                 context.update("formularioDialogos:editarTipoEntidadVAD");
                 context.execute("editarTipoEntidadVAD"
                         + ".show()");
                 cualCeldaVA = -1;
             } else if (cualCeldaVA == 4) {
-                System.out.println("cualCeldaVA == 4");
                 context.update("formularioDialogos:editarValorVAD");
                 context.execute("editarValorVAD.show()");
                 cualCeldaVA = -1;
@@ -1155,7 +1116,6 @@ public class ControlVigenciaSueldo implements Serializable {
         cambioVigenciaA = true;
         //CERRAR FILTRADO
         if (banderaVA == 1) {
-            System.out.println("Desactiva filtrado vigencia prorrateo");
             vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
             vAFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
@@ -1177,9 +1137,7 @@ public class ControlVigenciaSueldo implements Serializable {
         BigDecimal var = BigDecimal.valueOf(k);
         nuevaVigenciaA.setSecuencia(var);
         nuevaVigenciaA.setEmpleado(empleado);
-        System.out.println("indexAuxVS : " + indexAuxVS);
         nuevaVigenciaA.setVigenciasueldo(listVigenciasSueldos.get(indexAuxVS));
-        System.out.println("Tercero Sucursal : " + nuevaVigenciaA.getTercerosucursal().getSecuencia());
         listVACrear.add(nuevaVigenciaA);
         //
         nuevaVigenciaA = new VigenciasAfiliaciones();
@@ -1415,7 +1373,6 @@ public class ControlVigenciaSueldo implements Serializable {
             if (listVigenciasAfiliaciones == null) {
                 borrarVS();
             } else {
-                System.out.println("DIALOGO DE BORRAR VIGTENCIAS PREVIAMENTE");
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:negacionBorradoVS");
                 context.execute("negacionBorradoVS.show()");
@@ -1511,7 +1468,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 filtrarVigenciasAfiliaciones.remove(indexVA);
             }
             index = indexAuxVS;
-            System.out.println("Valor index = " + index);
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVSVigencia");
             indexVA = -1;
@@ -1540,9 +1496,7 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void filtradoVigenciaSueldo() {
         if (index >= 0) {
-            System.out.println("Filtrado Tabla VigenciaLocalizacion");
             if (bandera == 0) {
-                System.out.println("Activar");
                 vSFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVSEmpleado:vSFechaVigencia");
                 vSFechaVigencia.setFilterStyle("width: 60px");
                 vSMotivoCambioSueldo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVSEmpleado:vSMotivoCambioSueldo");
@@ -1560,7 +1514,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosVSEmpleado");
                 bandera = 1;
             } else if (bandera == 1) {
-                System.out.println("Desactivar");
                 vSFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVSEmpleado:vSFechaVigencia");
                 vSFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
                 vSMotivoCambioSueldo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVSEmpleado:vSMotivoCambioSueldo");
@@ -1588,10 +1541,8 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void filtradoVigenciaAfiliacion() {
         if (indexVA >= 0) {
-            System.out.println("Filtrado Vigencia Prorrateos");
             if (banderaVA == 0) {
                 //Columnas Tabla VPP
-                System.out.println("Activa");
                 vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
                 vAFechaInicial.setFilterStyle("width: 60px");
                 vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
@@ -1605,7 +1556,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosVAVigencia");
                 banderaVA = 1;
             } else if (banderaVA == 1) {
-                System.out.println("Desactiva");
                 vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
                 vAFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                 vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
@@ -1648,7 +1598,6 @@ public class ControlVigenciaSueldo implements Serializable {
             tipoLista = 0;
         }
         if (banderaVA == 1) {
-            System.out.println("Desactiva");
             vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
             vAFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
@@ -1935,10 +1884,8 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void actualizarTipoSueldo() {
         if (tipoActualizacion == 0) {
-            System.out.println("tipoSueldoSeleccionado : " + tipoSueldoSeleccionado.getDescripcion());
             if (tipoListaVA == 0) {
                 listVigenciasSueldos.get(index).setTiposueldo(tipoSueldoSeleccionado);
-                System.out.println("listVigenciasSueldos.get(index).setTiposueldo(tipoSueldoSeleccionado) : " + listVigenciasSueldos.get(index).getTiposueldo().getDescripcion());
                 if (!listVSCrear.contains(listVigenciasSueldos.get(index))) {
                     if (listVSModificar.isEmpty()) {
                         listVSModificar.add(listVigenciasSueldos.get(index));
@@ -2031,7 +1978,6 @@ public class ControlVigenciaSueldo implements Serializable {
     public void validarNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
-            System.out.println("listVigenciasAfiliaciones : " + listVigenciasAfiliaciones);
             if (listVigenciasAfiliaciones != null) {
                 if (listVigenciasAfiliaciones.isEmpty()) {
                     context.update("form:NuevoRegistroPagina");
@@ -2083,7 +2029,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportPDF() throws IOException {
-        System.out.println("Entro a validarExportPDF");
         if (index >= 0) {
             exportPDFVS();
         }
@@ -2098,7 +2043,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportPDFVS() throws IOException {
-        System.out.println("Entro a exportPDFVL");
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarVS:datosVSEmpleadoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
@@ -2113,7 +2057,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportPDFVA() throws IOException {
-        System.out.println("Entro a exportPDFVP");
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarVA:datosVAVigenciaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
@@ -2142,7 +2085,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportXLSVS() throws IOException {
-        System.out.println("Entro a exportXLSVL");
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarVS:datosVSEmpleadoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
@@ -2157,7 +2099,6 @@ public class ControlVigenciaSueldo implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportXLSVA() throws IOException {
-        System.out.println("Entro a exportXLSVP");
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarVA:datosVAVigenciaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
@@ -2235,7 +2176,6 @@ public class ControlVigenciaSueldo implements Serializable {
     //GET - SET 
 
     public List<VigenciasSueldos> getListVigenciasSueldos() {
-        System.out.println("getListVigenciasSueldos");
         try {
             if (listVigenciasSueldos == null) {
                 listVigenciasSueldos = new ArrayList<VigenciasSueldos>();
@@ -2262,7 +2202,6 @@ public class ControlVigenciaSueldo implements Serializable {
 
     public List<VigenciasAfiliaciones> getListVigenciasAfiliaciones() {
         if (index >= 0) {
-            System.out.println("listVigenciasSueldos.get(index) : "+listVigenciasSueldos);
             VigenciasSueldos vigenciaTemporal = (VigenciasSueldos) listVigenciasSueldos.get(index);
             listVigenciasAfiliaciones = administrarVigenciasSueldos.VigenciasAfiliacionesVigencia(vigenciaTemporal.getSecuencia());
             if (listVigenciasAfiliaciones == null) {
@@ -2581,7 +2520,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 valorTotal = valorTotal + listVigenciasSueldos.get(i).getValor().intValue();
             }
         }
-        System.out.println("Valor Total : " + valorTotal);
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:totalConsultarActual");
         context.update("form:valorConsultarActual");

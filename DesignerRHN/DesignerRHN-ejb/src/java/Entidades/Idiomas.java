@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -32,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Idiomas.findAll", query = "SELECT i FROM Idiomas i")})
 public class Idiomas implements Serializable {
+    @OneToMany(mappedBy = "idioma")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -78,6 +79,9 @@ public class Idiomas implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -117,6 +121,15 @@ public class Idiomas implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Idiomas[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
     
 }

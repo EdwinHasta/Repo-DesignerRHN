@@ -7,7 +7,6 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Ciudades.findAll", query = "SELECT c FROM Ciudades c")})
 public class Ciudades implements Serializable {
+    @OneToMany(mappedBy = "ciudad")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
     @OneToMany(mappedBy = "ciudad")
     private Collection<Telefonos> telefonosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudad")
@@ -240,5 +240,14 @@ public class Ciudades implements Serializable {
 
     public void setDireccionesCollection(Collection<Direcciones> direccionesCollection) {
         this.direccionesCollection = direccionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
 }

@@ -36,6 +36,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findBySecOrganigrama", query = "SELECT es FROM Estructuras es where (es.centrocosto.obsoleto ='N' or es.centrocosto.obsoleto is null) AND es.organigrama.secuencia = :secOrganigrama"),
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
 public class Estructuras implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
+    private Collection<Pdgpoliticas> pdgpoliticasCollection;
+    @OneToMany(mappedBy = "localizacion")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
     @OneToMany(mappedBy = "estructura")
     private Collection<Evalconvocatorias> evalconvocatoriasCollection;
     @OneToMany(mappedBy = "estructura")
@@ -246,5 +250,23 @@ public class Estructuras implements Serializable {
 
     public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
         this.evalconvocatoriasCollection = evalconvocatoriasCollection;
+    }
+
+    @XmlTransient
+    public Collection<Pdgpoliticas> getPdgpoliticasCollection() {
+        return pdgpoliticasCollection;
+    }
+
+    public void setPdgpoliticasCollection(Collection<Pdgpoliticas> pdgpoliticasCollection) {
+        this.pdgpoliticasCollection = pdgpoliticasCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
 }

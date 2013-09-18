@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -33,6 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Asociaciones.findByCodigo", query = "SELECT a FROM Asociaciones a WHERE a.codigo = :codigo"),
     @NamedQuery(name = "Asociaciones.findByDescripcion", query = "SELECT a FROM Asociaciones a WHERE a.descripcion = :descripcion")})
 public class Asociaciones implements Serializable {
+    @JoinColumn(name = "TIPOASOCIACION", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private TiposAsociaciones tipoasociacion;
     @OneToMany(mappedBy = "asociacion")
     private Collection<ParametrosInformes> parametrosinformesCollection;
    
@@ -129,6 +134,14 @@ public class Asociaciones implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Asociaciones[ secuencia=" + secuencia + " ]";
+    }
+
+    public TiposAsociaciones getTipoasociacion() {
+        return tipoasociacion;
+    }
+
+    public void setTipoasociacion(TiposAsociaciones tipoasociacion) {
+        this.tipoasociacion = tipoasociacion;
     }
 
     

@@ -95,7 +95,9 @@ public class ControlNReporteLaboral implements Serializable {
             if (parametroModificacion.getEmpresa().getSecuencia() == null) {
                 parametroModificacion.setEmpresa(null);
             }
-            System.out.println("tipo pèrsopnal "+parametroModificacion.getTipopersonal());
+            System.out.println("Usuario : "+parametroModificacion.getUsuario());
+            System.out.println("cargo "+parametroModificacion.getCargo());
+            System.out.println("tipo personal : "+parametroModificacion.getTipopersonal());
             administrarNReporteLaboral.modificarParametrosInformes(parametroModificacion);
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
@@ -314,30 +316,32 @@ public class ControlNReporteLaboral implements Serializable {
 
     public void actualizarSeleccionCargo() {
         parametroDeInforme.setCargo(cargoSeleccionado);
+        parametroModificacion = parametroDeInforme;
         cargoSeleccionado = new Cargos();
         filtrarListCargos = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:cargoParametroL");
-        defaultPropiedadesParametrosReporte();
         permitirIndex = true;
+        aceptar = true;
 
     }
 
     public void cancelarSeleccionCargo() {
-        filtrarListInforeportesUsuario = null;
-        inforreporteSeleccionado = new Inforeportes();
+        filtrarListCargos = null;
+        cargoSeleccionado = new Cargos();
         aceptar = true;
         permitirIndex = true;
     }
 
     public void actualizarEmpresa() {
         parametroDeInforme.setEmpresa(empresaSeleccionada);
-        empresaSeleccionada = null;
-        filtrarListEmpresas = null;
+        parametroModificacion = parametroDeInforme;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:empresaParametroL");
-        defaultPropiedadesParametrosReporte();
+        empresaSeleccionada = null;
+        filtrarListEmpresas = null;
         permitirIndex = true;
+        aceptar = true;
     }
 
     public void cancelarEmpresa() {
@@ -348,13 +352,18 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void actualizarEmpleadoDesde() {
-        defaultPropiedadesParametrosReporte();
+        
         parametroDeInforme.setCodigoempleadodesde(empleadoSeleccionado.getCodigoempleado());
+        parametroModificacion = parametroDeInforme;
         empleadoSeleccionado = null;
         filtrarListEmpleados = null;
+        aceptar = true;
+        permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:empleadoDesdeParametroL");
-        aceptar = false;
+        
+        
+        
     }
 
     public void cancelarEmpleadoDesde() {
@@ -365,12 +374,14 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void actualizarEmpleadoHasta() {
-        defaultPropiedadesParametrosReporte();
         parametroDeInforme.setCodigoempleadohasta(empleadoSeleccionado.getCodigoempleado());
+        parametroModificacion = parametroDeInforme;
         empleadoSeleccionado = null;
         filtrarListEmpleados = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:empleadoHastaParametroL");
+        aceptar = true;
+        permitirIndex = true;
     }
 
     public void cancelarEmpleadoHasta() {
@@ -435,7 +446,6 @@ public class ControlNReporteLaboral implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-
                 parametroDeInforme.setEmpresa(listEmpresas.get(indiceUnicoElemento));
                 parametroModificacion = parametroDeInforme;
                 listEmpresas.clear();
@@ -568,11 +578,11 @@ public class ControlNReporteLaboral implements Serializable {
 
 
         fechaDesdeParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametroL");
-        fechaDesdeParametroL.setStyleClass("ui-datepicker, myClass");
+        fechaDesdeParametroL.setStyleClass("ui-datepicker, calendarioReportes");
         RequestContext.getCurrentInstance().update("form:fechaDesdeParametroL");
 
         fechaHastaParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametroL");
-        fechaHastaParametroL.setStyleClass("ui-datepicker, myClass");
+        fechaHastaParametroL.setStyleClass("ui-datepicker, calendarioReportes");
         RequestContext.getCurrentInstance().update("form:fechaHastaParametroL");
 
         empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametroL");

@@ -46,4 +46,14 @@ public interface PersistenciaInforeportesInterface {
      */
     public List<Inforeportes> buscarInforeportesUsuarioLaboral();
     
+    public List<Inforeportes> buscarInforeportesUsuarioBanco();
+    
+    public List<Inforeportes> buscarInforeportesUsuarioContabilidad();
+    
+    public List<Inforeportes> buscarInforeportesUsuarioPersonal();
+    
+    public List<Inforeportes> buscarInforeportesUsuarioBienestar();
+    
+    
+    
 }

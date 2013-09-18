@@ -40,6 +40,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
+    @OneToMany(mappedBy = "nombregerente")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
+    @OneToMany(mappedBy = "empleado")
+    private Collection<Pdgmetas> pdgmetasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<EvalResultadosConv> evalResultadosConvCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
@@ -586,5 +590,23 @@ public class Empleados implements Serializable {
 
     public void setEvalResultadosConvCollection(Collection<EvalResultadosConv> evalResultadosConvCollection) {
         this.evalResultadosConvCollection = evalResultadosConvCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Pdgmetas> getPdgmetasCollection() {
+        return pdgmetasCollection;
+    }
+
+    public void setPdgmetasCollection(Collection<Pdgmetas> pdgmetasCollection) {
+        this.pdgmetasCollection = pdgmetasCollection;
     }
 }

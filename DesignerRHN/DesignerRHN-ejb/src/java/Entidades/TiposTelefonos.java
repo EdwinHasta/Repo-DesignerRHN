@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposTelefonos.findAll", query = "SELECT t FROM TiposTelefonos t")})
 public class TiposTelefonos implements Serializable {
+    @OneToMany(mappedBy = "tipotelefono")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -80,6 +82,9 @@ public class TiposTelefonos implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -119,6 +124,15 @@ public class TiposTelefonos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.TiposTelefonos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
     
 }

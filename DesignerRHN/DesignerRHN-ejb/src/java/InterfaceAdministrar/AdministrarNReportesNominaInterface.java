@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author user
  */
-public interface AdministrarReportesInterface {
+public interface AdministrarNReportesNominaInterface {
     
     /**
      * 

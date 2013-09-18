@@ -46,6 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
     @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
+    @OneToMany(mappedBy = "tercero")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
 
     @OneToMany(mappedBy = "tercero")
     private Collection<Soausentismos> soausentismosCollection;
@@ -354,5 +356,14 @@ public class Terceros implements Serializable {
 
     public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
         this.novedadesCollection = novedadesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
 }

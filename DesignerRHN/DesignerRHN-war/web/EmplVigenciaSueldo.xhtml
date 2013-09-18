@@ -11,8 +11,8 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos de Sueldos" style=" font-size: 12px; position: absolute; width: 740px; height: 540px; text-align: left" >  
-                        <h:outputText style="position: absolute; left: 500px; top: 50px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlVigenciaSueldo.empleado.persona.primerapellido} #{controlVigenciaSueldo.empleado.persona.segundoapellido} #{controlVigenciaSueldo.empleado.persona.nombre}">
+                    <p:panel  id="PanelTotal" header="Históricos de Sueldos" style=" font-size: 12px; position: absolute; width: 874px; height: 540px; text-align: left" >  
+                        <h:outputText style="position: absolute; left: 680px; top: 50px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlVigenciaSueldo.empleado.persona.primerapellido} #{controlVigenciaSueldo.empleado.persona.segundoapellido} #{controlVigenciaSueldo.empleado.persona.nombre}">
                         </h:outputText>
                         <h:outputText id="totalConsultarActual" value="Total $ " style="position: absolute; top: 75px;left: 500px; visibility: #{controlVigenciaSueldo.visibilidadTotal()};" >
                         </h:outputText>
@@ -63,12 +63,12 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 700px; height: 210px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 830px; height: 210px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Sueldo del Empleado</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
-                            <p:dataTable id="datosVSEmpleado" var="infoDVS" rowKey="#{infoDVS.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 700px"   
-                                         value="#{controlVigenciaSueldo.listVigenciasSueldos}" scrollable="true" scrollHeight="72" scrollWidth="700"
+                            <p:dataTable id="datosVSEmpleado" var="infoDVS" rowKey="#{infoDVS.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"   
+                                         value="#{controlVigenciaSueldo.listVigenciasSueldos}" scrollable="true" scrollHeight="72" scrollWidth="830"
                                          filteredValue="#{controlVigenciaSueldo.filtrarVigenciasSueldos}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="true" rows="2"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
@@ -201,11 +201,11 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <fieldset style="position: absolute;top: 320px;left: 10px;height: 160px;width: 700px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 320px;left: 10px;height: 160px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 10px; color: blue"><strong>Distribución</strong></legend>
                             <p:dataTable id="datosVAVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVA" value="#{controlVigenciaSueldo.listVigenciasAfiliaciones}" 
                                          filteredValue="#{controlVigenciaSueldo.filtrarVigenciasAfiliaciones}" editable="true" editMode="cell" rows="3" 
-                                         scrollable="true" scrollHeight="71" scrollWidth="700" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width:">
+                                         scrollable="true" scrollHeight="71" scrollWidth="830" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;">
 
                                 <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="100"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
@@ -449,9 +449,9 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 570px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 400px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 660px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 530px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 790px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
