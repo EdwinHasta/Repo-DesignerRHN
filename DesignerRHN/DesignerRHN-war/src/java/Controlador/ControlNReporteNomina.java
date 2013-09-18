@@ -16,9 +16,8 @@ import Entidades.Terceros;
 import Entidades.TiposTrabajadores;
 import Entidades.TiposAsociaciones;
 import Entidades.UbicacionesGeograficas;
-import InterfaceAdministrar.AdministrarReportesInterface;
+import InterfaceAdministrar.AdministrarNReportesNominaInterface;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -40,9 +39,9 @@ import org.primefaces.context.RequestContext;
 public class ControlNReporteNomina implements Serializable {
 
     @EJB
-    AdministrarReportesInterface administrarReportes;
+    AdministrarNReportesNominaInterface administrarReportes;
     private ParametrosInformes parametroDeInforme;
-    private ParametrosInformes nuevoParametroInforme; 
+    private ParametrosInformes nuevoParametroInforme;
     private List<Inforeportes> listaIR;
     private List<Inforeportes> filtrarListInforeportesUsuario;
     private List<Inforeportes> listaIRRespaldo;
@@ -89,7 +88,7 @@ public class ControlNReporteNomina implements Serializable {
     private List<Terceros> filtrarListTerceros;
     private List<Procesos> filtrarListProcesos;
     private List<Asociaciones> filtrarListAsociaciones;
-    private String emplDesde, emplHasta, grupo, ubiGeo, tipoAso, estructura, empresa, tipoTrabajador, tercero, proceso, asociacion;
+    private String grupo, ubiGeo, tipoAso, estructura, empresa, tipoTrabajador, tercero, proceso, asociacion;
     private boolean permitirIndex;
 
     public ControlNReporteNomina() {
@@ -105,16 +104,16 @@ public class ControlNReporteNomina implements Serializable {
         reporteGenerar = "";
         requisitosReporte = "";
         posicionReporte = -1;
-        listAsociaciones = new ArrayList<Asociaciones>();
-        listEmpleados = new ArrayList<Empleados>();
-        listEmpresas = new ArrayList<Empresas>();
-        listEstructuras = new ArrayList<Estructuras>();
-        listGruposConceptos = new ArrayList<GruposConceptos>();
-        listProcesos = new ArrayList<Procesos>();
-        listTerceros = new ArrayList<Terceros>();
-        listTiposAsociaciones = new ArrayList<TiposAsociaciones>();
-        listTiposTrabajadores = new ArrayList<TiposTrabajadores>();
-        listUbicacionesGeograficas = new ArrayList<UbicacionesGeograficas>();
+        listAsociaciones = null;
+        listEmpleados = null;
+        listEmpresas = null;
+        listEstructuras = null;
+        listGruposConceptos = null;
+        listProcesos = null;
+        listTerceros = null;
+        listTiposAsociaciones = null;
+        listTiposTrabajadores = null;
+        listUbicacionesGeograficas = null;
 
         empleadoSeleccionado = new Empleados();
         empresaSeleccionada = new Empresas();
@@ -162,50 +161,319 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void modificarParametroInforme() {
-        System.out.println("Se modifico el parametro de informe");
         parametroModificacion = parametroDeInforme;
     }
 
     public void posicionCelda(int i) {
         casilla = i;
+        if (permitirIndex==true) {
+            if (casilla == 3) {
+                grupo = parametroDeInforme.getGrupo().getDescripcion();
+            }
+            if (casilla == 4) {
+                ubiGeo = parametroDeInforme.getUbicaciongeografica().getDescripcion();
+            }
+            if (casilla == 5) {
+                tipoAso = parametroDeInforme.getTipoasociacion().getDescripcion();
+            }
+            if (casilla == 8) {
+                empresa = parametroDeInforme.getEmpresa().getNombre();
+            }
+            if (casilla == 9) {
+                estructura = parametroDeInforme.getLocalizacion().getNombre();
+            }
+            if (casilla == 10) {
+                tipoTrabajador = parametroDeInforme.getTipotrabajador().getNombre();
+            }
+            if (casilla == 11) {
+                tercero = parametroDeInforme.getTercero().getNombre();
+            }
+            if (casilla == 12) {
+                proceso = parametroDeInforme.getProceso().getDescripcion();
+            }
+            if (casilla == 14) {
+                asociacion = parametroDeInforme.getAsociacion().getDescripcion();
+            }
+        }
+    }
+
+    public void autocompletarGeneral(String campoConfirmar, String valorConfirmar) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        int indiceUnicoElemento = -1;
+        int coincidencias = 0;
+        if (campoConfirmar.equalsIgnoreCase("GRUPO")) {
+            parametroDeInforme.getGrupo().setDescripcion(grupo);
+            for (int i = 0; i < listGruposConceptos.size(); i++) {
+                if (listGruposConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setGrupo(listGruposConceptos.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listGruposConceptos.clear();
+                getListGruposConceptos();
+            } else {
+                permitirIndex = false;
+                context.update("form:GruposConceptosDialogo");
+                context.execute("GruposConceptosDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("UBIGEO")) {
+            parametroDeInforme.getUbicaciongeografica().setDescripcion(ubiGeo);
+
+            for (int i = 0; i < listUbicacionesGeograficas.size(); i++) {
+                if (listUbicacionesGeograficas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setUbicaciongeografica(listUbicacionesGeograficas.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listUbicacionesGeograficas.clear();
+                getListUbicacionesGeograficas();
+            } else {
+                permitirIndex = false;
+                context.update("form:UbicacionGeograficaDialogo");
+                context.execute("UbicacionGeograficaDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("EMPRESA")) {
+            parametroDeInforme.getEmpresa().setNombre(empresa);
+
+            for (int i = 0; i < listEmpresas.size(); i++) {
+                if (listEmpresas.get(i).getNombre().startsWith(valorConfirmar)) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setEmpresa(listEmpresas.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listEmpresas.clear();
+                getListEmpresas();
+            } else {
+                permitirIndex = false;
+                context.update("form:EmpresaDialogo");
+                context.execute("EmpresaDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("TIPOASO")) {
+            parametroDeInforme.getTipoasociacion().setDescripcion(tipoAso);
+            for (int i = 0; i < listTiposAsociaciones.size(); i++) {
+                if (listTiposAsociaciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setTipoasociacion(listTiposAsociaciones.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listTiposAsociaciones.clear();
+                getListTiposAsociaciones();
+            } else {
+                permitirIndex = false;
+                context.update("form:TipoAsociacionDialogo");
+                context.execute("TipoAsociacionDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("ESTRUCTURA")) {
+            parametroDeInforme.getLocalizacion().setNombre(estructura);
+            for (int i = 0; i < listEstructuras.size(); i++) {
+                if (listEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setLocalizacion(listEstructuras.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listEstructuras.clear();
+                getListEstructuras();
+            } else {
+                permitirIndex = false;
+                context.update("form:EstructuraDialogo");
+                context.execute("EstructuraDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("TIPOTRABAJADOR")) {
+            parametroDeInforme.getTipotrabajador().setNombre(tipoTrabajador);
+            for (int i = 0; i < listTiposTrabajadores.size(); i++) {
+                if (listTiposTrabajadores.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setTipotrabajador(listTiposTrabajadores.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listTiposTrabajadores.clear();
+                getListTiposTrabajadores();
+            } else {
+                permitirIndex = false;
+                context.update("form:TipoTrabajadorDialogo");
+                context.execute("TipoTrabajadorDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("TERCERO")) {
+            parametroDeInforme.getTercero().setNombre(tercero);
+            for (int i = 0; i < listTerceros.size(); i++) {
+                if (listTerceros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setTercero(listTerceros.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listTerceros.clear();
+                getListTerceros();
+            } else {
+                permitirIndex = false;
+                context.update("form:TercerosDialogo");
+                context.execute("TercerosDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("PROCESO")) {
+            parametroDeInforme.getProceso().setDescripcion(proceso);
+            for (int i = 0; i < listProcesos.size(); i++) {
+                if (listProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setProceso(listProcesos.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listProcesos.clear();
+                getListProcesos();
+            } else {
+                permitirIndex = false;
+                context.update("form:ProcesoDialogo");
+                context.execute("ProcesoDialogo.show()");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("ASOCIACION")) {
+            parametroDeInforme.getAsociacion().setDescripcion(asociacion);
+            for (int i = 0; i < listAsociaciones.size(); i++) {
+                if (listAsociaciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                parametroDeInforme.setAsociacion(listAsociaciones.get(indiceUnicoElemento));
+                parametroModificacion = parametroDeInforme;
+                listAsociaciones.clear();
+                getListAsociaciones();
+            } else {
+                permitirIndex = false;
+                context.update("form:AsociacionDialogo");
+                context.execute("AsociacionDialogo.show()");
+            }
+        }
+    }
+
+    public void listaValoresBoton() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (casilla == 2) {
-            emplDesde = parametroDeInforme.getCodigoempleadodesde().toString();
+            context.update("form:EmpleadoDesdeDialogo");
+            context.execute("EmpleadoDesdeDialogo.show()");
+        }
+        if (casilla == 3) {
+            context.update("form:GruposConceptosDialogo");
+            context.execute("GruposConceptosDialogo.show()");
         }
         if (casilla == 4) {
-            grupo = parametroDeInforme.getGrupo().getDescripcion();
+            context.update("form:UbicacionGeograficaDialogo");
+            context.execute("UbicacionGeograficaDialogo.show()");
         }
         if (casilla == 5) {
-            ubiGeo = parametroDeInforme.getUbicaciongeografica().getDescripcion();
+            context.update("form:TipoAsociacionDialogo");
+            context.execute("TipoAsociacionDialogo.show()");
         }
-        if (casilla == 6) {
-            tipoAso = parametroDeInforme.getTipoasociacion().getDescripcion();
+        if (casilla == 7) {
+            context.update("form:EmpleadoHastaDialogo");
+            context.execute("EmpleadoHastaDialogo.show()");
         }
         if (casilla == 8) {
-            emplHasta = parametroDeInforme.getCodigoempleadohasta().toString();
+            context.update("form:EmpresaDialogo");
+            context.execute("EmpresaDialogo.show()");
+        }
+        if (casilla == 9) {
+            context.update("form:EstructuraDialogo");
+            context.execute("EstructuraDialogo.show()");
         }
         if (casilla == 10) {
-            empresa = parametroDeInforme.getEmpresa().getNombre();
+            context.update("form:TipoTrabajadorDialogo");
+            context.execute("TipoTrabajadorDialogo.show()");
         }
         if (casilla == 11) {
-            estructura = parametroDeInforme.getLocalizacion().getNombre();
+            context.update("form:TercerosDialogo");
+            context.execute("TercerosDialogo.show()");
         }
         if (casilla == 12) {
-            tipoTrabajador = parametroDeInforme.getTipotrabajador().getNombre();
-        }
-        if (casilla == 13) {
-            tercero = parametroDeInforme.getTercero().getNombre();
+            context.update("form:ProcesoDialogo");
+            context.execute("ProcesoDialogo.show()");
         }
         if (casilla == 14) {
-            proceso = parametroDeInforme.getProceso().getDescripcion();
+            context.update("form:AsociacionDialogo");
+            context.execute("AsociacionDialogo.show()");
         }
-        if (casilla == 15) {
-            asociacion = parametroDeInforme.getAsociacion().getDescripcion();
+    }
+
+    public void listasValores(int pos) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (pos == 2) {
+            context.update("form:EmpleadoDesdeDialogo");
+            context.execute("EmpleadoDesdeDialogo.show()");
         }
-        System.out.println("Casilla : " + casilla);
+        if (pos == 3) {
+            context.update("form:GruposConceptosDialogo");
+            context.execute("GruposConceptosDialogo.show()");
+        }
+        if (pos == 4) {
+            context.update("form:UbicacionGeograficaDialogo");
+            context.execute("UbicacionGeograficaDialogo.show()");
+        }
+        if (pos == 5) {
+            context.update("form:TipoAsociacionDialogo");
+            context.execute("TipoAsociacionDialogo.show()");
+        }
+        if (pos == 7) {
+            context.update("form:EmpleadoHastaDialogo");
+            context.execute("EmpleadoHastaDialogo.show()");
+        }
+        if (pos == 8) {
+            context.update("form:EmpresaDialogo");
+            context.execute("EmpresaDialogo.show()");
+        }
+        if (pos == 9) {
+            context.update("form:EstructuraDialogo");
+            context.execute("EstructuraDialogo.show()");
+        }
+        if (pos == 10) {
+            context.update("form:TipoTrabajadorDialogo");
+            context.execute("TipoTrabajadorDialogo.show()");
+        }
+        if (pos == 11) {
+            context.update("form:TercerosDialogo");
+            context.execute("TercerosDialogo.show()");
+        }
+        if (pos == 12) {
+            context.update("form:ProcesoDialogo");
+            context.execute("ProcesoDialogo.show()");
+        }
+        if (pos == 14) {
+            context.update("form:AsociacionDialogo");
+            context.execute("AsociacionDialogo.show()");
+        }
+
     }
 
     public void editarCelda() {
-        System.out.println("Casilla a editar : " + casilla);
         RequestContext context = RequestContext.getCurrentInstance();
         if (casilla == 1) {
             context.update("formularioDialogos:editarFechaDesde");
@@ -274,9 +542,13 @@ public class ControlNReporteNomina implements Serializable {
     public void actualizarEmplDesde() {
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadodesde(empleadoSeleccionado.getCodigoempleado());
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:empleadoDesdeParametro");
         empleadoSeleccionado = null;
         aceptar = true;
         filtrarListEmpleados = null;
+
     }
 
     public void cancelarCambioEmplDesde() {
@@ -285,10 +557,13 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListEmpleados = null;
         permitirIndex = true;
     }
-    
+
     public void actualizarEmplHasta() {
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadohasta(empleadoSeleccionado.getCodigoempleado());
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:empleadoHastaParametro");
         empleadoSeleccionado = null;
         aceptar = true;
         filtrarListEmpleados = null;
@@ -300,13 +575,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListEmpleados = null;
         permitirIndex = true;
     }
-    
+
     public void actualizarGrupo() {
         permitirIndex = true;
         parametroDeInforme.setGrupo(grupoCSeleccionado);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:grupoParametro");
         grupoCSeleccionado = null;
         aceptar = true;
         filtrarListGruposConceptos = null;
+
     }
 
     public void cancelarCambioGrupo() {
@@ -315,13 +594,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListGruposConceptos = null;
         permitirIndex = true;
     }
-    
+
     public void actualizarUbicacionGeografica() {
         permitirIndex = true;
         parametroDeInforme.setUbicaciongeografica(ubicacionesGSeleccionado);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ubicacionGeograficaParametro");
         ubicacionesGSeleccionado = null;
         aceptar = true;
         filtrarListUbicacionesGeograficas = null;
+
     }
 
     public void cancelarCambioUbicacionGeografica() {
@@ -330,13 +613,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListUbicacionesGeograficas = null;
         permitirIndex = true;
     }
-    
-     public void actualizarTipoAsociacion() {
+
+    public void actualizarTipoAsociacion() {
         permitirIndex = true;
         parametroDeInforme.setTipoasociacion(tiposASeleccionado);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tipoAsociacionParametro");
         tiposASeleccionado = null;
         aceptar = true;
         filtrarListTiposAsociaciones = null;
+
     }
 
     public void cancelarTipoAsociacion() {
@@ -345,13 +632,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListTiposAsociaciones = null;
         permitirIndex = true;
     }
-    
-     public void actualizarEmpresa() {
+
+    public void actualizarEmpresa() {
         permitirIndex = true;
         parametroDeInforme.setEmpresa(empresaSeleccionada);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:empresaParametro");
         empresaSeleccionada = null;
         aceptar = true;
         filtrarListEmpresas = null;
+
     }
 
     public void cancelarEmpresa() {
@@ -360,12 +651,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListEmpresas = null;
         permitirIndex = true;
     }
-    
-    public void actualizarEstructura(){
+
+    public void actualizarEstructura() {
         parametroDeInforme.setLocalizacion(estructuraSeleccionada);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:estructuraParametro");
         estructuraSeleccionada = null;
         aceptar = true;
         filtrarListEstructuras = null;
+        permitirIndex = true;
+
     }
 
     public void cancelarEstructura() {
@@ -374,12 +670,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListEstructuras = null;
         permitirIndex = true;
     }
-    
-    public void actualizarTipoTrabajador(){
+
+    public void actualizarTipoTrabajador() {
         parametroDeInforme.setTipotrabajador(tipoTSeleccionado);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tipoTrabajadorParametro");
         tipoTSeleccionado = null;
         aceptar = true;
         filtrarListTiposTrabajadores = null;
+        permitirIndex = true;
+
     }
 
     public void cancelarTipoTrabajador() {
@@ -388,12 +689,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListTiposTrabajadores = null;
         permitirIndex = true;
     }
-    
-    public void actualizarTercero(){
+
+    public void actualizarTercero() {
+        permitirIndex = true;
         parametroDeInforme.setTercero(terceroSeleccionado);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:terceroParametro");
         terceroSeleccionado = null;
         aceptar = true;
         filtrarListTerceros = null;
+
     }
 
     public void cancelarTercero() {
@@ -402,12 +708,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListTerceros = null;
         permitirIndex = true;
     }
-    
-    public void actualizarProceso(){
+
+    public void actualizarProceso() {
+        permitirIndex = true;
         parametroDeInforme.setProceso(procesoSeleccionado);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:procesoParametro");
         procesoSeleccionado = null;
         aceptar = true;
         filtrarListProcesos = null;
+
     }
 
     public void cancelarProceso() {
@@ -416,12 +727,17 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListProcesos = null;
         permitirIndex = true;
     }
-    
-    public void actualizarAsociacion(){
+
+    public void actualizarAsociacion() {
+        permitirIndex = true;
         parametroDeInforme.setAsociacion(asociacionSeleccionado);
+        parametroModificacion = parametroDeInforme;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:asociacionParametro");
         asociacionSeleccionado = null;
         aceptar = true;
         filtrarListAsociaciones = null;
+
     }
 
     public void cancelarAsociacion() {
@@ -430,8 +746,6 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListAsociaciones = null;
         permitirIndex = true;
     }
-    
-    
 
     public void generarReporte(int i) {
         defaultPropiedadesParametrosReporte();
@@ -473,7 +787,6 @@ public class ControlNReporteNomina implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            System.out.println("Desactivar");
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -504,7 +817,6 @@ public class ControlNReporteNomina implements Serializable {
 
     public void actualizarSeleccionInforeporte() {
         if (bandera == 1) {
-            System.out.println("Desactivar");
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -585,11 +897,11 @@ public class ControlNReporteNomina implements Serializable {
     public void defaultPropiedadesParametrosReporte() {
 
         fechaDesdeParametro = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametro");
-        fechaDesdeParametro.setStyleClass("ui-datepicker, myClass");
+        fechaDesdeParametro.setStyleClass("ui-datepicker, calendarioReportes");
         RequestContext.getCurrentInstance().update("form:fechaDesdeParametro");
 
         fechaHastaParametro = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametro");
-        fechaHastaParametro.setStyleClass("ui-datepicker, myClass");
+        fechaHastaParametro.setStyleClass("ui-datepicker, calendarioReportes");
         RequestContext.getCurrentInstance().update("form:fechaHastaParametro");
 
         empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametro");
@@ -660,7 +972,7 @@ public class ControlNReporteNomina implements Serializable {
             RequestContext.getCurrentInstance().update("form:grupoParametro");
         }
         if (reporteS.getLocalizacion().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Ubicacion Geofrafica -";
+            requisitosReporte = requisitosReporte + "- Estructura -";
             estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estructuraParametro");
             estructuraParametro.setStyle("position: absolute; top: 10px; left: 480px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:estructuraParametro");
@@ -672,7 +984,6 @@ public class ControlNReporteNomina implements Serializable {
             RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
         }
         if (reporteS.getTercero().equals("SI")) {
-            System.out.println("Entro tercero");
             requisitosReporte = requisitosReporte + "- Tercero -";
             terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:terceroParametro");
             terceroParametro.setStyle("position: absolute; top: 58px; left: 480px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");

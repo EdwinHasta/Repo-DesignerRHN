@@ -112,7 +112,7 @@
                             <legend style="font-size: 11px; color: blue;text-align:left"><strong>Parametros</strong></legend>
                             <h:outputText value="Fecha desde" style="position: absolute; top: 20px; left: 10px;font-size: 11px;"/>
                             <p:calendar  value="#{controlNReporteLaboral.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" style="position: absolute; top: 13px; left: 90px;font-size: 11px;width: 90px" 
-                                         styleClass="ui-datepicker, myClass"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
+                                         styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
                                          autocomplete="true" onclick="select();">    
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(1)}" process="@this"/>
                                 <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" process="@this" update="fechaDesdeParametroL"/>
@@ -124,14 +124,14 @@
                             <h:outputText value="Empleado desde" style="position: absolute; top: 55px; left: 10px;font-size: 11px;"/>
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 50px; left: 90px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(2)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoDesdeParametroL" listener="#{controlNReporteLaboral.autocompletarGeneral('EMPLDESDE',controlNReporteLaboral.parametroDeInforme.codigoempleadodesde)}" process="@this"/>
+                                <p:ajax event="change" update="empleadoDesdeParametroL"  process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteLaboral.mostrarDialogosListas()}"/>
                             </p:inputText>
 
 
                             <h:outputText value="hasta" style="position: absolute; top: 20px; left: 210px;font-size: 11px;"/>
                             <p:calendar value="#{controlNReporteLaboral.parametroDeInforme.fechahasta}" id="fechaHastaParametroL" style="position: absolute; top: 13px; left: 270px;font-size: 11px;width: 90px" 
-                                        styleClass="ui-datepicker, myClass"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
+                                        styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
                                         autocomplete="true" onclick="select();">                                         
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(3)}" process="@this"/> 
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -143,7 +143,7 @@
                             <h:outputText value="hasta" style="position: absolute; top: 55px; left: 210px;font-size: 11px"/>
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 50px; left: 270px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(4)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoHastaParametroL" listener="#{controlNReporteLaboral.autocompletarGeneral('EMPLHASTA',controlNReporteLaboral.parametroDeInforme.codigoempleadohasta)}" process="@this"/>
+                                <p:ajax event="change" update="empleadoHastaParametroL" process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteLaboral.mostrarDialogosListas()}"/>
                             </p:inputText>
 

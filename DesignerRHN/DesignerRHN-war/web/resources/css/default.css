@@ -65,8 +65,7 @@ a:link:hover, a:visited:hover  {
 }
 
 .myClass3 input {
-    width: 81px;
-    border-radius: 0px;
+    width: 55px;
     height: 15px;
     text-decoration: underline;
     color: red !important;

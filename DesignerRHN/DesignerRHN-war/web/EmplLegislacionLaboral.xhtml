@@ -11,18 +11,16 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos Legislaciones Laborales" style=" font-size: 12px; position: absolute; width: 685px; height: 440px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Históricos Legislaciones Laborales" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
-                        <h:outputText id="btn" style="position: absolute; left: 25px; top: 40px; background-image: url(Imagenes/icon-question-big.png); width:60px ;height:60px; background-repeat: no-repeat; background-size: 100% 100%; "/>
-                        <p:tooltip style="font-size: 12px" for="btn" value="Ingrese la legislación laboral, esta puede ser una convención, de ley, etc." showEffect="slide" hideEffect="slide"/>
-                        <p:inputText style="position: absolute; left: 90px; top: 80px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado" value="#{controlVigenciasContratos.empleado.persona.primerapellido} #{controlVigenciasContratos.empleado.persona.segundoapellido} #{controlVigenciasContratos.empleado.persona.nombre}"/>  
+                       <h:outputText style="position: absolute; left: 500px; top: 50px; width: 200px; height: 12px;position: absolute;color: red; font-weight: bold "  id="nombreEmpleado" value="#{controlVigenciasContratos.empleado.persona.primerapellido} #{controlVigenciasContratos.empleado.persona.segundoapellido} #{controlVigenciasContratos.empleado.persona.nombre}"/>  
 
-                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 820px; height: 285px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue;text-align: left"><strong>Legislación Laboral</strong></legend>
                             <!-- TABLA EMPLVIGENCIACONTRATOS -->
 
-                            <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"                           
-                                         value="#{controlVigenciasContratos.vigenciasContratosEmpleado}" scrollable="true" scrollHeight="150" 
+                            <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 820px"                           
+                                         value="#{controlVigenciasContratos.vigenciasContratosEmpleado}" scrollable="true" scrollHeight="150" scrollWidth="820"
                                          filteredValue="#{controlVigenciasContratos.filtrarVC}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="true" rows="6"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
@@ -110,7 +108,7 @@
                             </p:dataTable>  
                         </fieldset>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 70px; left: 360px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 30px;">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasContratos.guardarCambiosVC()}" process="@this" />
@@ -219,9 +217,9 @@
 
 
 
-                        <p:commandButton style="position: absolute; left: 510px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 40px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 605px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 600px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 40px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

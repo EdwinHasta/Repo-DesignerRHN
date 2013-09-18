@@ -12,13 +12,13 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos Reformas Laborales" style=" font-size: 12px; position: absolute; width: 685px; height: 440px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Históricos Reformas Laborales" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
                         <h:outputText id="btn" style="position: absolute; left: 25px; top: 40px; background-image: url(Imagenes/icon-question-big.png); width:60px ;height:60px; background-repeat: no-repeat; background-size: 100% 100%; "/>
                         <p:tooltip style="font-size: 12px" for="btn" value="Ingrese la reforma laboral, todos los empleados nuevos deben ser acogidos." showEffect="slide" hideEffect="slide"/>
                         <p:inputText style="position: absolute; left: 90px; top: 80px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado" value="#{controlVigenciasReformasLaborales.empleado.persona.primerapellido} #{controlVigenciasReformasLaborales.empleado.persona.segundoapellido} #{controlVigenciasReformasLaborales.empleado.persona.nombre}"/>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 70px; left: 360px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 70px; left: 540px;">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasReformasLaborales.guardarCambiosVRL()}" process="@this" />
@@ -61,7 +61,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 830px; height: 285px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue;text-align:left"><strong>Reformas Laborales</strong></legend>
                             <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
 
@@ -147,9 +147,9 @@
                             </p:commandButton>
                         </p:dialog> 
 
-                        <p:commandButton style="position: absolute; left: 500px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" icon="ui-icon-check" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVRLEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" icon="ui-icon-check" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVRLEmpleado" process="@this" />
                         <p:commandButton style="position: absolute; left: 30px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasReformasLaborales.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 596px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

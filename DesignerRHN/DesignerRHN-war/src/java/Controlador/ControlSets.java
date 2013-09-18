@@ -1,6 +1,5 @@
 package Controlador;
 
-import Administrar.AdministrarSets;
 import Entidades.Empleados;
 import Entidades.Sets;
 import Exportar.ExportarPDF;
@@ -142,7 +141,6 @@ public class ControlSets implements Serializable{
     public void cambiarIndice(int indice, int celda) {
         index = indice;
         cualCelda = celda;
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
     //GUARDAR
     /**
@@ -150,17 +148,14 @@ public class ControlSets implements Serializable{
      */
     public void guardarCambiosSets() {
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Sets");
             if (!listSetsBorrar.isEmpty()) {
                 for (int i = 0; i < listSetsBorrar.size(); i++) {
-                    System.out.println("Borrando...");
                     administrarSets.borrarSets(listSetsBorrar.get(i));
                 }
                 listSetsBorrar.clear();
             }
             if (!listSetsCrear.isEmpty()) {
                 for (int i = 0; i < listSetsCrear.size(); i++) {
-                    System.out.println("Creando...");
                     administrarSets.crearSets(listSetsCrear.get(i));
                 }
                 listSetsCrear.clear();
@@ -169,7 +164,6 @@ public class ControlSets implements Serializable{
                 administrarSets.modificarSets(listSetsModificar);
                 listSetsModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
             listSets = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosSetsEmpleado");
@@ -230,7 +224,6 @@ public class ControlSets implements Serializable{
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFechaInicial");
                 context.execute("editarFechaInicial.show()");
@@ -451,7 +444,6 @@ public class ControlSets implements Serializable{
      */
     public void activarCtrlF11() {
         if (bandera == 0) {
-            System.out.println("Activar");
             
             setsFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaInicial");
             setsFechaInicial.setFilterStyle("width: 60px");
@@ -468,7 +460,6 @@ public class ControlSets implements Serializable{
             RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
             setsFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaInicial");
             setsFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             setsFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaFinal");
@@ -573,7 +564,6 @@ public class ControlSets implements Serializable{
     public List<Sets> getSetsEmpleado() {
         try {
             if (listSets == null) {
-                System.out.println("sec empleado: " + empleado.getSecuencia());
               return listSets = administrarSets.SetsEmpleado(empleado.getSecuencia());
             } else {
                 return listSets;

@@ -6,8 +6,11 @@ package Controlador;
 
 import Entidades.Ciudades;
 import Entidades.Departamentos;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarCiudadesInterface;
 import InterfaceAdministrar.AdministrarDepartamentosInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -17,6 +20,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -298,20 +303,21 @@ public class ControlCiudades implements Serializable {
         boolean pasa = false;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevaCiudad.getNombre() == null) {
+        System.out.println("Valor de nombre: " + nuevaCiudad.getNombre());
+        if (nuevaCiudad.getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " * Nombre de la Ciudad \n";
             pasa = false;
         } else {
             pasa = true;
         }
-        if (nuevaCiudad.getDepartamento().getNombre()== null) {
+        if (nuevaCiudad.getDepartamento().getSecuencia()== null) {
             mensajeValidacion = mensajeValidacion + "   * Departamento \n";
             pasa = false;
         } else {
             pasa = true;
         }
-
-
+            
+        System.out.println("Valor Para: " + pasa);
         if (pasa == true) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -525,6 +531,28 @@ public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
             }
         }
 
+    }
+    
+    //EXPORTAR
+        
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCiudadesExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "CiudadesXLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
+    }
+    
+        public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCiudadesExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "CiudadesPDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
     }
 
 //GETTER AND SETTER

@@ -112,15 +112,15 @@
 
                                 <p:separator />
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasTiposContratos.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlCiudades.exportXLS()}" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.limpiarNuevaVTC()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosVTCEmpleadoExportar" fileName="VigenciasTiposContratosXML" encoding="UTF-8"/> 
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.limpiarNuevaCiudad()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosCiudadesExportar" fileName="CiudadesXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
@@ -165,8 +165,8 @@
                             <strong><h:outputText value="Departamento:" style="font-size: 12px; position: absolute; top: 160px" /></strong>
                             <p:inputText id="nuevoDepartamento" value="#{controlCiudades.nuevaCiudad.departamento.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 153px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlCiudades.valoresBackupAutocompletar(1)}" />
-                                <p:ajax event="change" listener="#{controlCiudades.autocompletarNuevoyDuplicado(controlCiudades.nuevaCiudad.departamento.nombre,'1')}"/>
-                                <p:ajax event="dblclick" listener="#{controlCiudades.asignarIndex(indice, '1', '1')}" />
+                                <p:ajax event="change" listener="#{controlCiudades.autocompletarNuevoyDuplicado(controlCiudades.nuevaCiudad.departamento.nombre, 1)}" update="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlCiudades.asignarIndex(indice)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 153px;  " id="btnNuevoDepartamento" icon="ui-icon-search" process="@this"  actionListener="#{controlCiudades.llamarLovDepartamento(1)}"/>
                             
@@ -183,7 +183,7 @@
                         </p:panel>
                     </p:dialog>
                     
-                    <p:dialog id="validacionNuevaCiudad" header="ATENCIÓN...!" widgetVar="validacioNuevaCiudad"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="validacionNuevaCiudad" header="ATENCIÓN...!" widgetVar="validacionNuevaCiudad"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="Para agregar una nueva ciudad es necesario adicionar: #{controlCiudades.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="validacionNuevaCiudad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
@@ -236,6 +236,34 @@
                         <p:inputTextarea value="#{controlCiudades.editarCiudad.codigoalternativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCodigosAlternativos" value="Atras" onclick="editarCodigosAlternativos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog> 
+                </h:form>
+                <h:form id="formExportar">
+                    <p:dataTable id="datosCiudadesExportar" var="ciudades" style="visibility: hidden; display: none;"                           
+                                 value="#{controlCiudades.listaCiudades}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS TIPOS CONTRATOS DE UN EMPLEADO --> 
+                        <p:column headerText="Codigo">                                  
+                            <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
+                            <h:outputText value="#{ciudades.codigo}" />
+                        </p:column> 
+
+                        <p:column headerText="Nombre">                                  
+                            <f:facet name="header"><h:outputText value="Nombre"/> </f:facet> 
+                            <h:outputText value="#{ciudades.nombre}" />
+                        </p:column>  
+
+                        <p:column headerText="Departamento">      
+                            <f:facet name="header"><h:outputText value="Departamento"/></f:facet>
+                            <h:outputText value="#{ciudades.departamento.nombre}" />
+                        </p:column>
+                        
+                         <p:column headerText="Codigo_Alternativo">                                  
+                            <f:facet name="header"><h:outputText value="Codigo Alternativo"/> </f:facet> 
+                            <h:outputText value="#{ciudades.codigoalternativo}" />
+                        </p:column> 
+
+                       
+
+                    </p:dataTable>
                 </h:form>
                 
             </ui:define>
