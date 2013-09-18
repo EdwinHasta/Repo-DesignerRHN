@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "UbicacionesGeograficas.findAll", query = "SELECT u FROM UbicacionesGeograficas u")})
 public class UbicacionesGeograficas implements Serializable {
+    @OneToMany(mappedBy = "ubicaciongeografica")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ubicacion")
     private Collection<VigenciasUbicaciones> vigenciasubicacionesCollection;
@@ -252,5 +255,14 @@ public class UbicacionesGeograficas implements Serializable {
 
     public void setVigenciasubicacionesCollection(Collection<VigenciasUbicaciones> vigenciasubicacionesCollection) {
         this.vigenciasubicacionesCollection = vigenciasubicacionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
 }

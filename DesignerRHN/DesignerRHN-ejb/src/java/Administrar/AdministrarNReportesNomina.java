@@ -16,7 +16,7 @@ import Entidades.Terceros;
 import Entidades.TiposAsociaciones;
 import Entidades.TiposTrabajadores;
 import Entidades.UbicacionesGeograficas;
-import InterfaceAdministrar.AdministrarReportesInterface;
+import InterfaceAdministrar.AdministrarNReportesNominaInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaAsociacionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -39,7 +39,7 @@ import javax.ejb.Stateful;
  * @author AndresPineda
  */
 @Stateful
-public class AdministrarNReportesNomina implements AdministrarReportesInterface {
+public class AdministrarNReportesNomina implements AdministrarNReportesNominaInterface {
 
     @EJB
     PersistenciaInforeportesInterface persistenciaInforeportes;

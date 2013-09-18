@@ -64,7 +64,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
             List<MotivosCambiosSueldos> motivosCambiosSueldos = (List<MotivosCambiosSueldos>) em.createNamedQuery("MotivosCambiosSueldos.findAll").getResultList();
             return motivosCambiosSueldos;
         } catch (Exception e) {
-            System.out.println("Error buscarMotivosCambiosSueldos");
+            System.out.println("Error buscarMotivosCambiosSueldos PersistenciaMotivoCambioSueldo : "+e.toString());
             return null;
         }
     }

@@ -4,28 +4,26 @@
  */
 package Administrar;
 
-import Entidades.Cargos;
+import Entidades.Actividades;
 import Entidades.Empleados;
-import Entidades.Empresas;
 import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
-import InterfaceAdministrar.AdministrarNReporteLaboralInterface;
+import InterfaceAdministrar.AdministrarNReporteBienestarInterface;
+import InterfacePersistencia.PersistenciaActividadesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
-import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
-import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaInforeportesInterface;
 import InterfacePersistencia.PersistenciaParametrosInformesInterface;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author AndresPineda
  */
-@Stateful
-public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInterface {
+@Stateless
+public class AdministrarNReporteBienestar implements AdministrarNReporteBienestarInterface {
 
     @EJB
     PersistenciaInforeportesInterface persistenciaInforeportes;
@@ -34,16 +32,13 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     @EJB
-    PersistenciaCargosInterface persistenciaCargos;
+    PersistenciaActividadesInterface persistenciaActividades;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
-    @EJB
-    PersistenciaEmpresasInterface persistenciaEmpresas;
     List<Inforeportes> listInforeportes;
     ParametrosInformes parametroReporte;
     String usuarioActual;
-    List<Cargos> listCargos;
-    List<Empresas> listEmpresas;
+    List<Actividades> listActividades;
     List<Empleados> listEmpleados;
 
     @Override
@@ -61,53 +56,41 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Inforeportes> listInforeportesUsuario() {
         try {
-            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioLaboral();
-            System.out.println("Tamaño: " + listInforeportes.size());
+            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioBienestar();
             return listInforeportes;
         } catch (Exception e) {
-            System.out.println("Error listInforeportesUsuario " + e);
+            System.out.println("Error listInforeportesUsuario " + e.toString());
             return null;
         }
     }
-    
+
     @Override
-    public void modificarParametrosInformes(ParametrosInformes parametroInforme){
-        try{
+    public void modificarParametrosInformes(ParametrosInformes parametroInforme) {
+        try {
             persistenciaParametrosInformes.editar(parametroInforme);
-        }catch(Exception e){
-            System.out.println("Error modificarParametrosInformes : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error modificarParametrosInformes : " + e.toString());
         }
     }
-    
+
     @Override
-    public List<Cargos> listCargos(){
-        try{
-            listCargos = persistenciaCargos.buscarCargos();
-            return listCargos;
-        }catch(Exception e){
-            System.out.println("Error en listCargos Administrar: "+e.toString());
+    public List<Actividades> listActividades() {
+        try {
+            listActividades = persistenciaActividades.buscarActividades();
+            return listActividades;
+        } catch (Exception e) {
+            System.out.println("Error en listActividades Administrar: " + e.toString());
             return null;
         }
     }
-    
+
     @Override
-    public List<Empleados> listEmpleados(){
-        try{
+    public List<Empleados> listEmpleados() {
+        try {
             listEmpleados = persistenciaEmpleado.buscarEmpleados();
             return listEmpleados;
-        }catch(Exception e){
-            System.out.println("Error listEmpleados : "+e.toString());
-            return null;
-        }
-    }
-    
-    @Override
-    public List<Empresas> listEmpresas() {
-        try {
-            listEmpresas = persistenciaEmpresas.buscarEmpresas();
-            return listEmpresas;
         } catch (Exception e) {
-            System.out.println("Error listEmpresas Administrar : " + e.toString());
+            System.out.println("Error listEmpleados : " + e.toString());
             return null;
         }
     }

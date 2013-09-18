@@ -34,6 +34,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cargos.findAll", query = "SELECT c FROM Cargos c")})
 public class Cargos implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
+    private Collection<Competenciascargos> competenciascargosCollection;
+    @OneToMany(mappedBy = "cargo")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
+    @OneToMany(mappedBy = "cargo")
+    private Collection<Evalplanillas> evalplanillasCollection;
     @OneToMany(mappedBy = "cargo")
     private Collection<Evalconvocatorias> evalconvocatoriasCollection;
     @OneToMany(mappedBy = "cargo")
@@ -297,5 +303,32 @@ public class Cargos implements Serializable {
 
     public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
         this.evalconvocatoriasCollection = evalconvocatoriasCollection;
+    }
+
+    @XmlTransient
+    public Collection<Competenciascargos> getCompetenciascargosCollection() {
+        return competenciascargosCollection;
+    }
+
+    public void setCompetenciascargosCollection(Collection<Competenciascargos> competenciascargosCollection) {
+        this.competenciascargosCollection = competenciascargosCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Evalplanillas> getEvalplanillasCollection() {
+        return evalplanillasCollection;
+    }
+
+    public void setEvalplanillasCollection(Collection<Evalplanillas> evalplanillasCollection) {
+        this.evalplanillasCollection = evalplanillasCollection;
     }
 }

@@ -10,9 +10,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasInterface{
+public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasInterface {
 
-        @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
@@ -33,5 +33,4 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
             return null;
         }
     }
-
 }

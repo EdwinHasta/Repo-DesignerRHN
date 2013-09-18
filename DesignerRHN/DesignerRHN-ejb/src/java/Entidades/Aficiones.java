@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Aficiones.findByCodigo", query = "SELECT a FROM Aficiones a WHERE a.codigo = :codigo"),
     @NamedQuery(name = "Aficiones.findByDescripcion", query = "SELECT a FROM Aficiones a WHERE a.descripcion = :descripcion")})
 public class Aficiones implements Serializable {
+    @OneToMany(mappedBy = "aficion")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "aficion")
     private Collection<VigenciasAficiones> vigenciasAficionesCollection;
     private static final long serialVersionUID = 1L;
@@ -76,6 +78,9 @@ public class Aficiones implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -115,5 +120,14 @@ public class Aficiones implements Serializable {
 
     public void setVigenciasAficionesCollection(Collection<VigenciasAficiones> vigenciasAficionesCollection) {
         this.vigenciasAficionesCollection = vigenciasAficionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
 }

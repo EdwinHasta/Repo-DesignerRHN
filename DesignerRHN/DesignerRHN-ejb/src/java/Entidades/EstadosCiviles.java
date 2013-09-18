@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "EstadosCiviles.findAll", query = "SELECT e FROM EstadosCiviles e")})
 public class EstadosCiviles implements Serializable {
+    @OneToMany(mappedBy = "estadocivil")
+    private Collection<ParametrosInformes> parametrosInformesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadocivil")
     private Collection<VigenciasEstadosCiviles> vigenciasEstadosCivilesCollection;
     private static final long serialVersionUID = 1L;
@@ -71,6 +73,9 @@ public class EstadosCiviles implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -127,6 +132,15 @@ public class EstadosCiviles implements Serializable {
 
     public void setVigenciasEstadosCivilesCollection(Collection<VigenciasEstadosCiviles> vigenciasEstadosCivilesCollection) {
         this.vigenciasEstadosCivilesCollection = vigenciasEstadosCivilesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosInformes> getParametrosInformesCollection() {
+        return parametrosInformesCollection;
+    }
+
+    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
+        this.parametrosInformesCollection = parametrosInformesCollection;
     }
     
 }

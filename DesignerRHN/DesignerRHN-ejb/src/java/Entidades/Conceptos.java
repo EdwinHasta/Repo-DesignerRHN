@@ -36,6 +36,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
+    @OneToMany(mappedBy = "conceptoabono")
+    private Collection<Tiposprestamos> tiposprestamosCollection;
+    @OneToMany(mappedBy = "conceptotercero")
+    private Collection<Tiposprestamos> tiposprestamosCollection1;
+    @OneToMany(mappedBy = "conceptodesembolso")
+    private Collection<Tiposprestamos> tiposprestamosCollection2;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -494,5 +500,32 @@ public class Conceptos implements Serializable {
     public void setVigenciasconceptosttCollection(Collection<VigenciasConceptosTT> vigenciasconceptosttCollection) {
         this.vigenciasconceptosttCollection = vigenciasconceptosttCollection;
     }*/
+
+    @XmlTransient
+    public Collection<Tiposprestamos> getTiposprestamosCollection() {
+        return tiposprestamosCollection;
+    }
+
+    public void setTiposprestamosCollection(Collection<Tiposprestamos> tiposprestamosCollection) {
+        this.tiposprestamosCollection = tiposprestamosCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tiposprestamos> getTiposprestamosCollection1() {
+        return tiposprestamosCollection1;
+    }
+
+    public void setTiposprestamosCollection1(Collection<Tiposprestamos> tiposprestamosCollection1) {
+        this.tiposprestamosCollection1 = tiposprestamosCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Tiposprestamos> getTiposprestamosCollection2() {
+        return tiposprestamosCollection2;
+    }
+
+    public void setTiposprestamosCollection2(Collection<Tiposprestamos> tiposprestamosCollection2) {
+        this.tiposprestamosCollection2 = tiposprestamosCollection2;
+    }
      
 }

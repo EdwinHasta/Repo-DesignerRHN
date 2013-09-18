@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "MOTIVOSCAMBIOSSUELDOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "MotivosCambioSueldos.findAll", query = "SELECT m FROM MotivosCambiosSueldos m")})
+    @NamedQuery(name = "MotivosCambiosSueldos.findAll", query = "SELECT m FROM MotivosCambiosSueldos m")})
 public class MotivosCambiosSueldos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

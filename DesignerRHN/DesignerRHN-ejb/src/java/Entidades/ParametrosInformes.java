@@ -65,6 +65,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ParametrosInformes.findByPdgpolitica", query = "SELECT p FROM ParametrosInformes p WHERE p.pdgpolitica = :pdgpolitica"),
     @NamedQuery(name = "ParametrosInformes.findByPdgestrategia", query = "SELECT p FROM ParametrosInformes p WHERE p.pdgestrategia = :pdgestrategia")})
 public class ParametrosInformes implements Serializable { 
+    @JoinColumn(name = "NOMBREGERENTE", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Empleados nombregerente;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -90,8 +93,6 @@ public class ParametrosInformes implements Serializable {
     @Size(max = 1)
     @Column(name = "GENERAPLANO")
     private String generaplano;
-    @Column(name = "NOMBREGERENTE")
-    private BigInteger nombregerente;
     @Size(max = 20)
     @Column(name = "TIPOPARATRABAJADOR")
     private String tipoparatrabajador;
@@ -293,14 +294,6 @@ public class ParametrosInformes implements Serializable {
 
     public void setGeneraplano(String generaplano) {
         this.generaplano = generaplano;
-    }
-
-    public BigInteger getNombregerente() {
-        return nombregerente;
-    }
-
-    public void setNombregerente(BigInteger nombregerente) {
-        this.nombregerente = nombregerente;
     }
 
     public String getTipoparatrabajador() {
@@ -702,6 +695,17 @@ public class ParametrosInformes implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Parametrosinformes[ usuario=" + usuario + " ]";
+    }
+
+    public Empleados getNombregerente() {
+        if(nombregerente == null){
+            nombregerente = new Empleados();
+        }
+        return nombregerente;
+    }
+
+    public void setNombregerente(Empleados nombregerente) {
+        this.nombregerente = nombregerente;
     }
     
 }

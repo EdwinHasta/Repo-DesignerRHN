@@ -19,11 +19,10 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author Administrator
+ * @author user
  */
 @Entity
-public class VWActualesReformasLaborales implements Serializable {
-
+public class VWVacaPendientesEmpleados implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -35,12 +34,21 @@ public class VWActualesReformasLaborales implements Serializable {
     private Empleados empleado;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FECHAVIGENCIA")
+    @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.DATE)
-    private Date fechaVigencia;
-    @JoinColumn(name = "REFORMALABORAL", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
-    private ReformasLaborales reformaLaboral;
+    private Date fechaInicial;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHAFINAL")
+    @Temporal(TemporalType.DATE)
+    private Date fechaFinal;
+    @Basic(optional = false)
+    @Column(name = "ESTADO")
+    private String estado;
+    @Basic(optional = false)
+    @Column(name = "DIASPENDIENTES")
+    private String diaspendientes;
+    
 
     public BigInteger getSecuencia() {
         return secuencia;
@@ -58,19 +66,35 @@ public class VWActualesReformasLaborales implements Serializable {
         this.empleado = empleado;
     }
 
-    public Date getFechaVigencia() {
-        return fechaVigencia;
+    public Date getFechaInicial() {
+        return fechaInicial;
     }
 
-    public void setFechaVigencia(Date fechaVigencia) {
-        this.fechaVigencia = fechaVigencia;
+    public void setFechaInicial(Date fechaInicial) {
+        this.fechaInicial = fechaInicial;
     }
 
-    public ReformasLaborales getReformaLaboral() {
-        return reformaLaboral;
+    public Date getFechaFinal() {
+        return fechaFinal;
     }
 
-    public void setReformaLaboral(ReformasLaborales reformaLaboral) {
-        this.reformaLaboral = reformaLaboral;
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getDiaspendientes() {
+        return diaspendientes;
+    }
+
+    public void setDiaspendientes(String diaspendientes) {
+        this.diaspendientes = diaspendientes;
     }
 }
