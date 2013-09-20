@@ -13,14 +13,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
 /**
  *
  * @author user
  */
 @Stateless
-
-public class PersistenciaProcesos implements PersistenciaProcesosInterface{
+public class PersistenciaProcesos implements PersistenciaProcesosInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -77,7 +75,6 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface{
 
     @Override
     public Procesos buscarProcesosSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT t FROM Procesos t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -90,4 +87,14 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface{
         }
     }
 
+    public List<Procesos> lovProcesos() {
+        try {
+            Query query = em.createQuery("SELECT p FROM Procesos p ORDER BY p.descripcion");
+            List<Procesos> listaProcesos = query.getResultList();
+            return listaProcesos;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaProcesos.lovProcesos: " + e);
+            return null;
+        }
+    }
 }

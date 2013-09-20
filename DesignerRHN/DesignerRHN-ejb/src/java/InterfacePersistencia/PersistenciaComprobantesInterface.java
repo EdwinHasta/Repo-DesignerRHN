@@ -19,4 +19,5 @@ public interface PersistenciaComprobantesInterface {
     public Comprobantes buscarComprobante(Object id);
     public List<Comprobantes> buscarComprobantes();
     public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado);
+    public BigInteger numeroMaximoComprobante();
 }

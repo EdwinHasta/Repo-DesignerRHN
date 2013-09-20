@@ -3,7 +3,6 @@ package Persistencia;
 import Entidades.VigenciasTiposContratos;
 import InterfacePersistencia.PersistenciaVigenciasTiposContratosInterface;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

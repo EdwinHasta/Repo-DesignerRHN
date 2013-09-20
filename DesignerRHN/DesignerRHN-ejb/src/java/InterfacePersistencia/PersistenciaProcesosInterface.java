@@ -20,6 +20,5 @@ public interface PersistenciaProcesosInterface {
     public Procesos buscarProceso(Object id);
     public List<Procesos> buscarProcesos();
     public Procesos buscarProcesosSecuencia(BigInteger secuencia);
-    
-    
+    public List<Procesos> lovProcesos();
 }

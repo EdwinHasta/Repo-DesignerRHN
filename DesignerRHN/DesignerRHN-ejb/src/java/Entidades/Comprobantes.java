@@ -52,7 +52,7 @@ public class Comprobantes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "NUMERO")
-    private long numero;
+    private BigInteger numero;
     @Basic(optional = false)
     @NotNull
     @Column(name = "VALOR")
@@ -81,7 +81,7 @@ public class Comprobantes implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Comprobantes(BigInteger secuencia, Date fecha, long numero, BigDecimal valor) {
+    public Comprobantes(BigInteger secuencia, Date fecha, BigInteger numero, BigDecimal valor) {
         this.secuencia = secuencia;
         this.fecha = fecha;
         this.numero = numero;
@@ -104,11 +104,11 @@ public class Comprobantes implements Serializable {
         this.fecha = fecha;
     }
 
-    public long getNumero() {
+    public BigInteger getNumero() {
         return numero;
     }
 
-    public void setNumero(long numero) {
+    public void setNumero(BigInteger numero) {
         this.numero = numero;
     }
 

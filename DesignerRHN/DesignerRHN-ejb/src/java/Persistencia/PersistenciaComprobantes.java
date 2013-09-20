@@ -69,4 +69,16 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
             return null;
         }
     }
+    
+    @Override
+    public BigInteger numeroMaximoComprobante() {
+        try {
+            Query query = em.createQuery("SELECT MAX(c.numero) FROM Comprobantes c");
+            BigInteger max = (BigInteger) query.getSingleResult();
+            return max;
+        } catch (Exception e) {
+            System.out.println("Error: (PersistenciaComprobantes.numeroMaximoComprobante)" + e);
+            return null;
+        }
+    }
 }
