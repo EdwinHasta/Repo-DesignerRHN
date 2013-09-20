@@ -37,14 +37,14 @@ function comprobantesScroll() {
 }
 
 function cortesProcesosScroll() {
-    datosComprobantes.scrollOffset = 3;
+    datosCortesProcesos.scrollOffset = 3;
 }
 /*SCROLL DINAMICOS TABLAS CON COLUMNA FIJA*/
 function iniciarScrollEmpleado() {
     var leftDiv = document.getElementById('inferiorIzquierda');
     var rightDiv = document.getElementById('inferiorDerecha');
     var topDiv = document.getElementById('superiorDerecha');
-
+    
     rightDiv.onscroll = function() {
         leftDiv.scrollTop = rightDiv.scrollTop;
         topDiv.scrollLeft = rightDiv.scrollLeft;

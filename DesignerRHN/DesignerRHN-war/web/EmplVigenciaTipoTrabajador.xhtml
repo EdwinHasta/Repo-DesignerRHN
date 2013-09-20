@@ -85,7 +85,7 @@
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice)}" update="editFecha"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice,'0')}" />
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice,0)}" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -102,8 +102,8 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipotrabajador.nombre}" id="editarTipoTrabajador" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice, 'TIPOTRABAJADOR', info.tipotrabajador.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, '1')}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, 1)}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 0)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -118,7 +118,7 @@
                                         <f:facet name="output"><h:outputText value="#{info.tipotrabajador.tipocotizante.descripcion}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipotrabajador.tipocotizante.descripcion}" id="editarTipoCotizante" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" readonly="true"> 
-                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, '2')}" />
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, 2)}" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -431,11 +431,11 @@
                             </p:calendar>
                             <strong><h:outputText value="Tipo Trabajador: " style="font-size: 14px; position: absolute; top: 118px; left: 50px" /></strong>
                             <p:inputText id="nuevoTipoTrabajador" value="#{controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '1')}"/>
-                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar('1', 'TIPOTRABAJADOR')}" />
-                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre, '1')}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 1)}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar(1, 'TIPOTRABAJADOR')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevoTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice,'1')}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevoTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice,1)}"/>   
                             <p:watermark for="nuevoTipoTrabajador" value="Tipo Trabajador" />
 
                             <strong><h:outputText value="Tipo Cotizante: " style="font-size: 14px; position: absolute; top: 150px; left: 50px"  /></strong>
@@ -464,11 +464,11 @@
 
                             <strong><h:outputText value="Tipo Trabajador: " style="font-size: 14px; position: absolute; top: 118px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoTrabajador" value="#{controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '2')}"/>
-                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar('2', 'TIPOTRABAJADOR')}" />
-                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre, '2')}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 2)}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar(2, 'TIPOTRABAJADOR')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnDuplicarTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '2')}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnDuplicarTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 2)}"/>   
                             <p:watermark for="duplicarTipoTrabajador" value="Tipo Trabajador" />
 
                             <strong><h:outputText value="Tipo Cotizante: " style="font-size: 14px; position: absolute; top: 150px; left: 50px"/></strong>

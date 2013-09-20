@@ -746,7 +746,6 @@ public class ControlVigenciasTiposContratos implements Serializable {
         }
     }
     //CTRL + F11 ACTIVAR/DESACTIVAR
-
     public void activarCtrlF11() {
         if (bandera == 0) {
             System.out.println("Activar");
@@ -851,7 +850,6 @@ public class ControlVigenciasTiposContratos implements Serializable {
             context.update("form:ciudadesDialogo");
             context.execute("ciudadesDialogo.show()");
         }
-
     }
 
     //LOVS
