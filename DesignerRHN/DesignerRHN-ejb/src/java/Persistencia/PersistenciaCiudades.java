@@ -2,7 +2,6 @@ package Persistencia;
 
 import Entidades.Ciudades;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

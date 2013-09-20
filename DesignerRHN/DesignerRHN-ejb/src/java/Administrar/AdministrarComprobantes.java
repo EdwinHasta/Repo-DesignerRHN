@@ -41,6 +41,11 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
             return empleado;
         }
     }
+    
+    @Override
+    public BigInteger maximoNumeroComprobante(){
+        return persistenciaComprobantes.numeroMaximoComprobante();
+    }
 
     @Override
     public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado) {
@@ -61,9 +66,63 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     public List<SolucionesNodos> solucionesNodosCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         return persistenciaSolucionesNodos.solucionNodoCorteProcesoEmpleador(secuenciaCorteProceso, secuenciaEmpleado);
     }
-    
+
     @Override
     public List<Procesos> lovProcesos() {
         return persistenciaProcesos.lovProcesos();
+    }
+
+    //CAMBIOS COMPROBANTES
+    @Override
+    public void modificarComprobantes(List<Comprobantes> listComprobantes) {
+        for (int i = 0; i < listComprobantes.size(); i++) {
+            System.out.println("Modificando Comprobantes...");
+            persistenciaComprobantes.editar(listComprobantes.get(i));
+        }
+
+    }
+
+    @Override
+    public void borrarComprobantes(Comprobantes comprobante) {
+        try {
+            persistenciaComprobantes.borrar(comprobante);
+        } catch (Exception e) {
+            System.out.println("Error borrarComprobantes" + e);
+        }
+
+    }
+
+    @Override
+    public void crearComprobante(Comprobantes comprobantes) {
+        persistenciaComprobantes.crear(comprobantes);
+    }
+
+    //CAMBIOS CORTES PROCESOS
+    @Override
+    public void modificarCortesProcesos(List<CortesProcesos> listaCortesProcesos) {
+        for (int i = 0; i < listaCortesProcesos.size(); i++) {
+            System.out.println("Modificando Cortes procesos...");
+            if (listaCortesProcesos.get(i).getProceso().getSecuencia() == null) {
+                listaCortesProcesos.get(i).setProceso(null);
+                persistenciaCortesProcesos.editar(listaCortesProcesos.get(i));
+            } else {
+                persistenciaCortesProcesos.editar(listaCortesProcesos.get(i));
+            }
+        }
+    }
+
+    @Override
+    public void borrarCortesProcesos(CortesProcesos corteProceso) {
+        try {
+            persistenciaCortesProcesos.borrar(corteProceso);
+        } catch (Exception e) {
+            System.out.println("Error borrarCortesProcesos" + e);
+        }
+
+    }
+
+    @Override
+    public void crearCorteProceso(CortesProcesos corteProceso) {
+        persistenciaCortesProcesos.crear(corteProceso);
     }
 }

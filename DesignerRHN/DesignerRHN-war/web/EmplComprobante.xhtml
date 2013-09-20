@@ -22,13 +22,12 @@
 
                             <p:dataTable id="datosComprobantes" widgetVar="datosComprobantes" var="comprobante" value="#{controlComprobantes.listaComprobantes}"
                                          rowKey="#{comprobante.secuencia}" rowIndexVar="indiceComprobante" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         scrollable="true" scrollHeight="#{controlComprobantes.altoScrollComprobante}" filteredValue="#{controlComprobantes.filtradolistaComprobantes}" liveScroll="true" scrollRows="4" 
-                                         emptyMessage="No se encontrarón datos" editable="true" editMode="cell"  selectionMode="single">
+                                         scrollable="true" scrollHeight="#{controlComprobantes.altoScrollComprobante}" filteredValue="#{controlComprobantes.filtradolistaComprobantes}" 
+                                         emptyMessage="No se encontrarón datos" editable="true" editMode="cell" >
 
-                                <p:ajax  event="sort" update="@this" onstart="comprobantesScroll()" onerror="alert('ERROR!')" />
                                 <p:ajax event="filter" listener="#{controlComprobantes.eventoFiltrarComponentes()}"/>
 
-                                <p:column headerText="#Compr." sortBy="#{comprobante.numero}" filterBy="#{comprobante.numero}" filterMatchMode="contains"  width="40" id="numeroComprobanteC" filterStyle="display: none; visibility: hidden;">  
+                                <p:column headerText="#Compr." sortBy="#{comprobante.numero}" filterBy="#{comprobante.numero}" filterMatchMode="contains"  width="40" id="numeroComprobanteC"  filterStyle="display: none; visibility: hidden;">  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{comprobante.numero}"/>
@@ -36,7 +35,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{comprobante.numero}" id="editarNumero" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase; height: 11px;"> 
                                                 <p:ajax event="change" listener="#{controlComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
-                                                <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceComprobantes(indiceComprobante, 0)}"/>
+                                                <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceComprobantes(indiceComprobante, 0)}" update="numeroComprobanteC"/>
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -85,7 +84,7 @@
                         <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 20px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlComprobantes.guardarCambios()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
@@ -132,10 +131,9 @@
 
                             <p:dataTable id="datosCortesProcesos" widgetVar="datosCortesProcesos" var="corteProceso" value="#{controlComprobantes.listaCortesProcesos}"
                                          rowKey="#{corteProceso.secuencia}" rowIndexVar="indiceCorteProceso" style="font-size: 10px;"
-                                         scrollable="true" scrollHeight="67" filteredValue="#{controlComprobantes.filtradolistaCortesProcesos}" liveScroll="true" scrollRows="3" 
+                                         scrollable="true" scrollHeight="67" filteredValue="#{controlComprobantes.filtradolistaCortesProcesos}"
                                          emptyMessage="No se encontrarón datos" editable="true" editMode="cell">
 
-                                <p:ajax  event="sort" update="@this" onstart="cortesProcesosScroll()" onerror="alert('ERROR!')" />
                              <!--   <p:ajax event="filter" listener="#{controlPerTelefonos.eventoFiltrar()}"/>  -->
 
                                 <p:column headerText="Fecha Corte" sortBy="#{corteProceso.corte}" width="60" filterBy="#{corteProceso.corte}" filterMatchMode="contains" id="fechaCorteCP" filterStyle="display: none; visibility: hidden;" >  
@@ -391,9 +389,22 @@
                                 </p:dataTable>
                             </div> 
                         </fieldset>
+                        <p:commandButton value="Refrescar" style="position: absolute; top: 520px; left: -70px;" actionListener="#{controlComprobantes.salir()}" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos" >
+
+                    <p:dialog id="NuevoRegistroPagina" header="Nuevo Registro" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="145" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="Seleccione la tabla para ingresar nuevo registro" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <h:outputText value="Comprobantes" style="position: absolute; top: 47px;left: 60px"/>
+                        <p:commandButton id="NuevoComprobante" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroComprobantes.show()" update=":formularioDialogos:nuevoComprobante" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <h:outputText value="Cortes Procesos" style="position: absolute; top: 92px;left: 60px"/>
+                        <p:commandButton id="NuevoCorteProceso" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroCortesProcesos.show()" update=":formularioDialogos:nuevoCorteProceso" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+
+                        <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="Cancelar" style="position: absolute; top: 120px;left: 280px"/>
+                    </p:dialog>
+
                     <p:dialog id="NuevoRegistroComprobantes" header="Nuevo Registro Comprobantes" widgetVar="NuevoRegistroComprobantes" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar nuevo comprobante" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
@@ -471,6 +482,7 @@
                             <strong><h:outputText value="Proceso: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
                             <p:inputText id="nuevoProceso" value="#{controlComprobantes.nuevoCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
+                                <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVProcesosNuevo_Duplicado(1)}" />
                             </p:inputText>
 
                             <p:commandButton id="limpiarCorteProceso" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" process="@this"/>
@@ -494,6 +506,7 @@
                             <strong><h:outputText value="Proceso: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
                             <p:inputText id="duplicadoProceso" value="#{controlComprobantes.duplicarCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
+                                <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVProcesosNuevo_Duplicado(2)}" />
                             </p:inputText>
 
                             <p:commandButton id="limpiarCorteProcesoD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" process="@this"/>
@@ -554,7 +567,6 @@
                         <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlComprobantes.secRegistro, controlComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
-                    #{controlComprobantes.secRegistro}
 
                     <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
@@ -595,8 +607,15 @@
                         <h:outputText value="La tabla '#{controlComprobantes.nombreTabla}' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
+                    <!-- GUARDAR CAMBIOS CORTES PROCESOS -->
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlComprobantes.guardarCambios()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
                     <!-- LOV PROCESOS-->
-                    <!-- DIALOGO L.O.V ESTATICO DE TIPOS CONTRATO -->
                     <p:dialog header="Procesos" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
                               showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovProcesos" style="font-size: 11px; width: 310px" var="proceso" value="#{controlComprobantes.listaProcesos}" rowKey="#{proceso.secuencia}"
