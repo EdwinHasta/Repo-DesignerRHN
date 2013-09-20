@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,7 +39,7 @@ public class Direcciones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
@@ -105,11 +106,11 @@ public class Direcciones implements Serializable {
     public Direcciones() {
     }
 
-    public Direcciones(BigDecimal secuencia) {
+    public Direcciones(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Direcciones(BigDecimal secuencia, String ppal, String tipoppal, String tiposecundario, Date fechavigencia) {
+    public Direcciones(BigInteger secuencia, String ppal, String tipoppal, String tiposecundario, Date fechavigencia) {
         this.secuencia = secuencia;
         this.ppal = ppal;
         this.tipoppal = tipoppal;
@@ -117,11 +118,11 @@ public class Direcciones implements Serializable {
         this.fechavigencia = fechavigencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

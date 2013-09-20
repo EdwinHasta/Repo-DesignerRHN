@@ -30,6 +30,11 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
         listaCiudades = persistenciaCiudades.ciudades();
         return listaCiudades;
     }
+    
+    @Override
+    public List<Ciudades>  lovCiudades(){
+        return persistenciaCiudades.ciudades();
+    }
 
     @Override
     public void modificarCiudad(List<Ciudades> listaCiudadesModificar) {
