@@ -21,7 +21,8 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
     @Override
     public void crear(Telefonos telefonos) {
         try {
-            em.merge(telefonos);
+            Telefonos t = em.merge(telefonos);
+            
         } catch (Exception e) {
             System.out.println("Error en PersistenciaTelefonos.crear: " + e);
         }
