@@ -92,6 +92,7 @@ public class ControlCiudades implements Serializable {
         nuevaCiudad.setDepartamento(new Departamentos());
         nuevaCiudad.getDepartamento().setNombre(" ");
         secRegistro = null;
+        k = 0;
     }
 
     public void asignarIndex(Integer indice) {
@@ -177,22 +178,25 @@ public class ControlCiudades implements Serializable {
     public void limpiarduplicarCiudad() {
         duplicarCiudad = new Ciudades();
     }
-
-    //Ubicacion Celda.
-    public void cambiarIndice(int indice, int celda) {
-        System.out.println("Valor" + permitirIndex);
+//UBICACION CELDA
+        public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            System.out.println("Valor: " + celda);
-            secRegistro = listaCiudades.get(index).getSecuencia();
-
-            if (cualCelda == 3) {
-                Departamento = listaCiudades.get(index).getDepartamento().getNombre();
+            if (tipoLista == 0) {
+                secRegistro = listaCiudades.get(index).getSecuencia();
+                if (cualCelda == 1) {
+                    Departamento = listaCiudades.get(index).getDepartamento().getNombre();
+                } 
+            } else {
+                secRegistro = filtradoListaCiudades.get(index).getSecuencia();
+                if (cualCelda == 1) {
+                    Departamento = filtradoListaCiudades.get(index).getDepartamento().getNombre();
+                }  
+                }
             }
-        }
-    }
-
+         }
+    
     //AUTOCOMPLETAR
     public void modificarCiudades(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
@@ -374,24 +378,21 @@ public class ControlCiudades implements Serializable {
 
     //CREAR CIUDAD
     public void agregarNuevaCiudad() {
-        boolean pasa = false;
+        int pasa = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevaCiudad.getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " * Nombre de la Ciudad \n";
-            pasa = false;
-        } else {
-            pasa = true;
-        }
+            pasa++;
+        } 
         if (nuevaCiudad.getDepartamento().getSecuencia()== null) {
             mensajeValidacion = mensajeValidacion + "   * Departamento \n";
-            pasa = false;
-        } else {
-            pasa = true;
-        }
+            pasa++;
+        } 
             
         System.out.println("Valor Para: " + pasa);
-        if (pasa == true) {
+        
+        if (pasa == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");

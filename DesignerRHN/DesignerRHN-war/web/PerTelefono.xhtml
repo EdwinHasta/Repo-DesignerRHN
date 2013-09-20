@@ -22,8 +22,7 @@
                                          rowKey="#{telefono.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
                                          scrollable="true" scrollHeight="200" filteredValue="#{controlPerTelefonos.filtradosListaTelefonos}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" 
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                         editable="true" editMode="cell">
 
                                 <p:ajax event="filter" listener="#{controlPerTelefonos.eventoFiltrar()}"/>
 
@@ -89,7 +88,7 @@
                                             <p:inputText value="#{telefono.ciudad.nombre}" id="editarCiudad" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="change" listener="#{controlPerTelefonos.modificarTelefonos(indice, 'CIUDAD', telefono.ciudad.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlPerTelefonos.cambiarIndice(indice, 3)}" />
-                                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 1)}"/>
+                                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 1, 0)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -101,10 +100,10 @@
                             </p:dataTable>  
                         </fieldset>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 32px; left: 3px;">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlCiudades.guardarCambiosCiudad()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlPerTelefonos.guardarCambiosTelefono()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerTelefonos.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
@@ -123,7 +122,7 @@
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerTelefonos.limpiarNuevoTelefono()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosTelefonosExportar" fileName="CiudadesXML" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target=":formExportar:datosTelefonosExportar" fileName="TelefonosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
@@ -137,16 +136,18 @@
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerTelefonos.borrarTelefonos()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Telefono" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.duplicarC()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerTelefonos.duplicarT()}"  process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Telefono" />
 
                                 <p:separator /> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerTelefonos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 15px; top: 410px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlPerTelefonos.refrescar()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 522px; top: 410px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosTelefonosPersona" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 410px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPerTelefonos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 605px; top: 410px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPerTelefonos.salir()}" action="nomina" process="@this" />
 
                     </p:panel> 
                 </h:form>
@@ -173,8 +174,8 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevoTipoTelefono" icon="ui-icon-search" process="@this"  actionListener="#{controlPerTelefonos.asignarIndex(indice, 0, 1)}"/>   
                             <p:watermark for="nuevoTipoTelefono" value="Tipo Teléfono" />
 
-                            <strong><h:outputText value="Numero:  "  style="font-size: 12px; position: absolute; top: 293px" /></strong>
-                            <p:inputText id="nuevoNumero" value="#{controlPerTelefonos.nuevoTelefono.numerotelefono}" style="font-size: 12px; width: 150px; height: 50px; overflow: auto; position: absolute; left: 200px; top: 290px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="Numero:  "  style="font-size: 12px; position: absolute; top: 152px" /></strong>
+                            <p:inputText id="nuevoNumero" value="#{controlPerTelefonos.nuevoTelefono.numerotelefono}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="nuevoNumero"/>
                             </p:inputText>
                             <p:watermark for="nuevoNumero" value="Numero" />
@@ -193,6 +194,69 @@
                             <p:commandButton id="cancelarT" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarNuevoTelefono()}" update="nuevoTelefono" onclick="NuevoRegistroTelefono.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
+                    
+                    <p:dialog id="validacionNuevoTelefono" header="ATENCIÓN...!" widgetVar="validacionNuevoTelefono"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar un nuevo Telefono es necesario adicionar: #{controlPerTelefonos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevoTelefono.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                     <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPerTelefonos.guardarCambiosTelefono()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <!--DIALOGO DUPLICAR-->
+
+                    <p:dialog id="DuplicarRegistroTelefono" header="Duplicar Registro" widgetVar="DuplicarRegistroTelefono" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información del Telefono " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarTelefono" style="border: none;">
+
+                           <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 85px" /></strong>
+                           <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; top: 80px; left: 200px;" value="#{controlPerTelefonos.duplicarTelefono.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFecha"/>
+                                <p:ajax event="change" update="duplicarFecha"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Numero: " style="font-size: 12px; position: absolute; top: 166px" /></strong>
+                            <p:inputText id="duplicarNumero" value="#{controlPerTelefonos.duplicarTelefono.numerotelefono}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 165px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="duplicarNumero"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarNumero" value="Numero" />
+
+                            <strong><h:outputText value="Tipo Telefono:  " style="font-size: 12px; position: absolute; top: 125px" /></strong>
+                            <p:inputText id="duplicarTipoTelefono" value="#{controlPerTelefonos.duplicarTelefono.tipotelefono.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 126px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPerTelefonos.valoresBackupAutocompletar(2, 'TIPOT')}" />
+                                <p:ajax event="change" listener="#{controlPerTelefonos.autocompletarNuevoyDuplicado('TIPOT', controlPerTelefonos.duplicarTelefono.tipotelefono.nombre, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 0, 2)}" />
+                            </p:inputText>
+                            <p:watermark for="duplicarTipoTelefono" value="Tipo Telefono" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 125px;  " id="btnDuplicarTipoTelefono" icon="ui-icon-search" process="@this"  actionListener="#{controlPerTelefonos.asignarIndex(indice, 0, 2)}"/>   
+
+
+                            <strong><h:outputText value="Ciudad: " style="font-size: 12px; position: absolute; top: 202px" /></strong>
+                            <p:inputText id="duplicarCiudad" value="#{controlPerTelefonos.duplicarTelefono.ciudad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 200px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPerTelefonos.valoresBackupAutocompletar(2, 'CIUDAD')}" />
+                                <p:ajax event="change" listener="#{controlPerTelefonos.autocompletarNuevoyDuplicado('CIUDAD', controlPerTelefonos.duplicarTelefono.ciudad.nombre, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 1 , 2)}" />
+                            </p:inputText>
+                            <p:watermark for="duplicarCiudad" value="Ciudad:" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 200px;  " id="btnDuplicarCiudad" icon="ui-icon-search" process="@this"  actionListener="#{controlPerTelefonos.asignarIndex(indice, 1, 2)}"/>   
+
+
+                            <p:commandButton id="limpiarDuplicadoTelefono" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarduplicarTelefono()}" update="duplicarTelefono" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoTelefono" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  process="@this" actionListener="#{controlPerTelefonos.confirmarDuplicar()}" onclick="DuplicarRegistroTelefono.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoTelefono" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarduplicarTelefono()}" update="duplicarTelefono" onclick="DuplicarRegistroTelefono.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+
                     <!--DIALOGO TIPOS DE TELEFONOS-->    
                     <p:dialog header="Tipos de Telefonos" widgetVar="tiposTelefonosDialogo" draggable="false" resizable="false" id="tiposTelefonosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
@@ -282,11 +346,58 @@
                         <p:commandButton id="cancelarCiudad" value="Atras" onclick="editarCiudad.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog> 
 
+                      <!-- DIALOGOS RASTROS -->
+
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'TELEFONOS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerTelefonos.secRegistro, 'Telefonos', 'telefonos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'TELEFONOS' tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Telefonos', 'telefonos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerTelefonos.secRegistro, 'Telefonos', 'telefonos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'TELEFONOS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
                 </h:form>
 
                 <h:form id="formExportar">
-                    <p:dataTable id="datosTelefonosExportar" var="telefonos" style="visibility: hidden; display: none;"                           
+                    <p:dataTable id="datosTelefonosExportar" var="telefono" style="visibility: hidden; display: none;"                           
                                  value="#{controlPerTelefonos.listaTelefonos}"> 
                         <!--COLUMNAS TABLA TELEFONOS--> 
                         <p:column>  
