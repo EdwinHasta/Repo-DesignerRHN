@@ -30,6 +30,7 @@ public class ControlPerTelefonos implements Serializable {
     AdministrarTelefonosInterface administrarTelefonos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaPersona;
     private Personas persona;
