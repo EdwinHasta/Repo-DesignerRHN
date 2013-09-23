@@ -175,6 +175,7 @@ public class ControlPerDirecciones implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevaDireccion.setSecuencia(l);
+            nuevaDireccion.setPersona(persona);
             listaDireccionesCrear.add(nuevaDireccion);
             listaDirecciones.add(nuevaDireccion);
             nuevaDireccion = new Direcciones();
