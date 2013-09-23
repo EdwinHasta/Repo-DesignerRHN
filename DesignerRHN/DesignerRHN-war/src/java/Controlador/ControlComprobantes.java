@@ -5,6 +5,7 @@ import Entidades.CortesProcesos;
 import Entidades.Empleados;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.Terceros;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarComprobantesInterface;
@@ -47,16 +48,23 @@ public class ControlComprobantes implements Serializable {
     //TABLA 4
     private List<SolucionesNodos> listaSolucionesNodosEmpleador;
     private List<SolucionesNodos> filtradolistaSolucionesNodosEmpleador;
+    //LOV PROCESOS
     private List<Procesos> listaProcesos;
     private Procesos procesoSelecionado;
     private List<Procesos> filtradoProcesos;
+    //LOV TERCEROS
+    private List<Terceros> listaTerceros;
+    private Terceros TerceroSelecionado;
+    private List<Terceros> filtradolistaTerceros;
     private int tipoActualizacion;
     private boolean permitirIndex;
     //Activo/Desactivo Crtl + F11
-    private int bandera;
-    //Columnas Tabla Comprobantes
+    private int banderaComprobantes;
+    private int banderaCortesProcesos;
+    //Columnas Tablas
     DataTable tablaComprobantes, tablaCortesProcesos;
     private Column numeroComprobanteC, fechaC, fechaEntregaC;
+    private Column fechaCorteCP, procesoCP;
     private String altoScrollComprobante, altoScrollCortesProcesos;
     //Otros
     private boolean aceptar;
@@ -68,9 +76,13 @@ public class ControlComprobantes implements Serializable {
     //modificar
     private List<Comprobantes> listaComprobantesModificar;
     private List<CortesProcesos> listaCortesProcesosModificar;
+    private List<SolucionesNodos> listaSolucionesNodosEmpleadoModificar;
+    private List<SolucionesNodos> listaSolucionesNodosEmpleadorModificar;
     private boolean guardado, guardarOk;
     private boolean modificacionesComprobantes;
     private boolean modificacionesCortesProcesos;
+    private boolean modificacionesSolucionesNodosEmpleado;
+    private boolean modificacionesSolucionesNodosEmpleador;
     //crear
     private Comprobantes nuevoComprobante;
     private CortesProcesos nuevoCorteProceso;
@@ -90,17 +102,19 @@ public class ControlComprobantes implements Serializable {
     private Comprobantes duplicarComprobante;
     private CortesProcesos duplicarCorteProceso;
     //AUTOCOMPLETAR
-    private String Proceso;
+    private String Proceso, Tercero;
     //RASTRO*/
     private BigInteger secRegistro;
     private String nombreTabla;
     //INFORMATIVOS
-    private int cualCelda, tipoListaComprobantes, tipoListaCortesProcesos, tipoTabla;
+    private int cualCelda, tipoListaComprobantes, tipoListaCortesProcesos, tipoListaSNEmpleado, tipoListaSNEmpleador, tipoTabla;
+    //SUBTOTALES Y NETO
+    private BigDecimal subtotalPago, subtotalDescuento, subtotalPasivo, subtotalGasto, neto;
 
     public ControlComprobantes() {
-        secuenciaEmpleado = BigInteger.valueOf(10661474);
         permitirIndex = true;
         listaProcesos = new ArrayList<Procesos>();
+        listaTerceros = new ArrayList<Terceros>();
         empleado = new Empleados();
         procesoSelecionado = new Procesos();
         seleccionComprobante = new Comprobantes();
@@ -116,6 +130,8 @@ public class ControlComprobantes implements Serializable {
         //modificar 
         listaComprobantesModificar = new ArrayList<Comprobantes>();
         listaCortesProcesosModificar = new ArrayList<CortesProcesos>();
+        listaSolucionesNodosEmpleadoModificar = new ArrayList<SolucionesNodos>();
+        listaSolucionesNodosEmpleadorModificar = new ArrayList<SolucionesNodos>();
         modificacionesCortesProcesos = false;
         modificacionesComprobantes = false;
         //editar
@@ -126,6 +142,8 @@ public class ControlComprobantes implements Serializable {
         cualCelda = -1;
         tipoListaComprobantes = 0;
         tipoListaCortesProcesos = 0;
+        tipoListaSNEmpleado = 0;
+        tipoListaSNEmpleador = 0;
         tipoTabla = 0;
         //guardar
         guardado = true;
@@ -137,10 +155,21 @@ public class ControlComprobantes implements Serializable {
         secRegistro = null;
         tablaExportar = ":formExportar:datosComprobantesExportar";
         altoScrollComprobante = "67";
+        altoScrollCortesProcesos = "67";
+        banderaComprobantes = 0;
+        banderaCortesProcesos = 0;
         nombreTabla = "Comprobantes";
+        subtotalPago = new BigDecimal(0);
+        subtotalDescuento = new BigDecimal(0);
+        subtotalPasivo = new BigDecimal(0);
+        subtotalGasto = new BigDecimal(0);
     }
 
     public void recibirEmpleado(BigInteger sec) {
+        subtotalPago = new BigDecimal(0);
+        subtotalDescuento = new BigDecimal(0);
+        subtotalPasivo = new BigDecimal(0);
+        subtotalGasto = new BigDecimal(0);
         secuenciaEmpleado = sec;
         empleado = administrarComprobantes.buscarEmpleado(secuenciaEmpleado);
         if (empleado != null) {
@@ -151,6 +180,21 @@ public class ControlComprobantes implements Serializable {
                 if (!listaCortesProcesos.isEmpty()) {
                     listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
                     listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
+                    for (int i = 0; i < listaSolucionesNodosEmpleado.size(); i++) {
+                        if (listaSolucionesNodosEmpleado.get(i).getTipo().equals("PAGO")) {
+                            subtotalPago = subtotalPago.add(listaSolucionesNodosEmpleado.get(i).getValor());
+                        } else {
+                            subtotalDescuento = subtotalDescuento.add(listaSolucionesNodosEmpleado.get(i).getValor());
+                        }
+                    }
+                    for (int i = 0; i < listaSolucionesNodosEmpleador.size(); i++) {
+                        if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("PASIVO")) {
+                            subtotalPasivo = subtotalPasivo.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                        } else if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("GASTO")) {
+                            subtotalGasto = subtotalGasto.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                        }
+                    }
+                    neto = subtotalPago.subtract(subtotalDescuento);
                 }
             }
         }
@@ -159,42 +203,85 @@ public class ControlComprobantes implements Serializable {
 
     public void cambiarIndiceComprobantes(int indice, int celda) {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (modificacionesCortesProcesos == false) {
-            if (permitirIndex == true) {
-                indexComprobante = indice;
-                cualCelda = celda;
-                tipoTabla = 0;
-                nombreTabla = "Comprobantes";
-                seleccionComprobante = listaComprobantes.get(indexComprobante);
-                if (tipoListaComprobantes == 0) {
-                    secRegistro = listaComprobantes.get(indexComprobante).getSecuencia();
-                    listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(listaComprobantes.get(indexComprobante).getSecuencia());
-                    if (!listaCortesProcesos.isEmpty()) {
-                        listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
-                        listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+        if (modificacionesSolucionesNodosEmpleado == false && modificacionesSolucionesNodosEmpleador == false) {
+            if (modificacionesCortesProcesos == false) {
+                if (permitirIndex == true) {
+                    subtotalPago = new BigDecimal(0);
+                    subtotalDescuento = new BigDecimal(0);
+                    subtotalPasivo = new BigDecimal(0);
+                    subtotalGasto = new BigDecimal(0);
+                    indexComprobante = indice;
+                    cualCelda = celda;
+                    tipoTabla = 0;
+                    nombreTabla = "Comprobantes";
+                    seleccionComprobante = listaComprobantes.get(indexComprobante);
+                    if (tipoListaComprobantes == 0) {
+                        secRegistro = listaComprobantes.get(indexComprobante).getSecuencia();
+                        listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(listaComprobantes.get(indexComprobante).getSecuencia());
+                        if (!listaCortesProcesos.isEmpty()) {
+                            listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                            listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                        } else {
+                            listaSolucionesNodosEmpleado = null;
+                            listaSolucionesNodosEmpleador = null;
+                        }
                     } else {
-                        listaSolucionesNodosEmpleado = null;
-                        listaSolucionesNodosEmpleador = null;
+                        secRegistro = filtradolistaComprobantes.get(indexComprobante).getSecuencia();
+                        listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(filtradolistaComprobantes.get(indexComprobante).getSecuencia());
+                        if (!listaCortesProcesos.isEmpty()) {
+                            listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                            listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                        } else {
+                            listaSolucionesNodosEmpleado = null;
+                            listaSolucionesNodosEmpleador = null;
+                        }
                     }
-                } else {
-                    secRegistro = filtradolistaComprobantes.get(indexComprobante).getSecuencia();
-                    listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(filtradolistaComprobantes.get(indexComprobante).getSecuencia());
-                    if (!listaCortesProcesos.isEmpty()) {
-                        listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
-                        listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
-                    } else {
-                        listaSolucionesNodosEmpleado = null;
-                        listaSolucionesNodosEmpleador = null;
+                    if (banderaCortesProcesos == 1) {
+                        fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                        fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
+                        procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                        procesoCP.setFilterStyle("display: none; visibility: hidden;");
+                        altoScrollCortesProcesos = "67";
+                        RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
+                        banderaCortesProcesos = 0;
+                        filtradolistaCortesProcesos = null;
+                        tipoListaCortesProcesos = 0;
                     }
+                    if (!listaSolucionesNodosEmpleado.isEmpty()) {
+                        for (int i = 0; i < listaSolucionesNodosEmpleado.size(); i++) {
+                            if (listaSolucionesNodosEmpleado.get(i).getTipo().equals("PAGO")) {
+                                subtotalPago = subtotalPago.add(listaSolucionesNodosEmpleado.get(i).getValor());
+                            } else {
+                                subtotalDescuento = subtotalDescuento.add(listaSolucionesNodosEmpleado.get(i).getValor());
+                            }
+                        }
+                    }
+                    if (!listaSolucionesNodosEmpleador.isEmpty()) {
+                        for (int i = 0; i < listaSolucionesNodosEmpleador.size(); i++) {
+                            if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("PASIVO")) {
+                                subtotalPasivo = subtotalPasivo.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                            } else if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("GASTO")) {
+                                subtotalGasto = subtotalGasto.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                            }
+                        }
+                    }
+                    neto = subtotalPago.subtract(subtotalDescuento);
+                    tablaExportar = ":formExportar:datosComprobantesExportar";
+                    nombreArchivoExportar = "ComprobantesXML";
+                    context.update("form:datosCortesProcesos");
+                    context.update("form:tablaInferiorIzquierda");
+                    context.update("form:tablaInferiorDerecha");
+                    context.update("form:tablaInferiorIzquierdaEM");
+                    context.update("form:tablaInferiorDerechaEM");
+                    context.update("form:exportarXML");
+                    context.update("form:subTotalPago");
+                    context.update("form:subTotalDescuento");
+                    context.update("form:subTotalPasivo");
+                    context.update("form:subTotalGasto");
+                    context.update("form:neto");
                 }
-                tablaExportar = ":formExportar:datosComprobantesExportar";
-                nombreArchivoExportar = "ComprobantesXML";
-                context.update("form:datosCortesProcesos");
-                context.update("form:tablaInferiorIzquierda");
-                context.update("form:tablaInferiorDerecha");
-                context.update("form:tablaInferiorIzquierdaEM");
-                context.update("form:tablaInferiorDerechaEM");
-                context.update("form:exportarXML");
+            } else {
+                context.execute("confirmarGuardar.show();");
             }
         } else {
             context.execute("confirmarGuardar.show();");
@@ -202,35 +289,150 @@ public class ControlComprobantes implements Serializable {
     }
 
     public void cambiarIndiceCortesProcesos(int indice, int celda) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (modificacionesSolucionesNodosEmpleado == false && modificacionesSolucionesNodosEmpleador == false) {
+            if (permitirIndex == true) {
+                subtotalPago = new BigDecimal(0);
+                subtotalDescuento = new BigDecimal(0);
+                subtotalPasivo = new BigDecimal(0);
+                subtotalGasto = new BigDecimal(0);
+                indexCortesProcesos = indice;
+                cualCelda = celda;
+                tipoTabla = 1;
+                nombreTabla = "CortesProcesos";
+                if (tipoListaCortesProcesos == 0) {
+                    secRegistro = listaCortesProcesos.get(indexCortesProcesos).getSecuencia();
+                    if (cualCelda == 1) {
+                        Proceso = listaCortesProcesos.get(indexCortesProcesos).getProceso().getDescripcion();
+                    }
+                    listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                    listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                } else {
+                    secRegistro = filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia();
+                    if (cualCelda == 1) {
+                        Proceso = filtradolistaCortesProcesos.get(indexCortesProcesos).getProceso().getDescripcion();
+                    }
+                    listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                    listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                }
+            }
+            if (banderaComprobantes == 1) {
+                numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+                numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
+                fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+                fechaC.setFilterStyle("display: none; visibility: hidden;");
+                fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+                fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
+                altoScrollComprobante = "67";
+                context.update("form:datosComprobantes");
+                banderaComprobantes = 0;
+                filtradolistaComprobantes = null;
+                tipoListaComprobantes = 0;
+            }
+            if (!listaSolucionesNodosEmpleado.isEmpty()) {
+                for (int i = 0; i < listaSolucionesNodosEmpleado.size(); i++) {
+                    if (listaSolucionesNodosEmpleado.get(i).getTipo().equals("PAGO")) {
+                        subtotalPago = subtotalPago.add(listaSolucionesNodosEmpleado.get(i).getValor());
+                    } else {
+                        subtotalDescuento = subtotalDescuento.add(listaSolucionesNodosEmpleado.get(i).getValor());
+                    }
+                }
+            }
+            if (!listaSolucionesNodosEmpleador.isEmpty()) {
+                for (int i = 0; i < listaSolucionesNodosEmpleador.size(); i++) {
+                    if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("PASIVO")) {
+                        subtotalPasivo = subtotalPasivo.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                    } else if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("GASTO")) {
+                        subtotalGasto = subtotalGasto.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                    }
+                }
+            }
+            neto = subtotalPago.subtract(subtotalDescuento);
+            tablaExportar = ":formExportar:datosCortesProcesosExportar";
+            nombreArchivoExportar = "CortesProcesosXML";
+            context.update("form:tablaInferiorIzquierda");
+            context.update("form:tablaInferiorDerecha");
+            context.update("form:tablaInferiorIzquierdaEM");
+            context.update("form:tablaInferiorDerechaEM");
+            context.update("form:exportarXML");
+            context.update("form:subTotalPago");
+            context.update("form:subTotalDescuento");
+            context.update("form:subTotalPasivo");
+            context.update("form:subTotalGasto");
+            context.update("form:neto");
+        } else {
+            context.execute("confirmarGuardar.show();");
+        }
+    }
+
+    public void cambiarIndiceSolucionesNodosEmpleado(int indice, int celda) {
         if (permitirIndex == true) {
-            indexCortesProcesos = indice;
+            indexSolucionesEmpleado = indice;
             cualCelda = celda;
-            tipoTabla = 1;
-            nombreTabla = "CortesProcesos";
-            if (tipoListaCortesProcesos == 0) {
-                secRegistro = listaCortesProcesos.get(indexCortesProcesos).getSecuencia();
-                if (cualCelda == 1) {
-                    Proceso = listaCortesProcesos.get(indexCortesProcesos).getProceso().getDescripcion();
+            tipoTabla = 2;
+            nombreTabla = "SolucionesNodos";
+            if (tipoListaSNEmpleado == 0) {
+                secRegistro = listaSolucionesNodosEmpleado.get(indexSolucionesEmpleado).getSecuencia();
+                if (cualCelda == 7) {
+                    Tercero = listaSolucionesNodosEmpleado.get(indexSolucionesEmpleado).getNit().getNombre();
                 }
-                listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
-                listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
             } else {
-                secRegistro = listaCortesProcesos.get(indexCortesProcesos).getSecuencia();
-                if (cualCelda == 1) {
-                    Proceso = filtradolistaCortesProcesos.get(indexCortesProcesos).getProceso().getDescripcion();
+                secRegistro = filtradolistaSolucionesNodosEmpleado.get(indexSolucionesEmpleado).getSecuencia();
+                if (cualCelda == 7) {
+                    Tercero = filtradolistaSolucionesNodosEmpleado.get(indexSolucionesEmpleado).getNit().getNombre();
                 }
-                listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
-                listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
             }
         }
-        tablaExportar = ":formExportar:datosCortesProcesosExportar";
-        nombreArchivoExportar = "CortesProcesosXML";
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tablaInferiorIzquierda");
-        context.update("form:tablaInferiorDerecha");
-        context.update("form:tablaInferiorIzquierdaEM");
-        context.update("form:tablaInferiorDerechaEM");
-        context.update("form:exportarXML");
+        /* if (banderaComprobantes == 1) {
+         numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+         numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
+         fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+         fechaC.setFilterStyle("display: none; visibility: hidden;");
+         fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+         fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
+         altoScrollComprobante = "67";
+         RequestContext.getCurrentInstance().update("form:datosComprobantes");
+         banderaComprobantes = 0;
+         filtradolistaComprobantes = null;
+         tipoListaComprobantes = 0;
+         }*/
+        //tablaExportar = ":formExportar:datosCortesProcesosExportar";
+        nombreArchivoExportar = "SolucionesNodosEmpleadoXML";
+    }
+
+    public void cambiarIndiceSolucionesNodosEmpleador(int indice, int celda) {
+        if (permitirIndex == true) {
+            indexSolucionesEmpleador = indice;
+            cualCelda = celda;
+            tipoTabla = 3;
+            nombreTabla = "SolucionesNodos";
+            if (tipoListaSNEmpleador == 0) {
+                secRegistro = listaSolucionesNodosEmpleador.get(indexSolucionesEmpleador).getSecuencia();
+                if (cualCelda == 7) {
+                    Tercero = listaSolucionesNodosEmpleador.get(indexSolucionesEmpleador).getNit().getNombre();
+                }
+            } else {
+                secRegistro = filtradolistaSolucionesNodosEmpleador.get(indexSolucionesEmpleador).getSecuencia();
+                if (cualCelda == 7) {
+                    Tercero = filtradolistaSolucionesNodosEmpleador.get(indexSolucionesEmpleador).getNit().getNombre();
+                }
+            }
+        }
+        /* if (banderaComprobantes == 1) {
+         numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+         numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
+         fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+         fechaC.setFilterStyle("display: none; visibility: hidden;");
+         fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+         fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
+         altoScrollComprobante = "67";
+         RequestContext.getCurrentInstance().update("form:datosComprobantes");
+         banderaComprobantes = 0;
+         filtradolistaComprobantes = null;
+         tipoListaComprobantes = 0;
+         }*/
+        //tablaExportar = ":formExportar:datosCortesProcesosExportar";
+        nombreArchivoExportar = "SolucionesNodosEmpleadorXML";
     }
 
     public void modificarComprobantes(int indice) {
@@ -352,7 +554,97 @@ public class ControlComprobantes implements Serializable {
         context.update("form:datosCortesProcesos");
     }
 
+    public void modificarSolucionesNodos(int indice, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoTabla == 2) {
+            indexSolucionesEmpleado = indice;
+            if (tipoListaSNEmpleado == 0) {
+                listaSolucionesNodosEmpleado.get(indice).getNit().setNombre(Tercero);
+            } else {
+                filtradolistaSolucionesNodosEmpleado.get(indice).getNit().setNombre(Tercero);
+            }
+        } else if (tipoTabla == 3) {
+            indexSolucionesEmpleador = indice;
+            if (tipoListaSNEmpleador == 0) {
+                listaSolucionesNodosEmpleador.get(indice).getNit().setNombre(Tercero);
+            } else {
+                filtradolistaSolucionesNodosEmpleador.get(indice).getNit().setNombre(Tercero);
+            }
+        }
+
+        for (int i = 0; i < listaTerceros.size(); i++) {
+            if (listaTerceros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                indiceUnicoElemento = i;
+                coincidencias++;
+            }
+        }
+        if (coincidencias == 1) {
+            if (tipoTabla == 2) {
+                if (tipoListaSNEmpleado == 0) {
+                    listaSolucionesNodosEmpleado.get(indice).setNit(listaTerceros.get(indiceUnicoElemento));
+                } else {
+                    filtradolistaSolucionesNodosEmpleado.get(indice).setNit(listaTerceros.get(indiceUnicoElemento));
+                }
+            } else if (tipoTabla == 3) {
+                if (tipoListaSNEmpleador == 0) {
+                    listaSolucionesNodosEmpleador.get(indice).setNit(listaTerceros.get(indiceUnicoElemento));
+                } else {
+                    filtradolistaSolucionesNodosEmpleador.get(indice).setNit(listaTerceros.get(indiceUnicoElemento));
+                }
+            }
+            listaTerceros.clear();
+            getListaTerceros();
+        } else {
+            permitirIndex = false;
+            context.update("formularioDialogos:TercerosDialogo");
+            context.execute("TercerosDialogo.show()");
+        }
+        if (coincidencias == 1) {
+            if (tipoTabla == 2) {
+                if (tipoListaSNEmpleado == 0) {
+                    if (listaSolucionesNodosEmpleadoModificar.isEmpty()) {
+                        listaSolucionesNodosEmpleadoModificar.add(listaSolucionesNodosEmpleado.get(indice));
+                    } else if (!listaSolucionesNodosEmpleadoModificar.contains(listaSolucionesNodosEmpleado.get(indice))) {
+                        listaSolucionesNodosEmpleadoModificar.add(listaSolucionesNodosEmpleado.get(indice));
+                    }
+                } else {
+                    if (listaSolucionesNodosEmpleadoModificar.isEmpty()) {
+                        listaSolucionesNodosEmpleadoModificar.add(filtradolistaSolucionesNodosEmpleado.get(indice));
+                    } else if (!listaSolucionesNodosEmpleadoModificar.contains(filtradolistaSolucionesNodosEmpleado.get(indice))) {
+                        listaSolucionesNodosEmpleadoModificar.add(filtradolistaSolucionesNodosEmpleado.get(indice));
+                    }
+                }
+                modificacionesSolucionesNodosEmpleado = true;
+                context.update("form:tablaInferiorDerecha");
+            } else if (tipoTabla == 3) {
+                if (tipoListaSNEmpleador == 0) {
+                    if (listaSolucionesNodosEmpleadorModificar.isEmpty()) {
+                        listaSolucionesNodosEmpleadorModificar.add(listaSolucionesNodosEmpleador.get(indice));
+                    } else if (!listaSolucionesNodosEmpleadorModificar.contains(listaSolucionesNodosEmpleador.get(indice))) {
+                        listaSolucionesNodosEmpleadorModificar.add(listaSolucionesNodosEmpleador.get(indice));
+                    }
+                    indexCortesProcesos = -1;
+                } else {
+                    if (listaSolucionesNodosEmpleadorModificar.isEmpty()) {
+                        listaSolucionesNodosEmpleadorModificar.add(filtradolistaSolucionesNodosEmpleador.get(indice));
+                    } else if (!listaSolucionesNodosEmpleadorModificar.contains(filtradolistaSolucionesNodosEmpleador.get(indice))) {
+                        listaSolucionesNodosEmpleadorModificar.add(filtradolistaSolucionesNodosEmpleador.get(indice));
+                    }
+                    indexCortesProcesos = -1;
+                }
+                modificacionesSolucionesNodosEmpleador = true;
+                context.update("form:tablaInferiorDerechaEM");
+            }
+            if (guardado == true) {
+                guardado = false;
+            }
+            secRegistro = null;
+        }
+    }
     //LOV PROCESOS
+
     public void llamarLOVProcesos(int indice) {
         indexCortesProcesos = indice;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -370,6 +662,13 @@ public class ControlComprobantes implements Serializable {
         }
         context.update("form:ProcesosDialogo");
         context.execute("ProcesosDialogo.show()");
+    }
+
+    //LOV TERCEROS
+    public void llamarLOVTerceros() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:TercerosDialogo");
+        context.execute("TercerosDialogo.show()");
     }
 
     public void activarAceptar() {
@@ -432,6 +731,79 @@ public class ControlComprobantes implements Serializable {
         indexCortesProcesos = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        permitirIndex = true;
+        tipoTabla = -1;
+    }
+
+    //ACTUALIZAR TERCERO
+    public void actualizarTercero() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoTabla == 2) {
+            if (tipoListaSNEmpleado == 0) {
+                listaSolucionesNodosEmpleado.get(indexSolucionesEmpleado).setNit(TerceroSelecionado);
+                if (listaSolucionesNodosEmpleadoModificar.isEmpty()) {
+                    listaSolucionesNodosEmpleadoModificar.add(listaSolucionesNodosEmpleado.get(indexSolucionesEmpleado));
+                } else if (!listaSolucionesNodosEmpleadoModificar.contains(listaSolucionesNodosEmpleado.get(indexSolucionesEmpleado))) {
+                    listaSolucionesNodosEmpleadoModificar.add(listaSolucionesNodosEmpleado.get(indexSolucionesEmpleado));
+                }
+            } else {
+                filtradolistaSolucionesNodosEmpleado.get(indexSolucionesEmpleado).setNit(TerceroSelecionado);
+                if (listaSolucionesNodosEmpleadoModificar.isEmpty()) {
+                    listaSolucionesNodosEmpleadoModificar.add(filtradolistaSolucionesNodosEmpleado.get(indexSolucionesEmpleado));
+                } else if (!listaSolucionesNodosEmpleadoModificar.contains(filtradolistaSolucionesNodosEmpleado.get(indexSolucionesEmpleado))) {
+                    listaSolucionesNodosEmpleadoModificar.add(filtradolistaSolucionesNodosEmpleado.get(indexSolucionesEmpleado));
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+            }
+            context.update("form:tablaInferiorDerecha");
+            indexSolucionesEmpleado = -1;
+            modificacionesSolucionesNodosEmpleado = true;
+            permitirIndex = true;
+        } else if (tipoTabla == 3) {
+            if (tipoListaSNEmpleador == 0) {
+                listaSolucionesNodosEmpleador.get(indexSolucionesEmpleador).setNit(TerceroSelecionado);
+                if (listaSolucionesNodosEmpleadorModificar.isEmpty()) {
+                    listaSolucionesNodosEmpleadorModificar.add(listaSolucionesNodosEmpleador.get(indexSolucionesEmpleador));
+                } else if (!listaSolucionesNodosEmpleadorModificar.contains(listaSolucionesNodosEmpleador.get(indexSolucionesEmpleador))) {
+                    listaSolucionesNodosEmpleadorModificar.add(listaSolucionesNodosEmpleador.get(indexSolucionesEmpleador));
+                }
+            } else {
+                filtradolistaSolucionesNodosEmpleador.get(indexSolucionesEmpleador).setNit(TerceroSelecionado);
+                if (listaSolucionesNodosEmpleadorModificar.isEmpty()) {
+                    listaSolucionesNodosEmpleadorModificar.add(filtradolistaSolucionesNodosEmpleador.get(indexSolucionesEmpleador));
+                } else if (!listaSolucionesNodosEmpleadorModificar.contains(filtradolistaSolucionesNodosEmpleador.get(indexSolucionesEmpleador))) {
+                    listaSolucionesNodosEmpleadorModificar.add(filtradolistaSolucionesNodosEmpleador.get(indexSolucionesEmpleador));
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+            }
+            context.update("form:tablaInferiorDerechaEM");
+            indexSolucionesEmpleador = -1;
+            modificacionesSolucionesNodosEmpleador = true;
+            permitirIndex = true;
+        }
+
+        filtradolistaTerceros = null;
+        TerceroSelecionado = null;
+        aceptar = true;
+        secRegistro = null;
+        cualCelda = -1;
+        tipoTabla = -1;
+        context.execute("TercerosDialogo.hide()");
+        context.reset("formularioDialogos:lovTerceros:globalFilter");
+        context.update("formularioDialogos:lovTerceros");
+    }
+
+    public void cancelarTercero() {
+        filtradolistaTerceros = null;
+        TerceroSelecionado = null;
+        aceptar = true;
+        indexSolucionesEmpleado = -1;
+        indexSolucionesEmpleador = -1;
+        secRegistro = null;
         permitirIndex = true;
         tipoTabla = -1;
     }
@@ -555,48 +927,48 @@ public class ControlComprobantes implements Serializable {
 
     public void nuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaCortesProcesos.isEmpty()) {
-            if (indexComprobante >= 0) {
-                context.execute("NuevoRegistroPagina.show()");
+        if (!listaComprobantes.isEmpty()) {
+            if (listaCortesProcesos.isEmpty()) {
+                if (indexComprobante >= 0) {
+                    context.execute("NuevoRegistroPagina.show()");
+                }
+            } else {
+                if (tipoTabla == 0) {
+                    BigInteger sugerenciaNumero = administrarComprobantes.maximoNumeroComprobante().add(new BigInteger("1"));
+                    nuevoComprobante.setNumero(sugerenciaNumero);
+                    context.update("formularioDialogos:nuevoComprobante");
+                    context.execute("NuevoRegistroComprobantes.show()");
+                } else if (tipoTabla == 1) {
+                    context.update("formularioDialogos:nuevoCorteProceso");
+                    context.execute("NuevoRegistroCortesProcesos.show()");
+                }
             }
         } else {
-            if (tipoTabla == 0) {
-                BigInteger sugerenciaNumero = administrarComprobantes.maximoNumeroComprobante().add(new BigInteger("1"));
-                nuevoComprobante.setNumero(sugerenciaNumero);
-                context.update("formularioDialogos:nuevoComprobante");
-                context.execute("NuevoRegistroComprobantes.show()");
-            } else if (tipoTabla == 1) {
-                context.update("formularioDialogos:nuevoCorteProceso");
-                context.execute("NuevoRegistroCortesProcesos.show()");
-            }
+            BigInteger sugerenciaNumero = administrarComprobantes.maximoNumeroComprobante().add(new BigInteger("1"));
+            nuevoComprobante.setNumero(sugerenciaNumero);
+            context.update("formularioDialogos:nuevoComprobante");
+            context.execute("NuevoRegistroComprobantes.show()");
         }
     }
 
     public void agregarNuevoComprobante() {
-        boolean pasa = false;
+        int pasa = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoComprobante.getNumero() == null) {
             mensajeValidacion = " * Numero \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
         if (nuevoComprobante.getFecha() == null) {
             mensajeValidacion = " * Fecha Comprobante \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
         if (nuevoComprobante.getFechaentregado() == null) {
             mensajeValidacion = mensajeValidacion + " * Fecha Entregado \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
-
-        if (pasa == true) {
-            if (bandera == 1) {
+        if (pasa == 0) {
+            if (banderaComprobantes == 1) {
                 numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
                 numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
                 fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
@@ -605,7 +977,7 @@ public class ControlComprobantes implements Serializable {
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
                 altoScrollComprobante = "67";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
-                bandera = 0;
+                banderaComprobantes = 0;
                 filtradolistaComprobantes = null;
                 tipoListaComprobantes = 0;
             }
@@ -643,43 +1015,29 @@ public class ControlComprobantes implements Serializable {
     }
 
     public void agregarNuevoCorteProceso() {
-        boolean pasa = false;
+        int pasa = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoCorteProceso.getCorte() == null) {
             mensajeValidacion = " * Fecha de corte \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
         if (nuevoCorteProceso.getProceso().getSecuencia() == null) {
             mensajeValidacion = " * Proceso \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
-        if (pasa == true) {
-            /* if (bandera == 1) {
-             //CERRAR FILTRADO
-             vtcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcFecha");
-             vtcFecha.setFilterStyle("display: none; visibility: hidden;");
-             vtcContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcContrato");
-             vtcContrato.setFilterStyle("display: none; visibility: hidden;");
-             vtcTipoContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcTipoContrato");
-             vtcTipoContrato.setFilterStyle("display: none; visibility: hidden;");
-             vtcCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcCiudad");
-             vtcCiudad.setFilterStyle("display: none; visibility: hidden;");
-             vtcFechaSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcFechaSP");
-             vtcFechaSP.setFilterStyle("display: none; visibility: hidden;");
-             vtcInicioFlexibilizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcInicioFlexibilizacion");
-             vtcInicioFlexibilizacion.setFilterStyle("display: none; visibility: hidden;");
-             vtcObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcObservacion");
-             vtcObservacion.setFilterStyle("display: none; visibility: hidden;");
-             RequestContext.getCurrentInstance().update("form:datosVTCEmpleado");
-             bandera = 0;
-             filtrarVTC = null;
-             tipoLista = 0;
-             }*/
+        if (pasa == 0) {
+            if (banderaCortesProcesos == 1) {
+                fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
+                procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                procesoCP.setFilterStyle("display: none; visibility: hidden;");
+                altoScrollCortesProcesos = "67";
+                RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
+                banderaCortesProcesos = 0;
+                filtradolistaCortesProcesos = null;
+                tipoListaCortesProcesos = 0;
+            }
             k++;
             l = BigInteger.valueOf(k);
             nuevoCorteProceso.setSecuencia(l);
@@ -785,7 +1143,7 @@ public class ControlComprobantes implements Serializable {
             guardado = false;
             //RequestContext.getCurrentInstance().update("form:aceptar");
         }
-        if (bandera == 1) {
+        if (banderaComprobantes == 1) {
             numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
             numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
             fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
@@ -794,7 +1152,7 @@ public class ControlComprobantes implements Serializable {
             fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
             altoScrollComprobante = "67";
             RequestContext.getCurrentInstance().update("form:datosComprobantes");
-            bandera = 0;
+            banderaComprobantes = 0;
             filtradolistaComprobantes = null;
             tipoListaComprobantes = 0;
         }
@@ -822,19 +1180,17 @@ public class ControlComprobantes implements Serializable {
             guardado = false;
             //RequestContext.getCurrentInstance().update("form:aceptar");
         }
-        /*if (bandera == 1) {
-         numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
-         numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-         fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
-         fechaC.setFilterStyle("display: none; visibility: hidden;");
-         fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
-         fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-         altoScrollComprobante = "67";
-         RequestContext.getCurrentInstance().update("form:datosComprobantes");
-         bandera = 0;
-         filtradolistaComprobantes = null;
-         tipoListaComprobantes = 0;
-         }*/
+        if (banderaCortesProcesos == 1) {
+            fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+            fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
+            procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+            procesoCP.setFilterStyle("display: none; visibility: hidden;");
+            altoScrollCortesProcesos = "67";
+            RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
+            banderaCortesProcesos = 0;
+            filtradolistaCortesProcesos = null;
+            tipoListaCortesProcesos = 0;
+        }
     }
 
     //LIMPIAR DUPLICADO REGISTRO CORTES PROCESOS
@@ -848,8 +1204,7 @@ public class ControlComprobantes implements Serializable {
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
         if (tipoTabla == 0) {
-            tablaComprobantes = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosComprobantes");
-            if (bandera == 0) {
+            if (banderaComprobantes == 0) {
                 numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
                 numeroComprobanteC.setFilterStyle("width: 40px;");
                 fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
@@ -858,9 +1213,9 @@ public class ControlComprobantes implements Serializable {
                 fechaEntregaC.setFilterStyle("width: 60px;");
                 altoScrollComprobante = "45";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
-                bandera = 1;
+                banderaComprobantes = 1;
 
-            } else if (bandera == 1) {
+            } else if (banderaComprobantes == 1) {
                 numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
                 numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
                 fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
@@ -869,9 +1224,30 @@ public class ControlComprobantes implements Serializable {
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
                 altoScrollComprobante = "67";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
-                bandera = 0;
+                banderaComprobantes = 0;
                 filtradolistaComprobantes = null;
                 tipoListaComprobantes = 0;
+            }
+        } else if (tipoTabla == 1) {
+            if (banderaCortesProcesos == 0) {
+                fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                fechaCorteCP.setFilterStyle("width: 80px;");
+                procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                procesoCP.setFilterStyle("width: 150px;");
+                altoScrollCortesProcesos = "45";
+                RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
+                banderaCortesProcesos = 1;
+
+            } else if (banderaCortesProcesos == 1) {
+                fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
+                procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                procesoCP.setFilterStyle("display: none; visibility: hidden;");
+                altoScrollCortesProcesos = "67";
+                RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
+                banderaCortesProcesos = 0;
+                filtradolistaCortesProcesos = null;
+                tipoListaCortesProcesos = 0;
             }
         }
     }
@@ -898,12 +1274,42 @@ public class ControlComprobantes implements Serializable {
                     context.execute("editarFechaEntrega.show()");
                 }
             }
+            indexComprobante = -1;
+        } else if (tipoTabla == 1) {
+            if (tipoListaCortesProcesos == 0) {
+                editarCorteProceso = listaCortesProcesos.get(indexCortesProcesos);
+            }
+            if (tipoListaCortesProcesos == 1) {
+                editarCorteProceso = filtradolistaCortesProcesos.get(indexCortesProcesos);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (cualCelda == 0) {
+                context.update("formularioDialogos:editarFechaCorte");
+                context.execute("editarFechaCorte.show()");
+            } else if (cualCelda == 1) {
+                context.update("formularioDialogos:editarProceso");
+                context.execute("editarProceso.show()");
+            }
+            indexCortesProcesos = -1;
         }
-        indexComprobante = -1;
         secRegistro = null;
     }
 
+    //LISTA DE VALORES BOTON
+    public void listaValoresBoton() {
+        if (tipoTabla == 1) {
+            if (indexCortesProcesos >= 0) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                if (cualCelda == 1) {
+                    context.update("form:ProcesosDialogo");
+                    context.execute("ProcesosDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            }
+        }
+    }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
+
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         int resultado = -1;
@@ -912,10 +1318,7 @@ public class ControlComprobantes implements Serializable {
                 resultado = administrarRastros.obtenerTabla(secRegistro, nombreTabla.toUpperCase());
             } else if (nombreTabla.equals("CortesProcesos")) {
                 resultado = administrarRastros.obtenerTabla(secRegistro, nombreTabla.toUpperCase());
-            }/* else if (nombreTabla.equals("HVHojasDeVida")) {
-             secRastro = empleado.getSecuencia();
-             resultado = administrarRastros.obtenerTabla(secRastro, nombreTabla.toUpperCase());
-             }*/
+            }
             if (resultado == 1) {
                 context.update("formDialogos:errorObjetosDB");
                 context.execute("errorObjetosDB.show()");
@@ -979,36 +1382,46 @@ public class ControlComprobantes implements Serializable {
 
     //SALIR Y REFRESCAR
     public void salir() {
-        /* if (bandera == 1) {
-         //CERRAR FILTRADO
-         vtcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcFecha");
-         vtcFecha.setFilterStyle("display: none; visibility: hidden;");
-         vtcContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcContrato");
-         vtcContrato.setFilterStyle("display: none; visibility: hidden;");
-         vtcTipoContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcTipoContrato");
-         vtcTipoContrato.setFilterStyle("display: none; visibility: hidden;");
-         vtcCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcCiudad");
-         vtcCiudad.setFilterStyle("display: none; visibility: hidden;");
-         vtcFechaSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcFechaSP");
-         vtcFechaSP.setFilterStyle("display: none; visibility: hidden;");
-         vtcInicioFlexibilizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcInicioFlexibilizacion");
-         vtcInicioFlexibilizacion.setFilterStyle("display: none; visibility: hidden;");
-         vtcObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcObservacion");
-         vtcObservacion.setFilterStyle("display: none; visibility: hidden;");
-         RequestContext.getCurrentInstance().update("form:datosVTCEmpleado");
-         bandera = 0;
-         filtrarVTC = null;
-         tipoLista = 0;
-         }*/
-
+        if (banderaCortesProcesos == 1) {
+            fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+            fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
+            procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+            procesoCP.setFilterStyle("display: none; visibility: hidden;");
+            altoScrollCortesProcesos = "67";
+            RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
+            banderaCortesProcesos = 0;
+            filtradolistaCortesProcesos = null;
+            tipoListaCortesProcesos = 0;
+        }
+        if (banderaComprobantes == 1) {
+            numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+            numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
+            fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+            fechaC.setFilterStyle("display: none; visibility: hidden;");
+            fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+            fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
+            altoScrollComprobante = "67";
+            RequestContext.getCurrentInstance().update("form:datosComprobantes");
+            banderaComprobantes = 0;
+            filtradolistaComprobantes = null;
+            tipoListaComprobantes = 0;
+        }
         listaComprobantesBorrar.clear();
         listaCortesProcesosBorrar.clear();
         listaComprobantesCrear.clear();
         listaCortesProcesosCrear.clear();
         listaComprobantesModificar.clear();
         listaCortesProcesosModificar.clear();
+        listaSolucionesNodosEmpleadoModificar.clear();
+        listaSolucionesNodosEmpleadorModificar.clear();
         modificacionesComprobantes = false;
         modificacionesCortesProcesos = false;
+        modificacionesSolucionesNodosEmpleado = false;
+        modificacionesSolucionesNodosEmpleador = false;
+        tipoTabla = 0;
+        cualCelda = -1;
+        tablaExportar = ":formExportar:datosComprobantesExportar";
+        nombreTabla = "Comprobantes";
         indexComprobante = -1;
         indexCortesProcesos = -1;
         indexSolucionesEmpleado = -1;
@@ -1103,6 +1516,33 @@ public class ControlComprobantes implements Serializable {
             k = 0;
             indexCortesProcesos = -1;
         }
+        if (modificacionesSolucionesNodosEmpleado = true) {
+            if (!listaSolucionesNodosEmpleadoModificar.isEmpty()) {
+                administrarComprobantes.modificarSolucionesNodosEmpleado(listaSolucionesNodosEmpleadoModificar);
+                listaSolucionesNodosEmpleadoModificar.clear();
+            }
+            System.out.println("Se guardaron los datos con exito - Soluciones Nodo Empleado");
+            listaSolucionesNodosEmpleado = null;
+            context.update("form:tablaInferiorDerecha");
+            guardado = true;
+            modificacionesSolucionesNodosEmpleado = false;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            indexSolucionesEmpleado = -1;
+        }
+
+        if (modificacionesSolucionesNodosEmpleador = true) {
+            if (!listaSolucionesNodosEmpleadorModificar.isEmpty()) {
+                administrarComprobantes.modificarSolucionesNodosEmpleador(listaSolucionesNodosEmpleadorModificar);
+                listaSolucionesNodosEmpleadorModificar.clear();
+            }
+            System.out.println("Se guardaron los datos con exito - Soluciones Nodo Empleador");
+            listaSolucionesNodosEmpleador = null;
+            context.update("form:tablaInferiorDerechaEM");
+            guardado = true;
+            modificacionesSolucionesNodosEmpleador = false;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            indexSolucionesEmpleador = -1;
+        }
         //}
         recibirEmpleado(secuenciaEmpleado);
         tablaExportar = ":formExportar:datosComprobantesExportar";
@@ -1132,6 +1572,12 @@ public class ControlComprobantes implements Serializable {
     public void eventoFiltrarComponentes() {
         if (tipoListaComprobantes == 0) {
             tipoListaComprobantes = 1;
+        }
+    }
+
+    public void eventoFiltrarCortesProcesos() {
+        if (tipoListaCortesProcesos == 0) {
+            tipoListaCortesProcesos = 1;
         }
     }
 //GETTER AND SETTER
@@ -1329,5 +1775,58 @@ public class ControlComprobantes implements Serializable {
 
     public void setSeleccionComprobante(Comprobantes seleccionComprobante) {
         this.seleccionComprobante = seleccionComprobante;
+    }
+
+    public String getAltoScrollCortesProcesos() {
+        return altoScrollCortesProcesos;
+    }
+
+    public List<Terceros> getListaTerceros() {
+        if (listaTerceros.isEmpty()) {
+            if (empleado != null) {
+                listaTerceros = administrarComprobantes.lovTerceros(empleado.getEmpresa().getSecuencia());
+            }
+        }
+        return listaTerceros;
+    }
+
+    public void setListaTerceros(List<Terceros> listaTerceros) {
+        this.listaTerceros = listaTerceros;
+    }
+
+    public Terceros getTerceroSelecionado() {
+        return TerceroSelecionado;
+    }
+
+    public void setTerceroSelecionado(Terceros TerceroSelecionado) {
+        this.TerceroSelecionado = TerceroSelecionado;
+    }
+
+    public List<Terceros> getFiltradolistaTerceros() {
+        return filtradolistaTerceros;
+    }
+
+    public void setFiltradolistaTerceros(List<Terceros> filtradolistaTerceros) {
+        this.filtradolistaTerceros = filtradolistaTerceros;
+    }
+
+    public BigDecimal getSubtotalPago() {
+        return subtotalPago;
+    }
+
+    public BigDecimal getSubtotalDescuento() {
+        return subtotalDescuento;
+    }
+
+    public BigDecimal getSubtotalPasivo() {
+        return subtotalPasivo;
+    }
+
+    public BigDecimal getSubtotalGasto() {
+        return subtotalGasto;
+    }
+
+    public BigDecimal getNeto() {
+        return neto;
     }
 }

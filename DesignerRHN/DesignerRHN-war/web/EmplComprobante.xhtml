@@ -13,9 +13,11 @@
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Comprobantes" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
-                        <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 11px; width: 200px; height: 88px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 11px; width: 215px; height: 98px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
-                            <p:commandButton id="btnComprobante" value="" style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/birrete1.gif);  top: 15px; width: 45px; height: 45px; background-repeat: no-repeat;" />
+                            <p:commandButton id="btnComprobante" value="" style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/comprobante.gif);  top: 20px; width: 50px; height: 50px; background-repeat: no-repeat;" />
+                            <h:outputText value="Estos son los comprobantes con los respectivos pagos y descuentos que ha tenido el empleado."  style="font-weight: bold; width: 160px; text-align: justify; position: absolute; left: 65px;"/>
+                            <p:inputText value="#{controlComprobantes.empleado.persona.nombreCompleto}" style="position: absolute; top: 77px; width: 206px; color: #BF1A1A; font-weight: bold; text-align: center" readonly="true" />
                         </fieldset>
                         <fieldset style="position: absolute; left: 250px; top: 63px; font-size: 11px; width: 270px; height: 100px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Comprobantes</legend>
@@ -91,7 +93,7 @@
 
                                 <p:separator />
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.activarCtrlF11()}" process="@this"/>
@@ -131,10 +133,10 @@
 
                             <p:dataTable id="datosCortesProcesos" widgetVar="datosCortesProcesos" var="corteProceso" value="#{controlComprobantes.listaCortesProcesos}"
                                          rowKey="#{corteProceso.secuencia}" rowIndexVar="indiceCorteProceso" style="font-size: 10px;"
-                                         scrollable="true" scrollHeight="67" filteredValue="#{controlComprobantes.filtradolistaCortesProcesos}"
+                                         scrollable="true" scrollHeight="#{controlComprobantes.altoScrollCortesProcesos}" filteredValue="#{controlComprobantes.filtradolistaCortesProcesos}"
                                          emptyMessage="No se encontrarón datos" editable="true" editMode="cell">
 
-                             <!--   <p:ajax event="filter" listener="#{controlPerTelefonos.eventoFiltrar()}"/>  -->
+                                <p:ajax event="filter" listener="#{controlComprobantes.eventoFiltrarCortesProcesos()}"/>
 
                                 <p:column headerText="Fecha Corte" sortBy="#{corteProceso.corte}" width="60" filterBy="#{corteProceso.corte}" filterMatchMode="contains" id="fechaCorteCP" filterStyle="display: none; visibility: hidden;" >  
                                     <p:cellEditor>  
@@ -172,7 +174,7 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <fieldset style="position: absolute; top: 175px; font-size: 11px; width: 835px; height: 160px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; top: 180px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
 
                             <div id="superiorIzquierdo" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: -5px" >
@@ -187,7 +189,7 @@
                                 </p:dataTable>
                             </div>
 
-                            <div id="inferiorIzquierda"  style="height: 116px; width: 315px; overflow-y: hidden; position: absolute; top: 37px" >
+                            <div id="inferiorIzquierda"  style="height: 70px; width: 315px; overflow-y: hidden; position: absolute; top: 37px" >
                                 <p:dataTable id="tablaInferiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 315px" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
                                              rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="315" 
                                              widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names"
@@ -203,10 +205,10 @@
                                 </p:dataTable>
                             </div>
 
-                            <div id="inferiorDerecha" style="height: 132px; width: 544px; overflow: scroll; position: absolute; left: 307px; top: 37px;" >
+                            <div id="inferiorDerecha" style="height: 70px; width: 544px; overflow-x: hidden; position: absolute; left: 307px; top: 37px;" >
                                 <p:dataTable id="tablaInferiorDerecha" var="solucionNodoEmpleado" style="font-size: 11px; width: 1350px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
-                                             rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="1350"
-                                             widgetVar="tablaInferiorDerecha" styleClass="hide-column-names"
+                                             rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="1350" rowIndexVar="indexSNEmpleado"
+                                             widgetVar="tablaInferiorDerecha" styleClass="hide-column-names" editable="true" editMode="cell" 
                                              filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="...">
 
                                     <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleado.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
@@ -225,13 +227,26 @@
                                         <h:outputText value="#{solucionNodoEmpleado.unidades}" />
                                     </p:column>
                                     <p:column id="pasivoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.pago}" style="width: 55px" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
-                                        <h:outputText value="#{solucionNodoEmpleado.pago}" />
+                                        <h:outputText value="#{solucionNodoEmpleado.pago}"/>
                                     </p:column>
                                     <p:column id="gastoSNE" headerText="Descuento" sortBy="#{solucionNodoEmpleado.descuento}" style="width: 55px" filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.descuento}" />
                                     </p:column>
                                     <p:column id="terceroSNE" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleado.nit.nombre}" style="width: 150px" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                        <h:outputText value="#{solucionNodoEmpleado.nit.nombre}"/>
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{solucionNodoEmpleado.nit.nombre}" >
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{solucionNodoEmpleado.nit.nombre}" style="width: 96%; text-transform: uppercase">
+                                                    <p:ajax event="change" listener="#{controlComprobantes.modificarSolucionesNodos(indexSNEmpleado, solucionNodoEmpleado.nit.nombre)}"/>
+                                                    <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceSolucionesNodosEmpleado(indexSNEmpleado, 7)}"/>
+                                                    <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVTerceros()}"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
                                     </p:column>
                                     <p:column id="debitoSNE" headerText="Debito" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleado.cuentad.codigo}" />
@@ -256,7 +271,18 @@
                                 </p:dataTable>
                             </div>
 
-                            <div id="superiorDerecha" style="height: 50px; width: 525px; overflow-x: hidden; position: absolute; left: 307px; top: -11px;" >
+                            <div id="inferiorDerechaSubtotalesEmpleado" style="height: 42px; width: 544px; overflow-y: hidden; position: absolute; left: 307px; top: 107px;" >
+                                <fieldset style="width: 1325px; visibility: hidden"></fieldset>
+                                <h:outputText value="Subtotales: " style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
+                                <p:inputText id="subTotalPago" value="#{controlComprobantes.subtotalPago}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                    <f:convertNumber currencyCode="COP"/>
+                                </p:inputText>
+                                <p:inputText id="subTotalDescuento" value="#{controlComprobantes.subtotalDescuento}" style="position: absolute; top: 1px; left: 330.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                    <f:convertNumber currencyCode="COP"/>
+                                </p:inputText>
+                            </div>
+
+                            <div id="superiorDerecha" style="height: 50px; width: 528px; overflow-x: hidden; position: absolute; left: 307px; top: -11px;" >
                                 <p:dataTable id="tablaSuperiorDerecha" var="solucionNodoEmpleado" style="font-size: 11px; width: 1350px; position: relative; top: 24px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
                                              widgetVar="tablaSuperiorDerecha" styleClass="hide-row-names"
                                              filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}">
@@ -280,9 +306,14 @@
 
                                 </p:dataTable>
                             </div> 
+
+                            <h:outputText value="Neto: " style="color: #14388B; font-weight: bold; position: absolute; left: 20px; top: 111px;"/>
+                            <p:inputText id="neto" value="#{controlComprobantes.neto}" style="position: absolute; top: 108px; left: 69px; width: 228px; font-size: 11px; font-weight: bold; color: #14388B; text-align: center" readonly="true">
+                                <f:convertNumber currencyCode="COP"/>
+                            </p:inputText>
                         </fieldset>
 
-                        <fieldset style="position: absolute; top: 350px; font-size: 11px; width: 835px; height: 160px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; top: 337px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleador</legend>
                             <div id="superiorIzquierdoEM" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: -5px" >
                                 <p:dataTable id="tablaSuperiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
@@ -295,7 +326,7 @@
                                 </p:dataTable>
                             </div>
 
-                            <div id="inferiorIzquierdaEM" style="height: 116px; width: 315px; overflow-y: hidden; position: absolute; top: 37px; border: 5px; border-color: red" >
+                            <div id="inferiorIzquierdaEM" style="height: 70px; width: 315px; overflow-y: hidden; position: absolute; top: 37px; border: 5px; border-color: red" >
                                 <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 315px" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
                                              rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="315"
                                              widgetVar="tablaInferiorIzquierdaEM" styleClass="hide-column-names"
@@ -311,10 +342,10 @@
                                 </p:dataTable>
                             </div>
 
-                            <div id="inferiorDerechaEM" style="height: 132px; width: 544px; overflow: scroll; position: absolute; left: 307px; top: 37px;" >
+                            <div id="inferiorDerechaEM" style="height: 70px; width: 544px; overflow-x: hidden; position: absolute; left: 307px; top: 37px;" >
                                 <p:dataTable id="tablaInferiorDerechaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 1350px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
-                                             rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="1350"
-                                             widgetVar="tablaInferiorDerechaEM" styleClass="hide-column-names"
+                                             rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="1350" editable="true" editMode="cell"
+                                             widgetVar="tablaInferiorDerechaEM" styleClass="hide-column-names" rowIndexVar="indexSNEmpleador"
                                              filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="...">
 
                                     <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleador.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
@@ -339,7 +370,20 @@
                                         <h:outputText value="#{solucionNodoEmpleador.gasto}" />
                                     </p:column>
                                     <p:column id="terceroSNEM" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleador.nit.nombre}" style="width: 150px" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                        <h:outputText value="#{solucionNodoEmpleador.nit.nombre}"/>
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{solucionNodoEmpleador.nit.nombre}" >
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{solucionNodoEmpleador.nit.nombre}" style="width: 96%; text-transform: uppercase">
+                                                    <p:ajax event="change" listener="#{controlComprobantes.modificarSolucionesNodos(indexSNEmpleador, solucionNodoEmpleador.nit.nombre)}"/>
+                                                    <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceSolucionesNodosEmpleador(indexSNEmpleador, 7)}"/>
+                                                    <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVTerceros()}"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
                                     </p:column>
                                     <p:column id="debitoSNEM" headerText="Debito" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.cuentad.codigo}" />
@@ -362,6 +406,17 @@
                                         </h:outputText> 
                                     </p:column>
                                 </p:dataTable>
+                            </div>
+
+                            <div id="inferiorDerechaSubtotalesEmpleador" style="height: 42px; width: 544px; overflow-y: hidden; position: absolute; left: 307px; top: 107px;" >
+                                <fieldset style="width: 1325px; visibility: hidden"></fieldset>
+                                <h:outputText value="Subtotales: " style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
+                                <p:inputText id="subTotalPasivo" value="#{controlComprobantes.subtotalPasivo}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                    <f:convertNumber currencyCode="COP"/>
+                                </p:inputText>
+                                <p:inputText id="subTotalGasto" value="#{controlComprobantes.subtotalGasto}" style="position: absolute; top: 1px; left: 330.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                    <f:convertNumber currencyCode="COP"/>
+                                </p:inputText>
                             </div>
 
                             <div id="superiorDerechaEM" style="height: 50px; width: 525px; overflow-x: hidden; position: absolute; left: 307px; top: -11px;" >
@@ -389,7 +444,9 @@
                                 </p:dataTable>
                             </div> 
                         </fieldset>
-                        <p:commandButton value="Refrescar" style="position: absolute; top: 520px; left: -70px;" actionListener="#{controlComprobantes.salir()}" />
+                        <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" icon="ui-icon-check" process="@this" />
+                        <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlComprobantes.salir()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlComprobantes.salir()}" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos" >
@@ -559,6 +616,19 @@
                         <p:commandButton id="cancelarFechaEntrega" value="Atras" onclick="editarFechaEntrega.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
+                    <!-- EDITOR CORTES PROCESOS -->
+                    <p:dialog id="editarFechaCorte" header="Fecha corte" widgetVar="editarFechaCorte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px" value="#{controlComprobantes.editarCorteProceso.corte}" styleClass="ui-datepicker, myClass"  readonlyInput="true"
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaCorte" value="Atras" onclick="editarFechaCorte.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarProceso" header="Proceso" widgetVar="editarProceso" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlComprobantes.editarCorteProceso.proceso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarProceso" value="Atras" onclick="editarProceso.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
                     <!-- DIALOGOS RASTRO-->
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
@@ -612,9 +682,10 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlComprobantes.guardarCambios()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlComprobantes.salir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
+
                     <!-- LOV PROCESOS-->
                     <p:dialog header="Procesos" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
                               showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
@@ -639,6 +710,41 @@
                         </p:commandButton>
                         <p:commandButton id="atrasP" style="position: relative; left: 200px" value="Atras" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlComprobantes.cancelarProceso()}" update="lovProcesos" process="@this">
                             <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                    <!-- LOV TERCEROS-->
+                    <p:dialog header="Terceros" widgetVar="TercerosDialogo" draggable="false" resizable="false" closable="false" id="TercerosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="401" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovTerceros" style="font-size: 11px; width: 370px" var="tercero" value="#{controlComprobantes.listaTerceros}" rowKey="#{tercero.secuencia}"
+                                     selection="#{controlComprobantes.terceroSelecionado}" selectionMode="single" widgetVar="lovTerceros" scrollable="true" scrollWidth="390" scrollHeight="250"
+                                     filteredValue="#{controlComprobantes.filtradolistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
+                            <p:ajax event="rowDblselect" listener="#{controlComprobantes.actualizarTercero()}" process="@this" onstart="lovTerceros.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Tercero: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTerceros.filter();" style="width:150px; position: relative; left: 2px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tercero.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText  value="#{tercero.nombre}" />
+                            </p:column>
+
+                            <p:column width="120" filterBy="#{tercero.nit}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nit" />
+                                </f:facet>
+                                <h:outputText  value="#{tercero.nit}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarT" style="position: relative; left: 245px" value="Aceptar" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.actualizarTercero()}" update="aceptarT" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasT" style="position: relative; left: 245px" value="Atras" onclick="TercerosDialogo.hide(), lovTerceros.clearFilters();" actionListener="#{controlComprobantes.cancelarTercero()}" update="lovTerceros" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
                 </h:form>

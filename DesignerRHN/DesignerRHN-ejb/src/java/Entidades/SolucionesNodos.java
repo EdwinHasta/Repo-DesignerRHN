@@ -53,7 +53,7 @@ public class SolucionesNodos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 10)
     @Column(name = "ESTADO")
     private String estado;
@@ -159,22 +159,22 @@ public class SolucionesNodos implements Serializable {
     public SolucionesNodos() {
     }
 
-    public SolucionesNodos(BigDecimal secuencia) {
+    public SolucionesNodos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public SolucionesNodos(BigDecimal secuencia, BigDecimal valor, Date fechadesde, Date fechahasta) {
+    public SolucionesNodos(BigInteger secuencia, BigDecimal valor, Date fechadesde, Date fechahasta) {
         this.secuencia = secuencia;
         this.valor = valor;
         this.fechadesde = fechadesde;
         this.fechahasta = fechahasta;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -299,6 +299,9 @@ public class SolucionesNodos implements Serializable {
     }
 
     public Terceros getNit() {
+        if(nit == null){
+            nit = new Terceros();
+        }
         return nit;
     }
 
@@ -450,7 +453,7 @@ public class SolucionesNodos implements Serializable {
 
     public BigDecimal getPasivo() {
         if (tipo.equals("PASIVO")) {
-            descuento = valor;
+            pasivo = valor;
         }
         return pasivo;
     }
@@ -461,7 +464,7 @@ public class SolucionesNodos implements Serializable {
 
     public BigDecimal getGasto() {
         if (tipo.equals("GASTO")) {
-            descuento = valor;
+            gasto = valor;
         }
         return gasto;
     }

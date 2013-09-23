@@ -43,11 +43,15 @@ function cortesProcesosScroll() {
 function iniciarScrollEmpleado() {
     var leftDiv = document.getElementById('inferiorIzquierda');
     var rightDiv = document.getElementById('inferiorDerecha');
+    var rightDivSub = document.getElementById('inferiorDerechaSubtotalesEmpleado');
     var topDiv = document.getElementById('superiorDerecha');
-    
+
     rightDiv.onscroll = function() {
         leftDiv.scrollTop = rightDiv.scrollTop;
-        topDiv.scrollLeft = rightDiv.scrollLeft;
+    };
+    rightDivSub.onscroll = function() {
+        topDiv.scrollLeft = rightDivSub.scrollLeft;
+        rightDiv.scrollLeft = rightDivSub.scrollLeft;
     };
     leftDiv.onscroll = function() {
         rightDiv.scrollTop = leftDiv.scrollTop;
@@ -57,11 +61,15 @@ function iniciarScrollEmpleado() {
 function iniciarScrollEmpleador() {
     var leftDiv = document.getElementById('inferiorIzquierdaEM');
     var rightDiv = document.getElementById('inferiorDerechaEM');
+    var rightDivSub = document.getElementById('inferiorDerechaSubtotalesEmpleador');
     var topDiv = document.getElementById('superiorDerechaEM');
 
     rightDiv.onscroll = function() {
         leftDiv.scrollTop = rightDiv.scrollTop;
-        topDiv.scrollLeft = rightDiv.scrollLeft;
+    };
+    rightDivSub.onscroll = function() {
+        topDiv.scrollLeft = rightDivSub.scrollLeft;
+        rightDiv.scrollLeft = rightDivSub.scrollLeft;
     };
     leftDiv.onscroll = function() {
         rightDiv.scrollTop = leftDiv.scrollTop;

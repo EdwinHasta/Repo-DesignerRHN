@@ -22,6 +22,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     /*
      * Crear concepto.
      */
+    @Override
     public void crear(Conceptos concepto) {
         em.persist(concepto);
     }
@@ -29,6 +30,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     /*
      *Editar concepto. 
      */
+    @Override
     public void editar(Conceptos concepto) {
         em.merge(concepto);
     }
@@ -36,6 +38,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     /*
      *Borrar concepto.
      */
+    @Override
     public void borrar(Conceptos concepto) {
         em.remove(em.merge(concepto));
     }
@@ -43,6 +46,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     /*
      *Encontrar un concepto. 
      */
+    @Override
     public Conceptos buscarConcepto(Object id) {
         return em.find(Conceptos.class, id);
     }
@@ -50,12 +54,14 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     /*
      *Encontrar todos los conceptos. 
      */
+    @Override
     public List<Conceptos> buscarConceptos() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Conceptos.class));
         return em.createQuery(cq).getResultList();
     }
 
+    @Override
     public void revisarConcepto(int codigoConcepto) {
         try {
             /*Query queryEmp = em.createQuery("SELECT e.secuencia from Empresas e");
@@ -78,6 +84,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
 
+    @Override
     public boolean verificarCodigoConcepto(BigInteger codigoConcepto) {
         try {
             Query query = em.createQuery("SELECT COUNT(c) FROM Conceptos c WHERE c.codigo = :codigo");
@@ -93,14 +100,26 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
 
+    @Override
     public Conceptos validarCodigoConcepto(BigInteger codigoConcepto, BigInteger secEmpresa) {
-        Conceptos concepto = new Conceptos();
         try {
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.codigo = :codigo AND c.empresa.secuencia = :secEmpresa");
             query.setParameter("codigo", codigoConcepto);
             query.setParameter("secEmpresa", secEmpresa);
-            concepto = (Conceptos) query.getSingleResult();
+            Conceptos concepto = (Conceptos) query.getSingleResult();
             return concepto;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa) {
+        try {
+            Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa ORDER BY c.codigo ASC");
+            query.setParameter("secEmpresa", secEmpresa);
+            List<Conceptos> listaConceptos = query.getResultList();
+            return listaConceptos;
         } catch (Exception e) {
             return null;
         }

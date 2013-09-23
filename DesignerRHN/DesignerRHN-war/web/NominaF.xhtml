@@ -262,7 +262,7 @@
                                             S.E.T.: Salario Equivalente Tributario.<br/> Calculo de retención en la fuente
                                         </p:tooltip>
 
-                                        <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" action="emplComprobante" actionListener="#{controlComprobantes.recibirEmpleado(10661474)}" />
+                                        <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" action="emplComprobante" actionListener="#{controlComprobantes.recibirEmpleado(item.empleado.secuencia)}" />
                                         <p:tooltip style="font-size: 12px" for="Comprobantes" >
                                             COMPROBANTES DE PAGO: Observe todos los comprobantes<br/> de pago que ha tenido el empleado.
                                         </p:tooltip>

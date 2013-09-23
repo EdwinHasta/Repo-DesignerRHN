@@ -61,4 +61,6 @@ public interface PersistenciaTercerosInterface {
     public boolean verificarTerceroPorNit(BigInteger nit);
 
     public boolean verificarTerceroParaEmpresaEmpleado(BigInteger nit, BigInteger secEmpresa);
+
+    public List<Terceros> lovTerceros(BigInteger secEmpresa);
 }

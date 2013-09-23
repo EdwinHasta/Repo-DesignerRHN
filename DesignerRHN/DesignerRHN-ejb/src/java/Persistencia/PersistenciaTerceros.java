@@ -82,6 +82,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
 
     }
 
+    @Override
     public boolean verificarTerceroPorNit(BigInteger nit) {
         try {
             Query query = em.createQuery("SELECT COUNT(t) FROM Terceros t WHERE t.nit = :nit");
@@ -97,6 +98,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
         }
     }
 
+    @Override
     public boolean verificarTerceroParaEmpresaEmpleado(BigInteger nit, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT COUNT(t) FROM Terceros t WHERE t.nit = :nit AND t.empresa.secuencia = :secEmpresa");
@@ -110,6 +112,19 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
         } catch (Exception e) {
             System.out.println("Exepcion: " + e);
             return false;
+        }
+    }
+    
+    @Override
+    public List<Terceros> lovTerceros(BigInteger secEmpresa) {
+        try {
+            Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.empresa.secuencia = :secEmpresa ORDER BY t.nombre");
+            query.setParameter("secEmpresa", secEmpresa);
+            List<Terceros> listaTerceros = query.getResultList();
+            return listaTerceros;
+        } catch (Exception e) {
+            System.out.println("Exepcion lovTerceros: " + e);
+            return null;
         }
     }
 }

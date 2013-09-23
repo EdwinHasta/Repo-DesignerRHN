@@ -60,7 +60,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     @Override
    public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado) {
         try {
-            Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia = :secuenciaEmpleado ORDER BY c.numero ASC");
+            Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia = :secuenciaEmpleado ORDER BY c.numero DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             List<Comprobantes> listComprobantes = query.getResultList();
             return listComprobantes;

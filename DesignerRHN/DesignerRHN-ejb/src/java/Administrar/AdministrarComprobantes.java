@@ -5,12 +5,14 @@ import Entidades.CortesProcesos;
 import Entidades.Empleados;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.Terceros;
 import InterfaceAdministrar.AdministrarComprobantesInterface;
 import InterfacePersistencia.PersistenciaComprobantesInterface;
 import InterfacePersistencia.PersistenciaCortesProcesosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
+import InterfacePersistencia.PersistenciaTercerosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,6 +31,8 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaProcesosInterface persistenciaProcesos;
+    @EJB
+    PersistenciaTercerosInterface persistenciaTerceros;
 
     @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
@@ -70,6 +74,11 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     @Override
     public List<Procesos> lovProcesos() {
         return persistenciaProcesos.lovProcesos();
+    }
+    
+    @Override
+    public List<Terceros> lovTerceros(BigInteger secEmpresa) {
+        return persistenciaTerceros.lovTerceros(secEmpresa);
     }
 
     //CAMBIOS COMPROBANTES
@@ -124,5 +133,31 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     @Override
     public void crearCorteProceso(CortesProcesos corteProceso) {
         persistenciaCortesProcesos.crear(corteProceso);
+    }
+    
+    @Override
+    public void modificarSolucionesNodosEmpleado(List<SolucionesNodos> listaSolucionesNodosEmpleado) {
+        for (int i = 0; i < listaSolucionesNodosEmpleado.size(); i++) {
+            System.out.println("Modificando Soluciones Nodo Empleado...");
+            if (listaSolucionesNodosEmpleado.get(i).getNit().getSecuencia() == null) {
+                listaSolucionesNodosEmpleado.get(i).setNit(null);
+                persistenciaSolucionesNodos.editar(listaSolucionesNodosEmpleado.get(i));
+            } else {
+                persistenciaSolucionesNodos.editar(listaSolucionesNodosEmpleado.get(i));
+            }
+        }
+    }
+    
+    @Override
+    public void modificarSolucionesNodosEmpleador(List<SolucionesNodos> listaSolucionesNodosEmpleador) {
+        for (int i = 0; i < listaSolucionesNodosEmpleador.size(); i++) {
+            System.out.println("Modificando Soluciones Nodo Empleador...");
+            if (listaSolucionesNodosEmpleador.get(i).getNit().getSecuencia() == null) {
+                listaSolucionesNodosEmpleador.get(i).setNit(null);
+                persistenciaSolucionesNodos.editar(listaSolucionesNodosEmpleador.get(i));
+            } else {
+                persistenciaSolucionesNodos.editar(listaSolucionesNodosEmpleador.get(i));
+            }
+        }
     }
 }

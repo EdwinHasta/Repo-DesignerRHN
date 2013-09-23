@@ -21,4 +21,5 @@ public interface PersistenciaConceptosInterface {
     public void revisarConcepto(int codigoConcepto);
     public boolean verificarCodigoConcepto(BigInteger codigoConcepto);
     public Conceptos validarCodigoConcepto(BigInteger codigoConcepto, BigInteger secEmpresa);
+    public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa);
 }

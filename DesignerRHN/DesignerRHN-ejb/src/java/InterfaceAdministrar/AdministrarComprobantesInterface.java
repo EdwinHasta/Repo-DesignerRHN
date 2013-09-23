@@ -9,6 +9,7 @@ import Entidades.CortesProcesos;
 import Entidades.Empleados;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.Terceros;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -30,4 +31,7 @@ public interface AdministrarComprobantesInterface {
     public void modificarCortesProcesos(List<CortesProcesos> listaCortesProcesos);
     public void borrarCortesProcesos(CortesProcesos corteProceso);
     public void crearCorteProceso(CortesProcesos corteProceso);
+    public List<Terceros> lovTerceros(BigInteger secEmpresa);
+    public void modificarSolucionesNodosEmpleado(List<SolucionesNodos> listaSolucionesNodosEmpleado);
+    public void modificarSolucionesNodosEmpleador(List<SolucionesNodos> listaSolucionesNodosEmpleado);
 }
