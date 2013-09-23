@@ -67,13 +67,13 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface{
     }
 
     @Override
-    public void borrarTelefono(Direcciones direcciones) {
+    public void borrarDireccion(Direcciones direcciones) {
         persistenciaDirecciones.borrar(direcciones);
     }
 
 
     @Override
-    public void crearTelefono(Direcciones direcciones) {
+    public void crearDireccion(Direcciones direcciones) {
         persistenciaDirecciones.crear(direcciones);
     }
     

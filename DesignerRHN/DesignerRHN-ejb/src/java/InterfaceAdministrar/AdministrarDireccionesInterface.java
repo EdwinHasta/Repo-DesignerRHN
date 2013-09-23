@@ -17,7 +17,7 @@ public interface AdministrarDireccionesInterface {
      public Personas encontrarPersona(BigInteger secPersona);
      public List<Ciudades>  lovCiudades();
      public void modificarDireccion(List<Direcciones> listaDireccionesModificar);
-     public void borrarTelefono(Direcciones direcciones);
-     public void crearTelefono(Direcciones direcciones);
+     public void borrarDireccion(Direcciones direcciones);
+     public void crearDireccion(Direcciones direcciones);
      
 }
