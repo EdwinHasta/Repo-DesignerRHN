@@ -415,7 +415,7 @@ public class ControlCiudades implements Serializable {
             listaCiudadesCrear.add(nuevaCiudad);
             listaCiudades.add(nuevaCiudad);
             nuevaCiudad = new Ciudades();
-            nuevaCiudad.setNombre(Departamento);
+          //  nuevaCiudad.setNombre(Departamento);
             nuevaCiudad.setDepartamento(new Departamentos());
             nuevaCiudad.getDepartamento().setNombre(" ");
             context.update("form:datosCiudades");

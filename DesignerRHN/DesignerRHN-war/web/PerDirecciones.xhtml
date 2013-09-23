@@ -52,7 +52,7 @@
 
                                 <p:column headerText="Ubicacion Principal" sortBy="#{direccion.tipoppal}" filterBy="#{direccion.tipoppal}" filterMatchMode="contains" id="dUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText id="OutUbicacionPrincipal" value="#{direccion.tipoppal}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText id="OutUbicacionPrincipal" value="#{direccion.tipoppal}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
                                             <p:selectOneMenu id="editarUbicacionPrincipal" value="#{direccion.tipoppal}" style="width: 100%">  
                                                 <f:selectItem itemLabel="Calle" itemValue="C" />  
@@ -74,7 +74,7 @@
 
                                 <p:column headerText="Descripcion Ubicacion Principal" sortBy="#{direccion.ppal}" filterBy="#{direccion.ppal}" filterMatchMode="contains" id="dDescripcionUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.ppal}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{direccion.ppal}" style="text-transform: uppercase " /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.ppal}" id="editarDescripcionUbicacionPrincipal" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 2)}" />
@@ -89,7 +89,7 @@
 
                                 <p:column headerText="Ubicacion Secundaria" sortBy="#{direccion.tiposecundario}" filterBy="#{direccion.tiposecundario}" filterMatchMode="contains" id="dUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.tiposecundario}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{direccion.tiposecundario}" style="text-transform: uppercase " /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.tiposecundario}" id="editarUbicacionSecundaria" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 3)}" />
@@ -104,7 +104,7 @@
 
                                 <p:column headerText="Descripcion Ubicacion Secundaria" sortBy="#{direccion.secundario}" filterBy="#{direccion.secundario}" filterMatchMode="contains" id="dDescripcionUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.secundario}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{direccion.secundario}" style="text-transform: uppercase "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.secundario}" id="editarDescripcionUbicacionSecundaria" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 4)}" />
@@ -119,7 +119,7 @@
 
                                 <p:column headerText="Barrio - Informacion Adicional" sortBy="#{direccion.interior}" filterBy="#{direccion.interior}" filterMatchMode="contains" id="dInterior" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.interior}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{direccion.interior}" style="text-transform: uppercase "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.interior}" id="editarInterior" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 5)}" />
@@ -152,7 +152,7 @@
 
                                 <p:column headerText="Tipo Vivienda" sortBy="#{direccion.tipovivienda}" filterBy="#{direccion.tipovivienda}" filterMatchMode="contains" id="dTipoVivienda" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.tipovivienda}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{direccion.tipovivienda}" style="text-transform: uppercase "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.tipovivienda}" id="editarTipoVivienda" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 7)}" />
@@ -167,7 +167,7 @@
 
                                 <p:column headerText="Hipoteca" sortBy="#{direccion.hipoteca}" filterBy="#{direccion.hipoteca}" filterMatchMode="contains" id="dHipoteca" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.hipoteca}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{direccion.hipoteca}" style="text-transform: uppercase " /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.hipoteca}" id="editarHipoteca" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 8)}" />
@@ -182,7 +182,7 @@
 
                                 <p:column headerText="Direccion Alternativa" sortBy="#{direccion.direccionalternativa}" filterBy="#{direccion.direccionalternativa}" filterMatchMode="contains" id="dDireccionAlternativa" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.direccionalternativa}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{direccion.direccionalternativa}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.direccionalternativa}" id="editarDireccionAlternativa" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 9)}" />
@@ -203,7 +203,7 @@
                         <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlCiudades.guardarCambiosCiudad()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlPerDirecciones.guardarCambiosDireccion()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
@@ -230,7 +230,7 @@
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroCiudad.show()" update=":formularioDialogos:nuevaCiudad" process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroDireccion.show()" update=":formularioDialogos:nuevaDireccion" process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Direccion" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.borrarDirecciones()}" process="@this"/>  
@@ -240,69 +240,105 @@
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Direccion" />
 
                                 <p:separator /> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <!--      <p:commandButton style="position: absolute; left: 522px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosCiudades" process="@this" />
-                              <p:commandButton style="position: absolute; left: 15px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlCiudades.cancelarModificacion()}" process="@this" />
-                              <p:commandButton style="position: absolute; left: 605px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlCiudades.salir()}" action="nomina" process="@this" /> -->
+                              <p:commandButton style="position: absolute; left: 522px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosDireccionesPersona" process="@this" />
+                              <p:commandButton style="position: absolute; left: 15px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPerDirecciones.cancelarModificacion()}" process="@this" />
+                              <p:commandButton style="position: absolute; left: 605px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPerDirecciones.salir()}" action="nomina" process="@this" /> 
 
 
                     </p:panel>
                 </h:form>
                 <!-- NUEVO REGISTRO --> 
                 <h:form id="formularioDialogos" >
-                    <p:dialog id="NuevoRegistroCiudad" header="Nuevo Registro" widgetVar="NuevoRegistroCiudad" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroDireccion" header="Nuevo Registro" widgetVar="NuevoRegistroDireccion" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar una nueva Ciudad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="Ingresar una nueva Direccion" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
-                        <p:panel id="nuevaCiudad" style="border: none;">
-                            <strong><h:outputText value="Código:" style="font-size: 12px; position: absolute; top: 90px" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlCiudades.nuevaCiudad.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 85px; text-transform: uppercase" onclick="select();">
-
-                                <p:ajax event="change" update="@this"/>
+                        <p:panel id="nuevaDireccion" style="border: none;">
+                            <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 85px" /></strong>
+                            <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; top: 80px; left: 200px;" value="#{controlPerDirecciones.nuevaDireccion.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFecha"/>
+                                <p:ajax event="change" update="nuevaFecha"/>
+                            </p:calendar>
+                            
+                            <strong><h:outputText value="Ubicacion Principal:  " style="font-size: 12px; position: absolute; top: 118px" /></strong>
+                            <p:inputText id="nuevaUbicacionPrincipal" value="#{controlPerDirecciones.nuevaDireccion.tipoppal}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaUbicacionPrincipal"/>
                             </p:inputText>
+                            <p:watermark for="nuevaUbicacionPrincipal" value="Ubicacion Principal" />
 
-                            <strong><h:outputText value="Nombre de la Ciudad " style="font-size: 12px; position: absolute; top: 122px" /></strong>
-                            <p:inputText id="nuevoNombreCiudad" value="#{controlCiudades.nuevaCiudad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 118px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="@this"/>
-                            </p:inputText> 
-
-
-
-                            <strong><h:outputText value="Departamento:" style="font-size: 12px; position: absolute; top: 160px" /></strong>
-                            <p:inputText id="nuevoDepartamento" value="#{controlCiudades.nuevaCiudad.departamento.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 153px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlCiudades.valoresBackupAutocompletar(1)}" />
-                                <p:ajax event="change" listener="#{controlCiudades.autocompletarNuevoyDuplicado(controlCiudades.nuevaCiudad.departamento.nombre,1)}"/>
-                                <p:ajax event="dblclick" listener="#{controlCiudades.llamarLovDepartamento(1)}" />
+                            <strong><h:outputText value="Descripcion U. Principal:  " style="font-size: 12px; position: absolute; top: 148px" /></strong>
+                            <p:inputText id="nuevaDescripcionUbicacionPrincipal" value="#{controlPerDirecciones.nuevaDireccion.ppal}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 149px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaDescripcionUbicacionPrincipal"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 153px;  " id="btnNuevoDepartamento" icon="ui-icon-search" process="@this"  actionListener="#{controlCiudades.llamarLovDepartamento(1)}"/>
+                            <p:watermark for="nuevaDescripcionUbicacionPrincipal" value="Descripcion Ubicacion Principal" />
 
-
-                            <strong><h:outputText value="Código Alternativo:" style="font-size: 12px; position: absolute; top: 194px" /></strong>
-                            <p:inputText id="nuevoCodigoAlternativo" value="#{controlCiudades.nuevaCiudad.codigoalternativo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 188px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="@this"/>
+                            <strong><h:outputText value="Ubicacion Secundaria: " style="font-size: 12px; position: absolute; top: 178px" /></strong>
+                            <p:inputText id="nuevaUbicacionSecundaria" value="#{controlPerDirecciones.nuevaDireccion.tiposecundario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 179px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaUbicacionSecundaria"/>
                             </p:inputText>
+                            <p:watermark for="nuevaUbicacionSecundaria" value="Ubicacion Secundaria" />
 
+                            <strong><h:outputText value="Descripcion U. Secundaria: " style="font-size: 12px; position: absolute; top: 208px" /></strong>
+                            <p:inputText id="nuevaDescripcionUbicacionSecundaria" value="#{controlPerDirecciones.nuevaDireccion.secundario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 209px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaDescripcionUbicacionSecundaria"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaDescripcionUbicacionSecundaria" value="Descripcion Ubicacion Secundaria" />
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" process="@this"/>
-                            <p:commandButton id="agregarC" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  actionListener="#{controlCiudades.agregarNuevaCiudad()}" process="@this"/>
-                            <p:commandButton id="cancelarC" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" onclick="NuevoRegistroCiudad.hide();"  process="@this"/>
+                            <strong><h:outputText value="Barrio: " style="font-size: 12px; position: absolute; top: 238px" /></strong>
+                            <p:inputText id="nuevoInterior" value="#{controlPerDirecciones.nuevaDireccion.interior}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 239px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevoInterior"/>
+                            </p:inputText>
+                            <p:watermark for="nuevoInterior" value="Barrio" />                            
+
+                            <strong><h:outputText value="Ciudad: " style="font-size: 12px; position: absolute; top: 268px" /></strong>
+                            <p:inputText id="nuevaCiudad" value="#{controlPerDirecciones.nuevaDireccion.ciudad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 269px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPerDirecciones.valoresBackupAutocompletar(1)}" />
+                                <p:ajax event="change" listener="#{controlPerDirecciones.autocompletarNuevoyDuplicado(controlPerDirecciones.nuevaDireccion.ciudad.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPerDirecciones.llamarLovCiudad(1)}" />
+                            </p:inputText>
+                            <p:watermark for="nuevaCiudad" value="Ciudad" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 268px; " id="btnNuevaCiudad" process="@this" icon="ui-icon-search" actionListener="#{controlPerDirecciones.llamarLovCiudad(1)}"/>
+
+                            <strong><h:outputText value="Tipo Vivienda: "  style="font-size: 12px; position: absolute; top: 298px" /></strong>
+                            <p:inputText id="nuevoTipoVivienda" value="#{controlPerDirecciones.nuevaDireccion.tipovivienda}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 299px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevoTipoVivienda"/>
+                            </p:inputText>
+                            <p:watermark for="nuevoTipoVivienda" value="Tipo Vivienda" />
+
+                            <strong><h:outputText value="Hipoteca: "  style="font-size: 12px; position: absolute; top: 328px" /></strong>
+                            <p:inputText id="nuevaHipoteca" value="#{controlPerDirecciones.nuevaDireccion.hipoteca}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 329px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaHipoteca"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaHipoteca" value="Hipoteca" />
+
+                            <strong><h:outputText value="Direccion Alternativa: "  style="font-size: 12px; position: absolute; top: 358px" /></strong>
+                            <p:inputText id="nuevaDireccionAlternativa" value="#{controlPerDirecciones.nuevaDireccion.direccionalternativa}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 358px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaDireccionAlternativa"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaDireccionAlternativa" value="Direccion Alternativa" />
+                            
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" update="nuevaCiudad" process="@this"/>
+                            <p:commandButton id="agregarDir" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  actionListener="#{controlPerDirecciones.agregarNuevaDireccion()}" process="@this"/>
+                            <p:commandButton id="cancelarDir" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" update="nuevaCiudad" onclick="NuevoRegistroDireccion.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <p:dialog id="validacionNuevaDireccion" header="ATENCIÓN...!" widgetVar="validacionNuevaDireccion"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar una nueva dirección es necesario adicionar: #{controlCiudades.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="validacionNuevaCiudad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="Para agregar una nueva dirección es necesario adicionar: #{controlPerDirecciones.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaDireccion.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlCiudades.guardarCambiosCiudad()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPerDirecciones.guardarCambiosDireccion()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                         <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
@@ -317,10 +353,10 @@
                             <p:ajax event="rowSelect" listener="#{controlPerDirecciones.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
                             <p:ajax event="rowDblselect" listener="#{controlPerDirecciones.actualizarCiudades()}" process="@this" onstart="LOVCiudades.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Ciudad"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVCiudades.filter();" style="width:150px; position: relative; left: 8px;" />  
                             </f:facet>
-                            <p:column filterBy="#{cuidades.nombre}" width="200"  filterMatchMode="contains">
+                            <p:column filterBy="#{ciudades.nombre}" width="200"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Ciudad" />
                                 </f:facet>
@@ -330,9 +366,9 @@
                         <p:commandButton id="aceptarC" value="Aceptar" disabled="#{controlPerDirecciones.aceptar}" style="position: absolute; top: 336px; left: 232px; font-size: 12px" actionListener="#{controlPerDirecciones.actualizarCiudades()}" onclick="LOVCiudades.clearFilters();" update="aceptarC" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasC" style="position: relative; left: 303px; font-size: 12px" value="Atras" actionListener="#{controlCiudades.cancelarCambioDepartamentos()}" onclick="departamentosDialogo.hide(), LOVCiudades.clearFilters();"  update="LOVCiudades" process="@this">
+                        <p:commandButton id="atrasC" style="position: relative; left: 303px; font-size: 12px" value="Atras" actionListener="#{controlPerDirecciones.cancelarCambioCiudades()}" onclick="ciudadesDialogo.hide(), LOVCiudades.clearFilters();"  update="LOVCiudades" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
-                        </p:commandButton>
+                        </p:commandButton> 
                     </p:dialog> 
 
 
@@ -404,7 +440,7 @@
 
                             <strong><h:outputText value="Direccion Alternativa: "  style="font-size: 12px; position: absolute; top: 358px" /></strong>
                             <p:inputText id="duplicarDireccionAlternativa" value="#{controlPerDirecciones.duplicarDireccion.direccionalternativa}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 358px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarDireccionAlternativa"/>
+                                <p:ajax event="change" update="duplicarDireccion"/>
                             </p:inputText>
                             <p:watermark for="duplicarDireccionAlternativa" value="Direccion Alternativa" />
 
@@ -413,22 +449,21 @@
                             <p:commandButton id="cancelarDuplicarDireccion" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerDirecciones.limpiarDuplicarDireccion()}" update="duplicarDireccion" onclick="DuplicarRegistroDireccion.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-
-
-
-                    <!-- DIALOGOS RASTROS -->
+                    
+                    
+                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla 'CIUDADES' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlCiudades.secRegistro, 'Ciudades', 'ciudades')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla 'DIRECCIONES' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerDirecciones.secRegistro, 'Direcciones', 'direcciones')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla CIUDADES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Ciudades', 'ciudades')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla DIRECCIONES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Direcciones', 'direcciones')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -445,7 +480,7 @@
                     <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlCiudades.secRegistro, 'Ciudades', 'ciudades')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerDirecciones.secRegistro, 'Direcciones', 'direcciones')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -461,7 +496,7 @@
 
                     <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla 'CIUDADES' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="La tabla 'DIRECCIONES' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
 
