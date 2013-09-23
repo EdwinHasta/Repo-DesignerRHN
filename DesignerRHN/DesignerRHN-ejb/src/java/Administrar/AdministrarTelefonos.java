@@ -25,6 +25,7 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     PersistenciaTiposTelefonosInterface persistenciaTiposTelefonos;
     @EJB
     PersistenciaCiudadesInterface PersistenciaCiudades;
+    private Telefonos t;
 
     @Override
     public List<Telefonos> telefonosPersona(BigInteger secPersona) {
@@ -52,4 +53,39 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     public List<Ciudades>  lovCiudades(){
         return PersistenciaCiudades.ciudades();
     }
+    
+    @Override
+    public void modificarTelefono(List<Telefonos> listaTelefonosModificar) {
+        for (int i = 0; i < listaTelefonosModificar.size(); i++) {
+            System.out.println("Modificando...");
+            if (listaTelefonosModificar.get(i).getTipotelefono().getSecuencia() == null) {
+                listaTelefonosModificar.get(i).setTipotelefono(null);
+                t = listaTelefonosModificar.get(i);
+            } else {
+                t = listaTelefonosModificar.get(i);
+            }
+            if (listaTelefonosModificar.get(i).getCiudad().getSecuencia() == null) {
+                listaTelefonosModificar.get(i).setCiudad(null);
+                t = listaTelefonosModificar.get(i);
+            } else {
+                t = listaTelefonosModificar.get(i);
+            }
+            
+            
+            persistenciaTelefonos.editar(t);
+        }
+    }
+
+    @Override
+    public void borrarTelefono(Telefonos telefonos) {
+        persistenciaTelefonos.borrar(telefonos);
+    }
+
+
+    @Override
+    public void crearTelefono(Telefonos telefonos) {
+        persistenciaTelefonos.crear(telefonos);
+    }
+
+    
 }

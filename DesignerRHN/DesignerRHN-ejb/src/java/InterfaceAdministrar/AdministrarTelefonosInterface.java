@@ -20,4 +20,7 @@ public interface AdministrarTelefonosInterface {
     public Personas encontrarPersona(BigInteger secPersona);
     public List<TiposTelefonos>  lovTiposTelefonos();
     public List<Ciudades>  lovCiudades();
+    public void modificarTelefono(List<Telefonos> listaTelefonosModificar);
+    public void borrarTelefono(Telefonos telefonos);
+    public void crearTelefono(Telefonos telefonos);
 }

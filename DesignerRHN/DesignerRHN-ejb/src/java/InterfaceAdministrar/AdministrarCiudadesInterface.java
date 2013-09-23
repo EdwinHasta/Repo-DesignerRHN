@@ -13,4 +13,5 @@ public interface AdministrarCiudadesInterface {
     public void modificarCiudad(List<Ciudades> listaCiudadesModificar);
     public void borrarCiudad(Ciudades ciudades);
     public void crearCiudad(Ciudades ciudades);
+    public List<Ciudades>  lovCiudades();
 }
