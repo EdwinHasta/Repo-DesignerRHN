@@ -62,6 +62,7 @@ public class Organigramas implements Serializable {
     private Collection<Estructuras> estructurasCollection;
     @Transient
     private String estadoOrg;
+    
 
     public Organigramas() {
     }

@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
+
     @OneToMany(mappedBy = "conceptoabono")
     private Collection<Tiposprestamos> tiposprestamosCollection;
     @OneToMany(mappedBy = "conceptotercero")
@@ -139,22 +141,23 @@ public class Conceptos implements Serializable {
     private ClavesSap clavecontablecredito;
     @OneToMany(mappedBy = "concepto")
     private Collection<Categorias> categoriasCollection;
-
-    
-   /* @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<VigenciasConceptosTC> vigenciasconceptostcCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<VigenciasConceptosRL> vigenciasconceptosrlCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<VigenciasConceptosTT> vigenciasconceptosttCollection;*/
+    /* @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+     private Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection;
+     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+     private Collection<VigenciasConceptosTC> vigenciasconceptostcCollection;
+     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+     private Collection<VigenciasConceptosRL> vigenciasconceptosrlCollection;
+     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+     private Collection<VigenciasConceptosTT> vigenciasconceptosttCollection;*/
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<FormulasConceptos> formulasconceptosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<Novedades> novedadesCollection;
+    @Transient
+    private String naturalezaConcepto;
+
     public Conceptos() {
     }
 
@@ -468,38 +471,38 @@ public class Conceptos implements Serializable {
     public void setFormulasconceptosCollection(Collection<FormulasConceptos> formulasconceptosCollection) {
         this.formulasconceptosCollection = formulasconceptosCollection;
     }
-/*
-    public Collection<VigenciasGruposConceptos> getVigenciasgruposconceptosCollection() {
-        return vigenciasgruposconceptosCollection;
-    }
+    /*
+     public Collection<VigenciasGruposConceptos> getVigenciasgruposconceptosCollection() {
+     return vigenciasgruposconceptosCollection;
+     }
 
-    public void setVigenciasgruposconceptosCollection(Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection) {
-        this.vigenciasgruposconceptosCollection = vigenciasgruposconceptosCollection;
-    }
+     public void setVigenciasgruposconceptosCollection(Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection) {
+     this.vigenciasgruposconceptosCollection = vigenciasgruposconceptosCollection;
+     }
 
-    public Collection<VigenciasConceptosTC> getVigenciasconceptostcCollection() {
-        return vigenciasconceptostcCollection;
-    }
+     public Collection<VigenciasConceptosTC> getVigenciasconceptostcCollection() {
+     return vigenciasconceptostcCollection;
+     }
 
-    public void setVigenciasconceptostcCollection(Collection<VigenciasConceptosTC> vigenciasconceptostcCollection) {
-        this.vigenciasconceptostcCollection = vigenciasconceptostcCollection;
-    }
+     public void setVigenciasconceptostcCollection(Collection<VigenciasConceptosTC> vigenciasconceptostcCollection) {
+     this.vigenciasconceptostcCollection = vigenciasconceptostcCollection;
+     }
 
-    public Collection<VigenciasConceptosRL> getVigenciasconceptosrlCollection() {
-        return vigenciasconceptosrlCollection;
-    }
+     public Collection<VigenciasConceptosRL> getVigenciasconceptosrlCollection() {
+     return vigenciasconceptosrlCollection;
+     }
 
-    public void setVigenciasconceptosrlCollection(Collection<VigenciasConceptosRL> vigenciasconceptosrlCollection) {
-        this.vigenciasconceptosrlCollection = vigenciasconceptosrlCollection;
-    }
+     public void setVigenciasconceptosrlCollection(Collection<VigenciasConceptosRL> vigenciasconceptosrlCollection) {
+     this.vigenciasconceptosrlCollection = vigenciasconceptosrlCollection;
+     }
 
-    public Collection<VigenciasConceptosTT> getVigenciasconceptosttCollection() {
-        return vigenciasconceptosttCollection;
-    }
+     public Collection<VigenciasConceptosTT> getVigenciasconceptosttCollection() {
+     return vigenciasconceptosttCollection;
+     }
 
-    public void setVigenciasconceptosttCollection(Collection<VigenciasConceptosTT> vigenciasconceptosttCollection) {
-        this.vigenciasconceptosttCollection = vigenciasconceptosttCollection;
-    }*/
+     public void setVigenciasconceptosttCollection(Collection<VigenciasConceptosTT> vigenciasconceptosttCollection) {
+     this.vigenciasconceptosttCollection = vigenciasconceptosttCollection;
+     }*/
 
     @XmlTransient
     public Collection<Tiposprestamos> getTiposprestamosCollection() {
@@ -527,5 +530,29 @@ public class Conceptos implements Serializable {
     public void setTiposprestamosCollection2(Collection<Tiposprestamos> tiposprestamosCollection2) {
         this.tiposprestamosCollection2 = tiposprestamosCollection2;
     }
-     
+
+    public String getNaturalezaConcepto() {
+        if (naturalezaConcepto == null) {
+            if (naturaleza == null) {
+                naturalezaConcepto = "DESCUENTO";
+            } else {
+                if (naturaleza.equalsIgnoreCase("N")) {
+                    naturalezaConcepto = "NETO";
+                } else if (naturaleza.equalsIgnoreCase("G")) {
+                    naturalezaConcepto = "GASTO";
+                } else if (naturaleza.equalsIgnoreCase("D")) {
+                    naturalezaConcepto = "DESCUENTO";
+                } else if (naturaleza.equalsIgnoreCase("P")) {
+                    naturalezaConcepto = "PAGO";
+                } else if (naturaleza.equalsIgnoreCase("L")) {
+                    naturalezaConcepto = "PASIVO";
+                }
+            }
+        }
+        return naturalezaConcepto;
+    }
+
+    public void setNaturalezaConcepto(String naturalezaConcepto) {
+        this.naturalezaConcepto = naturalezaConcepto;
+    }
 }

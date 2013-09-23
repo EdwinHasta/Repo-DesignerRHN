@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.component.column.Column;
+import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @SessionScoped
@@ -64,6 +65,50 @@ public class ControlConcepto implements Serializable {
 
     public ControlConcepto() {
         listaConceptosEmpresa = new ArrayList<Conceptos>();
+    }
+
+    //SELECCIONAR NATURALEZA
+    public void seleccionarNaturaleza(String naturalezaConcepto, int indice, int celda) {
+        if (tipoLista == 0) {
+            if (naturalezaConcepto.equals("NETO")) {
+                listaConceptosEmpresa.get(indice).setNaturaleza("N");
+            } else if (naturalezaConcepto.equals("GASTO")) {
+                listaConceptosEmpresa.get(indice).setNaturaleza("G");
+            } else if (naturalezaConcepto.equals("DESCUENTO")) {
+                listaConceptosEmpresa.get(indice).setNaturaleza("D");
+            } else if (naturalezaConcepto.equals("PAGO")) {
+                listaConceptosEmpresa.get(indice).setNaturaleza("P");
+            } else if (naturalezaConcepto.equals("PASIVO")) {
+                listaConceptosEmpresa.get(indice).setNaturaleza("L");
+            }
+
+            /*     if (!listOrganigramasCrear.contains(listaOrganigramas.get(indice))) {
+             if (listOrganigramasModificar.isEmpty()) {
+             listOrganigramasModificar.add(listaOrganigramas.get(indice));
+             } else if (!listOrganigramasModificar.contains(listaOrganigramas.get(indice))) {
+             listOrganigramasModificar.add(listaOrganigramas.get(indice));
+             }
+             }
+             } else {
+             if (estadoOrganigrama.equals("ACTIVO")) {
+             filtradoListaOrganigramas.get(indice).setEstado("A");
+             } else {
+             filtradoListaOrganigramas.get(indice).setEstado("I");
+             }
+
+             if (!listOrganigramasCrear.contains(filtradoListaOrganigramas.get(indice))) {
+             if (listOrganigramasModificar.isEmpty()) {
+             listOrganigramasModificar.add(filtradoListaOrganigramas.get(indice));
+             } else if (!listOrganigramasModificar.contains(filtradoListaOrganigramas.get(indice))) {
+             listOrganigramasModificar.add(filtradoListaOrganigramas.get(indice));
+             }
+             }
+             }*/
+            if (guardado == true) {
+                guardado = false;
+            }
+            RequestContext.getCurrentInstance().update("form:datosConceptos");
+        }
     }
 
     //EVENTO FILTRAR
