@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Direcciones.findAll", query = "SELECT d FROM Direcciones d")})
 public class Direcciones implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -102,6 +104,14 @@ public class Direcciones implements Serializable {
     @JoinColumn(name = "BANCO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Bancos banco;
+    @Transient
+    private String estadoTipoPpal;
+    @Transient
+    private String estadoTipoSecundario;
+    @Transient
+    private String estadoTipoVivienda;
+    @Transient
+    private String estadoHipoteca;
 
     public Direcciones() {
     }
@@ -124,6 +134,65 @@ public class Direcciones implements Serializable {
 
     public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
+    }
+
+    public String getEstadoTipoPpal() {
+        if (estadoTipoPpal == null) {
+            if (tipoppal == null) {
+                estadoTipoPpal = "CALLE";
+            } else {
+                if (tipoppal.equalsIgnoreCase("C")) {
+                    estadoTipoPpal = "CALLE";
+                } else if (tipoppal.equalsIgnoreCase("K")) {
+                    estadoTipoPpal = "CARRERA";
+                } else if (tipoppal.equalsIgnoreCase("A")) {
+                    estadoTipoPpal = "AVENIDA CALLE";
+                } else if (tipoppal.equalsIgnoreCase("M")) {
+                    estadoTipoPpal = "AVENIDA CARRERA";
+                } else if (tipoppal.equalsIgnoreCase("D")) {
+                    estadoTipoPpal = "DIAGONAL";
+                } else if (tipoppal.equalsIgnoreCase("T")) {
+                    estadoTipoPpal = "TRANSVERSAL";
+                } else if (tipoppal.equalsIgnoreCase("O")) {
+                    estadoTipoPpal = "OTROS";
+                }
+            }
+        }
+
+        return estadoTipoPpal;
+    }
+
+    public void setEstadoTipoPpal(String estadoTipoPpal) {
+        this.estadoTipoPpal = estadoTipoPpal;
+    }
+
+    public String getEstadoTipoSecundario() {
+        if (estadoTipoSecundario == null) {
+            if (tiposecundario == null) {
+                estadoTipoSecundario = "CALLE";
+            } else {
+                if (tiposecundario.equalsIgnoreCase("C")) {
+                    estadoTipoSecundario = "CALLE";
+                } else if (tiposecundario.equalsIgnoreCase("K")) {
+                    estadoTipoSecundario = "CARRERA";
+                } else if (tiposecundario.equalsIgnoreCase("A")) {
+                    estadoTipoSecundario = "AVENIDA CALLE";
+                } else if (tiposecundario.equalsIgnoreCase("M")) {
+                    estadoTipoSecundario = "AVENIDA CARRERA";
+                } else if (tiposecundario.equalsIgnoreCase("D")) {
+                    estadoTipoSecundario = "DIAGONAL";
+                } else if (tiposecundario.equalsIgnoreCase("T")) {
+                    estadoTipoSecundario = "TRANSVERSAL";
+                } else if (tiposecundario.equalsIgnoreCase("O")) {
+                    estadoTipoSecundario = "OTROS";
+                }
+            }
+        }
+        return estadoTipoSecundario;
+    }
+
+    public void setEstadoTipoSecundario(String estadoTipoSecundario) {
+        this.estadoTipoSecundario = estadoTipoSecundario.toUpperCase();
     }
 
     public String getPpal() {
@@ -182,6 +251,27 @@ public class Direcciones implements Serializable {
         this.tipovivienda = tipovivienda.toUpperCase();
     }
 
+    public String getEstadoTipoVivienda() {
+        if (estadoTipoVivienda == null) {
+            if (tipovivienda == null) {
+                estadoTipoVivienda = "CASA";
+            } else {
+                if (tipovivienda.equalsIgnoreCase("CASA")) {
+                    estadoTipoVivienda = "CASA";
+                } else if (tipovivienda.equalsIgnoreCase("APARTAMENTO")) {
+                    estadoTipoVivienda = "APARTAMENTO";
+                } else if (tipovivienda.equalsIgnoreCase("FINCA")) {
+                    estadoTipoVivienda = "FINCA";
+                }
+            }
+        }
+        return estadoTipoVivienda;
+    }
+
+    public void setEstadoTipoVivienda(String estadoTipoVivienda) {
+        this.estadoTipoVivienda = estadoTipoVivienda.toUpperCase();
+    }
+
     public String getVivienda() {
         return vivienda;
     }
@@ -206,6 +296,28 @@ public class Direcciones implements Serializable {
         this.hipoteca = hipoteca.toUpperCase();
     }
 
+    public String getEstadoHipoteca() {
+        if (estadoHipoteca == null) {
+            if (hipoteca == null) {
+                estadoHipoteca = "NO";
+            } else {
+                if (hipoteca.equalsIgnoreCase("N")) {
+                    estadoHipoteca = "NO";
+                } else if (hipoteca.equalsIgnoreCase("S")) {
+                    estadoHipoteca = "SI";
+                }
+            }
+        }
+        return estadoHipoteca;
+
+
+
+    }
+
+    public void setEstadoHipoteca(String estadoHipoteca) {
+        this.estadoHipoteca = estadoHipoteca;
+    }
+
     public String getEntidadhipoteca() {
         return entidadhipoteca;
     }
@@ -227,7 +339,11 @@ public class Direcciones implements Serializable {
     }
 
     public void setDireccionalternativa(String direccionalternativa) {
-        this.direccionalternativa = direccionalternativa.toUpperCase();
+        if (direccionalternativa != null) {
+            this.direccionalternativa = direccionalternativa.toUpperCase();
+        }else{
+            this.direccionalternativa = direccionalternativa;
+        }
     }
 
     public TercerosSucursales getTercero() {
@@ -294,5 +410,4 @@ public class Direcciones implements Serializable {
     public String toString() {
         return "Entidades.Direcciones[ secuencia=" + secuencia + " ]";
     }
-    
 }

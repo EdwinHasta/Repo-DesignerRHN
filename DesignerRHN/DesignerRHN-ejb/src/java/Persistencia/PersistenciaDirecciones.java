@@ -82,4 +82,26 @@ public class PersistenciaDirecciones implements PersistenciaDireccionesInterface
             return null;
         }
     }
+    
+    @Override
+    public List<Direcciones> direccionesPersona(BigInteger secuenciaPersona){
+        try {
+            Query query = em.createQuery("SELECT COUNT(d) FROM Direcciones d WHERE d.persona.secuencia = :secuenciaPersona");
+            query.setParameter("secuenciaPersona", secuenciaPersona);
+            Long resultado = (Long) query.getSingleResult();
+            if (resultado > 0) {
+                Query queryFinal = em.createQuery("SELECT d FROM Direcciones d WHERE d.persona.secuencia = :secuenciaPersona ");
+                queryFinal.setParameter("secuenciaPersona", secuenciaPersona);
+                List<Direcciones> listaDirecciones = queryFinal.getResultList();
+                return listaDirecciones;
+            }
+            return null;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaDirecciones.direccionPersona" + e);
+            return null;
+        }
+    }
+    
+    
+    
 }

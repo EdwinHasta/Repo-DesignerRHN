@@ -19,4 +19,5 @@ public interface PersistenciaDireccionesInterface {
     public Direcciones buscarDireccion(BigInteger id);
     public List<Direcciones> buscarDirecciones();
     public List<Direcciones> direccionPersona(BigInteger secuenciaPersona);
+    public List<Direcciones> direccionesPersona(BigInteger secuenciaPersona);
 }
