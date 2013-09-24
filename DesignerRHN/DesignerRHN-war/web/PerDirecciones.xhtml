@@ -14,14 +14,14 @@
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Direcciones" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
 
-                        <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlPerDirecciones.persona.nombreCompleto}"/>
+                        <h:outputText style="position: absolute; left: 570px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlPerDirecciones.persona.nombreCompleto}"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 320px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 840px; height: 320px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Direcciones donde ubicar al empleado</strong></legend>
 
                             <p:dataTable id="datosDireccionesPersona" var="direccion" value="#{controlPerDirecciones.listaDirecciones}"
                                          rowKey="#{direccion.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         scrollable="true" scrollHeight="200" scrollWidth="640" filteredValue="#{controlPerDirecciones.filtradosListaDirecciones}" 
+                                         scrollable="true" scrollHeight="200" scrollWidth="840" filteredValue="#{controlPerDirecciones.filtradosListaDirecciones}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -50,19 +50,19 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Ubicacion Principal" sortBy="#{direccion.tipoppal}" filterBy="#{direccion.tipoppal}" filterMatchMode="contains" id="dUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Ubicacion Principal" sortBy="#{direccion.estadoTipoPpal}" filterBy="#{direccion.estadoTipoPpal}" filterMatchMode="contains" id="dUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText id="OutUbicacionPrincipal" value="#{direccion.tipoppal}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="output"><h:outputText id="OutUbicacionPrincipal" value="#{direccion.estadoTipoPpal}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:selectOneMenu id="editarUbicacionPrincipal" value="#{direccion.tipoppal}" style="width: 100%">  
-                                                <f:selectItem itemLabel="Calle" itemValue="C" />  
-                                                <f:selectItem itemLabel="Carrera" itemValue="K" />  
-                                                <f:selectItem itemLabel="Avenida Calle" itemValue="A" />  
-                                                <f:selectItem itemLabel="Avenida Carrera" itemValue="M" />  
-                                                <f:selectItem itemLabel="Diagonal" itemValue="D" />  
-                                                <f:selectItem itemLabel="Transversal" itemValue="T" />  
-                                                <f:selectItem itemLabel="Otros" itemValue="O" />
-                                                <p:ajax update="@this, OutUbicacionPrincipal"/>
+                                            <p:selectOneMenu id="editarUbicacionPrincipal" value="#{direccion.estadoTipoPpal}" style="width: 100%">  
+                                                <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
+                                                <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
+                                                <f:selectItem itemLabel="Avenida Calle" itemValue="AVENIDA CALLE" />  
+                                                <f:selectItem itemLabel="Avenida Carrera" itemValue="AVENIDA CARRERA" />  
+                                                <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
+                                                <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
+                                                <f:selectItem itemLabel="Otros" itemValue="OTROS" />
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoPpal(direccion.estadoTipoPpal, indice, 1)}" update="@this" />
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -87,20 +87,27 @@
                                     </f:facet>
                                 </p:column> 
 
-                                <p:column headerText="Ubicacion Secundaria" sortBy="#{direccion.tiposecundario}" filterBy="#{direccion.tiposecundario}" filterMatchMode="contains" id="dUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Ubicacion Secundaria" sortBy="#{direccion.estadoTipoSecundario}" filterBy="#{direccion.estadoTipoSecundario}" filterMatchMode="contains" id="dUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.tiposecundario}" style="text-transform: uppercase " /></f:facet>  
+                                        <f:facet name="output"><h:outputText id="OutUbicacionSecundaria" value="#{direccion.estadoTipoSecundario}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{direccion.tiposecundario}" id="editarUbicacionSecundaria" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 3)}" />
-                                            </p:inputText>
+                                            <p:selectOneMenu id="editarUbicacionSecundaria" value="#{direccion.estadoTipoSecundario}" style="width: 100%">  
+                                                <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
+                                                <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
+                                                <f:selectItem itemLabel="Avenida Calle" itemValue="AVENIDA CALLE" />  
+                                                <f:selectItem itemLabel="Avenida Carrera" itemValue="AVENIDA CARRERA" />  
+                                                <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
+                                                <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
+                                                <f:selectItem itemLabel="Otros" itemValue="OTROS" />
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoSecundario(direccion.estadoTipoSecundario, indice, 3)}" update="@this" />
+                                            </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
                                         <h:outputText value="Ubicacion Secundaria" />
                                     </f:facet>
-                                </p:column>
+                                </p:column> 
 
                                 <p:column headerText="Descripcion Ubicacion Secundaria" sortBy="#{direccion.secundario}" filterBy="#{direccion.secundario}" filterMatchMode="contains" id="dDescripcionUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -150,35 +157,41 @@
                                     </f:facet>
                                 </p:column> 
 
-                                <p:column headerText="Tipo Vivienda" sortBy="#{direccion.tipovivienda}" filterBy="#{direccion.tipovivienda}" filterMatchMode="contains" id="dTipoVivienda" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Tipo Vivienda" sortBy="#{direccion.estadoTipoVivienda}" filterBy="#{direccion.estadoTipoVivienda}" filterMatchMode="contains" id="dTipoVivienda" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.tipovivienda}" style="text-transform: uppercase "/></f:facet>  
+                                        <f:facet name="output"><h:outputText id="OutTipoVivienda" value="#{direccion.estadoTipoVivienda}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{direccion.tipovivienda}" id="editarTipoVivienda" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 7)}" />
-                                            </p:inputText>
+                                            <p:selectOneMenu id="editarTipoVivienda" value="#{direccion.estadoTipoVivienda}" style="width: 100%">  
+                                                <f:selectItem itemLabel="Casa" itemValue="CASA" />  
+                                                <f:selectItem itemLabel="Apartamento" itemValue="APARTAMENTO" /> 
+                                                <f:selectItem itemLabel="Finca" itemValue="FINCA" />  
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoVivienda(direccion.estadoTipoVivienda, indice, 7)}" update="@this" />
+                                            </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
                                         <h:outputText value="Tipo Vivienda" />
                                     </f:facet>
-                                </p:column>
+                                </p:column> 
 
-                                <p:column headerText="Hipoteca" sortBy="#{direccion.hipoteca}" filterBy="#{direccion.hipoteca}" filterMatchMode="contains" id="dHipoteca" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column headerText="Hipoteca" sortBy="#{direccion.estadoHipoteca}" filterBy="#{direccion.estadoHipoteca}" filterMatchMode="contains" id="dHipoteca" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{direccion.hipoteca}" style="text-transform: uppercase " /></f:facet>  
+                                        <f:facet name="output"><h:outputText id="OutestadoHipoteca" value="#{direccion.estadoHipoteca}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{direccion.hipoteca}" id="editarHipoteca" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 8)}" />
-                                            </p:inputText>
+                                            <p:selectOneMenu id="editarHipoteca" value="#{direccion.estadoHipoteca}" style="width: 100%">  
+                                                <f:selectItem itemLabel="Si" itemValue="SI" />  
+                                                <f:selectItem itemLabel="No" itemValue="NO" />  
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarHipoteca(direccion.estadoHipoteca, indice, 8)}" update="@this" />
+                                            </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
                                         <h:outputText value="Hipoteca" />
                                     </f:facet>
-                                </p:column>
+                                </p:column> 
 
                                 <p:column headerText="Direccion Alternativa" sortBy="#{direccion.direccionalternativa}" filterBy="#{direccion.direccionalternativa}" filterMatchMode="contains" id="dDireccionAlternativa" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -245,9 +258,9 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                              <p:commandButton style="position: absolute; left: 522px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosDireccionesPersona" process="@this" />
-                              <p:commandButton style="position: absolute; left: 15px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPerDirecciones.cancelarModificacion()}" process="@this" />
-                              <p:commandButton style="position: absolute; left: 605px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPerDirecciones.salir()}" action="nomina" process="@this" /> 
+                        <p:commandButton style="position: absolute; left: 700px; top: 380px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosDireccionesPersona" process="@this" />
+                        <p:commandButton style="position: absolute; left: 25px; top: 380px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPerDirecciones.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 785px; top: 380px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPerDirecciones.salir()}" action="nomina" process="@this" /> 
 
 
                     </p:panel>
@@ -265,11 +278,18 @@
                                 <p:ajax event="dateSelect" update="nuevaFecha"/>
                                 <p:ajax event="change" update="nuevaFecha"/>
                             </p:calendar>
-                            
+
                             <strong><h:outputText value="Ubicacion Principal:  " style="font-size: 12px; position: absolute; top: 118px" /></strong>
-                            <p:inputText id="nuevaUbicacionPrincipal" value="#{controlPerDirecciones.nuevaDireccion.tipoppal}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevaUbicacionPrincipal"/>
-                            </p:inputText>
+                            <p:selectOneMenu id="nuevaUbicacionPrincipal" value="#{controlPerDirecciones.nuevaDireccion.estadoTipoPpal}"  style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase">
+                                <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
+                                <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
+                                <f:selectItem itemLabel="Avenida Calle" itemValue="AVENIDA CALLE" />  
+                                <f:selectItem itemLabel="Avenida Carrera" itemValue="AVENIDA CARRERA" />  
+                                <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
+                                <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
+                                <f:selectItem itemLabel="Otros" itemValue="OTROS" />
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoPpalNuevaDireccion(controlPerDirecciones.nuevaDireccion.estadoTipoPpal, 1)}" update="@this" />
+                            </p:selectOneMenu>
                             <p:watermark for="nuevaUbicacionPrincipal" value="Ubicacion Principal" />
 
                             <strong><h:outputText value="Descripcion U. Principal:  " style="font-size: 12px; position: absolute; top: 148px" /></strong>
@@ -279,9 +299,16 @@
                             <p:watermark for="nuevaDescripcionUbicacionPrincipal" value="Descripcion Ubicacion Principal" />
 
                             <strong><h:outputText value="Ubicacion Secundaria: " style="font-size: 12px; position: absolute; top: 178px" /></strong>
-                            <p:inputText id="nuevaUbicacionSecundaria" value="#{controlPerDirecciones.nuevaDireccion.tiposecundario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 179px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevaUbicacionSecundaria"/>
-                            </p:inputText>
+                            <p:selectOneMenu id="nuevaUbicacionSecundaria" value="#{controlPerDirecciones.nuevaDireccion.estadoTipoSecundario}"  style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 179px; text-transform: uppercase">
+                                <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
+                                <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
+                                <f:selectItem itemLabel="Avenida Calle" itemValue="AVENIDA CALLE" />  
+                                <f:selectItem itemLabel="Avenida Carrera" itemValue="AVENIDA CARRERA" />  
+                                <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
+                                <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
+                                <f:selectItem itemLabel="Otros" itemValue="OTROS" />
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoSecundarioNuevaDireccion(controlPerDirecciones.nuevaDireccion.estadoTipoSecundario, 1)}" update="@this" />
+                            </p:selectOneMenu>
                             <p:watermark for="nuevaUbicacionSecundaria" value="Ubicacion Secundaria" />
 
                             <strong><h:outputText value="Descripcion U. Secundaria: " style="font-size: 12px; position: absolute; top: 208px" /></strong>
@@ -306,15 +333,21 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 268px; " id="btnNuevaCiudad" process="@this" icon="ui-icon-search" actionListener="#{controlPerDirecciones.llamarLovCiudad(1)}"/>
 
                             <strong><h:outputText value="Tipo Vivienda: "  style="font-size: 12px; position: absolute; top: 298px" /></strong>
-                            <p:inputText id="nuevoTipoVivienda" value="#{controlPerDirecciones.nuevaDireccion.tipovivienda}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 299px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevoTipoVivienda"/>
-                            </p:inputText>
+                            <p:selectOneMenu id="nuevoTipoVivienda" value="#{controlPerDirecciones.nuevaDireccion.estadoTipoVivienda}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 299px; text-transform: uppercase">  
+                                <f:selectItem itemLabel="Casa" itemValue="CASA" />  
+                                <f:selectItem itemLabel="Apartamento" itemValue="APARTAMENTO" /> 
+                                <f:selectItem itemLabel="Finca" itemValue="FINCA" />  
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoViviendaNuevaDireccion(controlPerDirecciones.nuevaDireccion.estadoTipoVivienda, 1)}" update="@this" />
+                            </p:selectOneMenu>
+
                             <p:watermark for="nuevoTipoVivienda" value="Tipo Vivienda" />
 
                             <strong><h:outputText value="Hipoteca: "  style="font-size: 12px; position: absolute; top: 328px" /></strong>
-                            <p:inputText id="nuevaHipoteca" value="#{controlPerDirecciones.nuevaDireccion.hipoteca}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 329px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevaHipoteca"/>
-                            </p:inputText>
+                            <p:selectOneMenu id="nuevaHipoteca" value="#{controlPerDirecciones.nuevaDireccion.estadoHipoteca}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 329px; text-transform: uppercase">
+                                <f:selectItem itemLabel="Si" itemValue="SI" />  
+                                <f:selectItem itemLabel="No" itemValue="NO" /> 
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarHipotecaNuevaDireccion(controlPerDirecciones.nuevaDireccion.estadoHipoteca, 1)}" update="@this" />
+                            </p:selectOneMenu>
                             <p:watermark for="nuevaHipoteca" value="Hipoteca" />
 
                             <strong><h:outputText value="Direccion Alternativa: "  style="font-size: 12px; position: absolute; top: 358px" /></strong>
@@ -322,7 +355,7 @@
                                 <p:ajax event="change" update="nuevaDireccionAlternativa"/>
                             </p:inputText>
                             <p:watermark for="nuevaDireccionAlternativa" value="Direccion Alternativa" />
-                            
+
                             <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" update="nuevaCiudad" process="@this"/>
                             <p:commandButton id="agregarDir" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  actionListener="#{controlPerDirecciones.agregarNuevaDireccion()}" process="@this"/>
                             <p:commandButton id="cancelarDir" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" update="nuevaCiudad" onclick="NuevoRegistroDireccion.hide();"  process="@this"/>
@@ -388,21 +421,35 @@
                             </p:calendar>
 
                             <strong><h:outputText value="Ubicacion Principal:  " style="font-size: 12px; position: absolute; top: 118px" /></strong>
-                            <p:inputText id="duplicarUbicacionPrincipal" value="#{controlPerDirecciones.duplicarDireccion.tipoppal}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarDireccion"/>
-                            </p:inputText>
+                            <p:selectOneMenu id="duplicarUbicacionPrincipal" value="#{controlPerDirecciones.duplicarDireccion.estadoTipoPpal}"  style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase">
+                                <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
+                                <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
+                                <f:selectItem itemLabel="Avenida Calle" itemValue="AVENIDA CALLE" />  
+                                <f:selectItem itemLabel="Avenida Carrera" itemValue="AVENIDA CARRERA" />  
+                                <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
+                                <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
+                                <f:selectItem itemLabel="Otros" itemValue="OTROS" />
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoPpalNuevaDireccion(controlPerDirecciones.duplicarDireccion.estadoTipoPpal, 2)}" update="@this" />
+                            </p:selectOneMenu>
                             <p:watermark for="duplicarUbicacionPrincipal" value="Ubicacion Principal" />
-
+                            
                             <strong><h:outputText value="Descripcion U. Principal:  " style="font-size: 12px; position: absolute; top: 148px" /></strong>
                             <p:inputText id="duplicarDescripcionUbicacionPrincipal" value="#{controlPerDirecciones.duplicarDireccion.ppal}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 149px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarDireccion"/>
                             </p:inputText>
                             <p:watermark for="duplicarDescripcionUbicacionPrincipal" value="Descripcion Ubicacion Principal" />
 
-                            <strong><h:outputText value="Ubicacion Secundaria: " style="font-size: 12px; position: absolute; top: 178px" /></strong>
-                            <p:inputText id="duplicarUbicacionSecundaria" value="#{controlPerDirecciones.duplicarDireccion.tiposecundario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 179px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarDireccion"/>
-                            </p:inputText>
+                            <strong><h:outputText value="Ubicacion Secundaria  " style="font-size: 12px; position: absolute; top: 178px" /></strong>
+                            <p:selectOneMenu id="duplicarUbicacionSecundaria" value="#{controlPerDirecciones.duplicarDireccion.estadoTipoSecundario}"  style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 179px; text-transform: uppercase">
+                                <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
+                                <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
+                                <f:selectItem itemLabel="Avenida Calle" itemValue="AVENIDA CALLE" />  
+                                <f:selectItem itemLabel="Avenida Carrera" itemValue="AVENIDA CARRERA" />  
+                                <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
+                                <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
+                                <f:selectItem itemLabel="Otros" itemValue="OTROS" />
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoSecundarioNuevaDireccion(controlPerDirecciones.duplicarDireccion.estadoTipoSecundario, 2)}" update="@this" />
+                            </p:selectOneMenu>
                             <p:watermark for="duplicarUbicacionSecundaria" value="Ubicacion Secundaria" />
 
                             <strong><h:outputText value="Descripcion U. Secundaria: " style="font-size: 12px; position: absolute; top: 208px" /></strong>
@@ -427,15 +474,20 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 268px; " id="btnDuplicarCiudad" process="@this" icon="ui-icon-search" actionListener="#{controlPerDirecciones.llamarLovCiudad(2)}"/>
 
                             <strong><h:outputText value="Tipo Vivienda: "  style="font-size: 12px; position: absolute; top: 298px" /></strong>
-                            <p:inputText id="duplicarTipoVivienda" value="#{controlPerDirecciones.duplicarDireccion.tipovivienda}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 299px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarDireccion"/>
-                            </p:inputText>
+                            <p:selectOneMenu id="duplicarTipoVivienda" value="#{controlPerDirecciones.duplicarDireccion.tipovivienda}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 299px; text-transform: uppercase">  
+                                <f:selectItem itemLabel="Casa" itemValue="CASA" />  
+                                <f:selectItem itemLabel="Apartamento" itemValue="APARTAMENTO" /> 
+                                <f:selectItem itemLabel="Finca" itemValue="FINCA" />  
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoViviendaNuevaDireccion(controlPerDirecciones.duplicarDireccion.estadoTipoVivienda, 2)}" update="@this" />
+                            </p:selectOneMenu>
                             <p:watermark for="duplicarTipoVivienda" value="Tipo Vivienda" />
 
                             <strong><h:outputText value="Hipoteca: "  style="font-size: 12px; position: absolute; top: 328px" /></strong>
-                            <p:inputText id="duplicarHipoteca" value="#{controlPerDirecciones.duplicarDireccion.hipoteca}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 329px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarDireccion"/>
-                            </p:inputText>
+                            <p:selectOneMenu id="duplicarHipoteca" value="#{controlPerDirecciones.duplicarDireccion.estadoHipoteca}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 329px; text-transform: uppercase">
+                                <f:selectItem itemLabel="Si" itemValue="SI" />  
+                                <f:selectItem itemLabel="No" itemValue="NO" /> 
+                                <p:ajax listener="#{controlPerDirecciones.seleccionarHipotecaNuevaDireccion(controlPerDirecciones.duplicarDireccion.estadoHipoteca, 2)}" update="@this" />
+                            </p:selectOneMenu>
                             <p:watermark for="duplicarHipoteca" value="Hipoteca" />
 
                             <strong><h:outputText value="Direccion Alternativa: "  style="font-size: 12px; position: absolute; top: 358px" /></strong>
@@ -449,9 +501,9 @@
                             <p:commandButton id="cancelarDuplicarDireccion" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerDirecciones.limpiarDuplicarDireccion()}" update="duplicarDireccion" onclick="DuplicarRegistroDireccion.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
-                    
-                     <!-- DIALOGOS RASTROS -->
+
+
+                    <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
