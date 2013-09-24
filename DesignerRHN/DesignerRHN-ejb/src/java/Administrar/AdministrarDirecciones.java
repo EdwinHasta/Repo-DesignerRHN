@@ -31,7 +31,7 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface{
 @Override
     public List<Direcciones> direccionesPersona(BigInteger secPersona) {
         try {
-            return persistenciaDirecciones.direccionPersona(secPersona);
+            return persistenciaDirecciones.direccionesPersona(secPersona);
         } catch (Exception e) {
             System.err.println("Error AdministrarTelefonos.telefonosPersona " + e);
             return null;
