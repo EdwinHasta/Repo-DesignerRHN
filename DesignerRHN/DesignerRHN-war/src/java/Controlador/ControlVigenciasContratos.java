@@ -75,8 +75,6 @@ public class ControlVigenciasContratos implements Serializable {
     private boolean permitirIndex;
 
     public ControlVigenciasContratos() {
-
-       
         vigenciasContratos = null;
         listaContratos = new ArrayList<Contratos>();
         listaTiposContratos = new ArrayList<TiposContratos>();
@@ -96,15 +94,13 @@ public class ControlVigenciasContratos implements Serializable {
         aceptarEditar = true;
         cualCelda = -1;
         tipoLista = 0;
-        //guardar
+        //guardar 
         guardado = true;
         //Crear VC
         nuevaVigencia = new VigenciasContratos();
         nuevaVigencia.setContrato(new Contratos());
         nuevaVigencia.setTipocontrato(new TiposContratos());
-        
         permitirIndex = true;
-
     }
 
     //EMPLEADO DE LA VIGENCIA

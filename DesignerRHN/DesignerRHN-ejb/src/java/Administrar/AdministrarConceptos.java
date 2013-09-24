@@ -1,10 +1,12 @@
 package Administrar;
 
 import Entidades.Conceptos;
+import Entidades.Empresas;
 import Entidades.Terceros;
 import Entidades.Unidades;
 import InterfaceAdministrar.AdministrarConceptosInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
+import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaUnidadesInterface;
 import java.math.BigInteger;
@@ -21,10 +23,17 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     PersistenciaUnidadesInterface persistenciaUnidades;
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
+    @EJB
+    PersistenciaEmpresasInterface persistenciaEmpresas;
 
     @Override
     public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa) {
         return persistenciaConceptos.conceptosEmpresa(secEmpresa);
+    }
+    
+    @Override
+    public List<Empresas> listadoEmpresas() {
+        return persistenciaEmpresas.buscarEmpresas();
     }
 
     @Override

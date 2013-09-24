@@ -157,6 +157,10 @@ public class Conceptos implements Serializable {
     private Collection<Novedades> novedadesCollection;
     @Transient
     private String naturalezaConcepto;
+    @Transient
+    private String estadoConcepto;
+    @Transient
+    private String enviarConcepto;
 
     public Conceptos() {
     }
@@ -381,6 +385,9 @@ public class Conceptos implements Serializable {
     }
 
     public Terceros getTercero() {
+        if(tercero == null){
+            tercero = new Terceros();
+        }
         return tercero;
     }
 
@@ -554,5 +561,43 @@ public class Conceptos implements Serializable {
 
     public void setNaturalezaConcepto(String naturalezaConcepto) {
         this.naturalezaConcepto = naturalezaConcepto;
+    }
+
+    public String getEstadoConcepto() {
+        if (estadoConcepto == null) {
+            if (activo == null) {
+                estadoConcepto = "ACTIVO";
+            } else {
+                if (activo.equalsIgnoreCase("S")) {
+                    estadoConcepto = "ACTIVO";
+                } else if (activo.equalsIgnoreCase("N")) {
+                    estadoConcepto = "INACTIVO";
+                }
+            }
+        }
+        return estadoConcepto;
+    }
+
+    public void setEstadoConcepto(String estadoConcepto) {
+        this.estadoConcepto = estadoConcepto;
+    }
+
+    public String getEnviarConcepto() {
+        if (enviarConcepto == null) {
+            if (enviotesoreria == null) {
+                enviarConcepto = "SI";
+            } else {
+                if (enviotesoreria.equalsIgnoreCase("S")) {
+                    enviarConcepto = "SI";
+                } else if (enviotesoreria.equalsIgnoreCase("N")) {
+                    enviarConcepto = "NO";
+                }
+            }
+        }
+        return enviarConcepto;
+    }
+
+    public void setEnviarConcepto(String enviarConcepto) {
+        this.enviarConcepto = enviarConcepto;
     }
 }
