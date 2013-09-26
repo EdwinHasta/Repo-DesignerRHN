@@ -30,7 +30,7 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa) {
         return persistenciaConceptos.conceptosEmpresa(secEmpresa);
     }
-    
+
     @Override
     public List<Empresas> listadoEmpresas() {
         return persistenciaEmpresas.buscarEmpresas();
@@ -44,5 +44,28 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     @Override
     public List<Terceros> lovTerceros(BigInteger secEmpresa) {
         return persistenciaTerceros.lovTerceros(secEmpresa);
+    }
+
+    @Override
+    public void modificar(List<Conceptos> listConceptosModificados) {
+        for (int i = 0; i < listConceptosModificados.size(); i++) {
+            System.out.println("Modificando...");
+            if (listConceptosModificados.get(i).getTercero().getSecuencia() == null) {
+                listConceptosModificados.get(i).setTercero(null);
+                persistenciaConceptos.editar(listConceptosModificados.get(i));
+            } else {
+                persistenciaConceptos.editar(listConceptosModificados.get(i));
+            }
+        }
+    }
+
+    @Override
+    public void borrar(Conceptos concepto) {
+        persistenciaConceptos.borrar(concepto);
+    }
+
+    @Override
+    public void crear(Conceptos conceptos) {
+        persistenciaConceptos.crear(conceptos);
     }
 }

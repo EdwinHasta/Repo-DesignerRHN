@@ -21,4 +21,7 @@ public interface AdministrarConceptosInterface {
     public List<Empresas> listadoEmpresas();
     public List<Unidades> lovUnidades();
     public List<Terceros> lovTerceros(BigInteger secEmpresa);
+    public void modificar(List<Conceptos> listConceptosModificados);
+    public void borrar(Conceptos concepto);
+    public void crear(Conceptos conceptos);
 }
