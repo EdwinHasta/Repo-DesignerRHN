@@ -56,7 +56,7 @@
                                             <p:inputText value="#{telefono.tipotelefono.nombre}" id="editarTipoTelefono" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlPerTelefonos.modificarTelefonos(indice, 'TIPOTELEFONO', telefono.tipotelefono.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlPerTelefonos.cambiarIndice(indice, 1)}" />
-                                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 0)}"/>
+                                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 0, 0)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -293,6 +293,7 @@
                             <p:resetInput target=":formularioDialogos:LOVTiposTelefonos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
+                    
                     <!--DIALOGO CIUDADES-->    
                     <p:dialog header="Ciudades" widgetVar="ciudadesDialogo" draggable="false" resizable="false" id="ciudadesDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
@@ -331,12 +332,12 @@
                         <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoTelefono" header="Motivo Contrato" widgetVar="editarTipoTelefono" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTipoTelefono" header="Tipo Telefono" widgetVar="editarTipoTelefono" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlPerTelefonos.editarTelefono.tipotelefono.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTipoTelefono" value="Atras" onclick="editarTipoTelefono.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNumeroTelefono" header="Tipo Contrato" widgetVar="editarNumeroTelefono" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarNumeroTelefono" header="Numero Telefono" widgetVar="editarNumeroTelefono" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlPerTelefonos.editarTelefono.numerotelefono}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarNumeroTelefono" value="Atras" onclick="editarNumeroTelefono.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
