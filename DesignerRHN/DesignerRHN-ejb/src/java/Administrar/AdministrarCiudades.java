@@ -35,6 +35,8 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
     public List<Ciudades>  lovCiudades(){
         return persistenciaCiudades.ciudades();
     }
+    
+    
 
     @Override
     public void modificarCiudad(List<Ciudades> listaCiudadesModificar) {
@@ -50,10 +52,12 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
         }
     }
 
+    @Override
     public void borrarCiudad(Ciudades ciudades) {
         persistenciaCiudades.borrar(ciudades);
     }
 
+    @Override
     public void crearCiudad(Ciudades ciudades) {
         persistenciaCiudades.crear(ciudades);
     }

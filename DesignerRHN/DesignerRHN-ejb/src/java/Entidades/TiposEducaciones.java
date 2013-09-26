@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -39,7 +38,7 @@ public class TiposEducaciones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -59,21 +58,21 @@ public class TiposEducaciones implements Serializable {
     public TiposEducaciones() {
     }
 
-    public TiposEducaciones(BigDecimal secuencia) {
+    public TiposEducaciones(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposEducaciones(BigDecimal secuencia, short codigo, String nombre) {
+    public TiposEducaciones(BigInteger secuencia, short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -86,8 +85,13 @@ public class TiposEducaciones implements Serializable {
     }
 
     public String getNombre() {
-        return nombre;
-    }
+        if (nombre == null) {
+            nombre = " ";
+            return nombre;
+        } else {
+            return nombre.toUpperCase();
+        }
+     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;

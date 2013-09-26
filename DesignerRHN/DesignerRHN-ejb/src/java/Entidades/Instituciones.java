@@ -37,7 +37,7 @@ public class Instituciones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @Size(max = 100)
@@ -51,15 +51,15 @@ public class Instituciones implements Serializable {
     public Instituciones() {
     }
 
-    public Instituciones(BigDecimal secuencia) {
+    public Instituciones(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -72,7 +72,12 @@ public class Instituciones implements Serializable {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if (descripcion == null) {
+            descripcion = " ";
+            return descripcion;
+        } else {
+            return descripcion.toUpperCase();
+        }
     }
 
     public void setDescripcion(String descripcion) {
