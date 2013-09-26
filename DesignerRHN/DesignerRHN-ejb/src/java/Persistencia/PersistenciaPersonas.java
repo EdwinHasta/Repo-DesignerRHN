@@ -18,6 +18,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     /*
      * Crear persona.
      */
+    @Override
     public void crear(Personas personas) {
         em.persist(personas);
     }
@@ -25,6 +26,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     /*
      *Editar persona. 
      */
+    @Override
     public void editar(Personas personas) {
         em.merge(personas);
     }
@@ -32,6 +34,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     /*
      *Borrar persona.
      */
+    @Override
     public void borrar(Personas personas) {
         em.remove(em.merge(personas));
     }
@@ -39,6 +42,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     /*
      *Encontrar una persona. 
      */
+    @Override
     public Personas buscarPersona(BigInteger id) {
         return em.find(Personas.class, id);
     }
@@ -46,12 +50,14 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     /*
      *Encontrar todas las personas. 
      */
+    @Override
     public List<Personas> buscarPersonas() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Personas.class));
         return em.createQuery(cq).getResultList();
     }
 
+    @Override
     public void actualizarFotoPersona(BigInteger identificacion) {
         try {
             Query query = em.createQuery("update Personas p set pathfoto='S' where p.numerodocumento =:identificacion");
@@ -63,6 +69,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
         }
     }
 
+    @Override
     public Personas buscarFotoPersona(BigInteger identificacion) {
         try {
             Query query = em.createQuery("SELECT p from Personas p where p.numerodocumento = :identificacion");

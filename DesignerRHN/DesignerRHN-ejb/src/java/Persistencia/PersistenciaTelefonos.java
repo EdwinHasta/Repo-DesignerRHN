@@ -85,6 +85,7 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
     }
     //METODO PARA TRAER LOS TELEFONOS DE UNA PERSONA
 
+    @Override
     public List<Telefonos> telefonosPersona(BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT t FROM Telefonos t WHERE t.persona.secuencia = :secuenciaPersona ORDER BY t.fechavigencia DESC");

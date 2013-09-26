@@ -42,7 +42,7 @@ public class AdiestramientosF implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 250)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -83,27 +83,33 @@ public class AdiestramientosF implements Serializable {
     public AdiestramientosF() {
     }
 
-    public AdiestramientosF(BigDecimal secuencia) {
+    public AdiestramientosF(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public AdiestramientosF(BigDecimal secuencia, BigDecimal costototal, Date fechadesde, Date fechahasta) {
+    public AdiestramientosF(BigInteger secuencia, BigDecimal costototal, Date fechadesde, Date fechahasta) {
         this.secuencia = secuencia;
         this.costototal = costototal;
         this.fechadesde = fechadesde;
         this.fechahasta = fechahasta;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if (descripcion == null) {
+            descripcion = " ";
+            return descripcion;
+        } else {
+            return descripcion.toUpperCase();
+        }
+
     }
 
     public void setDescripcion(String descripcion) {

@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,7 +39,7 @@ public class VigenciasFormales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAVIGENCIA")
@@ -84,20 +85,20 @@ public class VigenciasFormales implements Serializable {
     public VigenciasFormales() {
     }
 
-    public VigenciasFormales(BigDecimal secuencia) {
+    public VigenciasFormales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public VigenciasFormales(BigDecimal secuencia, Date fechavigencia) {
+    public VigenciasFormales(BigInteger secuencia, Date fechavigencia) {
         this.secuencia = secuencia;
         this.fechavigencia = fechavigencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -118,7 +119,12 @@ public class VigenciasFormales implements Serializable {
     }
 
     public String getObservacion() {
-        return observacion;
+        if (observacion == null) {
+            observacion = " ";
+            return observacion;
+        } else {
+            return observacion.toUpperCase();
+        }
     }
 
     public void setObservacion(String observacion) {

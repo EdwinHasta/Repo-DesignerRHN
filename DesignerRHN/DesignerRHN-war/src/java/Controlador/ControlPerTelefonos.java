@@ -501,7 +501,7 @@ public class ControlPerTelefonos implements Serializable {
             index = -1;
             secRegistro = null;
         } else {
-            context.update("formularioDialogos:validacionNuevaTelefono");
+            context.update("formularioDialogos:validacionNuevoTelefono");
             context.execute("validacionNuevoTelefono.show()");
         }
     }
@@ -824,7 +824,7 @@ public class ControlPerTelefonos implements Serializable {
             } else if (tipoNuevo == 2) {
                 Ciudad = duplicarTelefono.getCiudad().getNombre();
             }
-        }
+        } 
     }
 
     public void autocompletarNuevoyDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {

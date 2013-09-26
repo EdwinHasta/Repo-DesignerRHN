@@ -463,19 +463,17 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Concepto.xhtml</from-view-id>
+        <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
-            <redirect />
+            <from-outcome>vigenciasformales</from-outcome>
+            <to-view-id>/PersonaEducacion.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/PersonaEducacion.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>concepto</from-outcome>
-            <to-view-id>/Concepto.xhtml</to-view-id>
-            <redirect />
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>
