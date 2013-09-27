@@ -1318,8 +1318,6 @@ public class ControlPersonaEducacion implements Serializable {
                         listaVigenciasFormalesCrear.get(i).setAdiestramientof(null);
                         administrarVigenciasFormales.crearVigenciaFormal(listaVigenciasFormalesCrear.get(i));
                     }
-
-
                     System.out.println("LimpiaLista");
                     listaVigenciasFormalesCrear.clear();
                 }
