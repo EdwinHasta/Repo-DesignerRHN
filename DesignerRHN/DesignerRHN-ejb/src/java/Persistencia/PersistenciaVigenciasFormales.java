@@ -24,7 +24,7 @@ public class PersistenciaVigenciasFormales implements PersistenciaVigenciasForma
         try {
             em.merge(vigenciasFormales);
         } catch (PersistenceException ex) {
-            System.out.println(" rjnsf");
+            System.out.println("rjnsf");
         }
     }
        
