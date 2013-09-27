@@ -18,7 +18,13 @@
                         <h:outputText value="Nit: " style="font-weight: bold; color: #14388B; position: relative; left: 300px; top: 38px" />
                         <h:outputText id="nitEmpresa" value="#{controlConcepto.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 300px; top: 38px" />
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px; height: 23px">  
+                        <p:selectOneRadio id="opciones" value="#{controlConcepto.estadoConceptoEmpresa}" styleClass="ui-radiobutton" style="font-weight: bold; position: absolute; left: 370px; top: 37px">  
+                            <f:selectItem itemLabel="Activos" itemValue="S" />
+                            <f:selectItem itemLabel="Inactivos" itemValue="N" />  
+                            <f:selectItem itemLabel="Todos" itemValue="TODOS" />
+                            <p:ajax listener="#{controlConcepto.cambiarEstado()}" update="@this"/>
+                        </p:selectOneRadio>
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlConcepto.guardarCambios()}" process="@this" />
@@ -63,13 +69,13 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 5px; top: 95px; font-size: 11px; width: 835px; height: 365px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 5px; top: 95px; font-size: 11px; width: 835px; height: 265px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>Conceptos de Nómina</strong></legend>
                         </fieldset>
                         <br/><br/><br/><br/><br/>
                         <p:dataTable id="datosConceptos" var="concepto" rowKey="#{concepto.secuencia}" rowIndexVar="indice" style="font-size: 11px; width: 1300px; position: relative"                           
-                                     value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="832" scrollHeight="300" liveScroll="true" scrollRows="20"
-                                     filteredValue="#{controlConcepto.filtrardoConceptosEmpresa}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                     value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="832" scrollHeight="200" liveScroll="true" scrollRows="20"
+                                     filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                      editable="true" editMode="cell"  >
 
                             <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}"/>
@@ -192,7 +198,7 @@
                             <p:column headerText="I" sortBy="#{concepto.independienteConcepto}" filterBy="#{concepto.independienteConcepto}" filterMatchMode="contains" id="columnaIndependienteConcepto" width="15" filterStyle="display: none; visibility: hidden;" style="padding-left: 5px" >                                                              
 
                                 <p:selectBooleanCheckbox value="#{concepto.independienteConcepto}" >  
-                                    <p:ajax update="@this"/>  
+                                    <p:ajax listener="#{controlConcepto.modificarConcepto(indice, 'N', concepto.independienteConcepto)}" update="@this"/>  
                                 </p:selectBooleanCheckbox> 
 
                                 <f:facet name="footer">
@@ -294,13 +300,32 @@
                                 </f:facet>
                             </p:column>
                         </p:dataTable> 
-                        <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlConcepto.refrescar()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlConcepto.refrescar()}" process="@this" />
-                        <p:hotkey bind="ctrl+f11" actionListener="#{controlConcepto.activarCtrlF11()}"/>
-                        <p:hotkey bind="alt+p" oncomplete="EmpresasDialogo.show();"/> 
 
+                        <fieldset style="position: absolute; left: 5px; top: 410px; font-size: 11px; width: 835px; height: 70px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue"><strong>Clonar Concepto</strong></legend>
+                            <h:outputText value="Código y Nombre del nuevo concepto:"  style="color: #14388B; font-weight: bold; position: absolute"/>
+                            <p:inputText value="#{controlConcepto.conceptoClon.codigo}" style="position: absolute; top: 35px; width: 55px;" />
+                            <p:inputText  value="#{controlConcepto.conceptoClon.descripcion}" style="position: absolute; top: 35px; left: 75px; width: 280px;" />
+                            <h:outputText value="Código y Nombre del concepto a clonar (Utilize lista de valores):"  style="color: #14388B; font-weight: bold; position: absolute; left: 380px"/>
+                            <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlConcepto.lovConcepto(1)}"  style="position: absolute; top: 32px; left: 380px" process="@this"/>
+                            <p:inputText id="descripcionClon" value="#{controlConcepto.conceptoOriginal.codigo} - #{controlConcepto.conceptoOriginal.descripcion}" style="position: absolute; top: 35px; left: 408px; width: 350px;"/>
+                            <p:commandButton value="[Clonar]" style="position: absolute; top: 13.5px; left: 776px; width: 70px; height: 60px" process="@this"/>
+                        </fieldset>
+
+                        <p:commandButton style="position: absolute; left: 9px; top: 378px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="grupoConcepto" value="[Grupo Conceptos]" process="@this" />
+                        <p:commandButton style="position: absolute; left: 140px; top: 378px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="conceptoRedondeos" value="[Conceptos Redondeos]"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 300px; top: 378px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="unidadesConcepto" value="[Unidad del Concepto]"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 635px; top: 378px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarConcepto" value="Buscar Concepto" actionListener="#{controlConcepto.lovConcepto(0)}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 755px; top: 378px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlConcepto.mostrarTodos}" id="mostrarTodos" actionListener="#{controlConcepto.mostrarTodosConceptos()}" value="Mostrar Todos" process="@this" />
+
+                        <p:commandButton style="position: absolute; left: 717px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 9px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlConcepto.refrescar()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 800px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlConcepto.refrescar()}" process="@this" />
                     </p:panel>
+                </h:form>
+                <h:form>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlConcepto.activarCtrlF11()}"/>
+                    <p:hotkey bind="alt+p" actionListener="#{controlConcepto.lovEmpresas()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
 
@@ -516,7 +541,7 @@
                     <p:dialog header="Unidades" widgetVar="unidadesDialogo" draggable="false" resizable="false" closable="false" id="unidadesDialogo"  
                               showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovUnidades" style="font-size: 11px; width: 310px" var="unidad" value="#{controlConcepto.listaUnidades}" rowKey="#{unidad.secuencia}"
-                                     selection="#{controlConcepto.unidadSelecionada}" selectionMode="single" widgetVar="lovUnidades" scrollable="true" scrollWidth="330" scrollHeight="140"
+                                     selection="#{controlConcepto.unidadSeleccionada}" selectionMode="single" widgetVar="lovUnidades" scrollable="true" scrollWidth="330" scrollHeight="140"
                                      filteredValue="#{controlConcepto.filtradoUnidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlConcepto.activarAceptar()}" update=":formularioDialogos:aceptarU"/>
                             <p:ajax event="rowDblselect" listener="#{controlConcepto.actualizarUnidad()}" process="@this" onstart="lovUnidades.clearFilters()"/>
@@ -549,7 +574,7 @@
                     <p:dialog header="Terceros" widgetVar="TercerosDialogo" draggable="false" resizable="false" closable="false" id="TercerosDialogo"  
                               showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovTerceros" style="font-size: 11px; width: 310px" var="tercero" value="#{controlConcepto.listaTerceros}" rowKey="#{tercero.secuencia}"
-                                     selection="#{controlConcepto.terceroSelecionado}" selectionMode="single" widgetVar="lovTerceros" scrollable="true" scrollWidth="330" scrollHeight="250"
+                                     selection="#{controlConcepto.terceroSeleccionado}" selectionMode="single" widgetVar="lovTerceros" scrollable="true" scrollWidth="330" scrollHeight="250"
                                      filteredValue="#{controlConcepto.filtradoTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlConcepto.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
                             <p:ajax event="rowDblselect" listener="#{controlConcepto.actualizarTercero()}" process="@this" onstart="lovTerceros.clearFilters()"/>
@@ -604,11 +629,45 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarE" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlConcepto.aceptar}" actionListener="#{controlConcepto.cambiarEmpresa()}" update="aceptarT" process="@this">
+                        <p:commandButton id="aceptarE" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlConcepto.aceptar}" actionListener="#{controlConcepto.cambiarEmpresa()}" update="aceptarE" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasE" style="position: relative; left: 200px" value="Atras" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlConcepto.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                    <!-- LOV CONCEPTOS -->
+                    <p:dialog header="Conceptos" widgetVar="ConceptosDialogo" draggable="false" resizable="false" closable="false" id="ConceptosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="541" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovConceptos" style="font-size: 11px; width: 510px" var="conceptoEstado" value="#{controlConcepto.listaConceptosEmpresa_Estado}" rowKey="#{conceptoEstado.secuencia}"
+                                     selection="#{controlConcepto.conceptoSeleccionado}" selectionMode="single" widgetVar="lovConceptos" scrollable="true" scrollWidth="530" scrollHeight="250"
+                                     filteredValue="#{controlConcepto.filtradoConceptosEmpresa_Estado}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlConcepto.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
+                            <p:ajax event="rowDblselect" listener="#{controlConcepto.seleccionConcepto()}" process="@this" onstart="lovConceptos.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Concepto: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovConceptos.filter();" style="width:200px; position: relative; left: -20px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{conceptoEstado.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                <f:facet name="header">
+                                    <h:outputText value="Código" /> 
+                                </f:facet>
+                                <h:outputText  value="#{conceptoEstado.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{conceptoEstado.descripcion}" filterMatchMode="contains" filterStyle="width: 300px">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripción" />
+                                </f:facet>
+                                <h:outputText  value="#{conceptoEstado.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 400px" value="Aceptar" disabled="#{controlConcepto.aceptar}" actionListener="#{controlConcepto.seleccionConcepto()}" update="aceptarC" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovConceptos:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasC" style="position: relative; left: 400px" value="Atras" onclick="ConceptosDialogo.hide(), lovConceptos.clearFilters();" actionListener="#{controlConcepto.cancelarSeleccionConcepto()}" update="lovConceptos, aceptarC" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovConceptos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
@@ -628,8 +687,8 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlConcepto.guardarCambios()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlConcepto.refrescar()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" actionListener="#{controlConcepto.cancelarCambios()}" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- EDITOR -->

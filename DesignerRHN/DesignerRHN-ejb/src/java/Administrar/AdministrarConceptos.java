@@ -32,6 +32,17 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     }
 
     @Override
+    public List<Conceptos> conceptosEmpresaAtivos_Inactivos(BigInteger secEmpresa, String estado) {
+        return persistenciaConceptos.conceptosEmpresaActivos_Inactivos(secEmpresa, estado);
+    }
+    
+    
+    @Override
+    public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa) {
+        return persistenciaConceptos.conceptosEmpresaSinPasivos(secEmpresa);
+    }
+
+    @Override
     public List<Empresas> listadoEmpresas() {
         return persistenciaEmpresas.buscarEmpresas();
     }
@@ -50,6 +61,12 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     public void modificar(List<Conceptos> listConceptosModificados) {
         for (int i = 0; i < listConceptosModificados.size(); i++) {
             System.out.println("Modificando...");
+            if (listConceptosModificados.get(i).isIndependienteConcepto() == true) {
+                listConceptosModificados.get(i).setIndependiente("S");
+            } else if (listConceptosModificados.get(i).isIndependienteConcepto() == false) {
+                listConceptosModificados.get(i).setIndependiente("N");
+            }
+            
             if (listConceptosModificados.get(i).getTercero().getSecuencia() == null) {
                 listConceptosModificados.get(i).setTercero(null);
                 persistenciaConceptos.editar(listConceptosModificados.get(i));
