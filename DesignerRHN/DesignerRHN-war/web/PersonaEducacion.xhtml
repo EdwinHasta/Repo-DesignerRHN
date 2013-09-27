@@ -12,16 +12,16 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
 
-                    <p:panel  id="PanelTotal" header="Vigencias Formales" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
+                    <p:panel  id="PanelTotal" header="Educaciones" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
 
                         <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlPersonaEducacion.persona.nombreCompleto}"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 645px; height: 320px; border-radius: 10px; ">
-                            <legend style="font-size: 13px; color: #14388B"><strong>Telefonos donde ubicar al empleado</strong></legend>
+                            <legend style="font-size: 13px; color: #14388B"><strong>Educacion del empleado</strong></legend>
 
                             <p:dataTable id="datosVigenciasFormalesPersona" var="vigenciasFormales" value="#{controlPersonaEducacion.listaVigenciasFormales}"
                                          rowKey="#{vigenciasFormales.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         scrollable="true" scrollHeight="200" scrollWidth="840" filteredValue="#{controlPersonaEducacion.filtradosListaVigenciasFormales}" 
+                                         scrollable="true" scrollHeight="100" scrollWidth="840" filteredValue="#{controlPersonaEducacion.filtradosListaVigenciasFormales}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -195,7 +195,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Observaciones" sortBy="#{vigenciasFormales.observacion}" filterBy="#{telefono.numerotelefono}" filterMatchMode="contains" id="pEObservaciones" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Observaciones" sortBy="#{vigenciasFormales.observacion}" filterBy="#{vigenciasFormales.observacion}" filterMatchMode="contains" id="pEObservaciones" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{vigenciasFormales.observacion}" /></f:facet>  
                                         <f:facet name="input">
@@ -213,6 +213,145 @@
 
                             </p:dataTable>  
                         </fieldset> 
+                        
+                        <fieldset style="position: absolute; left: 10px; top: 245px; font-size: 10px; width: 645px; height: 220px; border-radius: 10px; ">
+                            <legend style="font-size: 13px; color: #14388B"><strong>Educacion No Formal del Empleado</strong></legend>
+
+                            <p:dataTable id="datosVigenciasNoFormalesPersona" var="vigenciasNoFormales" value="#{controlPersonaEducacion.listaVigenciasNoFormales}"
+                                         rowKey="#{vigenciasNoFormales.secuencia}" rowIndexVar="indiceNF" style="font-size: 10px; border: 1px; text-align: left"                           
+                                         scrollable="true" scrollHeight="100" scrollWidth="840" filteredValue="#{controlPersonaEducacion.filtradosListaVigenciasNoFormales}" 
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell">
+
+                                <p:ajax event="filter" listener="#{controlPersonaEducacion.eventoFiltrarNF()}"/>
+
+                                <p:column headerText="Fecha" sortBy="#{vigenciasNoFormales.fechavigencia}" filterBy="#{vigenciasNoFormales.fechavigencia}" filterMatchMode="contains"  width="72" id="pEFechasNF" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{vigenciasNoFormales.fechavigencia}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar  style="font-size: 10px;" value="#{vigenciasNoFormales.fechavigencia}" id="editFechaNF"   styleClass="ui-datepicker, myClass"  
+                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                                <p:ajax event="dateSelect"  update="editFechaNF"/>
+                                                <p:ajax event="change" />
+                                                <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 0)}" />
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>   
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Curso*" sortBy="#{vigenciasNoFormales.curso.nombre}" filterBy="#{vigenciasNoFormales.curso.nombre}" filterMatchMode="contains" id="pECursosNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.curso.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{vigenciasNoFormales.curso.nombre}" id="editarCursoNF" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlPersonaEducacion.modificarVigenciasNoFormales(indiceNF, 'CURSO', vigenciasNoFormales.curso.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 1)}" />
+                                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 0, 0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCurso" value="Curso"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Titulo" sortBy="#{vigenciasNoFormales.titulo}" filterBy="#{vigenciasNoFormales.titulo}" filterMatchMode="contains" id="pETitulosNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.titulo}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{vigenciasNoFormales.titulo}" id="editarTitulo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                                <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 2)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Titulo" />
+                                    </f:facet>
+                                    
+                                </p:column>
+
+                                <p:column headerText="Institucion*" sortBy="#{vigenciasNoFormales.institucion.descripcion}" filterBy="#{vigenciasNoFormales.institucion.descripcion}" filterMatchMode="contains" id="pEInstitucionesNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.institucion.descripcion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{vigenciasNoFormales.institucion.descripcion}" id="editarInstitucionNF" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlPersonaEducacion.modificarVigenciasNoFormales(indiceNF, 'INSTITUCION' , vigenciasNoFormales.institucion.descripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 3)}" />
+                                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 2, 0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooInstitucionNF" value="Institucion"/>
+                                    </f:facet>
+                                </p:column>
+                                
+
+                                <p:column headerText="Adiestramiento" sortBy="#{vigenciasNoFormales.adiestramientonf.desccripcion}" filterBy="#{vigenciasNoFormales.adiestramientonf.desccripcion}" filterMatchMode="contains" id="pEAdiestramientosNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.adiestramientonf.desccripcion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{vigenciasNoFormales.adiestramientonf.desccripcion}" id="editarAdiestramientoNF" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlPersonaEducacion.modificarVigenciasNoFormales(indiceNF, 'ADIESTRAMIENTONF' , vigenciasNoFormales.adiestramientonf.desccripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 4)}" />
+                                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 3, 0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooAdiestramientoNF" value="Adiestramiento"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Valoracion" sortBy="#{vigenciasNoFormales.calificacionobtenida}" filterBy="#{vigenciasNoFormales.calificacionobtenida}" filterMatchMode="contains" id="pECalificacionesNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.calificacionobtenida}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{vigenciasNoFormales.calificacionobtenida}" id="editarCalificacionNF" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                                <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 5)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Valoracion" />
+                                    </f:facet>
+                                </p:column> 
+
+                                <p:column headerText="Observaciones" sortBy="#{vigenciasNoFormales.observacion}" filterBy="#{vigenciasNoFormales.observacion}" filterMatchMode="contains" id="pEObservacionesNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.observacion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{vigenciasNoFormales.observacion}" id="editarObservacion" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                                <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 6)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Observacion" />
+                                    </f:facet>
+                                </p:column>                                
+
+
+                            </p:dataTable>  
+                        </fieldset>
+                        
+                        
+                        
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 32px; left: 3px;">  
                             <p:toolbarGroup align="left"> 
@@ -236,7 +375,7 @@
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaFormal()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosVigenciasFormalesExportar" fileName="VigenciasFormalesXML" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target="#{controlPersonaEducacion.tablaImprimir}" fileName="#{controlPersonaEducacion.nombreArchivo}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
@@ -248,10 +387,10 @@
                                 <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Formal" /> 
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.borrarVigenciaFormal()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Telefono" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Formal" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.duplicarVF()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Telefono" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Formal" />
 
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.verificarRastro()}" process="@this"/>  
@@ -259,9 +398,9 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 522px; top: 410px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasFormalesPersona" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 410px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPersonaEducacion.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 605px; top: 410px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPersonaEducacion.salir()}" action="nomina" process="@this" /> 
+                        <p:commandButton style="position: absolute; left: 522px; top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasFormalesPersona" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPersonaEducacion.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 605px; top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPersonaEducacion.salir()}" action="nomina" process="@this" /> 
 
                     </p:panel> 
                 </h:form>
@@ -291,9 +430,9 @@
 
                             <strong><h:outputText value="Profesion:  "  style="font-size: 12px; position: absolute; top: 145px" /></strong>
                             <p:inputText id="nuevaProfesion" value="#{controlPersonaEducacion.nuevaVigenciaFormal.profesion.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlPerTelefonos.valoresBackupAutocompletar(1, 'PROFESION')}" />
-                                <p:ajax event="change" listener="#{controlPerTelefonos.autocompletarNuevoyDuplicado('PROFESION', controlPersonaEducacion.nuevaVigenciaFormal.profesion.descripcion , 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlPerTelefonos.asignarIndex(indice, 1, 1)}" />
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletar(1, 'PROFESION')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicado('PROFESION', controlPersonaEducacion.nuevaVigenciaFormal.profesion.descripcion , 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndex(indice, 1, 1)}" />
                             </p:inputText>
                             <p:watermark for="nuevaProfesion" value="Profesion" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 145px;  " id="btnNuevaProfesion" actionListener="#{controlPersonaEducacion.asignarIndex(indice, 1, 1)}" icon="ui-icon-search" process="@this" />
@@ -353,19 +492,82 @@
                             <p:commandButton id="cancelarVF" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 460px;" actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaFormal()}" update="nuevaVigenciaFormal" onclick="NuevoRegistroVigenciaFormal.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
+                    
+                    <p:dialog id="NuevoRegistroVigenciaNoFormal" header="Nuevo Registro" widgetVar="NuevoRegistroVigenciaNoFormal" closable="false" resizable="false"  draggable="false" modal="true" height="480" width="400" style="font-size: 12px; padding: 0px">  
 
-                    <p:dialog id="validacionNuevaVigenciaFormal" header="ATENCIÓN...!" widgetVar="validacionNuevaVigenciaFormal"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar una nueva Vigencia Formal es necesario adicionar: #{controlPersonaEducacion.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="validacionNuevaVigenciaFormal.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <center><strong><h:outputText value="Ingresar nueva información de Vigencia No Formal" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVigenciaNoFormal" style="border: none;">
+                            <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <p:calendar  id="nuevaFechaNF" style="font-size: 10px; position: absolute; top: 65px; left: 200px;" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFecha"/>
+                                <p:ajax event="change" update="nuevaFecha"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Curso: " style="font-size: 12px; position: absolute; top: 105px" /></strong>
+                            <p:inputText id="nuevoCursoNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.curso.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletar(1, 'CURSO')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('CURSO', controlPersonaEducacion.nuevaVigenciaNoFormal.curso.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indice, 0, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnNuevoCurso" icon="ui-icon-search" process="@this"  actionListener="#{controlPersonaEducacion.asignarIndexNF(indice, 0, 1)}"/>   
+                            <p:watermark for="nuevoCursoNF" value="Curso" />
+
+                            <strong><h:outputText value="Titulo:  "  style="font-size: 12px; position: absolute; top: 145px" /></strong>
+                            <p:inputText id="nuevoTituloNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.titulo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 305px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevoTituloNF"/>
+                            </p:inputText>
+                            <p:watermark for="nuevoTituloNF" value="Nuevo Titulo" />
+                          
+                            <strong><h:outputText value="Institucion:  "  style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                            <p:inputText id="nuevaInstitucionNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.institucion.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletarNF(1, 'INSTITUCIONNF')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('INSTITUCIONNF', controlPersonaEducacion.nuevaVigenciaNoFormal.institucion.descripcion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indice, 2, 1)}" />
+                            </p:inputText>
+                            <p:watermark for="nuevaInstitucionNF" value="Institucion" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 185px;  " id="btnNuevaInstitucionNF" actionListener="#{controlPersonaEducacion.asignarIndexNF(indice, 2, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Adiestramiento " style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                            <p:inputText id="nuevoAdiestramientoNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.adiestramientonf.desccripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletarNF(1, 'ADIESTRAMIENTONF')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('ADIESTRAMIENTONF', controlPersonaEducacion.nuevaVigenciaNoFormal.adiestramientonf.desccripcion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indice, 3, 1)}" />
+                            </p:inputText>
+                            <p:watermark for="nuevoAdiestramientoNF" value="Adiestramiento" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnNuevoAdiestramientoNF" actionListener="#{controlPersonaEducacion.asignarIndexNF(indice, 3, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Valoracion: "  style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                            <p:inputText id="nuevaCalificacionNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.calificacionobtenida}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaCalificacionNF"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaCalificacionNF" value="Calificacion" />
+
+                            <strong><h:outputText value="Observacion: "  style="font-size: 12px; position: absolute; top: 305px" /></strong>
+                            <p:inputText id="nuevaObservacionNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.observacion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 305px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaObservacionNF"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaObservacionNF" value="Observacion" />
+
+                            <p:commandButton id="limpiarVNF" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 460px;" actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaNoFormal()}" update="nuevaVigenciaNoFormal" process="@this"/>
+                            <p:commandButton id="agregarVNF" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 460px;"  process="@this" actionListener="#{controlPersonaEducacion.agregarNuevaVigenciaNoFormal()}"/>
+                            <p:commandButton id="cancelarVNF" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 460px;" actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaNoFormal()}" update="nuevaVigenciaNoFormal" onclick="NuevoRegistroVigenciaNoFormal.hide();"  process="@this"/>
+                        </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="validacionNuevaVigenciaNoFormal" header="ATENCIÓN...!" widgetVar="validacionNuevaVigenciaNoFormal"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar una nueva Vigencia No Formal es necesario adicionar: #{controlPersonaEducacion.mensajeValidacionNF}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaVigenciaNoFormal.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarGuardarNF" header="ATENCIÓN...!" widgetVar="confirmarGuardarNF"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPerTelefonos.guardarCambiosTelefono()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarGuardarNF.hide();" actionListener="#{controlPersonaEducacion.guardarCambiosVigenciasNoFormales()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardarNF.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardarNF.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
 
@@ -558,8 +760,10 @@
                         </p:commandButton>
 
                     </p:dialog>
+                    
+                    
 
-                    <!-- L.O.V INSTITUCIONES -->
+                    <!-- L.O.V AdiestramientosF -->
 
                     <p:dialog header="Adiestramiento" widgetVar="adiestramientosFDialogo" draggable="false" resizable="false" id="adiestramientosFDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
@@ -569,7 +773,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaAdiestramientosFormales}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{adiestramientosF.secuencia}" selection="#{controlPersonaEducacion.seleccionAdiestramientosFormales}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarAF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarInstituciones()}" process="@this" onstart="LOVInstituciones.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarAdiestramientoF()}" process="@this" onstart="LOVInstituciones.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Adiestramiento: "  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVAdiestramientosF.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -591,6 +795,106 @@
                         </p:commandButton>
 
                     </p:dialog>
+                    
+                    <!-- L.O.V CURSOS -->
+                    
+                    <p:dialog header="Cursos" widgetVar="cursosDialogo" draggable="false" resizable="false" id="cursosDialogo" closable="false"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
+
+                        <p:dataTable  id="LOVCursos" style="font-size: 11px; width: 300px" var="cursos" value="#{controlPersonaEducacion.listaCursos}"
+                                      scrollable="true" scrollHeight="117" scrollWidth="315" widgetVar="LOVCursos" 
+                                      filteredValue="#{controlPersonaEducacion.filtradoslistaCursos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{cursos.secuencia}" selection="#{controlPersonaEducacion.seleccionCursos}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarCursos()}" process="@this" onstart="LOVCursos.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Curso: "  style="position: absolute; left: 27px; top: 15px"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVCursos.filter();" style="width:100px; position: relative; left: 60px;" />  
+                            </f:facet>
+
+                            <p:column filterBy="#{cursos.nombre}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{cursos.nombre}" />  
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:commandButton id="aceptarC" value="Aceptar" disabled="#{controlPersonaEducacion.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" actionListener="#{controlPersonaEducacion.actualizarCursos()}" onclick="LOVCursos.clearFilters();" update="@this" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVCursos:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasC" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="cursosDialogo.hide(), LOVCursos.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioCursoNF()}" update="LOVCursos, aceptarC" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVCursos:globalFilter"/>
+                        </p:commandButton>
+
+                    </p:dialog>
+                    
+                    <!-- L.O.V INSTITUCIONES NF -->
+
+                    <p:dialog header="Instituciones" widgetVar="institucionesNFDialogo" draggable="false" resizable="false" id="institucionesNFDialogo" closable="false"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
+
+                        <p:dataTable  id="LOVInstitucionesNF" style="font-size: 11px; width: 300px" var="institucionesNF" value="#{controlPersonaEducacion.listaInstituciones}"
+                                      scrollable="true" scrollHeight="117" scrollWidth="315" widgetVar="LOVInstitucionesNF" 
+                                      filteredValue="#{controlPersonaEducacion.filtradoslistaInstituciones}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{institucionesNF.secuencia}" selection="#{controlPersonaEducacion.seleccionInstituciones}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarINF"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarInstituciones()}" process="@this" onstart="LOVInstitucionesNF.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Institucion: "  style="position: absolute; left: 27px; top: 15px"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVInstitucionesNF.filter();" style="width:100px; position: relative; left: 60px;" />  
+                            </f:facet>
+
+                            <p:column filterBy="#{institucionesNF.descripcion}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{institucionesNF.descripcion}" />  
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:commandButton id="aceptarINF" value="Aceptar" disabled="#{controlPersonaEducacion.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" actionListener="#{controlPersonaEducacion.actualizarInstitucionesNF()}" onclick="LOVInstitucionesNF.clearFilters();" update="@this" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVInstitucionesNF:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasINF" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="institucionesNFDialogo.hide(), LOVInstitucionesNF.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioInstitucionesNF()}" update="LOVInstitucionesNF, aceptarINF" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVInstitucionesNF:globalFilter"/>
+                        </p:commandButton>
+
+                    </p:dialog>
+                    
+                    <!-- L.O.V AdiestramientosF -->
+
+                    <p:dialog header="Adiestramiento" widgetVar="adiestramientosNFDialogo" draggable="false" resizable="false" id="adiestramientosNFDialogo" closable="false"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
+
+                        <p:dataTable  id="LOVAdiestramientosNF" style="font-size: 11px; width: 300px" var="adiestramientosNF" value="#{controlPersonaEducacion.listaAdiestramientosNoFormales}"
+                                      scrollable="true" scrollHeight="117" scrollWidth="315" widgetVar="LOVAdiestramientosNF" 
+                                      filteredValue="#{controlPersonaEducacion.filtradoslistaAdiestramientosNoFormales}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{adiestramientosNF.secuencia}" selection="#{controlPersonaEducacion.seleccionAdiestramientosNoFormales}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarANF"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarAdiestramientoNF()}" process="@this" onstart="LOVAdiestramientosNF.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Adiestramiento: "  style="position: absolute; left: 27px; top: 15px"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVAdiestramientosNF.filter();" style="width:100px; position: relative; left: 60px;" />  
+                            </f:facet>
+
+                            <p:column filterBy="#{adiestramientosNF.desccripcion}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{adiestramientosNF.desccripcion}" />  
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:commandButton id="aceptarANF" value="Aceptar" disabled="#{controlPersonaEducacion.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" actionListener="#{controlPersonaEducacion.actualizarAdiestramientoNF()}" onclick="LOVAdiestramientosNF.clearFilters();" update="@this" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVAdiestramientosNF:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasANF" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="adiestramientosNFDialogo.hide(), LOVAdiestramientosNF.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioAdiestramientoNF()}" update="LOVAdiestramientosNF, aceptarANF" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVAdiestramientosNF:globalFilter"/>
+                        </p:commandButton>
+
+                    </p:dialog>
+                    
 
                     <!-- DIALOGOS EDITAR -->
 
@@ -649,6 +953,46 @@
                         <p:inputTextarea value="#{controlPersonaEducacion.editarVigenciasFormales.observacion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarObservacion" value="Atras" onclick="editarObservacion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog> 
+                    
+                    <!-- Editar Vigencias NO Formales -->
+                    <p:dialog id="editarFechaNF" header="Fecha" widgetVar="editarFechaNF" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:inputText value="#{controlPersonaEducacion.editarVigenciasNoFormales.fechavigencia}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputText>
+                        <p:commandButton id="cancelarFechaNF" value="Atras" onclick="editarFechaNF.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarCursoNF" header="Curso" widgetVar="editarCursoNF" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPersonaEducacion.editarVigenciasNoFormales.curso.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCursoNF" value="Atras" onclick="editarCursoNF.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarTitulo" header="Titulo" widgetVar="editarTitulo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPersonaEducacion.editarVigenciasNoFormales.titulo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTituloNF" value="Atras" onclick="editarTitulo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarInstitucionNF" header="Institucion" widgetVar="editarInstitucionNF" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPersonaEducacion.editarVigenciasNoFormales.institucion.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarInstitucionNF" value="Atras" onclick="editarInstitucionNF.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarAdiestramientoNF" header="Adiestramiento" widgetVar="editarAdiestramientoNF" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPersonaEducacion.editarVigenciasNoFormales.adiestramientonf.desccripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarAdiestramientoNF" value="Atras" onclick="editarAdiestramientoNF.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarCalificacionNF" header="Valoracion" widgetVar="editarCalificacionNF" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPersonaEducacion.editarVigenciasNoFormales.calificacionobtenida}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCalificacionNF" value="Atras" onclick="editarCalificacionNF.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarObservacionNF" header="Observacion" widgetVar="editarObservacionNF" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPersonaEducacion.editarVigenciasNoFormales.observacion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarObservacionNF" value="Atras" onclick="editarObservacionNF.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    
 
                     <!-- DIALOGOS RASTROS -->
 
@@ -705,7 +1049,7 @@
                 <h:form id="formExportar">
                     <p:dataTable id="datosVigenciasFormalesExportar" var="vFormales" style="visibility: hidden; display: none;"                           
                                  value="#{controlPersonaEducacion.listaVigenciasFormales}"> 
-                        <!--COLUMNAS TABLA TELEFONOS--> 
+                        <!--COLUMNAS TABLA VIGENCIAS FORMALES--> 
                         <p:column>  
                             <f:facet name="header">
                                 <h:outputText value="Fecha" />
@@ -756,6 +1100,44 @@
                         <p:column headerText="Observaciones">      
                             <f:facet name="header"><h:outputText value="Observacion"/></f:facet>
                             <h:outputText value="#{vFormales.observacion}" />
+
+                        </p:column>
+
+                    </p:dataTable>
+                    
+                    <p:dataTable id="datosVigenciasNoFormalesExportar" var="vNFormales" style="visibility: hidden; display: none;"                           
+                                 value="#{controlPersonaEducacion.listaVigenciasNoFormales}"> 
+                        <!--COLUMNAS TABLA VIGENCIAS FORMALES--> 
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Fecha" />
+                            </f:facet>
+                            <h:outputText value="#{vNFormales.fechavigencia}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Cursos">                                  
+                            <f:facet name="header"><h:outputText value="Cursos"/> </f:facet> 
+                            <h:outputText value="#{vNFormales.curso.nombre}" />
+                        </p:column>  
+
+                        <p:column headerText="Titulo">      
+                            <f:facet name="header"><h:outputText value="Titulo"/></f:facet>
+                            <h:outputText value="#{vNFormales.titulo}" />
+                        </p:column>
+
+                        <p:column headerText="Instituciones">      
+                            <f:facet name="header"><h:outputText value="Instituciones"/></f:facet>
+                            <h:outputText value="#{vNFormales.institucion.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Adiestramientos">      
+                            <f:facet name="header"><h:outputText value="Adiestramientos"/></f:facet>
+                            <h:outputText value="#{vNFormales.adiestramientonf.desccripcion}" />
+                        </p:column>
+                        <p:column headerText="Observaciones">      
+                            <f:facet name="header"><h:outputText value="Observacion"/></f:facet>
+                            <h:outputText value="#{vNFormales.observacion}" />
 
                         </p:column>
 
