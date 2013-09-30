@@ -4,10 +4,7 @@ import Entidades.VigenciasFormales;
 import InterfacePersistencia.PersistenciaVigenciasFormalesInterface;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
@@ -22,9 +19,10 @@ public class PersistenciaVigenciasFormales implements PersistenciaVigenciasForma
     @Override
      public void crear(VigenciasFormales vigenciasFormales) {
         try {
+            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(vigenciasFormales);
         } catch (PersistenceException ex) {
-            System.out.println("rjnsf");
+            System.out.println("Error PersistenciaVigenciasFormales.crear");
         }
     }
        

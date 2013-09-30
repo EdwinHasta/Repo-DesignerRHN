@@ -22,4 +22,6 @@ public interface PersistenciaConceptosInterface {
     public boolean verificarCodigoConcepto(BigInteger codigoConcepto);
     public Conceptos validarCodigoConcepto(BigInteger codigoConcepto, BigInteger secEmpresa);
     public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa);
+    public List<Conceptos> conceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado);
+    public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa);
 }

@@ -408,8 +408,8 @@ public class ControlVigenciasTiposContratos implements Serializable {
             }
         }
     }
+    
     //GUARDAR
-
     public void guardarCambiosVTC() {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Tipos Contratos");
@@ -540,28 +540,22 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     //CREAR VTC
     public void agregarNuevaVTC() {
-        boolean pasa = false;
+        int pasa = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevaVigencia.getFechavigencia() == null) {
             mensajeValidacion = " * Fecha \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
         if (nuevaVigencia.getMotivocontrato().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + " * Motivo del Contrato \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
         if (nuevaVigencia.getTipocontrato().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + "   * Tipo de Contrato \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
-        if (pasa == true) {
+        if (pasa == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 vtcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVTCEmpleado:vtcFecha");
@@ -1061,11 +1055,12 @@ public class ControlVigenciasTiposContratos implements Serializable {
     }
     //EXPORTAR
 
+    
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVTCEmpleadoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "VigenciasTiposContratosPDF", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "CiudadesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1075,7 +1070,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVTCEmpleadoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "VigenciasTiposContratosXLS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "CiudadesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1123,8 +1118,6 @@ public class ControlVigenciasTiposContratos implements Serializable {
     public List<VigenciasTiposContratos> getVigenciasTiposContratoEmpleado() {
         try {
             if (vigenciasTiposContratoEmpleado == null) {
-                //vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(BigInteger.valueOf(10661039));
-                // return vigenciasTiposContratoEmpleado;
                 return vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(secuenciaEmpleado);
             } else {
                 return vigenciasTiposContratoEmpleado;
@@ -1276,11 +1269,5 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     public BigInteger getSecRegistro() {
         return secRegistro;
-    }
-
-    public void actualizar() {
-        System.out.println("HOLAAAAAAA :)");
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVTCEmpleado");
     }
 }

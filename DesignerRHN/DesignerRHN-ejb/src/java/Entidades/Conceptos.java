@@ -59,7 +59,7 @@ public class Conceptos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private int codigo;
+    private BigInteger codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
@@ -122,7 +122,7 @@ public class Conceptos implements Serializable {
     @Column(name = "ACTIVO")
     private String activo;
     @Column(name = "CONJUNTO")
-    private Short conjunto;
+    private int conjunto;
     @Size(max = 15)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
@@ -166,6 +166,8 @@ public class Conceptos implements Serializable {
     private String estadoConcepto;
     @Transient
     private String enviarConcepto;
+    @Transient
+    private boolean independienteConcepto;
 
     public Conceptos() {
     }
@@ -174,7 +176,7 @@ public class Conceptos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Conceptos(BigInteger secuencia, int codigo, String descripcion, String naturaleza) {
+    public Conceptos(BigInteger secuencia, BigInteger codigo, String descripcion, String naturaleza) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -189,11 +191,11 @@ public class Conceptos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public int getCodigo() {
+    public BigInteger getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(BigInteger codigo) {
         this.codigo = codigo;
     }
 
@@ -262,6 +264,9 @@ public class Conceptos implements Serializable {
     }
 
     public String getContenidofechahasta() {
+        if (contenidofechahasta == null) {
+            contenidofechahasta = "FECHAPAGO";
+        }
         return contenidofechahasta;
     }
 
@@ -357,11 +362,14 @@ public class Conceptos implements Serializable {
         this.activo = activo;
     }
 
-    public Short getConjunto() {
+    public int getConjunto() {
+        if (conjunto == 0) {
+            conjunto = 1;
+        }
         return conjunto;
     }
 
-    public void setConjunto(Short conjunto) {
+    public void setConjunto(int conjunto) {
         this.conjunto = conjunto;
     }
 
@@ -390,7 +398,7 @@ public class Conceptos implements Serializable {
     }
 
     public Terceros getTercero() {
-        if(tercero == null){
+        if (tercero == null) {
             tercero = new Terceros();
         }
         return tercero;
@@ -546,7 +554,7 @@ public class Conceptos implements Serializable {
     public String getNaturalezaConcepto() {
         if (naturalezaConcepto == null) {
             if (naturaleza == null) {
-                naturalezaConcepto = "DESCUENTO";
+                naturalezaConcepto = "PAGO";
             } else {
                 if (naturaleza.equalsIgnoreCase("N")) {
                     naturalezaConcepto = "NETO";
@@ -606,20 +614,22 @@ public class Conceptos implements Serializable {
         this.enviarConcepto = enviarConcepto;
     }
 
-    public GruposProvisiones getGruposProvisiones() {
-        return gruposProvisiones;
+    public boolean isIndependienteConcepto() {
+        if (independienteConcepto == false) {
+            if (independiente == null) {
+                independienteConcepto = false;
+            } else {
+                if (independiente.equalsIgnoreCase("S")) {
+                    independienteConcepto = true;
+                } else if (enviotesoreria.equalsIgnoreCase("N")) {
+                    independienteConcepto = false;
+                }
+            }
+        }
+        return independienteConcepto;
     }
 
-    public void setGruposProvisiones(GruposProvisiones gruposProvisiones) {
-        this.gruposProvisiones = gruposProvisiones;
-    }
-
-    @XmlTransient
-    public Collection<ConceptosSoportes> getConceptosSoportesCollection() {
-        return conceptosSoportesCollection;
-    }
-
-    public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
-        this.conceptosSoportesCollection = conceptosSoportesCollection;
+    public void setIndependienteConcepto(boolean independienteConcepto) {
+        this.independienteConcepto = independienteConcepto;
     }
 }

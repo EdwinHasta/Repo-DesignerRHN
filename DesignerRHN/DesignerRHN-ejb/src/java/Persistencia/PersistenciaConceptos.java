@@ -124,4 +124,29 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             return null;
         }
     }
+
+    @Override
+    public List<Conceptos> conceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado) {
+        try {
+            Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa AND c.activo = :estado ORDER BY c.codigo ASC");
+            query.setParameter("secEmpresa", secEmpresa);
+            query.setParameter("estado", estado);
+            List<Conceptos> listaConceptos = query.getResultList();
+            return listaConceptos;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa) {
+        try {
+            Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa AND c.naturaleza <> 'L' ORDER BY c.codigo ASC");
+            query.setParameter("secEmpresa", secEmpresa);
+            List<Conceptos> listaConceptos = query.getResultList();
+            return listaConceptos;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

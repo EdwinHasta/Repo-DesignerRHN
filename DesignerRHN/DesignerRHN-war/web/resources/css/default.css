@@ -201,5 +201,9 @@ a:link:hover, a:visited:hover  {
     display: none;
 }
 
+/*SELECT ON RADIO*/
 
+.ui-radiobutton{
+    padding-left: 50px;
+}
 
