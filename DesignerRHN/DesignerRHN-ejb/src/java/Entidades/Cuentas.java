@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")})
 public class Cuentas implements Serializable {
+    @OneToMany(mappedBy = "cuentaconsolidacion")
+    private Collection<GruposProvisiones> gruposProvisionesCollection;
     @Size(max = 1)
     @Column(name = "MANEJASUBCUENTA")
     private String manejasubcuenta;
@@ -430,6 +432,15 @@ public class Cuentas implements Serializable {
 
     public void setManejasubcuenta(String manejasubcuenta) {
         this.manejasubcuenta = manejasubcuenta;
+    }
+
+    @XmlTransient
+    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
+        return gruposProvisionesCollection;
+    }
+
+    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
+        this.gruposProvisionesCollection = gruposProvisionesCollection;
     }
     
 }

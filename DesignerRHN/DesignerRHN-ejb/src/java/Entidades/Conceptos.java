@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
+    @OneToMany(mappedBy = "concepto")
+    private Collection<ConceptosSoportes> conceptosSoportesCollection;
+    @OneToOne(mappedBy = "concepto")
+    private GruposProvisiones gruposProvisiones;
 
     @OneToMany(mappedBy = "conceptoabono")
     private Collection<Tiposprestamos> tiposprestamosCollection;
@@ -599,5 +604,22 @@ public class Conceptos implements Serializable {
 
     public void setEnviarConcepto(String enviarConcepto) {
         this.enviarConcepto = enviarConcepto;
+    }
+
+    public GruposProvisiones getGruposProvisiones() {
+        return gruposProvisiones;
+    }
+
+    public void setGruposProvisiones(GruposProvisiones gruposProvisiones) {
+        this.gruposProvisiones = gruposProvisiones;
+    }
+
+    @XmlTransient
+    public Collection<ConceptosSoportes> getConceptosSoportesCollection() {
+        return conceptosSoportesCollection;
+    }
+
+    public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
+        this.conceptosSoportesCollection = conceptosSoportesCollection;
     }
 }

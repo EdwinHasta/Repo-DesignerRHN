@@ -94,7 +94,7 @@ public class VigenciasAfiliaciones implements Serializable {
     private Formulas formula;
     @JoinColumn(name = "ESTADOAFILIACION", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Estadosafiliaciones estadoafiliacion;
+    private EstadosAfiliaciones estadoafiliacion;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
@@ -238,11 +238,11 @@ public class VigenciasAfiliaciones implements Serializable {
         this.formula = formula;
     }
 
-    public Estadosafiliaciones getEstadoafiliacion() {
+    public EstadosAfiliaciones getEstadoafiliacion() {
         return estadoafiliacion;
     }
 
-    public void setEstadoafiliacion(Estadosafiliaciones estadoafiliacion) {
+    public void setEstadoafiliacion(EstadosAfiliaciones estadoafiliacion) {
         this.estadoafiliacion = estadoafiliacion;
     }
 

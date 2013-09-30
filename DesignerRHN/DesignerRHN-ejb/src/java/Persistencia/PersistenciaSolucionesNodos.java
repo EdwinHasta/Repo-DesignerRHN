@@ -2,7 +2,9 @@ package Persistencia;
 
 import Entidades.SolucionesNodos;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosInterface{
+public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -70,7 +72,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             return null;
         }
     }
-    
+
     @Override
     public List<SolucionesNodos> solucionNodoCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         try {
@@ -82,6 +84,33 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
         } catch (Exception e) {
             System.out.println("Error: (PersistenciaSolucionesNodos.solucionNodoCorteProcesoEmpleador)" + e);
             return null;
+        }
+    }
+
+    @Override
+    public BigDecimal diasProvisionados(BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT SN1.unidades FROM SolucionesNodos SN1, Conceptos c WHERE SN1.empleado.secuencia =:secuenciaempleado AND c.secuencia=SN1.concepto.secuencia AND SN1.tipo='PASIVO' AND SN1.estado='CERRADO' AND SN1.concepto.secuencia=(SELECT GC.concepto.secuencia FROM  GruposProvisiones GC WHERE GC.nombre='VACACIONES' AND GC.empresa.secuencia=c.empresa.secuencia) AND SN1.fechahasta = (SELECT MAX(SN2.fechahasta) FROM SolucionesNodos SN2 WHERE SN2.fechadesde<=CURRENT_DATE AND SN1.empleado.secuencia=SN2.empleado.secuencia AND SN1.concepto.secuencia=SN2.concepto.secuencia AND SN2.tipo = 'PASIVO' AND SN2.estado='CERRADO')");
+            query.setParameter("secuenciaempleado", secuencia);
+            BigDecimal llegada = (BigDecimal) query.getSingleResult();
+            return llegada;
+        } catch (Exception e) {
+            System.out.println("Error: (PersistenciaSolucionesNodos.diasProvisionados)" + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public void validacionTercerosVigenciaAfiliacion(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer){
+        try {
+            Query query = em.createQuery("SELECT count(v) , MIN(v.fechapago) FROM SolucionesNodos v where v.fechapago > :fechaInicial AND v.empleado.secuencia = :secuencia AND v.estado ='CERRADO' AND V.nit != :secuenciaTer AND exists (SELECT 'x' FROM ConceptosSoportes cs WHERE cs.concetos = v.concepto AND cs.tipoentidad = :secuenciaT and cs.tipo='AUTOLIQUIDACION' AND cs.subgrupo='COTIZACION')");
+            query.setParameter("secuencia", secuencia);
+            query.setParameter("fechaInicial", fechaInicial);
+            query.setParameter("secuenciaTE", secuenciaTE);
+            query.setParameter("secuenciaTer", secuenciaTer);
+            System.out.println("Salida : "+query.getSingleResult());
+        } catch (Exception e) {
+            System.out.println("Error: (validacionTercerosVigenciaAfiliacion.diasProvisionados)" + e.toString());
         }
     }
 }

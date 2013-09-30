@@ -6,13 +6,12 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -24,16 +23,17 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Administrator
+ * @author user
  */
 @Entity
-@Table(name = "TIPOSENTIDADES")
+@Table(name = "ESTADOSAFILIACIONES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TiposEntidades.findAll", query = "SELECT t FROM TiposEntidades t")})
-public class TiposEntidades implements Serializable {
-    @OneToMany(mappedBy = "tipoentidad")
-    private Collection<ConceptosSoportes> conceptosSoportesCollection;
+    @NamedQuery(name = "EstadosAfiliaciones.findAll", query = "SELECT e FROM EstadosAfiliaciones e"),
+    @NamedQuery(name = "EstadosAfiliaciones.findBySecuencia", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.secuencia = :secuencia"),
+    @NamedQuery(name = "EstadosAfiliaciones.findByCodigo", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.codigo = :codigo"),
+    @NamedQuery(name = "EstadosAfiliaciones.findByNombre", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.nombre = :nombre")})
+public class EstadosAfiliaciones implements Serializable { 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -41,33 +41,19 @@ public class TiposEntidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private BigInteger codigo;
+    @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @JoinColumn(name = "RUBROPRESUPUESTAL", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private Rubrospresupuestales rubropresupuestal;
-    @JoinColumn(name = "GRUPO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
-    private Grupostiposentidades grupo;
+    @OneToMany(mappedBy = "estadoafiliacion")
+    private Collection<VigenciasAfiliaciones> vigenciasafiliacionesCollection;
 
-    public TiposEntidades() {
+    public EstadosAfiliaciones() {
     }
 
-    public TiposEntidades(BigDecimal secuencia) {
+    public EstadosAfiliaciones(BigDecimal secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public TiposEntidades(BigDecimal secuencia, short codigo, String nombre) {
-        this.secuencia = secuencia;
-        this.codigo = codigo;
-        this.nombre = nombre;
     }
 
     public BigDecimal getSecuencia() {
@@ -78,11 +64,11 @@ public class TiposEntidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public BigInteger getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(BigInteger codigo) {
         this.codigo = codigo;
     }
 
@@ -97,20 +83,13 @@ public class TiposEntidades implements Serializable {
         this.nombre = nombre;
     }
 
-    public Rubrospresupuestales getRubropresupuestal() {
-        return rubropresupuestal;
+    @XmlTransient
+    public Collection<VigenciasAfiliaciones> getVigenciasafiliacionesCollection() {
+        return vigenciasafiliacionesCollection;
     }
 
-    public void setRubropresupuestal(Rubrospresupuestales rubropresupuestal) {
-        this.rubropresupuestal = rubropresupuestal;
-    }
-
-    public Grupostiposentidades getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Grupostiposentidades grupo) {
-        this.grupo = grupo;
+    public void setVigenciasafiliacionesCollection(Collection<VigenciasAfiliaciones> vigenciasafiliacionesCollection) {
+        this.vigenciasafiliacionesCollection = vigenciasafiliacionesCollection;
     }
 
     @Override
@@ -123,10 +102,10 @@ public class TiposEntidades implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TiposEntidades)) {
+        if (!(object instanceof EstadosAfiliaciones)) {
             return false;
         }
-        TiposEntidades other = (TiposEntidades) object;
+        EstadosAfiliaciones other = (EstadosAfiliaciones) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -135,16 +114,7 @@ public class TiposEntidades implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Tiposentidades[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<ConceptosSoportes> getConceptosSoportesCollection() {
-        return conceptosSoportesCollection;
-    }
-
-    public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
-        this.conceptosSoportesCollection = conceptosSoportesCollection;
+        return "Entidades.Estadosafiliaciones[ secuencia=" + secuencia + " ]";
     }
     
 }
