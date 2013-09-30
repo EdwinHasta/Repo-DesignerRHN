@@ -190,7 +190,7 @@
                                             NORMAS LABORALES: Observe y/o ingrese <br/>la(s) norma(s) laboral(es) del empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="Afiliaciones" value="" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 29px; height: 35px; top: 123px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="Afiliaciones" value="" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 29px; height: 35px; top: 123px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="afiliaciones3" actionListener="#{controlEmplVigenciaAfiliacion3.recibirEmpleado(item.empleado.secuencia)}"/>
                                         <p:tooltip style="font-size: 12px" for="Afiliaciones" >
                                             AFILIACIONES: Observe y/o ingrese todos las afiliaciones<br/> que el empleado tiene con los diferentes terceros.
                                         </p:tooltip>
@@ -230,7 +230,7 @@
                                             MENORES VALORES DE RETENCION: Observe<br/> y/o ingrese todos los M.V.R.
                                         </p:tooltip>
 
-                                        <p:commandButton id="Vacaciones" value="" style="position: absolute; background-image: url(Imagenes/vacacion.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="Vacaciones" value="" style="position: absolute; background-image: url(Imagenes/vacacion.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" disabled="#{controlRemoto.acumulado}" action="vacaciones" actionListener="#{controlEmplVacaPendiente.recibirEmpleado(item.empleado.secuencia)}"/>
                                         <p:tooltip style="font-size: 12px" for="Vacaciones">
                                             VACACIONES: Observe todos los históricos de<br/> vacaciones que el empleado ha disfrutado.
                                         </p:tooltip>

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,6 +34,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Operandos.findAll", query = "SELECT o FROM Operandos o")})
 public class Operandos implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<ConceptosSoportes> conceptosSoportesCollection;
+    @OneToMany(mappedBy = "operandobaseliquidacion")
+    private Collection<GruposProvisiones> gruposProvisionesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -203,6 +208,24 @@ public class Operandos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Operandos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
+        return gruposProvisionesCollection;
+    }
+
+    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
+        this.gruposProvisionesCollection = gruposProvisionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ConceptosSoportes> getConceptosSoportesCollection() {
+        return conceptosSoportesCollection;
+    }
+
+    public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
+        this.conceptosSoportesCollection = conceptosSoportesCollection;
     }
     
 }

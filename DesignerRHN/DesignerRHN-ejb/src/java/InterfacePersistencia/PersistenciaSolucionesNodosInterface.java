@@ -5,7 +5,9 @@
 package InterfacePersistencia;
 
 import Entidades.SolucionesNodos;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,4 +22,6 @@ public interface PersistenciaSolucionesNodosInterface {
    public List<SolucionesNodos> buscarSolucionesNodos();
    public List<SolucionesNodos> solucionNodoCorteProcesoEmpleado(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado);
    public List<SolucionesNodos> solucionNodoCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado);
+   public BigDecimal diasProvisionados(BigInteger empl);
+   public void validacionTercerosVigenciaAfiliacion(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer);
 }

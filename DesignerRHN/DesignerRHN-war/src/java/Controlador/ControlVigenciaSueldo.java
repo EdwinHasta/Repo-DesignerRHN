@@ -1072,6 +1072,7 @@ public class ControlVigenciaSueldo implements Serializable {
             nuevaVigencia.setSecuencia(var);
             nuevaVigencia.setEmpleado(empleado);
             listVSCrear.add(nuevaVigencia);
+            
             listVigenciasSueldos.add(nuevaVigencia);
             nuevaVigencia = new VigenciasSueldos();
             nuevaVigencia.setMotivocambiosueldo(new MotivosCambiosSueldos());

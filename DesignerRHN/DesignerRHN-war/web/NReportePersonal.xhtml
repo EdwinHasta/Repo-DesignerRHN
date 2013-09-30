@@ -131,7 +131,7 @@
                             </p:inputText>
 
                             <h:outputText value="Solicitud" style="position: absolute; top: 60px; left: 10px;font-size: 11px;"/>
-                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.observaciones}" id="solicitudParametro" style="position: absolute; top: 54px; left: 90px;font-size: 11px;height: 10px;width: 270px;" onclick="select();">
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.observaciones}" id="solicitudParametro" style="position: absolute; top: 54px; left: 90px;font-size: 11px;height: 10px;width: 270px;text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(3)}" process="@this"/> 
                                 <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="solicitudParametro" process="@this"/>
                             </p:inputText>
@@ -158,7 +158,7 @@
                             </p:inputText>
 
                             <h:outputText value="Rodamiento" style="position: absolute; top: 144px; left: 10px;font-size: 11px;"/>
-                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.rodamineto}" id="rodamientoParametro" style="position: absolute; top: 138px; left: 90px;font-size: 11px;height: 10px;width: 270px;" onclick="select();">
+                            <p:inputText value="#{controlNReportePersonal.parametroDeInforme.rodamineto}" id="rodamientoParametro" style="position: absolute; top: 138px; left: 90px;font-size: 11px;height: 10px;width: 270px;text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(7)}" process="@this"/> 
                                 <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="rodamientoParametro" process="@this"/>
                             </p:inputText>
@@ -246,9 +246,9 @@
                             <h:outputText value="Personal" style="position: absolute; top: 144px; left: 430px;font-size: 11px;"/>
                             <p:selectOneMenu value="#{controlNReportePersonal.parametroDeInforme.tipopersonal}" id="personalParametro" style="position: absolute; top: 136px; left: 510px;font-size: 11px;width: 190px;">  
                                 <f:selectItem itemLabel="" itemValue="null" />  
-                                <f:selectItem itemLabel="Activo" itemValue="Activo" />  
-                                <f:selectItem itemLabel="Pensionado" itemValue="Pensionado" />  
-                                <f:selectItem itemLabel="Retirado" itemValue="Retirado" />  
+                                <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO" />  
+                                <f:selectItem itemLabel="PENSIONADO" itemValue="PENSIONADO" />  
+                                <f:selectItem itemLabel="RETIRADO" itemValue="RETIRADO" />  
                                 <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this"/>
                             </p:selectOneMenu>
 
@@ -669,10 +669,10 @@
                                 <h:outputText  value="#{jefe.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarJD" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.actualizarIdioma()}" update="lovJefeD, aceptarJD, jefeDivisionParametro" process="@this">
+                        <p:commandButton id="aceptarJD" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReportePersonal.aceptar}" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.actualizarJefeDivision()}" update="lovJefeD, aceptarJD, jefeDivisionParametro" process="@this">
                             <p:resetInput target=":form:lovJefeD:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasJD" style="position: relative; left: 150px" value="Atras" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.cancelarIdioma()}" update="lovJefeD" process="@this">
+                        <p:commandButton id="atrasJD" style="position: relative; left: 150px" value="Atras" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.cancelarJefeDivision()}" update="lovJefeD" process="@this">
                             <p:resetInput target=":form:lovJefeD:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>

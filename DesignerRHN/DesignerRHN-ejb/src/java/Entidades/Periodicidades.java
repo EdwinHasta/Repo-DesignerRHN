@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Periodicidades.findAll", query = "SELECT p FROM Periodicidades p")})
 public class Periodicidades implements Serializable {
+    @OneToMany(mappedBy = "periodicidadcorte")
+    private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(mappedBy = "periodicidad")
     private Collection<Novedades> novedadesCollection;
     private static final long serialVersionUID = 1L;
@@ -161,6 +163,15 @@ public class Periodicidades implements Serializable {
 
     public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
         this.novedadesCollection = novedadesCollection;
+    }
+
+    @XmlTransient
+    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
+        return gruposProvisionesCollection;
+    }
+
+    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
+        this.gruposProvisionesCollection = gruposProvisionesCollection;
     }
     
 }

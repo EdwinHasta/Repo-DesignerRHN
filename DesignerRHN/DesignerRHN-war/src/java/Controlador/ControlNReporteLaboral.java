@@ -86,7 +86,6 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void guardarCambios() {
-        System.out.println("Guardar cambios");
         try {
             if (parametroModificacion.getGrupo().getSecuencia() == null) {
                 parametroModificacion.setGrupo(null);
@@ -95,9 +94,6 @@ public class ControlNReporteLaboral implements Serializable {
             if (parametroModificacion.getEmpresa().getSecuencia() == null) {
                 parametroModificacion.setEmpresa(null);
             }
-            System.out.println("Usuario : "+parametroModificacion.getUsuario());
-            System.out.println("cargo "+parametroModificacion.getCargo());
-            System.out.println("tipo personal : "+parametroModificacion.getTipopersonal());
             administrarNReporteLaboral.modificarParametrosInformes(parametroModificacion);
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
@@ -161,7 +157,6 @@ public class ControlNReporteLaboral implements Serializable {
                 empresa = parametroDeInforme.getEmpresa().getNombre();
             }
         }
-        System.out.println("Casilla : " + casilla);
     }
 
     public void editarCelda() {
@@ -597,7 +592,6 @@ public class ControlNReporteLaboral implements Serializable {
 
     public void modificarParametroInforme() {
         parametroModificacion = parametroDeInforme;
-        System.out.println("tipo pèrsopnal "+parametroModificacion.getTipopersonal());
     }
 
     public void resaltoParametrosParaReporte(int i) {
@@ -648,7 +642,6 @@ public class ControlNReporteLaboral implements Serializable {
         if (reporteS.getEmhasta().equals("SI")) {
             cadena = cadena + "- Empleado Hasta -";
         }
-        System.out.println("Cadena : "+cadena);
         setRequisitosReporte(cadena);
         if (!requisitosReporte.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -760,7 +753,6 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public String getRequisitosReporte() {
-        System.out.println("Requisito reporte : "+requisitosReporte);
         return requisitosReporte;
     }
 
