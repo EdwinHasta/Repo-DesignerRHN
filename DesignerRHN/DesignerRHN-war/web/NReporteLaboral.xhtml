@@ -124,7 +124,7 @@
                             <h:outputText value="Empleado desde" style="position: absolute; top: 55px; left: 10px;font-size: 11px;"/>
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 50px; left: 90px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(2)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoDesdeParametroL"  process="@this"/>
+                                <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" update="empleadoDesdeParametroL"  process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteLaboral.mostrarDialogosListas()}"/>
                             </p:inputText>
 
@@ -143,7 +143,7 @@
                             <h:outputText value="hasta" style="position: absolute; top: 55px; left: 210px;font-size: 11px"/>
                             <p:inputText value="#{controlNReporteLaboral.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 50px; left: 270px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteLaboral.posicionCelda(4)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoHastaParametroL" process="@this"/>
+                                <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" update="empleadoHastaParametroL" process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteLaboral.mostrarDialogosListas()}"/>
                             </p:inputText>
 
@@ -157,10 +157,10 @@
                             </p:inputText>
 
                             <h:outputText value="Personal" style="position: absolute; top: 50px; left: 430px;font-size: 11px;"/>
-                            <p:selectOneMenu value="#{controlNReporteLaboral.parametroDeInforme.tipopersonal}" id="tipoPersonalParametroL" style="position: absolute; top: 43px; left: 475px;font-size: 11px;width: 132px;width: 85px;">  
-                                <f:selectItem itemLabel="Activo" itemValue="Activo" />  
-                                <f:selectItem itemLabel="Pensionado" itemValue="Pensionado" />  
-                                <f:selectItem itemLabel="Retirado" itemValue="Retirado" />
+                            <p:selectOneMenu value="#{controlNReporteLaboral.parametroDeInforme.tipopersonal}" id="tipoPersonalParametroL" style="position: absolute; top: 43px; left: 475px;font-size: 11px;width: 132px;width: 85px;text-transform: uppercase">  
+                                <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO" />  
+                                <f:selectItem itemLabel="PENSIONADO" itemValue="PENSIONADO" />  
+                                <f:selectItem itemLabel="RETIRADO" itemValue="RETIRADO" />
                                 <f:selectItem itemLabel=" " itemValue="null" />
                                 <p:ajax event="change" listener="#{controlNReporteLaboral.modificarParametroInforme()}" process="@this" update="tipoPersonalParametroL"/>
                             </p:selectOneMenu> 

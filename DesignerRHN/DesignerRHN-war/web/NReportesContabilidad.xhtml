@@ -135,14 +135,14 @@
                             <h:outputText value="Empleado Desde" style="position: absolute; top: 20px; left: 260px;font-size: 11px;"/>
                             <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 40px; left: 260px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(2)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoDesdeParametroL"  process="@this"/>
+                                <p:ajax event="change" update="empleadoDesdeParametroL" listener="#{controlNReporteContabilidad.modificarParametroInforme()}"  process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteContabilidad.mostrarDialogosListas()}"/>
                             </p:inputText>
 
                             <h:outputText value="Empleado Hasta" style="position: absolute; top: 20px; left: 400px;font-size: 11px"/>
                             <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 40px; left: 400px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(4)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoHastaParametroL" process="@this"/>
+                                <p:ajax event="change" update="empleadoHastaParametroL" listener="#{controlNReporteContabilidad.modificarParametroInforme()}" process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteContabilidad.mostrarDialogosListas()}"/>
                             </p:inputText>
 
@@ -160,10 +160,10 @@
                             </p:inputText>
 
                             <h:outputText value="Estado" style="position: absolute; top: 20px; left: 680px;font-size: 11px;"/>
-                            <p:selectOneMenu value="#{controlNReporteContabilidad.parametroDeInforme.tipopersonal}" id="estadoParametroL" style="position: absolute; top: 40px; left: 665px;font-size: 11px;width: 132px;width: 85px;">  
+                            <p:selectOneMenu value="#{controlNReporteContabilidad.parametroDeInforme.tipopersonal}" id="estadoParametroL" style="position: absolute; top: 40px; left: 665px;font-size: 11px;width: 132px;width: 85px;text-transform: uppercase">  
                                 <f:selectItem itemLabel=" " itemValue="null" />
-                                <f:selectItem itemLabel="Liquidado" itemValue="Liquidado" />  
-                                <f:selectItem itemLabel="Cerrado" itemValue="Cerrado" />  
+                                <f:selectItem itemLabel="LIQUIDADO" itemValue="LIQUIDADO" />  
+                                <f:selectItem itemLabel="CERRADO" itemValue="CERRADO" />  
                                 <p:ajax event="change" listener="#{controlNReporteContabilidad.modificarParametroInforme()}" process="@this" update="estadoParametroL"/>
                             </p:selectOneMenu> 
 

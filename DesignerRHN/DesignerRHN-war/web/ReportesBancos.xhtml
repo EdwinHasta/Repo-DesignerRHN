@@ -127,9 +127,9 @@
                             </p:inputText>
                             
                             <h:outputText value="Tipo Cuenta" style="position: absolute; top: 120px; left: 40px;font-size: 11px;"/>
-                            <p:selectOneMenu value="#{controlReportesBancos.parametroDeInforme.tipopersonal}" id="tipoCuentaParametro" style="position: absolute; top: 113px; left: 120px;font-size: 11px;width: 132px;width: 100px;">  
-                                <f:selectItem itemLabel="Ahorros" itemValue="Ahorros" />  
-                                <f:selectItem itemLabel="Corriente" itemValue="Corriente" />  
+                            <p:selectOneMenu value="#{controlReportesBancos.parametroDeInforme.tipopersonal}" id="tipoCuentaParametro" style="position: absolute; top: 113px; left: 120px;font-size: 11px;width: 132px;width: 100px;text-transform: uppercase">  
+                                <f:selectItem itemLabel="AHORROS" itemValue="AHORROS" />  
+                                <f:selectItem itemLabel="CORRIENTE" itemValue="CORRIENTE" />  
                                 <f:selectItem itemLabel=" " itemValue="null" />
                                 <p:ajax event="change" listener="#{controlReportesBancos.modificarParametroInforme()}" process="@this"/>
                             </p:selectOneMenu>                            

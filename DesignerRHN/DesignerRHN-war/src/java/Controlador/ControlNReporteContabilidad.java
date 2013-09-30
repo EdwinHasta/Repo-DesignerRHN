@@ -28,7 +28,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlNReporteContabilidad implements Serializable{
+public class ControlNReporteContabilidad implements Serializable {
 
     @EJB
     AdministrarNReporteContabilidadInterface administrarNReporteContabilidad;
@@ -208,6 +208,14 @@ public class ControlNReporteContabilidad implements Serializable{
 
     public void mostrarDialogosListas() {
         RequestContext context = RequestContext.getCurrentInstance();
+        if (casilla == 2) {
+            context.update("form:EmpleadoDesdeDialogo");
+            context.execute("EmpleadoDesdeDialogo.show()");
+        }
+        if (casilla == 4) {
+            context.update("form:EmpleadoHastaDialogo");
+            context.execute("EmpleadoHastaDialogo.show()");
+        }
         if (casilla == 5) {
             context.update("form:ProcesoDialogo");
             context.execute("ProcesoDialogo.show()");
@@ -231,7 +239,7 @@ public class ControlNReporteContabilidad implements Serializable{
         filtrarListProcesos = null;
         permitirIndex = true;
     }
-    
+
     public void actualizarEmplDesde() {
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadodesde(empleadoSeleccionado.getCodigoempleado());
@@ -249,7 +257,7 @@ public class ControlNReporteContabilidad implements Serializable{
         filtrarListEmpleados = null;
         permitirIndex = true;
     }
-    
+
     public void actualizarEmplHasta() {
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadohasta(empleadoSeleccionado.getCodigoempleado());

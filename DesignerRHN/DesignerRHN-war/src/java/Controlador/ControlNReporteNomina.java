@@ -136,9 +136,6 @@ public class ControlNReporteNomina implements Serializable {
             if (parametroModificacion.getUbicaciongeografica().getSecuencia() == null) {
                 parametroModificacion.setUbicaciongeografica(null);
             }
-            if (parametroModificacion.getTipoasociacion().getSecuencia() == null) {
-                parametroModificacion.setTipoasociacion(null);
-            }
             if (parametroModificacion.getLocalizacion().getSecuencia() == null) {
                 parametroModificacion.setLocalizacion(null);
             }
@@ -153,6 +150,9 @@ public class ControlNReporteNomina implements Serializable {
             }
             if (parametroModificacion.getAsociacion().getSecuencia() == null) {
                 parametroModificacion.setAsociacion(null);
+            }
+            if (parametroModificacion.getTipoasociacion().getSecuencia() == null) {
+                parametroModificacion.setTipoasociacion(null);
             }
             administrarReportes.modificarParametrosInformes(parametroModificacion);
         } catch (Exception e) {
@@ -236,8 +236,8 @@ public class ControlNReporteNomina implements Serializable {
                 getListUbicacionesGeograficas();
             } else {
                 permitirIndex = false;
-                context.update("form:UbicacionGeograficaDialogo");
-                context.execute("UbicacionGeograficaDialogo.show()");
+                context.update("form:UbiGeograficaDialogo");
+                context.execute("UbiGeograficaDialogo.show()");
             }
         }
         if (campoConfirmar.equalsIgnoreCase("EMPRESA")) {
@@ -332,8 +332,8 @@ public class ControlNReporteNomina implements Serializable {
                 getListTerceros();
             } else {
                 permitirIndex = false;
-                context.update("form:TercerosDialogo");
-                context.execute("TercerosDialogo.show()");
+                context.update("form:TerceroDialogo");
+                context.execute("TerceroDialogo.show()");
             }
         }
         if (campoConfirmar.equalsIgnoreCase("PROCESO")) {
@@ -382,91 +382,91 @@ public class ControlNReporteNomina implements Serializable {
             context.update("form:EmpleadoDesdeDialogo");
             context.execute("EmpleadoDesdeDialogo.show()");
         }
-        if (casilla == 3) {
+        if (casilla == 4) {
             context.update("form:GruposConceptosDialogo");
             context.execute("GruposConceptosDialogo.show()");
         }
-        if (casilla == 4) {
-            context.update("form:UbicacionGeograficaDialogo");
-            context.execute("UbicacionGeograficaDialogo.show()");
-        }
         if (casilla == 5) {
+            context.update("form:UbiGeograficaDialogo");
+            context.execute("UbiGeograficaDialogo.show()");
+        }
+        if (casilla == 6) {
             context.update("form:TipoAsociacionDialogo");
             context.execute("TipoAsociacionDialogo.show()");
         }
-        if (casilla == 7) {
+        if (casilla == 8) {
             context.update("form:EmpleadoHastaDialogo");
             context.execute("EmpleadoHastaDialogo.show()");
         }
-        if (casilla == 8) {
+        if (casilla == 10) {
             context.update("form:EmpresaDialogo");
             context.execute("EmpresaDialogo.show()");
         }
-        if (casilla == 9) {
+        if (casilla == 11) {
             context.update("form:EstructuraDialogo");
             context.execute("EstructuraDialogo.show()");
         }
-        if (casilla == 10) {
+        if (casilla == 12) {
             context.update("form:TipoTrabajadorDialogo");
             context.execute("TipoTrabajadorDialogo.show()");
         }
-        if (casilla == 11) {
-            context.update("form:TercerosDialogo");
-            context.execute("TercerosDialogo.show()");
+        if (casilla == 13) {
+            context.update("form:TerceroDialogo");
+            context.execute("TerceroDialogo.show()");
         }
-        if (casilla == 12) {
+        if (casilla == 14) {
             context.update("form:ProcesoDialogo");
             context.execute("ProcesoDialogo.show()");
         }
-        if (casilla == 14) {
+        if (casilla == 16) {
             context.update("form:AsociacionDialogo");
             context.execute("AsociacionDialogo.show()");
         }
     }
 
-    public void listasValores(int pos) {
+    public void dialogosParametros(int pos) {
         RequestContext context = RequestContext.getCurrentInstance();
         if (pos == 2) {
             context.update("form:EmpleadoDesdeDialogo");
             context.execute("EmpleadoDesdeDialogo.show()");
         }
-        if (pos == 3) {
+        if (pos == 4) {
             context.update("form:GruposConceptosDialogo");
             context.execute("GruposConceptosDialogo.show()");
         }
-        if (pos == 4) {
-            context.update("form:UbicacionGeograficaDialogo");
-            context.execute("UbicacionGeograficaDialogo.show()");
-        }
         if (pos == 5) {
+            context.update("form:UbiGeograficaDialogo");
+            context.execute("UbiGeograficaDialogo.show()");
+        }
+        if (pos == 6) {
             context.update("form:TipoAsociacionDialogo");
             context.execute("TipoAsociacionDialogo.show()");
         }
-        if (pos == 7) {
+        if (pos == 8) {
             context.update("form:EmpleadoHastaDialogo");
             context.execute("EmpleadoHastaDialogo.show()");
         }
-        if (pos == 8) {
+        if (pos == 10) {
             context.update("form:EmpresaDialogo");
             context.execute("EmpresaDialogo.show()");
         }
-        if (pos == 9) {
+        if (pos == 11) {
             context.update("form:EstructuraDialogo");
             context.execute("EstructuraDialogo.show()");
         }
-        if (pos == 10) {
+        if (pos == 12) {
             context.update("form:TipoTrabajadorDialogo");
             context.execute("TipoTrabajadorDialogo.show()");
         }
-        if (pos == 11) {
-            context.update("form:TercerosDialogo");
-            context.execute("TercerosDialogo.show()");
+        if (pos == 13) {
+            context.update("form:TerceroDialogo");
+            context.execute("TerceroDialogo.show()");
         }
-        if (pos == 12) {
+        if (pos == 14) {
             context.update("form:ProcesoDialogo");
             context.execute("ProcesoDialogo.show()");
         }
-        if (pos == 14) {
+        if (pos == 16) {
             context.update("form:AsociacionDialogo");
             context.execute("AsociacionDialogo.show()");
         }
@@ -476,59 +476,59 @@ public class ControlNReporteNomina implements Serializable {
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (casilla == 1) {
-            context.update("formularioDialogos:editarFechaDesde");
+            context.update("formDialogos:editarFechaDesde");
             context.execute("editarFechaDesde.show()");
         }
         if (casilla == 2) {
-            context.update("formularioDialogos:empleadoDesde");
+            context.update("formDialogos:empleadoDesde");
             context.execute("empleadoDesde.show()");
         }
-        if (casilla == 3) {
-            context.update("formularioDialogos:grupoDesde");
+        if (casilla == 4) {
+            context.update("formDialogos:grupoDesde");
             context.execute("grupoDesde.show()");
         }
-        if (casilla == 4) {
-            context.update("formularioDialogos:ubicacionGeografica");
+        if (casilla == 5) {
+            context.update("formDialogos:ubicacionGeografica");
             context.execute("ubicacionGeografica.show()");
         }
-        if (casilla == 5) {
-            context.update("formularioDialogos:tipoAsociacion");
+        if (casilla == 6) {
+            context.update("formDialogos:tipoAsociacion");
             context.execute("tipoAsociacion.show()");
         }
-        if (casilla == 6) {
-            context.update("formularioDialogos:editarFechaHasta");
+        if (casilla == 7) {
+            context.update("formDialogos:editarFechaHasta");
             context.execute("editarFechaHasta.show()");
         }
-        if (casilla == 7) {
-            context.update("formularioDialogos:empleadoHasta");
+        if (casilla == 8) {
+            context.update("formDialogos:empleadoHasta");
             context.execute("empleadoHasta.show()");
         }
-        if (casilla == 8) {
-            context.update("formularioDialogos:empresa");
+        if (casilla == 10) {
+            context.update("formDialogos:empresa");
             context.execute("empresa.show()");
         }
-        if (casilla == 9) {
-            context.update("formularioDialogos:estructura");
+        if (casilla == 11) {
+            context.update("formDialogos:estructura");
             context.execute("estructura.show()");
         }
-        if (casilla == 10) {
-            context.update("formularioDialogos:tipoTrabajador");
+        if (casilla == 12) {
+            context.update("formDialogos:tipoTrabajador");
             context.execute("tipoTrabajador.show()");
         }
-        if (casilla == 11) {
-            context.update("formularioDialogos:tercero");
+        if (casilla == 13) {
+            context.update("formDialogos:tercero");
             context.execute("tercero.show()");
         }
-        if (casilla == 12) {
-            context.update("formularioDialogos:proceso");
+        if (casilla == 14) {
+            context.update("formDialogos:proceso");
             context.execute("proceso.show()");
         }
-        if (casilla == 13) {
-            context.update("formularioDialogos:notas");
+        if (casilla == 15) {
+            context.update("formDialogos:notas");
             context.execute("notas.show()");
         }
-        if (casilla == 14) {
-            context.update("formularioDialogos:asociacion");
+        if (casilla == 16) {
+            context.update("formDialogos:asociacion");
             context.execute("asociacion.show()");
         }
         casilla = -1;
@@ -905,31 +905,27 @@ public class ControlNReporteNomina implements Serializable {
         RequestContext.getCurrentInstance().update("form:fechaHastaParametro");
 
         empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametro");
-        empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 90px;font-size: 11px;height: 10px;width: 90px;");
+        empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 130px;font-size: 11px;height: 10px;width: 90px;");
         RequestContext.getCurrentInstance().update("form:empleadoDesdeParametro");
 
         empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametro");
-        empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 270px;font-size: 11px;height: 10px;width: 90px;");
+        empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 350px;font-size: 11px;height: 10px;width: 90px;");
         RequestContext.getCurrentInstance().update("form:empleadoHastaParametro");
 
         grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:grupoParametro");
-        grupoParametro.setStyle("position: absolute; top: 85px; left: 90px;font-size: 11px;height: 10px;width: 90px;");
+        grupoParametro.setStyle("position: absolute; top: 85px; left: 130px;font-size: 11px;height: 10px;width: 90px;");
         RequestContext.getCurrentInstance().update("form:grupoParametro");
 
         estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estructuraParametro");
-        estructuraParametro.setStyle("position: absolute; top: 10px; left: 480px;font-size: 11px;height: 10px;width: 180px;");
+        estructuraParametro.setStyle("position: absolute; top: 10px; left: 560px;font-size: 11px;height: 10px;width: 180px;");
         RequestContext.getCurrentInstance().update("form:estructuraParametro");
 
         tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tipoTrabajadorParametro");
-        tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 480px;font-size: 11px;height: 10px;width: 180px;");
+        tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 560px;font-size: 11px;height: 10px;width: 180px;");
         RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
 
         terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:terceroParametro");
-        terceroParametro.setStyle("position: absolute; top: 58px; left: 480px;font-size: 11px;height: 10px;width: 180px;");
-        RequestContext.getCurrentInstance().update("form:terceroParametro");
-
-        terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:terceroParametro");
-        terceroParametro.setStyle("position: absolute; top: 58px; left: 480px;font-size: 11px;height: 10px;width: 180px;");
+        terceroParametro.setStyle("position: absolute; top: 58px; left: 560px;font-size: 11px;height: 10px;width: 180px;");
         RequestContext.getCurrentInstance().update("form:terceroParametro");
 
         estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estadoParametro");
@@ -956,37 +952,37 @@ public class ControlNReporteNomina implements Serializable {
         if (reporteS.getEmdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Desde -";
             empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametro");
-            empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 90px;font-size: 11px;height: 10px;width: 90px;text-decoration: underline; color: red;");
+            empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 130px;font-size: 11px;height: 10px;width: 90px;text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:empleadoDesdeParametro");
         }
         if (reporteS.getEmhasta().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Hasta -";
             empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametro");
-            empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 270px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
+            empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 350px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:empleadoHastaParametro");
         }
         if (reporteS.getGrupo().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Grupo -";
             grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:grupoParametro");
-            grupoParametro.setStyle("position: absolute; top: 85px; left: 90px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
+            grupoParametro.setStyle("position: absolute; top: 85px; left: 130px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:grupoParametro");
         }
         if (reporteS.getLocalizacion().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Estructura -";
             estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estructuraParametro");
-            estructuraParametro.setStyle("position: absolute; top: 10px; left: 480px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
+            estructuraParametro.setStyle("position: absolute; top: 10px; left: 560px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:estructuraParametro");
         }
         if (reporteS.getTipotrabajador().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Tipo Trabajador -";
             tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tipoTrabajadorParametro");
-            tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 480px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
+            tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 560px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
         }
         if (reporteS.getTercero().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Tercero -";
             terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:terceroParametro");
-            terceroParametro.setStyle("position: absolute; top: 58px; left: 480px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
+            terceroParametro.setStyle("position: absolute; top: 58px; left: 560px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:terceroParametro");
         }
         if (reporteS.getEstado().equals("SI")) {

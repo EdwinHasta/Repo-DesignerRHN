@@ -137,14 +137,14 @@
                             <h:outputText value="Empleado Desde" style="position: absolute; top: 20px; left: 260px;font-size: 11px;"/>
                             <p:inputText value="#{controlNReporteBienestar.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 40px; left: 260px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteBienestar.posicionCelda(2)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoDesdeParametroL"  process="@this"/>
+                                <p:ajax event="change" listener="#{controlNReporteBienestar.modificarParametroInforme()}" update="empleadoDesdeParametroL"  process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteBienestar.mostrarDialogosListas()}"/>
                             </p:inputText>
 
                             <h:outputText value="Empleado Hasta" style="position: absolute; top: 20px; left: 400px;font-size: 11px"/>
                             <p:inputText value="#{controlNReporteBienestar.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 40px; left: 400px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteBienestar.posicionCelda(4)}" process="@this"/> 
-                                <p:ajax event="change" update="empleadoHastaParametroL" process="@this"/>
+                                <p:ajax event="change" listener="#{controlNReporteBienestar.modificarParametroInforme()}" update="empleadoHastaParametroL" process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteBienestar.mostrarDialogosListas()}"/>
                             </p:inputText>
 

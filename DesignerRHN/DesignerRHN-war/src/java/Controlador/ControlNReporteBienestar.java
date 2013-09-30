@@ -91,7 +91,7 @@ public class ControlNReporteBienestar implements Serializable{
 
     public void guardarCambios() {
         try {
-            if (parametroModificacion.getActividadbienestar() == null) {
+            if (parametroModificacion.getActividadbienestar().getSecuencia() == null) {
                 parametroModificacion.setActividadbienestar(null);
             }
             administrarNReporteBienestar.modificarParametrosInformes(parametroModificacion);

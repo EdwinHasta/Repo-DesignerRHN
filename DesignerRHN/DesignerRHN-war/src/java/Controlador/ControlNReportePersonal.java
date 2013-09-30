@@ -139,32 +139,35 @@ public class ControlNReportePersonal implements Serializable {
 
     public void guardarCambios() {
         try {
-            if (parametroDeInforme.getEstadocivil().getSecuencia() == null) {
-                parametroDeInforme.setEstadocivil(null);
+            if (parametroModificacion.getEstadocivil().getSecuencia() == null) {
+                parametroModificacion.setEstadocivil(null);
             }
-            if (parametroDeInforme.getTipotelefono().getSecuencia() == null) {
-                parametroDeInforme.setTipotelefono(null);
+            if (parametroModificacion.getTipotelefono().getSecuencia() == null) {
+                parametroModificacion.setTipotelefono(null);
             }
-            if (parametroDeInforme.getLocalizacion().getSecuencia() == null) {
-                parametroDeInforme.setLocalizacion(null);
+            if (parametroModificacion.getLocalizacion().getSecuencia() == null) {
+                parametroModificacion.setLocalizacion(null);
             }
-            if (parametroDeInforme.getTipotrabajador().getSecuencia() == null) {
-                parametroDeInforme.setTipotrabajador(null);
+            if (parametroModificacion.getTipotrabajador().getSecuencia() == null) {
+                parametroModificacion.setTipotrabajador(null);
             }
-            if (parametroDeInforme.getCiudad().getSecuencia() == null) {
-                parametroDeInforme.setCiudad(null);
+            if (parametroModificacion.getCiudad().getSecuencia() == null) {
+                parametroModificacion.setCiudad(null);
             }
-            if (parametroDeInforme.getDeporte().getSecuencia() == null) {
-                parametroDeInforme.setDeporte(null);
+            if (parametroModificacion.getDeporte().getSecuencia() == null) {
+                parametroModificacion.setDeporte(null);
             }
-            if (parametroDeInforme.getAficion().getSecuencia() == null) {
-                parametroDeInforme.setAficion(null);
+            if (parametroModificacion.getAficion().getSecuencia() == null) {
+                parametroModificacion.setAficion(null);
             }
-            if (parametroDeInforme.getIdioma().getSecuencia() == null) {
-                parametroDeInforme.setIdioma(null);
+            if (parametroModificacion.getIdioma().getSecuencia() == null) {
+                parametroModificacion.setIdioma(null);
             }
-            if (parametroDeInforme.getEmpresa().getSecuencia() == null) {
-                parametroDeInforme.setEmpresa(null);
+            if (parametroModificacion.getEmpresa().getSecuencia() == null) {
+                parametroModificacion.setEmpresa(null);
+            }
+            if (parametroModificacion.getNombregerente().getSecuencia() == null) {
+                parametroModificacion.setNombregerente(null);
             }
             administrarNReportePersonal.modificarParametrosInformes(parametroModificacion);
         } catch (Exception e) {
