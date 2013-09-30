@@ -60,7 +60,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public List<SolucionesNodos> solucionNodoCorteProcesoEmpleado(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         try {
-            Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN ('PAGO','DESCUENTO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado");
+            Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN ('PAGO','DESCUENTO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             List<SolucionesNodos> listSolucionesNodos = query.getResultList();
@@ -74,7 +74,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public List<SolucionesNodos> solucionNodoCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         try {
-            Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN  ('PASIVO','GASTO','NETO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado");
+            Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN  ('PASIVO','GASTO','NETO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             List<SolucionesNodos> listSolucionesNodos = query.getResultList();

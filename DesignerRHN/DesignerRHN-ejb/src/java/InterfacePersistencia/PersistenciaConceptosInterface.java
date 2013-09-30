@@ -24,4 +24,5 @@ public interface PersistenciaConceptosInterface {
     public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa);
     public List<Conceptos> conceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado);
     public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa);
+    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo);
 }

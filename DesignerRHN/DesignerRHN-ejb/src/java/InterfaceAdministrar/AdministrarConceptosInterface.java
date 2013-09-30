@@ -26,4 +26,5 @@ public interface AdministrarConceptosInterface {
     public void borrar(Conceptos concepto);
     public void crear(Conceptos conceptos);
     public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa);
+    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo);
 }

@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -1052,6 +1053,9 @@ public class ControlConcepto implements Serializable {
             permitirIndex = true;
             RequestContext.getCurrentInstance().update("form:aceptar");
             k = 0;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         secRegistro = null;
@@ -1429,6 +1433,8 @@ public class ControlConcepto implements Serializable {
         guardado = true;
         permitirIndex = true;
         mostrarTodos = true;
+        conceptoClon = new Conceptos();
+        conceptoOriginal = null;
         if (verCambioEmpresa == true) {
             cambiarEmpresa();
         }
@@ -1445,6 +1451,9 @@ public class ControlConcepto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:mostrarTodos");
         context.update("form:datosConceptos");
+        context.update("form:codigoConceptoClon");
+        context.update("form:descripcioConceptoClon");
+        context.update("form:descripcionClon");
     }
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
@@ -1507,6 +1516,25 @@ public class ControlConcepto implements Serializable {
 
     public void activarAceptar() {
         aceptar = false;
+    }
+
+    //CLONAR
+    public void clonarConcepto() {
+        if (conceptoClon.getCodigo() != null && conceptoClon.getDescripcion() != null && conceptoOriginal != null) {
+            administrarConceptos.clonarConcepto(conceptoOriginal.getSecuencia(), conceptoClon.getCodigo(), conceptoClon.getDescripcion());
+            conceptoClon = new Conceptos();
+            conceptoOriginal = null;
+            listaConceptosEmpresa = null;
+            getListaConceptosEmpresa();
+            RequestContext context = RequestContext.getCurrentInstance();
+            FacesMessage msg = new FacesMessage("Información", "Concepto clonado con exito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            context.update("form:datosConceptos");
+            context.update("form:codigoConceptoClon");
+            context.update("form:descripcioConceptoClon");
+            context.update("form:descripcionClon");
+        }
     }
     //GETTER AND SETTER
 

@@ -371,6 +371,7 @@ public class ControlComprobantes implements Serializable {
             cualCelda = celda;
             tipoTabla = 2;
             nombreTabla = "SolucionesNodos";
+            tablaExportar = ":formExportar:solucionesNodoEmpleadoExportar";
             if (tipoListaSNEmpleado == 0) {
                 secRegistro = listaSolucionesNodosEmpleado.get(indexSolucionesEmpleado).getSecuencia();
                 if (cualCelda == 7) {
@@ -406,6 +407,7 @@ public class ControlComprobantes implements Serializable {
             cualCelda = celda;
             tipoTabla = 3;
             nombreTabla = "SolucionesNodos";
+            tablaExportar = ":formExportar:solucionesNodoEmpleadorExportar";
             if (tipoListaSNEmpleador == 0) {
                 secRegistro = listaSolucionesNodosEmpleador.get(indexSolucionesEmpleador).getSecuencia();
                 if (cualCelda == 7) {
@@ -1357,6 +1359,18 @@ public class ControlComprobantes implements Serializable {
             exporter.export(context, tabla, "CortesProcesosPDF", false, false, "UTF-8", null, null);
             context.responseComplete();
             indexCortesProcesos = -1;
+        } else if (tipoTabla == 2) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:solucionesNodoEmpleadoExportar");
+            exporter.export(context, tabla, "SolucionesNodosEmpleadoPDF", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexSolucionesEmpleado = -1;
+        } else if (tipoTabla == 3) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:solucionesNodoEmpleadorExportar");
+            exporter.export(context, tabla, "SolucionesNodosEmpleadorPDF", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexSolucionesEmpleador = -1;
         }
         secRegistro = null;
     }
@@ -1376,6 +1390,18 @@ public class ControlComprobantes implements Serializable {
             exporter.export(context, tabla, "CortesProcesosXLS", false, false, "UTF-8", null, null);
             context.responseComplete();
             indexComprobante = -1;
+        } else if (tipoTabla == 2) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:solucionesNodoEmpleadoExportar");
+            exporter.export(context, tabla, "SolucionesNodosEmpleadoXLS", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexSolucionesEmpleado = -1;
+        } else if (tipoTabla == 3) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:solucionesNodoEmpleadorExportar");
+            exporter.export(context, tabla, "SolucionesNodosEmpleadorXLS", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexSolucionesEmpleador = -1;
         }
         secRegistro = null;
     }

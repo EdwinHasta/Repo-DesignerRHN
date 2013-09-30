@@ -791,6 +791,165 @@
                             <h:outputText value="#{corteProcesoE.proceso.descripcion}" />
                         </p:column>
                     </p:dataTable>
+
+                    <p:dataTable id="solucionesNodoEmpleadoExportar" var="solucionNodoEmpleadoE" style="visibility: hidden; display: none;"  value="#{controlComprobantes.listaSolucionesNodosEmpleado}">
+
+                        <p:column headerText="Codigo">
+                            <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.concepto.codigo}" />  
+                        </p:column>  
+
+                        <p:column headerText="Descripcion">
+                            <f:facet name="header"><h:outputText value="Descripcion"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.concepto.descripcion}" />  
+                        </p:column>  
+
+                        <p:column headerText="Desde">
+                            <f:facet name="header"><h:outputText value="Desde"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.fechadesde}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText> 
+                        </p:column>  
+
+                        <p:column headerText="Hasta"> 
+                            <f:facet name="header"><h:outputText value="Hasta"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.fechahasta}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>  
+                        </p:column>
+
+                        <p:column headerText="Unidad"> 
+                            <f:facet name="header"><h:outputText value="Unidad"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.unidades}" />
+                        </p:column>
+
+                        <p:column headerText="Pago">
+                            <f:facet name="header"><h:outputText value="Pago"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.pago}"/>
+                        </p:column>
+
+                        <p:column headerText="Descuento">
+                            <f:facet name="header"><h:outputText value="Descuento"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.descuento}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre_del_Tercero"> 
+                            <f:facet name="header"><h:outputText value="Nombre del Tercero"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.nit.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Debito">
+                            <f:facet name="header"><h:outputText value="Debito"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.cuentad.codigo}"/>
+                        </p:column>
+
+                        <p:column headerText="CC-D">
+                            <f:facet name="header"><h:outputText value="CC-D"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.centrocostod.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Credito">
+                            <f:facet name="header"><h:outputText value="Credito"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.cuentac.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="CC-C">
+                            <f:facet name="header"><h:outputText value="CC-C"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.centrocostoc.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Saldo"> 
+                            <f:facet name="header"><h:outputText value="Saldo"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.saldo}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha_Pago"> 
+                            <f:facet name="header"><h:outputText value="Fecha Pago"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadoE.fechapago}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText> 
+                        </p:column>
+                    </p:dataTable>
+
+
+                    <p:dataTable id="solucionesNodoEmpleadorExportar" var="solucionNodoEmpleadorE" style="visibility: hidden; display: none;"  value="#{controlComprobantes.listaSolucionesNodosEmpleador}">
+
+                        <p:column headerText="Codigo">
+                            <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.concepto.codigo}" />  
+                        </p:column>  
+
+                        <p:column headerText="Descripcion">
+                            <f:facet name="header"><h:outputText value="Descripcion"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.concepto.descripcion}" />  
+                        </p:column>  
+
+                        <p:column headerText="Desde">
+                            <f:facet name="header"><h:outputText value="Desde"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.fechadesde}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Hasta"> 
+                            <f:facet name="header"><h:outputText value="Hasta"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.fechahasta}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Unidad"> 
+                            <f:facet name="header"><h:outputText value="Unidad"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.unidades}" />
+                        </p:column>
+
+                        <p:column headerText="Pasivo">
+                            <f:facet name="header"><h:outputText value="Pasivo"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.pasivo}"/>
+                        </p:column>
+
+                        <p:column headerText="Gasto"> 
+                            <f:facet name="header"><h:outputText value="Gasto"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.gasto}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre_del_Tercero">
+                            <f:facet name="header"><h:outputText value="Nombre del Tercero"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.nit.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Debito">
+                            <f:facet name="header"><h:outputText value="Debito"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.cuentad.codigo}"/>
+                        </p:column>
+
+                        <p:column headerText="CC-D"> 
+                            <f:facet name="header"><h:outputText value="CC-D"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.centrocostod.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Credito">
+                            <f:facet name="header"><h:outputText value="Credito"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.cuentac.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="CC-C">
+                            <f:facet name="header"><h:outputText value="CC-C"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.centrocostoc.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Saldo"> 
+                            <f:facet name="header"><h:outputText value="Saldo"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.saldo}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha_Pago">
+                            <f:facet name="header"><h:outputText value="Fecha Pago"/> </f:facet> 
+                            <h:outputText value="#{solucionNodoEmpleadorE.fechapago}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText> 
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
             </ui:define>
         </ui:composition>

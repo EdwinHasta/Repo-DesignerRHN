@@ -149,4 +149,19 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             return null;
         }
     }
+
+    @Override
+    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
+        int i = 0;
+        try {
+            String sqlQuery = "call CONCEPTOS_PKG.CLONARCONCEPTO(?, ?, ?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secConceptoOrigen);
+            query.setParameter(2, codigoConceptoNuevo);
+            query.setParameter(3, descripcionConceptoNuevo);
+            i = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error en clonarConcepto: " + e);
+        }
+    }
 }

@@ -85,4 +85,9 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     public void crear(Conceptos conceptos) {
         persistenciaConceptos.crear(conceptos);
     }
+    
+    @Override
+    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
+        persistenciaConceptos.clonarConcepto(secConceptoOrigen, codigoConceptoNuevo, descripcionConceptoNuevo);
+    }
 }
