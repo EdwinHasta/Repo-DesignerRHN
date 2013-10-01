@@ -312,7 +312,7 @@
                             </p:inputText>
                             <h:outputText value="Código y Nombre del concepto a clonar (Utilize lista de valores):"  style="color: #14388B; font-weight: bold; position: absolute; left: 380px"/>
                             <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlConcepto.lovConcepto(1)}"  style="position: absolute; top: 32px; left: 380px" process="@this"/>
-                            <p:inputText id="descripcionClon" value="#{controlConcepto.conceptoOriginal.codigo} - #{controlConcepto.conceptoOriginal.descripcion}" style="position: absolute; top: 35px; left: 408px; width: 350px;"/>
+                            <p:inputText id="descripcionClon" value="#{controlConcepto.conceptoOriginal.informacionConcepto}" style="position: absolute; top: 35px; left: 408px; width: 350px;"/>
                             <p:commandButton value="[Clonar]" actionListener="#{controlConcepto.clonarConcepto()}" style="position: absolute; top: 13.5px; left: 776px; width: 70px; height: 60px" process="@this"/>
                         </fieldset>
 

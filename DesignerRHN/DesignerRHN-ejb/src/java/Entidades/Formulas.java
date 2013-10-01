@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Formulas.findAll", query = "SELECT f FROM Formulas f")})
 public class Formulas implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
     private Collection<FormulasDependientes> formulasDependientesCollection;
     @OneToMany(mappedBy = "dependiente")
@@ -50,13 +52,9 @@ public class Formulas implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
     @Column(name = "NOMBRECORTO")
     private String nombrecorto;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRELARGO")
     private String nombrelargo;
     @Basic(optional = false)
@@ -84,6 +82,10 @@ public class Formulas implements Serializable {
     private Collection<Novedades> novedadesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
     private Collection<Historiasformulas> historiasformulasCollection;
+    @Transient
+    private boolean periodicidadFormula;
+    @Transient
+    private String nombresFormula;
 
     public Formulas() {
     }
@@ -113,7 +115,11 @@ public class Formulas implements Serializable {
     }
 
     public void setNombrecorto(String nombrecorto) {
-        this.nombrecorto = nombrecorto;
+        if (nombrecorto != null) {
+            this.nombrecorto = nombrecorto.toUpperCase();
+        } else {
+            this.nombrecorto = nombrecorto;
+        }
     }
 
     public String getNombrelargo() {
@@ -121,10 +127,17 @@ public class Formulas implements Serializable {
     }
 
     public void setNombrelargo(String nombrelargo) {
-        this.nombrelargo = nombrelargo;
+        if (nombrelargo != null) {
+            this.nombrelargo = nombrelargo.toUpperCase();
+        } else {
+            this.nombrelargo = nombrelargo;
+        }
     }
 
     public String getTipo() {
+        if (tipo == null) {
+            tipo = "FINAL";
+        }
         return tipo;
     }
 
@@ -133,6 +146,9 @@ public class Formulas implements Serializable {
     }
 
     public String getEstado() {
+        if (estado == null) {
+            estado = "ACTIVO";
+        }
         return estado;
     }
 
@@ -145,7 +161,11 @@ public class Formulas implements Serializable {
     }
 
     public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
+        if (observaciones != null) {
+            this.observaciones = observaciones.toUpperCase();
+        } else {
+            this.observaciones = observaciones;
+        }
     }
 
     public String getFundamental() {
@@ -258,5 +278,36 @@ public class Formulas implements Serializable {
     public void setProcesosDependientesCollection(Collection<ProcesosDependientes> procesosDependientesCollection) {
         this.procesosDependientesCollection = procesosDependientesCollection;
     }
-    
+
+    public boolean isPeriodicidadFormula() {
+        if (periodicidadFormula == false) {
+            if (periodicidadindependiente == null) {
+                periodicidadFormula = false;
+            } else {
+                if (periodicidadindependiente.equalsIgnoreCase("S")) {
+                    periodicidadFormula = true;
+                } else if (periodicidadindependiente.equalsIgnoreCase("N")) {
+                    periodicidadFormula = false;
+                }
+            }
+        }
+        return periodicidadFormula;
+    }
+
+    public void setPeriodicidadFormula(boolean periodicidadFormula) {
+        this.periodicidadFormula = periodicidadFormula;
+    }
+
+    public String getNombresFormula() {
+        if (nombresFormula == null) {
+            if (nombrecorto != null && nombrelargo != null) {
+                nombresFormula = nombrecorto + " - " +  nombrelargo;
+            }
+        }
+        return nombresFormula;
+    }
+
+    public void setNombresFormula(String nombresFormula) {
+        this.nombresFormula = nombresFormula;
+    }
 }

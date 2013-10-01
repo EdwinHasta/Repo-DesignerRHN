@@ -1434,7 +1434,7 @@ public class ControlConcepto implements Serializable {
         permitirIndex = true;
         mostrarTodos = true;
         conceptoClon = new Conceptos();
-        conceptoOriginal = null;
+        conceptoOriginal = new Conceptos();
         if (verCambioEmpresa == true) {
             cambiarEmpresa();
         }
@@ -1520,10 +1520,10 @@ public class ControlConcepto implements Serializable {
 
     //CLONAR
     public void clonarConcepto() {
-        if (conceptoClon.getCodigo() != null && conceptoClon.getDescripcion() != null && conceptoOriginal != null) {
+        if (conceptoClon.getCodigo() != null && conceptoClon.getDescripcion() != null && conceptoOriginal.getSecuencia() != null) {
             administrarConceptos.clonarConcepto(conceptoOriginal.getSecuencia(), conceptoClon.getCodigo(), conceptoClon.getDescripcion());
             conceptoClon = new Conceptos();
-            conceptoOriginal = null;
+            conceptoOriginal = new Conceptos();
             listaConceptosEmpresa = null;
             getListaConceptosEmpresa();
             RequestContext context = RequestContext.getCurrentInstance();

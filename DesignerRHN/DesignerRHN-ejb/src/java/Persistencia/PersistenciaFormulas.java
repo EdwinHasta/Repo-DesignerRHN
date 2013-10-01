@@ -2,6 +2,7 @@ package Persistencia;
 
 import Entidades.Formulas;
 import InterfacePersistencia.PersistenciaFormulasInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -79,6 +80,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
         }
     }
 
+    @Override
     public Formulas buscarFormulaCargeInicial() {
         try {
             Query query = em.createQuery("SELECT f FROM Formulas f WHERE f.secuencia IN (SELECT fn.formula.secuencia FROM FormulasNovedades fn WHERE fn.cargue = 'S' AND fn.formula.nombrecorto = 'LIQNOV')");
@@ -86,6 +88,47 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
             return formulaInicial;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    @Override
+    public List<Formulas> lovFormulas() {
+        try {
+            Query query = em.createQuery("SELECT f FROM Formulas f ORDER BY f.nombrelargo ASC");
+            List<Formulas> listaFormulas = query.getResultList();
+            return listaFormulas;
+        } catch (Exception e) {
+            System.out.println("Error lovFormulas: " + e);
+            return null;
+        }
+    }
+
+    @Override
+    public void clonarFormulas(String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon) {
+        int i = 0;
+        try {
+            String sqlQuery = "call FORMULAS_PKG.CLONARFORMULA(?, ?, ?, ?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, nombreCortoOrigen);
+            query.setParameter(2, nombreCortoClon);
+            query.setParameter(3, nombreLargoClon);
+            query.setParameter(4, observacionClon);
+            i = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error en clonarFormulas: " + e);
+        }
+    }
+
+    @Override
+    public void oprandoFormulas(BigInteger secFormula) {
+        int i = 0;
+        try {
+            String sqlQuery = "call UTL_FORMS.INSERTAROPERANDOFORMULA(?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secFormula);
+            i = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error en oprandoFormulas: " + e);
         }
     }
 }

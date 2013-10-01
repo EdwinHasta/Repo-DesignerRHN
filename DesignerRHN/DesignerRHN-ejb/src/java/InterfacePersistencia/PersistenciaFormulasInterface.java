@@ -5,6 +5,7 @@
 package InterfacePersistencia;
 
 import Entidades.Formulas;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -19,4 +20,7 @@ public interface PersistenciaFormulasInterface {
     public List<Formulas> buscarFormulas();
     public List<Formulas> buscarFormulasCarge();
     public Formulas buscarFormulaCargeInicial();
+    public List<Formulas> lovFormulas();
+    public void clonarFormulas(String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon);
+    public void oprandoFormulas(BigInteger secFormula);
 }

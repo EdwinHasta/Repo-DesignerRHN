@@ -38,11 +38,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
+
     @OneToMany(mappedBy = "concepto")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
     @OneToOne(mappedBy = "concepto")
     private GruposProvisiones gruposProvisiones;
-
     @OneToMany(mappedBy = "conceptoabono")
     private Collection<Tiposprestamos> tiposprestamosCollection;
     @OneToMany(mappedBy = "conceptotercero")
@@ -57,12 +57,9 @@ public class Conceptos implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
@@ -168,6 +165,8 @@ public class Conceptos implements Serializable {
     private String enviarConcepto;
     @Transient
     private boolean independienteConcepto;
+    @Transient
+    private String informacionConcepto;
 
     public Conceptos() {
     }
@@ -621,7 +620,7 @@ public class Conceptos implements Serializable {
             } else {
                 if (independiente.equalsIgnoreCase("S")) {
                     independienteConcepto = true;
-                } else if (enviotesoreria.equalsIgnoreCase("N")) {
+                } else if (independiente.equalsIgnoreCase("N")) {
                     independienteConcepto = false;
                 }
             }
@@ -631,5 +630,18 @@ public class Conceptos implements Serializable {
 
     public void setIndependienteConcepto(boolean independienteConcepto) {
         this.independienteConcepto = independienteConcepto;
+    }
+
+    public String getInformacionConcepto() {
+        if (informacionConcepto == null) {
+            if (codigo != null && descripcion != null) {
+                informacionConcepto = codigo + " - " + descripcion;
+            }
+        }
+        return informacionConcepto;
+    }
+
+    public void setInformacionConcepto(String informacionConcepto) {
+        this.informacionConcepto = informacionConcepto;
     }
 }
