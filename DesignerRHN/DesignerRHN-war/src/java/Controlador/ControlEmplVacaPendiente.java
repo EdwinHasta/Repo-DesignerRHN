@@ -147,8 +147,8 @@ public class ControlEmplVacaPendiente implements Serializable {
         h = h + 1;
         BigInteger k;
         k = BigInteger.valueOf(h);
-        nuevaVacacion.setSecuencia(k);
-        nuevaVacacion.setEmpleado(empleado);
+        nuevaVacacion.setRfvacacion(k);
+        nuevaVacacion.setEmpleado(empleado.getSecuencia());
         listVacaPendientes.add(nuevaVacacion);
         listCrearTablaPendientes.add(nuevaVacacion);
         nuevaVacacion = new VWVacaPendientesEmpleados();
@@ -162,17 +162,17 @@ public class ControlEmplVacaPendiente implements Serializable {
             duplicarVacacion = new VWVacaPendientesEmpleados();
             if (filtrarListaPendientes == 1) {
                 int pos = listVacaPendientes.indexOf(filtrarListVacaPendientes.get(indexVPendientes));
-                duplicarVacacion.setEmpleado(empleado);
+                duplicarVacacion.setEmpleado(empleado.getSecuencia());
                 duplicarVacacion.setEstado(listVacaPendientes.get(pos).getEstado());
                 duplicarVacacion.setDiaspendientes(listVacaPendientes.get(pos).getDiaspendientes());
-                duplicarVacacion.setInicialCausacion(listVacaPendientes.get(pos).getInicialCausacion());
-                duplicarVacacion.setFinalCausacion(listVacaPendientes.get(pos).getFinalCausacion());
+                duplicarVacacion.setInicialcausacion(listVacaPendientes.get(pos).getInicialcausacion());
+                duplicarVacacion.setFinalcausacion(listVacaPendientes.get(pos).getFinalcausacion());
             } else {
-                duplicarVacacion.setEmpleado(empleado);
+                duplicarVacacion.setEmpleado(empleado.getSecuencia());
                 duplicarVacacion.setEstado(listVacaPendientes.get(indexVPendientes).getEstado());
                 duplicarVacacion.setDiaspendientes(listVacaPendientes.get(indexVPendientes).getDiaspendientes());
-                duplicarVacacion.setInicialCausacion(listVacaPendientes.get(indexVPendientes).getInicialCausacion());
-                duplicarVacacion.setFinalCausacion(listVacaPendientes.get(indexVPendientes).getFinalCausacion());
+                duplicarVacacion.setInicialcausacion(listVacaPendientes.get(indexVPendientes).getInicialcausacion());
+                duplicarVacacion.setFinalcausacion(listVacaPendientes.get(indexVPendientes).getFinalcausacion());
             }
             //Dialogo Duplicar VacaPendiente
             RequestContext context = RequestContext.getCurrentInstance();
@@ -203,21 +203,7 @@ public class ControlEmplVacaPendiente implements Serializable {
         context.update("form:datosVacacionesPEmpleado");
     }
 
-    public void validarDuplicadoVacaDisfrutadas() {
-        if (filtrarListaDisfrutadas == 1) {
-            vacacionesDPD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
-            vacacionesDPD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaInicialD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
-            vacacionesFechaInicialD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaFinalD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
-            vacacionesFechaFinalD.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
-            banderaDisfrutadas = 0;
-            filtrarListVacaDisfrutadas = null;
-            filtrarListaDisfrutadas = 0;
-        }
-        listCrearTablaDisfrutadas.add(duplicarVacacion);
-        listVacaDisfrutadas.add(duplicarVacacion);
+    public void limpiarDuplicadoVacaPendiente(){
         duplicarVacacion = new VWVacaPendientesEmpleados();
     }
 
@@ -772,7 +758,7 @@ public class ControlEmplVacaPendiente implements Serializable {
             diasProvisionados = administrarVWVacaPendientesEmpleados.diasProvisionadosEmpleado(empleado);
             return diasProvisionados;
         } catch (Exception e) {
-            System.out.println("Error getDiasProvisionados : "+e.toString());
+            System.out.println("Error getDiasProvisionados : " + e.toString());
             return null;
         }
     }

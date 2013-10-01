@@ -50,27 +50,44 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
 
     @Override
     public List<VWVacaPendientesEmpleados> vacaEmpleadoPendientes(BigInteger sec) {
+        List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
         try {
-            Query query = em.createQuery("SELECT v FROM VWVacaPendientesEmpleados v WHERE v.empleado.secuencia =:secuencia AND v.diaspendientes>=1 ORDER BY v.inicialCausacion DESC");
-            query.setParameter("secuencia", sec);
-            List<VWVacaPendientesEmpleados> vacapendientes = query.getResultList();
-            return vacapendientes;
+            String script ="SELECT vwv FROM VWVacaPendientesEmpleados vwv WHERE vwv.empleado = :empleado AND vwv.diaspendientes > 0";
+            Query query = em.createQuery(script).setParameter("empleado", sec);
+            listaVacaPendientesEmpleados = query.getResultList();
         } catch (Exception e) {
-            System.out.println("Error en vacaEmpleadoMayorCero : " + e.toString());
-            return null;
+            System.err.println("PersistenciaVWVacaPendientesEmpleados.buscarVacaPendientesEmpleados.");
+            System.out.println(e);
+        } finally {
+            return listaVacaPendientesEmpleados;
         }
     }
 
     @Override
     public List<VWVacaPendientesEmpleados> vacaEmpleadoDisfrutadas(BigInteger sec) {
+        List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
         try {
-            Query query = em.createQuery("SELECT v FROM VWVacaPendientesEmpleados v WHERE v.empleado.secuencia =:secuencia AND v.diaspendientes<=0 ORDER BY v.inicialCausacion DESC");
-            query.setParameter("secuencia", sec);
-            List<VWVacaPendientesEmpleados> vacapendientes = query.getResultList();
-            return vacapendientes;
+            String script ="SELECT vwv FROM VWVacaPendientesEmpleados vwv WHERE vwv.empleado = :empleado AND vwv.diaspendientes <= 0";
+            Query query = em.createQuery(script).setParameter("empleado", sec);
+            listaVacaPendientesEmpleados = query.getResultList();
         } catch (Exception e) {
-            System.out.println("Error en vacaEmpleadoIgualCero : " + e.toString());
-            return null;
+            System.err.println("PersistenciaVWVacaPendientesEmpleados.buscarVacaPendientesEmpleadosDisfrutadas");
+            System.out.println(e);
+        } finally {
+            return listaVacaPendientesEmpleados;
+        }
+    }
+
+    @Override
+    public List<VWVacaPendientesEmpleados> buscarVacaPendientesEmpleados(BigInteger secuenciaEmpleado) {
+        List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
+        try {
+            listaVacaPendientesEmpleados = em.createNamedQuery("VWVacaPendientesEmpleados.findByEmpleado").setParameter("empleado", secuenciaEmpleado).getResultList();
+        } catch (Exception e) {
+            System.err.println("PersistenciaVWVacaPendientesEmpleados.buscarVacaPendientesEmpleados.");
+            System.out.println(e);
+        } finally {
+            return listaVacaPendientesEmpleados;
         }
     }
 }

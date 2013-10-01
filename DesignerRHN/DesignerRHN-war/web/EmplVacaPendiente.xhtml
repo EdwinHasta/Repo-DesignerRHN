@@ -38,9 +38,9 @@
                                 </p:column>
                                 <p:column headerText="Estado" style="padding: 0"  filterMatchMode="contains" id="vacacionesEstado" width="70" filterStyle="display: none; visibility: hidden;" >                                  
 
-                                    <p:selectOneMenu id="editarEstado" value="#{info.estado}" style="width: 99%; font-weight: bold;">  
-                                        <f:selectItem itemLabel="Cerrado" itemValue="Cerrado" />  
-                                        <f:selectItem itemLabel="Abierto" itemValue="Abierto" /> 
+                                    <p:selectOneMenu id="editarEstado" value="#{info.estado}" style="width: 99%; font-weight: bold;text-transform: uppercase">  
+                                        <f:selectItem itemLabel="CERRADO" itemValue="CERRADO" />  
+                                        <f:selectItem itemLabel="ABIERTO" itemValue="ABIERTO" /> 
                                         <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificacionesTablas()}" update="editarEstado"/>
                                     </p:selectOneMenu>
 
@@ -65,15 +65,15 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{info.inicialCausacion}" filterBy="#{info.inicialCausacion}" filterMatchMode="contains"  width="112" id="vacacionesFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Fecha Inicial" sortBy="#{info.inicialcausacion}" filterBy="#{info.inicialcausacion}" filterMatchMode="contains"  width="112" id="vacacionesFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.inicialCausacion}">
+                                            <h:outputText value="#{info.inicialcausacion}">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.inicialCausacion}" style="font-size: 10px;"  id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
+                                            <p:calendar value="#{info.inicialcausacion}" style="font-size: 10px;"  id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                                 <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(1, indice, 2)}"/>
@@ -87,15 +87,15 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Final" sortBy="#{info.finalCausacion}" filterBy="#{info.finalCausacion}"  filterMatchMode="contains"  width="113" id="vacacionesFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Fecha Final" sortBy="#{info.finalcausacion}" filterBy="#{info.finalcausacion}"  filterMatchMode="contains"  width="113" id="vacacionesFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.finalCausacion}" >
+                                            <h:outputText value="#{info.finalcausacion}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.finalCausacion}" style="font-size: 10px;" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
+                                            <p:calendar value="#{info.finalcausacion}" style="font-size: 10px;" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                                 <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(1, indice, 3)}"/>
@@ -134,9 +134,9 @@
                                     </p:commandButton>
                                 </p:column>
                                 <p:column headerText="Estado" style="padding: 0" filterMatchMode="contains" id="vacacionesEstadoD" width="70" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:selectOneMenu value="#{info2.estado}" id="editarEstadoD"  style="width: 99%; font-weight: bold; "  panelStyle="width: 115px">  
-                                        <f:selectItem itemLabel="Cerrado" itemValue="Cerrado" />  
-                                        <f:selectItem itemLabel="Abierto" itemValue="Abierto" />  
+                                    <p:selectOneMenu value="#{info2.estado}" id="editarEstadoD"  style="width: 99%; font-weight: bold;text-transform: uppercase "  panelStyle="width: 115px">  
+                                        <f:selectItem itemLabel="CERRADO" itemValue="CERRADO" />  
+                                        <f:selectItem itemLabel="CERRADO" itemValue="CERRADO" />  
                                         <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificacionesTablas()}" update="editarEstadoD"/>
                                     </p:selectOneMenu>
 
@@ -161,15 +161,15 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{info2.inicialCausacion}" filterBy="#{info2.inicialCausacion}"  filterMatchMode="contains"  width="112" id="vacacionesFechaInicialD" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Fecha Inicial" sortBy="#{info2.inicialcausacion}" filterBy="#{info2.inicialcausacion}"  filterMatchMode="contains"  width="112" id="vacacionesFechaInicialD" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info2.inicialCausacion}" >
+                                            <h:outputText value="#{info2.inicialcausacion}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info2.inicialCausacion}" style="font-size: 10px;"  id="editFechaInicialD"   styleClass="ui-datepicker, myClass"  
+                                            <p:calendar value="#{info2.inicialcausacion}" style="font-size: 10px;"  id="editFechaInicialD"   styleClass="ui-datepicker, myClass"  
                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                                 <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2, indice, 2)}"/>
@@ -183,15 +183,15 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Final" sortBy="#{info2.finalCausacion}" filterBy="#{info2.finalCausacion}"  filterMatchMode="contains"  width="113" id="vacacionesFechaFinalD" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Fecha Final" sortBy="#{info2.finalcausacion}" filterBy="#{info2.finalcausacion}"  filterMatchMode="contains"  width="113" id="vacacionesFechaFinalD" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info2.finalCausacion}" >
+                                            <h:outputText value="#{info2.finalcausacion}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info2.finalCausacion}" style="font-size: 10px;" id="editFechaFinalD"   styleClass="ui-datepicker, myClass"  
+                                            <p:calendar value="#{info2.finalcausacion}" style="font-size: 10px;" id="editFechaFinalD"   styleClass="ui-datepicker, myClass"  
                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                                 <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2, indice, 3)}"/>
@@ -207,7 +207,7 @@
                             </p:dataTable>  
                         </fieldset> 
 
-                        <p:commandButton style="position: absolute; left: 700px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" oncomplete="confirmarGuardar.show()" action="nomina"  icon="ui-icon-check" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" oncomplete="confirmarGuardar.show()" icon="ui-icon-check" process="@this" />
                         <p:commandButton style="position: absolute; left: 40px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplVacaPendiente.cancelarModificaciones()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 790px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplVacaPendiente.salir()}" action="nomina" process="@this" />
 
@@ -284,13 +284,13 @@
                         </p:column>  
                         <p:column headerText="Fecha Inicial">      
                             <f:facet name="header"><h:outputText value="Fecha Inicial"/></f:facet>
-                            <h:outputText value="#{info.inicialCausacion}">
+                            <h:outputText value="#{info.inicialcausacion}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Fecha Final">      
                             <f:facet name="header"><h:outputText value="Fecha Final"/></f:facet>
-                            <h:outputText value="#{info.finalCausacion}" >
+                            <h:outputText value="#{info.finalcausacion}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
@@ -313,13 +313,13 @@
                         </p:column>  
                         <p:column headerText="Fecha Inicial">      
                             <f:facet name="header"><h:outputText value="Fecha Inicial"/></f:facet>
-                            <h:outputText value="#{info4.inicialCausacion}">
+                            <h:outputText value="#{info4.inicialcausacion}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Fecha Final">      
                             <f:facet name="header"><h:outputText value="Fecha Final"/></f:facet>
-                            <h:outputText value="#{info4.finalCausacion}" >
+                            <h:outputText value="#{info4.finalcausacion}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
@@ -329,18 +329,18 @@
 
                 <h:form id="formularioDialogos" >
 
-                    <p:dialog id="editarFechaInicialP" header="Fecha Inicial Vacaciones Pendientes" widgetVar="editarFechaInicialP" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px" id="editFechaCeldaInicialP" value="#{controlEmplVacaPendiente.editarVacacion.inicialCausacion}" styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaInicialP" header="Fecha Inicial Vacaciones Pendientes" widgetVar="editarFechaInicialP" resizable="false" draggable="false" modal="true" height="73" width="280" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px" id="editFechaCeldaInicialP" value="#{controlEmplVacaPendiente.editarVacacion.inicialcausacion}" styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaInicialP" value="Atras" onclick="editarFechaInicialP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaInicialP" value="Atras" onclick="editarFechaInicialP.hide();" style="position: absolute; top: 40px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalP" header="Fecha Final Vacaciones Pendientes" widgetVar="editarFechaFinalP" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px"  id="editFechaCeldaFinalP" value="#{controlEmplVacaPendiente.editarVacacion.finalCausacion}" styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaFinalP" header="Fecha Final Vacaciones Pendientes" widgetVar="editarFechaFinalP" resizable="false" draggable="false" modal="true" height="73" width="280" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px"  id="editFechaCeldaFinalP" value="#{controlEmplVacaPendiente.editarVacacion.finalcausacion}" styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaFinalP" value="Atras" onclick="editarFechaFinalP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaFinalP" value="Atras" onclick="editarFechaFinalP.hide();" style="position: absolute; top: 40px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
 
@@ -349,18 +349,18 @@
                         <p:commandButton id="cancelarDiasPendientesP" value="Atras" onclick="editarDiasPendientesP.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialD" header="Fecha Inicial Vacaciones Disfrutadas" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="93" width="285" style="font-size: 12px; padding: 0px">  
-                        <p:calendar value="#{controlEmplVacaPendiente.editarVacacion.inicialCausacion}" style="font-size: 10px;" id="editFechaCeldaInicialD"  styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaInicialD" header="Fecha Inicial Vacaciones Disfrutadas" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="73" width="285" style="font-size: 12px; padding: 0px">  
+                        <p:calendar value="#{controlEmplVacaPendiente.editarVacacion.inicialcausacion}" style="font-size: 10px;" id="editFechaCeldaInicialD"  styleClass="ui-datepicker, myClass"  
                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaInicialD" value="Atras" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaInicialD" value="Atras" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 40px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalD" header="Fecha Final Vacaciones Disfrutadas" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="93" width="285" style="font-size: 12px; padding: 0px">  
-                        <p:calendar value="#{controlEmplVacaPendiente.editarVacacion.finalCausacion}" style="font-size: 10px"  id="editFechaCeldaFinalD"  styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaFinalD" header="Fecha Final Vacaciones Disfrutadas" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="73" width="285" style="font-size: 12px; padding: 0px">  
+                        <p:calendar value="#{controlEmplVacaPendiente.editarVacacion.finalcausacion}" style="font-size: 10px"  id="editFechaCeldaFinalD"  styleClass="ui-datepicker, myClass"  
                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaFinalD" value="Atras" onclick="editarFechaFinalD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaFinalD" value="Atras" onclick="editarFechaFinalD.hide();" style="position: absolute; top: 40px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
 
@@ -376,24 +376,26 @@
                         <p:panel id="nuevaVP" style="border: none;">
 
                             <strong><h:outputText value="Estado " style="position: absolute; top: 60px;left: 55px;font-weight: bold;"/></strong>
-                            <p:selectOneMenu id="nuevaEstado" value="#{controlEmplVacaPendiente.nuevaVacacion.estado}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 55px" >
+                            <p:selectOneMenu id="nuevaEstado" value="#{controlEmplVacaPendiente.nuevaVacacion.estado}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 55px;text-transform: uppercase" >
                                 <f:selectItem itemLabel=" " itemValue="null" />  
-                                <f:selectItem itemLabel="Cerrado" itemValue="Cerrado" />  
-                                <f:selectItem itemLabel="Abierto" itemValue="Abierto" />  
+                                <f:selectItem itemLabel="CERRADO" itemValue="CERRADO" />  
+                                <f:selectItem itemLabel="ABIERTO" itemValue="ABIERTO" />  
                             </p:selectOneMenu>
 
                             <strong><h:outputText value="Dias Pendientes " style="font-size: 12px; position: absolute; top: 90px;left: 55px" /></strong>
-                            <p:inputText value="#{controlEmplVacaPendiente.nuevaVacacion.diaspendientes}" id="nuevaDiasPendientes" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 85px;"/>
-                            <p:watermark for="nuevaDiasPendientes" value="0" />
+                            <p:inputText value="#{controlEmplVacaPendiente.nuevaVacacion.diaspendientes}" id="nuevaDiasPendientes" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 85px;">
+                                <p:ajax event="change" update="nuevaDiasPendientes"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaDiasPendientes" value="Dias Pendientes" />
 
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 12px; position: absolute; top: 120px;left: 55px" /></strong>
-                            <p:calendar value="#{controlEmplVacaPendiente.nuevaVacacion.inicialCausacion}" id="nuevaFechaInicial" style="font-size: 10px; position: absolute; top: 115px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar value="#{controlEmplVacaPendiente.nuevaVacacion.inicialcausacion}" id="nuevaFechaInicial" style="font-size: 10px; position: absolute; top: 115px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
                                 <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
                             </p:calendar>
                             <strong><h:outputText value="Fecha Final: " style="font-size: 12px; position: absolute; top: 150px;left: 55px" /></strong>
-                            <p:calendar value="#{controlEmplVacaPendiente.nuevaVacacion.finalCausacion}" id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 145px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar value="#{controlEmplVacaPendiente.nuevaVacacion.finalcausacion}" id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 145px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
                                 <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
@@ -405,45 +407,44 @@
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroVP" header="Duplicar Registro Vacaciones Pendientes" widgetVar="DuplicarRegistroVP" closable="false" resizable="false"  draggable="false" modal="true" height="240" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroVP" header="Duplicar Registro Vacaciones Pendientes" widgetVar="DuplicarRegistroVP" closable="false" resizable="false"  draggable="false" modal="true" height="210" width="430" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar información del empleado" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVP" style="border: none;">
 
                             <strong><h:outputText value="Estado " style="position: absolute; top: 60px;left: 55px;font-weight: bold;"/></strong>
-                            <p:selectOneMenu id="duplicarEstado" value="#{controlEmplVacaPendiente.duplicarVacacion.estado}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 55px" >
+                            <p:selectOneMenu id="duplicarEstado" value="#{controlEmplVacaPendiente.duplicarVacacion.estado}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 55px;text-transform: uppercase" >
                                 <f:selectItem itemLabel=" " itemValue="null" />  
-                                <f:selectItem itemLabel="Cerrado" itemValue="Cerrado" />  
-                                <f:selectItem itemLabel="Abierto" itemValue="Abierto" />  
+                                <f:selectItem itemLabel="CERRADO" itemValue="CERRADO" />  
+                                <f:selectItem itemLabel="ABIERTO" itemValue="ABIERTO" />  
                             </p:selectOneMenu>
 
                             <strong><h:outputText value="Dias Pendientes " style="font-size: 12px; position: absolute; top: 90px;left: 55px" /></strong>
-                            <p:inputText value="#{controlEmplVacaPendiente.duplicarVacacion.diaspendientes}" id="duplicarDiasPendientes" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 85px;"/>
-                            <p:watermark for="nuevaDiasPendientes" value="0" />
+                            <p:inputText value="#{controlEmplVacaPendiente.duplicarVacacion.diaspendientes}" id="duplicarDiasPendientes" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 85px;">
+                                <p:ajax event="change" update="duplicarDiasPendientes"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarDiasPendientes" value="Dias Pendientes" />
 
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 12px; position: absolute; top: 120px;left: 55px" /></strong>
-                            <p:calendar value="#{controlEmplVacaPendiente.duplicarVacacion.inicialCausacion}"  id="duplicarFechaInicial" style="font-size: 10px; position: absolute; top: 115px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar value="#{controlEmplVacaPendiente.duplicarVacacion.inicialcausacion}"  id="duplicarFechaInicial" style="font-size: 10px; position: absolute; top: 115px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
                                 <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
                             </p:calendar>
                             <strong><h:outputText value="Fecha Final: " style="font-size: 12px; position: absolute; top: 150px;left: 55px" /></strong>
-                            <p:calendar value="#{controlEmplVacaPendiente.duplicarVacacion.finalCausacion}" id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 145px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar value="#{controlEmplVacaPendiente.duplicarVacacion.finalcausacion}" id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 145px; left: 200px;"  styleClass="ui-datepicker, myClass2"  
                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
                                 <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
                             </p:calendar>
 
-                            <p:commandButton id="limpiarDVP" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 200px;"  update="duplicarVP" process="@this"/>
-                            <p:commandButton id="agregarDVP" value="Agregar" style="font-size: 11px; position: absolute; left: 240px; top: 200px;"  process="@this" />
-                            <p:commandButton id="cancelarDVP" value="Cancelar" style="font-size: 11px; position: absolute; left: 310px; top: 200px;"  update="duplicarVP" onclick="DuplicarRegistroVP.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDVP" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 180px;"  update="duplicarVP" actionListener="#{controlEmplVacaPendiente.limpiarDuplicadoVacaPendiente()}" process="@this"/>
+                            <p:commandButton id="agregarDVP" value="Agregar" style="font-size: 11px; position: absolute; left: 240px; top: 180px;" actionListener="#{controlEmplVacaPendiente.validarDuplicadoVacaPendientes()}" process="@this" />
+                            <p:commandButton id="cancelarDVP" value="Cancelar" style="font-size: 11px; position: absolute; left: 310px; top: 180px;"  update="duplicarVP" actionListener="#{controlEmplVacaPendiente.limpiarDuplicadoVacaPendiente()}" onclick="DuplicarRegistroVP.hide();"  process="@this"/>
 
                         </p:panel>
                     </p:dialog>
-
-
-
                 </h:form>
 
             </ui:define>

@@ -101,16 +101,19 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
     
     @Override
-    public void validacionTercerosVigenciaAfiliacion(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer){
+    public Long validacionTercerosVigenciaAfiliacion(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer){
         try {
-            Query query = em.createQuery("SELECT count(v) , MIN(v.fechapago) FROM SolucionesNodos v where v.fechapago > :fechaInicial AND v.empleado.secuencia = :secuencia AND v.estado ='CERRADO' AND V.nit != :secuenciaTer AND exists (SELECT 'x' FROM ConceptosSoportes cs WHERE cs.concetos = v.concepto AND cs.tipoentidad = :secuenciaT and cs.tipo='AUTOLIQUIDACION' AND cs.subgrupo='COTIZACION')");
+            Query query = em.createQuery("SELECT count(v)  FROM SolucionesNodos v where v.fechapago > :fechaInicial AND v.empleado.secuencia = :secuencia AND v.estado ='CERRADO' AND V.secuencia != :secuenciaTer AND exists (SELECT cs FROM ConceptosSoportes cs WHERE cs.concepto.secuencia = v.concepto.secuencia AND cs.tipoentidad.secuencia = :secuenciaT and cs.tipo='AUTOLIQUIDACION' AND cs.subgrupo='COTIZACION')");
             query.setParameter("secuencia", secuencia);
             query.setParameter("fechaInicial", fechaInicial);
-            query.setParameter("secuenciaTE", secuenciaTE);
+            query.setParameter("secuenciaT", secuenciaTE);
             query.setParameter("secuenciaTer", secuenciaTer);
-            System.out.println("Salida : "+query.getSingleResult());
+            Long r = (Long)query.getSingleResult();
+            System.out.println("Resultado : "+r);
+            return r;
         } catch (Exception e) {
-            System.out.println("Error: (validacionTercerosVigenciaAfiliacion.diasProvisionados)" + e.toString());
+            System.out.println("Error validacionTercerosVigenciaAfiliacion Persistencia : " + e.toString());
+            return null;
         }
     }
 }

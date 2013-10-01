@@ -17,6 +17,7 @@ public interface PersistenciaVWVacaPendientesEmpleadosInterface {
     public void crear(VWVacaPendientesEmpleados vacaP);
     public void editar(VWVacaPendientesEmpleados vacaP);
     public void borrar(VWVacaPendientesEmpleados vacaP);
+    public List<VWVacaPendientesEmpleados> buscarVacaPendientesEmpleados(BigInteger secuenciaEmpleado);
     public List<VWVacaPendientesEmpleados> vacaEmpleadoPendientes(BigInteger sec);
     public List<VWVacaPendientesEmpleados> vacaEmpleadoDisfrutadas(BigInteger sec);
     

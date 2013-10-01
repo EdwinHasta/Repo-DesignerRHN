@@ -87,6 +87,16 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
             return null;
         }
     }
+    
+    public VigenciasAfiliaciones vigenciaAfiliacionSecuencia(BigDecimal secuencia) {
+        try {
+            VigenciasAfiliaciones retorno = persistenciaVigenciasAfilicaciones.buscarVigenciasAfiliacionesSecuencia(secuencia);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error vigenciaAfiliacionSecuencia Admi : " + e.toString());
+            return null;
+        }
+    }
 
     @Override
     public List<Terceros> listTerceros() {
@@ -144,11 +154,13 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
     }
     
     @Override
-    public void validacionTercerosSurcursales(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer){
+    public Long validacionTercerosSurcursalesNuevaVigencia(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer){
         try{
-            persistenciaSolucionesNodos.validacionTercerosVigenciaAfiliacion(secuencia, fechaInicial, secuenciaTE, secuenciaTer);
+            Long result = persistenciaSolucionesNodos.validacionTercerosVigenciaAfiliacion(secuencia, fechaInicial, secuenciaTE, secuenciaTer);
+            return result;
         }catch(Exception e){
             System.out.println("Error validacionTercerosSurcursales Admi : "+e.toString());
+            return null;
         }
     }
 }

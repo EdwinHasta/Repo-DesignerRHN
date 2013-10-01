@@ -8,174 +8,116 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author user
  */
 @Entity
+@Table(name = "VWVACAPENDIENTESEMPLEADOS")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "VWVacaPendientesEmpleados.findAll", query = "SELECT v FROM VWVacaPendientesEmpleados v"),
+    @NamedQuery(name = "VWVacaPendientesEmpleados.findByEmpleado", query = "SELECT v FROM VWVacaPendientesEmpleados v WHERE v.empleado = :empleado")})
 public class VWVacaPendientesEmpleados implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "SECUENCIA")
-    private BigInteger secuencia;
-    @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
-    private Empleados empleado;
     @NotNull
-    @Column(name = "FECHAINICIAL")
-    @Temporal(TemporalType.DATE)
-    private Date fechaInicial;
-    @Column(name = "FECHAFINAL")
-    @Temporal(TemporalType.DATE)
-    private Date fechaFinal;
-    @NotNull
-    @Column(name = "FECHAREPORTE")
-    @Temporal(TemporalType.DATE)
-    private Date fechaReporte;
-    @NotNull
-    @Column(name = "INICIALCAUSACION")
-    @Temporal(TemporalType.DATE)
-    private Date inicialCausacion;
-    @NotNull
-    @Column(name = "FINALCAUSACION")
-    @Temporal(TemporalType.DATE)
-    private Date finalCausacion;
-    @Column(name = "CONCEPTO")
-    @NotNull
-    private BigInteger concepto;
     @Column(name = "RFVACACION")
-    @NotNull
     private BigInteger rfvacacion;
-    @Column(name = "RFNOVEDAD")
+    @Basic(optional = false)
     @NotNull
-    private BigInteger rfnovedad;
-    @Column(name = "USUARIOREPORTA")
+    @Column(name = "EMPLEADO")
+    private BigInteger empleado;
+    @Basic(optional = false)
     @NotNull
-    private BigInteger usuarioreporta;
-    @Column(name = "FORMULA")
-    @NotNull
-    private BigInteger formula;
-    @Column(name = "DIASPENDIENTES")
-    private BigInteger diaspendientes;
-    @Column(name = "VALORTOTAL")
-    @NotNull
-    private BigDecimal valortotal;
-    @Size(max = 20)
-    @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "ESTADO")
     private String estado;
-    @Size(max = 20)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "DIASPENDIENTES")
+    private BigInteger diaspendientes;
+    @Basic(optional = false)
     @NotNull
+    @Column(name = "INICIALCAUSACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inicialcausacion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FINALCAUSACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date finalcausacion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "RFNOVEDAD")
+    private BigInteger rfnovedad;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CONCEPTO")
+    private BigInteger concepto;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHAINICIAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechainicial;
+    @Column(name = "FECHAFINAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechafinal;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHAREPORTE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechareporte;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FORMULA")
+    private BigInteger formula;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "TERMINAL")
     private String terminal;
-    @Size(max = 20)
+    @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "TIPO")
     private String tipo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "USUARIOREPORTA")
+    private BigInteger usuarioreporta;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "VALORTOTAL")
+    private BigDecimal valortotal;
+    @Column(name = "SECUENCIA")
+    private BigInteger secuencia;
 
-    public BigInteger getSecuencia() {
-        return secuencia;
-    }
-
-    public void setSecuencia(BigInteger secuencia) {
-        this.secuencia = secuencia;
-    }
-
-    public Empleados getEmpleado() {
+   
+    public BigInteger getEmpleado() {
         return empleado;
     }
 
-    public void setEmpleado(Empleados empleado) {
+    public void setEmpleado(BigInteger empleado) {
         this.empleado = empleado;
     }
 
-    public Date getFechaInicial() {
-        return fechaInicial;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setFechaInicial(Date fechaInicial) {
-        this.fechaInicial = fechaInicial;
-    }
-
-    public Date getFechaFinal() {
-        return fechaFinal;
-    }
-
-    public void setFechaFinal(Date fechaFinal) {
-        this.fechaFinal = fechaFinal;
-    }
-
-    public Date getFechaReporte() {
-        return fechaReporte;
-    }
-
-    public void setFechaReporte(Date fechaReporte) {
-        this.fechaReporte = fechaReporte;
-    }
-
-    public Date getInicialCausacion() {
-        return inicialCausacion;
-    }
-
-    public void setInicialCausacion(Date inicialCausacion) {
-        this.inicialCausacion = inicialCausacion;
-    }
-
-    public Date getFinalCausacion() {
-        return finalCausacion;
-    }
-
-    public void setFinalCausacion(Date finalCausacion) {
-        this.finalCausacion = finalCausacion;
-    }
-
-    public BigInteger getConcepto() {
-        return concepto;
-    }
-
-    public void setConcepto(BigInteger concepto) {
-        this.concepto = concepto;
-    }
-
-    public BigInteger getRfvacacion() {
-        return rfvacacion;
-    }
-
-    public void setRfvacacion(BigInteger rfvacacion) {
-        this.rfvacacion = rfvacacion;
-    }
-
-    public BigInteger getRfnovedad() {
-        return rfnovedad;
-    }
-
-    public void setRfnovedad(BigInteger rfnovedad) {
-        this.rfnovedad = rfnovedad;
-    }
-
-    public BigInteger getUsuarioreporta() {
-        return usuarioreporta;
-    }
-
-    public void setUsuarioreporta(BigInteger usuarioreporta) {
-        this.usuarioreporta = usuarioreporta;
-    }
-
-    public BigInteger getFormula() {
-        return formula;
-    }
-
-    public void setFormula(BigInteger formula) {
-        this.formula = formula;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public BigInteger getDiaspendientes() {
@@ -186,21 +128,76 @@ public class VWVacaPendientesEmpleados implements Serializable {
         this.diaspendientes = diaspendientes;
     }
 
-    
-    public BigDecimal getValortotal() {
-        return valortotal;
+    public Date getInicialcausacion() {
+        return inicialcausacion;
     }
 
-    public void setValortotal(BigDecimal valortotal) {
-        this.valortotal = valortotal;
+    public void setInicialcausacion(Date inicialcausacion) {
+        this.inicialcausacion = inicialcausacion;
     }
 
-    public String getEstado() {
-        return estado;
+    public Date getFinalcausacion() {
+        return finalcausacion;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setFinalcausacion(Date finalcausacion) {
+        this.finalcausacion = finalcausacion;
+    }
+
+    public BigInteger getRfnovedad() {
+        return rfnovedad;
+    }
+
+    public void setRfnovedad(BigInteger rfnovedad) {
+        this.rfnovedad = rfnovedad;
+    }
+
+    public BigInteger getRfvacacion() {
+        return rfvacacion;
+    }
+
+    public void setRfvacacion(BigInteger rfvacacion) {
+        this.rfvacacion = rfvacacion;
+    }
+
+    public BigInteger getConcepto() {
+        return concepto;
+    }
+
+    public void setConcepto(BigInteger concepto) {
+        this.concepto = concepto;
+    }
+
+    public Date getFechainicial() {
+        return fechainicial;
+    }
+
+    public void setFechainicial(Date fechainicial) {
+        this.fechainicial = fechainicial;
+    }
+
+    public Date getFechafinal() {
+        return fechafinal;
+    }
+
+    public void setFechafinal(Date fechafinal) {
+        this.fechafinal = fechafinal;
+    }
+
+    public Date getFechareporte() {
+        return fechareporte;
+    }
+
+    public void setFechareporte(Date fechareporte) {
+        this.fechareporte = fechareporte;
+    }
+
+    public BigInteger getFormula() {
+        return formula;
+    }
+
+    public void setFormula(BigInteger formula) {
+        this.formula = formula;
     }
 
     public String getTerminal() {
@@ -219,7 +216,29 @@ public class VWVacaPendientesEmpleados implements Serializable {
         this.tipo = tipo;
     }
 
-    
+    public BigInteger getUsuarioreporta() {
+        return usuarioreporta;
+    }
+
+    public void setUsuarioreporta(BigInteger usuarioreporta) {
+        this.usuarioreporta = usuarioreporta;
+    }
+
+    public BigDecimal getValortotal() {
+        return valortotal;
+    }
+
+    public void setValortotal(BigDecimal valortotal) {
+        this.valortotal = valortotal;
+    }
+
+    public BigInteger getSecuencia() {
+        return secuencia;
+    }
+
+    public void setSecuencia(BigInteger secuencia) {
+        this.secuencia = secuencia;
+    }
     
     
 }

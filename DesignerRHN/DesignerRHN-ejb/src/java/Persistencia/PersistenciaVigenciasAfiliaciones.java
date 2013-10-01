@@ -16,7 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasAfiliacionesInterface {
+public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasAfiliacionesInterface { 
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -100,7 +100,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secVA) {
+    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigDecimal secVA) {
         try {
             Query query = em.createNamedQuery("VigenciasAfiliaciones.findBySecuencia").setParameter("secuencia", secVA);
             VigenciasAfiliaciones vigenciasAfiliaciones = (VigenciasAfiliaciones) query.getSingleResult();

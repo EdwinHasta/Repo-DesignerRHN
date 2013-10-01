@@ -39,5 +39,7 @@ public interface AdministrarVigenciasAfiliaciones3Interface {
     
     public Empleados obtenerEmpleado (BigInteger secuencia);
     
-    public void validacionTercerosSurcursales(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer);
+    public Long validacionTercerosSurcursalesNuevaVigencia(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer);
+    
+    public VigenciasAfiliaciones vigenciaAfiliacionSecuencia(BigDecimal secuencia);
 }

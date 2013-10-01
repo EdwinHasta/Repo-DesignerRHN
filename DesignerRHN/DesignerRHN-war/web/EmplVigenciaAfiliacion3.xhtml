@@ -12,7 +12,7 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Vigencias Afiliaciones" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
-                        <h:outputText style="position: absolute; left: 680px; top: 50px; width: 200px; height: 12px;position: absolute;" id="nombreEmpleado" value="#{controlEmplVigenciaAfiliacion3.empleado.persona.primerapellido} #{controlEmplVigenciaAfiliacion3.empleado.persona.segundoapellido} #{controlEmplVigenciaAfiliacion3.empleado.persona.nombre}">
+                        <h:outputText style="position: absolute; left: 680px; top: 50px; width: 200px; height: 12px;position: absolute;color: red; font-weight: bold" id="nombreEmpleado" value="#{controlEmplVigenciaAfiliacion3.empleado.persona.primerapellido} #{controlEmplVigenciaAfiliacion3.empleado.persona.segundoapellido} #{controlEmplVigenciaAfiliacion3.empleado.persona.nombre}">
                         </h:outputText>
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
@@ -396,13 +396,14 @@
 
                             <strong><h:outputText value="Observacion: " style="font-size: 14px; position: absolute; top: 355px; left: 50px" /></strong>
                             <p:inputText id="nuevaObservacionVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.observacion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 350px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="change" update="nuevaObservacionVA" process="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaObservacionVA" value="Observacion" />
 
 
 
                             <p:commandButton id="limpiarVA" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.limpiarNuevaVA()}" update="nuevaVA" process="@this"/>
-                            <p:commandButton id="agregarVA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.agregarNuevaVA()}" process="@this"  onclick="NuevoRegistroVA.hide();"  />
+                            <p:commandButton id="agregarVA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.agregarNuevaVA()}" process="@this"/>
                             <p:commandButton id="cancelarVA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.limpiarNuevaVA()}" update="nuevaVA" onclick="NuevoRegistroVA.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -472,7 +473,7 @@
 
 
                             <p:commandButton id="limpiarDuplicadoVA" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.limpiarduplicarVA()}" update="duplicadoVA" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.confirmarDuplicarVA()}" process="@this"  onclick="DuplicadoRegistroVA.hide();"  />
+                            <p:commandButton id="agregarDuplicadoVA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.confirmarDuplicarVA()}" process="@this"/>
                             <p:commandButton id="cancelarDuplicadoVA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.limpiarduplicarVA()}" update="duplicadoVA" onclick="DuplicadoRegistroVA.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -522,6 +523,30 @@
                     <p:dialog id="editarObservacionesVAD" header="Observaciones" widgetVar="editarObservacionesVAD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlEmplVigenciaAfiliacion3.editarVA.observaciones}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarObservacionesVA" value="Atras" onclick="editarObservacionesVAD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="errorIngresoRegistro" header="ATENCIÓN...!" widgetVar="errorIngresoRegistro"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Almenos uno de los campos FechaInicial-TipoEntidad-Tercero se encuentra vacio y/o se supero el tamaño maximo del campo Observacion (100 caracteres)" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Ok" onclick="errorIngresoRegistro.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorFechasRegistro" header="ATENCIÓN...!" widgetVar="errorFechasRegistro"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Error de fechas. La fecha final es mayor a la fecha inicial. Favor rectificar las fechas" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Ok" onclick="errorFechasRegistro.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorExistenciaTipoEntidad" header="ATENCIÓN...!" widgetVar="errorExistenciaTipoEntidad"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Se encuentra un registro con la misma entidad y fecha final indefinida. No es posible ingresar el nuevo registro" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Ok" onclick="errorExistenciaTipoEntidad.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorTerceroSucursal" header="ATENCIÓN...!" widgetVar="errorTerceroSucursal"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Error con tercero sucursal" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Ok" onclick="errorTerceroSucursal.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
                     </p:dialog>
 
 
