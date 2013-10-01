@@ -63,7 +63,6 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
     private Column vAFechaInicial, vAFechaFinal, vATercero, vATipoEntidad, vANITTercero, vACodigo, vAEstadoAfiliacion, vAObservaciones;
     //Otros
     private boolean aceptar;
-    private int index;
     //modificar
     private List<VigenciasAfiliaciones> listVAModificar;
     private boolean guardado, guardarOk;
@@ -91,6 +90,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
     private List<VigenciasAfiliaciones> listVACrear;
     private boolean cambioVigenciaA;
     private int tipoLista;
+    private VigenciasAfiliaciones vigenciaValidaciones;
 
     public ControlEmplVigenciaAfiliacion3() {
         tipoLista = 0;
@@ -116,7 +116,9 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         permitirIndexVA = true;
         indexVA = -1;
         cualCeldaVA = -1;
-
+        listEstadosAfiliaciones = null;
+        listTerceros = null;
+        listTiposEntidades = null;
         nuevaVigenciaA = new VigenciasAfiliaciones();
         nuevaVigenciaA.setTipoentidad(new TiposEntidades());
         nuevaVigenciaA.setTercerosucursal(new TercerosSucursales());
@@ -146,36 +148,52 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
      */
     public void modificarVA(int indice) {
         if (tipoListaVA == 0) {
-            if (!listVACrear.contains(listVigenciasAfiliaciones.get(indice))) {
-                if (listVAModificar.isEmpty()) {
-                    listVAModificar.add(listVigenciasAfiliaciones.get(indice));
-                } else if (!listVAModificar.contains(listVigenciasAfiliaciones.get(indice))) {
-                    listVAModificar.add(listVigenciasAfiliaciones.get(indice));
+            indexVA = indice;
+            boolean validacion = validarIngresoNuevoRegistro(0);
+            if (validacion == true) {
+                if (!listVACrear.contains(listVigenciasAfiliaciones.get(indice))) {
+                    if (listVAModificar.isEmpty()) {
+                        listVAModificar.add(listVigenciasAfiliaciones.get(indice));
+                    } else if (!listVAModificar.contains(listVigenciasAfiliaciones.get(indice))) {
+                        listVAModificar.add(listVigenciasAfiliaciones.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                    }
                 }
-                if (guardado == true) {
-                    guardado = false;
-                }
+                listVigenciasAfiliaciones.get(indice).getTercerosucursal().getTercero().setNit(nit);
+                cambioVigenciaA = true;
+                indexVA = -1;
+            } else {
+                VigenciasAfiliaciones cambio = administrarVigenciasAfiliaciones3.vigenciaAfiliacionSecuencia(listVigenciasAfiliaciones.get(indexVA).getSecuencia());
+                listVigenciasAfiliaciones.set(indexVA, cambio);
             }
-            listVigenciasAfiliaciones.get(indice).getTercerosucursal().getTercero().setNit(nit);
-            cambioVigenciaA = true;
-            indexVA = -1;
         } else {
-            if (!listVACrear.contains(filtrarVigenciasAfiliaciones.get(indice))) {
-
-                if (listVAModificar.isEmpty()) {
-                    listVAModificar.add(filtrarVigenciasAfiliaciones.get(indice));
-                } else if (!listVAModificar.contains(filtrarVigenciasAfiliaciones.get(indice))) {
-                    listVAModificar.add(filtrarVigenciasAfiliaciones.get(indice));
+            int ind = listVigenciasAfiliaciones.indexOf(filtrarVigenciasAfiliaciones.get(indice));
+            indexVA = ind;
+            boolean validacion = validarIngresoNuevoRegistro(0);
+            if (validacion == true) {
+                if (!listVACrear.contains(filtrarVigenciasAfiliaciones.get(indice))) {
+                    if (listVAModificar.isEmpty()) {
+                        listVAModificar.add(filtrarVigenciasAfiliaciones.get(indice));
+                    } else if (!listVAModificar.contains(filtrarVigenciasAfiliaciones.get(indice))) {
+                        listVAModificar.add(filtrarVigenciasAfiliaciones.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                    }
                 }
-                if (guardado == true) {
-                    guardado = false;
-                }
+                filtrarVigenciasAfiliaciones.get(indice).getTercerosucursal().getTercero().setNit(nit);
+                listVigenciasAfiliaciones.get(ind).getTercerosucursal().getTercero().setNit(nit);
+                cambioVigenciaA = true;
+                indexVA = -1;
+            } else {
+                VigenciasAfiliaciones cambio = administrarVigenciasAfiliaciones3.vigenciaAfiliacionSecuencia(listVigenciasAfiliaciones.get(indexVA).getSecuencia());
+                listVigenciasAfiliaciones.set(indexVA, cambio);
             }
-            filtrarVigenciasAfiliaciones.get(indice).getTercerosucursal().getTercero().setNit(nit);
-            cambioVigenciaA = true;
-            indexVA = -1;
         }
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosVAVigencia");
     }
 
     /**
@@ -204,12 +222,30 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             if (coincidencias == 1) {
                 if (tipoListaVA == 0) {
                     cambioVigenciaA = true;
-                    listVigenciasAfiliaciones.get(indice).setTipoentidad(listTiposEntidades.get(indiceUnicoElemento));
+                    vigenciaValidaciones = listVigenciasAfiliaciones.get(indexVA);
+                    vigenciaValidaciones.setTipoentidad(listTiposEntidades.get(indiceUnicoElemento));
+                    //listVigenciasAfiliaciones.get(indice).setTipoentidad(listTiposEntidades.get(indiceUnicoElemento));
+                    System.out.println("Tipo Entidad : " + listVigenciasAfiliaciones.get(indexVA).getTipoentidad().getNombre());
+                    indexVA = indice;
+                    boolean cambio = validarIngresoNuevoRegistro(0);
+                    if (cambio == false) {
+                        cambioVigenciaA = false;
+                        listVigenciasAfiliaciones.get(indice).getTipoentidad().setNombre(tiposEntidades);
+                    } else {
+                        listVigenciasAfiliaciones.get(indice).setTipoentidad(listTiposEntidades.get(indiceUnicoElemento));
+                    }
                 } else {
                     cambioVigenciaA = true;
                     filtrarVigenciasAfiliaciones.get(indice).setTipoentidad(listTiposEntidades.get(indiceUnicoElemento));
+                    indexVA = indice;
+                    boolean cambio = validarIngresoNuevoRegistro(0);
+                    indexVA = indice;
+                    if (cambio == false) {
+                        cambioVigenciaA = false;
+                        filtrarVigenciasAfiliaciones.get(indice).getTipoentidad().setNombre(tiposEntidades);
+                    }
                 }
-                listTiposEntidades.clear();
+                listTiposEntidades = null;
                 getListTiposEntidades();
             } else {
                 permitirIndexVA = false;
@@ -231,13 +267,20 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoListaVA == 0) {
-                    cambioVigenciaA = true;
-                    listVigenciasAfiliaciones.get(indice).getTercerosucursal().setTercero(listTerceros.get(indiceUnicoElemento));
+                    boolean cambio = validarIngresoNuevoRegistro(0);
+                    if (cambio == true) {
+                        cambioVigenciaA = true;
+                        listVigenciasAfiliaciones.get(indice).getTercerosucursal().setTercero(listTerceros.get(indiceUnicoElemento));
+                    }
                 } else {
-                    cambioVigenciaA = true;
-                    filtrarVigenciasAfiliaciones.get(indice).getTercerosucursal().setTercero(listTerceros.get(indiceUnicoElemento));
+                    boolean cambio = validarIngresoNuevoRegistro(0);
+                    indexVA = indice;
+                    if (cambio == true) {
+                        cambioVigenciaA = true;
+                        filtrarVigenciasAfiliaciones.get(indice).getTercerosucursal().setTercero(listTerceros.get(indiceUnicoElemento));
+                    }
                 }
-                listTerceros.clear();
+                listTerceros = null;
                 getListTerceros();
             } else {
                 permitirIndexVA = false;
@@ -265,7 +308,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                     cambioVigenciaA = true;
                     filtrarVigenciasAfiliaciones.get(indice).setEstadoafiliacion(listEstadosAfiliaciones.get(indiceUnicoElemento));
                 }
-                listEstadosAfiliaciones.clear();
+                listEstadosAfiliaciones = null;
                 getListEstadosAfiliaciones();
             } else {
                 permitirIndexVA = false;
@@ -373,7 +416,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                     duplicarVA.setTipoentidad(listTiposEntidades.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarTipoEntidadVA");
                 }
-                listTiposEntidades.clear();
+                listTiposEntidades = null;
                 getListTiposEntidades();
             } else {
                 context.update("form:TipoEntidadDialogo");
@@ -406,7 +449,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                     duplicarVA.getTercerosucursal().setTercero(listTerceros.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarTerceroVA");
                 }
-                listTerceros.clear();
+                listTerceros = null;
                 getListTerceros();
             } else {
                 context.update("form:TerceroDialogo");
@@ -438,7 +481,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                     duplicarVA.setEstadoafiliacion(listEstadosAfiliaciones.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicadoEstadoAfiliacionVA");
                 }
-                listEstadosAfiliaciones.clear();
+                listEstadosAfiliaciones = null;
                 getListEstadosAfiliaciones();
             } else {
                 context.update("form:EstadoAfiliacionDialogo");
@@ -457,103 +500,270 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         boolean retorno = true;
         if (tipo == 0) {
             int posicion = indexVA;
-            if ((listVigenciasAfiliaciones.get(posicion).getFechainicial() == null) || (listVigenciasAfiliaciones.get(posicion).getTipoentidad().getNombre().isEmpty()) || (listVigenciasAfiliaciones.get(posicion).getTercerosucursal().getTercero().getNombre().isEmpty()) || (listVigenciasAfiliaciones.get(posicion).getObservacion().length() > 100)) {
+            if ((listVigenciasAfiliaciones.get(posicion).getFechainicial() == null) || (listVigenciasAfiliaciones.get(posicion).getTipoentidad().getNombre().isEmpty()) || (listVigenciasAfiliaciones.get(posicion).getTercerosucursal().getTercero().getNombre().isEmpty())) {
                 retorno = false;
             }
-            if (listVigenciasAfiliaciones.get(posicion).getFechafinal().before(listVigenciasAfiliaciones.get(posicion).getFechainicial())) {
+            if ((listVigenciasAfiliaciones.get(posicion).getObservacion() != null) && (listVigenciasAfiliaciones.get(posicion).getObservacion().length() > 100)) {
                 retorno = false;
             }
         }
         if (tipo == 1) {
-            if ((nuevaVigenciaA.getFechainicial() == null) || (nuevaVigenciaA.getTipoentidad().getNombre().isEmpty()) || (nuevaVigenciaA.getTercerosucursal().getTercero().getNombre().isEmpty()) || (nuevaVigenciaA.getObservacion().length() > 100)) {
+            if ((nuevaVigenciaA.getFechainicial() == null) || (nuevaVigenciaA.getTipoentidad().getSecuencia() == null) || (nuevaVigenciaA.getTercerosucursal().getSecuencia() == null)) {
                 retorno = false;
             }
-            if (nuevaVigenciaA.getFechainicial() != null) {
-                if (nuevaVigenciaA.getFechafinal() != null) {
-                    if (nuevaVigenciaA.getFechafinal().before(nuevaVigenciaA.getFechainicial())) {
-                        retorno = false;
-                    }
-                }
-            }
-        }
-            if (tipo == 2) {
-                if ((duplicarVA.getFechainicial() == null) || (duplicarVA.getTipoentidad().getNombre().isEmpty()) || (duplicarVA.getTercerosucursal().getTercero().getNombre().isEmpty()) || (duplicarVA.getObservacion().length() > 100)) {
-                    retorno = false;
-                }
-                if (duplicarVA.getFechafinal().before(duplicarVA.getFechainicial())) {
-                    retorno = false;
-                }
-            }
-            return retorno;
-        }
-
-    
-
-    public boolean validarExistenciaTipoEntidad(int i) {
-        boolean retorno = true;
-        if (i == 0) {
-            VigenciasAfiliaciones auxiliar = listVigenciasAfiliaciones.get(index);
-            int rep = 0;
-            for (int cont = 0; cont < listVigenciasAfiliaciones.size(); i++) {
-                if (listVigenciasAfiliaciones.get(cont).getTipoentidad().getSecuencia() == auxiliar.getTipoentidad().getSecuencia()) {
-                    rep++;
-                }
-            }
-            if (rep > 0) {
+            if ((nuevaVigenciaA.getObservacion() != null) && (nuevaVigenciaA.getObservacion().length() > 100)) {
                 retorno = false;
             }
         }
-        if (i == 1) {
-            int rep = 0;
-            for (int cont = 0; cont < listVigenciasAfiliaciones.size(); i++) {
-                if (listVigenciasAfiliaciones.get(cont).getTipoentidad().getSecuencia() == nuevaVigenciaA.getTipoentidad().getSecuencia()) {
-                    rep++;
-                }
-            }
-            if (rep > 0) {
+        if (tipo == 2) {
+            if ((duplicarVA.getFechainicial() == null) || (duplicarVA.getTipoentidad().getNombre().isEmpty()) || (duplicarVA.getTercerosucursal().getTercero().getNombre().isEmpty())) {
                 retorno = false;
             }
-        }
-        if (i == 2) {
-            int rep = 0;
-            for (int cont = 0; cont < listVigenciasAfiliaciones.size(); i++) {
-                if (listVigenciasAfiliaciones.get(cont).getTipoentidad().getSecuencia() == duplicarVA.getTipoentidad().getSecuencia()) {
-                    rep++;
-                }
-            }
-            if (rep > 0) {
+            if ((duplicarVA.getObservacion() != null) && (duplicarVA.getObservacion().length() > 100)) {
                 retorno = false;
             }
         }
         return retorno;
     }
 
-    public boolean validacionTercerorSucursalesNuevoRegistro(int i) {
+    public boolean validarExistenciaTipoEntidad(int i) {
+        boolean retorno = true;
+        List<VigenciasAfiliaciones> listAuxiliar = new ArrayList<VigenciasAfiliaciones>();
+        VigenciasAfiliaciones provisional = null;
+        ///////////--------////////////
         if (i == 0) {
-            administrarVigenciasAfiliaciones3.validacionTercerosSurcursales(empleado.getSecuencia(), listVigenciasAfiliaciones.get(indexVA).getFechainicial(), listVigenciasAfiliaciones.get(indexVA).getEstadoafiliacion().getSecuencia(), listVigenciasAfiliaciones.get(indexVA).getTercerosucursal().getTercero().getSecuencia());
+            provisional = vigenciaValidaciones;
         }
         if (i == 1) {
-            administrarVigenciasAfiliaciones3.validacionTercerosSurcursales(empleado.getSecuencia(), nuevaVigenciaA.getFechainicial(), nuevaVigenciaA.getEstadoafiliacion().getSecuencia(), nuevaVigenciaA.getTercerosucursal().getTercero().getSecuencia());
+            provisional = nuevaVigenciaA;
         }
         if (i == 2) {
-            administrarVigenciasAfiliaciones3.validacionTercerosSurcursales(empleado.getSecuencia(), duplicarVA.getFechainicial(), duplicarVA.getEstadoafiliacion().getSecuencia(), duplicarVA.getTercerosucursal().getTercero().getSecuencia());
+            provisional = duplicarVA;
         }
-        return false;
+        ///////////--------////////////
+        for (int cont = 0; cont < listVigenciasAfiliaciones.size(); cont++) {
+            if (listVigenciasAfiliaciones.get(cont).getTipoentidad().getSecuencia() == provisional.getTipoentidad().getSecuencia()) {
+                listAuxiliar.add(listVigenciasAfiliaciones.get(cont));
+            }
+        }
+
+        ///////////--------////////////
+        int tam = listAuxiliar.size();
+        System.out.println("Tamanio : " + tam);
+        ///////////--------////////////
+        if (tam >= 2) {
+            if (provisional.getFechafinal() == null) {
+                int conteo = 0;
+                for (int de = 0; de < listAuxiliar.size(); de++) {
+                    if (listAuxiliar.get(de).getFechafinal() == null) {
+                        conteo++;
+                    }
+                }
+                ///////////--------////////////
+                if (conteo > 0) {
+                    retorno = false;
+                } ///////////--------////////////
+                else {
+                    VigenciasAfiliaciones auxiliar = listAuxiliar.get(0);
+                    if (provisional.getFechainicial().after(auxiliar.getFechafinal())) {
+                        retorno = true;
+                    } else {
+                        retorno = false;
+                    }
+                }
+            } ///////////--------///////////////////////--------////////////
+            else {
+                boolean cambiosBefore = false;
+                VigenciasAfiliaciones reg1 = listAuxiliar.get(0);
+                VigenciasAfiliaciones regN = listAuxiliar.get(tam - 1);
+                ///////////--------////////////
+                if ((provisional.getFechafinal().before(reg1.getFechainicial())) && (provisional.getFechainicial().before(reg1.getFechainicial()))) {
+                    cambiosBefore = true;
+                }
+                ///////////--------////////////
+                if (regN.getFechafinal() != null) {
+                    if ((provisional.getFechafinal().after(regN.getFechafinal())) && (provisional.getFechainicial().after(regN.getFechafinal()))) {
+                        cambiosBefore = true;
+                    }
+                } else {
+                    if (provisional.getFechainicial().after(regN.getFechafinal())) {
+                        cambiosBefore = true;
+                    }
+                }
+                ///////////--------////////////
+                if (cambiosBefore == true) {
+                    retorno = true;
+                } else {
+                    boolean ubicoReg = false;
+                    int cambios = 0;
+                    for (int o = 1; o < tam - 1; o++) {
+                        if (listAuxiliar.get(o + 1).getFechafinal() != null) {
+                            if ((provisional.getFechainicial().after(listAuxiliar.get(o - 1).getFechafinal())) && (provisional.getFechafinal().before(listAuxiliar.get(o + 1).getFechainicial()))) {
+                                cambios++;
+                                ubicoReg = true;
+                            }
+                        }
+                    }
+                    ///////////--------////////////
+                    if (cambios == 1) {
+                        if (ubicoReg == true) {
+                            retorno = true;
+                        }
+                    } ///////////--------////////////
+                    else {
+                        retorno = false;
+                    }
+                }
+            }
+        }
+        ///////////--------///////////////////////--------////////////
+        if (tam == 1) {
+            boolean ubico = false;
+            if (provisional.getFechafinal() != null) {
+                if ((provisional.getFechainicial().before(listAuxiliar.get(0).getFechainicial())) && (provisional.getFechafinal().before(listAuxiliar.get(0).getFechainicial()))) {
+                    ubico = true;
+                } else if ((provisional.getFechainicial().after(listAuxiliar.get(0).getFechafinal())) && (provisional.getFechafinal().after(listAuxiliar.get(0).getFechafinal()))) {
+                    ubico = true;
+                }
+            } else {
+                if (listAuxiliar.get(0).getFechafinal() != null) {
+                    if ((provisional.getFechainicial().after(listAuxiliar.get(0).getFechafinal()))) {
+                        ubico = true;
+                    }
+                } else {
+                    ubico = false;
+                }
+            }
+            if (ubico == false) {
+                retorno = false;
+            } else {
+                retorno = true;
+            }
+        }
+        if (tam == 0) {
+            retorno = true;
+        }
+        return retorno;
     }
 
-    public String validarIngresoNuevoRegistro(int i) {
-        String mensaje = "Error en ";
+    public boolean validacionTercerorSucursalesNuevoRegistro(int i) {
+        boolean retorno = true;
+        if (i == 0) {
+            Long r = administrarVigenciasAfiliaciones3.validacionTercerosSurcursalesNuevaVigencia(empleado.getSecuencia(), listVigenciasAfiliaciones.get(indexVA).getFechainicial(), listVigenciasAfiliaciones.get(indexVA).getEstadoafiliacion().getSecuencia(), listVigenciasAfiliaciones.get(indexVA).getTercerosucursal().getTercero().getSecuencia());
+            if (r > 0) {
+                retorno = false;
+            }
+        }
+        if (i == 1) {
+            Long r = administrarVigenciasAfiliaciones3.validacionTercerosSurcursalesNuevaVigencia(empleado.getSecuencia(), nuevaVigenciaA.getFechainicial(), nuevaVigenciaA.getEstadoafiliacion().getSecuencia(), nuevaVigenciaA.getTercerosucursal().getTercero().getSecuencia());
+            if (r > 0) {
+                retorno = false;
+            }
+        }
+        if (i == 2) {
+            Long r = administrarVigenciasAfiliaciones3.validacionTercerosSurcursalesNuevaVigencia(empleado.getSecuencia(), duplicarVA.getFechainicial(), duplicarVA.getEstadoafiliacion().getSecuencia(), duplicarVA.getTercerosucursal().getTercero().getSecuencia());
+            if (r > 0) {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validacionFechasNuevoRegistro(int i) {
+        boolean retorno = true;
+        if (i == 0) {
+            VigenciasAfiliaciones auxiliar = listVigenciasAfiliaciones.get(indexVA);
+            if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() != null)) {
+                if (auxiliar.getFechainicial().after(auxiliar.getFechafinal())) {
+                    retorno = false;
+                }
+            }
+            if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() == null)) {
+                retorno = true;
+            }
+        }
+        if (i == 1) {
+            if ((nuevaVigenciaA.getFechainicial() != null) && (nuevaVigenciaA.getFechafinal() != null)) {
+                if (nuevaVigenciaA.getFechainicial().after(nuevaVigenciaA.getFechafinal())) {
+                    retorno = false;
+                }
+            }
+            if ((nuevaVigenciaA.getFechainicial() != null) && (nuevaVigenciaA.getFechafinal() == null)) {
+                retorno = true;
+            }
+        }
+        if (i == 2) {
+            if ((duplicarVA.getFechainicial() != null) && (duplicarVA.getFechafinal() != null)) {
+                if (duplicarVA.getFechainicial().after(duplicarVA.getFechafinal())) {
+                    retorno = false;
+                }
+            }
+            if ((duplicarVA.getFechainicial() != null) && (duplicarVA.getFechafinal() == null)) {
+                retorno = true;
+            }
+        }
+        return retorno;
+    }
+
+    public void dialogoCamposNulos() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:errorIngresoRegistro");
+        context.execute("errorIngresoRegistro.show()");
+    }
+
+    public void dialogoFechasErroneas() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:errorFechasRegistro");
+        context.execute("errorFechasRegistro.show()");
+    }
+
+    public void dialogoTipoERepetida() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:errorExistenciaTipoEntidad");
+        context.execute("errorExistenciaTipoEntidad.show()");
+    }
+
+    public void dialogoErrorTercero() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:errorTerceroSucursal");
+        context.execute("errorTerceroSucursal.show()");
+    }
+
+    public boolean validarIngresoNuevoRegistro(int i) {
+        boolean mensaje = true;
         boolean validacionCamposNulos;
         boolean validacionTiposEntidades;
+        boolean validacionFechas;
         boolean validacionTerceroSucursal;
+
+        //////----------////////////
         validacionCamposNulos = validarInformacionRegistro(i);
-        validacionTiposEntidades = validarExistenciaTipoEntidad(i);
-        validacionTerceroSucursal = validacionTercerorSucursalesNuevoRegistro(i);
         if (validacionCamposNulos == false) {
-            mensaje = mensaje + "validacionCamposNulos / ";
+            dialogoCamposNulos();
         }
-        if (validacionTerceroSucursal == false) {
-            mensaje = mensaje + "validacionTerceroSucursal";
+        //////----------////////////
+        if (validacionCamposNulos == true) {
+            validacionFechas = validacionFechasNuevoRegistro(i);
+            if (validacionFechas == false) {
+                dialogoFechasErroneas();
+            }
+            //////----------////////////
+            validacionTerceroSucursal = validacionTercerorSucursalesNuevoRegistro(i);
+            if (validacionTerceroSucursal == false) {
+                dialogoErrorTercero();
+            }
+            //////----------////////////
+            validacionTiposEntidades = validarExistenciaTipoEntidad(i);
+            if (validacionTiposEntidades == false) {
+                dialogoTipoERepetida();
+            }
+            if (validacionFechas == false || validacionTerceroSucursal == false || validacionTiposEntidades == false) {
+                mensaje = false;
+            }
+        } //////----------////////////
+        else {
+            mensaje = false;
+            return mensaje;
         }
         return mensaje;
     }
@@ -685,6 +895,9 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             filtrarVigenciasAfiliaciones = null;
             tipoListaVA = 0;
         }
+        listEstadosAfiliaciones = null;
+        listTerceros = null;
+        listTiposEntidades = null;
         listVABorrar.clear();
         listVACrear.clear();
         listVAModificar.clear();
@@ -757,8 +970,8 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
      * Agrega una nueva Vigencia Prorrateo
      */
     public void agregarNuevaVA() {
-        String msn = validarIngresoNuevoRegistro(1);
-        if (!msn.isEmpty()) {
+        boolean msn = validarIngresoNuevoRegistro(1);
+        if (msn == true) {
             cambioVigenciaA = true;
             //CERRAR FILTRADO
             if (banderaVA == 1) {
@@ -794,18 +1007,20 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             listVigenciasAfiliaciones.add(nuevaVigenciaA);
             System.out.println("Tam Despues : " + listVigenciasAfiliaciones.size());
             listVACrear.add(nuevaVigenciaA);
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosVAVigencia");
             //
-            nuevaVigenciaA = new VigenciasAfiliaciones();
-            nuevaVigenciaA.setTipoentidad(new TiposEntidades());
-            nuevaVigenciaA.setTercerosucursal(new TercerosSucursales());
-            nuevaVigenciaA.setEstadoafiliacion(new EstadosAfiliaciones());
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:aceptar");
             }
             indexVA = -1;
+            nuevaVigenciaA = new VigenciasAfiliaciones();
+            nuevaVigenciaA.setTipoentidad(new TiposEntidades());
+            nuevaVigenciaA.setTercerosucursal(new TercerosSucursales());
+            nuevaVigenciaA.setEstadoafiliacion(new EstadosAfiliaciones());
+            limpiarNuevaVA();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVAVigencia");
+            context.execute("NuevoRegistroVA.hide()");
         } else {
             System.out.println("Mensaje : " + msn);
         }
@@ -853,9 +1068,6 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                 duplicarVA.setCodigo(listVigenciasAfiliaciones.get(indexVA).getCodigo());
                 duplicarVA.setEstadoafiliacion(listVigenciasAfiliaciones.get(indexVA).getEstadoafiliacion());
                 duplicarVA.setObservacion(listVigenciasAfiliaciones.get(indexVA).getObservacion());
-
-
-
             }
             if (tipoListaVA == 1) {
                 duplicarVA.setSecuencia(var);
@@ -880,46 +1092,53 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
      * VigenciaProrrateo
      */
     public void confirmarDuplicarVA() {
-        cambioVigenciaA = true;
-        k++;
-        l = BigInteger.valueOf(k);
-        BigDecimal var = BigDecimal.valueOf(k);
-        duplicarVA.setSecuencia(var);
-        System.out.println("Antes : " + listVigenciasAfiliaciones.size());
-        listVigenciasAfiliaciones.add(duplicarVA);
-        System.out.println("Despues : " + listVigenciasAfiliaciones.size());
-        listVACrear.add(duplicarVA);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVAVigencia");
-        indexVA = -1;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        boolean msn = validarIngresoNuevoRegistro(2);
+        if (msn == true) {
+            cambioVigenciaA = true;
+            k++;
+            l = BigInteger.valueOf(k);
+            BigDecimal var = BigDecimal.valueOf(k);
+            duplicarVA.setSecuencia(var);
+            System.out.println("Antes : " + listVigenciasAfiliaciones.size());
+            listVigenciasAfiliaciones.add(duplicarVA);
+            System.out.println("Despues : " + listVigenciasAfiliaciones.size());
+            listVACrear.add(duplicarVA);
+            indexVA = -1;
+            if (guardado == true) {
+                guardado = false;
+                //RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+            if (banderaVA == 1) {
+                //CERRAR FILTRADO
+                vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
+                vAFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
+                vAFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                vATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vATercero");
+                vATercero.setFilterStyle("display: none; visibility: hidden;");
+                vATipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vATipoEntidad");
+                vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
+                vANITTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vANITTercero");
+                vANITTercero.setFilterStyle("display: none; visibility: hidden;");
+                vACodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vACodigo");
+                vACodigo.setFilterStyle("display: none; visibility: hidden;");
+                vAEstadoAfiliacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAEstadoAfiliacion");
+                vAEstadoAfiliacion.setFilterStyle("display: none; visibility: hidden;");
+                vAObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAObservaciones");
+                vAObservaciones.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosVAVigencia");
+                banderaVA = 0;
+                filtrarVigenciasAfiliaciones = null;
+                tipoListaVA = 0;
+            }
+            duplicarVA = new VigenciasAfiliaciones();
+            limpiarduplicarVA();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVAVigencia");
+            context.execute("DuplicadoRegistroVA.hide()");
+        } else {
+            System.out.println("Mensaje : " + msn);
         }
-        if (banderaVA == 1) {
-            //CERRAR FILTRADO
-            vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
-            vAFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vAFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaFinal");
-            vAFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vATercero");
-            vATercero.setFilterStyle("display: none; visibility: hidden;");
-            vATipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vATipoEntidad");
-            vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
-            vANITTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vANITTercero");
-            vANITTercero.setFilterStyle("display: none; visibility: hidden;");
-            vACodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vACodigo");
-            vACodigo.setFilterStyle("display: none; visibility: hidden;");
-            vAEstadoAfiliacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAEstadoAfiliacion");
-            vAEstadoAfiliacion.setFilterStyle("display: none; visibility: hidden;");
-            vAObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAObservaciones");
-            vAObservaciones.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVAVigencia");
-            banderaVA = 0;
-            filtrarVigenciasAfiliaciones = null;
-            tipoListaVA = 0;
-        }
-        duplicarVA = new VigenciasAfiliaciones();
     }
 
     /**
@@ -1019,6 +1238,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             vAObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAObservaciones");
             vAObservaciones.setFilterStyle("width: 80px");
             RequestContext.getCurrentInstance().update("form:datosVAVigencia");
+            tipoListaVA = 1;
             banderaVA = 1;
         } else if (banderaVA == 1) {
             vAFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVAVigencia:vAFechaInicial");
@@ -1124,6 +1344,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
     public void actualizarTipoEntidad() {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
+                TiposEntidades original = listVigenciasAfiliaciones.get(indexVA).getTipoentidad();
                 listVigenciasAfiliaciones.get(indexVA).setTipoentidad(tipoEntidadSeleccionado);
                 if (!listVACrear.contains(listVigenciasAfiliaciones.get(indexVA))) {
                     if (listVAModificar.isEmpty()) {
@@ -1132,7 +1353,18 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                         listVAModificar.add(listVigenciasAfiliaciones.get(indexVA));
                     }
                 }
+                boolean cambio = validarIngresoNuevoRegistro(0);
+                if (cambio == false) {
+                    listVigenciasAfiliaciones.get(indexVA).setTipoentidad(original);
+                }
+                if (guardado == true) {
+                    guardado = false;
+                }
+                cambioVigenciaA = true;
+                permitirIndexVA = true;
+
             } else {
+                TiposEntidades original = filtrarVigenciasAfiliaciones.get(indexVA).getTipoentidad();
                 filtrarVigenciasAfiliaciones.get(indexVA).setTipoentidad(tipoEntidadSeleccionado);
                 if (!listVACrear.contains(filtrarVigenciasAfiliaciones.get(indexVA))) {
                     if (listVAModificar.isEmpty()) {
@@ -1141,12 +1373,18 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                         listVAModificar.add(filtrarVigenciasAfiliaciones.get(indexVA));
                     }
                 }
+                boolean cambio = validarIngresoNuevoRegistro(0);
+                if (cambio == false) {
+                    filtrarVigenciasAfiliaciones.get(indexVA).setTipoentidad(original);
+                }
+                if (guardado == true) {
+                    guardado = false;
+                }
+                cambioVigenciaA = true;
+                permitirIndexVA = true;
             }
-            if (guardado == true) {
-                guardado = false;
-            }
-            cambioVigenciaA = true;
-            permitirIndexVA = true;
+
+
             RequestContext context = RequestContext.getCurrentInstance();
             context.update(":form:editarTipoEntidadVA");
         } else if (tipoActualizacion == 1) {
@@ -1386,7 +1624,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "VigenciasAfiliacionesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
+        indexVA = -1;
     }
 
     /**
