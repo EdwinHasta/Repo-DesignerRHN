@@ -535,7 +535,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Cocepto.xhtml</from-view-id>
+        <from-view-id>/Concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
