@@ -7,32 +7,26 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author user
+ * @author Administrator
  */
 @Entity
 @Table(name = "ESTADOSAFILIACIONES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "EstadosAfiliaciones.findAll", query = "SELECT e FROM EstadosAfiliaciones e"),
-    @NamedQuery(name = "EstadosAfiliaciones.findBySecuencia", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "EstadosAfiliaciones.findByCodigo", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.codigo = :codigo"),
-    @NamedQuery(name = "EstadosAfiliaciones.findByNombre", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.nombre = :nombre")})
+    @NamedQuery(name = "EstadosAfiliaciones.findAll", query = "SELECT e FROM EstadosAfiliaciones e")})
 public class EstadosAfiliaciones implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -41,19 +35,24 @@ public class EstadosAfiliaciones implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigDecimal secuencia;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(mappedBy = "estadoafiliacion")
-    private Collection<VigenciasAfiliaciones> vigenciasafiliacionesCollection;
 
     public EstadosAfiliaciones() {
     }
 
     public EstadosAfiliaciones(BigDecimal secuencia) {
         this.secuencia = secuencia;
+    }
+
+    public EstadosAfiliaciones(BigDecimal secuencia, BigInteger codigo) {
+        this.secuencia = secuencia;
+        this.codigo = codigo;
     }
 
     public BigDecimal getSecuencia() {
@@ -78,15 +77,6 @@ public class EstadosAfiliaciones implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasAfiliaciones> getVigenciasafiliacionesCollection() {
-        return vigenciasafiliacionesCollection;
-    }
-
-    public void setVigenciasafiliacionesCollection(Collection<VigenciasAfiliaciones> vigenciasafiliacionesCollection) {
-        this.vigenciasafiliacionesCollection = vigenciasafiliacionesCollection;
     }
 
     @Override

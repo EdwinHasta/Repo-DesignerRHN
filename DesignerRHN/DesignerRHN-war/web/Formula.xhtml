@@ -163,15 +163,15 @@
                             <p:inputText id="nombreLargoFormulaClon" value="#{controlFormula.formulaClon.nombrecorto}" style="position: absolute; top: 35px; width: 25px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:inputText id="nombreCortoFormulaClon" value="#{controlFormula.formulaClon.nombrelargo}" style="position: absolute; top: 35px; left: 50px; width: 120px;" >
+                            <p:inputText id="nombreCortoFormulaClon" value="#{controlFormula.formulaClon.nombrelargo}" style="position: absolute; top: 35px; left: 45px; width: 120px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:inputText id="observacionFormulaClon" value="#{controlFormula.formulaClon.observaciones}" style="position: absolute; top: 35px; left: 210px; width: 120px;" >
+                            <p:inputText id="observacionFormulaClon" value="#{controlFormula.formulaClon.observaciones}" style="position: absolute; top: 35px; left: 177px; width: 120px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <h:outputText value="Formula a clona: (Utilize lista de valores):"  style="color: #14388B; font-weight: bold; position: absolute; left: 380px"/>
                             <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlFormula.lovFomula(1)}"  style="position: absolute; top: 32px; left: 380px" process="@this"/>
-                            <p:inputText id="descripcionClon" value="#{controlFormula.formulaOriginal.nombresFormula}" style="position: absolute; top: 35px; left: 408px; width: 350px;"/>
+                            <p:inputText id="descripcionClon" value="#{controlFormula.formulaOriginal.nombresFormula}" style="position: absolute; top: 35px; left: 408px; width: 350px;" readonly="true"/>
                             <p:commandButton value="[Clonar]" actionListener="#{controlFormula.clonarFormula()}" style="position: absolute; top: 12px; left: 776px; width: 70px; height: 50px" process="@this"/>
                         </fieldset>
 
