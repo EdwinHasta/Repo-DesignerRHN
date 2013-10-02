@@ -170,7 +170,7 @@
                                             <h:outputText style="position: absolute; left: 585px; top: 87px; font-size: 12px; font-weight: bold; color: #14388B; " value="Ubicación Geográfica"/>
                                             <h:outputText style="position: absolute; left: 585px; top: 123px; font-size: 12px; font-weight: bold; color: #14388B; " value="Forma de Pago"/>
                                             <h:outputText style="position: absolute; left: 585px; top: 159px; font-size: 12px; font-weight: bold; color: #14388B; " value="S.E.T."/>
-                                            <h:outputText style="position: absolute; left: 585px; top: 194px; font-size: 12px; font-weight: bold; color: #14388B; " value="Comprobantes de Pago"/>
+                                            <h:outputText style="position: absolute; left: 585px; top: 194px; font-size: 12px; font-weight: bold; color: #14388B; " value="Comprobantes de Pago (S. Consulta)"/>
                                         </p>
 
                                         <!-- Botones Panel Central -->
@@ -462,11 +462,11 @@
 
                                         <h:outputText style="font-size: 11px; position: absolute; left: 100px; top: 25px; width: 150px; text-align: justify" value="Ingresar los parámetros por centro de costo a liquidar y fecha de liquidación."/>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 175px;" value="Generar Liquidación"/></strong>
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 90px;" value="Generar Liquidación"/></strong>
 
                                         <h:outputText style="font-size: 11px; position: absolute; left: 100px; top: 110px; width: 150px; text-align: justify" value="Ejecuta la liquidación acorde a los parametros establecidos con anterioridad."/>
 
-                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 90px;" value="Comprobantes de Pago"/></strong>
+                                        <strong><h:outputText style="font-size: 11px; color: #00F; position: absolute; left: 100px; top: 175px;" value="Comprobantes de Pago"/></strong>
 
                                         <h:outputText style="font-size: 11px; position: absolute; left: 100px; top: 195px; width: 150px; text-align: justify" value="Muestra los resultados de la liquidación por empleado."/>
 
@@ -485,17 +485,17 @@
 
                                         <p:commandButton value=" " id="btnParametrosLiquidacion" style="position: absolute; left: 10px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_parametros.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="btnComprobantesPago" style="position: absolute; left: 10px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_comprobante.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnGenerarLiquidacion" style="position: absolute; left: 10px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_liquidar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="btnGenerarLiquidacion" style="position: absolute; left: 10px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/nom_liquidar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnComprobantesPago" style="position: absolute; left: 10px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/nom_comprobante.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
                                         <hr style="float: left; height: 250px; position: absolute; left: 270px; top: 0px;"/>
 
                                         <p:commandButton value=" " id="btnBorrarLiquidacion" style="position: absolute; left: 275px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_borrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="btnCerrarLiquidacion" style="position: absolute; left: 275px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/reportesboton.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnCerrarLiquidacion" style="position: absolute; left: 275px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="btnReportesNomina" style="position: absolute; left: 275px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteNomina"/>
+                                        <p:commandButton value=" " id="btnReportesNomina" style="position: absolute; left: 275px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteNomina"/>
 
                                     </fieldset>
 
