@@ -19,7 +19,7 @@ public class PersistenciaVigenciasFormales implements PersistenciaVigenciasForma
     @Override
      public void crear(VigenciasFormales vigenciasFormales) {
         try {
-            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
+//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(vigenciasFormales);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaVigenciasFormales.crear");

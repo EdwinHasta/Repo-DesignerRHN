@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "VigenciasNoFormales.findAll", query = "SELECT v FROM VigenciasNoFormales v")})
 public class VigenciasNoFormales implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -99,7 +100,13 @@ public class VigenciasNoFormales implements Serializable {
     }
 
     public String getTitulo() {
-        return titulo;
+        if (titulo == null) {
+            titulo = " ";
+            return titulo;
+        } else {
+            return titulo.toUpperCase();
+
+        }
     }
 
     public void setTitulo(String titulo) {
@@ -115,7 +122,13 @@ public class VigenciasNoFormales implements Serializable {
     }
 
     public String getObservacion() {
-        return observacion;
+        if (observacion == null) {
+            observacion = " ";
+            return observacion;
+        } else {
+            return observacion.toUpperCase();
+
+        }
     }
 
     public void setObservacion(String observacion) {
@@ -186,5 +199,4 @@ public class VigenciasNoFormales implements Serializable {
     public String toString() {
         return "Entidades.VigenciasNoFormales[ secuencia=" + secuencia + " ]";
     }
-    
 }
