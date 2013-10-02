@@ -232,7 +232,7 @@ public class Direcciones implements Serializable {
     }
 
     public void setInterior(String interior) {
-        this.interior = interior;
+        this.interior = interior.toUpperCase();
     }
 
     public String getZonadir() {

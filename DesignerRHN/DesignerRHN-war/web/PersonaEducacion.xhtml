@@ -16,7 +16,7 @@
 
                         <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlPersonaEducacion.persona.nombreCompleto}"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 645px; height: 320px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 645px; height: 160px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Educacion del empleado</strong></legend>
 
                             <p:dataTable id="datosVigenciasFormalesPersona" var="vigenciasFormales" value="#{controlPersonaEducacion.listaVigenciasFormales}"
@@ -214,7 +214,7 @@
                             </p:dataTable>  
                         </fieldset> 
                         
-                        <fieldset style="position: absolute; left: 10px; top: 245px; font-size: 10px; width: 645px; height: 220px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 285px; font-size: 10px; width: 645px; height: 160px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Educacion No Formal del Empleado</strong></legend>
 
                             <p:dataTable id="datosVigenciasNoFormalesPersona" var="vigenciasNoFormales" value="#{controlPersonaEducacion.listaVigenciasNoFormales}"
@@ -267,9 +267,9 @@
 
                                 <p:column headerText="Titulo" sortBy="#{vigenciasNoFormales.titulo}" filterBy="#{vigenciasNoFormales.titulo}" filterMatchMode="contains" id="pETitulosNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.titulo}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.titulo}"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{vigenciasNoFormales.titulo}" id="editarTitulo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                            <p:inputText value="#{vigenciasNoFormales.titulo}" id="editarTituloNF" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPersonaEducacion.cambiarIndiceNF(indiceNF, 2)}" />
                                             </p:inputText>
                                         </f:facet>  
@@ -383,14 +383,14 @@
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVigenciaFormal.show()" update=":formularioDialogos:nuevaVigenciaFormal" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Formal" /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.chiste()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia " /> 
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.borrarVigenciaFormal()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Formal" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia " />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.duplicarVF()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Formal" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia " />
 
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaEducacion.verificarRastro()}" process="@this"/>  
@@ -398,9 +398,9 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 522px; top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasFormalesPersona" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPersonaEducacion.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 605px; top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPersonaEducacion.salir()}" action="nomina" process="@this" /> 
+                        <p:commandButton style="position: absolute; left: 522px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasFormalesPersona, :form:datosVigenciasNoFormalesPersona " process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPersonaEducacion.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 605px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPersonaEducacion.salir()}" action="nomina" process="@this" /> 
 
                     </p:panel> 
                 </h:form>
@@ -427,7 +427,7 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnNuevoTipoEducacion" icon="ui-icon-search" process="@this"  actionListener="#{controlPersonaEducacion.asignarIndex(indice, 0, 1)}"/>   
                             <p:watermark for="nuevoTipoEducacion" value="Tipo Educacion" />
-
+                            
                             <strong><h:outputText value="Profesion:  "  style="font-size: 12px; position: absolute; top: 145px" /></strong>
                             <p:inputText id="nuevaProfesion" value="#{controlPersonaEducacion.nuevaVigenciaFormal.profesion.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletar(1, 'PROFESION')}" />
@@ -493,7 +493,7 @@
                         </p:panel>
                     </p:dialog>
                     
-                    <p:dialog id="NuevoRegistroVigenciaNoFormal" header="Nuevo Registro" widgetVar="NuevoRegistroVigenciaNoFormal" closable="false" resizable="false"  draggable="false" modal="true" height="480" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroVigenciaNoFormal" header="Nuevo Registro" widgetVar="NuevoRegistroVigenciaNoFormal" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar nueva información de Vigencia No Formal" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -509,13 +509,13 @@
                             <p:inputText id="nuevoCursoNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.curso.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletar(1, 'CURSO')}" />
                                 <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('CURSO', controlPersonaEducacion.nuevaVigenciaNoFormal.curso.nombre, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indice, 0, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 0, 1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnNuevoCurso" icon="ui-icon-search" process="@this"  actionListener="#{controlPersonaEducacion.asignarIndexNF(indice, 0, 1)}"/>   
                             <p:watermark for="nuevoCursoNF" value="Curso" />
 
                             <strong><h:outputText value="Titulo:  "  style="font-size: 12px; position: absolute; top: 145px" /></strong>
-                            <p:inputText id="nuevoTituloNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.titulo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 305px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoTituloNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.titulo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="nuevoTituloNF"/>
                             </p:inputText>
                             <p:watermark for="nuevoTituloNF" value="Nuevo Titulo" />
@@ -524,19 +524,19 @@
                             <p:inputText id="nuevaInstitucionNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.institucion.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletarNF(1, 'INSTITUCIONNF')}" />
                                 <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('INSTITUCIONNF', controlPersonaEducacion.nuevaVigenciaNoFormal.institucion.descripcion, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indice, 2, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 2, 1)}" />
                             </p:inputText>
                             <p:watermark for="nuevaInstitucionNF" value="Institucion" />
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 185px;  " id="btnNuevaInstitucionNF" actionListener="#{controlPersonaEducacion.asignarIndexNF(indice, 2, 1)}" icon="ui-icon-search" process="@this" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 185px;  " id="btnNuevaInstitucionNF" actionListener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 2, 1)}" icon="ui-icon-search" process="@this" />
 
                             <strong><h:outputText value="Adiestramiento " style="font-size: 12px; position: absolute; top: 225px" /></strong>
                             <p:inputText id="nuevoAdiestramientoNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.adiestramientonf.desccripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletarNF(1, 'ADIESTRAMIENTONF')}" />
                                 <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('ADIESTRAMIENTONF', controlPersonaEducacion.nuevaVigenciaNoFormal.adiestramientonf.desccripcion, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indice, 3, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 3, 1)}" />
                             </p:inputText>
                             <p:watermark for="nuevoAdiestramientoNF" value="Adiestramiento" />
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnNuevoAdiestramientoNF" actionListener="#{controlPersonaEducacion.asignarIndexNF(indice, 3, 1)}" icon="ui-icon-search" process="@this" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnNuevoAdiestramientoNF" actionListener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 3, 1)}" icon="ui-icon-search" process="@this" />
 
                             <strong><h:outputText value="Valoracion: "  style="font-size: 12px; position: absolute; top: 265px" /></strong>
                             <p:inputText id="nuevaCalificacionNF" value="#{controlPersonaEducacion.nuevaVigenciaNoFormal.calificacionobtenida}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
@@ -550,13 +550,27 @@
                             </p:inputText>
                             <p:watermark for="nuevaObservacionNF" value="Observacion" />
 
-                            <p:commandButton id="limpiarVNF" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 460px;" actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaNoFormal()}" update="nuevaVigenciaNoFormal" process="@this"/>
-                            <p:commandButton id="agregarVNF" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 460px;"  process="@this" actionListener="#{controlPersonaEducacion.agregarNuevaVigenciaNoFormal()}"/>
-                            <p:commandButton id="cancelarVNF" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 460px;" actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaNoFormal()}" update="nuevaVigenciaNoFormal" onclick="NuevoRegistroVigenciaNoFormal.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarVNF" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 370px;" actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaNoFormal()}" update="nuevaVigenciaNoFormal" process="@this"/>
+                            <p:commandButton id="agregarVNF" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 370px;"  process="@this" actionListener="#{controlPersonaEducacion.agregarNuevaVigenciaNoFormal()}"/>
+                            <p:commandButton id="cancelarVNF" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 370px;" actionListener="#{controlPersonaEducacion.limpiarNuevaVigenciaNoFormal()}" update="nuevaVigenciaNoFormal" onclick="NuevoRegistroVigenciaNoFormal.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="validacionNuevaVigenciaNoFormal" header="ATENCIÓN...!" widgetVar="validacionNuevaVigenciaNoFormal"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="validacionNuevaVigenciaFormal" header="ATENCIÓN...!" widgetVar="validacionNuevaVigenciaFormal"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar una nueva Vigencia Formal es necesario adicionar: #{controlPersonaEducacion.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaVigenciaFormal.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPersonaEducacion.guardarCambiosVigenciasFormales()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                     <p:dialog id="validacionNuevaVigenciaNoFormal" header="ATENCIÓN...!" widgetVar="validacionNuevaVigenciaNoFormal"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="Para agregar una nueva Vigencia No Formal es necesario adicionar: #{controlPersonaEducacion.mensajeValidacionNF}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="validacionNuevaVigenciaNoFormal.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
@@ -565,7 +579,7 @@
                     <p:dialog id="confirmarGuardarNF" header="ATENCIÓN...!" widgetVar="confirmarGuardarNF"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardarNF.hide();" actionListener="#{controlPersonaEducacion.guardarCambiosVigenciasNoFormales()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarGuardarNF.hide();" actionListener="#{controlPersonaEducacion.guardarCambiosVigenciasFormales()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                         <p:commandButton value="No" onclick="confirmarGuardarNF.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardarNF.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
@@ -616,8 +630,8 @@
 
                             <strong><h:outputText value="Adiestramiento: " style="font-size: 12px; position: absolute; top: 225px" /></strong>
                             <p:inputText id="duplicarAdiestramiento" value="#{controlPersonaEducacion.duplicarVigenciaFormal.adiestramientof.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletar(2, 'INSTITUCION')}" />
-                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicado('INSTITUCION', controlPersonaEducacion.duplicarVigenciaFormal.adiestramientof.descripcion, 2)}" />
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletar(2, 'ADIESTRAMIENTOF')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicado('ADIESTRAMIENTOF', controlPersonaEducacion.duplicarVigenciaFormal.adiestramientof.descripcion, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndex(indice, 3, 2)}" />
                             </p:inputText>
                             <p:watermark for="duplicarAdiestramiento" value="Adiestramiento" />
@@ -660,6 +674,73 @@
                             <p:commandButton id="cancelarDuplicadoVigenciaFormal" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 460px;" actionListener="#{controlPersonaEducacion.limpiarduplicarVigenciaFormal()}" update="duplicarVigenciaFormal" onclick="DuplicarRegistroVigenciaFormal.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
+                    
+                    <!--DIALOGO DUPLICAR-->
+
+                    <p:dialog id="DuplicarRegistroVigenciaNoFormal" header="Duplicar Registro" widgetVar="DuplicarRegistroVigenciaNoFormal" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información de la Vigencia No Formal" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVigenciaNoFormal" style="border: none;">
+
+                            <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <p:calendar  id="duplicarFechaNF" style="font-size: 10px; position: absolute; top: 65px; left: 200px;" value="#{controlPersonaEducacion.duplicarVigenciaNoFormal.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaNF"/>
+                                <p:ajax event="change" update="duplicarFechaNF"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Curso: " style="font-size: 12px; position: absolute; top: 105px" /></strong>
+                            <p:inputText id="duplicarCursoNF" value="#{controlPersonaEducacion.duplicarVigenciaNoFormal.curso.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletarNF(2, 'CURSO')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('CURSO', controlPersonaEducacion.duplicarVigenciaNoFormal.curso.nombre, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 0, 2)}" />
+                            </p:inputText>
+                            <p:watermark for="duplicarCursoNF" value="Curso" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnDuplicarCursoNF" icon="ui-icon-search" process="@this"  actionListener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 0, 2)}"/>   
+
+                            <strong><h:outputText value="Título: " style="font-size: 12px; position: absolute; top: 145px" /></strong>
+                            <p:inputText id="duplicarTituloNF" value="#{controlPersonaEducacion.duplicarVigenciaNoFormal.titulo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="duplicarTituloNF"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarTituloNF" value="Titulo" />
+                            
+                            <strong><h:outputText value="Instituciones: " style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                            <p:inputText id="duplicarInstitucionNF" value="#{controlPersonaEducacion.duplicarVigenciaNoFormal.institucion.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletarNF(2, 'INSTITUCIONNF')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('INSTITUCIONNF', controlPersonaEducacion.duplicarVigenciaNoFormal.institucion.descripcion, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 2, 2)}" />
+                            </p:inputText>
+                            <p:watermark for="duplicarInstitucionNF" value="Institucion" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 185px;  " id="btnDuplicarInstitucionNF" icon="ui-icon-search" process="@this"  actionListener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 2, 2)}"/>
+
+                            <strong><h:outputText value="Adiestramiento: " style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                            <p:inputText id="duplicarAdiestramientoNF" value="#{controlPersonaEducacion.duplicarVigenciaNoFormal.adiestramientonf.desccripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlPersonaEducacion.valoresBackupAutocompletarNF(2, 'ADIESTRAMIENTONF')}" />
+                                <p:ajax event="change" listener="#{controlPersonaEducacion.autocompletarNuevoyDuplicadoNF('ADIESTRAMIENTONF', controlPersonaEducacion.duplicarVigenciaNoFormal.adiestramientonf.desccripcion, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlPersonaEducacion.asignarIndexNF(indice, 3, 2)}" />
+                            </p:inputText>
+                            <p:watermark for="duplicarAdiestramientoNF" value="Adiestramiento" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnDuplicarAdiestramientoNF" icon="ui-icon-search" process="@this"  actionListener="#{controlPersonaEducacion.asignarIndexNF(indiceNF, 3, 2)}"/>
+
+                            <strong><h:outputText value="Valoracion: " style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                            <p:inputText id="duplicarCalificacionNF" value="#{controlPersonaEducacion.duplicarVigenciaNoFormal.calificacionobtenida}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="duplicarCalificacionNF"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarCalificacionNF" value="Calificacion" />
+
+                            <strong><h:outputText value="Observacion: " style="font-size: 12px; position: absolute; top: 305px" /></strong>
+                            <p:inputText id="duplicarObservacionNF" value="#{controlPersonaEducacion.duplicarVigenciaNoFormal.observacion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 305px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="duplicarObservacionNF"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarObservacionNF" value="Observacion" />
+
+                            <p:commandButton id="limpiarDuplicadoVigenciaNoFormal" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 370px;" actionListener="#{controlPersonaEducacion.limpiarduplicarVigenciaNoFormal()}" update="duplicarVigenciaNoFormal" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVigenciaNoFormal" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 370px;"  process="@this" actionListener="#{controlPersonaEducacion.confirmarDuplicarNF()}" onclick="DuplicarRegistroVigenciaNoFormal.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoVigenciaNoFormal" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 370px;" actionListener="#{controlPersonaEducacion.limpiarduplicarVigenciaNoFormal()}" update="duplicarVigenciaNoFormal" onclick="DuplicarRegistroVigenciaNoFormal.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
 
 
                     <!-- L.O.V TIPOEDUCACION -->
@@ -675,7 +756,7 @@
                             <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarTiposEducaciones()}" process="@this" onstart="LOVTiposEducaciones.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Nivel de Educacion: "  style="position: absolute; left: 27px; top: 15px"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVTiposEducaciones.filter();" style="width:100px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVTiposEducaciones.filter();" style="width:100px; position: relative; left: 65px;" />  
                             </f:facet>
 
                             <p:column filterBy="#{tiposEducaciones.nombre}" width="150" filterMatchMode="contains" > 
@@ -1045,6 +1126,58 @@
                     </p:dialog>
 
                 </h:form>
+                
+                 <!-- DIALOGOS RASTROS NO FORMALES -->
+                 <h:form>
+                    <p:dialog id="confirmarRastroNF" header="ATENCIÓN" widgetVar="confirmarRastroNF"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'VIGENCIASNOFORMALES' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPersonaEducacion.secRegistro, 'VigenciasFormales', 'vigenciasformales')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+
+                    </p:dialog>
+
+
+                    <p:dialog id="confirmarRastroHistoricoNF" header="ATENCIÓN" widgetVar="confirmarRastroHistoricoNF"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'VIGENCIASNOFORMALES' tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasFormales', 'vigenciasformales')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistoricoNF" header="ATENCIÓN" widgetVar="errorRastroHistoricoNF"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastroNF" header="ATENCIÓN" widgetVar="errorRegistroRastroNF"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastroNF" header="ATENCIÓN" widgetVar="errorTablaConRastroNF"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPersonaEducacion.secRegistro, 'VigenciasFormales', 'vigenciasformales')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastroNF" header="ATENCIÓN" widgetVar="errorTablaSinRastroNF"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistroNF" header="ATENCIÓN" widgetVar="seleccionarRegistroNF"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDBNF" header="ATENCIÓN" widgetVar="errorObjetosDBNF"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'VIGENCIASNOFORMALES' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                </h:form>
 
                 <h:form id="formExportar">
                     <p:dataTable id="datosVigenciasFormalesExportar" var="vFormales" style="visibility: hidden; display: none;"                           
@@ -1142,6 +1275,15 @@
                         </p:column>
 
                     </p:dataTable>
+                    
+                    <!-- Dialogo para ver en qué tabla se quiere insertar -->
+                    <p:dialog id="elegirTabla" header="ATENCIÓN" widgetVar="elegirTabla"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="¿En qué tabla desea añadir un registro?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Vigencias Formales" onclick="elegirTabla.hide();" actionListener="#{controlPersonaEducacion.dialogoVigenciasFormales()}" style="position: absolute; top: 60px; left: 20px" process="@this" />
+                        <p:commandButton value="Vigencias No Formales" onclick="elegirTabla.hide();" actionListener="#{controlPersonaEducacion.dialogoVigenciasNoFormales()}" style="position: absolute; top: 50px; left: 220px" process="@this" />
+
+                    </p:dialog>
                 </h:form>
 
 

@@ -15,12 +15,12 @@
 
                         <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlPerTelefonos.persona.nombreCompleto}"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 645px; height: 320px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 840px; height: 320px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Telefonos donde ubicar al empleado</strong></legend>
 
                             <p:dataTable id="datosTelefonosPersona" var="telefono" value="#{controlPerTelefonos.listaTelefonos}"
                                          rowKey="#{telefono.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         scrollable="true" scrollHeight="200" filteredValue="#{controlPerTelefonos.filtradosListaTelefonos}" 
+                                         paginator="true" rows="7" filteredValue="#{controlPerTelefonos.filtradosListaTelefonos}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -153,7 +153,7 @@
                 </h:form>
 
                 <h:form id="formularioDialogos">
-                    <p:dialog id="NuevoRegistroTelefono" header="Nuevo Registro" widgetVar="NuevoRegistroTelefono" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroTelefono" header="Nuevo Registro" widgetVar="NuevoRegistroTelefono" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar nueva información de Telefono " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -189,9 +189,9 @@
                             <p:watermark for="nuevaCiudad" value="Ciudad" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 185px;  " id="btnNuevaCiudad" actionListener="#{controlPerTelefonos.asignarIndex(indice, 1, 1)}" icon="ui-icon-search" process="@this" />
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarNuevoTelefono()}" update="nuevoTelefono" process="@this"/>
-                            <p:commandButton id="agregarT" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  process="@this" actionListener="#{controlPerTelefonos.agregarNuevoTelefono()}"/>
-                            <p:commandButton id="cancelarT" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarNuevoTelefono()}" update="nuevoTelefono" onclick="NuevoRegistroTelefono.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlPerTelefonos.limpiarNuevoTelefono()}" update="nuevoTelefono" process="@this"/>
+                            <p:commandButton id="agregarT" value="Agregar" style="font-size: 11px; position: absolute; left: 170px; top: 270px;"  process="@this" actionListener="#{controlPerTelefonos.agregarNuevoTelefono()}"/>
+                            <p:commandButton id="cancelarT" value="Cancelar" style="font-size: 11px; position: absolute; left: 240px; top: 270px;" actionListener="#{controlPerTelefonos.limpiarNuevoTelefono()}" update="nuevoTelefono" onclick="NuevoRegistroTelefono.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                     
@@ -209,9 +209,19 @@
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
                     
+                    <!-- Ya Existe Tipo Telefono -->
+                    
+                    <p:dialog id="existeTipoTelefono" header="ATENCIÓN" widgetVar="existeTipoTelefono"  resizable="false" draggable="false" modal="true" height="100" width="400px" style="font-size: 12px" closable ="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La Fecha y el Tipo de Telefono se Repiten" style="position: absolute; left: 70px; top: 10px; width: 300px; font-weight:bold;" />
+                        <p:commandButton value="Aceptar" onclick="existeTipoTelefono.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+
+                    
                     <!--DIALOGO DUPLICAR-->
 
-                    <p:dialog id="DuplicarRegistroTelefono" header="Duplicar Registro" widgetVar="DuplicarRegistroTelefono" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroTelefono" header="Duplicar Registro" widgetVar="DuplicarRegistroTelefono" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar información del Telefono " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -251,8 +261,8 @@
 
 
                             <p:commandButton id="limpiarDuplicadoTelefono" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarduplicarTelefono()}" update="duplicarTelefono" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoTelefono" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  process="@this" actionListener="#{controlPerTelefonos.confirmarDuplicar()}" onclick="DuplicarRegistroTelefono.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoTelefono" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarduplicarTelefono()}" update="duplicarTelefono" onclick="DuplicarRegistroTelefono.hide();"  process="@this"/>
+                            <p:commandButton id="agregarDuplicadoTelefono" value="Agregar" style="font-size: 11px; position: absolute; left: 170px; top: 390px;"  process="@this" actionListener="#{controlPerTelefonos.confirmarDuplicar()}" />
+                            <p:commandButton id="cancelarDuplicadoTelefono" value="Cancelar" style="font-size: 11px; position: absolute; left: 240px; top: 390px;" actionListener="#{controlPerTelefonos.limpiarduplicarTelefono()}" update="duplicarTelefono" onclick="DuplicarRegistroTelefono.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -394,6 +404,8 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'TELEFONOS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                      <!--HotKey-->
+                     <p:hotkey bind="ctrl+f11" actionListener="#{controlPerTelefonos.activarCtrlF11()}" process="@this"/>
 
                 </h:form>
 

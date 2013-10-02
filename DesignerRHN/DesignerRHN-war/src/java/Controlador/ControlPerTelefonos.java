@@ -320,6 +320,7 @@ public class ControlPerTelefonos implements Serializable {
                 duplicarTelefono.setTipotelefono(listaTelefonos.get(index).getTipotelefono());
                 duplicarTelefono.setNumerotelefono(listaTelefonos.get(index).getNumerotelefono());
                 duplicarTelefono.setCiudad(listaTelefonos.get(index).getCiudad());
+                duplicarTelefono.setPersona(listaTelefonos.get(index).getPersona());
             }
             if (tipoLista == 1) {
                 duplicarTelefono.setSecuencia(l);
@@ -327,6 +328,7 @@ public class ControlPerTelefonos implements Serializable {
                 duplicarTelefono.setTipotelefono(filtradosListaTelefonos.get(index).getTipotelefono());
                 duplicarTelefono.setNumerotelefono(filtradosListaTelefonos.get(index).getNumerotelefono());
                 duplicarTelefono.setCiudad(filtradosListaTelefonos.get(index).getCiudad());
+                duplicarTelefono.setPersona(filtradosListaTelefonos.get(index).getPersona());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -339,9 +341,28 @@ public class ControlPerTelefonos implements Serializable {
 
     public void confirmarDuplicar() {
 
+        RequestContext context = RequestContext.getCurrentInstance();
+        int pasa= 0;
+        
+         for (int i = 0; i < listaTelefonos.size(); i++) {
+            if ((listaTelefonos.get(i).getTipotelefono().getNombre().equals(duplicarTelefono.getTipotelefono().getNombre())) && (!(listaTelefonos.get(i).getFechavigencia().before(duplicarTelefono.getFechavigencia())) && !(duplicarTelefono.getFechavigencia().before(listaTelefonos.get(i).getFechavigencia())))){ 
+                System.out.println("Entro al IF Tipo Telefono");
+                context.update("formularioDialogos:existeTipoTelefono");
+                context.execute("existeTipoTelefono.show()");
+                pasa++;
+            } if(pasa != 0){
+                    context.update("formularioDialogos:validacionNuevoTelefono");
+                    context.execute("validacionNuevoTelefono.show()");
+                    
+                }
+        }
+          
+        
+            if (pasa == 0){
+        
         listaTelefonos.add(duplicarTelefono);
         listaTelefonosCrear.add(duplicarTelefono);
-        RequestContext context = RequestContext.getCurrentInstance();
+        
         context.update("form:datosTelefonosPersona");
         index = -1;
         secRegistro = null;
@@ -368,6 +389,9 @@ public class ControlPerTelefonos implements Serializable {
         }
         duplicarTelefono = new Telefonos();
     }
+       context.update("formularioDialogos:DuplicarRegistroTelefono");
+        context.execute("DuplicarRegistroTelefono.hide()"); 
+        }
     //LIMPIAR DUPLICAR
 
     public void limpiarduplicarTelefono() {
@@ -442,8 +466,12 @@ public class ControlPerTelefonos implements Serializable {
 
     public void agregarNuevoTelefono() {
         int pasa = 0;
+        int pasaA = 0;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
+        
+        
+        
         if (nuevoTelefono.getFechavigencia() == null) {
             System.out.println("Entro a Fecha");
             mensajeValidacion = " * Fecha \n";
@@ -459,7 +487,22 @@ public class ControlPerTelefonos implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Numero de Telefono\n";
             pasa++;
         }
-        if (pasa == 0) {
+         for (int i = 0; i < listaTelefonos.size(); i++) {
+            if ((listaTelefonos.get(i).getTipotelefono().getNombre().equals(nuevoTelefono.getTipotelefono().getNombre())) && (!(listaTelefonos.get(i).getFechavigencia().before(nuevoTelefono.getFechavigencia())) && !(nuevoTelefono.getFechavigencia().before(listaTelefonos.get(i).getFechavigencia())))){ 
+                System.out.println("Entro al IF Tipo Telefono");
+                context.update("formularioDialogos:existeTipoTelefono");
+                context.execute("existeTipoTelefono.show()");
+                pasaA++;
+            } if(pasa != 0){
+                    context.update("formularioDialogos:validacionNuevoTelefono");
+                    context.execute("validacionNuevoTelefono.show()");
+                    
+                }
+        }
+         
+         
+        
+        if (pasa == 0 && pasaA == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 //System.out.println("Desactivar");
@@ -501,8 +544,8 @@ public class ControlPerTelefonos implements Serializable {
             index = -1;
             secRegistro = null;
         } else {
-            context.update("formularioDialogos:validacionNuevoTelefono");
-            context.execute("validacionNuevoTelefono.show()");
+      //      context.update("formularioDialogos:validacionNuevoTelefono");
+        //    context.execute("validacionNuevoTelefono.show()");
         }
     }
 
