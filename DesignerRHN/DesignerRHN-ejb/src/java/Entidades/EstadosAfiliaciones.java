@@ -29,10 +29,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "ESTADOSAFILIACIONES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Estadosafiliaciones.findAll", query = "SELECT e FROM Estadosafiliaciones e"),
-    @NamedQuery(name = "Estadosafiliaciones.findBySecuencia", query = "SELECT e FROM Estadosafiliaciones e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "Estadosafiliaciones.findByCodigo", query = "SELECT e FROM Estadosafiliaciones e WHERE e.codigo = :codigo"),
-    @NamedQuery(name = "Estadosafiliaciones.findByNombre", query = "SELECT e FROM Estadosafiliaciones e WHERE e.nombre = :nombre")})
+    @NamedQuery(name = "EstadosAfiliaciones.findAll", query = "SELECT e FROM EstadosAfiliaciones e"),
+    @NamedQuery(name = "EstadosAfiliaciones.findBySecuencia", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.secuencia = :secuencia"),
+    @NamedQuery(name = "EstadosAfiliaciones.findByCodigo", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.codigo = :codigo"),
+    @NamedQuery(name = "EstadosAfiliaciones.findByNombre", query = "SELECT e FROM EstadosAfiliaciones e WHERE e.nombre = :nombre")})
 public class EstadosAfiliaciones implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -111,7 +111,7 @@ public class EstadosAfiliaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Estadosafiliaciones[ secuencia=" + secuencia + " ]";
+        return "Entidades.EstadosAfiliaciones[ secuencia=" + secuencia + " ]";
     }
     
 }
