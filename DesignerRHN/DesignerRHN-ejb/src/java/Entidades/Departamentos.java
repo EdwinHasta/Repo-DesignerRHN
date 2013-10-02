@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import Administrar.AdministrarDepartamentos;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -82,6 +83,9 @@ public class Departamentos implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = (" ");
+        }
         return nombre;
     }
 

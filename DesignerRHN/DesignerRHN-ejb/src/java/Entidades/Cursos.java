@@ -89,7 +89,12 @@ public class Cursos implements Serializable {
     }
 
     public String getNombre() {
-        return nombre;
+        if (nombre == null) {
+            nombre = " ";
+            return nombre;
+        } else {
+            return nombre.toUpperCase();
+        }
     }
 
     public void setNombre(String nombre) {

@@ -47,7 +47,6 @@ public class TiposTelefonos implements Serializable {
     private BigInteger codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipotelefono")
@@ -90,7 +89,7 @@ public class TiposTelefonos implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     @XmlTransient
