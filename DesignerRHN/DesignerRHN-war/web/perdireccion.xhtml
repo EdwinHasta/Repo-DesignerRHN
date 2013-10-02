@@ -72,18 +72,23 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Descripcion Ubicacion Principal" sortBy="#{direccion.ppal}" filterBy="#{direccion.ppal}" filterMatchMode="contains" id="dDescripcionUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column sortBy="#{direccion.ppal}" filterBy="#{direccion.ppal}" filterMatchMode="contains" id="dDescripcionUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="ppalHead" value="Descripcion " />
+                                        <p:tooltip for="ppalHead" value="Descripcion Ubicacion Principal"/>
+                                    </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{direccion.ppal}" style="text-transform: uppercase " /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.ppal}" id="editarDescripcionUbicacionPrincipal" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.ppal)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Descripcion Ubicacion Principal" />
+                                        <h:outputText value="Descripcion" />
                                     </f:facet>
                                 </p:column> 
 
@@ -109,33 +114,43 @@
                                     </f:facet>
                                 </p:column> 
 
-                                <p:column headerText="Descripcion Ubicacion Secundaria" sortBy="#{direccion.secundario}" filterBy="#{direccion.secundario}" filterMatchMode="contains" id="dDescripcionUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column sortBy="#{direccion.secundario}" filterBy="#{direccion.secundario}" filterMatchMode="contains" id="dDescripcionUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="secundarioHead" value="Descripcion " />
+                                        <p:tooltip for="secundarioHead" value="Descripcion Ubicacion Secundaria"/>
+                                    </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{direccion.secundario}" style="text-transform: uppercase "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.secundario}" id="editarDescripcionUbicacionSecundaria" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 4)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.secundario)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Descripcion Ubicacion Secundaria" />
+                                        <h:outputText value="Descripcion" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Barrio - Informacion Adicional" sortBy="#{direccion.interior}" filterBy="#{direccion.interior}" filterMatchMode="contains" id="dInterior" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  sortBy="#{direccion.interior}" filterBy="#{direccion.interior}" filterMatchMode="contains" id="dInterior" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="interiorHead" value="Barrio" />
+                                        <p:tooltip for="interiorHead" value="Barrio - Informacion Adicional"/>
+                                    </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{direccion.interior}" style="text-transform: uppercase "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.interior}" id="editarInterior" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 5)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.interior)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Barrio - Informacion Adicional" />
+                                        <h:outputText value="Barrio" />
                                     </f:facet>
                                 </p:column>
 
@@ -199,6 +214,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.direccionalternativa}" id="editarDireccionAlternativa" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 9)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.direccionalternativa)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -624,7 +640,7 @@
 
                         <p:column headerText="Ubicacion_Principal">                                  
                             <f:facet name="header"><h:outputText value="Ubicacion Principal"/> </f:facet> 
-                            <h:outputText value="#{direccion.tipoppal}" />
+                            <h:outputText value="#{direccion.estadoTipoPpal}" />
                         </p:column>  
 
                         <p:column headerText="Descripcion_Ubicacion_Principal">      
@@ -634,12 +650,12 @@
 
                         <p:column headerText="Ubicacion_Secundaria">      
                             <f:facet name="header"><h:outputText value="Ubicacion Secundaria"/></f:facet>
-                            <h:outputText value="#{direccion.tiposecundario}" />
+                            <h:outputText value="#{direccion.estadoTipoSecundario}" />
                         </p:column>
 
                         <p:column headerText="Descripcion_Ubicacion_Secundaria">      
-                            <f:facet name="header"><h:outputText value="Ubicacion Secundaria"/></f:facet>
-                            <h:outputText value="#{direccion.tiposecundario}" />
+                            <f:facet name="header"><h:outputText value="Descripcion Ubicacion Secundaria"/></f:facet>
+                            <h:outputText value="#{direccion.secundario}" />
                         </p:column>
 
                         <p:column headerText="Barrio">      
@@ -654,12 +670,12 @@
 
                         <p:column headerText="Tipo_Vivienda">      
                             <f:facet name="header"><h:outputText value="Tipo Vivienda"/></f:facet>
-                            <h:outputText value="#{direccion.tipovivienda}" />
+                            <h:outputText value="#{direccion.estadoTipoVivienda}" />
                         </p:column>
 
                         <p:column headerText="Hipoteca">      
                             <f:facet name="header"><h:outputText value="Hipoteca"/></f:facet>
-                            <h:outputText value="#{direccion.hipoteca}" />
+                            <h:outputText value="#{direccion.estadoHipoteca}" />
                         </p:column>
 
                         <p:column headerText="Direccion_Alternativa">      

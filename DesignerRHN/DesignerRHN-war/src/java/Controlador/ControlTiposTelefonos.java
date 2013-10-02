@@ -4,7 +4,6 @@
  */
 package Controlador;
 
-import Administrar.AdministrarTiposTelefonos;
 import Entidades.TiposTelefonos;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
@@ -193,8 +192,10 @@ public class ControlTiposTelefonos implements Serializable{
     //CREAR TIPO TELEFONO
     public void agregarNuevoTipoTelefono() {
         int pasa = 0;
+        int pasaA = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
+         
         if (nuevoTipoTelefono.getNombre().equals(" ") || nuevoTipoTelefono.getNombre().equals("")) {
             mensajeValidacion = mensajeValidacion + " * Nombre de Tipo de Telefono \n";
             pasa++;
@@ -202,15 +203,48 @@ public class ControlTiposTelefonos implements Serializable{
         if (nuevoTipoTelefono.getCodigo() == null) {
             mensajeValidacion = mensajeValidacion + " * Codigo \n";
             pasa++;
-        } 
-        System.out.println("Valor Para: " + pasa);
-        System.out.println("Valor Nombre: " + nuevoTipoTelefono.getNombre());
-        System.out.println("Mensaje Validacion: " + mensajeValidacion);
+        }
+        System.out.println("Lista Tipos Telefonos tiene: " + listaTiposTelefonos.size());
+         
+        for (int i = 0; i < listaTiposTelefonos.size(); i++) {
+            System.out.println("Nombres: " + listaTiposTelefonos.get(i).getNombre());
+            
+            
+            if (listaTiposTelefonos.get(i).getNombre().equals(nuevoTipoTelefono.getNombre())){ 
+                System.out.println("Entro al IF Tipo Telefono");
+                context.update("formularioDialogos:existeNombre");
+                context.execute("existeNombre.show()");
+                pasaA++;
+            } if(pasa != 0){
+                    context.update("formularioDialogos:validacionNuevoTipoTelefono");
+                    context.execute("validacionNuevoTipoTelefono.show()");
+                    
+                }
+        }
         
+        for (int i = 0; i < listaTiposTelefonos.size(); i++) {
+            System.out.println("Codigos: " + listaTiposTelefonos.get(i).getCodigo());
+            if (listaTiposTelefonos.get(i).getCodigo().compareTo(nuevoTipoTelefono.getCodigo())== 0){ 
+                System.out.println("Entro al IF Tipo Telefono");
+                context.update("formularioDialogos:existeCodigo");
+                context.execute("existeCodigo.show()");
+                pasaA++;
+            } if(pasa != 0){
+                    context.update("formularioDialogos:validacionNuevoTipoTelefono");
+                    context.execute("validacionNuevoTipoTelefono.show()");
+                    
+                }
+        }
         
-        if (pasa == 0) {
+        if(nuevoTipoTelefono.getNombre().length()>20){
+            context.update("formularioDialogos:sobrepasaCaracteres");
+            context.execute("sobrepasaCaracteres.show()");
+            pasa++;
+        }
+        
+        if (pasa == 0 && pasaA == 0) {
             if (bandera == 1) {
-                //CERRAR FILTRADO
+            //CERRAR FILTRADO
             System.out.println("Desactivar");
             tiposTelefonosCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposTelefonos:tiposTelefonosCodigos");
             tiposTelefonosCodigos.setFilterStyle("display: none; visibility: hidden;");
@@ -241,8 +275,8 @@ public class ControlTiposTelefonos implements Serializable{
             index = -1;
             secRegistro = null;
         } else {
-            context.update("formularioDialogos:validacionNuevoTipoTelefono");
-            context.execute("validacionNuevoTipoTelefono.show()");
+       //     context.update("formularioDialogos:validacionNuevoTipoTelefono");
+       //     context.execute("validacionNuevoTipoTelefono.show()");
         }
     }
     //LIMPIAR NUEVO REGISTRO TIPO TELEFONO
@@ -406,10 +440,30 @@ public class ControlTiposTelefonos implements Serializable{
     }
     
     public void confirmarDuplicar() {
+        
+        RequestContext context = RequestContext.getCurrentInstance();
+        int pasa= 0;
+        
+        for (int i = 0; i < listaTiposTelefonos.size(); i++) {
+            if (duplicarTipoTelefono.getNombre().equals(listaTiposTelefonos.get(i).getNombre())) {
+                System.out.println("Entro al IF");
+                context.update("formularioDialogos:existeNombre");
+                context.execute("existeNombre.show()");
+                pasa++;
+            }
+            if (duplicarTipoTelefono.getCodigo().compareTo(listaTiposTelefonos.get(i).getCodigo()) == 0) {
+                System.out.println("Entro al IF");
+                context.update("formularioDialogos:existeCodigo");
+                context.execute("existeCodigo.show()");
+                pasa++;
+        }
+        }
+        
+            if (pasa == 0){
 
         listaTiposTelefonos.add(duplicarTipoTelefono);
         listaTiposTelefonosCrear.add(duplicarTipoTelefono);
-        RequestContext context = RequestContext.getCurrentInstance();
+
         context.update("form:datosTiposTelefonos");
         index = -1;
         secRegistro = null;
@@ -431,7 +485,10 @@ public class ControlTiposTelefonos implements Serializable{
             tipoLista = 0;
         }
         duplicarTipoTelefono = new TiposTelefonos();
+    } context.update("formularioDialogos:DuplicarRegistroTipoTelefono");
+        context.execute("DuplicarRegistroTipoTelefono.hide()"); 
     }
+            
     
         public void cancelarModificacion() {
         if (bandera == 1) {
