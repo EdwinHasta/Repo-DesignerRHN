@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Procesos.findAll", query = "SELECT p FROM Procesos p")})
 public class Procesos implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
+    private List<Parametros> parametrosList;
     @OneToMany(mappedBy = "proceso")
     private Collection<ParametrosInformes> parametrosInformesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dependiente")
@@ -310,6 +313,15 @@ public class Procesos implements Serializable {
 
     public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
         this.parametrosInformesCollection = parametrosInformesCollection;
+    }
+
+    @XmlTransient
+    public List<Parametros> getParametrosList() {
+        return parametrosList;
+    }
+
+    public void setParametrosList(List<Parametros> parametrosList) {
+        this.parametrosList = parametrosList;
     }
     
 }

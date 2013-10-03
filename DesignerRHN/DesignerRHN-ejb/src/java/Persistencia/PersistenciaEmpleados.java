@@ -18,6 +18,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      * Crear empleado.
      */
+    @Override
     public void crear(Empleados empleados) {
         em.persist(empleados);
     }
@@ -25,6 +26,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      *Editar empleado. 
      */
+    @Override
     public void editar(Empleados empleados) {
         em.merge(empleados);
     }
@@ -32,6 +34,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      *Borrar empleado.
      */
+    @Override
     public void borrar(Empleados empleados) {
         em.remove(em.merge(empleados));
     }
@@ -39,6 +42,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      *Encontrar un empleado. 
      */
+    @Override
     public Empleados buscarEmpleado(BigInteger id) {
         try {
             BigInteger secuencia = new BigInteger(id.toString());
@@ -53,6 +57,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      *Encontrar todos los empleados. 
      */
+    @Override
     public List<Empleados> buscarEmpleados() {
 
         //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -65,6 +70,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         return empleadosLista;
     }
 
+    @Override
     public Empleados buscarEmpleadoSecuencia(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.secuencia = :secuencia");
@@ -77,6 +83,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public boolean verificarCodigoEmpleado_Empresa(BigInteger codigoEmpleado, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT COUNT(e) FROM Empleados e WHERE e.codigoempleado = :codigo AND e.empresa.secuencia = :secEmpresa");
@@ -93,6 +100,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public Empleados buscarEmpleadoCodigo_Empresa(BigInteger codigoEmpleado, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE AND e.empresa.secuencia = :secEmpresa");
@@ -106,6 +114,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public Empleados buscarEmpleadoTipo(BigInteger codigoEmpleado) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE");
@@ -118,6 +127,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public Empleados buscarEmpleadoCodigo(BigInteger codigoEmpleado) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE");
@@ -126,6 +136,19 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return empleado;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.buscarEmpleadoCodigo");
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Empleados> empleadosComprobantes(String usuarioBD) {
+        try {
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE EXISTS (SELECT 1 FROM Parametros p ,ParametrosInstancias pi, UsuariosInstancias ui, Usuarios u WHERE p.empleado = e.secuencia and p.secuencia = pi.parametro and pi.instancia = ui.instancia and ui.usuario = u.secuencia and u.alias = :usuarioBD)");
+            query.setParameter("usuarioBD", usuarioBD);
+            List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosComprobantes" + e);
             return null;
         }
     }

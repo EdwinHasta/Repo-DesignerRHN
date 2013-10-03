@@ -13,6 +13,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public ActualUsuario actualUsuarioBD() {
         try {
             Query query = em.createQuery("SELECT au FROM ActualUsuario au");
@@ -25,6 +26,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
         }
     }
     
+    @Override
     public String actualAliasBD() {
         try {
             String sqlQuery = "SELECT au.ALIAS FROM ActualUsuario au";

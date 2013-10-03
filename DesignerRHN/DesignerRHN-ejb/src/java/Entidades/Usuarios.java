@@ -7,6 +7,7 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")})
 public class Usuarios implements Serializable {
+    @OneToMany(mappedBy = "usuario")
+    private List<UsuariosInstancias> usuariosInstanciasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioreporta")
     private Collection<Novedades> novedadesCollection;
     @OneToMany(mappedBy = "usuarioaprueba")
@@ -168,6 +171,15 @@ public class Usuarios implements Serializable {
 
     public void setNovedadesCollection1(Collection<Novedades> novedadesCollection1) {
         this.novedadesCollection1 = novedadesCollection1;
+    }
+
+    @XmlTransient
+    public List<UsuariosInstancias> getUsuariosInstanciasList() {
+        return usuariosInstanciasList;
+    }
+
+    public void setUsuariosInstanciasList(List<UsuariosInstancias> usuariosInstanciasList) {
+        this.usuariosInstanciasList = usuariosInstanciasList;
     }
     
 }

@@ -49,6 +49,7 @@ public class ControlLegislacion implements Serializable{
     //Otros
     private boolean aceptar;
     private int index;
+    private String altoTabla;
     //modificar
     private List<Contratos> listaContratosModificar;
     private boolean guardado, guardarOk;
@@ -100,6 +101,7 @@ public class ControlLegislacion implements Serializable{
         contratoClon = new Contratos();
         contratoOriginal = new Contratos();
         permitirIndex = true;
+        altoTabla = "230";
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo) {
@@ -408,6 +410,7 @@ public class ControlLegislacion implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado == true) {
             if (bandera == 1) {
+                altoTabla = "230";
                 columnaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaCodigo");
                 columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
                 columnaDescripción = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaDescripción");
@@ -440,6 +443,7 @@ public class ControlLegislacion implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
         if (cambioContrato == 0) {
             if (bandera == 1) {
+                altoTabla = "230";
                 columnaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaCodigo");
                 columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
                 columnaDescripción = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaDescripción");
@@ -574,18 +578,20 @@ public class ControlLegislacion implements Serializable{
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
         if (bandera == 0) {
+            altoTabla = "205";
             columnaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaCodigo");
             columnaCodigo.setFilterStyle("width: 20px;");
             columnaDescripción = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaDescripción");
-            columnaDescripción.setFilterStyle("width: 190px;");
+            columnaDescripción.setFilterStyle("width: 250px;");
             columnaTipoCotizante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaTipoCotizante");
-            columnaTipoCotizante.setFilterStyle("width: 70px;");
+            columnaTipoCotizante.setFilterStyle("width: 280px;");
             columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaEstado");
-            columnaEstado.setFilterStyle("width: 55px;");
+            columnaEstado.setFilterStyle("width: 70px;");
             RequestContext.getCurrentInstance().update("form:datosContratos");
             bandera = 1;
 
         } else if (bandera == 1) {
+            altoTabla = "230";
             columnaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaCodigo");
             columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
             columnaDescripción = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaDescripción");
@@ -619,6 +625,7 @@ public class ControlLegislacion implements Serializable{
         }
         if (pasa == 0) {
             if (bandera == 1) {
+                altoTabla = "230";
                 columnaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaCodigo");
                 columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
                 columnaDescripción = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaDescripción");
@@ -702,6 +709,7 @@ public class ControlLegislacion implements Serializable{
             guardado = false;
         }
         if (bandera == 1) {
+            altoTabla = "230";
             columnaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaCodigo");
             columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
             columnaDescripción = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaDescripción");
@@ -725,6 +733,7 @@ public class ControlLegislacion implements Serializable{
 
     public void refrescar() {
         if (bandera == 1) {
+            altoTabla = "230";
             columnaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaCodigo");
             columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
             columnaDescripción = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosContratos:columnaDescripción");
@@ -987,5 +996,13 @@ public class ControlLegislacion implements Serializable{
 
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
     }
 }

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -40,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private List<Parametros> parametrosList;
     @OneToMany(mappedBy = "nombregerente")
     private Collection<ParametrosInformes> parametrosInformesCollection;
     @OneToMany(mappedBy = "empleado")
@@ -608,5 +611,14 @@ public class Empleados implements Serializable {
 
     public void setPdgmetasCollection(Collection<Pdgmetas> pdgmetasCollection) {
         this.pdgmetasCollection = pdgmetasCollection;
+    }
+
+    @XmlTransient
+    public List<Parametros> getParametrosList() {
+        return parametrosList;
+    }
+
+    public void setParametrosList(List<Parametros> parametrosList) {
+        this.parametrosList = parametrosList;
     }
 }

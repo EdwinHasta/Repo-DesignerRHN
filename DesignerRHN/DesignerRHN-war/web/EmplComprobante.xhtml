@@ -17,17 +17,17 @@
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
                             <p:commandButton id="btnComprobante" value="" style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/comprobante.gif);  top: 20px; width: 50px; height: 50px; background-repeat: no-repeat;" />
                             <h:outputText value="Estos son los comprobantes con los respectivos pagos y descuentos que ha tenido el empleado."  style="font-weight: bold; width: 160px; text-align: justify; position: absolute; left: 65px;"/>
-                            <p:inputText value="#{controlComprobantes.empleado.persona.nombreCompleto}" style="position: absolute; top: 77px; width: 206px; color: #BF1A1A; font-weight: bold; text-align: center" readonly="true" />
+                            <p:inputText value="#{controlEmplComprobantes.empleado.persona.nombreCompleto}" style="position: absolute; top: 77px; width: 206px; color: #BF1A1A; font-weight: bold; text-align: center" readonly="true" />
                         </fieldset>
                         <fieldset style="position: absolute; left: 250px; top: 63px; font-size: 11px; width: 270px; height: 100px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Comprobantes</legend>
 
-                            <p:dataTable id="datosComprobantes" widgetVar="datosComprobantes" var="comprobante" value="#{controlComprobantes.listaComprobantes}"
+                            <p:dataTable id="datosComprobantes" widgetVar="datosComprobantes" var="comprobante" value="#{controlEmplComprobantes.listaComprobantes}"
                                          rowKey="#{comprobante.secuencia}" rowIndexVar="indiceComprobante" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         scrollable="true" scrollHeight="#{controlComprobantes.altoScrollComprobante}" filteredValue="#{controlComprobantes.filtradolistaComprobantes}" 
+                                         scrollable="true" scrollHeight="#{controlEmplComprobantes.altoScrollComprobante}" filteredValue="#{controlEmplComprobantes.filtradolistaComprobantes}" 
                                          emptyMessage="No se encontrarón datos" editable="true" editMode="cell" >
 
-                                <p:ajax event="filter" listener="#{controlComprobantes.eventoFiltrarComponentes()}"/>
+                                <p:ajax event="filter" listener="#{controlEmplComprobantes.eventoFiltrarComponentes()}"/>
 
                                 <p:column headerText="#Compr." sortBy="#{comprobante.numero}" filterBy="#{comprobante.numero}" filterMatchMode="contains"  width="40" id="numeroComprobanteC"  filterStyle="display: none; visibility: hidden;">  
                                     <p:cellEditor>  
@@ -36,8 +36,8 @@
                                         </f:facet>   
                                         <f:facet name="input">
                                             <p:inputText value="#{comprobante.numero}" id="editarNumero" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase; height: 11px;"> 
-                                                <p:ajax event="change" listener="#{controlComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
-                                                <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceComprobantes(indiceComprobante, 0)}" update="numeroComprobanteC"/>
+                                                <p:ajax event="change" listener="#{controlEmplComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceComprobantes(indiceComprobante, 0)}" update="numeroComprobanteC"/>
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -53,9 +53,9 @@
                                         <f:facet name="input">
                                             <p:calendar  style="font-size: 10px;" value="#{comprobante.fecha}" id="editarFecha"   styleClass="ui-datepicker, calendarioComprobantes"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
-                                                <p:ajax event="change" listener="#{controlComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
-                                                <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceComprobantes(indiceComprobante, 1)}"/>
+                                                <p:ajax event="dateSelect" listener="#{controlEmplComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceComprobantes(indiceComprobante, 1)}"/>
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -72,9 +72,9 @@
                                         <f:facet name="input">
                                             <p:calendar  style="font-size: 10px;" value="#{comprobante.fechaentregado}" id="editarFechaEntregado"   styleClass="ui-datepicker, calendarioComprobantes"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
-                                                <p:ajax event="change" listener="#{controlComprobantes.modificarComprobantes(indiceComprobante)}" update="@this" />
-                                                <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceComprobantes(indiceComprobante, 2)}"/>
+                                                <p:ajax event="dateSelect" listener="#{controlEmplComprobantes.modificarComprobantes(indiceComprobante)}" update="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplComprobantes.modificarComprobantes(indiceComprobante)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceComprobantes(indiceComprobante, 2)}"/>
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -86,44 +86,44 @@
                         <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 20px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlComprobantes.guardarCambios()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlEmplComprobantes.guardarCambios()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
 
                                 <p:separator />
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
 
                                 <p:separator />
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlComprobantes.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEmplComprobantes.exportXLS()}" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
-                                    <p:dataExporter type="xml"  target="#{controlComprobantes.tablaExportar}" fileName="#{controlComprobantes.nombreArchivoExportar}" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target="#{controlEmplComprobantes.tablaExportar}" fileName="#{controlEmplComprobantes.nombreArchivoExportar}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.nuevoRegistro()}" process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.nuevoRegistro()}" process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.borrar()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.borrar()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.duplicarC()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.duplicarC()}"  process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro" />
 
                                 <p:separator /> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
@@ -131,12 +131,12 @@
                         <fieldset style="position: absolute; left: 550px; top: 63px; font-size: 11px; width: 300px; height: 100px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Procesos</legend>
 
-                            <p:dataTable id="datosCortesProcesos" widgetVar="datosCortesProcesos" var="corteProceso" value="#{controlComprobantes.listaCortesProcesos}"
+                            <p:dataTable id="datosCortesProcesos" widgetVar="datosCortesProcesos" var="corteProceso" value="#{controlEmplComprobantes.listaCortesProcesos}"
                                          rowKey="#{corteProceso.secuencia}" rowIndexVar="indiceCorteProceso" style="font-size: 10px;"
-                                         scrollable="true" scrollHeight="#{controlComprobantes.altoScrollCortesProcesos}" filteredValue="#{controlComprobantes.filtradolistaCortesProcesos}"
+                                         scrollable="true" scrollHeight="#{controlEmplComprobantes.altoScrollCortesProcesos}" filteredValue="#{controlEmplComprobantes.filtradolistaCortesProcesos}"
                                          emptyMessage="No se encontrarón datos" editable="true" editMode="cell">
 
-                                <p:ajax event="filter" listener="#{controlComprobantes.eventoFiltrarCortesProcesos()}"/>
+                                <p:ajax event="filter" listener="#{controlEmplComprobantes.eventoFiltrarCortesProcesos()}"/>
 
                                 <p:column headerText="Fecha Corte" sortBy="#{corteProceso.corte}" width="60" filterBy="#{corteProceso.corte}" filterMatchMode="contains" id="fechaCorteCP" filterStyle="display: none; visibility: hidden;" >  
                                     <p:cellEditor>  
@@ -148,9 +148,9 @@
                                         <f:facet name="input">
                                             <p:calendar  style="font-size: 10px;" value="#{corteProceso.corte}" id="editarFechaCorte"   styleClass="ui-datepicker, calendarioComprobantes"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlComprobantes.modificarCortesProcesos(indiceCorteProceso, 'N', corteProceso.corte)}"  update="@this"/>
-                                                <p:ajax event="change" listener="#{controlComprobantes.modificarCortesProcesos(indiceCorteProceso, 'N', corteProceso.corte)}" />
-                                                <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceCortesProcesos(indiceCorteProceso, 0)}"/>
+                                                <p:ajax event="dateSelect" listener="#{controlEmplComprobantes.modificarCortesProcesos(indiceCorteProceso, 'N', corteProceso.corte)}"  update="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplComprobantes.modificarCortesProcesos(indiceCorteProceso, 'N', corteProceso.corte)}" />
+                                                <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceCortesProcesos(indiceCorteProceso, 0)}"/>
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -164,9 +164,9 @@
                                         </f:facet>   
                                         <f:facet name="input">
                                             <p:inputText value="#{corteProceso.proceso.descripcion}" id="editarProceso" style="font-size: 10px;  width: 93.5%; border-radius: 0px; height: 11px; text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlComprobantes.modificarCortesProcesos(indiceCorteProceso, 'PROCESO', corteProceso.proceso.descripcion)}"/>
-                                                <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceCortesProcesos(indiceCorteProceso, 1)}"/>
-                                                <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVProcesos(indiceCorteProceso)}"/>
+                                                <p:ajax event="change" listener="#{controlEmplComprobantes.modificarCortesProcesos(indiceCorteProceso, 'PROCESO', corteProceso.proceso.descripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceCortesProcesos(indiceCorteProceso, 1)}"/>
+                                                <p:ajax event="dblclick" listener="#{controlEmplComprobantes.llamarLOVProcesos(indiceCorteProceso)}"/>
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor> 
@@ -178,10 +178,10 @@
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
 
                             <div id="superiorIzquierdo" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: -5px" >
-                                <p:dataTable id="tablaSuperiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
-                                             rowKey="#{solucionNodoEmpleado.secuencia}" widgetVar="tablaSuperiorIzquierda" styleClass="hide-row-names" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}">
+                                <p:dataTable id="tablaSuperiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
+                                             rowKey="#{solucionNodoEmpleado.secuencia}" widgetVar="tablaSuperiorIzquierda" styleClass="hide-row-names" filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}">
 
-                                    <p:ajax event="sort" listener="#{controlComprobantes.organizarTablasEmpleado()}" />   
+                                    <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleado()}" />   
                                     <!-- <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
                                     <p:column id="codigoSNE" headerText="Codigo" width="40" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
@@ -190,10 +190,10 @@
                             </div>
 
                             <div id="inferiorIzquierda"  style="height: 70px; width: 315px; overflow-y: hidden; position: absolute; top: 37px" >
-                                <p:dataTable id="tablaInferiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 315px" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
+                                <p:dataTable id="tablaInferiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 315px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
                                              rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="315" 
                                              widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names"
-                                             filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="No se encontrarón datos.">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="No se encontrarón datos.">
 
                                     <p:column id="codigoSNE2" headerText="Codigo" style="width: 40px" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleado.concepto.codigo}" />  
@@ -206,10 +206,10 @@
                             </div>
 
                             <div id="inferiorDerecha" style="height: 70px; width: 544px; overflow-x: hidden; position: absolute; left: 307px; top: 37px;" >
-                                <p:dataTable id="tablaInferiorDerecha" var="solucionNodoEmpleado" style="font-size: 11px; width: 1350px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
+                                <p:dataTable id="tablaInferiorDerecha" var="solucionNodoEmpleado" style="font-size: 11px; width: 1350px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
                                              rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="1350" rowIndexVar="indexSNEmpleado"
                                              widgetVar="tablaInferiorDerecha" styleClass="hide-column-names" editable="true" editMode="cell" 
-                                             filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="...">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="...">
 
                                     <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleado.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                                         <h:outputText value="#{solucionNodoEmpleado.fechadesde}" >
@@ -241,9 +241,9 @@
                                             </f:facet>  
                                             <f:facet name="input">
                                                 <p:inputText value="#{solucionNodoEmpleado.nit.nombre}" style="width: 96%; text-transform: uppercase">
-                                                    <p:ajax event="change" listener="#{controlComprobantes.modificarSolucionesNodos(indexSNEmpleado, solucionNodoEmpleado.nit.nombre)}"/>
-                                                    <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceSolucionesNodosEmpleado(indexSNEmpleado, 7)}"/>
-                                                    <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVTerceros()}"/>
+                                                    <p:ajax event="change" listener="#{controlEmplComprobantes.modificarSolucionesNodos(indexSNEmpleado, solucionNodoEmpleado.nit.nombre)}"/>
+                                                    <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceSolucionesNodosEmpleado(indexSNEmpleado, 7)}"/>
+                                                    <p:ajax event="dblclick" listener="#{controlEmplComprobantes.llamarLOVTerceros()}"/>
                                                 </p:inputText>
                                             </f:facet>
                                         </p:cellEditor>
@@ -274,20 +274,20 @@
                             <div id="inferiorDerechaSubtotalesEmpleado" style="height: 42px; width: 544px; overflow-y: hidden; position: absolute; left: 307px; top: 107px;" >
                                 <fieldset style="width: 1325px; visibility: hidden"></fieldset>
                                 <h:outputText value="Subtotales: " style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
-                                <p:inputText id="subTotalPago" value="#{controlComprobantes.subtotalPago}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                <p:inputText id="subTotalPago" value="#{controlEmplComprobantes.subtotalPago}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
                                     <f:convertNumber currencyCode="COP"/>
                                 </p:inputText>
-                                <p:inputText id="subTotalDescuento" value="#{controlComprobantes.subtotalDescuento}" style="position: absolute; top: 1px; left: 330.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                <p:inputText id="subTotalDescuento" value="#{controlEmplComprobantes.subtotalDescuento}" style="position: absolute; top: 1px; left: 330.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
                                     <f:convertNumber currencyCode="COP"/>
                                 </p:inputText>
                             </div>
 
                             <div id="superiorDerecha" style="height: 50px; width: 528px; overflow-x: hidden; position: absolute; left: 307px; top: -11px;" >
-                                <p:dataTable id="tablaSuperiorDerecha" var="solucionNodoEmpleado" style="font-size: 11px; width: 1350px; position: relative; top: 24px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
+                                <p:dataTable id="tablaSuperiorDerecha" var="solucionNodoEmpleado" style="font-size: 11px; width: 1350px; position: relative; top: 24px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
                                              widgetVar="tablaSuperiorDerecha" styleClass="hide-row-names"
-                                             filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}">
 
-                                    <p:ajax event="sort" listener="#{controlComprobantes.organizarTablasEmpleado()}" />
+                                    <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleado()}" />
                                   <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
                                     <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
@@ -308,7 +308,7 @@
                             </div> 
 
                             <h:outputText value="Neto: " style="color: #14388B; font-weight: bold; position: absolute; left: 20px; top: 111px;"/>
-                            <p:inputText id="neto" value="#{controlComprobantes.neto}" style="position: absolute; top: 108px; left: 69px; width: 228px; font-size: 11px; font-weight: bold; color: #14388B; text-align: center" readonly="true">
+                            <p:inputText id="neto" value="#{controlEmplComprobantes.neto}" style="position: absolute; top: 108px; left: 69px; width: 228px; font-size: 11px; font-weight: bold; color: #14388B; text-align: center" readonly="true">
                                 <f:convertNumber currencyCode="COP"/>
                             </p:inputText>
                         </fieldset>
@@ -316,9 +316,9 @@
                         <fieldset style="position: absolute; top: 337px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleador</legend>
                             <div id="superiorIzquierdoEM" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: -5px" >
-                                <p:dataTable id="tablaSuperiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
-                                             rowKey="#{solucionNodoEmpleador.secuencia}" widgetVar="tablaSuperiorIzquierdaEM" styleClass="hide-row-names" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}">
-                                    <p:ajax event="sort" listener="#{controlComprobantes.organizarTablasEmpleador()}" />
+                                <p:dataTable id="tablaSuperiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
+                                             rowKey="#{solucionNodoEmpleador.secuencia}" widgetVar="tablaSuperiorIzquierdaEM" styleClass="hide-row-names" filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}">
+                                    <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleador()}" />
                                     <!--  <p:ajax event="filter" update=":form:tablaInferiorDerechaEM, :form:tablaInferiorIzquierdaEM"/> -->
 
                                     <p:column id="codigoSNEM" headerText="Codigo" width="40" sortBy="#{solucionNodoEmpleador.concepto.codigo}"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
@@ -327,10 +327,10 @@
                             </div>
 
                             <div id="inferiorIzquierdaEM" style="height: 70px; width: 315px; overflow-y: hidden; position: absolute; top: 37px; border: 5px; border-color: red" >
-                                <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 315px" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
+                                <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 315px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="315"
                                              widgetVar="tablaInferiorIzquierdaEM" styleClass="hide-column-names"
-                                             filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="No se encontrarón datos.">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="No se encontrarón datos.">
 
                                     <p:column id="codigoSNEM" headerText="Codigo" sortBy="#{solucionNodoEmpleador.concepto.codigo}" style="width: 40px;"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />  
@@ -343,10 +343,10 @@
                             </div>
 
                             <div id="inferiorDerechaEM" style="height: 70px; width: 544px; overflow-x: hidden; position: absolute; left: 307px; top: 37px;" >
-                                <p:dataTable id="tablaInferiorDerechaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 1350px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
+                                <p:dataTable id="tablaInferiorDerechaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 1350px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="1350" editable="true" editMode="cell"
                                              widgetVar="tablaInferiorDerechaEM" styleClass="hide-column-names" rowIndexVar="indexSNEmpleador"
-                                             filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="...">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="...">
 
                                     <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleador.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                                         <h:outputText value="#{solucionNodoEmpleador.fechadesde}" >
@@ -378,9 +378,9 @@
                                             </f:facet>  
                                             <f:facet name="input">
                                                 <p:inputText value="#{solucionNodoEmpleador.nit.nombre}" style="width: 96%; text-transform: uppercase">
-                                                    <p:ajax event="change" listener="#{controlComprobantes.modificarSolucionesNodos(indexSNEmpleador, solucionNodoEmpleador.nit.nombre)}"/>
-                                                    <p:ajax event="select" listener="#{controlComprobantes.cambiarIndiceSolucionesNodosEmpleador(indexSNEmpleador, 7)}"/>
-                                                    <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVTerceros()}"/>
+                                                    <p:ajax event="change" listener="#{controlEmplComprobantes.modificarSolucionesNodos(indexSNEmpleador, solucionNodoEmpleador.nit.nombre)}"/>
+                                                    <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceSolucionesNodosEmpleador(indexSNEmpleador, 7)}"/>
+                                                    <p:ajax event="dblclick" listener="#{controlEmplComprobantes.llamarLOVTerceros()}"/>
                                                 </p:inputText>
                                             </f:facet>
                                         </p:cellEditor>
@@ -411,20 +411,20 @@
                             <div id="inferiorDerechaSubtotalesEmpleador" style="height: 42px; width: 544px; overflow-y: hidden; position: absolute; left: 307px; top: 107px;" >
                                 <fieldset style="width: 1325px; visibility: hidden"></fieldset>
                                 <h:outputText value="Subtotales: " style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
-                                <p:inputText id="subTotalPasivo" value="#{controlComprobantes.subtotalPasivo}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                <p:inputText id="subTotalPasivo" value="#{controlEmplComprobantes.subtotalPasivo}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
                                     <f:convertNumber currencyCode="COP"/>
                                 </p:inputText>
-                                <p:inputText id="subTotalGasto" value="#{controlComprobantes.subtotalGasto}" style="position: absolute; top: 1px; left: 330.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
+                                <p:inputText id="subTotalGasto" value="#{controlEmplComprobantes.subtotalGasto}" style="position: absolute; top: 1px; left: 330.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
                                     <f:convertNumber currencyCode="COP"/>
                                 </p:inputText>
                             </div>
 
                             <div id="superiorDerechaEM" style="height: 50px; width: 525px; overflow-x: hidden; position: absolute; left: 307px; top: -11px;" >
-                                <p:dataTable id="tablaSuperiorDerechaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 1350px; position: relative; top: 24px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
+                                <p:dataTable id="tablaSuperiorDerechaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 1350px; position: relative; top: 24px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              widgetVar="tablaSuperiorDerechaEM" styleClass="hide-row-names"
-                                             filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}">
 
-                                    <p:ajax event="sort" listener="#{controlComprobantes.organizarTablasEmpleador()}" />
+                                    <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleador()}" />
                                  <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
                                    <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
@@ -445,8 +445,8 @@
                             </div> 
                         </fieldset>
                         <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" icon="ui-icon-check" process="@this" />
-                        <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlComprobantes.salir()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlComprobantes.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplComprobantes.salir()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplComprobantes.salir()}" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos" >
@@ -468,27 +468,27 @@
 
                         <p:panel id="nuevoComprobante" style="border: none;">
                             <strong><h:outputText value="Número comprobante: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:inputText id="nuevoNumeroComprobante" value="#{controlComprobantes.nuevoComprobante.numero}" style="font-size: 10px; position: absolute; top: 63px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoNumeroComprobante" value="#{controlEmplComprobantes.nuevoComprobante.numero}" style="font-size: 10px; position: absolute; top: 63px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                             </p:inputText>
 
                             <strong><h:outputText value="Fecha comprobante: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
-                            <p:calendar  id="nuevaFechaComprobante" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 90px" value="#{controlComprobantes.nuevoComprobante.fecha}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="nuevaFechaComprobante" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 90px" value="#{controlEmplComprobantes.nuevoComprobante.fecha}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Fecha entrega: " style="font-size: 12px; position: absolute; top: 123px" /></strong>
-                            <p:calendar  id="nuevaFechaEntrega" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 119px;" value="#{controlComprobantes.nuevoComprobante.fechaentregado}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="nuevaFechaEntrega" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 119px;" value="#{controlEmplComprobantes.nuevoComprobante.fechaentregado}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <p:commandButton id="limpiarComprobante" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" process="@this"/>
-                            <p:commandButton id="agregarComprobante" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlComprobantes.agregarNuevoComprobante()}"/>
-                            <p:commandButton id="cancelarComprobante" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" onclick="NuevoRegistroComprobantes.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarComprobante" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" process="@this"/>
+                            <p:commandButton id="agregarComprobante" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.agregarNuevoComprobante()}"/>
+                            <p:commandButton id="cancelarComprobante" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" onclick="NuevoRegistroComprobantes.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -498,27 +498,27 @@
 
                         <p:panel id="duplicadoComprobante" style="border: none;">
                             <strong><h:outputText value="Número comprobante: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:inputText id="duplicadoNumeroComprobante" value="#{controlComprobantes.duplicarComprobante.numero}" style="font-size: 10px; position: absolute; top: 63px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="duplicadoNumeroComprobante" value="#{controlEmplComprobantes.duplicarComprobante.numero}" style="font-size: 10px; position: absolute; top: 63px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                             </p:inputText>
 
                             <strong><h:outputText value="Fecha comprobante: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
-                            <p:calendar  id="duplicadoFechaComprobante" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 90px" value="#{controlComprobantes.duplicarComprobante.fecha}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="duplicadoFechaComprobante" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 90px" value="#{controlEmplComprobantes.duplicarComprobante.fecha}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Fecha entrega: " style="font-size: 12px; position: absolute; top: 123px" /></strong>
-                            <p:calendar  id="duplicadoFechaEntrega" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 119px;" value="#{controlComprobantes.duplicarComprobante.fechaentregado}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="duplicadoFechaEntrega" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 119px;" value="#{controlEmplComprobantes.duplicarComprobante.fechaentregado}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <p:commandButton id="limpiarComprobanteD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" process="@this"/>
-                            <p:commandButton id="agregarComprobanteD" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlComprobantes.confirmarDuplicarComprobantes()}"/>
-                            <p:commandButton id="cancelarComprobanteD" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" onclick="DuplicarRegistroComprobantes.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarComprobanteD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" process="@this"/>
+                            <p:commandButton id="agregarComprobanteD" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.confirmarDuplicarComprobantes()}"/>
+                            <p:commandButton id="cancelarComprobanteD" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" onclick="DuplicarRegistroComprobantes.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -530,21 +530,21 @@
 
                         <p:panel id="nuevoCorteProceso" style="border: none;">
                             <strong><h:outputText value="Fecha corte: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:calendar  id="nuevaFechaCorte" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 63px" value="#{controlComprobantes.nuevoCorteProceso.corte}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="nuevaFechaCorte" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 63px" value="#{controlEmplComprobantes.nuevoCorteProceso.corte}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Proceso: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
-                            <p:inputText id="nuevoProceso" value="#{controlComprobantes.nuevoCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoProceso" value="#{controlEmplComprobantes.nuevoCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
-                                <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVProcesosNuevo_Duplicado(1)}" />
+                                <p:ajax event="dblclick" listener="#{controlEmplComprobantes.llamarLOVProcesosNuevo_Duplicado(1)}" />
                             </p:inputText>
 
-                            <p:commandButton id="limpiarCorteProceso" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" process="@this"/>
-                            <p:commandButton id="agregarCorteProceso" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlComprobantes.agregarNuevoCorteProceso()}"/>
-                            <p:commandButton id="cancelarCorteProceso" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" onclick="NuevoRegistroCortesProcesos.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarCorteProceso" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" process="@this"/>
+                            <p:commandButton id="agregarCorteProceso" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.agregarNuevoCorteProceso()}"/>
+                            <p:commandButton id="cancelarCorteProceso" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" onclick="NuevoRegistroCortesProcesos.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -554,34 +554,34 @@
 
                         <p:panel id="duplicadoCorteProceso" style="border: none;"> 
                             <strong><h:outputText value="Fecha corte: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:calendar  id="duplicadoFechaCorte" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 63px" value="#{controlComprobantes.duplicarCorteProceso.corte}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="duplicadoFechaCorte" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 63px" value="#{controlEmplComprobantes.duplicarCorteProceso.corte}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Proceso: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
-                            <p:inputText id="duplicadoProceso" value="#{controlComprobantes.duplicarCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="duplicadoProceso" value="#{controlEmplComprobantes.duplicarCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
-                                <p:ajax event="dblclick" listener="#{controlComprobantes.llamarLOVProcesosNuevo_Duplicado(2)}" />
+                                <p:ajax event="dblclick" listener="#{controlEmplComprobantes.llamarLOVProcesosNuevo_Duplicado(2)}" />
                             </p:inputText>
 
-                            <p:commandButton id="limpiarCorteProcesoD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" process="@this"/>
-                            <p:commandButton id="agregarCorteProcesoD" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlComprobantes.confirmarDuplicarCortesProcesos()}"/>
-                            <p:commandButton id="cancelarCorteProcesoD" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" onclick="DuplicarCortesProcesos.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarCorteProcesoD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" process="@this"/>
+                            <p:commandButton id="agregarCorteProcesoD" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.confirmarDuplicarCortesProcesos()}"/>
+                            <p:commandButton id="cancelarCorteProcesoD" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" onclick="DuplicarCortesProcesos.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!-- DIALOGOS VALIDACION-->
                     <p:dialog id="validacioNuevoComprobante" header="ATENCIÓN...!" widgetVar="validacioNuevoComprobante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar un nuevo comprobante es necesario adicionar: #{controlComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="Para agregar un nuevo comprobante es necesario adicionar: #{controlEmplComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="validacioNuevoComprobante.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="validacioNuevoCorteProceso" header="ATENCIÓN...!" widgetVar="validacioNuevoCorteProceso"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar un nuevo corte proceso es necesario adicionar: #{controlComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="Para agregar un nuevo corte proceso es necesario adicionar: #{controlEmplComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="validacioNuevoCorteProceso.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
@@ -599,18 +599,18 @@
 
                     <!-- EDITOR COMPROBANTES -->
                     <p:dialog id="editarNumeroComprobante" header="Número del comprobante" widgetVar="editarNumeroComprobante" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlComprobantes.editarComprobante.numero}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlEmplComprobantes.editarComprobante.numero}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarNumeroComprobante" value="Atras" onclick="editarNumeroComprobante.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarFechaComprobante" header="Fecha del comprobante" widgetVar="editarFechaComprobante" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px" value="#{controlComprobantes.editarComprobante.fecha}" styleClass="ui-datepicker, myClass"  
+                        <p:calendar  style="font-size: 10px" value="#{controlEmplComprobantes.editarComprobante.fecha}" styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaComprobante" value="Atras" onclick="editarFechaComprobante.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
                     <p:dialog id="editarFechaEntrega" header="Fecha de entrega" widgetVar="editarFechaEntrega" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px" value="#{controlComprobantes.editarComprobante.fechaentregado}" styleClass="ui-datepicker, myClass"  
+                        <p:calendar  style="font-size: 10px" value="#{controlEmplComprobantes.editarComprobante.fechaentregado}" styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaEntrega" value="Atras" onclick="editarFechaEntrega.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
@@ -618,14 +618,14 @@
 
                     <!-- EDITOR CORTES PROCESOS -->
                     <p:dialog id="editarFechaCorte" header="Fecha corte" widgetVar="editarFechaCorte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px" value="#{controlComprobantes.editarCorteProceso.corte}" styleClass="ui-datepicker, myClass"  readonlyInput="true"
+                        <p:calendar  style="font-size: 10px" value="#{controlEmplComprobantes.editarCorteProceso.corte}" styleClass="ui-datepicker, myClass"  readonlyInput="true"
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaCorte" value="Atras" onclick="editarFechaCorte.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarProceso" header="Proceso" widgetVar="editarProceso" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlComprobantes.editarCorteProceso.proceso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlEmplComprobantes.editarCorteProceso.proceso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarProceso" value="Atras" onclick="editarProceso.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
@@ -633,21 +633,21 @@
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlComprobantes.nombreTabla}' tiene rastros para este registro, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlComprobantes.secRegistro, controlComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' tiene rastros para este registro, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplComprobantes.secRegistro, controlEmplComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlComprobantes.nombreTabla}' tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlEmplComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlComprobantes.nombreTabla}' no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
@@ -657,14 +657,14 @@
 
                     <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlComprobantes.nombreTabla}' no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlComprobantes.secRegistro, controlComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplComprobantes.secRegistro, controlEmplComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlComprobantes.nombreTabla}' no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
@@ -674,26 +674,26 @@
 
                     <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlComprobantes.nombreTabla}' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <!-- GUARDAR CAMBIOS CORTES PROCESOS -->
                     <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlComprobantes.guardarCambios()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlComprobantes.salir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplComprobantes.guardarCambios()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplComprobantes.salir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- LOV PROCESOS-->
                     <p:dialog header="Procesos" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
                               showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovProcesos" style="font-size: 11px; width: 310px" var="proceso" value="#{controlComprobantes.listaProcesos}" rowKey="#{proceso.secuencia}"
-                                     selection="#{controlComprobantes.procesoSelecionado}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="330" scrollHeight="250"
-                                     filteredValue="#{controlComprobantes.filtradoProcesos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
-                            <p:ajax event="rowSelect" listener="#{controlComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlComprobantes.actualizarProceso()}" process="@this" onstart="lovProcesos.clearFilters()"/>
+                        <p:dataTable id="lovProcesos" style="font-size: 11px; width: 310px" var="proceso" value="#{controlEmplComprobantes.listaProcesos}" rowKey="#{proceso.secuencia}"
+                                     selection="#{controlEmplComprobantes.procesoSelecionado}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="330" scrollHeight="250"
+                                     filteredValue="#{controlEmplComprobantes.filtradoProcesos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarProceso()}" process="@this" onstart="lovProcesos.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Proceso: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:100px; position: relative; left: 40px;" />  
@@ -705,10 +705,10 @@
                                 <h:outputText  value="#{proceso.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarP" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.actualizarProceso()}" update="aceptarP" process="@this">
+                        <p:commandButton id="aceptarP" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarProceso()}" update="aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 200px" value="Atras" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlComprobantes.cancelarProceso()}" update="lovProcesos" process="@this">
+                        <p:commandButton id="atrasP" style="position: relative; left: 200px" value="Atras" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarProceso()}" update="lovProcesos" process="@this">
                             <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -717,11 +717,11 @@
                     <!-- LOV TERCEROS-->
                     <p:dialog header="Terceros" widgetVar="TercerosDialogo" draggable="false" resizable="false" closable="false" id="TercerosDialogo"  
                               showEffect="fade" hideEffect="fade" width="401" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovTerceros" style="font-size: 11px; width: 370px" var="tercero" value="#{controlComprobantes.listaTerceros}" rowKey="#{tercero.secuencia}"
-                                     selection="#{controlComprobantes.terceroSelecionado}" selectionMode="single" widgetVar="lovTerceros" scrollable="true" scrollWidth="390" scrollHeight="250"
-                                     filteredValue="#{controlComprobantes.filtradolistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
-                            <p:ajax event="rowSelect" listener="#{controlComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlComprobantes.actualizarTercero()}" process="@this" onstart="lovTerceros.clearFilters()"/>
+                        <p:dataTable id="lovTerceros" style="font-size: 11px; width: 370px" var="tercero" value="#{controlEmplComprobantes.listaTerceros}" rowKey="#{tercero.secuencia}"
+                                     selection="#{controlEmplComprobantes.terceroSelecionado}" selectionMode="single" widgetVar="lovTerceros" scrollable="true" scrollWidth="390" scrollHeight="250"
+                                     filteredValue="#{controlEmplComprobantes.filtradolistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarTercero()}" process="@this" onstart="lovTerceros.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Tercero: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTerceros.filter();" style="width:150px; position: relative; left: 2px;" />  
@@ -740,17 +740,17 @@
                                 <h:outputText  value="#{tercero.nit}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarT" style="position: relative; left: 245px" value="Aceptar" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.actualizarTercero()}" update="aceptarT" process="@this">
+                        <p:commandButton id="aceptarT" style="position: relative; left: 245px" value="Aceptar" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarTercero()}" update="aceptarT" process="@this">
                             <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasT" style="position: relative; left: 245px" value="Atras" onclick="TercerosDialogo.hide(), lovTerceros.clearFilters();" actionListener="#{controlComprobantes.cancelarTercero()}" update="lovTerceros" process="@this">
+                        <p:commandButton id="atrasT" style="position: relative; left: 245px" value="Atras" onclick="TercerosDialogo.hide(), lovTerceros.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarTercero()}" update="lovTerceros" process="@this">
                             <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="datosComprobantesExportar" var="comprobanteE" style="visibility: hidden; display: none;"                           
-                                 value="#{controlComprobantes.listaComprobantes}"> 
+                                 value="#{controlEmplComprobantes.listaComprobantes}"> 
 
                         <p:column headerText="Numero">  
                             <f:facet name="header">
@@ -775,7 +775,7 @@
                     </p:dataTable>
 
                     <p:dataTable id="datosCortesProcesosExportar" var="corteProcesoE" style="visibility: hidden; display: none;"                           
-                                 value="#{controlComprobantes.listaCortesProcesos}"> 
+                                 value="#{controlEmplComprobantes.listaCortesProcesos}"> 
 
                         <p:column headerText="Fecha_Corte">  
                             <f:facet name="header">
@@ -792,7 +792,7 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:dataTable id="solucionesNodoEmpleadoExportar" var="solucionNodoEmpleadoE" style="visibility: hidden; display: none;"  value="#{controlComprobantes.listaSolucionesNodosEmpleado}">
+                    <p:dataTable id="solucionesNodoEmpleadoExportar" var="solucionNodoEmpleadoE" style="visibility: hidden; display: none;"  value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}">
 
                         <p:column headerText="Codigo">
                             <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
@@ -872,7 +872,7 @@
                     </p:dataTable>
 
 
-                    <p:dataTable id="solucionesNodoEmpleadorExportar" var="solucionNodoEmpleadorE" style="visibility: hidden; display: none;"  value="#{controlComprobantes.listaSolucionesNodosEmpleador}">
+                    <p:dataTable id="solucionesNodoEmpleadorExportar" var="solucionNodoEmpleadorE" style="visibility: hidden; display: none;"  value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}">
 
                         <p:column headerText="Codigo">
                             <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 

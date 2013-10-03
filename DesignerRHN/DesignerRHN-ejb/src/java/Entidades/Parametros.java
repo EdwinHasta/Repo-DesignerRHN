@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Entidades;
 
 import java.io.Serializable;
@@ -6,6 +10,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,11 +31,11 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Administrator
  */
 @Entity
-@Table(name = "PARAMETROSESTRUCTURAS")
+@Table(name = "PARAMETROS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ParametroEestructuras.findAll", query = "SELECT p FROM ParametrosEstructuras p")})
-public class ParametrosEstructuras implements Serializable {
+    @NamedQuery(name = "Parametros.findAll", query = "SELECT p FROM Parametros p")})
+public class Parametros implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -38,13 +43,6 @@ public class ParametrosEstructuras implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigDecimal secuencia;
-    @Column(name = "CODIGO")
-    private Short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHADESDECAUSADO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechadesdecausado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHASTACAUSADO")
@@ -52,36 +50,37 @@ public class ParametrosEstructuras implements Serializable {
     private Date fechahastacausado;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "FECHADESDECAUSADO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechadesdecausado;
     @Column(name = "FECHASISTEMA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechasistema;
-    @JoinColumn(name = "USUARIO", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private Usuarios usuario;
-    @JoinColumn(name = "TIPOTRABAJADOR", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private TiposTrabajadores tipotrabajador;
+    @Column(name = "USUARIO")
+    private BigInteger usuario;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parametro")
+    private List<ParametrosInstancias> parametrosInstanciasList;
     @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Procesos proceso;
-    @JoinColumn(name = "ESTRUCTURA", referencedColumnName = "SECUENCIA")
+    @JoinColumn(name = "PARAMETROESTRUCTURA", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Estructuras estructura;
-    @OneToMany(mappedBy = "parametroestructura")
-    private List<Parametros> parametrosList;
+    private ParametrosEstructuras parametroestructura;
+    @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Empleados empleado;
 
-    public ParametrosEstructuras() {
+    public Parametros() {
     }
 
-    public ParametrosEstructuras(BigDecimal secuencia) {
+    public Parametros(BigDecimal secuencia) {
         this.secuencia = secuencia;
     }
 
-    public ParametrosEstructuras(BigDecimal secuencia, Date fechadesdecausado, Date fechahastacausado, Date fechasistema, BigInteger usuario) {
+    public Parametros(BigDecimal secuencia, Date fechahastacausado, Date fechadesdecausado) {
         this.secuencia = secuencia;
-        this.fechadesdecausado = fechadesdecausado;
         this.fechahastacausado = fechahastacausado;
-        this.fechasistema = fechasistema;
+        this.fechadesdecausado = fechadesdecausado;
     }
 
     public BigDecimal getSecuencia() {
@@ -92,12 +91,12 @@ public class ParametrosEstructuras implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
-        return codigo;
+    public Date getFechahastacausado() {
+        return fechahastacausado;
     }
 
-    public void setCodigo(Short codigo) {
-        this.codigo = codigo;
+    public void setFechahastacausado(Date fechahastacausado) {
+        this.fechahastacausado = fechahastacausado;
     }
 
     public Date getFechadesdecausado() {
@@ -108,14 +107,6 @@ public class ParametrosEstructuras implements Serializable {
         this.fechadesdecausado = fechadesdecausado;
     }
 
-    public Date getFechahastacausado() {
-        return fechahastacausado;
-    }
-
-    public void setFechahastacausado(Date fechahastacausado) {
-        this.fechahastacausado = fechahastacausado;
-    }
-
     public Date getFechasistema() {
         return fechasistema;
     }
@@ -124,12 +115,21 @@ public class ParametrosEstructuras implements Serializable {
         this.fechasistema = fechasistema;
     }
 
-    public TiposTrabajadores getTipotrabajador() {
-        return tipotrabajador;
+    public BigInteger getUsuario() {
+        return usuario;
     }
 
-    public void setTipotrabajador(TiposTrabajadores tipotrabajador) {
-        this.tipotrabajador = tipotrabajador;
+    public void setUsuario(BigInteger usuario) {
+        this.usuario = usuario;
+    }
+
+    @XmlTransient
+    public List<ParametrosInstancias> getParametrosInstanciasList() {
+        return parametrosInstanciasList;
+    }
+
+    public void setParametrosInstanciasList(List<ParametrosInstancias> parametrosInstanciasList) {
+        this.parametrosInstanciasList = parametrosInstanciasList;
     }
 
     public Procesos getProceso() {
@@ -140,20 +140,20 @@ public class ParametrosEstructuras implements Serializable {
         this.proceso = proceso;
     }
 
-    public Estructuras getEstructura() {
-        return estructura;
+    public ParametrosEstructuras getParametroestructura() {
+        return parametroestructura;
     }
 
-    public void setEstructura(Estructuras estructura) {
-        this.estructura = estructura;
+    public void setParametroestructura(ParametrosEstructuras parametroestructura) {
+        this.parametroestructura = parametroestructura;
     }
 
-    public Usuarios getUsuario() {
-        return usuario;
+    public Empleados getEmpleado() {
+        return empleado;
     }
 
-    public void setUsuario(Usuarios usuario) {
-        this.usuario = usuario;
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
     }
 
     @Override
@@ -166,10 +166,10 @@ public class ParametrosEstructuras implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParametrosEstructuras)) {
+        if (!(object instanceof Parametros)) {
             return false;
         }
-        ParametrosEstructuras other = (ParametrosEstructuras) object;
+        Parametros other = (Parametros) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -178,16 +178,7 @@ public class ParametrosEstructuras implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Parametrosestructuras[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public List<Parametros> getParametrosList() {
-        return parametrosList;
-    }
-
-    public void setParametrosList(List<Parametros> parametrosList) {
-        this.parametrosList = parametrosList;
+        return "Entidades.Parametros[ secuencia=" + secuencia + " ]";
     }
     
 }

@@ -32,8 +32,6 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
      /*
       *Editar ciudades. 
       */
-    
-
     @Override
     public void editar(Ciudades ciudades) {
         em.merge(ciudades);

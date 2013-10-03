@@ -17,7 +17,7 @@
                         <fieldset style="position: relative; top: 30px; font-size: 10px; width: 640px; height: 110px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>Organigramas</strong></legend>
                             <p:dataTable id="datosOrganigramas" var="organigrama" style="font-size: 11px; width: 370px; " value="#{controlEstructura.listaOrganigramas}"
-                                         rowKey="#{organigrama.secuencia}" scrollable="true" scrollHeight="47" scrollWidth="635" widgetVar="datosOrganigramas" rowIndexVar="indice"
+                                         rowKey="#{organigrama.secuencia}" scrollable="true" scrollHeight="47" scrollWidth="640" widgetVar="datosOrganigramas" rowIndexVar="indice"
                                          filteredValue="#{controlEstructura.filtradoListaOrganigramas}" emptyMessage="No hay datos." editable="true" editMode="cell">   
 
                                 <p:ajax event="filter" listener="#{controlEstructura.eventoFiltrar()}"/>

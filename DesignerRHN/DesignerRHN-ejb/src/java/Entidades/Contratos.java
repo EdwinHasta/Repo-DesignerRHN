@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Contratos.findAll", query = "SELECT c FROM Contratos c")})
 public class Contratos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -72,6 +74,8 @@ public class Contratos implements Serializable {
     @JoinColumn(name = "CONTRATOHIJO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Contratos contratohijo;
+    @Transient
+    private String informacionContrato;
 
     public Contratos() {
     }
@@ -135,7 +139,7 @@ public class Contratos implements Serializable {
     }
 
     public TiposCotizantes getTipocotizante() {
-        if(tipocotizante == null){
+        if (tipocotizante == null) {
             tipocotizante = new TiposCotizantes();
         }
         return tipocotizante;
@@ -203,5 +207,17 @@ public class Contratos implements Serializable {
     public String toString() {
         return "Entidades.Contratos[ secuencia=" + secuencia + " ]";
     }
-    
+
+    public String getInformacionContrato() {
+        if (informacionContrato == null) {
+            if (codigo != null && descripcion != null) {
+                informacionContrato = codigo + " - " + descripcion;
+            }
+        }
+        return informacionContrato;
+    }
+
+    public void setInformacionContrato(String informacionContrato) {
+        this.informacionContrato = informacionContrato;
+    }
 }

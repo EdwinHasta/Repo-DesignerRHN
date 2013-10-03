@@ -262,7 +262,7 @@
                                             S.E.T.: Salario Equivalente Tributario.<br/> Calculo de retención en la fuente
                                         </p:tooltip>
 
-                                        <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" action="emplComprobante" actionListener="#{controlComprobantes.recibirEmpleado(item.empleado.secuencia)}" />
+                                        <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" action="emplComprobante" actionListener="#{controlEmplComprobantes.recibirEmpleado(item.empleado.secuencia)}" />
                                         <p:tooltip style="font-size: 12px" for="Comprobantes" >
                                             COMPROBANTES DE PAGO: Observe todos los comprobantes<br/> de pago que ha tenido el empleado.
                                         </p:tooltip>
@@ -424,7 +424,7 @@
 
                                     <hr style="float: left; height: 120px; position: absolute; left: 615px; top: 2px;"/>
 
-                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 670px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 670px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; " action="contrato"/>
                                 </fieldset>
 
                                 <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 280px; top: 175px;">

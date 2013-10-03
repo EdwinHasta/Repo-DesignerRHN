@@ -8,7 +8,7 @@ import Entidades.SolucionesNodos;
 import Entidades.Terceros;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarComprobantesInterface;
+import InterfaceAdministrar.AdministrarEmplComprobantesInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,10 +27,10 @@ import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @SessionScoped
-public class ControlComprobantes implements Serializable {
+public class ControlEmplComprobantes implements Serializable {
 
     @EJB
-    AdministrarComprobantesInterface administrarComprobantes;
+    AdministrarEmplComprobantesInterface administrarComprobantes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
     private Empleados empleado;
@@ -111,7 +111,7 @@ public class ControlComprobantes implements Serializable {
     //SUBTOTALES Y NETO
     private BigDecimal subtotalPago, subtotalDescuento, subtotalPasivo, subtotalGasto, neto;
 
-    public ControlComprobantes() {
+    public ControlEmplComprobantes() {
         permitirIndex = true;
         listaProcesos = new ArrayList<Procesos>();
         listaTerceros = new ArrayList<Terceros>();

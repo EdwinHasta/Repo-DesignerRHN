@@ -30,8 +30,13 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     /*
      *Editar Contrato. 
      */
+    @Override
     public void editar(Contratos contratos) {
-        em.merge(contratos);
+        try {
+            em.merge(contratos);
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaContratos.editar: " + e);
+        }
     }
 
     /*
@@ -92,7 +97,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
             return null;
         }
     }
-    
+
     @Override
     public void reproducirContrato(Short codigoOrigen, Short codigoDestino) {
         int i = 0;

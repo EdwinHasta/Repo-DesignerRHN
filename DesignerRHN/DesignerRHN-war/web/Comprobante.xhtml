@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Comprobante" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+
+                        <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 835px; height: 100px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue;text-align: left"><strong>Empleado</strong></legend>
+                            <h:outputText value="Código" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute"/>
+                            <p:inputText  readonly="true" style="position: absolute; top: 35px; width: 70px"/>
+                            <h:outputText value="Primer Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 90px"/>
+                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 90px; width: 110px"/>
+                            <h:outputText value="Segundo Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 211px"/>
+                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 211px; width: 110px" />
+                            <h:outputText value="Nombre" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 332px"/>
+                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 332px; width: 213px"/>
+                            <h:outputText value="Correo Electrónico" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 556px"/>
+                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 556px; width: 233px"/>
+
+                            <h:outputText value="Periódo de liquidación:" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px"/>
+                            <h:outputText value="01/10/2013 - 31/01/2013" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 145px"/>
+                            <h:outputText value="Estructura liquidada: " style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 290px"/>
+                            <h:outputText value="*DESTINO SEGURO SAS" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 415px"/>
+
+                            <p:commandButton style="position: absolute; left: 815px; top: 15px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value=""  process="@this" />
+                            <p:commandButton style="position: absolute; left: 815px; top: 40px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value=""  process="@this" />
+                            <p:commandButton style="position: absolute; left: 620px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarEmpleado" value="Buscar Empleado"  process="@this" />
+                            <p:commandButton style="position: absolute; left: 740px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="mostrarTodos" value="Mostrar Todos" process="@this" />
+
+
+                        </fieldset>
+
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
