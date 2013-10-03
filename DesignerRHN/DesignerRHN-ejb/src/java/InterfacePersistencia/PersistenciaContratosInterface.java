@@ -46,5 +46,7 @@ public interface PersistenciaContratosInterface {
      * @return Objeto Contrato que cumple con la llave primaria dada
      */
     public Contratos buscarContratoSecuencia(BigInteger secuencia);
+    public List<Contratos> lovContratos();
+    public void reproducirContrato(Short codigoOrigen, Short codigoDestino);
     
 }

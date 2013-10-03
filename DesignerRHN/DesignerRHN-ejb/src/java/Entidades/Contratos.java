@@ -135,6 +135,9 @@ public class Contratos implements Serializable {
     }
 
     public TiposCotizantes getTipocotizante() {
+        if(tipocotizante == null){
+            tipocotizante = new TiposCotizantes();
+        }
         return tipocotizante;
     }
 

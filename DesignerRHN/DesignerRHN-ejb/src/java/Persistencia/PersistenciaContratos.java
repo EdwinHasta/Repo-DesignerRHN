@@ -1,4 +1,3 @@
-
 package Persistencia;
 
 import Entidades.Contratos;
@@ -10,15 +9,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
 /**
  *
  * @author AndresPineda
  */
-
 @Stateless
-public class PersistenciaContratos implements PersistenciaContratosInterface{
-    
+public class PersistenciaContratos implements PersistenciaContratosInterface {
+
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -74,7 +71,6 @@ public class PersistenciaContratos implements PersistenciaContratosInterface{
 
     @Override
     public Contratos buscarContratoSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT e FROM Contratos e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -84,7 +80,30 @@ public class PersistenciaContratos implements PersistenciaContratosInterface{
             Contratos contrato = null;
             return contrato;
         }
-        
     }
 
+    @Override
+    public List<Contratos> lovContratos() {
+        try {
+            Query query = em.createQuery("SELECT c FROM Contratos c ORDER BY c.codigo ASC");
+            List<Contratos> listaContratos = query.getResultList();
+            return listaContratos;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    @Override
+    public void reproducirContrato(Short codigoOrigen, Short codigoDestino) {
+        int i = 0;
+        try {
+            String sqlQuery = "call FORMULASCONTRATOS_PKG.CLONARLEGISLACION(?, ?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, codigoOrigen);
+            query.setParameter(2, codigoDestino);
+            i = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error en reproducirContrato: " + e);
+        }
+    }
 }

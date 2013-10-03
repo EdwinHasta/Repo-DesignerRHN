@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposCotizantes.findAll", query = "SELECT t FROM TiposCotizantes t")})
 public class TiposCotizantes implements Serializable {
+
     @OneToMany(mappedBy = "tipocotizante")
     private Collection<Contratos> contratosCollection;
     private static final long serialVersionUID = 1L;
@@ -107,6 +108,9 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -228,5 +232,4 @@ public class TiposCotizantes implements Serializable {
     public void setContratosCollection(Collection<Contratos> contratosCollection) {
         this.contratosCollection = contratosCollection;
     }
-    
 }
