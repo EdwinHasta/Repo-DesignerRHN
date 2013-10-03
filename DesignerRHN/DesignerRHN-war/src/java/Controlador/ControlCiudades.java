@@ -468,8 +468,8 @@ public class ControlCiudades implements Serializable {
             index = -1;
             secRegistro = null;
         } else {
-            // context.update("formularioDialogos:validacionNuevaCiudad");
-            // context.execute("validacionNuevaCiudad.show()");
+           //  context.update("formularioDialogos:validacionNuevaCiudad");
+           //  context.execute("validacionNuevaCiudad.show()");
         }
     }
     //LIMPIAR NUEVO REGISTRO CIUDAD

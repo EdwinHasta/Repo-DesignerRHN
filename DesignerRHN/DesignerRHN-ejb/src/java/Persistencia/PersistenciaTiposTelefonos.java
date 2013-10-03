@@ -69,7 +69,7 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
     @Override
     public List<TiposTelefonos> tiposTelefonos() {
         try {
-            Query query = em.createQuery("SELECT tt FROM TiposTelefonos tt");
+            Query query = em.createQuery("SELECT tt FROM TiposTelefonos tt ORDER BY tt.codigo ASC");
             List<TiposTelefonos> listaTiposTelefonos = query.getResultList();
             return listaTiposTelefonos;
         } catch (Exception e) {
