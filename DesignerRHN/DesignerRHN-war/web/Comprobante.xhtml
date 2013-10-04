@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
     </h:head>
     <h:body>
@@ -12,33 +13,478 @@
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Comprobante" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
-                        <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 835px; height: 100px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 835px; height: 83px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue;text-align: left"><strong>Empleado</strong></legend>
-                            <h:outputText value="Código" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute"/>
-                            <p:inputText  readonly="true" style="position: absolute; top: 35px; width: 70px"/>
-                            <h:outputText value="Primer Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 90px"/>
-                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 90px; width: 110px"/>
-                            <h:outputText value="Segundo Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 211px"/>
-                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 211px; width: 110px" />
-                            <h:outputText value="Nombre" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 332px"/>
-                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 332px; width: 213px"/>
-                            <h:outputText value="Correo Electrónico" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 556px"/>
-                            <p:inputText readonly="true" style="position: absolute; top: 35px; left: 556px; width: 233px"/>
+                            <p:panel id="panelInf" style="border: none">
+                                <h:outputText value="Código" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 20px; left: 9px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.codigoempleado}"  readonly="true" style="position: absolute; top: 35px; width: 70px; left: 9px"/>
+                                <h:outputText value="Primer Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 90px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.primerapellido}" readonly="true" style="position: absolute; top: 35px; left: 90px; width: 110px"/>
+                                <h:outputText value="Segundo Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 211px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.segundoapellido}" readonly="true" style="position: absolute; top: 35px; left: 211px; width: 110px" />
+                                <h:outputText value="Nombre" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 332px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.nombre}" readonly="true" style="position: absolute; top: 35px; left: 332px; width: 213px"/>
+                                <h:outputText value="Correo Electrónico" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 556px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.email}" readonly="true" style="position: absolute; top: 35px; left: 556px; width: 240px"/>
 
-                            <h:outputText value="Periódo de liquidación:" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px"/>
-                            <h:outputText value="01/10/2013 - 31/01/2013" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 145px"/>
-                            <h:outputText value="Estructura liquidada: " style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 290px"/>
-                            <h:outputText value="*DESTINO SEGURO SAS" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 415px"/>
+                                <h:outputText value="Periódo de liquidación:" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px"/>
+                                <h:outputText value="#{controlComprobantes.parametroActual.fechasParametros}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 155px"/>
+                                <h:outputText value="Estructura liquidada: " style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 300px"/>
+                                <h:outputText value="#{controlComprobantes.parametroEstructura.estructura.nombre}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 425px"/>
 
-                            <p:commandButton style="position: absolute; left: 815px; top: 15px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value=""  process="@this" />
-                            <p:commandButton style="position: absolute; left: 815px; top: 40px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value=""  process="@this" />
-                            <p:commandButton style="position: absolute; left: 620px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarEmpleado" value="Buscar Empleado"  process="@this" />
-                            <p:commandButton style="position: absolute; left: 740px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="mostrarTodos" value="Mostrar Todos" process="@this" />
-
-
+                                <p:commandButton style="position: absolute; left: 815px; top: 24px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value="" actionListener="#{controlComprobantes.anteriorEmpleado()}" process="@this" />
+                                <p:commandButton style="position: absolute; left: 815px; top: 45px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value=""  actionListener="#{controlComprobantes.siguienteEmpleado()}" process="@this" />
+                                <p:commandButton style="position: absolute; left: 620px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarEmpleado" value="Buscar Empleado"  process="@this" oncomplete="buscarEmpleadoDialogo.show();" update=":formularioDialogos:buscarEmpleadoDialogo" />
+                                <p:commandButton style="position: absolute; left: 740px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlComprobantes.mostrarTodos}" id="mostrarTodos" value="Mostrar Todos" actionListener="#{controlComprobantes.mostarTodosEmpleados()}" process="@this" />
+                            </p:panel>
                         </fieldset>
 
+                        <fieldset style="position: absolute; top: 180px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
+
+                            <p:dataTable id="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" style="font-size: 11px; width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
+                                         rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" 
+                                         editable="true" editMode="cell"  scrollHeight="105" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="Sin registros">
+
+                                <p:column id="codigoSNE" headerText="Codigo" sortBy="#{solucionNodoEmpleado.concepto.codigo}" width="50" filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.concepto.codigo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.concepto.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="descipcionSNE" headerText="Descripción" sortBy="#{solucionNodoEmpleado.concepto.descripcion}" width="200" filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.concepto.descripcion}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.concepto.descripcion}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="unidadSNE" headerText="U" sortBy="#{solucionNodoEmpleado.unidades}" width="20" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.unidades}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.unidades}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="pagoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.pago}" width="100" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.pago}">
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.pago}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column id="descuentoSNE" headerText="Descuento" sortBy="#{solucionNodoEmpleado.descuento}" width="100"  filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.descuento}">
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.descuento}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column id="terceroSNE" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleado.nit.nombre}" width="200" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.nit.nombre}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.nit.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="fechaHastaSNE" headerText="Hasta" sortBy="#{solucionNodoEmpleado.fechahasta}" width="50" filterBy="#{solucionNodoEmpleado.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.fechahasta}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText> 
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.fechahasta}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="debitoSNE" headerText="Debito" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" width="60" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.cuentad.codigo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="centroCostoDSNE" headerText="CC-D" sortBy="#{solucionNodoEmpleado.centrocostod.nombre}" width="100" filterBy="#{solucionNodoEmpleado.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.centrocostod.nombre}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.centrocostod.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column id="creditoSNE" headerText="Credito" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" width="60" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.cuentac.codigo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="centroCostoCSNE" headerText="CC-C" sortBy="#{solucionNodoEmpleado.centrocostoc.nombre}" width="100" filterBy="#{solucionNodoEmpleado.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.centrocostoc.nombre}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.centrocostoc.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="saldoSNE" headerText="Saldo" sortBy="#{solucionNodoEmpleado.saldo}" width="100" filterBy="#{solucionNodoEmpleado.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.saldo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.saldo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleado.fechadesde}" width="50"  filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">                                    
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.fechadesde}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.fechadesde}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column> 
+
+                                <p:column id="fechaPagoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.fechapago}" width="50" filterBy="#{solucionNodoEmpleado.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.fechapago}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText> 
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.fechapago}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="FechaModificacioSNE" headerText="Fecha Mod." sortBy="#{solucionNodoEmpleado.ultimamodificacion}" width="90" filterBy="#{solucionNodoEmpleado.ultimamodificacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleado.ultimamodificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
+                                            </h:outputText> 
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleado.ultimamodificacion}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                            </p:dataTable>
+                        </fieldset>
+
+                        <fieldset style="position: absolute; top: 337px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleador</legend>
+
+                            <p:dataTable id="datosSolucionesNodosEmpleador" var="solucionNodoEmpleador" style="font-size: 11px; width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
+                                         rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" 
+                                         editable="true" editMode="cell"  scrollHeight="105" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="Sin registros">
+
+                                <p:column id="codigoSNER" headerText="Codigo" sortBy="#{solucionNodoEmpleador.concepto.codigo}" width="50" filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.concepto.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="descipcionSNER" headerText="Descripción" sortBy="#{solucionNodoEmpleador.concepto.descripcion}" width="200" filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.concepto.descripcion}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.concepto.descripcion}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="unidadSNER" headerText="U" sortBy="#{solucionNodoEmpleador.unidades}" width="20" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.unidades}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.unidades}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="pasivoSNER" headerText="Pasivo" sortBy="#{solucionNodoEmpleador.pasivo}" width="100" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.pasivo}">
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.pasivo}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column id="gastoSNER" headerText="Gasto" sortBy="#{solucionNodoEmpleador.gasto}" width="100"  filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.gasto}" >
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.gasto}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertNumber currencyCode="COP"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column id="terceroSNER" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleador.nit.nombre}" width="200" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.nit.nombre}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.nit.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="fechaHastaSNER" headerText="Hasta" sortBy="#{solucionNodoEmpleador.fechahasta}" width="50" filterBy="#{solucionNodoEmpleador.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.fechahasta}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText> 
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.fechahasta}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="debitoSNER" headerText="Debito" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" width="60" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.cuentad.codigo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="centroCostoDSNER" headerText="CC-D" sortBy="#{solucionNodoEmpleador.centrocostod.nombre}" width="100" filterBy="#{solucionNodoEmpleador.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.centrocostod.nombre}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.centrocostod.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                <p:column id="creditoSNER" headerText="Credito" sortBy="#{solucionNodoEmpleador.cuentac.codigo}" width="60" filterBy="#{solucionNodoEmpleador.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.cuentac.codigo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.cuentac.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="centroCostoCSNER" headerText="CC-C" sortBy="#{solucionNodoEmpleador.centrocostoc.nombre}" width="100" filterBy="#{solucionNodoEmpleador.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.centrocostoc.nombre}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.centrocostoc.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="saldoSNER" headerText="Saldo" sortBy="#{solucionNodoEmpleador.saldo}" width="100" filterBy="#{solucionNodoEmpleador.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.saldo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.saldo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="fechaDesdeSNER" headerText="Desde" sortBy="#{solucionNodoEmpleador.fechadesde}" width="50"  filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">                                    
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.fechadesde}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.fechadesde}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column> 
+
+                                <p:column id="pagoSNER" headerText="Pago" sortBy="#{solucionNodoEmpleador.fechapago}" width="50" filterBy="#{solucionNodoEmpleador.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.fechapago}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText> 
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.fechapago}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column id="FechaModificacioSNER" headerText="Fecha Mod." sortBy="#{solucionNodoEmpleador.ultimamodificacion}" width="90" filterBy="#{solucionNodoEmpleador.ultimamodificacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{solucionNodoEmpleador.ultimamodificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
+                                            </h:outputText> 
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{solucionNodoEmpleador.ultimamodificacion}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:columnGroup type="footer">  
+                                    <p:row>  
+                                        <p:column colspan="3" footerText="Totals:"  
+                                                  style="text-align:right; position: relative; left: 200px"  />   
+                                        <p:column colspan="1">
+                                            FELIPE
+                                        </p:column>
+                                        
+                                        <p:column>
+                                            FELIPE
+                                        </p:column>
+                                    </p:row>  
+                                </p:columnGroup>
+                            </p:dataTable>
+                        </fieldset>
                     </p:panel>
+                </h:form>
+                <h:form id="formularioDialogos">
+                    <p:dialog id="buscarEmpleadoDialogo" header="Empleados" widgetVar="buscarEmpleadoDialogo"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
+                        <p:dataTable  id="lovEmpleados" style="font-size: 11px; width: 700px" var="parametro" value="#{controlComprobantes.listaParametrosLOV}"
+                                      scrollable="true" scrollHeight="162" scrollWidth="720" widgetVar="lovEmpleados" 
+                                      filteredValue="#{controlComprobantes.filtradoListaParametrosLOV}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{parametro.empleado.secuencia}" selection="#{controlComprobantes.parametroSeleccionado}" selectionMode="single" >
+
+                            <p:ajax event="rowSelect" listener="#{controlComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
+                            <p:ajax event="rowDblselect" listener="#{controlComprobantes.seleccionarEmpleado()}" process="@this" onstart="lovEmpleados.clearFilters()"/>
+
+                            <f:facet name="header" >  
+                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 22px; top: 18px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpleados.filter();" style="width:150px; position: relative; left: -150px;"/>
+                                <p:watermark for="globalFilter" value="Ingresar valor a buscar" />
+                            </f:facet>
+
+                            <p:column  headerText="Codigo Empleado" filterOptions="" filterBy="#{parametro.empleado.codigoempleado}" filterMatchMode="contains">  
+                                <h:outputText value="#{parametro.empleado.codigoempleado}" />  
+                            </p:column>  
+
+                            <p:column headerText="Primer Apellido" filterBy="#{parametro.empleado.persona.primerapellido}" filterMatchMode="contains">  
+                                <h:outputText value="#{parametro.empleado.persona.primerapellido}" />  
+                            </p:column>  
+
+                            <p:column headerText="Segundo Apellido" filterBy="#{parametro.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
+                                <h:outputText value="#{parametro.empleado.persona.segundoapellido}" />  
+                            </p:column>  
+
+                            <p:column headerText="Nombre" width="160" filterBy="#{parametro.empleado.persona.nombre}" filterMatchMode="contains">  
+                                <h:outputText value="#{parametro.empleado.persona.nombre}" />  
+                            </p:column>  
+                        </p:dataTable> 
+
+                        <p:commandButton id="aceptarP" style="position: relative; left: 567px" value="Aceptar" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}" update="aceptarP" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasP" style="position: relative; left: 567px" value="Atras" onclick="buscarEmpleadoDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlComprobantes.cancelarSeleccionEmpleado()}" update="lovEmpleados, aceptarP" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
                 </h:form>
             </ui:define>
         </ui:composition>
