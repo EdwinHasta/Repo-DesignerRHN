@@ -99,20 +99,46 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             return null;
         }
     }
-    
+
     @Override
-    public Long validacionTercerosVigenciaAfiliacion(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer){
+    public Long validacionTercerosVigenciaAfiliacion(BigInteger secuencia, Date fechaInicial, BigDecimal secuenciaTE, BigDecimal secuenciaTer) {
         try {
             Query query = em.createQuery("SELECT count(v)  FROM SolucionesNodos v where v.fechapago > :fechaInicial AND v.empleado.secuencia = :secuencia AND v.estado ='CERRADO' AND V.secuencia != :secuenciaTer AND exists (SELECT cs FROM ConceptosSoportes cs WHERE cs.concepto.secuencia = v.concepto.secuencia AND cs.tipoentidad.secuencia = :secuenciaT and cs.tipo='AUTOLIQUIDACION' AND cs.subgrupo='COTIZACION')");
             query.setParameter("secuencia", secuencia);
             query.setParameter("fechaInicial", fechaInicial);
             query.setParameter("secuenciaT", secuenciaTE);
             query.setParameter("secuenciaTer", secuenciaTer);
-            Long r = (Long)query.getSingleResult();
-            System.out.println("Resultado : "+r);
+            Long r = (Long) query.getSingleResult();
+            System.out.println("Resultado : " + r);
             return r;
         } catch (Exception e) {
             System.out.println("Error validacionTercerosVigenciaAfiliacion Persistencia : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<SolucionesNodos> solucionNodoEmpleado(BigInteger secuenciaEmpleado) {
+        try {
+            Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'LIQUIDADO' AND sn.tipo IN ('PAGO','DESCUENTO') AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
+            query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            List<SolucionesNodos> listSolucionesNodos = query.getResultList();
+            return listSolucionesNodos;
+        } catch (Exception e) {
+            System.out.println("Error: (PersistenciaSolucionesNodos.solucionNodoEmpleado)" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<SolucionesNodos> solucionNodoEmpleador(BigInteger secuenciaEmpleado) {
+        try {
+            Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'LIQUIDADO' AND sn.tipo IN  ('PASIVO','GASTO','NETO') AND sn.valor <> 0 AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
+            query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            List<SolucionesNodos> listSolucionesNodos = query.getResultList();
+            return listSolucionesNodos;
+        } catch (Exception e) {
+            System.out.println("Error: (PersistenciaSolucionesNodos.solucionNodoEmpleador)" + e);
             return null;
         }
     }

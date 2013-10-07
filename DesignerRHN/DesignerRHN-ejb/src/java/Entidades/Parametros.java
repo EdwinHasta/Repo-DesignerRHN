@@ -7,6 +7,7 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -22,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -36,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Parametros.findAll", query = "SELECT p FROM Parametros p")})
 public class Parametros implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -69,6 +72,8 @@ public class Parametros implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
+    @Transient
+    private String fechasParametros;
 
     public Parametros() {
     }
@@ -180,5 +185,16 @@ public class Parametros implements Serializable {
     public String toString() {
         return "Entidades.Parametros[ secuencia=" + secuencia + " ]";
     }
-    
+
+    public String getFechasParametros() {
+        if (fechasParametros == null && fechadesdecausado != null && fechahastacausado != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            fechasParametros = formatoFecha.format(fechadesdecausado) + " - " + formatoFecha.format(fechahastacausado);
+        }
+        return fechasParametros;
+    }
+
+    public void setFechasParametros(String fechasParametros) {
+        this.fechasParametros = fechasParametros;
+    }
 }

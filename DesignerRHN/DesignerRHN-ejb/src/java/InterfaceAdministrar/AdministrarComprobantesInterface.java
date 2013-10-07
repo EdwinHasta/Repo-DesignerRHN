@@ -4,7 +4,10 @@
  */
 package InterfaceAdministrar;
 
-import Entidades.Empleados;
+import Entidades.Parametros;
+import Entidades.ParametrosEstructuras;
+import Entidades.SolucionesNodos;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -12,5 +15,9 @@ import java.util.List;
  * @author Administrator
  */
 public interface AdministrarComprobantesInterface {
-    public List<Empleados> empleadosComprobantes();
+
+    public List<Parametros> parametrosComprobantes();
+    public ParametrosEstructuras parametroEstructura();
+    public List<SolucionesNodos> solucionesNodosEmpleado(BigInteger secEmpleado);
+    public List<SolucionesNodos> solucionesNodosEmpleador(BigInteger secEmpleado);
 }

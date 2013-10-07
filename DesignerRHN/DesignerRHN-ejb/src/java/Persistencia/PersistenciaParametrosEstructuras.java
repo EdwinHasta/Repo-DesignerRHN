@@ -41,4 +41,17 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
             return null;
         }
     }
+
+    @Override
+    public ParametrosEstructuras estructurasComprobantes(String usuarioBD) {
+        try {
+            Query query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
+            query.setParameter("usuarioBD", usuarioBD);
+            ParametrosEstructuras parametroEstructura = (ParametrosEstructuras) query.getSingleResult();
+            return parametroEstructura;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEstructuras.estructurasComprobantes" + e);
+            return null;
+        }
+    }
 }
