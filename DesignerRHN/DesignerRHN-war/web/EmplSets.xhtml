@@ -14,11 +14,9 @@
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Históricos Sets" style=" font-size: 12px; position: absolute; width: 874px; height: 530px;  text-align: left" >  
 
-                        <h:outputText id="btn" style="position: absolute; left: 25px; top: 40px; background-image: url(Imagenes/icon-question-big.png); width:60px ;height:60px; background-repeat: no-repeat; background-size: 100% 100%; "/>
-                        <p:tooltip style="font-size: 12px" for="btn" value="Información del SET (Salario Equivalente Tributario)" showEffect="slide" hideEffect="slide"/>
-                        <p:inputText style="position: absolute; left: 90px; top: 80px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado" value="#{controlSets.empleado.persona.primerapellido} #{controlSets.empleado.persona.segundoapellido} #{controlSets.empleado.persona.nombre}"/>  
+                       <h:outputText style="position: absolute; left: 640px; top: 50px; width: 200px; height: 12px;position: absolute; color: red; font-weight: bold" id="nombreEmpleado" value="#{controlSets.empleado.persona.primerapellido} #{controlSets.empleado.persona.segundoapellido} #{controlSets.empleado.persona.nombre}"/>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 70px; left: 540px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlSets.guardarCambiosSets()}" process="@this" />
@@ -186,7 +184,8 @@
                         </fieldset>  
 
                         <p:commandButton style="position: absolute; left: 680px; top: 411px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosSetsEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 40px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlSets.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 100px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlSets.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="DECLARANTE" value="Declarante" process="@this" />
                         <p:commandButton style="position: absolute; left: 780px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlSets.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
