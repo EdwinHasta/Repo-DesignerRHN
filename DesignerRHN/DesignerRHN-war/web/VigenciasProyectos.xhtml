@@ -386,7 +386,7 @@
                     </p:dialog>
                     <!--DIALOGO DUPLICAR-->
 
-                    <p:dialog id="DuplicarRegistroVigenciaProyecto" header="Duplicar Registro" widgetVar="DuplicarRegistroVigenciaProyecto" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroVigenciaProyecto" header="Duplicar Registro" widgetVar="DuplicarRegistroVigenciaProyecto" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar información Vigencia Proyecto" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -433,11 +433,17 @@
                             </p:inputText>
                             <p:watermark for="duplicarCargo" value="Cargo" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnDuplicarCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasProyectos.asignarIndex(indice, 2, 2)}"/>   
+                            
+                            <strong><h:outputText value="Personas a Cargo: " style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                            <p:inputText id="duplicarCantidadPersonas" value="#{controlVigenciasProyectos.duplicarVigenciaProyectos.cantidadpersonaacargo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="duplicarCantidadPersonas"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarCantidadPersonas" value="P.C" />
 
 
-                            <p:commandButton id="limpiarDuplicadoTelefono" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoTelefono" value="Agregar" style="font-size: 11px; position: absolute; left: 170px; top: 390px;"  process="@this" actionListener="#{controlVigenciasProyectos.confirmarDuplicar()}" />
-                            <p:commandButton id="cancelarDuplicadoTelefono" value="Cancelar" style="font-size: 11px; position: absolute; left: 240px; top: 390px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" onclick="DuplicarRegistroVigenciaProyecto.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoTelefono" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoTelefono" value="Agregar" style="font-size: 11px; position: absolute; left: 170px; top: 300px;"  process="@this" actionListener="#{controlVigenciasProyectos.confirmarDuplicar()}" />
+                            <p:commandButton id="cancelarDuplicadoTelefono" value="Cancelar" style="font-size: 11px; position: absolute; left: 240px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" onclick="DuplicarRegistroVigenciaProyecto.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -475,13 +481,13 @@
                         <p:commandButton id="cancelarCargos" value="Atras" onclick="editarCargos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog> 
 
-                    <p:dialog id="editarCantidadPersonas" header="Cantidad Personas" widgetVar="editarCantidadPersonas" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px" >  
+                    <p:dialog id="editarCantidadPersonas" header="Personas a Cargo" widgetVar="editarCantidadPersonas" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px" >  
                         <p:inputTextarea value="#{controlVigenciasProyectos.editarVigenciasProyectos.cantidadpersonaacargo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCantidadPersonas" value="Atras" onclick="editarCantidadPersonas.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog> 
 
                     <!-- DIALOGO NUEVO REGISTRO -->
-                    <p:dialog id="NuevoRegistroVigenciaProyecto" header="Nuevo Registro" widgetVar="NuevoRegistroVigenciaProyecto" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroVigenciaProyecto" header="Nuevo Registro" widgetVar="NuevoRegistroVigenciaProyecto" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar un nuevo proyecto" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -527,15 +533,15 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnNuevoCargo" actionListener="#{controlVigenciasProyectos.asignarIndex(indice, 2, 1)}" icon="ui-icon-search" process="@this" />
 
-                            <strong><h:outputText value="Cantidad Personas: " style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                            <strong><h:outputText value="Personas a Cargo: " style="font-size: 12px; position: absolute; top: 265px" /></strong>
                             <p:inputText id="nuevaCantidadPersonas" value="#{controlVigenciasProyectos.nuevaVigenciaProyectos.cantidadpersonaacargo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlVigenciasProyectos.limpiarNuevaVigenciaProyecto()}" update="nuevaVigenciaProyecto" process="@this"/>
-                            <p:commandButton id="agregarVP" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  actionListener="#{controlVigenciasProyectos.agregarNuevaVigenciaProyecto()}" process="@this"/>
-                            <p:commandButton id="cancelarVP" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlVigenciasProyectos.limpiarNuevaVigenciaProyecto()}" update="nuevaVigenciaProyecto" onclick="NuevoRegistroVigenciaProyecto.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarNuevaVigenciaProyecto()}" update="nuevaVigenciaProyecto" process="@this"/>
+                            <p:commandButton id="agregarVP" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 300px;"  actionListener="#{controlVigenciasProyectos.agregarNuevaVigenciaProyecto()}" process="@this"/>
+                            <p:commandButton id="cancelarVP" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarNuevaVigenciaProyecto()}" update="nuevaVigenciaProyecto" onclick="NuevoRegistroVigenciaProyecto.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
