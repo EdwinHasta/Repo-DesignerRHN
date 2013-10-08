@@ -474,7 +474,7 @@
 
                             <p:commandButton id="limpiarDuplicadoVA" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.limpiarduplicarVA()}" update="duplicadoVA" process="@this"/>
                             <p:commandButton id="agregarDuplicadoVA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.confirmarDuplicarVA()}" process="@this"/>
-                            <p:commandButton id="cancelarDuplicadoVA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.limpiarduplicarVA()}" update="duplicadoVA" onclick="DuplicadoRegistroVA.hide();"  process="@this"/>
+                            <p:commandButton id="cancelarDuplicadoVA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 400px;" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarDuplicadoVA()}" update="duplicadoVA" onclick="DuplicadoRegistroVA.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -547,6 +547,18 @@
                         <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="Error con tercero sucursal" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Ok" onclick="errorTerceroSucursal.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorFechaMenorContratacion" header="ATENCIÓN...!" widgetVar="errorFechaMenorContratacion"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Error de fechas. La fecha ingresada es menor a la fecha de contratacion del empleado. Se recomienda ingresar una fecha mayor a la de contratacion." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Ok" onclick="errorFechaMenorContratacion.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorFechaInicialRegistro" header="ATENCIÓN...!" widgetVar="errorFechaInicialRegistro"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Error de fechas. Se recomienda usar el dia primero del mes para ingresar el nuevo registro." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Ok" onclick="errorFechaInicialRegistro.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
                     </p:dialog>
 
 

@@ -25,7 +25,7 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     @EJB
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
 
-    @Override
+
     public List<Parametros> parametrosComprobantes() {
         String usuarioBD;
         usuarioBD = persistenciaActualUsuario.actualAliasBD();

@@ -14,6 +14,7 @@ import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaTercerosSucursalesInterface;
 import InterfacePersistencia.PersistenciaTiposEntidadesInterface;
 import InterfacePersistencia.PersistenciaVigenciasAfiliacionesInterface;
+import InterfacePersistencia.PersistenciaVigenciasTiposContratosInterface;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -42,6 +43,8 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
+    @EJB
+    PersistenciaVigenciasTiposContratosInterface persistenciaVigenciasTiposContratos;
     //
     List<VigenciasAfiliaciones> listVigenciasAfiliaciones;
     List<Terceros> listTercetos;
@@ -49,6 +52,7 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
     List<TiposEntidades> listTiposEntidades;
     List<TercerosSucursales> listTercerosSucursales;
     Empleados empleado;
+    Date fechaContratacion;
 
     @Override
     public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia) {
@@ -87,7 +91,8 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
             return null;
         }
     }
-    
+
+    @Override
     public VigenciasAfiliaciones vigenciaAfiliacionSecuencia(BigDecimal secuencia) {
         try {
             VigenciasAfiliaciones retorno = persistenciaVigenciasAfilicaciones.buscarVigenciasAfiliacionesSecuencia(secuencia);
@@ -152,14 +157,25 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
             return null;
         }
     }
-    
+
     @Override
-    public Long validacionTercerosSurcursalesNuevaVigencia(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigDecimal secuenciaTer){
-        try{
+    public Long validacionTercerosSurcursalesNuevaVigencia(BigInteger secuencia, Date fechaInicial, BigDecimal secuenciaTE, BigDecimal secuenciaTer) {
+        try {
             Long result = persistenciaSolucionesNodos.validacionTercerosVigenciaAfiliacion(secuencia, fechaInicial, secuenciaTE, secuenciaTer);
             return result;
-        }catch(Exception e){
-            System.out.println("Error validacionTercerosSurcursales Admi : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error validacionTercerosSurcursales Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Date fechaContratacion(Empleados empleado) {
+        try {
+            fechaContratacion = persistenciaVigenciasTiposContratos.fechaMaxContratacion(empleado);
+            return fechaContratacion;
+        } catch (Exception e) {
+            System.out.println("Error fechaContratacion Admi : " + e.toString());
             return null;
         }
     }

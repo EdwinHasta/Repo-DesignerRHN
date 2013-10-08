@@ -39,7 +39,7 @@
                             </p:panel>
                         </fieldset>
 
-                        <fieldset style="position: absolute; top: 180px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; top: 160px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
 
                             <p:dataTable id="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" style="font-size: 11px; width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
@@ -68,7 +68,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="unidadSNE" headerText="U" sortBy="#{solucionNodoEmpleado.unidades}" width="20" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="unidadSNE" headerText="U" sortBy="#{solucionNodoEmpleado.unidades}" width="40" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.unidades}" />
@@ -79,21 +79,22 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="pagoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.pago}" width="100" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                <p:column id="pagoSNE"  sortBy="#{solucionNodoEmpleado.pago}" width="116.5" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                    <f:facet name="header"><h:outputText value="Pago" /></f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{solucionNodoEmpleado.pago}">
+                                            <h:outputText value="#{solucionNodoEmpleado.pago}" style="text-align: right">
                                                 <f:convertNumber currencyCode="COP"/>
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.pago}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleado.pago}" style="width: 96%; text-transform: uppercase; text-align: right" readonly="true">
                                                 <f:convertNumber currencyCode="COP"/>
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="descuentoSNE" headerText="Descuento" sortBy="#{solucionNodoEmpleado.descuento}" width="100"  filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="descuentoSNE" headerText="Descuento" sortBy="#{solucionNodoEmpleado.descuento}" width="116.5"  filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.descuento}">
@@ -232,6 +233,17 @@
                                     </p:cellEditor>
                                 </p:column>
 
+                                <p:columnGroup type="footer">  
+                                    <p:row> 
+                                        <p:column footerText="" style="visibility: hidden; border: none"/>
+                                        <p:column footerText="" style="visibility: hidden; border: none"/>
+                                        <p:column footerText="Totales: " style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none"/>
+                                        <p:column footerText="#{controlComprobantes.pago}" style="text-align:right; position: relative; left: 17px; padding-left: 0px; border: none"/>
+                                        <p:column footerText="#{controlComprobantes.descuento}" style="text-align:right; position: relative; left: 25px; padding-left: 0px; border: none"/> 
+                                        <p:column footerText="&nbsp;&nbsp;&nbsp; Neto: &nbsp;&nbsp;&nbsp; #{controlComprobantes.netoTotal}"  style=" text-align: left; position: relative; padding-left: 0px; border: none; left: 22px; border: none"/>
+                                    </p:row>  
+                                </p:columnGroup>
+
                             </p:dataTable>
                         </fieldset>
 
@@ -264,7 +276,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="unidadSNER" headerText="U" sortBy="#{solucionNodoEmpleador.unidades}" width="20" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="unidadSNER" headerText="U" sortBy="#{solucionNodoEmpleador.unidades}" width="40" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.unidades}" />
@@ -275,7 +287,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="pasivoSNER" headerText="Pasivo" sortBy="#{solucionNodoEmpleador.pasivo}" width="100" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                <p:column id="pasivoSNER" headerText="Pasivo" sortBy="#{solucionNodoEmpleador.pasivo}" width="116.5" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.pasivo}">
@@ -289,7 +301,7 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="gastoSNER" headerText="Gasto" sortBy="#{solucionNodoEmpleador.gasto}" width="100"  filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="gastoSNER" headerText="Gasto" sortBy="#{solucionNodoEmpleador.gasto}" width="116.5"  filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.gasto}" >
@@ -429,16 +441,13 @@
                                 </p:column>
 
                                 <p:columnGroup type="footer">  
-                                    <p:row>  
-                                        <p:column colspan="3" footerText="Totals:"  
-                                                  style="text-align:right; position: relative; left: 200px"  />   
-                                        <p:column colspan="1">
-                                            FELIPE
-                                        </p:column>
-                                        
-                                        <p:column>
-                                            FELIPE
-                                        </p:column>
+                                    <p:row> 
+                                        <p:column footerText="" style="visibility: hidden; border: none"/>
+                                        <p:column footerText="" style="visibility: hidden; border: none"/>
+                                        <p:column footerText="Totales: " style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none"/>
+                                        <p:column footerText="#{controlComprobantes.pasivo}" style="text-align:right; position: relative; left: 17px; padding-left: 0px; border: none"/>
+                                        <p:column footerText="#{controlComprobantes.gasto}" style="text-align:right; position: relative; left: 25px; padding-left: 0px; border: none"/> 
+                                        <p:column footerText=""  style=" visibility: hidden; position: relative; padding-left: 0px; border: none; left: 22px; border: none"/>
                                     </p:row>  
                                 </p:columnGroup>
                             </p:dataTable>
@@ -475,7 +484,7 @@
 
                             <p:column headerText="Nombre" width="160" filterBy="#{parametro.empleado.persona.nombre}" filterMatchMode="contains">  
                                 <h:outputText value="#{parametro.empleado.persona.nombre}" />  
-                            </p:column>  
+                            </p:column> 
                         </p:dataTable> 
 
                         <p:commandButton id="aceptarP" style="position: relative; left: 567px" value="Aceptar" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}" update="aceptarP" process="@this">
