@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import Administrar.AdministrarVigenciasProyectos;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -84,7 +85,12 @@ public class PryPlataformas implements Serializable {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if(descripcion == null){
+            descripcion = (" ");
+            return descripcion;
+        }
+            
+        return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {
@@ -92,6 +98,10 @@ public class PryPlataformas implements Serializable {
     }
 
     public String getObservacion() {
+        if(observacion == null ){
+            observacion = (" ");
+            return observacion;
+        }
         return observacion;
     }
 

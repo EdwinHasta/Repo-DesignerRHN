@@ -11,4 +11,6 @@ public interface PersistenciaCargosInterface {
     public void borrar(Cargos cargos);
     public Cargos buscarCargo(Object id);
     public List<Cargos> buscarCargos();
+    public List<Cargos> cargos();
 }
+    

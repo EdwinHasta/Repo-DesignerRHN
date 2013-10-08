@@ -6,6 +6,7 @@ package InterfacePersistencia;
 
 import Entidades.Proyectos;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -45,5 +46,9 @@ public interface PersistenciaProyectosInterface {
      * @param secuencia Secuencia del proyecto
      * @return proyecto Proyecto que cumple con la secuencia dada
      */
-    public Proyectos buscarProyectoSecuencia(BigDecimal secuencia);
+    public Proyectos buscarProyectoSecuencia(BigInteger secuencia);
+    
+    public List<Proyectos> proyectos();
+    
+    public Proyectos buscarProyectoNombre(String nombreP);
 }
