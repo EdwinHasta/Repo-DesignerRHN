@@ -12,13 +12,11 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Historia Tipo Trabajador" style=" font-size: 12px; position: absolute; width: 685px; height: 545px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Historia Tipo Trabajador" style=" font-size: 12px; position: absolute; width: 874px; height: 545px;  text-align: left" >  
 
-                        <h:outputText id="btn" style="position: absolute; left: 25px; top: 40px; background-image: url(Imagenes/icon-question-big.png); width:60px ;height:60px; background-repeat: no-repeat; background-size: 100% 100%; "/>
-                        <p:tooltip style="font-size: 12px" for="btn" value="Ingrese el tipo de trabajador, puede utilizar la lista de valores; si el empleado es Pensionado o Retirado utilice los botones continuos para ingresar los datos faltantes" showEffect="slide" hideEffect="slide"/>
-                        <p:inputText style="position: absolute; left: 90px; top: 80px; width: 200px; height: 12px;position: absolute; " readonly="true" id="nombreEmpleado" value="#{controlVigenciaTipoTrabajador.empleado.persona.primerapellido} #{controlVigenciaTipoTrabajador.empleado.persona.segundoapellido} #{controlVigenciaTipoTrabajador.empleado.persona.nombre}"/>  
+                        <h:outputText style="position: absolute; left: 500px; top: 50px; width: 200px; height: 12px;position: absolute;color: red; font-weight: bold "  id="nombreEmpleado" value="#{controlVigenciaTipoTrabajador.empleado.persona.primerapellido} #{controlVigenciaTipoTrabajador.empleado.persona.segundoapellido} #{controlVigenciaTipoTrabajador.empleado.persona.nombre}"/>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 70px; left: 360px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaTipoTrabajador.guardarGeneral()}" process="@this" />
@@ -61,12 +59,12 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 645px; height: 185px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 820px; height: 195px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue"><strong>Tipo de Trabajador</strong></legend>
                             <!-- TABLA EMPLVIGENCIATIPOTRABAJADOR -->
 
-                            <p:dataTable id="datosVTTEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         value="#{controlVigenciaTipoTrabajador.vigenciasTiposTrabajadoresEmpleado}" scrollable="true" scrollHeight="45" 
+                            <p:dataTable id="datosVTTEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 820px"                           
+                                         value="#{controlVigenciaTipoTrabajador.vigenciasTiposTrabajadoresEmpleado}" scrollable="true" scrollWidth="820"
                                          filteredValue="#{controlVigenciaTipoTrabajador.filtrarVTT}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="true" rows="2"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
@@ -85,7 +83,7 @@
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice)}" update="editFecha"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice,0)}" />
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice,'0')}" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -102,8 +100,8 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipotrabajador.nombre}" id="editarTipoTrabajador" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice, 'TIPOTRABAJADOR', info.tipotrabajador.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, 1)}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 0)}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, '1')}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '0')}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -118,7 +116,7 @@
                                         <f:facet name="output"><h:outputText value="#{info.tipotrabajador.tipocotizante.descripcion}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipotrabajador.tipocotizante.descripcion}" id="editarTipoCotizante" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" readonly="true"> 
-                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, '2')}" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -129,63 +127,66 @@
                                 </p:column> 
                             </p:dataTable>  
                         </fieldset>
-                        <p:panel id="panelPensionadosMensaje" header="Información Adicional Para Pensionados" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 330px; height: 228px; border-radius: 10px; text-align: left; visibility: visible">
+                        <p:panel id="panelPensionadosMensaje" header="Información Adicional Para Pensionados" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 410px; height: 228px; border-radius: 10px; text-align: left; visibility: visible">
                             <h:outputText value="Este bloque se habilita cuando el Tipo Trabajador es un Pensionado; en el cual podra ver información como: fecha inicio, fecha final, porcentage de la pensión, nombre de quien sustituye pensión, nombre del tutor, resolución pensión o sustitución" style="font-size: 12px;"/>
                         </p:panel>
-                        <p:panel id="panelPensionadosInput" header="Información Adicional Para Pensionados" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 330px; height: 228px; border-radius: 10px; text-align: left; visibility: hidden;" >
-                            <h:outputText value="Fecha Inicio" style="font-size: 11px;position: absolute; left: 8px; top: 25px"/>
-                            <p:calendar  id="fechaPensionInicio" value="#{controlVigenciaTipoTrabajador.pensionVigencia.fechainiciopension}" style="font-size: 11px; position: absolute; left: 8px; top: 40px;"   styleClass="ui-datepicker, myClass2"  
+                        <p:panel id="panelPensionadosInput" header="Información Adicional Para Pensionados" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 410px; height: 228px; border-radius: 10px; text-align: left; visibility: hidden;" >
+                            <h:outputText value="Fecha Inicio" style="font-size: 11px;position: absolute; left: 40px; top: 25px"/>
+                            <p:calendar  id="fechaPensionInicio" value="#{controlVigenciaTipoTrabajador.pensionVigencia.fechainiciopension}" style="font-size: 11px; position: absolute; left: 40px; top: 40px;"   styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="fechaPensionInicio"/>
                                 <p:ajax event="change" update="fechaPensionInicio"/>
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                             </p:calendar>
-                            <h:outputText value="Fecha Final" style="font-size: 11px;position: absolute; left: 105px; top: 25px"/>
-                            <p:calendar  id="fechaPensionFinal" value="#{controlVigenciaTipoTrabajador.pensionVigencia.fechafinalpension}" style="font-size: 11px; position: absolute; left: 105px; top: 40px"   styleClass="ui-datepicker, myClass2"  
+                            <h:outputText value="Fecha Final" style="font-size: 11px;position: absolute; left: 145px; top: 25px"/>
+                            <p:calendar  id="fechaPensionFinal" value="#{controlVigenciaTipoTrabajador.pensionVigencia.fechafinalpension}" style="font-size: 11px; position: absolute; left: 145px; top: 40px"   styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="fechaPensionFinal"/>
                                 <p:ajax event="change" update="fechaPensionFinal"/>
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                             </p:calendar>
-                            <h:outputText value="Porcentaje" style="font-size: 11px;position: absolute; left: 205px; top: 25px"/>
-                            <p:inputText id="porcentajePension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.porcentaje}" style="font-size: 11px;position: absolute; left: 205px; top: 40px; width: 105px">
+                            <h:outputText value="Porcentaje" style="font-size: 11px;position: absolute; left: 245px; top: 25px"/>
+                            <p:inputText id="porcentajePension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.porcentaje}" style="font-size: 11px;position: absolute; left: 245px; top: 40px; width: 105px">
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                             </p:inputText>
 
-                            <h:outputText value="Clase Pensión" style="font-size: 11px;position: absolute; left: 8px; top: 68px"/>
-                            <p:inputText id="clasePension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.clase.descripcion}" style="font-size: 11px;position: absolute; left: 8px; top: 83px; width: 280px">
+                            <h:outputText value="Clase Pensión" style="font-size: 11px;position: absolute; left: 40px; top: 68px"/>
+                            <p:inputText id="clasePension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.clase.descripcion}" style="font-size: 11px;position: absolute; left: 40px; top: 83px; width: 280px">
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoClasePension()}" immediate="true" process="@this"/>
                             </p:inputText>
-                            <p:commandButton value="" icon="ui-icon-search" style="position: absolute; left: 297px; top: 83px; height: 23px; width: 23px"/>
+                            <p:commandButton value="" icon="ui-icon-search" style="position: absolute; left: 330px; top: 83px; height: 23px; width: 23px"/>
 
-                            <h:outputText value="Tipo Pensionado" style="font-size: 11px;position: absolute; left: 8px; top: 108px"/>
-                            <p:inputText id="tipoPensionado" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tipopensionado.descripcion}" style="font-size: 11px;position: absolute; left: 8px; top: 123px; width: 120px">
+                            <h:outputText value="Tipo Pensionado" style="font-size: 11px;position: absolute; left: 40px; top: 108px"/>
+                            <p:inputText id="tipoPensionado" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tipopensionado.descripcion}" style="font-size: 11px;position: absolute; left: 40px; top: 123px; width: 120px">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoTipoPensionado()}" immediate="true" process="@this"/>
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                             </p:inputText>
-                            <p:commandButton value="" icon="ui-icon-search" style="position: absolute; left: 138px; top: 123px; height: 23px; width: 23px"/>
+                            <p:commandButton value="" icon="ui-icon-search" style="position: absolute; left: 178px; top: 123px; height: 23px; width: 23px"/>
 
-                            <h:outputText value="Resolución Pensión" style="font-size: 11px;position: absolute; left: 175px; top: 108px"/>
-                            <p:inputText id="resolucionPension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.resolucionpension}" style="font-size: 11px;position: absolute; left: 175px; top: 123px; width: 135px">
+                            <h:outputText value="Resolución Pensión" style="font-size: 11px;position: absolute; left: 215px; top: 108px"/>
+                            <p:inputText id="resolucionPension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.resolucionpension}" style="font-size: 11px;position: absolute; left: 215px; top: 123px; width: 135px">
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                             </p:inputText>
 
-                            <h:outputText value="Nombre a Quien Sustituye Pensión" style="font-size: 11px;position: absolute; left: 8px; top: 147px"/>
-                            <p:inputText id="causaBiente" value="#{controlVigenciaTipoTrabajador.pensionVigencia.causabiente.persona.nombre}" style="font-size: 11px;position: absolute; left: 8px; top: 162px; width: 302px">
+                            <h:outputText value="Nombre a Quien Sustituye Pensión" style="font-size: 11px;position: absolute; left: 40px; top: 147px"/>
+                            <p:inputText id="causaBiente" value="#{controlVigenciaTipoTrabajador.pensionVigencia.causabiente.persona.nombre}" style="font-size: 11px;position: absolute; left: 40px; top: 162px; width: 302px">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoCausaBiente()}" immediate="true" process="@this"/>
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                             </p:inputText>
 
-                            <h:outputText value="Nombre Tutor" style="font-size: 11px;position: absolute; left: 8px; top: 185px"/>
-                            <p:inputText id="tutorPension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tutor.nombreCompleto}" style="font-size: 11px;position: absolute; left: 8px; top: 200px; width: 240px">
+                            <h:outputText value="Nombre Tutor" style="font-size: 11px;position: absolute; left: 40px; top: 185px"/>
+                            <p:inputText id="tutorPension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tutor.nombreCompleto}" style="font-size: 11px;position: absolute; left: 40px; top: 200px; width: 240px">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoTutor()}" immediate="true" process="@this"/>
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
                             </p:inputText>
-                            <p:commandButton value="Limpiar" id="LimpiarPensionados" style="font-size: 10px;position: absolute; left: 266px; top: 200px; width: 55px; height: 23px" actionListener="#{controlVigenciaTipoTrabajador.limpiarPension()}" process="@this"/>
+                            <p:commandButton value="Limpiar" id="LimpiarPensionados" style="font-size: 10px;position: absolute; left: 306px; top: 200px; width: 55px; height: 23px" actionListener="#{controlVigenciaTipoTrabajador.limpiarPension()}" process="@this"/>
                         </p:panel>
 
-                        <p:panel id="panelRetiradosInput" header="Información Adicional Para Retirado" style="position: absolute; left: 12px; top: 310px; font-size: 10px; width: 325px; height: 200px; border-radius: 10px; text-align: left; visibility: hidden">
+                        <p:panel id="panelRetiradosMensaje" header="Información Adicional Para Retirado" style="position: absolute; left: 440px; top: 310px; font-size: 10px; width: 405px; height: 200px; border-radius: 10px; text-align: left; visibility: visible">
+                            <h:outputText value="Este bloque se habilita cuando el Tipo Trabajador es un Retirado; en el cual podra ver informacion como: fecha del Retiro, motivo del Retiro y las observaciones correspondientes" style="font-size: 12px;"/>
+                        </p:panel>
+                        <p:panel id="panelRetiradosInput" header="Información Adicional Para Retirado" style="position: absolute; left: 440px; top: 310px; font-size: 10px; width: 405px; height: 200px; border-radius: 10px; text-align: left; visibility: hidden">
                             <h:outputText value="Fecha Retiro" style="font-size: 12px;position: absolute; left: 25px; top: 40px"/>
                             <p:calendar  id="fechaRetiro" value="#{controlVigenciaTipoTrabajador.retiroVigencia.fecharetiro}" style="font-size: 10px; position: absolute; left: 125px; top: 40px"   styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
@@ -211,9 +212,7 @@
 
                             <p:commandButton value="Limpiar" id="LimpiarRetirado" style="font-size: 10px;position: absolute; left: 25px; top: 175px; height: 25px; width: 60px" actionListener="#{controlVigenciaTipoTrabajador.limpiarRetiro()}" update="panelRetiradosInput" process="@this"/>
                         </p:panel>
-                        <p:panel id="panelRetiradosMensaje" header="Información Adicional Para Retirado" style="position: absolute; left: 360px; top: 310px; font-size: 10px; width: 300px; height: 200px; border-radius: 10px; text-align: left; visibility: visible">
-                            <h:outputText value="Este bloque se habilita cuando el Tipo Trabajador es un Retirado; en el cual podra ver informacion como: fecha del Retiro, motivo del Retiro y las observaciones correspondientes" style="font-size: 12px;"/>
-                        </p:panel>
+                        
 
 
                         <!-- DIALOGO L.O.V ESTATICO TIPOS TRABAJADORES -->
@@ -403,9 +402,9 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 530px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTTEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 360px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 610px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 630px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTTEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 460px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 517px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
@@ -431,11 +430,11 @@
                             </p:calendar>
                             <strong><h:outputText value="Tipo Trabajador: " style="font-size: 14px; position: absolute; top: 118px; left: 50px" /></strong>
                             <p:inputText id="nuevoTipoTrabajador" value="#{controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 1)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar(1, 'TIPOTRABAJADOR')}" />
-                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '1')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar('1', 'TIPOTRABAJADOR')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.nuevaVigencia.tipotrabajador.nombre, '1')}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevoTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice,1)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevoTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice,'1')}"/>   
                             <p:watermark for="nuevoTipoTrabajador" value="Tipo Trabajador" />
 
                             <strong><h:outputText value="Tipo Cotizante: " style="font-size: 14px; position: absolute; top: 150px; left: 50px"  /></strong>
@@ -464,11 +463,11 @@
 
                             <strong><h:outputText value="Tipo Trabajador: " style="font-size: 14px; position: absolute; top: 118px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoTrabajador" value="#{controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 2)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar(2, 'TIPOTRABAJADOR')}" />
-                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '2')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.valoresBackupAutocompletar('2', 'TIPOTRABAJADOR')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.autocompletarNuevoyDuplicado('TIPOTRABAJADOR', controlVigenciaTipoTrabajador.duplicarVTT.tipotrabajador.nombre, '2')}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnDuplicarTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 2)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnDuplicarTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, '2')}"/>   
                             <p:watermark for="duplicarTipoTrabajador" value="Tipo Trabajador" />
 
                             <strong><h:outputText value="Tipo Cotizante: " style="font-size: 14px; position: absolute; top: 150px; left: 50px"/></strong>
