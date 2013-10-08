@@ -191,9 +191,9 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <p:commandButton style="position: absolute; left: 522px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasProyectosPersona" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasProyectosPersona" process="@this" />
                         <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciasProyectos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 605px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlVigenciasProyectos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlVigenciasProyectos.salir()}" action="nomina" process="@this" />
 
 
                     </p:panel>
@@ -441,9 +441,9 @@
                             <p:watermark for="duplicarCantidadPersonas" value="P.C" />
 
 
-                            <p:commandButton id="limpiarDuplicadoTelefono" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoTelefono" value="Agregar" style="font-size: 11px; position: absolute; left: 170px; top: 300px;"  process="@this" actionListener="#{controlVigenciasProyectos.confirmarDuplicar()}" />
-                            <p:commandButton id="cancelarDuplicadoTelefono" value="Cancelar" style="font-size: 11px; position: absolute; left: 240px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" onclick="DuplicarRegistroVigenciaProyecto.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoVigenciaProyecto" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVigenciaProyecto" value="Agregar" style="font-size: 11px; position: absolute; left: 170px; top: 300px;"  process="@this" actionListener="#{controlVigenciasProyectos.confirmarDuplicar()}" />
+                            <p:commandButton id="cancelarDuplicadoVigenciaProyecto" value="Cancelar" style="font-size: 11px; position: absolute; left: 240px; top: 300px;" actionListener="#{controlVigenciasProyectos.limpiarduplicarVigenciaProyectos()}" update="duplicarVigenciaProyecto" onclick="DuplicarRegistroVigenciaProyecto.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -567,7 +567,7 @@
                     <p:dataTable id="datosVigenciasProyectosExportar" var="vigenciasProyectos" style="visibility: hidden; display: none;"                           
                                  value="#{controlVigenciasProyectos.listaVigenciasProyectos}"> 
 
-                        <!--COLUMNAS TABLA CIUDADES--> 
+                        <!--COLUMNAS TABLA VIGENCIAS PROYECTOS--> 
                         <p:column headerText="Fecha_Inicial">  
                             <f:facet name="header">
                                 <h:outputText value="Fecha Inicial" />

@@ -44,7 +44,7 @@ public class ControlVigenciasProyectos implements Serializable {
     //LISTA VIGENCIAS FORMALES
     private List<VigenciasProyectos> listaVigenciasProyectos;
     private List<VigenciasProyectos> filtradosListaVigenciasProyectos;
-    //Columnas Tabla Ciudades
+    //Columnas Tabla Vigencias Proyectos
     private Column vPFechasIniciales, vPFechasFinales, vPProyectos, vPPryRoles, vPCargos, vPCantidadPersonas;
     //L.O.V Proyectos
     private List<Proyectos> listaProyectos;
@@ -435,7 +435,7 @@ public class ControlVigenciasProyectos implements Serializable {
         secRegistro = null;
     }
 
-    //LIMPIAR NUEVO REGISTRO CIUDAD
+    //LIMPIAR NUEVO REGISTRO VIGENCIA PROYECTO
     public void limpiarNuevaVigenciaProyecto() {
         nuevaVigenciaProyectos = new VigenciasProyectos();
         nuevaVigenciaProyectos.setProyecto(new Proyectos());
@@ -467,7 +467,7 @@ public class ControlVigenciasProyectos implements Serializable {
         }
     }
 
-    //CREAR TELEFONO
+    //CREAR VIGENCIA PROYECTO
     public void agregarNuevaVigenciaProyecto() {
         int pasa = 0;
         mensajeValidacion = " ";
@@ -515,7 +515,7 @@ public class ControlVigenciasProyectos implements Serializable {
                 tipoLista = 0;
 
             }
-            //AGREGAR REGISTRO A LA LISTA TELEFONOS.
+            //AGREGAR REGISTRO A LA LISTA VIGENCIAS PROYECTOS.
             k++;
             l = BigInteger.valueOf(k);
             nuevaVigenciaProyectos.setSecuencia(l);
@@ -544,7 +544,7 @@ public class ControlVigenciasProyectos implements Serializable {
         }
     }
 
-    //DUPLICAR TELEFONO
+    //DUPLICAR VIGENCIA PROYECTO
     public void duplicarVP() {
         if (index >= 0) {
             duplicarVigenciaProyectos = new VigenciasProyectos();
@@ -612,12 +612,12 @@ public class ControlVigenciasProyectos implements Serializable {
         }
         duplicarVigenciaProyectos = new VigenciasProyectos();
         context.update("formularioDialogos:DuplicarRegistroVigenciaProyecto");
-        context.execute("DuplicarRegistroTipoTelefono.hide()");
+        context.execute("DuplicarRegistroVigenciaProyecto.hide()");
     }
     //LIMPIAR DUPLICAR
 
     /**
-     * Metodo que limpia los datos de un duplicar Vigencia
+     * Metodo que limpia los datos de un duplicar Vigencia Proyecto
      */
     public void limpiarduplicarVigenciaProyectos() {
         duplicarVigenciaProyectos = new VigenciasProyectos();
@@ -626,7 +626,7 @@ public class ControlVigenciasProyectos implements Serializable {
         duplicarVigenciaProyectos.setPryRol(new PryRoles());
     }
 
-    //BORRAR CIUDADES
+    //BORRAR VIGENCIA PROYECTO
     public void borrarVigenciasProyectos() {
 
         if (index >= 0) {
@@ -747,7 +747,7 @@ public class ControlVigenciasProyectos implements Serializable {
     //GUARDAR
     public void guardarCambiosVigenciasProyectos() {
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Telefonos");
+            System.out.println("Realizando Operaciones Vigencias Proyectos");
             if (!listaVigenciasProyectosBorrar.isEmpty()) {
                 for (int i = 0; i < listaVigenciasProyectosBorrar.size(); i++) {
                     System.out.println("Borrando...");
