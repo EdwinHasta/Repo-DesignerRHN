@@ -4,8 +4,10 @@
  */
 package InterfacePersistencia;
 
+import Entidades.Empleados;
 import Entidades.VigenciasTiposContratos;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,4 +21,5 @@ public interface PersistenciaVigenciasTiposContratosInterface {
     public VigenciasTiposContratos buscarVigenciaTipoContrato(Object id);
     public List<VigenciasTiposContratos> buscarVigenciasTiposContratos();
     public List<VigenciasTiposContratos> buscarVigenciaTipoContratoEmpleado(BigInteger secEmpleado);
+    public Date fechaMaxContratacion(Empleados empleado);
 }

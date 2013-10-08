@@ -1,8 +1,10 @@
 package Persistencia;
 
+import Entidades.Empleados;
 import Entidades.VigenciasTiposContratos;
 import InterfacePersistencia.PersistenciaVigenciasTiposContratosInterface;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -87,5 +89,19 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
             return null;
         }
 
+    }
+
+    @Override
+    public Date fechaMaxContratacion(Empleados empleado) {
+        try{
+            Date fechaContratacion;
+            Query query = em.createQuery("SELECT vwac.fechaVigencia FROM VWActualesTiposContratos vwac WHERE vwac.empleado =:empleado");
+            query.setParameter("empleado", empleado);
+            fechaContratacion = (Date) query.getSingleResult();
+            return fechaContratacion;
+        }catch(Exception e){
+            System.out.println("Error fechaMaxContratacion PersistenciaTiposContratos : "+e.toString());
+            return null;
+        }
     }
 }
