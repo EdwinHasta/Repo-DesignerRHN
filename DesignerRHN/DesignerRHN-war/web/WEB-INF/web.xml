@@ -55,7 +55,7 @@
         <param-value>true</param-value>
     </context-param>
     <welcome-file-list>
-        <welcome-file>Comprobante.xhtml</welcome-file>
+        <welcome-file>VigenciasProyectos.xhtml</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
