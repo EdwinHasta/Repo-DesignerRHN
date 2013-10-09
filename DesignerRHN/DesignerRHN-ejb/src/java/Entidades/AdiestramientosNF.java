@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -41,7 +42,7 @@ public class AdiestramientosNF implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 250)
     @Column(name = "DESCCRIPCION")
     private String desccripcion;
@@ -85,22 +86,22 @@ public class AdiestramientosNF implements Serializable {
     public AdiestramientosNF() {
     }
 
-    public AdiestramientosNF(BigDecimal secuencia) {
+    public AdiestramientosNF(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public AdiestramientosNF(BigDecimal secuencia, BigDecimal costototal, Date fechadesde, Date fechahasta) {
+    public AdiestramientosNF(BigInteger secuencia, BigDecimal costototal, Date fechadesde, Date fechahasta) {
         this.secuencia = secuencia;
         this.costototal = costototal;
         this.fechadesde = fechadesde;
         this.fechahasta = fechahasta;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

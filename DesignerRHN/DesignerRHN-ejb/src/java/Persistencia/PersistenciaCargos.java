@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import java.math.BigInteger;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 @Stateless
@@ -62,5 +63,16 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Cargos.class));
         return em.createQuery(cq).getResultList();
+    }
+    
+    @Override
+        public List<Cargos> cargos() {
+        try {
+            Query query = em.createQuery("SELECT c FROM Cargos c ORDER BY c.nombre");
+            List<Cargos> cargos = query.getResultList();
+            return cargos;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

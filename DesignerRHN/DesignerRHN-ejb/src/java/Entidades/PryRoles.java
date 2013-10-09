@@ -77,7 +77,10 @@ public class PryRoles implements Serializable {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if (descripcion == null){
+            descripcion = (" ");
+        }
+        return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {

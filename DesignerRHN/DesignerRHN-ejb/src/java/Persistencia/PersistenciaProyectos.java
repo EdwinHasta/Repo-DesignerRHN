@@ -2,7 +2,6 @@ package Persistencia;
 
 import Entidades.Proyectos;
 import InterfacePersistencia.PersistenciaProyectosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -57,7 +56,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     }
 
     /*
-     *Encontrar un Proyectos
+     *Encontrar un Proyecto
      */
     @Override
     public Proyectos buscarProyecto(Object id) {
@@ -86,7 +85,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     }
 
     @Override
-    public Proyectos buscarProyectoSecuencia(BigDecimal secuencia) {
+    public Proyectos buscarProyectoSecuencia(BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT p FROM Proyectos p WHERE p.secuencia = :secuencia");
@@ -100,4 +99,32 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
         }
 
     }
+    
+     //METODO PARA TRAER LAS VIGENCIAS DE UNA PERSONA
+
+   @Override
+    public List<Proyectos> proyectos() {
+        try {
+            Query query = em.createQuery("SELECT p FROM Proyectos p ORDER BY p.empresa.nombre");
+            List<Proyectos> proyectos = query.getResultList();
+            return proyectos;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+   
+    @Override
+   public Proyectos buscarProyectoNombre(String nombreP){
+       try{
+           Query query = em.createQuery("SELECT p FROM Proyectos p WHERE p.nombreproyecto =:nombreP");
+           query.setParameter("nombreP", nombreP);
+           Proyectos pry = (Proyectos) query.getSingleResult();
+           return pry;
+       }catch(Exception e){
+           System.out.println("Error buscarProyectoNombre PersistenciaProyectos : "+e.toString());
+           return null;
+       }
+   }
+    
 }
