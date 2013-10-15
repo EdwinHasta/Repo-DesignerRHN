@@ -75,4 +75,5 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
             return null;
         }
     }
+    
 }
