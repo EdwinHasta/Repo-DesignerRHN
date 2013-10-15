@@ -85,6 +85,7 @@
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasProyectos.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
+                               <!-- Falta el Boton de Insertar -->
                                
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasProyectos.borrarVigenciasProyectos()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Proyecto" />
@@ -109,7 +110,7 @@
 
                                 <p:ajax event="filter" listener="#{controlNovedadesReemplazos.eventoFiltrar()}"/>
 
-                                <p:column headerText="Nombre Empleado Reemplazado" sortBy="#{encargaturas.reemplazado.persona.nombreCompleto}" filterBy="#{encargaturas.reemplazado.persona.nombreCompleto}" filterMatchMode="contains"  width="72" id="nREmpleadoReemplazado" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Nombre Empleado Reemplazado" sortBy="#{encargaturas.reemplazado.persona.nombreCompleto}" filterBy="#{encargaturas.reemplazado.persona.nombreCompleto}" filterMatchMode="contains"  width="170" id="nREmpleadoReemplazado" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{encargaturas.reemplazado.persona.nombreCompleto}" /></f:facet>  
                                         <f:facet name="input">
@@ -460,36 +461,41 @@
                     <p:dialog header="Estructuras" widgetVar="estructurasDialogo" draggable="false" resizable="false" id="estructurasDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="327" height="225" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVEstructuras" style="font-size: 11px; width: 300px" var="estructuras" value="#{controlNovedadesReemplazos.listaMotivosReemplazos}"
+                        <p:dataTable  id="LOVEstructuras" style="font-size: 11px; width: 300px" var="estructuras" value="#{controlNovedadesReemplazos.listaEstructuras}"
                                       scrollable="true" scrollHeight="117" scrollWidth="315" widgetVar="LOVEstructuras" 
-                                      filteredValue="#{controlNovedadesReemplazos.filtradoslistaMotivosReemplazos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
-                                      rowKey="#{estructuras.secuencia}" selection="#{controlNovedadesReemplazos.seleccionMotivosReemplazos}" selectionMode="single">
-                            <p:ajax event="rowSelect" listener="#{controlNovedadesReemplazos.activarAceptar()}" update=":formularioDialogos:aceptarES"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesReemplazos.actualizarMotivosReemplazos()}" process="@this" onstart="LOVEstructuras.clearFilters()"/>
+                                      filteredValue="#{controlNovedadesReemplazos.filtradoslistaEstructuras}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{estructuras.secuencia}" selection="#{controlNovedadesReemplazos.seleccionEstructuras}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlNovedadesReemplazos.activarAceptar()}" update=":formularioDialogos:aceptarEST"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesReemplazos.actualizarEstructuras()}" process="@this" onstart="LOVEstructuras.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Tipos de Reemplazos: "  style="position: absolute; left: 27px; top: 15px"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVMotivosReemplazos.filter();" style="width:100px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVEstructuras.filter();" style="width:100px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{motivosReemplazos.nombre}" width="150" filterMatchMode="contains" > 
+                            <p:column filterBy="#{estructuras.codigo}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Codigo" />
+                                </f:facet>
+                                <h:outputText value="#{estructuras.codigo}" />  
+                            </p:column>
+                            
+                            <p:column filterBy="#{estructuras.nombre}" width="150" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
-                                <h:outputText value="#{motivosReemplazos.nombre}" />  
+                                <h:outputText value="#{estructuras.nombre}" />  
                             </p:column>
+                            
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarMR" value="Aceptar" disabled="#{controlNovedadesReemplazos.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" actionListener="#{controlNovedadesReemplazos.actualizarMotivosReemplazos()}" onclick="LOVMotivosReemplazos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVMotivosReemplazos:globalFilter"/>
+                        <p:commandButton id="aceptarEST" value="Aceptar" disabled="#{controlNovedadesReemplazos.aceptar}" style="position: absolute; top: 205px; left: 182px; font-size: 12px" actionListener="#{controlNovedadesReemplazos.actualizarEstructuras()}" onclick="LOVEstructuras.clearFilters();" update="@this" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVEstructuras:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasMR" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="motivosReemplazosDialogo.hide(), LOVMotivosReemplazos.clearFilters();" actionListener="#{controlNovedadesReemplazos.cancelarCambioMotivosReemplazos()}" update="LOVMotivosReemplazos, aceptarMR" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVMotivosReemplazos:globalFilter"/>
+                        <p:commandButton id="atrasEST" value="Atras" style="position: absolute; top: 205px; left: 255px; font-size: 12px" onclick="estructurasDialogo.hide(), LOVEstructuras.clearFilters();" actionListener="#{controlNovedadesReemplazos.cancelarCambioEstructuras()}" update="LOVEstructuras, aceptarEST" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVEstructuras:globalFilter"/>
                         </p:commandButton>
 
                     </p:dialog>
-
-
-
 
                 </h:form>
 

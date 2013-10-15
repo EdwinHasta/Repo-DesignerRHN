@@ -94,7 +94,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         secuenciaEmpleado = BigInteger.valueOf(10661474);
         aceptar = true;
         empleadoParametro = new Empleados();
-        listaEncargaturas = new ArrayList<Encargaturas>();
+        listaEncargaturas = null;
         listaTiposReemplazos = new ArrayList<TiposReemplazos>();
         listaMotivosReemplazos = new ArrayList<MotivosReemplazos>();
         listaEstructuras = new ArrayList<Estructuras>();
@@ -105,6 +105,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         listaFalsaEmpleados = null;
         secRegistro = null;
         guardado = true;
+        tipoLista = 0;
 
     }
 
@@ -126,7 +127,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         listaFalsaEmpleados.clear();
         getEmpleadoParametro();
         listaFalsaEmpleados.add(empleadoParametro);
-        
+
     }
 
     //AUTOCOMPLETAR
@@ -272,7 +273,8 @@ public class ControlNovedadesReemplazos implements Serializable {
                 context.execute("estructurasDialogo.show()");
                 tipoActualizacion = 0;
             }
-        }if (coincidencias == 1) {
+        }
+        if (coincidencias == 1) {
             if (tipoLista == 0) {
                 if (!listaEncargaturasCrear.contains(listaEncargaturas.get(indice))) {
                     if (listaEncargaturasModificar.isEmpty()) {
@@ -304,11 +306,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         }
         context.update("form:datosEncargaturasEmpleado");
     }
-        
-        
-    
-    //Ubicacion Celda Indice.
 
+    //Ubicacion Celda Indice.
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
 
@@ -348,8 +347,8 @@ public class ControlNovedadesReemplazos implements Serializable {
                     Estructura = filtradosListaEncargaturas.get(index).getEstructura().getNombre();
                 }
             }
-
         }
+        System.out.println("Index: " + index + " Celda: " + celda);
     }
 
     public void asignarIndex(Integer indice, int dlg, int LND) {
@@ -368,22 +367,22 @@ public class ControlNovedadesReemplazos implements Serializable {
             tipoActualizacion = 2;
         }
         if (dlg == 0) {
-            context.update("form:empleadosDialogo");
+            context.update("formularioDialogos:empleadosDialogo");
             context.execute("empleadosDialogo.show()");
         } else if (dlg == 1) {
-            context.update("form:tiposReemplazosDialogo");
+            context.update("formularioDialogos:tiposReemplazosDialogo");
             context.execute("tiposReemplazosDialogo.show()");
         } else if (dlg == 2) {
-            context.update("form:motivosReemplazosDialogo");
+            context.update("formularioDialogos:motivosReemplazosDialogo");
             context.execute("motivosReemplazosDialogo.show()");
         } else if (dlg == 3) {
-            context.update("form:cargosDialogo");
+            context.update("formularioDialogos:cargosDialogo");
             context.execute("cargosDialogo.show()");
         } else if (dlg == 4) {
-            context.update("form:estructurasDialogo");
+            context.update("formularioDialogos:estructurasDialogo");
             context.execute("estructurasDialogo.show()");
         } else if (dlg == 5) {
-            context.update("form:empleadosAbajoDialogo");
+            context.update("formularioDialogos:empleadosAbajoDialogo");
             context.execute("empleadosAbajoDialogo.show()");
         }
 
@@ -396,23 +395,18 @@ public class ControlNovedadesReemplazos implements Serializable {
         if (!listaFalsaEmpleados.isEmpty()) {
             listaFalsaEmpleados.clear();
             listaFalsaEmpleados.add(seleccionEmpleados);
-            context.execute("empleadosDialogo.hide()");
-            context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-            context.update("formularioDialogos:LOVEmpleados");
-            context.update("form:datosEmpleados");
-            context.update("form:datosEncargaturasEmpleado");
         } else {
             listaFalsaEmpleados.add(seleccionEmpleados);
-            context.execute("empleadosDialogo.hide()");
-            context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-            context.update("formularioDialogos:LOVEmpleados");
-            context.update("form:datosEmpleados");
-            context.update("form:datosEncargaturasEmpleado");
-        }
-        for (int i = 0; i < listaFalsaEmpleados.size(); i++) {
-            System.out.println("En la lista está:" + listaFalsaEmpleados.get(i).getPersona().getNombre());
 
         }
+        secuenciaEmpleado = seleccionEmpleados.getSecuencia();
+        for (int i = 0; i < listaFalsaEmpleados.size(); i++) {
+            System.out.println("En la lista está:" + listaFalsaEmpleados.get(i).getPersona().getNombre());
+        }
+        listaEncargaturas = null;
+        context.execute("empleadosDialogo.hide()");
+        context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+        context.update("formularioDialogos:LOVEmpleados");
         context.update("form:datosEmpleados");
         context.update("form:datosEncargaturasEmpleado");
         filtradosListaFalsaEmpleados = null;
@@ -426,9 +420,11 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public void actualizarEmpleados() {
         RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Index: " + index + " Tipo Actualización: " + tipoActualizacion);
         if (tipoActualizacion == 0) {
+            System.out.println("Tipo Lista: " + tipoLista);
             if (tipoLista == 0) {
-                listaEncargaturas.get(index).setEmpleado(seleccionEmpleadosReemplazados);
+                listaEncargaturas.get(index).setReemplazado(seleccionEmpleadosReemplazados);
                 if (!listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
                     if (listaEncargaturasModificar.isEmpty()) {
                         listaEncargaturasModificar.add(listaEncargaturas.get(index));
@@ -437,7 +433,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                     }
                 }
             } else {
-                filtradosListaEncargaturas.get(index).setEmpleado(seleccionEmpleadosReemplazados);
+                filtradosListaEncargaturas.get(index).setReemplazado(seleccionEmpleadosReemplazados);
                 if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
                     if (listaEncargaturasModificar.isEmpty()) {
                         listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
@@ -449,11 +445,11 @@ public class ControlNovedadesReemplazos implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
-            
+
             for (int i = 0; i < listaEncargaturas.size(); i++) {
-            System.out.println("En la lista encargaturas está:" + listaFalsaEmpleados.get(i).getPersona().getNombre());
-                System.out.println("Seleccionado: " + seleccionEmpleadosReemplazados.getPersona().getNombre());
-        }
+                System.out.println("En la lista encargaturas está:" + listaEncargaturas.get(i).getReemplazado().getPersona().getNombreCompleto());
+                System.out.println("Seleccionado: " + seleccionEmpleadosReemplazados.getPersona().getNombreCompleto());
+            }
             permitirIndex = true;
             context.update("form:datosEncargaturasEmpleado");
         } else if (tipoActualizacion == 1) {
@@ -474,7 +470,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         context.reset("formularioDialogos:LOVEmpleadosAbajo:globalFilter");
         context.update("formularioDialogos:LOVEmpleadosAbajo");
     }
-    
+
     public void actualizarTiposReemplazos() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
@@ -521,7 +517,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         context.reset("formularioDialogos:LOVTiposReemplazos:globalFilter");
         context.update("formularioDialogos:LOVTiposReemplazos");
     }
-    
+
     public void actualizarMotivosReemplazos() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
@@ -564,12 +560,12 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposReemplazosDialogo.hide()");
-        context.reset("formularioDialogos:LOVTiposReemplazos:globalFilter");
-        context.update("formularioDialogos:LOVTiposReemplazos");
+        context.execute("motivosReemplazosDialogo.hide()");
+        context.reset("formularioDialogos:LOVMotivosReemplazos:globalFilter");
+        context.update("formularioDialogos:LOVMotivosReemplazos");
     }
-    
-     public void actualizarEstructuras() {
+
+    public void actualizarEstructuras() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -615,8 +611,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         context.reset("formularioDialogos:LOVEstructuras:globalFilter");
         context.update("formularioDialogos:LOVEstructuras");
     }
-     
-     public void cancelarCambioEstructuras() {
+
+    public void cancelarCambioEstructuras() {
         filtradoslistaEstructuras = null;
         seleccionEstructuras = null;
         aceptar = true;
@@ -626,8 +622,6 @@ public class ControlNovedadesReemplazos implements Serializable {
         cualCelda = -1;
         permitirIndex = true;
     }
-    
-    
 
     public void cancelarCambioEmpleados() {
         filtradoslistaEmpleados = null;
@@ -640,8 +634,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         cualCelda = -1;
         permitirIndex = true;
     }
-    
-        public void cancelarCambioMotivosReemplazos() {
+
+    public void cancelarCambioMotivosReemplazos() {
         filtradoslistaMotivosReemplazos = null;
         seleccionMotivosReemplazos = null;
         aceptar = true;
@@ -651,8 +645,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         cualCelda = -1;
         permitirIndex = true;
     }
-        
-        public void cancelarCambioTiposReemplazos() {
+
+    public void cancelarCambioTiposReemplazos() {
         filtradoslistaTiposReemplazos = null;
         seleccionTiposReemplazos = null;
         aceptar = true;
@@ -673,7 +667,7 @@ public class ControlNovedadesReemplazos implements Serializable {
     public void activarAceptar() {
         aceptar = false;
     }
-    
+
     //GUARDAR
     public void guardarCambiosEncargaturas() {
         if (guardado == false) {
@@ -737,8 +731,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    
-     //MOSTRAR DATOS CELDA
+
+    //MOSTRAR DATOS CELDA
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -770,23 +764,23 @@ public class ControlNovedadesReemplazos implements Serializable {
                 context.update("formularioDialogos:editarFechasFinales");
                 context.execute("editarFechasFinales.show()");
                 cualCelda = -1;
-            } else if (cualCelda == 6){
+            } else if (cualCelda == 6) {
                 context.update("formularioDialogos:editarMotivosReemplazos");
                 context.execute("editarMotivosReemplazos.show()");
-            } else if (cualCelda == 7){
+            } else if (cualCelda == 7) {
                 context.update("formularioDialogos:editarEstructuras");
                 context.execute("editarEstructuras.show()");
             } // Falta Cargos que es cualCelda == 5
-              //else if (cualCelda == 5) {
-              //  context.update("formularioDialogos:editarCantidadPersonas");
-              //  context.execute("editarCantidadPersonas.show()");
-              //  cualCelda = -1;
-            
+            //else if (cualCelda == 5) {
+            //  context.update("formularioDialogos:editarCantidadPersonas");
+            //  context.execute("editarCantidadPersonas.show()");
+            //  cualCelda = -1;
+
         }
         index = -1;
         secRegistro = null;
     }
-    
+
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
         if (index >= 0) {
@@ -809,7 +803,6 @@ public class ControlNovedadesReemplazos implements Serializable {
             }//Falta Cargos cualCelda == 5 
         }
     }
-    
 
     //Getter & Setter
     public Empleados getEmpleado() {
@@ -825,8 +818,9 @@ public class ControlNovedadesReemplazos implements Serializable {
     }
 
     public List<Encargaturas> getListaEncargaturas() {
-          listaEncargaturas = administrarNovedadesReemplazos.encargaturasEmpleado(secuenciaEmpleado);
-        
+        if (listaEncargaturas == null) {
+            listaEncargaturas = administrarNovedadesReemplazos.encargaturasEmpleado(secuenciaEmpleado);
+        }
         return listaEncargaturas;
     }
 
@@ -1002,7 +996,4 @@ public class ControlNovedadesReemplazos implements Serializable {
     public void setEditarEncargaturas(Encargaturas editarEncargaturas) {
         this.editarEncargaturas = editarEncargaturas;
     }
-    
-    
-    
 }
