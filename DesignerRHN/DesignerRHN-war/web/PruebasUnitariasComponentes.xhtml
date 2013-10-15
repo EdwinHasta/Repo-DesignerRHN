@@ -6,13 +6,26 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
+        <style type="text/css">
+            .animated .ui-progressbar-value {
+                border:0px;
+                background-image: url("Imagenes/bar.gif"); 
+            }
+        </style>
     </h:head> 
     <h:body>
         <h:form id="form">
+            <p:growl id="growl" />
             <p:panel   id="PanelTotal" header="PRUEBAS" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" >
-                <p:progressBar id="pbAjax" widgetVar="pbAjax"  ajax="true" value="#{controlPruebasUnitarias.progreso()}"  labelTemplate="{value}%" styleClass="animated"> 
+                <h3>Ajax ProgressBar with Growl Integration</h3>  
+                <p:commandButton value="Start" onclick="pbAjax.start();
+                        startButton2.disable();" widgetVar="startButton2" />  
+                <p:commandButton value="Cancel" actionListener="#{controlPruebasUnitarias.cancel}" oncomplete="pbAjax.cancel();startButton2.enable();" />  
+
+                <p:progressBar id="barra" widgetVar="pbAjax" ajax="true" value="#{controlPruebasUnitarias.progress}" labelTemplate="{value}%" styleClass="animated" interval="500">  
+                    <p:ajax event="complete" listener="#{controlPruebasUnitarias.onComplete}" update="growl" oncomplete="startButton2.enable()"/>  
                 </p:progressBar>
-                <p:commandButton value="Play" onclick="PF('pbAjax').start();"/>
+                <p:commandButton value="Accionelo" actionListener="#{controlPruebasUnitarias.cometalo()}"/>
             </p:panel>
         </h:form>
     </h:body>

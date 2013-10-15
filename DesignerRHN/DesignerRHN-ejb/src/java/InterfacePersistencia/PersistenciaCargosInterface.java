@@ -12,5 +12,6 @@ public interface PersistenciaCargosInterface {
     public Cargos buscarCargo(Object id);
     public List<Cargos> buscarCargos();
     public List<Cargos> cargos();
+    public List<Cargos> cargosSalario();
 }
     

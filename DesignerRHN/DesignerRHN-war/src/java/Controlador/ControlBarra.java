@@ -62,6 +62,11 @@ public class ControlBarra implements Serializable {
 
     public void limpiarbarra() {
         barra = 0;
+        if (empezar == false) {
+            empezar = true;
+        } else if (empezar == true) {
+            empezar = false;
+        }
     }
     //GETTER AND SETTER
 
@@ -83,18 +88,19 @@ public class ControlBarra implements Serializable {
     }
 
     public int getBarra() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (empezar == false) {
             barra = 0;
         } else {
             if (barra == 100) {
                 System.out.println("1215485");
-                RequestContext.getCurrentInstance().execute("pbAjax.cancel();");
+                context.execute("pbAjax.cancel()");
             } else {
                 System.out.println("jeje");
                 barra = barra + 10;
             }
         }
-        RequestContext.getCurrentInstance().update("form:pbAjax");
+        context.update("form:pbAjax");
         return barra;
     }
 

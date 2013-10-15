@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cargos.findAll", query = "SELECT c FROM Cargos c")})
 public class Cargos implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
     private Collection<Competenciascargos> competenciascargosCollection;
     @OneToMany(mappedBy = "cargo")
@@ -48,7 +50,6 @@ public class Cargos implements Serializable {
     private Collection<VigenciasProyectos> vigenciasProyectosCollection;
     @OneToMany(mappedBy = "cargo")
     private Collection<HVHojasDeVida> hVHojasDeVidaCollection;
-
     @OneToMany(mappedBy = "cargo")
     private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(mappedBy = "cargofirmaconstancia")
@@ -96,6 +97,8 @@ public class Cargos implements Serializable {
     private Empresas empresa;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
     private Collection<VigenciasCargos> vigenciascargosCollection;
+    @Transient
+    private BigDecimal sueldoCargo;
 
     public Cargos() {
     }
@@ -330,5 +333,13 @@ public class Cargos implements Serializable {
 
     public void setEvalplanillasCollection(Collection<Evalplanillas> evalplanillasCollection) {
         this.evalplanillasCollection = evalplanillasCollection;
+    }
+
+    public BigDecimal getSueldoCargo() {
+        return sueldoCargo;
+    }
+
+    public void setSueldoCargo(BigDecimal sueldoCargo) {
+        this.sueldoCargo = sueldoCargo;
     }
 }
