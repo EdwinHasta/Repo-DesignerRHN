@@ -38,6 +38,7 @@ public class ControlVigenciasProyectos implements Serializable {
     AdministrarProyectosInterface administrarProyectos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     private Empleados empleado;
@@ -50,11 +51,11 @@ public class ControlVigenciasProyectos implements Serializable {
     private List<Proyectos> listaProyectos;
     private List<Proyectos> filtradoslistaProyectos;
     private Proyectos seleccionProyectos;
-    //L.O.V CURSOS
+    //L.O.V PRYROLES
     private List<PryRoles> listaPryRoles;
     private List<PryRoles> filtradoslistaPryRoles;
     private PryRoles seleccionPryRoles;
-    //L.O.V PROFESION
+    //L.O.V CARGOS
     private List<Cargos> listaCargos;
     private List<Cargos> filtradoslistaCargos;
     private Cargos seleccionCargos;
@@ -277,7 +278,7 @@ public class ControlVigenciasProyectos implements Serializable {
         context.update("form:datosVigenciasProyectosPersona");
     }
 
-    //Ubicacion Celda.
+//Ubicacion Celda.
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
 
