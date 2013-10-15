@@ -4,6 +4,7 @@ import Entidades.Empleados;
 import Entidades.Sets;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarSetsInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,20 +26,20 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlSets implements Serializable{
+public class ControlSets implements Serializable {
 
     @EJB
     AdministrarSetsInterface administrarSets;
-    
+    @EJB
+    AdministrarRastrosInterface administrarRastros;
     //Vigencias Cargos
     private List<Sets> listSets;
     private List<Sets> filtrarSets;
-
     private Empleados empleado;
     //Activo/Desactivo Crtl + F11
     private int bandera;
     //Columnas Tabla VC
-    private Column setsFechaInicial,setsFechaFinal,setsPromedio,setsTipo,setsPorcentaje,setsTotalIngresos;
+    private Column setsFechaInicial, setsFechaFinal, setsPromedio, setsTipo, setsPorcentaje, setsTotalIngresos;
     //Otros
     private boolean aceptar;
     private int index;
@@ -58,13 +59,15 @@ public class ControlSets implements Serializable{
     private boolean cambioEditor, aceptarEditar;
     //duplicar
     private Sets duplicarSet;
+    private BigInteger secRegistro;
+    private BigInteger backUpSecRegistro;
 
     /**
      * Constructor de ControlSet
      */
     public ControlSets() {
 
-
+        backUpSecRegistro = null;
         listSets = null;
         //Otros
         aceptar = true;
@@ -85,13 +88,15 @@ public class ControlSets implements Serializable{
         guardado = true;
         //Crear VC
         nuevoSet = new Sets();
-        duplicarSet =  new Sets();
+        duplicarSet = new Sets();
+        secRegistro = null;
     }
 
     //EMPLEADO DE LA VIGENCIA
     /**
-     * Metodo que recibe la secuencia empleado desde la pagina anterior
-     * y obtiene el empleado referenciado
+     * Metodo que recibe la secuencia empleado desde la pagina anterior y
+     * obtiene el empleado referenciado
+     *
      * @param sec Secuencia del Empleado
      */
     public void recibirEmpleado(Empleados empl) {
@@ -101,6 +106,7 @@ public class ControlSets implements Serializable{
 
     /**
      * Metodo que modifica los cambios efectuados en la tabla Sets de la pagina
+     *
      * @param indice Fila en la cual se realizo el cambio
      */
     public void modificarSets(int indice) {
@@ -129,20 +135,24 @@ public class ControlSets implements Serializable{
                 }
             }
         }
-        index=-1;
+        index = -1;
+        secRegistro = null;
     }
 
     //Ubicacion Celda.
     /**
      * Metodo que obtiene la posicion dentro de la tabla Sets
+     *
      * @param indice Fila de la tabla
      * @param celda Columna de la tabla
      */
     public void cambiarIndice(int indice, int celda) {
         index = indice;
         cualCelda = celda;
+        secRegistro = listSets.get(index).getSecuencia();
     }
     //GUARDAR
+
     /**
      * Metodo que guarda los cambios efectuados en la pagina Sets
      */
@@ -172,6 +182,7 @@ public class ControlSets implements Serializable{
             k = 0;
         }
         index = -1;
+        secRegistro = null;
     }
     //CANCELAR MODIFICACIONES
 
@@ -203,6 +214,7 @@ public class ControlSets implements Serializable{
         listSetsCrear.clear();
         listSetsModificar.clear();
         index = -1;
+        secRegistro = null;
         k = 0;
         listSets = null;
         guardado = true;
@@ -212,7 +224,8 @@ public class ControlSets implements Serializable{
 
     //MOSTRAR DATOS CELDA
     /**
-     * Metodo que muestra los dialogos de editar con respecto a la lista real o la lista filtrada y a la columna
+     * Metodo que muestra los dialogos de editar con respecto a la lista real o
+     * la lista filtrada y a la columna
      */
     public void editarCelda() {
         if (index >= 0) {
@@ -232,29 +245,26 @@ public class ControlSets implements Serializable{
                 context.update("formularioDialogos:editarFechaFinal");
                 context.execute("editarFechaFinal.show()");
                 cualCelda = -1;
-            }
-            else if (cualCelda == 2) {
+            } else if (cualCelda == 2) {
                 context.update("formularioDialogos:editarPorcentaje");
                 context.execute("editarPorcentaje.show()");
                 cualCelda = -1;
-            }
-            else if (cualCelda == 3) {
+            } else if (cualCelda == 3) {
                 context.update("formularioDialogos:editarPromedio");
                 context.execute("editarPromedio.show()");
                 cualCelda = -1;
-            }
-            else if (cualCelda == 4) {
+            } else if (cualCelda == 4) {
                 context.update("formularioDialogos:editarTipoSet");
                 context.execute("editarTipoSet.show()");
                 cualCelda = -1;
-            }
-            else if (cualCelda == 5) {
+            } else if (cualCelda == 5) {
                 context.update("formularioDialogos:editarTotalIngresos");
                 context.execute("editarTotalIngresos.show()");
                 cualCelda = -1;
             }
         }
         index = -1;
+        secRegistro = null;
     }
 
     //CREAR VU
@@ -275,7 +285,7 @@ public class ControlSets implements Serializable{
             setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
             setsTipo.setFilterStyle("display: none; visibility: hidden;");
             setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
-            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;"); 
+            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
             bandera = 0;
             filtrarSets = null;
@@ -297,17 +307,19 @@ public class ControlSets implements Serializable{
             RequestContext.getCurrentInstance().update("form:aceptar");
         }
         index = -1;
+        secRegistro = null;
     }
     //LIMPIAR NUEVO REGISTRO
-    
+
     /**
      * Metodo que limpia las casillas del nuevo Set
      */
     public void limpiarNuevaSets() {
         nuevoSet = new Sets();
         index = -1;
+        secRegistro = null;
     }
-    
+
     //DUPLICAR VC
     /**
      * Metodo que duplica un Set especifico dado por la posicion de la fila
@@ -329,7 +341,7 @@ public class ControlSets implements Serializable{
                 duplicarSet.setTotalingresos(listSets.get(index).getTotalingresos());
             }
             if (tipoLista == 1) {
-                
+
                 duplicarSet.setSecuencia(l);
                 duplicarSet.setEmpleado(filtrarSets.get(index).getEmpleado());
                 duplicarSet.setFechainicial(filtrarSets.get(index).getFechainicial());
@@ -344,6 +356,7 @@ public class ControlSets implements Serializable{
             context.update("formularioDialogos:duplicarSet");
             context.execute("DuplicarRegistroSet.show()");
             index = -1;
+            secRegistro = null;
         }
     }
 
@@ -357,6 +370,7 @@ public class ControlSets implements Serializable{
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosSetsEmpleado");
         index = -1;
+        secRegistro = null;
         if (guardado == true) {
             guardado = false;
             //RequestContext.getCurrentInstance().update("form:aceptar");
@@ -374,7 +388,7 @@ public class ControlSets implements Serializable{
             setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
             setsTipo.setFilterStyle("display: none; visibility: hidden;");
             setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
-            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;"); 
+            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
             bandera = 0;
             filtrarSets = null;
@@ -382,7 +396,7 @@ public class ControlSets implements Serializable{
         }
         duplicarSet = new Sets();
     }
-    
+
     //LIMPIAR DUPLICAR
     /**
      * Metodo que limpia los datos de un duplicar Set
@@ -430,6 +444,7 @@ public class ControlSets implements Serializable{
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosSetsEmpleado");
             index = -1;
+            secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
@@ -440,11 +455,12 @@ public class ControlSets implements Serializable{
     //CTRL + F11 ACTIVAR/DESACTIVAR
 
     /**
-     * Metodo que activa el filtrado por medio de la opcion en el tollbar o por medio de la tecla Crtl+F11
+     * Metodo que activa el filtrado por medio de la opcion en el tollbar o por
+     * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
         if (bandera == 0) {
-            
+
             setsFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaInicial");
             setsFechaInicial.setFilterStyle("width: 60px");
             setsFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaFinal");
@@ -471,7 +487,7 @@ public class ControlSets implements Serializable{
             setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
             setsTipo.setFilterStyle("display: none; visibility: hidden;");
             setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
-            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;"); 
+            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
             bandera = 0;
             filtrarSets = null;
@@ -496,7 +512,7 @@ public class ControlSets implements Serializable{
             setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
             setsTipo.setFilterStyle("display: none; visibility: hidden;");
             setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
-            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;"); 
+            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
             bandera = 0;
             filtrarSets = null;
@@ -507,11 +523,12 @@ public class ControlSets implements Serializable{
         listSetsCrear.clear();
         listSetsModificar.clear();
         index = -1;
+        secRegistro = null;
         k = 0;
         listSets = null;
         guardado = true;
     }
-    
+
     /**
      * Metodo que activa el boton aceptar de la pantalla y dialogos
      */
@@ -522,6 +539,7 @@ public class ControlSets implements Serializable{
 
     /**
      * Metodo que exporta datos a PDF
+     *
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportPDF() throws IOException {
@@ -531,10 +549,12 @@ public class ControlSets implements Serializable{
         exporter.export(context, tabla, "SetsPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
+        secRegistro = null;
     }
 
     /**
      * Metodo que exporta datos a XLS
+     *
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportXLS() throws IOException {
@@ -544,6 +564,7 @@ public class ControlSets implements Serializable{
         exporter.export(context, tabla, "SetsXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
+        secRegistro = null;
     }
     //EVENTO FILTRAR
 
@@ -555,16 +576,52 @@ public class ControlSets implements Serializable{
             tipoLista = 1;
         }
     }
+    //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
+
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSets != null) {
+            if (secRegistro != null) {
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "SETS");
+                backUpSecRegistro = secRegistro;
+                secRegistro = null;
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("SETS")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+
+        }
+        index = -1;
+    }
+
     //GETTERS AND SETTERS
     /**
-     * Metodo que obtiene la lista de Sets de un Empleado, en caso de que sea null hace el llamado al metodo de obtener Sets del 
-     * empleado, en caso contrario no genera operaciones
+     * Metodo que obtiene la lista de Sets de un Empleado, en caso de que sea
+     * null hace el llamado al metodo de obtener Sets del empleado, en caso
+     * contrario no genera operaciones
+     *
      * @return listS Lista de Sets de un Empleado
      */
     public List<Sets> getSetsEmpleado() {
         try {
             if (listSets == null) {
-              return listSets = administrarSets.SetsEmpleado(empleado.getSecuencia());
+                return listSets = administrarSets.SetsEmpleado(empleado.getSecuencia());
             } else {
                 return listSets;
             }
@@ -577,9 +634,12 @@ public class ControlSets implements Serializable{
     public void setSetsEmpleado(List<Sets> sets) {
         this.listSets = sets;
     }
+
     /**
-     * Get del empleado, en caso de existir lo retorna en caso contrario lo obtiene y retorna
-     * @return empleado Empleado que esta usado en el momento 
+     * Get del empleado, en caso de existir lo retorna en caso contrario lo
+     * obtiene y retorna
+     *
+     * @return empleado Empleado que esta usado en el momento
      */
     public Empleados getEmpleado() {
         return empleado;
@@ -601,11 +661,10 @@ public class ControlSets implements Serializable{
         this.nuevoSet = nuevoSet;
     }
 
-
     public boolean isAceptar() {
         return aceptar;
     }
-    
+
     public Sets getEditarSets() {
         return editarSets;
     }
@@ -621,9 +680,22 @@ public class ControlSets implements Serializable{
     public void setDuplicarSet(Sets duplicarSet) {
         this.duplicarSet = duplicarSet;
     }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
+    }
+
+    public BigInteger getBackUpSecRegistro() {
+        return backUpSecRegistro;
+    }
+
+    public void setBackUpSecRegistro(BigInteger BackUpSecRegistro) {
+        this.backUpSecRegistro = BackUpSecRegistro;
+    }
+    
+    
 }
-
-
-
-
-
