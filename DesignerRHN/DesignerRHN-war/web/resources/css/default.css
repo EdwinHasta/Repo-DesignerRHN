@@ -207,3 +207,8 @@ a:link:hover, a:visited:hover  {
     padding-left: 50px;
 }
 
+/*PROGRESS BAR*/
+.animated .ui-progressbar-value {
+    border:0px;
+    background-image: url("Imagenes/bar.gif"); 
+}

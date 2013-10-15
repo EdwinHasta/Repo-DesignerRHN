@@ -4,13 +4,17 @@
  */
 package Controlador;
 
+import Entidades.Cargos;
 import Entidades.Empleados;
 import Entidades.Encargaturas;
 import Entidades.Estructuras;
 import Entidades.MotivosReemplazos;
 import Entidades.TiposReemplazos;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarNovedadesReemplazosInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,6 +22,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -28,6 +36,8 @@ public class ControlNovedadesReemplazos implements Serializable {
     AdministrarNovedadesReemplazosInterface administrarNovedadesReemplazos; // Encargaturas
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
+    
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     private Empleados empleado;
@@ -60,6 +70,10 @@ public class ControlNovedadesReemplazos implements Serializable {
     private List<Estructuras> listaEstructuras;
     private List<Estructuras> filtradoslistaEstructuras;
     private Estructuras seleccionEstructuras;
+    //L.O.V CARGOS
+    private List<Cargos> listaCargos;
+    private List<Cargos> filtradoslistaCargos;
+    private Cargos seleccionCargos;
     //L.O.V EMPLEADOS
     private List<Empleados> listaEmpleados;
     private List<Empleados> filtradoslistaEmpleados;
@@ -88,6 +102,8 @@ public class ControlNovedadesReemplazos implements Serializable {
     private Encargaturas duplicarEncargaturas;
     //AUTOCOMPLETAR
     private String Reemplazado, TipoReemplazo, MotivoReemplazo, Cargo, Estructura;
+    //Columnas Tabla Vigencias Proyectos
+    private Column nREmpleadoReemplazado, nRTiposReemplazos, nRFechasPagos, nRFechasIniciales, nRFechasFinales, nRCargos, nRMotivosReemplazos, nREstructuras;
 
     public ControlNovedadesReemplazos() {
         permitirIndex = true;
@@ -273,8 +289,33 @@ public class ControlNovedadesReemplazos implements Serializable {
                 context.execute("estructurasDialogo.show()");
                 tipoActualizacion = 0;
             }
-        }
-        if (coincidencias == 1) {
+        } else if (confirmarCambio.equalsIgnoreCase("CARGOS")) {
+            if (tipoLista == 0) {
+                listaEncargaturas.get(indice).getCargo().setNombre(Cargo);
+            } else {
+                filtradosListaEncargaturas.get(indice).getCargo().setNombre(Cargo);
+            }
+            for (int i = 0; i < listaCargos.size(); i++) {
+                if (listaCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                if (tipoLista == 0) {
+                    listaEncargaturas.get(indice).setCargo(listaCargos.get(indiceUnicoElemento));
+                } else {
+                    filtradosListaEncargaturas.get(indice).setCargo(listaCargos.get(indiceUnicoElemento));
+                }
+                listaCargos.clear();
+                getListaCargos();
+            } else {
+                permitirIndex = false;
+                context.update("formularioDialogos:cargosDialogo");
+                context.execute("cargosDialogo.show()");
+                tipoActualizacion = 0;
+            }
+        }if (coincidencias == 1) {
             if (tipoLista == 0) {
                 if (!listaEncargaturasCrear.contains(listaEncargaturas.get(indice))) {
                     if (listaEncargaturasModificar.isEmpty()) {
@@ -323,9 +364,9 @@ public class ControlNovedadesReemplazos implements Serializable {
                     Reemplazado = listaEncargaturas.get(index).getEmpleado().getPersona().getNombreCompleto();
                 } else if (cualCelda == 1) {
                     TipoReemplazo = listaEncargaturas.get(index).getTiporeemplazo().getNombre();
-                    /*else if (cualCelda == 6) { CARGO es la 6a Casilla
-                     Cargo = listaVigenciasProyectos.get(index).getPryCargoproyecto().getNombre();
-                     }*/
+                }else if (cualCelda == 5) { 
+                     Cargo = listaEncargaturas.get(index).getCargo().getNombre();
+                     
                 } else if (cualCelda == 6) {
                     MotivoReemplazo = listaEncargaturas.get(index).getMotivoreemplazo().getNombre();
                 } else if (cualCelda == 7) {
@@ -338,9 +379,9 @@ public class ControlNovedadesReemplazos implements Serializable {
                     Reemplazado = filtradosListaEncargaturas.get(index).getEmpleado().getPersona().getNombreCompleto();
                 } else if (cualCelda == 1) {
                     TipoReemplazo = filtradosListaEncargaturas.get(index).getTiporeemplazo().getNombre();
-                    /*else if (cualCelda == 6) {
-                     Cargo = filtradosListaEncargaturas.get(index).getPryCargoproyecto().getNombre();
-                     }*/
+                } else if (cualCelda == 5) {
+                     Cargo = filtradosListaEncargaturas.get(index).getCargo().getNombre();
+                     
                 } else if (cualCelda == 6) {
                     MotivoReemplazo = filtradosListaEncargaturas.get(index).getMotivoreemplazo().getNombre();
                 } else if (cualCelda == 7) {
@@ -517,6 +558,60 @@ public class ControlNovedadesReemplazos implements Serializable {
         context.reset("formularioDialogos:LOVTiposReemplazos:globalFilter");
         context.update("formularioDialogos:LOVTiposReemplazos");
     }
+    
+    public void actualizarCargos() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Index: " + index + " Tipo Actualización: " + tipoActualizacion);
+        if (tipoActualizacion == 0) {
+            System.out.println("Tipo Lista: " + tipoLista);
+            if (tipoLista == 0) {
+                listaEncargaturas.get(index).setCargo(seleccionCargos);
+                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
+                    if (listaEncargaturasModificar.isEmpty()) {
+                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
+                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(index))) {
+                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
+                    }
+                }
+            } else {
+                filtradosListaEncargaturas.get(index).setCargo(seleccionCargos);
+                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
+                    if (listaEncargaturasModificar.isEmpty()) {
+                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
+                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(index))) {
+                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
+                    }
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+            }
+
+            /*for (int i = 0; i < listaEncargaturas.size(); i++) {
+                System.out.println("En la lista encargaturas está:" + listaEncargaturas.get(i).getReemplazado().getPersona().getNombreCompleto());
+                System.out.println("Seleccionado: " + seleccionEmpleadosReemplazados.getPersona().getNombreCompleto());
+            }*/
+            
+            permitirIndex = true;
+            context.update("form:datosEncargaturasEmpleado");
+        } else if (tipoActualizacion == 1) {
+            nuevaEncargatura.setCargo(seleccionCargos);
+            context.update("formularioDialogos:nuevaEncargatura");
+        } else if (tipoActualizacion == 2) {
+            duplicarEncargaturas.setCargo(seleccionCargos);
+            context.update("formularioDialogos:duplicarEncargatura");
+        }
+        filtradoslistaCargos = null;
+        seleccionCargos = null;
+        aceptar = true;
+        index = -1;
+        secRegistro = null;
+        tipoActualizacion = -1;
+        cualCelda = -1;
+        context.execute("cargosDialogo.hide()");
+        context.reset("formularioDialogos:LOVCargos:globalFilter");
+        context.update("formularioDialogos:LOVCargos");
+    }
 
     public void actualizarMotivosReemplazos() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -634,6 +729,17 @@ public class ControlNovedadesReemplazos implements Serializable {
         cualCelda = -1;
         permitirIndex = true;
     }
+    
+        public void cancelarCambioCargos() {
+        filtradoslistaCargos = null;
+        seleccionCargos = null;
+        aceptar = true;
+        index = -1;
+        secRegistro = null;
+        tipoActualizacion = -1;
+        cualCelda = -1;
+        permitirIndex = true;
+    }
 
     public void cancelarCambioMotivosReemplazos() {
         filtradoslistaMotivosReemplazos = null;
@@ -666,6 +772,89 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public void activarAceptar() {
         aceptar = false;
+    }
+    
+    public void activarCtrlF11() {
+        System.out.println("TipoLista= " + tipoLista);
+        if (bandera == 0) {
+            System.out.println("Activar");
+            System.out.println("TipoLista= " + tipoLista);
+            nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+            nREmpleadoReemplazado.setFilterStyle("width: 60px");
+            nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+            nRTiposReemplazos.setFilterStyle("");
+            nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+            nRFechasPagos.setFilterStyle("width: 60px");
+            nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+            nRFechasIniciales.setFilterStyle("width: 60px");
+            nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+            nRFechasFinales.setFilterStyle("width: 60px");
+            nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+            nRCargos.setFilterStyle("width: 60px");
+            nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+            nRMotivosReemplazos.setFilterStyle("width: 60px");
+            nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+            nREstructuras.setFilterStyle("width: 60px");
+            RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
+            bandera = 1;
+            tipoLista = 1;
+        } else if (bandera == 1) {
+            System.out.println("Desactivar");
+            System.out.println("TipoLista= " + tipoLista);
+            nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+            nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
+            nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+            nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
+            nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+            nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
+            nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+            nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
+            nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+            nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
+            nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+            nRCargos.setFilterStyle("display: none; visibility: hidden;");
+            nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+            nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
+            nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+            nREstructuras.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
+            bandera = 0;
+            filtradosListaEncargaturas = null;
+            tipoLista = 0;
+        }
+    }
+    
+        //EXPORTAR
+    public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosEncargaturasExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "EncargaturasPDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
+    }
+
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosEncargaturasExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "EncargaturasXLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        index = -1;
+        secRegistro = null;
+    }
+    
+    //LIMPIAR NUEVO REGISTRO VIGENCIA PROYECTO
+    public void limpiarNuevaEncargatura() {
+        nuevaEncargatura = new Encargaturas();
+        nuevaEncargatura.setReemplazado(new Empleados());
+        nuevaEncargatura.setTiporeemplazo(new TiposReemplazos());
+        nuevaEncargatura.setCargo(new Cargos());
+        nuevaEncargatura.setMotivoreemplazo(new MotivosReemplazos());
+        nuevaEncargatura.setEstructura(new Estructuras());
+        index = -1;
+        secRegistro = null;
     }
 
     //GUARDAR
@@ -996,4 +1185,36 @@ public class ControlNovedadesReemplazos implements Serializable {
     public void setEditarEncargaturas(Encargaturas editarEncargaturas) {
         this.editarEncargaturas = editarEncargaturas;
     }
+
+    public List<Cargos> getListaCargos() {
+        if (listaCargos == null) {
+            listaCargos = administrarNovedadesReemplazos.lovCargos();
+        }
+        return listaCargos;
+    }
+
+    public void setListaCargos(List<Cargos> listaCargos) {
+        this.listaCargos = listaCargos;
+    }
+
+    public List<Cargos> getFiltradoslistaCargos() {
+        return filtradoslistaCargos;
+    }
+
+    public void setFiltradoslistaCargos(List<Cargos> filtradoslistaCargos) {
+        this.filtradoslistaCargos = filtradoslistaCargos;
+    }
+
+    public Cargos getSeleccionCargos() {
+        return seleccionCargos;
+    }
+
+    public void setSeleccionCargos(Cargos seleccionCargos) {
+        this.seleccionCargos = seleccionCargos;
+    }
+    
+    
+    
+    
+    
 }

@@ -49,7 +49,7 @@
 
                                 <fieldset style="position: absolute; left: 10px; top: 303px; font-size: 12px; width: 470px; height: 60px; border: inset; border-width: 2px">
                                     <h:outputText value="Progreso de liquidación: " style="font-weight: bold; position: absolute; top: 10px; left: 10px"/>
-                                    <p:progressBar id="pbAjax" widgetVar="pbAjax"  ajax="true" value="#{controlBarra.barra}"  labelTemplate="{value}%" styleClass="animated" interval="500" style="position: relative; top: 25px">
+                                    <p:progressBar id="pbAjax" widgetVar="pbAjax"  ajax="true" value="#{controlBarra.barra}"  labelTemplate="{value}%" styleClass="animated" interval="800" style="position: relative; top: 25px">
                                         <p:ajax event="complete" update="@this"/>  
                                     </p:progressBar>
                                     <h:outputText value="Oprima el boton liquidar para iniciar" style="font-weight: bold; position: absolute; top: 50px; left: 10px; color: blue"/>
