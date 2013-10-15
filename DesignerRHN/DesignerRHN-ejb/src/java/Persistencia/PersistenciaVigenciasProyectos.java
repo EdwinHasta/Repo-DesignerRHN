@@ -47,7 +47,7 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
      *Encontrar todas las Vigencias de Proyectos.
      */
     @Override
-    public List<VigenciasProyectos> buscarVigenciasFormales() {
+    public List<VigenciasProyectos> buscarVigenciasProyectos() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasProyectos.class));
         return em.createQuery(cq).getResultList();
@@ -83,9 +83,11 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
             List<VigenciasProyectos> listaVigenciasProyectos = query.getResultList();
             return listaVigenciasProyectos;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaTelefonos.telefonoPersona" + e);
+            System.out.println("Error PersistenciaVigenciasProyectos.vigenciasProyectosEmpleado" + e);
             return null;
         }
     }
+    
+    
     
 }

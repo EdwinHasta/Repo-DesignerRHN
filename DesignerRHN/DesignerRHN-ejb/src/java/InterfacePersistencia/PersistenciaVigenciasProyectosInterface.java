@@ -22,7 +22,7 @@ public interface PersistenciaVigenciasProyectosInterface {
 
     public void borrar(VigenciasProyectos vigenciasProyectos);
 
-    public List<VigenciasProyectos> buscarVigenciasFormales();
+    public List<VigenciasProyectos> buscarVigenciasProyectos();
 
     public List<VigenciasProyectos> vigenciasProyectosEmpleado(BigInteger secuenciaEmpleado);
 }
