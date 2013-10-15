@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,6 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Parametros.findAll", query = "SELECT p FROM Parametros p")})
 public class Parametros implements Serializable {
+    @JoinColumn(name = "USUARIO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Usuarios usuario;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "parametros")
+    private ParametrosEstados parametrosEstados;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -59,8 +65,6 @@ public class Parametros implements Serializable {
     @Column(name = "FECHASISTEMA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechasistema;
-    @Column(name = "USUARIO")
-    private BigInteger usuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parametro")
     private List<ParametrosInstancias> parametrosInstanciasList;
     @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
@@ -118,14 +122,6 @@ public class Parametros implements Serializable {
 
     public void setFechasistema(Date fechasistema) {
         this.fechasistema = fechasistema;
-    }
-
-    public BigInteger getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(BigInteger usuario) {
-        this.usuario = usuario;
     }
 
     @XmlTransient
@@ -196,5 +192,21 @@ public class Parametros implements Serializable {
 
     public void setFechasParametros(String fechasParametros) {
         this.fechasParametros = fechasParametros;
+    }
+
+    public Usuarios getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuarios usuario) {
+        this.usuario = usuario;
+    }
+
+    public ParametrosEstados getParametrosEstados() {
+        return parametrosEstados;
+    }
+
+    public void setParametrosEstados(ParametrosEstados parametrosEstados) {
+        this.parametrosEstados = parametrosEstados;
     }
 }
