@@ -40,7 +40,7 @@ public class VigenciasSueldos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAVIGENCIA")
@@ -89,11 +89,11 @@ public class VigenciasSueldos implements Serializable {
     public VigenciasSueldos() {
     }
 
-    public VigenciasSueldos(BigDecimal secuencia) {
+    public VigenciasSueldos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public VigenciasSueldos(BigDecimal secuencia, Date fechavigencia, BigDecimal valor, Date fechasistema, Date fechavigenciaretroactivo) {
+    public VigenciasSueldos(BigInteger secuencia, Date fechavigencia, BigDecimal valor, Date fechasistema, Date fechavigenciaretroactivo) {
         this.secuencia = secuencia;
         this.fechavigencia = fechavigencia;
         this.valor = valor;
@@ -101,11 +101,11 @@ public class VigenciasSueldos implements Serializable {
         this.fechavigenciaretroactivo = fechavigenciaretroactivo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

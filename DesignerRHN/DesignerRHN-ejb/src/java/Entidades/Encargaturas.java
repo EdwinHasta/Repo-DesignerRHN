@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,7 +38,7 @@ public class Encargaturas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAINICIAL")
@@ -75,22 +76,22 @@ public class Encargaturas implements Serializable {
     public Encargaturas() {
     }
 
-    public Encargaturas(BigDecimal secuencia) {
+    public Encargaturas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Encargaturas(BigDecimal secuencia, Date fechainicial, Date fechafinal, Date fechapago) {
+    public Encargaturas(BigInteger secuencia, Date fechainicial, Date fechafinal, Date fechapago) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
         this.fechafinal = fechafinal;
         this.fechapago = fechapago;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

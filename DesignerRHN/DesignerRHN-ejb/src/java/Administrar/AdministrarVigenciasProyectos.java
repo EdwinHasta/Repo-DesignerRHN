@@ -6,7 +6,6 @@ package Administrar;
 
 import Entidades.Cargos;
 import Entidades.Empleados;
-import Entidades.Personas;
 import Entidades.Proyectos;
 import Entidades.PryRoles;
 import Entidades.VigenciasProyectos;
@@ -50,7 +49,6 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
         }
     }
 
-    @Override
     public Empleados encontrarEmpleado(BigInteger secEmpleado) {
         return persistenciaEmpleados.buscarEmpleado(secEmpleado);
     }

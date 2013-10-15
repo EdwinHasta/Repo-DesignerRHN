@@ -61,7 +61,7 @@ public interface PersistenciaVigenciasAfiliacionesInterface {
      * @param secVA Secuencia VigenciasAfiliaciones
      * @return VigenciasAfiliaciones que cumple con la secuencia
      */
-    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigDecimal secVA);
+    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secVA);
 
     /**
      * Obtiene la lista de VigenciasAfiliaciones de una VigenciasSueldos
@@ -69,5 +69,5 @@ public interface PersistenciaVigenciasAfiliacionesInterface {
      * @param secVigencia Secuencia VigenciasSueldos
      * @return Lista de VigenciasAfiliaciones de una VigenciasSueldos
      */
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigDecimal secVigencia);
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigInteger secVigencia);
 }

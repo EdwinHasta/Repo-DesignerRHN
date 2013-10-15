@@ -100,7 +100,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigDecimal secVA) {
+    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secVA) {
         try {
             Query query = em.createNamedQuery("VigenciasAfiliaciones.findBySecuencia").setParameter("secuencia", secVA);
             VigenciasAfiliaciones vigenciasAfiliaciones = (VigenciasAfiliaciones) query.getSingleResult();
@@ -112,7 +112,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigDecimal secVigencia) {
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigInteger secVigencia) {
         try {
             Query query = em.createQuery("SELECT va FROM VigenciasAfiliaciones va WHERE va.vigenciasueldo.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);

@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ public class MotivosReemplazos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -52,21 +53,21 @@ public class MotivosReemplazos implements Serializable {
     public MotivosReemplazos() {
     }
 
-    public MotivosReemplazos(BigDecimal secuencia) {
+    public MotivosReemplazos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public MotivosReemplazos(BigDecimal secuencia, short codigo, String nombre) {
+    public MotivosReemplazos(BigInteger secuencia, short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -79,7 +80,10 @@ public class MotivosReemplazos implements Serializable {
     }
 
     public String getNombre() {
-        return nombre;
+        if(nombre == null){
+            nombre = (" ");
+        }
+        return nombre.toUpperCase();
     }
 
     public void setNombre(String nombre) {

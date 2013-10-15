@@ -93,7 +93,7 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
     }
 
     @Override
-    public VigenciasAfiliaciones vigenciaAfiliacionSecuencia(BigDecimal secuencia) {
+    public VigenciasAfiliaciones vigenciaAfiliacionSecuencia(BigInteger secuencia) {
         try {
             VigenciasAfiliaciones retorno = persistenciaVigenciasAfilicaciones.buscarVigenciasAfiliacionesSecuencia(secuencia);
             return retorno;

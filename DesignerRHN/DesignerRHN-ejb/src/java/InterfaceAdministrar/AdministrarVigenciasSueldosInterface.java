@@ -51,7 +51,7 @@ public interface AdministrarVigenciasSueldosInterface {
      * @param secVigencia Secuencia VigenciasSueldos
      * @return Lista de VigenciasAfiliaciones de una VigenciasSueldos
      */
-    public List<VigenciasAfiliaciones> VigenciasAfiliacionesVigencia(BigDecimal secVigencia);
+    public List<VigenciasAfiliaciones> VigenciasAfiliacionesVigencia(BigInteger secVigencia);
     /**
      * Modifica una lista de VigenciasAfiliaciones
      * @param listVAModificadas Lista de VigenciasAfiliaciones a ser modificada

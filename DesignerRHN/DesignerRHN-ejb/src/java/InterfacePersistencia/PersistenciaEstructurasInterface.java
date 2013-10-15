@@ -10,6 +10,7 @@ public interface PersistenciaEstructurasInterface {
     public void crear(Estructuras estructuras);
     public void editar(Estructuras estructuras);
     public void borrar(Estructuras estructuras);
+    public List<Estructuras> estructuras();
     public Estructuras buscarEstructura(Object id);
     public List<Estructuras> buscarEstructurasPorOrganigrama(BigInteger secOrganigrama);
     public List<Estructuras> buscarlistaValores(String fechaVigencia);
