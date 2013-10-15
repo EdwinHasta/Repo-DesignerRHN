@@ -139,7 +139,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     }
 
     @Override
-    public List<VigenciasAfiliaciones> VigenciasAfiliacionesVigencia(BigDecimal secVigencia) {
+    public List<VigenciasAfiliaciones> VigenciasAfiliacionesVigencia(BigInteger secVigencia) {
         try {
             listVigenciasAfiliaciones = persistenciaVigenciasAfiliaciones.buscarVigenciasAfiliacionesVigenciaSecuencia(secVigencia);
         } catch (Exception e) {

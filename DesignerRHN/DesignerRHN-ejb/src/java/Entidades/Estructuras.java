@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findFiltradas", query = "SELECT es FROM Estructuras es where (es.centrocosto.obsoleto ='N' or es.centrocosto.obsoleto is null)"),
     @NamedQuery(name = "Estructuras.findBySecOrganigrama", query = "SELECT es FROM Estructuras es where (es.centrocosto.obsoleto ='N' or es.centrocosto.obsoleto is null) AND es.organigrama.secuencia = :secOrganigrama"),
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
+    
 public class Estructuras implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
     private Collection<Pdgpoliticas> pdgpoliticasCollection;

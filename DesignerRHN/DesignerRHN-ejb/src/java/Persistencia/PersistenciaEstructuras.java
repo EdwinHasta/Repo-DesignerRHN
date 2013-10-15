@@ -60,6 +60,16 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
             return null;
         }
     }
+    @Override
+        public List<Estructuras> estructuras() {
+        try {
+            Query query = em.createQuery("SELECT e FROM Estructuras e ORDER BY e.nombre");
+            List<Estructuras> estructuras = query.getResultList();
+            return estructuras;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     @Override
     public List<Estructuras> buscarEstructurasPorOrganigrama(BigInteger secOrganigrama) {
@@ -150,4 +160,6 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
         }
         return estructura;
     }
+    
+   
 }

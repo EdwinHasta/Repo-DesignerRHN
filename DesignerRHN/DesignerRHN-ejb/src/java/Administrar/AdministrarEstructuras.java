@@ -36,6 +36,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     PersistenciaOrganigramasInterface persistenciaOrganigramas;
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+
     //------------------------------------------------------------------------------------------
     //ATRIBUTOS
     //------------------------------------------------------------------------------------------
@@ -160,5 +161,19 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
 
     public void crearOrganigrama(Organigramas organigrama) {
         persistenciaOrganigramas.crear(organigrama);
+    }
+    
+    
+
+    @Override
+    public List<Estructuras> Estructuras() {
+        List<Estructuras> listaEstructuras;
+        listaEstructuras = persistenciaEstructuras.estructuras();
+        return listaEstructuras;
+    }
+
+    @Override
+    public List<Estructuras> lovEstructuras() {
+        return persistenciaEstructuras.estructuras();
     }
 }

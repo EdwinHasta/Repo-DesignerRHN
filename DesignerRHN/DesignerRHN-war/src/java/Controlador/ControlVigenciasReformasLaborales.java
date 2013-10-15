@@ -9,6 +9,7 @@ import Exportar.ExportarXLS;
 import Entidades.Empleados;
 import Entidades.ReformasLaborales;
 import Entidades.VigenciasReformasLaborales;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarVigenciasReformasLaboralesInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -34,6 +35,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
 
     @EJB
     AdministrarVigenciasReformasLaboralesInterface administrarVigenciasReformasLaborales;
+    @EJB
+    AdministrarRastrosInterface administrarRastros;
     //Vigencias Cargos
     private List<VigenciasReformasLaborales> vigenciasReformasLaborales;
     private List<VigenciasReformasLaborales> filtrarVRL;
@@ -67,12 +70,14 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     private VigenciasReformasLaborales duplicarVRL;
     private String reformaLaboral;
     private boolean permitirIndex;
+    private BigInteger secRegistro;
+    private BigInteger backUpSecRegistro;
 
     /**
      * Constructor de la clases Controlador
      */
     public ControlVigenciasReformasLaborales() {
-        
+
         vigenciasReformasLaborales = null;
         listaReformasLaborales = new ArrayList<ReformasLaborales>();
         empleado = new Empleados();
@@ -96,8 +101,10 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         //Crear VC
         nuevaVigencia = new VigenciasReformasLaborales();
         nuevaVigencia.setReformalaboral(new ReformasLaborales());
-        
+        secRegistro = null;
         permitirIndex = true;
+        backUpSecRegistro = null;
+        
     }
 
     //EMPLEADO DE LA VIGENCIA
@@ -126,6 +133,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 }
             }
             index = -1;
+            secRegistro = null;
         } else {
             if (!listVRLCrear.contains(filtrarVRL.get(indice))) {
 
@@ -139,6 +147,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 }
             }
             index = -1;
+            secRegistro = null;
         }
     }
 
@@ -194,6 +203,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     }
                 }
                 index = -1;
+                secRegistro = null;
             } else {
                 if (!listVRLCrear.contains(filtrarVRL.get(indice))) {
 
@@ -207,6 +217,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     }
                 }
                 index = -1;
+                secRegistro = null;
             }
         }
         context.update("form:datosVRLEmpleado");
@@ -273,6 +284,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            secRegistro = vigenciasReformasLaborales.get(index).getSecuencia();
             if (cualCelda == 1) {
                 reformaLaboral = vigenciasReformasLaborales.get(index).getReformalaboral().getNombre();
             }
@@ -315,6 +327,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             k = 0;
         }
         index = -1;
+        secRegistro = null;
     }
     //CANCELAR MODIFICACIONES
 
@@ -338,6 +351,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLCrear.clear();
         listVRLModificar.clear();
         index = -1;
+        secRegistro = null;
         k = 0;
         vigenciasReformasLaborales = null;
         guardado = true;
@@ -372,6 +386,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
         }
         index = -1;
+        secRegistro = null;
     }
 
     //CREAR VU
@@ -407,6 +422,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             RequestContext.getCurrentInstance().update("form:aceptar");
         }
         index = -1;
+        secRegistro = null;
     }
     //LIMPIAR NUEVO REGISTRO
 
@@ -417,6 +433,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         nuevaVigencia = new VigenciasReformasLaborales();
         nuevaVigencia.setReformalaboral(new ReformasLaborales());
         index = -1;
+        secRegistro = null;
     }
     //DUPLICAR VC
 
@@ -447,6 +464,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             context.update("formularioDialogos:duplicarVRL");
             context.execute("DuplicarRegistroVRL.show()");
             index = -1;
+            secRegistro = null;
         }
     }
 
@@ -461,6 +479,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVRLEmpleado");
         index = -1;
+        secRegistro = null;
         if (guardado == true) {
             guardado = false;
             //RequestContext.getCurrentInstance().update("form:aceptar");
@@ -527,6 +546,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVRLEmpleado");
             index = -1;
+            secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
@@ -582,10 +602,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLCrear.clear();
         listVRLModificar.clear();
         index = -1;
+        secRegistro = null;
         k = 0;
         vigenciasReformasLaborales = null;
         guardado = true;
-        
+
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 
@@ -655,6 +676,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         reformaLaboralSelecionada = null;
         aceptar = true;
         index = -1;
+        secRegistro = null;
         tipoActualizacion = -1;
     }
 
@@ -666,6 +688,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         reformaLaboralSelecionada = null;
         aceptar = true;
         index = -1;
+        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
     }
@@ -706,6 +729,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         exporter.export(context, tabla, "VigenciasReformasLaboralesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
+        secRegistro = null;
     }
 
     /**
@@ -720,6 +744,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         exporter.export(context, tabla, "VigenciasReformasLaboralesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
+        secRegistro = null;
     }
     //EVENTO FILTRAR
 
@@ -730,6 +755,39 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+    }
+    //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
+
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (vigenciasReformasLaborales != null) {
+            if (secRegistro != null) {
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASREFORMASLABORALES");
+                backUpSecRegistro = secRegistro;
+                secRegistro = null;
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("VIGENCIASREFORMASLABORALES")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+
+        }
+        index = -1;
     }
     //GETTERS AND SETTERS
 
@@ -834,4 +892,21 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public void setReformaLaboralSelecionada(ReformasLaborales reformaLaboralSelecionada) {
         this.reformaLaboralSelecionada = reformaLaboralSelecionada;
     }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
+    }
+
+    public BigInteger getBackUpSecRegistro() {
+        return backUpSecRegistro;
+    }
+
+    public void setBackUpSecRegistro(BigInteger backUpSecRegistro) {
+        this.backUpSecRegistro = backUpSecRegistro;
+    }
+    
 }

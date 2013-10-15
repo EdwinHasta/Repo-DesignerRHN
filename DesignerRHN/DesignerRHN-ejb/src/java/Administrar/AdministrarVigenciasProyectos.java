@@ -22,7 +22,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 @Stateful
-public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyectosInterface {
+public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyectosInterface{
 
     @EJB
     PersistenciaVigenciasProyectosInterface persistenciaVigenciasProyectos;
@@ -36,8 +36,9 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
     PersistenciaCargosInterface persistenciaCargos;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
+    
     private VigenciasProyectos vP;
-
+    
     @Override
     public List<VigenciasProyectos> vigenciasProyectosEmpleado(BigInteger secEmpleado) {
         try {
@@ -67,7 +68,7 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
     public List<Cargos> lovCargos() {
         return persistenciaCargos.cargos();
     }
-
+       
     @Override
     public void modificarVigenciaProyecto(List<VigenciasProyectos> listaVigenciasProyectosModificar) {
         for (int i = 0; i < listaVigenciasProyectosModificar.size(); i++) {
@@ -90,8 +91,8 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
             } else {
                 vP = listaVigenciasProyectosModificar.get(i);
             }
-
-
+                       
+            
             persistenciaVigenciasProyectos.editar(vP);
         }
     }
@@ -101,17 +102,18 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
         persistenciaVigenciasProyectos.borrar(vigenciasProyectos);
     }
 
+
     @Override
     public void crearVigenciaProyecto(VigenciasProyectos vigenciasProyectos) {
         persistenciaVigenciasProyectos.crear(vigenciasProyectos);
     }
-
+    
     @Override
-    public Proyectos buscarProyectoPorNombreVigencia(String nombre) {
-        try {
+    public Proyectos buscarProyectoPorNombreVigencia(String nombre){
+        try{
             Proyectos proyecto = persistenciaProyectos.buscarProyectoNombre(nombre);
             return proyecto;
-        } catch (Exception e) {
+        } catch(Exception e){
             return null;
         }
     }

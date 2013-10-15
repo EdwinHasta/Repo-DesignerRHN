@@ -28,6 +28,10 @@ public interface AdministrarEstructurasInterface {
     public List<Cargos> consultarTodoCargos();
 
     public Cargos consultarCargoPorSecuencia(BigInteger secuenciaC);
+
+    public List<Estructuras> lovEstructuras();
+
+    public List<Estructuras> Estructuras();
     //PANTALLA ESTRUCTURAS
 
     public List<Estructuras> estructuraPadre(short codigoOrg);
