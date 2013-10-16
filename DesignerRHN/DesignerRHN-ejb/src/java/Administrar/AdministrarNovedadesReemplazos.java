@@ -4,6 +4,7 @@
  */
 package Administrar;
 
+import Entidades.Cargos;
 import Entidades.Empleados;
 import Entidades.Encargaturas;
 import Entidades.Estructuras;
@@ -77,6 +78,11 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
     @Override
     public List<Estructuras> lovEstructuras(){
         return persistenciaEstructuras.estructuras();
+    }
+    
+    @Override
+    public List<Cargos> lovCargos(){
+        return persistenciaCargos.cargosSalario();
     }
 
     

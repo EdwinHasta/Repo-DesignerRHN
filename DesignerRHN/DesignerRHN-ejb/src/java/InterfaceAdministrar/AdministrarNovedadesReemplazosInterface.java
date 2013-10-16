@@ -4,6 +4,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.Cargos;
 import Entidades.Empleados;
 import Entidades.Encargaturas;
 import Entidades.Estructuras;
@@ -19,13 +20,15 @@ public interface AdministrarNovedadesReemplazosInterface {
     public Empleados encontrarEmpleado(BigInteger secEmpleado);
 
     public List<Empleados> lovEmpleados();
-
+    
+    public List<Cargos> lovCargos();
+    
     public List<TiposReemplazos> lovTiposReemplazos();
 
     public List<MotivosReemplazos> lovMotivosReemplazos();
 
     public List<Estructuras> lovEstructuras();
-    //Falta Cargos
+
 
     public void modificarEncargatura(List<Encargaturas> listaEncargaturasModificar);
 

@@ -94,6 +94,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
      return null;
      }
      }*/
+    @Override
     public List<Cargos> cargosSalario() {
         try {
             /*String sqlQuery = "SELECT c.* FROM CARGOS c ORDER BY c.NOMBRE";
