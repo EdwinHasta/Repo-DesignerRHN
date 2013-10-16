@@ -18,4 +18,6 @@ public interface AdministrarBarraInterface {
     public void liquidarNomina();
     public String estadoLiquidacion(String usuarioBD);
     public ParametrosEstructuras parametrosLiquidacion();
+    public void inicializarParametrosEstados();
+    public Integer progresoLiquidacion(Integer totalEmpleadoALiquidar);
 }

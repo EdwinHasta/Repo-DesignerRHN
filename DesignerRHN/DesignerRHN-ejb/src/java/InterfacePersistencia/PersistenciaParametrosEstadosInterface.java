@@ -11,4 +11,5 @@ package InterfacePersistencia;
 public interface PersistenciaParametrosEstadosInterface {
     public Integer empleadosParaLiquidar();
     public Integer empleadosLiquidados();
+    public void inicializarParametrosEstados();
 }

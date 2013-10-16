@@ -1,6 +1,7 @@
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaCandadosInterface;
+import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,6 +49,23 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             return estadoLiquidacion;
         } catch (Exception e) {
             System.out.println("Exepcion: estadoLiquidacion " + e);
+            return null;
+        }
+    }
+
+    public Integer progresoLiquidacion(Integer totalEmpleadosALiquidar) {
+        //int i = -100;
+        try {
+            String sqlQuery = "select conteoliquidados(?) from dual";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, totalEmpleadosALiquidar);
+            BigDecimal progreso = (BigDecimal) query.getSingleResult();
+            Integer porcentajeProgreso = progreso.intValueExact();
+            //i= query.executeUpdate();
+            //Integer porcentajeProgreso = 50;
+            return porcentajeProgreso;
+        } catch (Exception e) {
+            System.out.println("Error progresoLiquidacion. " + e);
             return null;
         }
     }

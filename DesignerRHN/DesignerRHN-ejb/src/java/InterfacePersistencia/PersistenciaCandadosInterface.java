@@ -12,4 +12,5 @@ public interface PersistenciaCandadosInterface {
     public boolean permisoLiquidar(String usuarioBD);
     public void liquidar();
     public String estadoLiquidacion(String usuarioBD);
+    public Integer progresoLiquidacion(Integer totalEmpleadosALiquidar);
 }

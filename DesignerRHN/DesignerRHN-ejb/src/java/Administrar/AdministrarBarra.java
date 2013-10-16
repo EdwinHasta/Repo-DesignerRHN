@@ -55,4 +55,11 @@ public class AdministrarBarra implements AdministrarBarraInterface {
         return persistenciaParametrosEstructuras.estructurasComprobantes(usuarioBD());
     }
     
+    public void inicializarParametrosEstados(){
+        persistenciaParametrosEstados.inicializarParametrosEstados();
+    }
+    
+    public Integer progresoLiquidacion(Integer totalEmpleadoALiquidar){
+        return persistenciaCandados.progresoLiquidacion(totalEmpleadoALiquidar);
+    }
 }
