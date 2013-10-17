@@ -80,7 +80,7 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
         return persistenciaEstructuras.estructuras();
     }
     
-    @Override
+    
     public List<Cargos> lovCargos(){
         return persistenciaCargos.cargosSalario();
     }

@@ -82,6 +82,9 @@ public class TiposReemplazos implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = (" ");
+        }
         return nombre;
     }
 
