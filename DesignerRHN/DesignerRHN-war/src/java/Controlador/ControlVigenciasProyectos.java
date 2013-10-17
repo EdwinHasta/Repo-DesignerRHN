@@ -837,7 +837,7 @@ public class ControlVigenciasProyectos implements Serializable {
                 getListaProyectos();
             } else {
                 context.update("form:proyectosDialogo");
-                context.execute("proyectossDialogo.show()");
+                context.execute("proyectosDialogo.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
                     context.update("formularioDialogos:nuevoProyecto");
