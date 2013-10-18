@@ -39,7 +39,7 @@ public class ControlNovedadesReemplazos implements Serializable {
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     private Empleados empleado;
-    //LISTA VIGENCIAS FORMALES
+    //LISTA ENCARGATURAS
     private List<Encargaturas> listaEncargaturas;
     private List<Encargaturas> filtradosListaEncargaturas;
     //OTROS
@@ -50,8 +50,6 @@ public class ControlNovedadesReemplazos implements Serializable {
     private boolean permitirIndex;
     //Consultas sobre detalles
     private Empleados empleadoParametro;
-    private String clienteParametroProyecto;
-    private String plataformaParametroProyecto;
     //editar celda
     private Encargaturas editarEncargaturas;
     private boolean cambioEditor, aceptarEditar;
@@ -77,7 +75,8 @@ public class ControlNovedadesReemplazos implements Serializable {
     private List<Empleados> filtradoslistaEmpleados;
     private Empleados seleccionEmpleados;
     private Empleados seleccionEmpleadosReemplazados;
-    ///////////////////////////////////////////////FALTA EL LOV DE CARGOS
+    //Seleccion Mostrar Todos
+    private Empleados seleccionMostrar;
     //RASTROS
     private BigInteger secRegistro;
     //LISTA QUE NO ES LISTA - 1 SOLO ELEMENTO
@@ -89,18 +88,21 @@ public class ControlNovedadesReemplazos implements Serializable {
     private int k;
     private BigInteger l;
     private String mensajeValidacion;
-    //Modificar Vigencias Proyectos
+    //Modificar Encargaturas
     private List<Encargaturas> listaEncargaturasModificar;
     private boolean guardado, guardarOk;
-    //Borrar Vigencias Proyectos
+    //Borrar Encargaturas
     private List<Encargaturas> listaEncargaturasBorrar;
     //Cual Tabla
     private int CualTabla;
+    //Boolean deshabilitar botones en caso de que no haya un parametro
+    private boolean botones;
+    private String tipoPantalla;
     //Duplicar
     private Encargaturas duplicarEncargatura;
     //AUTOCOMPLETAR
     private String Reemplazado, TipoReemplazo, MotivoReemplazo, Cargo, Estructura;
-    //Columnas Tabla Vigencias Proyectos
+    //Columnas Tabla Encargaturas
     private Column nREmpleadoReemplazado, nRTiposReemplazos, nRFechasPagos, nRFechasIniciales, nRFechasFinales, nRCargos, nRMotivosReemplazos, nREstructuras;
 
     public ControlNovedadesReemplazos() {
@@ -127,15 +129,36 @@ public class ControlNovedadesReemplazos implements Serializable {
         nuevaEncargatura.setCargo(new Cargos());
         nuevaEncargatura.setMotivoreemplazo(new MotivosReemplazos());
         nuevaEncargatura.setEstructura(new Estructuras());
+        empleadoParametro = new Empleados();
 
     }
 
     public void recibirEmpleado(BigInteger secEmpleado) {
+        if (secEmpleado.compareTo(new BigInteger("-1")) == 0) {
+            botones = false;
+            tipoPantalla = "TODOS";
+        } else {
+            botones = true;
+            tipoPantalla = "UNO";
+        }
+
         secuenciaEmpleado = secEmpleado;
         empleado = null;
+        listaFalsaEmpleados = new ArrayList<Empleados>();
         getEmpleado();
-        listaEncargaturas = null;
-        getListaEncargaturas();
+        listaEmpleados = null;
+        getListaEmpleados();
+        if (tipoPantalla.equals("UNO")) {
+            listaFalsaEmpleados.add(empleado);
+        } else {
+            listaFalsaEmpleados = listaEmpleados;
+        }
+        if (!listaFalsaEmpleados.isEmpty()) {
+            seleccionEmpleados = listaFalsaEmpleados.get(0);
+            listaEncargaturas = null;
+            getListaEncargaturas();
+        }
+
         listaTiposReemplazos = null;
         getListaTiposReemplazos();
         listaMotivosReemplazos = null;
@@ -145,10 +168,6 @@ public class ControlNovedadesReemplazos implements Serializable {
         listaEmpleados = null;
         getListaEmpleados();
         aceptar = true;
-        listaFalsaEmpleados.clear();
-        getEmpleadoParametro();
-        listaFalsaEmpleados.add(empleadoParametro);
-
     }
 
     //AUTOCOMPLETAR
@@ -186,7 +205,6 @@ public class ControlNovedadesReemplazos implements Serializable {
                     }
                 }
                 index = -1;
-                secRegistro = null;
             }
             context.update("form:datosEncargaturasEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("REEMPLAZADO")) {
@@ -354,7 +372,15 @@ public class ControlNovedadesReemplazos implements Serializable {
         context.update("form:datosEncargaturasEmpleado");
     }
 
-    //Ubicacion Celda Indice.
+    //Ubicacion Celda Arriba 
+    public void cambiarEmpleado() {
+        secuenciaEmpleado = seleccionEmpleados.getSecuencia();
+        listaEncargaturas = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosEncargaturasEmpleado");
+    }
+
+    //Ubicacion Celda Indice Abajo.
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
 
@@ -364,15 +390,17 @@ public class ControlNovedadesReemplazos implements Serializable {
             //nombreArchivo = "VigenciasFormalesXML";
             //RequestContext context = RequestContext.getCurrentInstance();
             //context.update("form:exportarXML");
+
+
+
             if (tipoLista == 0) {
                 secRegistro = listaEncargaturas.get(index).getSecuencia();
                 if (cualCelda == 0) {
-                    Reemplazado = listaEncargaturas.get(index).getEmpleado().getPersona().getNombreCompleto();
+                    Reemplazado = listaEncargaturas.get(index).getReemplazado().getPersona().getNombreCompleto();
                 } else if (cualCelda == 1) {
                     TipoReemplazo = listaEncargaturas.get(index).getTiporeemplazo().getNombre();
                 } else if (cualCelda == 5) {
                     Cargo = listaEncargaturas.get(index).getCargo().getNombre();
-
                 } else if (cualCelda == 6) {
                     MotivoReemplazo = listaEncargaturas.get(index).getMotivoreemplazo().getNombre();
                 } else if (cualCelda == 7) {
@@ -382,7 +410,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             } else {
                 secRegistro = filtradosListaEncargaturas.get(index).getSecuencia();
                 if (cualCelda == 0) {
-                    Reemplazado = filtradosListaEncargaturas.get(index).getEmpleado().getPersona().getNombreCompleto();
+                    Reemplazado = filtradosListaEncargaturas.get(index).getReemplazado().getPersona().getNombreCompleto();
                 } else if (cualCelda == 1) {
                     TipoReemplazo = filtradosListaEncargaturas.get(index).getTiporeemplazo().getNombre();
                 } else if (cualCelda == 5) {
@@ -435,6 +463,32 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     }
 
+    public void mostrarTodos() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (!listaFalsaEmpleados.isEmpty()) {
+            listaFalsaEmpleados.clear();
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                listaFalsaEmpleados.add(listaEmpleados.get(i));
+            }
+        } else {
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                listaFalsaEmpleados.add(listaEmpleados.get(i));
+            }
+        }
+
+        listaEncargaturas = null;
+        context.update("form:datosEmpleados");
+        context.update("form:datosEncargaturasEmpleado");
+        filtradosListaFalsaEmpleados = null;
+        seleccionMostrar = null;
+        aceptar = true;
+        index = -1;
+        secRegistro = null;
+        tipoActualizacion = -1;
+        cualCelda = -1;
+
+    }
+
     public void actualizarEmpleadosFalso() {
 
 
@@ -444,7 +498,6 @@ public class ControlNovedadesReemplazos implements Serializable {
             listaFalsaEmpleados.add(seleccionEmpleados);
         } else {
             listaFalsaEmpleados.add(seleccionEmpleados);
-
         }
         secuenciaEmpleado = seleccionEmpleados.getSecuencia();
         for (int i = 0; i < listaFalsaEmpleados.size(); i++) {
@@ -851,7 +904,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
     }
 
-    //CREAR VIGENCIA PROYECTO
+    //CREAR ENCARGATURAS
     public void agregarNuevaNovedadReemplazo() {
         int pasa = 0;
         int pasa2 = 0;
@@ -864,21 +917,24 @@ public class ControlNovedadesReemplazos implements Serializable {
             context.execute("inconsistencia.show()");
             pasa2++;
         }
-
-
         if (nuevaEncargatura.getTiporeemplazo().getNombre().equals(" ")) {
             System.out.println("Entro a Tipo Reemplazo");
             mensajeValidacion = mensajeValidacion + " * TipoReemplazo \n";
             pasa++;
         }
-        if (nuevaEncargatura.getMotivoreemplazo().getNombre().equals(" ")) {
-            System.out.println("Entro a Motivo Reemplazo");
-            mensajeValidacion = mensajeValidacion + " * Motivo Reemplazo\n";
+        if (nuevaEncargatura.getFechainicial() == null) {
+            System.out.println("Entro a Fecha Inicial");
+            mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
-        if (nuevaEncargatura.getEstructura().getNombre().equals(" ")) {
-            System.out.println("Entro a Estructura");
-            mensajeValidacion = mensajeValidacion + " * Estructura\n";
+        if (nuevaEncargatura.getFechapago() == null) {
+            System.out.println("Entro a FechaPago");
+            mensajeValidacion = mensajeValidacion + " * Fecha Pago\n";
+            pasa++;
+        }
+        if (nuevaEncargatura.getFechafinal() == null) {
+            System.out.println("Entro a FechaFinal");
+            mensajeValidacion = mensajeValidacion + " * Fecha Final\n";
             pasa++;
         }
         if (pasa == 0 && pasa2 == 0) {
@@ -907,14 +963,12 @@ public class ControlNovedadesReemplazos implements Serializable {
                 tipoLista = 0;
 
             }
-            //AGREGAR REGISTRO A LA LISTA VIGENCIAS PROYECTOS.
+            //AGREGAR REGISTRO A LA LISTA ENCARGATURA .
             k++;
             l = BigInteger.valueOf(k);
             nuevaEncargatura.setSecuencia(l);
-            nuevaEncargatura.setReemplazado(empleado);
-
+            nuevaEncargatura.setEmpleado(empleado); //Envia empleado
             listaEncargaturasCrear.add(nuevaEncargatura);
-
             listaEncargaturas.add(nuevaEncargatura);
             nuevaEncargatura = new Encargaturas();
             nuevaEncargatura.setReemplazado(new Empleados());
@@ -934,6 +988,39 @@ public class ControlNovedadesReemplazos implements Serializable {
             context.update("formularioDialogos:validacionNuevaNovedadReemplazo");
             context.execute("validacionNuevaNovedadReemplazo.show()");
         }
+    }
+    
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("lol");
+        if (!listaEncargaturas.isEmpty()) {
+            if (secRegistro != null) {
+                System.out.println("lol 2");
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "ENCARGATURAS");
+                System.out.println("resultado: " + resultado);
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("ENCARGATURAS")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+
+        }
+        index = -1;
     }
 
     //LIMPIAR NUEVO REGISTRO ENCARGATURA
@@ -956,23 +1043,23 @@ public class ControlNovedadesReemplazos implements Serializable {
     //GUARDAR
     public void guardarCambiosEncargaturas() {
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Vigencias Proyectos");
+            System.out.println("Realizando Operaciones Encargaturas");
             if (!listaEncargaturasBorrar.isEmpty()) {
                 for (int i = 0; i < listaEncargaturasBorrar.size(); i++) {
                     System.out.println("Borrando...");
-                    if (listaEncargaturasBorrar.get(i).getTiporeemplazo().getSecuencia() == null) {
-                        listaEncargaturasBorrar.get(i).setTiporeemplazo(null);
-                        administrarNovedadesReemplazos.borrarEncargaturas(listaEncargaturasBorrar.get(i));
-                    } else {
-                        if (listaEncargaturasBorrar.get(i).getMotivoreemplazo().getSecuencia() == null) {
-                            listaEncargaturasBorrar.get(i).setMotivoreemplazo(null);
-                            administrarNovedadesReemplazos.borrarEncargaturas(listaEncargaturasBorrar.get(i));
-                        } else {
-                            administrarNovedadesReemplazos.borrarEncargaturas(listaEncargaturasBorrar.get(i));
-                        }
-
+                    if (listaEncargaturasBorrar.get(i).getCargo().getSecuencia() == null) {
+                        listaEncargaturasBorrar.get(i).setCargo(null);
                     }
-
+                    if (listaEncargaturasBorrar.get(i).getEstructura().getSecuencia() == null) {
+                        listaEncargaturasBorrar.get(i).setEstructura(null);
+                    }
+                    if (listaEncargaturasBorrar.get(i).getMotivoreemplazo().getSecuencia() == null) {
+                        listaEncargaturasBorrar.get(i).setMotivoreemplazo(null);
+                    }
+                    if (listaEncargaturasBorrar.get(i).getReemplazado().getSecuencia() == null) {
+                        listaEncargaturasBorrar.get(i).setReemplazado(null);
+                    }
+                    administrarNovedadesReemplazos.borrarEncargaturas(listaEncargaturasBorrar.get(i));
                 }
                 System.out.println("Entra");
                 listaEncargaturasBorrar.clear();
@@ -981,34 +1068,48 @@ public class ControlNovedadesReemplazos implements Serializable {
             if (!listaEncargaturasCrear.isEmpty()) {
                 for (int i = 0; i < listaEncargaturasCrear.size(); i++) {
                     System.out.println("Creando...");
-                    if (listaEncargaturasCrear.get(i).getTiporeemplazo().getSecuencia() == null) {
-                        listaEncargaturasCrear.get(i).setTiporeemplazo(null);
-                        administrarNovedadesReemplazos.crearEncargaturas(listaEncargaturasCrear.get(i));
-                    } else {
-                        if (listaEncargaturasCrear.get(i).getMotivoreemplazo().getSecuencia() == null) {
-                            listaEncargaturasCrear.get(i).setMotivoreemplazo(null);
-                            administrarNovedadesReemplazos.crearEncargaturas(listaEncargaturasCrear.get(i));
-                        } else {
-                            administrarNovedadesReemplazos.crearEncargaturas(listaEncargaturasCrear.get(i));
 
-                        }
+                    if (listaEncargaturasCrear.get(i).getMotivoreemplazo().getSecuencia() == null) {
+                        listaEncargaturasCrear.get(i).setMotivoreemplazo(null);
 
                     }
+                    if (listaEncargaturasCrear.get(i).getReemplazado().getSecuencia() == null) {
+                        listaEncargaturasCrear.get(i).setReemplazado(null);
+                    }
+                    if (listaEncargaturasCrear.get(i).getCargo().getSecuencia() == null) {
+                        listaEncargaturasCrear.get(i).setCargo(null);
+                    }
+                    if (listaEncargaturasCrear.get(i).getEstructura().getSecuencia() == null) {
+                        listaEncargaturasCrear.get(i).setEstructura(null);
+                    }
+                    administrarNovedadesReemplazos.crearEncargaturas(listaEncargaturasCrear.get(i));
+
                 }
+
+
+
                 System.out.println("LimpiaLista");
                 listaEncargaturasCrear.clear();
             }
+
+
             if (!listaEncargaturasModificar.isEmpty()) {
                 administrarNovedadesReemplazos.modificarEncargatura(listaEncargaturasModificar);
                 listaEncargaturasModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
+
+            System.out.println(
+                    "Se guardaron los datos con exito");
             listaEncargaturas = null;
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosEncargaturasEmpleado");
+
+            context.update(
+                    "form:datosEncargaturasEmpleado");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+
+            RequestContext.getCurrentInstance()
+                    .update("form:aceptar");
             //  k = 0;
         }
         System.out.println("Tamaño lista: " + listaEncargaturasCrear.size());
@@ -1017,7 +1118,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
     }
 
-    //BORRAR VIGENCIA PROYECTO
+    //BORRAR ENCARGATURAS
     public void borrarEncargaturas() {
 
         if (index >= 0) {
@@ -1395,7 +1496,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
     }
 
-    //DUPLICAR VIGENCIA PROYECTO
+    //DUPLICAR ENCARGATURA
     public void duplicarNR() {
         if (index >= 0) {
             duplicarEncargatura = new Encargaturas();
@@ -1437,7 +1538,7 @@ public class ControlNovedadesReemplazos implements Serializable {
 
         int pasa2 = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        
+
         if ((!duplicarEncargatura.getReemplazado().getPersona().getNombreCompleto().equals("  ") && !duplicarEncargatura.getReemplazado().getPersona().getNombreCompleto().equals(" ")) && (!duplicarEncargatura.getCargo().getNombre().equals(" ") && !duplicarEncargatura.getCargo().getNombre().equals(""))) {
             System.out.println("Entro a Inconsistencia");
             context.update("formularioDialogos:inconsistencia");
@@ -1445,46 +1546,47 @@ public class ControlNovedadesReemplazos implements Serializable {
             pasa2++;
         }
 
-        if(pasa2 == 0){
-        listaEncargaturas.add(duplicarEncargatura);
-        listaEncargaturasCrear.add(duplicarEncargatura);
-        
-        context.update("form:datosEncargaturasEmpleado");
-        index = -1;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        if (pasa2 == 0) {
+            listaEncargaturas.add(duplicarEncargatura);
+            listaEncargaturasCrear.add(duplicarEncargatura);
+
+            context.update("form:datosEncargaturasEmpleado");
+            index = -1;
+            if (guardado == true) {
+                guardado = false;
+                //RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+            if (bandera == 1) {
+                nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+                nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
+                nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+                nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
+                nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+                nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
+                nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+                nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
+                nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+                nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
+                nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+                nRCargos.setFilterStyle("display: none; visibility: hidden;");
+                nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+                nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
+                nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+                nREstructuras.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
+                bandera = 0;
+                filtradosListaEncargaturas = null;
+                tipoLista = 0;
+            }
+            duplicarEncargatura = new Encargaturas();
+            context.update("formularioDialogos:DuplicarRegistroEncargatura");
+            context.execute("DuplicarRegistroEncargatura.hide()");
         }
-        if (bandera == 1) {
-            nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
-            nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
-            nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
-            nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
-            nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
-            nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
-            nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
-            nRCargos.setFilterStyle("display: none; visibility: hidden;");
-            nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
-            nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
-            nREstructuras.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
-            bandera = 0;
-            filtradosListaEncargaturas = null;
-            tipoLista = 0;
-        }
-        duplicarEncargatura = new Encargaturas();
-        context.update("formularioDialogos:DuplicarRegistroEncargatura");
-        context.execute("DuplicarRegistroEncargatura.hide()");
-    }
     }
     //LIMPIAR DUPLICAR
+
     /**
-     * Metodo que limpia los datos de un duplicar Vigencia Proyecto
+     * Metodo que limpia los datos de un duplicar Encargaturas
      */
     public void limpiarduplicarEncargaturas() {
         duplicarEncargatura = new Encargaturas();
@@ -1520,8 +1622,10 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     //Getter & Setter
     public Empleados getEmpleado() {
-        if (empleado == null) {
+        if (tipoPantalla.equals("UNO") && empleado == null) {
             empleado = administrarNovedadesReemplazos.encontrarEmpleado(secuenciaEmpleado);
+        } else {
+            empleado = new Empleados();
         }
 
         return empleado;
@@ -1533,7 +1637,7 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public List<Encargaturas> getListaEncargaturas() {
         if (listaEncargaturas == null) {
-            listaEncargaturas = administrarNovedadesReemplazos.encargaturasEmpleado(secuenciaEmpleado);
+            listaEncargaturas = administrarNovedadesReemplazos.encargaturasEmpleado(seleccionEmpleados.getSecuencia());
         }
         return listaEncargaturas;
     }
@@ -1548,15 +1652,6 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public void setFiltradosListaEncargaturas(List<Encargaturas> filtradosListaEncargaturas) {
         this.filtradosListaEncargaturas = filtradosListaEncargaturas;
-    }
-
-    public Empleados getEmpleadoParametro() {
-        empleadoParametro = administrarNovedadesReemplazos.encontrarEmpleado(secuenciaEmpleado);
-        return empleadoParametro;
-    }
-
-    public void setEmpleadoParametro(Empleados empleadoParametro) {
-        this.empleadoParametro = empleadoParametro;
     }
 
     public List<TiposReemplazos> getListaTiposReemplazos() {
@@ -1604,10 +1699,6 @@ public class ControlNovedadesReemplazos implements Serializable {
     }
 
     public List<Empleados> getListaFalsaEmpleados() {
-        if (listaFalsaEmpleados == null) {
-            listaFalsaEmpleados = new ArrayList<Empleados>();
-            recibirEmpleado(secuenciaEmpleado);
-        }
         return listaFalsaEmpleados;
     }
 
@@ -1761,4 +1852,25 @@ public class ControlNovedadesReemplazos implements Serializable {
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
+
+    public Empleados getSeleccionMostrar() {
+        return seleccionMostrar;
+    }
+
+    public void setSeleccionMostrar(Empleados seleccionMostrar) {
+        this.seleccionMostrar = seleccionMostrar;
+    }
+
+    public boolean isBotones() {
+        return botones;
+    }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
+    }
+        
 }

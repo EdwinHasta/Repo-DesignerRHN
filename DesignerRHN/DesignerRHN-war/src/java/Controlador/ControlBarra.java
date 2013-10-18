@@ -3,9 +3,12 @@ package Controlador;
 import Entidades.ParametrosEstructuras;
 import InterfaceAdministrar.AdministrarBarraInterface;
 import java.io.Serializable;
+import java.util.Date;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -18,15 +21,20 @@ public class ControlBarra implements Serializable {
     private Integer totalEmpleadosLiquidados;
     private boolean permisoParaLiquidar;
     private String usuarioBD;
-    private int barra;
+    private Integer barra;
     private ParametrosEstructuras parametroEstructura;
     private boolean empezar;
+    private boolean bandera;
+    private String horaInicialLiquidacion, horaFinalLiquidacion;
 
     public ControlBarra() {
         totalEmpleadosParaLiquidar = 0;
         totalEmpleadosLiquidados = 0;
         barra = 0;
         empezar = false;
+        bandera = true;
+        horaInicialLiquidacion = "--:--:--";
+        horaFinalLiquidacion = "--:--:--";
     }
 
     public void contarLiquidados() {
@@ -35,38 +43,50 @@ public class ControlBarra implements Serializable {
     }
 
     public void liquidar() {
+        barra = null;
+        empezar = true;
         usuarioBD = administrarBarra.usuarioBD();
         permisoParaLiquidar = administrarBarra.permisosLiquidar(usuarioBD);
-        barra = 0;
+        barra = null;
         if (permisoParaLiquidar == true) {
-            System.out.println("Liquidar: " + permisoParaLiquidar);
+            administrarBarra.inicializarParametrosEstados();
             administrarBarra.liquidarNomina();
-            long tiempoI = System.currentTimeMillis();
+            Date horaInicio = new Date();
+            System.out.println("Hora Inicio: " + horaInicio.getHours() + ":" + horaInicio.getMinutes() + ":" + horaInicio.getSeconds());
             /*while (!administrarBarra.estadoLiquidacion(usuarioBD).equals("FINALIZADO")) {
              System.out.println("Hola Pipelon");
              }*/
-            long tiempoF = System.currentTimeMillis();
-            long milisegundos = tiempoF - tiempoI;
-            long hora = milisegundos / 3600000;
-            long restohora = milisegundos % 3600000;
-            long minuto = restohora / 60000;
-            long restominuto = restohora % 60000;
-            long segundo = restominuto / 1000;
-            long restosegundo = restominuto % 1000;
-            System.out.println(hora + ":" + minuto + ":" + segundo + "." + restosegundo);
-            contarLiquidados();
+            horaInicialLiquidacion = horaInicio.getHours() + ":" + horaInicio.getMinutes() + ":" + horaInicio.getSeconds();
+            RequestContext.getCurrentInstance().update("form:horaI");
         } else {
             System.out.println("Liquidar: " + permisoParaLiquidar);
         }
     }
 
     public void limpiarbarra() {
-        barra = 0;
+        barra = null;
         if (empezar == false) {
             empezar = true;
         } else if (empezar == true) {
             empezar = false;
         }
+    }
+
+    public void liquidacionCompleta() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje", "Liquidación terminada con Éxito."));
+        RequestContext.getCurrentInstance().update("form:barra");
+        empezar = false;
+        contarLiquidados();
+        Date horaFinal = new Date();
+        System.out.println("Hora Final: " + horaFinal.getHours() + ":" + horaFinal.getMinutes() + ":" + horaFinal.getSeconds());
+        horaFinalLiquidacion = horaFinal.getHours() + ":" + horaFinal.getMinutes() + ":" + horaFinal.getSeconds();
+        RequestContext.getCurrentInstance().update("form:horaF");
+    }
+
+    public void cancelarLiquidacion() {
+        barra = null;
+        bandera = true;
+        empezar = false;
     }
     //GETTER AND SETTER
 
@@ -87,24 +107,26 @@ public class ControlBarra implements Serializable {
         this.totalEmpleadosLiquidados = totalEmpleadosLiquidados;
     }
 
-    public int getBarra() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (empezar == false) {
-            barra = 0;
-        } else {
-            if (barra == 100) {
-                System.out.println("1215485");
-                context.execute("pbAjax.cancel()");
+    public Integer getBarra() {
+        if (empezar == true) {
+            if (barra == null) {
+                barra = 0;
             } else {
-                System.out.println("jeje");
-                barra = barra + 10;
+                barra = administrarBarra.progresoLiquidacion(totalEmpleadosParaLiquidar);
+                if (barra >= 100) {
+                    barra = 100;
+                    bandera = false;
+                }
+                if (bandera == true) {
+                    RequestContext.getCurrentInstance().update("form:barra");
+                    contarLiquidados();
+                }
             }
         }
-        context.update("form:pbAjax");
         return barra;
     }
 
-    public void setBarra(int barra) {
+    public void setBarra(Integer barra) {
         this.barra = barra;
     }
 
@@ -113,5 +135,13 @@ public class ControlBarra implements Serializable {
             parametroEstructura = administrarBarra.parametrosLiquidacion();
         }
         return parametroEstructura;
+    }
+
+    public String getHoraInicialLiquidacion() {
+        return horaInicialLiquidacion;
+    }
+
+    public String getHoraFinalLiquidacion() {
+        return horaFinalLiquidacion;
     }
 }

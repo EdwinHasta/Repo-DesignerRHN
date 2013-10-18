@@ -209,6 +209,7 @@ a:link:hover, a:visited:hover  {
 
 /*PROGRESS BAR*/
 .animated .ui-progressbar-value {
-    border:0px;
-    background-image: url("Imagenes/bar.gif"); 
+    border: 0px;
+    background-image: url("bar.gif"); 
+    padding: 0px;
 }

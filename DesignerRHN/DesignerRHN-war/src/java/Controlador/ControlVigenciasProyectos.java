@@ -299,7 +299,6 @@ public class ControlVigenciasProyectos implements Serializable {
             }
             if (proyectoParametro != null) {
                 getClienteParametroProyecto();
-
             }
 
             if (tipoLista == 0) {
