@@ -58,6 +58,6 @@ public class ControlPruebasUnitarias implements Serializable {
     }
 
     public void cometalo() {
-        persistenciaCargos.cargosSalario();
+        System.out.println("Hola :D");
     }
 }

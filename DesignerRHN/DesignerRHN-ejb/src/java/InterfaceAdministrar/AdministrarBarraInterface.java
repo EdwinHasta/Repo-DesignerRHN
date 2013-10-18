@@ -20,4 +20,5 @@ public interface AdministrarBarraInterface {
     public ParametrosEstructuras parametrosLiquidacion();
     public void inicializarParametrosEstados();
     public Integer progresoLiquidacion(Integer totalEmpleadoALiquidar);
+    public void cancelarLiquidacion(String usuarioBD);
 }

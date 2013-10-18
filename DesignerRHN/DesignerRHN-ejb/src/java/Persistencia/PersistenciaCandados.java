@@ -69,4 +69,14 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             return null;
         }
     }
+    
+    public void cancelarLiquidacion(String usuarioBD) {
+        try {
+            Query query = em.createQuery("UPDATE Candados c SET c.estado='CANCELAR' WHERE c.usuario.alias = :usuarioBD");
+            query.setParameter("usuarioBD", usuarioBD);
+            int i = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Exepcion: cancelarLiquidacion " + e);
+        }
+    }
 }

@@ -62,4 +62,8 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     public Integer progresoLiquidacion(Integer totalEmpleadoALiquidar){
         return persistenciaCandados.progresoLiquidacion(totalEmpleadoALiquidar);
     }
+    
+    public void cancelarLiquidacion(String usuarioBD){
+        persistenciaCandados.cancelarLiquidacion(usuarioBD);
+    }
 }
