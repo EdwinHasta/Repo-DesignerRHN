@@ -161,7 +161,6 @@ public class Encargaturas implements Serializable {
     public Empleados getReemplazado() {
         if(reemplazado == null){
             reemplazado = new Empleados();
-            reemplazado.getPersona().setNombre("");
             
         }
         

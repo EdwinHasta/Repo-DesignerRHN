@@ -43,4 +43,20 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
             return null;
         }
     }
+
+    public void inicializarParametrosEstados() {
+        try {
+            String sqlQuery = "UPDATE PARAMETROSESTADOS pe SET ESTADO= 'A LIQUIDAR'\n"
+                    + "        where  ESTADO = 'LIQUIDADO'\n"
+                    + "        AND exists (select --+ rule\n"
+                    + "                     'x' from usuariosinstancias ui , usuarios u, parametros p, parametrosinstancias pi\n"
+                    + "                    where p.secuencia = pe.parametro and u.secuencia = p.usuario\n"
+                    + "                    and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = user\n"
+                    + "                    and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=user))";
+            Query query = em.createNativeQuery(sqlQuery);
+            int i = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaParametrosEstados.inicializarParametrosEstados " + e);
+        }
+    }
 }
