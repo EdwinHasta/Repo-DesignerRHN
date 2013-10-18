@@ -129,7 +129,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         nuevaEncargatura.setCargo(new Cargos());
         nuevaEncargatura.setMotivoreemplazo(new MotivosReemplazos());
         nuevaEncargatura.setEstructura(new Estructuras());
-        empleadoParametro = new Empleados();
+
 
     }
 
@@ -967,7 +967,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevaEncargatura.setSecuencia(l);
-            nuevaEncargatura.setEmpleado(empleado); //Envia empleado
+            nuevaEncargatura.setEmpleado(seleccionEmpleados); //Envia empleado
             listaEncargaturasCrear.add(nuevaEncargatura);
             listaEncargaturas.add(nuevaEncargatura);
             nuevaEncargatura = new Encargaturas();
@@ -989,7 +989,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             context.execute("validacionNuevaNovedadReemplazo.show()");
         }
     }
-    
+
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -1083,16 +1083,10 @@ public class ControlNovedadesReemplazos implements Serializable {
                         listaEncargaturasCrear.get(i).setEstructura(null);
                     }
                     administrarNovedadesReemplazos.crearEncargaturas(listaEncargaturasCrear.get(i));
-
                 }
-
-
-
                 System.out.println("LimpiaLista");
                 listaEncargaturasCrear.clear();
             }
-
-
             if (!listaEncargaturasModificar.isEmpty()) {
                 administrarNovedadesReemplazos.modificarEncargatura(listaEncargaturasModificar);
                 listaEncargaturasModificar.clear();
@@ -1872,5 +1866,4 @@ public class ControlNovedadesReemplazos implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-        
 }
