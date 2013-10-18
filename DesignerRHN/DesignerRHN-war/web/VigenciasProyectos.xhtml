@@ -234,7 +234,7 @@
                 </h:form>
 
                 <h:form id="formularioDialogos">
-                    
+
                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
@@ -282,10 +282,10 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'VIGENCIASPROYECTOS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
-                     <!--HotKey-->
-                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasProyectos.activarCtrlF11()}" process="@this"/> 
-                    
+
+                    <!--HotKey-->
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasProyectos.activarCtrlF11()}" process="@this"/> 
+
 
                     <!-- L.O.V PROYECTOS -->
                     <p:dialog header="Buscar nombre de proyecto." widgetVar="proyectosDialogo" draggable="false" resizable="false" id="proyectosDialogo" closable="false"  
@@ -433,7 +433,7 @@
                             </p:inputText>
                             <p:watermark for="duplicarCargo" value="Cargo" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnDuplicarCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasProyectos.asignarIndex(indice, 2, 2)}"/>   
-                            
+
                             <strong><h:outputText value="Personas a Cargo: " style="font-size: 12px; position: absolute; top: 265px" /></strong>
                             <p:inputText id="duplicarCantidadPersonas" value="#{controlVigenciasProyectos.duplicarVigenciaProyectos.cantidadpersonaacargo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarCantidadPersonas"/>
@@ -451,6 +451,7 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasProyectos.activarCtrlF11()}" process="@this"/> -->
 
                     <!-- DIALOGOS EDITAR -->
+
 
                     <p:dialog id="editarFechasIniciales" header="Fecha Inicial" widgetVar="editarFechasIniciales" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px" value="#{controlVigenciasProyectos.editarVigenciasProyectos.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
@@ -551,8 +552,6 @@
                         <p:commandButton value="Aceptar" onclick="validacionNuevaVigenciaProyecto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-
-
                     <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
@@ -614,4 +613,3 @@
         </ui:composition>
     </h:body>
 </html>
-
