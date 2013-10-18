@@ -15,7 +15,7 @@
 
                     <p:panel  id="PanelTotal" header="Novedades Reemplazos" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
 
-                        <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlNovedadesReemplazos.seleccionEmpleados.persona.nombreCompleto}"/>
+                        <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlNovedadesReemplazos.empleado.persona.nombreCompleto}"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 120px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Empleados</strong></legend>
@@ -26,7 +26,7 @@
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesReemplazos.listaFalsaEmpleados}"
                                          rowKey="#{empleados.secuencia}" rowIndexVar="indiceT" style="font-size: 10px; border: 1px; text-align: left; width: 550px"                           
                                          scrollable="true" scrollHeight="80" scrollWidth="550" filteredValue="#{controlNovedadesReemplazos.filtradosListaFalsaEmpleados}" 
-                                         emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesReemplazos.seleccionEmpleados}"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesReemplazos.seleccionMostrar}"
                                          editable="true" editMode="cell" selectionMode="single">
 
                                 <p:ajax event="rowSelect" listener="#{controlNovedadesReemplazos.cambiarEmpleado()}"/>
@@ -103,7 +103,7 @@
                             <legend style="font-size: 13px; color: #14388B"><strong>Reemplazos</strong></legend>
                             <p:dataTable id="datosEncargaturasEmpleado" var="encargaturas" value="#{controlNovedadesReemplazos.listaEncargaturas}"
                                          rowKey="#{encargaturas.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px"                           
-                                         scrollable="true" scrollHeight="200" scrollWidth="850" filteredValue="#{controlNovedadesReemplazos.filtradosListaEncargaturas}" 
+                                         scrollable="true" scrollHeight="180" scrollWidth="850" filteredValue="#{controlNovedadesReemplazos.filtradosListaEncargaturas}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -122,7 +122,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Nombre Empleado Reemplazado" />
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooNombreReemplazado" value="Nombre Empleado Reemplazado"/>
                                     </f:facet>
                                 </p:column>
 
@@ -257,7 +257,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
                                     <f:facet name="footer">
                                         <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooEstructura" value="Estructuras"/>
                                     </f:facet>
@@ -499,7 +498,7 @@
                                       filteredValue="#{controlNovedadesReemplazos.filtradoslistaTiposReemplazos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{tiposReemplazos.secuencia}" selection="#{controlNovedadesReemplazos.seleccionTiposReemplazos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesReemplazos.activarAceptar()}" update=":formularioDialogos:aceptarTR"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesReemplazos.actualizarTiposReemplazos()}" process="@this" onstart="LOVPryRoles.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesReemplazos.actualizarTiposReemplazos()}" process="@this" onstart="LOVTiposReemplazos.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar tipos de reemplazos: "  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposReemplazos.filter();" style="width:100px; position: relative; left: 85px;" />  
