@@ -1,10 +1,12 @@
 package Controlador;
 
+import Entidades.ConsultasLiquidaciones;
 import Entidades.ParametrosEstructuras;
 import InterfaceAdministrar.AdministrarBarraInterface;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -22,12 +24,14 @@ public class ControlBarra implements Serializable {
     private Integer totalEmpleadosLiquidados;
     private boolean permisoParaLiquidar;
     private String usuarioBD;
-    private Integer barra, bkBarra;
+    private Integer barra;
     private ParametrosEstructuras parametroEstructura;
     private boolean empezar, botonLiquidar, botonCancelar, cambioImagen;
     private boolean bandera, preparandoDatos;
     private String horaInicialLiquidacion, horaFinalLiquidacion, mensajeBarra, mensajeEstado, imagenEstado;
-    private SimpleDateFormat formato;
+    private SimpleDateFormat formato, formatoFecha;
+    //LIQUIDACIONES CERRADAS - ABIERTAS
+    private List<ConsultasLiquidaciones> liquidacionesCerradas, liquidacionesAbiertas, filtradoLiquidacionesCerradas, filtradoLiquidacionesAbiertas;
 
     public ControlBarra() {
         totalEmpleadosParaLiquidar = 0;
@@ -41,9 +45,12 @@ public class ControlBarra implements Serializable {
         horaInicialLiquidacion = "--:--:--";
         horaFinalLiquidacion = "--:--:--";
         formato = new SimpleDateFormat("hh:mm:ss a");
+        formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         mensajeEstado = "Oprima el boton liquidar para iniciar.";
         imagenEstado = "nom_parametros.gif";
         cambioImagen = true;
+        liquidacionesAbiertas = null;
+        liquidacionesCerradas = null;
     }
 
     public void contarLiquidados() {
@@ -91,7 +98,8 @@ public class ControlBarra implements Serializable {
     }
 
     public void liquidacionCompleta() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Información", "Liquidación terminada con Éxito."));
+        FacesMessage msg = new FacesMessage("Información", "Liquidación terminada con Éxito.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
         mensajeBarra = "Liquidación Completa (" + barra + "%)";
         mensajeEstado = "Liquidación terminada con exito.";
         imagenEstado = "hand3.gif";
@@ -109,6 +117,7 @@ public class ControlBarra implements Serializable {
         context.update("form:barra");
         context.update("form:estadoLiquidacion");
         context.update("form:imagen");
+        context.update("form:growl");
     }
 
     public void cancelarLiquidacion() {
@@ -119,27 +128,37 @@ public class ControlBarra implements Serializable {
         Date horaFinal = new Date();
         horaFinalLiquidacion = formato.format(horaFinal);
         mensajeBarra = "Liquidacion Cancelada (" + barra + "%)";
-        //bkBarra = barra;
         mensajeEstado = "El proceso de liquidacion fue cancelado.";
         imagenEstado = "cancelarLiquidacion.jpg";
         botonCancelar = true;
         botonLiquidar = false;
+        FacesMessage msg = new FacesMessage("Información", "Liquidación cancelada.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
         context.update("form:horaF");
         context.update("form:liquidar");
         context.update("form:cancelar");
         context.update("form:estadoLiquidacion");
         context.update("form:imagen");
-        // barra = bkBarra;
-        System.out.println(barra);
-        //System.out.println(bkBarra);
-        context.execute("barra.setValue("+barra+")");
-        //context.execute("barra.getValue()");
-        //context.update("form:barra"); 
+        context.execute("barra.setValue(" + barra + ")");
+        context.update("form:barra");
+        context.update("form:growl");
     }
 
-    public void actualizar() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:barra");
+    public void salir() {
+        totalEmpleadosParaLiquidar = 0;
+        totalEmpleadosLiquidados = 0;
+        barra = 0;
+        empezar = false;
+        bandera = true;
+        preparandoDatos = false;
+        botonCancelar = true;
+        botonLiquidar = false;
+        horaInicialLiquidacion = "--:--:--";
+        horaFinalLiquidacion = "--:--:--";
+        formato = new SimpleDateFormat("hh:mm:ss a");
+        mensajeEstado = "Oprima el boton liquidar para iniciar.";
+        imagenEstado = "nom_parametros.gif";
+        cambioImagen = true;
     }
     //GETTER AND SETTER
 
@@ -163,10 +182,10 @@ public class ControlBarra implements Serializable {
     public Integer getBarra() {
         if (empezar == true) {
             RequestContext context = RequestContext.getCurrentInstance();
+            String estado = administrarBarra.estadoLiquidacion(usuarioBD);
             if (preparandoDatos == true) {
                 barra = 101;
                 context.update("form:barra");
-                String estado = administrarBarra.estadoLiquidacion(usuarioBD);
                 if (!estado.equalsIgnoreCase("INICIADO") && !estado.equalsIgnoreCase("EN COLA")) {
                     preparandoDatos = false;
                     barra = null;
@@ -179,28 +198,57 @@ public class ControlBarra implements Serializable {
                     barra = 0;
                 } else {
                     barra = administrarBarra.progresoLiquidacion(totalEmpleadosParaLiquidar);
-                    if (barra >= 100) {
-                        barra = 100;
-                        System.out.println(":/");
-                        bandera = false;
-                    }
-                    mensajeBarra = "Liquidando... " + barra + "%";
-                    if (bandera == true) {
-                        if (cambioImagen == true) {
-                            cambioImagen = false;
-                            imagenEstado = "hand2.gif";
-                        } else {
-                            cambioImagen = true;
-                            imagenEstado = "hand1.gif";
+                    if (!estado.equalsIgnoreCase("FINALIZADO")) {
+                        if (barra >= 100) {
+                            barra = 100;
+                            bandera = false;
                         }
-                        context.update("form:barra");
-                        context.update("form:imagen");
-                        contarLiquidados();
+                        mensajeBarra = "Liquidando... " + barra + "%";
+                        if (bandera == true) {
+                            if (cambioImagen == true) {
+                                cambioImagen = false;
+                                imagenEstado = "hand2.gif";
+                            } else {
+                                cambioImagen = true;
+                                imagenEstado = "hand1.gif";
+                            }
+                            Date horaFinal = new Date();
+                            horaFinalLiquidacion = formato.format(horaFinal);
+                            context.update("form:barra");
+                            context.update("form:horaF");
+                            context.update("form:imagen");
+                            contarLiquidados();
+                        }
+                    } else {
+                        if (barra < 100) {
+                            context.execute("barra.cancel()");
+                            empezar = false;
+                            Date horaFinal = new Date();
+                            horaFinalLiquidacion = formato.format(horaFinal);
+                            mensajeBarra = "Liquidacion Finalizada (" + barra + "%)";
+                            mensajeEstado = "Liquidacion terminada parcialmente.";
+                            imagenEstado = "hand3.gif";
+                            botonCancelar = true;
+                            botonLiquidar = false;
+                            FacesMessage msg = new FacesMessage("Información", "Liquidación terminada parcialmente.");
+                            FacesContext.getCurrentInstance().addMessage(null, msg);
+                            context.update("form:horaF");
+                            context.update("form:liquidar");
+                            context.update("form:cancelar");
+                            context.update("form:estadoLiquidacion");
+                            context.update("form:imagen");
+                            context.execute("barra.setValue(" + barra + ")");
+                            context.update("form:barra");
+                            context.update("form:growl");
+                        } else {
+                            if (barra >= 100) {
+                                barra = 100;
+                            }
+                        }
                     }
                 }
             }
         }
-        System.out.println(":)");
         return barra;
     }
 
@@ -241,5 +289,34 @@ public class ControlBarra implements Serializable {
 
     public String getImagenEstado() {
         return imagenEstado;
+    }
+
+    public List<ConsultasLiquidaciones> getLiquidacionesCerradas() {
+        if (liquidacionesCerradas == null) {
+            if (parametroEstructura != null) {
+                liquidacionesCerradas = administrarBarra.liquidacionesCerradas(formatoFecha.format(parametroEstructura.getFechadesdecausado()), formatoFecha.format(parametroEstructura.getFechahastacausado()));
+            }
+        }
+        return liquidacionesCerradas;
+    }
+
+    public List<ConsultasLiquidaciones> getLiquidacionesAbiertas() {
+        return liquidacionesAbiertas;
+    }
+
+    public List<ConsultasLiquidaciones> getFiltradoLiquidacionesCerradas() {
+        return filtradoLiquidacionesCerradas;
+    }
+
+    public void setFiltradoLiquidacionesCerradas(List<ConsultasLiquidaciones> filtradoLiquidacionesCerradas) {
+        this.filtradoLiquidacionesCerradas = filtradoLiquidacionesCerradas;
+    }
+
+    public List<ConsultasLiquidaciones> getFiltradoLiquidacionesAbiertas() {
+        return filtradoLiquidacionesAbiertas;
+    }
+
+    public void setFiltradoLiquidacionesAbiertas(List<ConsultasLiquidaciones> filtradoLiquidacionesAbiertas) {
+        this.filtradoLiquidacionesAbiertas = filtradoLiquidacionesAbiertas;
     }
 }

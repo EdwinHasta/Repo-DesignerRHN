@@ -1,7 +1,11 @@
 package Controlador;
 
 import InterfacePersistencia.PersistenciaCargosInterface;
+import InterfacePersistencia.PersistenciaConsultasLiquidacionesInterface;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -15,6 +19,8 @@ public class ControlPruebasUnitarias implements Serializable {
 
     @EJB
     PersistenciaCargosInterface persistenciaCargos;
+    @EJB
+    PersistenciaConsultasLiquidacionesInterface persistenciaConsultasLiquidaciones;
     Integer progress;
     boolean bandera;
 
@@ -29,7 +35,7 @@ public class ControlPruebasUnitarias implements Serializable {
             progress = progress + 1;
             if (progress > 100) {
                 progress = 100;
-                bandera = false; 
+                bandera = false;
                 System.out.println("Hola :$");
             }
             System.out.println("Bandera: " + bandera);
@@ -57,7 +63,7 @@ public class ControlPruebasUnitarias implements Serializable {
         bandera = true;
     }
 
-    public void cometalo() {
-        System.out.println("Hola :D");
+    public void cometalo() throws ParseException {
+        persistenciaConsultasLiquidaciones.liquidacionesCerradas("01/01/2013", "31/01/2013");
     }
 }

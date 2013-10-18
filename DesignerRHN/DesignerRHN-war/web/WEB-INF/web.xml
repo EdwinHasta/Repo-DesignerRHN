@@ -56,5 +56,5 @@
     <error-page>
         <error-code>404</error-code>
         <location>/PaginaNoEncontrada.xhtml</location>
-    </error-page>    
+    </error-page>
 </web-app>
