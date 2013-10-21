@@ -6,8 +6,10 @@ import InterfaceAdministrar.AdministrarBarraInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaCandadosInterface;
 import InterfacePersistencia.PersistenciaConsultasLiquidacionesInterface;
+import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaParametrosEstadosInterface;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -25,6 +27,8 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     @EJB
     PersistenciaConsultasLiquidacionesInterface persistenciaConsultasLiquidaciones;
+    @EJB
+    PersistenciaEmpresasInterface persistenciaEmpresas;
 
     @Override
     public Integer empleadosParaLiquidar() {
@@ -76,4 +80,11 @@ public class AdministrarBarra implements AdministrarBarraInterface {
         return persistenciaConsultasLiquidaciones.liquidacionesCerradas(fechaInicial, fechaFinal);
     }
     
+    public List<ConsultasLiquidaciones> preNomina(){
+        return persistenciaConsultasLiquidaciones.preNomina();
+    }
+    
+    public String estadoConsultaDatos(BigInteger secuenciaEmpresa){
+        return persistenciaEmpresas.estadoConsultaDatos(secuenciaEmpresa);
+    }
 }

@@ -6,6 +6,7 @@ package InterfaceAdministrar;
 
 import Entidades.ConsultasLiquidaciones;
 import Entidades.ParametrosEstructuras;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -24,4 +25,6 @@ public interface AdministrarBarraInterface {
     public Integer progresoLiquidacion(Integer totalEmpleadoALiquidar);
     public void cancelarLiquidacion(String usuarioBD);
     public List<ConsultasLiquidaciones> liquidacionesCerradas(String fechaInicial, String fechaFinal);
+    public List<ConsultasLiquidaciones> preNomina();
+    public String estadoConsultaDatos(BigInteger secuenciaEmpresa);
 }

@@ -62,82 +62,168 @@
                             <p:commandButton value="[Detalles de liquidación]" style="position: absolute; top: 423px; font-size: 12px; left: 140px; width: 200px; border-color: #B61B26; border-width: 2px"/>
                             <p:commandButton value="[Errores]" style="position: absolute; top: 423px; font-size: 12px; width: 163px; left: 341px; border-color: #B61B26; border-width: 2px"/>
                         </fieldset>
-                        <fieldset style="position: absolute; left: 540px; top: 66px; font-size: 12px; width: 310px; height: 444px; border-radius: 10px; padding-left: 4px ">
-                            <p:dataTable id="datosLiquidacionesCerradas" var="liquidacionCerrada" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesCerradas}"
-                                         scrollable="true" rowIndexVar="indice" scrollWidth="315"
-                                         editable="true" editMode="cell"  scrollHeight="150" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="Sin registros">
+                        <p:commandButton value="Consultar datos" actionListener="#{controlBarra.consultarDatos()}" style="position: absolute; left: 645px"/>
+                        <fieldset style="position: absolute; left: 540px; top: 66px; font-size: 12px; width: 315px; height: 444px; border-radius: 10px; padding-left: 2px; z-index: 1; ">
+                            <h:outputText value="Liquidaciones cerradas" style="font-weight: bold; color: blue; font-size: 13px; position: absolute; top: 10px; left: 7px"/>
+                            <fieldset style="padding: 0px; position: absolute; top: 35px; border: none">
+                                <p:dataTable id="datosLiquidacionesCerradas" var="liquidacionCerrada" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesCerradas}"
+                                             scrollable="true" scrollWidth="315"
+                                             editable="true" editMode="cell"  scrollHeight="139" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="Sin registros">
 
-                                <p:column id="corte" headerText="Corte" sortBy="#{liquidacionCerrada.corte}" width="55" filterBy="#{liquidacionCerrada.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" > 
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{liquidacionCerrada.corte}">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{liquidacionCerrada.corte}" style="width: 87%; text-transform: uppercase" readonly="true">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:inputText>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                                    <p:column id="corte" headerText="Corte" sortBy="#{liquidacionCerrada.corte}" width="55" filterBy="#{liquidacionCerrada.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" > 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionCerrada.corte}">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionCerrada.corte}" style="width: 87%; text-transform: uppercase" readonly="true">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
 
-                                <p:column id="empresa" headerText=".." sortBy="#{liquidacionCerrada.empresaCodigo}" width="5" filterBy="#{liquidacionCerrada.empresaCodigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{liquidacionCerrada.empresaCodigo}" />
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{liquidacionCerrada.empresaCodigo}" style="width: 60%; text-transform: uppercase" readonly="true"/>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                                    <p:column id="empresa" headerText=".." sortBy="#{liquidacionCerrada.empresaCodigo}" width="5" filterBy="#{liquidacionCerrada.empresaCodigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionCerrada.empresaCodigo}" />
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionCerrada.empresaCodigo}" style="width: 60%; text-transform: uppercase" readonly="true"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
 
-                                <p:column id="proceso" headerText="Proceso" sortBy="#{liquidacionCerrada.descripcion}" width="50"  filterBy="#{liquidacionCerrada.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{liquidacionCerrada.descripcion}">
-                                                <f:convertNumber currencyCode="COP"/>
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{liquidacionCerrada.descripcion}" style="width: 96%; text-transform: uppercase" readonly="true">
-                                                <f:convertNumber currencyCode="COP"/>
-                                            </p:inputText>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                                    <p:column id="proceso" headerText="Proceso" sortBy="#{liquidacionCerrada.descripcion}" width="50"  filterBy="#{liquidacionCerrada.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionCerrada.descripcion}">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionCerrada.descripcion}" style="width: 85%; text-transform: uppercase" readonly="true">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
 
-                                <p:column id="totalEmpleados" headerText="#" sortBy="#{liquidacionCerrada.total}" width="15" filterBy="#{liquidacionCerrada.total}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{liquidacionCerrada.total}" />
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{liquidacionCerrada.total}" style="width: 96%; text-transform: uppercase" readonly="true"/>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                                    <p:column id="totalEmpleados" headerText="#" sortBy="#{liquidacionCerrada.total}" width="15" filterBy="#{liquidacionCerrada.total}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionCerrada.total}" />
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionCerrada.total}" style="width: 70%; text-transform: uppercase" readonly="true"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
 
-                                <p:column id="observacion"  sortBy="#{liquidacionCerrada.observaciones}" filterBy="#{liquidacionCerrada.observaciones}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
-                                    <f:facet name="header"><h:outputText value="Observación" /></f:facet>
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{liquidacionCerrada.observaciones}" style="text-align: right">
-                                                <f:convertNumber currencyCode="COP"/>
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{liquidacionCerrada.observaciones}" style="width: 96%; text-transform: uppercase; text-align: right" readonly="true">
-                                                <f:convertNumber currencyCode="COP"/>
-                                            </p:inputText>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
-                            </p:dataTable>
+                                    <p:column id="observacion"  sortBy="#{liquidacionCerrada.observaciones}" filterBy="#{liquidacionCerrada.observaciones}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                        <f:facet name="header"><h:outputText value="Observación" /></f:facet>
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionCerrada.observaciones}" style="text-align: right">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionCerrada.observaciones}" style="width: 89%; text-transform: uppercase; text-align: right" readonly="true">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                </p:dataTable>
+                            </fieldset>
+                            <h:outputText value="Liquidaciones en proceso" style="font-weight: bold; color: blue; font-size: 13px; position: absolute; top: 220px; left: 7px"/>
+                            <fieldset style="padding: 0px; position: absolute; top: 245px; border: none">
+                                <p:dataTable id="datosLiquidacionesAbiertas" var="liquidacionAbierta" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesAbiertas}"
+                                             scrollable="true" scrollWidth="315"
+                                             editable="true" editMode="cell"  scrollHeight="139" filteredValue="#{controlBarra.filtradoLiquidacionesAbiertas}" emptyMessage="Sin registros">
+
+                                    <p:column id="corteLA" headerText="Corte" sortBy="#{liquidacionAbierta.corte}" width="55" filterBy="#{liquidacionAbierta.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" > 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionAbierta.corte}">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionAbierta.corte}" style="width: 87%; text-transform: uppercase" readonly="true">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column id="empresaLA" headerText=".." sortBy="#{liquidacionAbierta.empresaCodigo}" width="5" filterBy="#{liquidacionAbierta.empresaCodigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionAbierta.empresaCodigo}" />
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionAbierta.empresaCodigo}" style="width: 60%; text-transform: uppercase" readonly="true"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column id="procesoLA" headerText="Proceso" sortBy="#{liquidacionAbierta.descripcion}" width="50"  filterBy="#{liquidacionAbierta.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionAbierta.descripcion}">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionAbierta.descripcion}" style="width: 85%; text-transform: uppercase" readonly="true">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column id="totalEmpleadosLA" headerText="#" sortBy="#{liquidacionAbierta.total}" width="15" filterBy="#{liquidacionAbierta.total}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionAbierta.total}" />
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionAbierta.total}" style="width: 70%; text-transform: uppercase" readonly="true"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column id="observacionLA"  sortBy="#{liquidacionAbierta.observaciones}" filterBy="#{liquidacionAbierta.observaciones}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                        <f:facet name="header"><h:outputText value="Observación" /></f:facet>
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{liquidacionAbierta.observaciones}" style="text-align: right">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{liquidacionAbierta.observaciones}" style="width: 89%; text-transform: uppercase; text-align: right" readonly="true">
+                                                    <f:convertNumber currencyCode="COP"/>
+                                                </p:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                </p:dataTable>
+                            </fieldset>
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 780px; top: 485px; font-size: 14px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlCiudades.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 780px; top: 485px; font-size: 14px; font-family: Arial, Helvetica, sans-serif; z-index: 1" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlCiudades.salir()}" action="nomina" process="@this" />
                     </p:panel>
+                </h:form>
+                <h:form>
+                    <p:dialog id="permisoLiquidacion" header="ATENCIÓN...!" widgetVar="permisoLiquidacion"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="El usuario actual, no tiene permisos para liquidar." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="permisoLiquidacion.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
                 </h:form>
             </ui:define>
         </ui:composition>

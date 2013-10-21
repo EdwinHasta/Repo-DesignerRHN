@@ -21,13 +21,14 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+
 /**
  *
  * @author user
  */
 @Stateful
-public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemplazosInterface{
-    
+public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemplazosInterface {
+
     @EJB
     PersistenciaEncargaturasInterface persistenciaEncargaturas;
     @EJB
@@ -40,10 +41,7 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
     PersistenciaEmpleadoInterface persistenciaEmpleados;
     @EJB
     PersistenciaEstructurasInterface persistenciaEstructuras;
-    
-    private Encargaturas e;
-    
-    
+
     //Trae las encargaturas del empleado cuya secuencia se envía como parametro//
     @Override
     public List<Encargaturas> encargaturasEmpleado(BigInteger secEmpleado) {
@@ -62,9 +60,10 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
 
     //Listas de Tipos Reemplazos, Profesion, Instituciones, Adiestramiento
     @Override
-    public List<Empleados> lovEmpleados(){
+    public List<Empleados> lovEmpleados() {
         return persistenciaEmpleados.buscarEmpleados();
     }
+
     @Override
     public List<TiposReemplazos> lovTiposReemplazos() {
         return persistenciaTiposReemplazos.tiposReemplazos();
@@ -74,57 +73,38 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
     public List<MotivosReemplazos> lovMotivosReemplazos() {
         return persistenciaMotivosReemplazos.motivosReemplazos();
     }
-    
+
     @Override
-    public List<Estructuras> lovEstructuras(){
+    public List<Estructuras> lovEstructuras() {
         return persistenciaEstructuras.estructuras();
     }
-    
-    @Override
-    public List<Cargos> lovCargos(){
+
+    public List<Cargos> lovCargos() {
         return persistenciaCargos.cargosSalario();
     }
 
-    
     /*Toca Arreglarlo con el Native Query
-    @Override
-    public List<Cargos> lovCargos() {
-        return persistenciaCargos.cargos();
-    }*/
-       
+     @Override
+     public List<Cargos> lovCargos() {
+     return persistenciaCargos.cargos();
+     }*/
     @Override
     public void modificarEncargatura(List<Encargaturas> listaEncargaturasModificar) {
         for (int i = 0; i < listaEncargaturasModificar.size(); i++) {
             System.out.println("Modificando...");
-            if (listaEncargaturasModificar.get(i).getTiporeemplazo().getSecuencia() == null) {
-                listaEncargaturasModificar.get(i).setTiporeemplazo(null);
-                e = listaEncargaturasModificar.get(i);
-            } else {
-                e = listaEncargaturasModificar.get(i);
+            if (listaEncargaturasModificar.get(i).getCargo().getSecuencia() == null) {
+                listaEncargaturasModificar.get(i).setCargo(null);
             }
             if (listaEncargaturasModificar.get(i).getMotivoreemplazo().getSecuencia() == null) {
                 listaEncargaturasModificar.get(i).setMotivoreemplazo(null);
-                e = listaEncargaturasModificar.get(i);
-            } else {
-                e = listaEncargaturasModificar.get(i);
             }
-            if (listaEncargaturasModificar.get(i).getEmpleado().getSecuencia() == null) {
-                listaEncargaturasModificar.get(i).setEmpleado(null);
-                e = listaEncargaturasModificar.get(i);
-            } else {
-                e = listaEncargaturasModificar.get(i);
+            if (listaEncargaturasModificar.get(i).getReemplazado().getSecuencia() == null) {
+                listaEncargaturasModificar.get(i).setReemplazado(null);
             }
             if (listaEncargaturasModificar.get(i).getEstructura().getSecuencia() == null) {
                 listaEncargaturasModificar.get(i).setEstructura(null);
-                e = listaEncargaturasModificar.get(i);
-            } else {
-                e = listaEncargaturasModificar.get(i);
             }
-           
-            //FALTA LO DE CARGOS
-                       
-            
-            persistenciaEncargaturas.editar(e);
+            persistenciaEncargaturas.editar(listaEncargaturasModificar.get(i));
         }
     }
 
@@ -133,14 +113,8 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
         persistenciaEncargaturas.borrar(encargaturas);
     }
 
-
     @Override
     public void crearEncargaturas(Encargaturas encargaturas) {
         persistenciaEncargaturas.crear(encargaturas);
     }
-    
-    
-  
-    
-
 }

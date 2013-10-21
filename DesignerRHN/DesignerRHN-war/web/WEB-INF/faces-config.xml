@@ -616,5 +616,34 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadreemplazo</from-outcome>
+            <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>individual</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadreemplazo</from-outcome>
+            <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

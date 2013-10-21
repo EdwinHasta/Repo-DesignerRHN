@@ -265,7 +265,7 @@
                                 <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/direccion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
                                 <h:outputText value="Direcciones" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
                                 <p:inputText id="direcciones" value="#{controlEmpleadoIndividual.direccionP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px" readonly="true"/>
-
+                                
                                 <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/estadocivil.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
                                 <h:outputText value="Estado civil" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
                                 <p:inputText id="estadoCivil" value="#{controlEmpleadoIndividual.estadoCivilP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px" readonly="true"/>
@@ -274,7 +274,7 @@
                                 <h:outputText value="Información Adicional" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
                                 <p:inputText id="informacionAdicional" value="#{controlEmpleadoIndividual.informacionAdicionalP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 165px" readonly="true"/>
 
-                                <p:commandButton id="btnReemplazos" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" process="@this"/>
+                                <p:commandButton id="btnReemplazos" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 195px;" action="novedadreemplazo" actionListener="#{controlNovedadesReemplazos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
                                 <h:outputText value="Reemplazos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 195px" />
                                 <p:inputText id="reemplazos" value="#{controlEmpleadoIndividual.reemplazoP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 210px" readonly="true"/>
                             </fieldset>

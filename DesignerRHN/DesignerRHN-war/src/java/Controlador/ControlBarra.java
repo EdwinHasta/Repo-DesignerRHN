@@ -84,7 +84,7 @@ public class ControlBarra implements Serializable {
             context.update("form:estadoLiquidacion");
             context.update("form:imagen");
         } else {
-            System.out.println("Liquidar: " + permisoParaLiquidar);
+            context.execute("permisoLiquidacion.show()");
         }
     }
 
@@ -118,6 +118,7 @@ public class ControlBarra implements Serializable {
         context.update("form:estadoLiquidacion");
         context.update("form:imagen");
         context.update("form:growl");
+        consultarEstadoDatos();
     }
 
     public void cancelarLiquidacion() {
@@ -142,6 +143,7 @@ public class ControlBarra implements Serializable {
         context.execute("barra.setValue(" + barra + ")");
         context.update("form:barra");
         context.update("form:growl");
+        consultarEstadoDatos();
     }
 
     public void salir() {
@@ -160,10 +162,31 @@ public class ControlBarra implements Serializable {
         imagenEstado = "nom_parametros.gif";
         cambioImagen = true;
     }
+
+    public void consultarDatos() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (parametroEstructura != null) {
+            liquidacionesCerradas = administrarBarra.liquidacionesCerradas(formatoFecha.format(parametroEstructura.getFechadesdecausado()), formatoFecha.format(parametroEstructura.getFechahastacausado()));
+        }
+        liquidacionesAbiertas = administrarBarra.preNomina();
+        context.update("form:datosLiquidacionesCerradas");
+        context.update("form:datosLiquidacionesAbiertas");
+    }
+
+    public void consultarEstadoDatos() {
+        if (parametroEstructura != null && administrarBarra.estadoConsultaDatos(parametroEstructura.getEstructura().getOrganigrama().getEmpresa().getSecuencia()).equals("S")) {
+            consultarDatos();
+        }
+    }
     //GETTER AND SETTER
 
     public Integer getTotalEmpleadosParaLiquidar() {
         totalEmpleadosParaLiquidar = administrarBarra.empleadosParaLiquidar();
+        if(totalEmpleadosParaLiquidar == 0){
+            botonLiquidar = true;
+        }else{
+            botonLiquidar = false; 
+        }
         return totalEmpleadosParaLiquidar;
     }
 
@@ -240,6 +263,7 @@ public class ControlBarra implements Serializable {
                             context.execute("barra.setValue(" + barra + ")");
                             context.update("form:barra");
                             context.update("form:growl");
+                            consultarEstadoDatos();
                         } else {
                             if (barra >= 100) {
                                 barra = 100;
@@ -292,11 +316,6 @@ public class ControlBarra implements Serializable {
     }
 
     public List<ConsultasLiquidaciones> getLiquidacionesCerradas() {
-        if (liquidacionesCerradas == null) {
-            if (parametroEstructura != null) {
-                liquidacionesCerradas = administrarBarra.liquidacionesCerradas(formatoFecha.format(parametroEstructura.getFechadesdecausado()), formatoFecha.format(parametroEstructura.getFechahastacausado()));
-            }
-        }
         return liquidacionesCerradas;
     }
 

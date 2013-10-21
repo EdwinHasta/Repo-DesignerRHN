@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface PersistenciaConsultasLiquidacionesInterface {
     public List<ConsultasLiquidaciones> liquidacionesCerradas(String fechaInicial, String fechaFinal);
+    public List<ConsultasLiquidaciones> preNomina();
 }
