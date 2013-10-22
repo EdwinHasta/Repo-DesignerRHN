@@ -107,7 +107,7 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public ControlNovedadesReemplazos() {
         permitirIndex = true;
-        secuenciaEmpleado = BigInteger.valueOf(10661474);
+        //secuenciaEmpleado = BigInteger.valueOf(10661474);
         aceptar = true;
         empleadoParametro = new Empleados();
         listaEncargaturas = null;
@@ -129,8 +129,6 @@ public class ControlNovedadesReemplazos implements Serializable {
         nuevaEncargatura.setCargo(new Cargos());
         nuevaEncargatura.setMotivoreemplazo(new MotivosReemplazos());
         nuevaEncargatura.setEstructura(new Estructuras());
-
-
     }
 
     public void recibirEmpleado(BigInteger secEmpleado) {
@@ -974,7 +972,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevaEncargatura.setSecuencia(l);
-            nuevaEncargatura.setEmpleado(seleccionEmpleados); //Envia empleado
+            nuevaEncargatura.setEmpleado(seleccionMostrar); //Envia empleado
             listaEncargaturasCrear.add(nuevaEncargatura);
             listaEncargaturas.add(nuevaEncargatura);
             nuevaEncargatura = new Encargaturas();
@@ -1074,7 +1072,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             if (!listaEncargaturasCrear.isEmpty()) {
                 for (int i = 0; i < listaEncargaturasCrear.size(); i++) {
                     System.out.println("Creando...");
-                    System.out.println("En la lista Crear esta: " + listaEncargaturasCrear.get(i).getReemplazado().getPersona().getNombre());
+                    
 
                     if (listaEncargaturasCrear.get(i).getMotivoreemplazo().getSecuencia() == null) {
                         listaEncargaturasCrear.get(i).setMotivoreemplazo(null);
@@ -1090,6 +1088,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                         listaEncargaturasCrear.get(i).setEstructura(null);
                     }
                     administrarNovedadesReemplazos.crearEncargaturas(listaEncargaturasCrear.get(i));
+                    
                 }
                 System.out.println("LimpiaLista");
                 listaEncargaturasCrear.clear();
@@ -1102,11 +1101,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listaEncargaturas = null;
             RequestContext context = RequestContext.getCurrentInstance();
-
             context.update("form:datosEncargaturasEmpleado");
             guardado = true;
             permitirIndex = true;
-
             RequestContext.getCurrentInstance().update("form:aceptar");
             //  k = 0;
         }

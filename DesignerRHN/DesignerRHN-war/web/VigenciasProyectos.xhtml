@@ -12,16 +12,16 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
 
-                    <p:panel  id="PanelTotal" header="Proyectos en que ha participado." style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
+                    <p:panel  id="PanelTotal" header="Proyectos en que ha participado." style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
 
                         <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlVigenciasProyectos.empleado.persona.nombreCompleto}"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 180px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 200px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Proyectos</strong></legend>
 
                             <p:dataTable id="datosVigenciasProyectosPersona" var="vigenciasProyectos" value="#{controlVigenciasProyectos.listaVigenciasProyectos}"
                                          rowKey="#{vigenciasProyectos.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px"                           
-                                         scrollable="true" scrollHeight="100" scrollWidth="860" filteredValue="#{controlVigenciasProyectos.filtradosListaVigenciasProyectos}" 
+                                         scrollable="true" scrollHeight="65" scrollWidth="850" paginator="true" rows="2" filteredValue="#{controlVigenciasProyectos.filtradosListaVigenciasProyectos}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -191,16 +191,16 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasProyectosPersona" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciasProyectos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 783px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlVigenciasProyectos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasProyectosPersona" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciasProyectos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlVigenciasProyectos.salir()}" action="individual" process="@this" />
 
 
                     </p:panel>
                 </h:form>
 
                 <h:form id="formularioDetalles" style="position: absolute;left: 250px;top :125px">
-                    <fieldset style="position: absolute; left: 10px; top: 270px; font-size: 10px; width: 840px; height: 200px; border-radius: 10px; ">
+                    <fieldset style="position: absolute; left: 10px; top: 290px; font-size: 10px; width: 840px; height: 200px; border-radius: 10px; ">
                         <legend style="font-size: 13px; color: #14388B"><strong>Detalles de Proyecto</strong></legend>
 
                         <h:outputText value="Nombre del Proyecto" style="font-size: 10px; top: 5px; position: relative" />
@@ -228,7 +228,7 @@
                         <h:outputText value="Total de Personas" style="font-size: 10px; position: absolute; top:115px; left:645px"/>
                         <h:inputText id="totalPersonas" value="#{controlVigenciasProyectos.proyectoParametro.cantidadpersonas}" style="left:760px;position: absolute;width:80px;top:110px" readonly="true" />
                         <h:outputText value="Detalle del Proyecto" style="font-size: 10px;position: absolute;top:145px;left: 15px"/>
-                        <h:inputTextarea id="detalleProyecto" value="#{controlVigenciasProyectos.proyectoParametro.descripcionproyecto}" style="left:150px;width: 690px;height:50px ;position: absolute; top: 140px;" readonly="true"/>
+                        <h:inputText id="detalleProyecto" value="#{controlVigenciasProyectos.proyectoParametro.descripcionproyecto}" style="left:150px;width: 690px;height:50px ;position: absolute; top: 140px;" readonly="true" />
 
                     </fieldset>
                 </h:form>

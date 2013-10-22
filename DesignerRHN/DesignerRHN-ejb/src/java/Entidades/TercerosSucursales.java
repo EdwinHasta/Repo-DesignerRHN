@@ -46,7 +46,7 @@ public class TercerosSucursales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGOSUCURSAL")
@@ -66,20 +66,20 @@ public class TercerosSucursales implements Serializable {
     public TercerosSucursales() {
     }
 
-    public TercerosSucursales(BigDecimal secuencia) {
+    public TercerosSucursales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TercerosSucursales(BigDecimal secuencia, BigInteger codigosucursal) {
+    public TercerosSucursales(BigInteger secuencia, BigInteger codigosucursal) {
         this.secuencia = secuencia;
         this.codigosucursal = codigosucursal;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

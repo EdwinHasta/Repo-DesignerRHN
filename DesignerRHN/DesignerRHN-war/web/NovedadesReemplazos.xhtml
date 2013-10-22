@@ -102,8 +102,9 @@
                         <fieldset style="position: absolute; left: 10px; top: 230px; font-size: 10px; width: 100px; height: 250px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Reemplazos</strong></legend>
                             <p:dataTable id="datosEncargaturasEmpleado" var="encargaturas" value="#{controlNovedadesReemplazos.listaEncargaturas}"
-                                         rowKey="#{encargaturas.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px"                           
-                                         scrollable="true" scrollHeight="180" scrollWidth="850" filteredValue="#{controlNovedadesReemplazos.filtradosListaEncargaturas}" 
+                                         rowKey="#{encargaturas.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px; "                           
+                                         scrollable="true" scrollHeight="130" scrollWidth="850" paginator="true" rows="5"  
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" filteredValue="#{controlNovedadesReemplazos.filtradosListaEncargaturas}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -154,7 +155,7 @@
                                             <p:calendar  style="font-size: 10px;" value="#{encargaturas.fechapago}" id="editFechaPago"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect"  update="editFechaPago"/>
-                                                <p:ajax event="change" listener="#{controlNovedadesReemplazos.modificarEncargaturas(indice, 'N', encargaturas.fechapago)}"/>/>
+                                                <p:ajax event="change" listener="#{controlNovedadesReemplazos.modificarEncargaturas(indice, 'N', encargaturas.fechapago)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadesReemplazos.cambiarIndice(indice, 2)}" process="@this" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
@@ -177,7 +178,7 @@
                                             <p:calendar  style="font-size: 10px;" value="#{encargaturas.fechainicial}" id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect"  update="editFechaInicial"/>
-                                                <p:ajax event="change" listener="#{controlNovedadesReemplazos.modificarEncargaturas(indice, 'N', encargaturas.fechainicial)}"/>/>
+                                                <p:ajax event="change" listener="#{controlNovedadesReemplazos.modificarEncargaturas(indice, 'N', encargaturas.fechainicial)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadesReemplazos.cambiarIndice(indice, 3)}" process="@this" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
@@ -200,7 +201,7 @@
                                             <p:calendar  style="font-size: 10px;" value="#{encargaturas.fechafinal}" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect"  update="editFechaFinal"/>
-                                                <p:ajax event="change" listener="#{controlNovedadesReemplazos.modificarEncargaturas(indice, 'N', encargaturas.fechafinal)}"/>/>
+                                                <p:ajax event="change" listener="#{controlNovedadesReemplazos.modificarEncargaturas(indice, 'N', encargaturas.fechafinal)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadesReemplazos.cambiarIndice(indice, 4)}" process="@this" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>

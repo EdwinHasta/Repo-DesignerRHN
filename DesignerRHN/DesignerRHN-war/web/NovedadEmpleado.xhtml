@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+
+                    <p:panel  id="PanelTotal" header="Proyectos en que ha participado." style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
+
+                        <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlVigenciasProyectos.empleado.persona.nombreCompleto}"/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 200px; border-radius: 10px; ">
+                            <legend style="font-size: 13px; color: #14388B"><strong>Proyectos</strong></legend>
+
+                            <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesEmpleados.listaEmpleados}"
+                                         rowKey="#{empleados.id}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px"                           
+                                         scrollable="true" scrollHeight="65" scrollWidth="850" paginator="true" rows="2" filteredValue="#{controlNovedadesEmpleados.filtradosListaEmpleados}" 
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         >
+
+                                <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
+
+                                <p:column headerText="Codigo" sortBy="#{empleados.codigo}" filterBy="#{empleados.codigo}" filterMatchMode="contains"  width="72" id="eCodigo" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{empleados.codigo}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleados.codigo}" />
+                                        </f:facet> 
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Codigo" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Nombre" sortBy="#{empleados.nombre}" filterBy="#{empleados.nombre}" filterMatchMode="contains" id="eNombre" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{empleados.nombre}" />
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleados.nombre}" />
+                                        </f:facet>
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Nombre" />
+                                    </f:facet>
+                                </p:column> 
+                                
+                                <p:column headerText="Asig. Basica" sortBy="#{empleados.valor}" filterBy="#{empleados.valor}" filterMatchMode="contains" id="eValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{empleados.valor}" />
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleados.valor}" />
+                                        </f:facet>
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Asig. Basica" />
+                                    </f:facet>
+                                </p:column> 
+                             </p:dataTable>
+                        </fieldset>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

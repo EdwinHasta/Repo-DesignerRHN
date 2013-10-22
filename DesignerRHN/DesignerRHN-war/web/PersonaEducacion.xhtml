@@ -16,12 +16,12 @@
 
                         <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlPersonaEducacion.persona.nombreCompleto}"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 645px; height: 160px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 645px; height: 190px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Educacion del empleado</strong></legend>
 
                             <p:dataTable id="datosVigenciasFormalesPersona" var="vigenciasFormales" value="#{controlPersonaEducacion.listaVigenciasFormales}"
                                          rowKey="#{vigenciasFormales.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         scrollable="true" scrollHeight="100" scrollWidth="840" filteredValue="#{controlPersonaEducacion.filtradosListaVigenciasFormales}" 
+                                         scrollable="true" scrollHeight="65" scrollWidth="840" paginator="true" rows="2" filteredValue="#{controlPersonaEducacion.filtradosListaVigenciasFormales}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -217,12 +217,12 @@
                             </p:dataTable>  
                         </fieldset> 
                         
-                        <fieldset style="position: absolute; left: 10px; top: 285px; font-size: 10px; width: 645px; height: 160px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 285px; font-size: 10px; width: 645px; height: 190px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Educacion No Formal del Empleado</strong></legend>
 
                             <p:dataTable id="datosVigenciasNoFormalesPersona" var="vigenciasNoFormales" value="#{controlPersonaEducacion.listaVigenciasNoFormales}"
                                          rowKey="#{vigenciasNoFormales.secuencia}" rowIndexVar="indiceNF" style="font-size: 10px; border: 1px; text-align: left"                           
-                                         scrollable="true" scrollHeight="100" scrollWidth="840" filteredValue="#{controlPersonaEducacion.filtradosListaVigenciasNoFormales}" 
+                                         scrollable="true" scrollHeight="65" scrollWidth="840" paginator="true" rows="2" filteredValue="#{controlPersonaEducacion.filtradosListaVigenciasNoFormales}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
 
@@ -406,7 +406,7 @@
 
                         <p:commandButton style="position: absolute; left: 522px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasFormalesPersona" process="@this" />
                         <p:commandButton style="position: absolute; left: 15px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPersonaEducacion.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 605px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPersonaEducacion.salir()}" action="nomina" process="@this" /> 
+                        <p:commandButton style="position: absolute; left: 605px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPersonaEducacion.salir()}" action="individual" process="@this" /> 
 
                     </p:panel> 
                 </h:form>

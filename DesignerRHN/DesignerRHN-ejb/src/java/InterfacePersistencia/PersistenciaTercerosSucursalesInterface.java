@@ -20,5 +20,6 @@ public interface PersistenciaTercerosSucursalesInterface {
     public TercerosSucursales buscarTerceroSucursal(Object id);
     public List<TercerosSucursales> buscarTercerosSucursales();
     public TercerosSucursales buscarTercerosSucursalesSecuencia(BigInteger secuencia);
+    public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(BigInteger secuencia);
     
 }
