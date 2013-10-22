@@ -38,7 +38,6 @@ public class ControlVigenciasProyectos implements Serializable {
     AdministrarProyectosInterface administrarProyectos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     private Empleados empleado;
@@ -90,11 +89,10 @@ public class ControlVigenciasProyectos implements Serializable {
     private Proyectos proyectoParametro;
     private String clienteParametroProyecto;
     private String plataformaParametroProyecto;
-    
 
     public ControlVigenciasProyectos() {
         permitirIndex = true;
-        secuenciaEmpleado = BigInteger.valueOf(10661474);
+        //secuenciaEmpleado = BigInteger.valueOf(10661474);
         aceptar = true;
         listaVigenciasProyectosBorrar = new ArrayList<VigenciasProyectos>();
         listaVigenciasProyectosCrear = new ArrayList<VigenciasProyectos>();
@@ -110,6 +108,7 @@ public class ControlVigenciasProyectos implements Serializable {
         nuevaVigenciaProyectos.setPryRol(new PryRoles());
         nuevaVigenciaProyectos.setPryCargoproyecto(new Cargos());
         proyectoParametro = new Proyectos();
+        index = 0;
     }
 
     public void recibirEmpleado(BigInteger secEmpleado) {
@@ -1128,7 +1127,7 @@ public class ControlVigenciasProyectos implements Serializable {
         cualCelda = -1;
         permitirIndex = true;
     }
-    
+
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -1214,7 +1213,7 @@ public class ControlVigenciasProyectos implements Serializable {
     }
 
     public List<Proyectos> getListaProyectos() {
-        if (listaProyectos.isEmpty()) {
+        if (listaProyectos == null) {
             listaProyectos = administrarVigenciasProyectos.lovProyectos();
         }
         return listaProyectos;
@@ -1225,7 +1224,7 @@ public class ControlVigenciasProyectos implements Serializable {
     }
 
     public List<PryRoles> getListaPryRoles() {
-        if (listaPryRoles.isEmpty()) {
+        if (listaPryRoles == null) {
             listaPryRoles = administrarVigenciasProyectos.lovPryRoles();
         }
 
@@ -1237,7 +1236,7 @@ public class ControlVigenciasProyectos implements Serializable {
     }
 
     public List<Cargos> getListaCargos() {
-        if (listaCargos.isEmpty()) {
+        if (listaCargos == null) {
             listaCargos = administrarVigenciasProyectos.lovCargos();
         }
         return listaCargos;
@@ -1337,22 +1336,24 @@ public class ControlVigenciasProyectos implements Serializable {
 
     public Proyectos getProyectoParametro() {
         if (index >= 0) {
-            proyectoParametro = administrarVigenciasProyectos.buscarProyectoPorNombreVigencia(listaVigenciasProyectos.get(index).getProyecto().getNombreproyecto());
-            /*RequestContext context = RequestContext.getCurrentInstance();
-             context.update("formularioDialogos:pryRolesDialogo");
-             context.execute("pryRolesDialogo.show()");*/
+            if (!listaVigenciasProyectos.isEmpty()) {
+                proyectoParametro = administrarVigenciasProyectos.buscarProyectoPorNombreVigencia(listaVigenciasProyectos.get(index).getProyecto().getNombreproyecto());
+                /*RequestContext context = RequestContext.getCurrentInstance();
+                 context.update("formularioDialogos:pryRolesDialogo");
+                 context.execute("pryRolesDialogo.show()");*/
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("formularioDetalles:nombreProyecto");
+                context.update("formularioDetalles:tipoMoneda");
+                context.update("formularioDetalles:cliente");
+                context.update("formularioDetalles:plataforma");
+                context.update("formularioDetalles:totalPersonas");
+                context.update("formularioDetalles:detalleProyecto");
+                context.update("formularioDetalles:fechaInicial");
+                context.update("formularioDetalles:monto");
+                context.update("formularioDetalles:fechaFinal");
+                context.update("formularioDetalles:codigoProyecto");
+            }
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDetalles:nombreProyecto");
-        context.update("formularioDetalles:tipoMoneda");
-        context.update("formularioDetalles:cliente");
-        context.update("formularioDetalles:plataforma");
-        context.update("formularioDetalles:totalPersonas");
-        context.update("formularioDetalles:detalleProyecto");
-        context.update("formularioDetalles:fechaInicial");
-        context.update("formularioDetalles:monto");
-        context.update("formularioDetalles:fechaFinal");
-        context.update("formularioDetalles:codigoProyecto");
         return proyectoParametro;
     }
 
@@ -1361,9 +1362,11 @@ public class ControlVigenciasProyectos implements Serializable {
     }
 
     public String getClienteParametroProyecto() {
-        clienteParametroProyecto = proyectoParametro.getPryCliente().getNombre() + "/" + proyectoParametro.getPryCliente().getDireccion() + "/" + proyectoParametro.getPryCliente().getTelefono() + " - " + proyectoParametro.getPryCliente().getContacto();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDetalles:cliente");
+        if (proyectoParametro.getSecuencia() != null) {
+            clienteParametroProyecto = proyectoParametro.getPryCliente().getNombre() + "/" + proyectoParametro.getPryCliente().getDireccion() + "/" + proyectoParametro.getPryCliente().getTelefono() + " - " + proyectoParametro.getPryCliente().getContacto();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDetalles:cliente");
+        }
         return clienteParametroProyecto;
     }
 

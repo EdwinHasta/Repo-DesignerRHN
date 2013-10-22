@@ -11,7 +11,7 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">
-                    <p:panel  id="PanelTotal" header="Ciudades" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
+                    <p:panel  id="PanelTotal" header="Ciudades" style=" font-size: 13px; position: absolute; width: 874px; height: 450px;" > 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 840px; height: 285px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue"><strong>Ciudades</strong></legend>
@@ -141,7 +141,7 @@
 
                         <p:commandButton style="position: absolute; left: 700px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosCiudades" process="@this" />
                         <p:commandButton style="position: absolute; left: 25px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlCiudades.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 780px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlCiudades.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlCiudades.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

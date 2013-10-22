@@ -77,7 +77,7 @@ public class ControlPerTelefonos implements Serializable {
 
     public ControlPerTelefonos() {
         permitirIndex = true;
-        secuenciaPersona = BigInteger.valueOf(10668967);
+        //secuenciaPersona = BigInteger.valueOf(10668967);
         aceptar = true;
         tipoLista = 0;
         listaTelefonosBorrar = new ArrayList<Telefonos>();
@@ -1035,7 +1035,7 @@ public class ControlPerTelefonos implements Serializable {
     }
 
     public List<TiposTelefonos> getListaTiposTelefonos() {
-        if (listaTiposTelefonos.isEmpty()) {
+        if (listaTiposTelefonos == null) {
             listaTiposTelefonos = administrarTelefonos.lovTiposTelefonos();
         }
         return listaTiposTelefonos;
