@@ -26,7 +26,7 @@
                 <p:progressBar id="barra" rendered="true" widgetVar="pbAjax" ajax="true" value="#{controlPruebasUnitarias.progress}" labelTemplate="{value}%" styleClass="animated" interval="500">  
                     <p:ajax event="complete" listener="#{controlPruebasUnitarias.onComplete}" update="growl" oncomplete="startButton2.enable()"/>  
                 </p:progressBar>
-                <p:commandButton value="Accionelo" onclick="llamado()"/>
+                <p:commandButton value="Accionelo" actionListener="#{controlPruebasUnitarias.cometalo()}"/>
             </p:panel>
         </h:form>
     </h:body>

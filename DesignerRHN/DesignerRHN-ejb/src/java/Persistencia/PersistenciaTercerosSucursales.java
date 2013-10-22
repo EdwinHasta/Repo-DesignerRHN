@@ -82,6 +82,17 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
             TercerosSucursales tercerosSucursales = null;
             return tercerosSucursales;
         }
-
+    }
+    
+    public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(BigInteger secuencia){
+        try{
+            Query query = em.createQuery("SELECT ts FROM TercerosSucursales ts WHERE ts.tercero.secuencia = :secuenciaT");
+            query.setParameter("secuenciaT", secuencia);
+            List<TercerosSucursales> listTercerosS = query.getResultList();
+            return listTercerosS;
+        } catch(Exception e){
+            System.out.println("Error buscarTercerosSucursalesPorTerceroSecuencia PersistenciaTerceroSurcusal : "+e.toString());
+            return null;
+        }
     }
 }
