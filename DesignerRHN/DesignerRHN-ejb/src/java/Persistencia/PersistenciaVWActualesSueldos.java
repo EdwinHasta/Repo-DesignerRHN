@@ -1,6 +1,5 @@
 package Persistencia;
 
-import Entidades.VWActualesSueldos;
 import InterfacePersistencia.PersistenciaVWActualesSueldosInterface;
 import java.math.BigDecimal;
 import java.math.BigInteger;

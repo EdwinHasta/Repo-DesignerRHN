@@ -139,7 +139,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
-    
+
     @Override
     public List<Empleados> empleadosComprobantes(String usuarioBD) {
         try {
@@ -149,6 +149,22 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return listaEmpleados;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.empleadosComprobantes" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empleados> empleadosNovedad() {
+        try {
+            String sqlQuery = "select * from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
+                    + "where tt.secuencia = vtt.tipotrabajador\n"
+                    + "and   vtt.empleado = v.secuencia\n"
+                    + "and tt.tipo IN ('ACTIVO','PENSIONADO','RETIRADO'))";
+            Query query = em.createNativeQuery(sqlQuery, Empleados.class);
+            List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e);
             return null;
         }
     }

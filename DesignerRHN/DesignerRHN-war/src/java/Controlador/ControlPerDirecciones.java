@@ -79,7 +79,7 @@ public class ControlPerDirecciones implements Serializable {
 
     public ControlPerDirecciones() {
         permitirIndex = true;
-        secuenciaPersona = BigInteger.valueOf(10668967);
+        //secuenciaPersona = BigInteger.valueOf(10668967);
         aceptar = true;
         tipoLista = 0;
         nuevaDireccion = new Direcciones();
@@ -1240,7 +1240,7 @@ public List<Direcciones> getListaDirecciones() {
     }
 
     public List<Ciudades> getListaCiudades() {
-        if (listaCiudades.isEmpty()) {
+        if (listaCiudades == null) {
             listaCiudades = administrarCiudades.lovCiudades();
         }
         return listaCiudades;

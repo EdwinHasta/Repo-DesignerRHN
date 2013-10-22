@@ -26,6 +26,11 @@
             <to-view-id>/EmplUbicacionGeografica.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>liquidacion</from-outcome>
+            <to-view-id>/Barra.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
@@ -710,6 +715,111 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>direccionespersona</from-outcome>
+            <to-view-id>/perdireccion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/perdireccion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>individual</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>telefonospersona</from-outcome>
+            <to-view-id>/PerTelefono.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>individual</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>personaeducacion</from-outcome>
+            <to-view-id>/PersonaEducacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/PersonaEducacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>individual</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>proyecto</from-outcome>
+            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>individual</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ciudad</from-outcome>
+            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipotelefono</from-outcome>
+            <to-view-id>/tipotelefono.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Barra.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Comprobante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>comprobante</from-outcome>
+            <to-view-id>/Comprobante.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
 </faces-config>

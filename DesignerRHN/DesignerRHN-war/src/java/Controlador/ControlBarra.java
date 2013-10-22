@@ -2,7 +2,10 @@ package Controlador;
 
 import Entidades.ConsultasLiquidaciones;
 import Entidades.ParametrosEstructuras;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarBarraInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +15,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -32,6 +38,10 @@ public class ControlBarra implements Serializable {
     private SimpleDateFormat formato, formatoFecha;
     //LIQUIDACIONES CERRADAS - ABIERTAS
     private List<ConsultasLiquidaciones> liquidacionesCerradas, liquidacionesAbiertas, filtradoLiquidacionesCerradas, filtradoLiquidacionesAbiertas;
+    private Column corte, empresa, proceso, totalEmpleados, observacion;
+    private Column corteLA, empresaLA, procesoLA, totalEmpleadosLA, observacionLA;
+    private String altoScrollLiquidacionesCerradas, altoScrollLiquidacionesAbiertas;
+    private int banderaFiltros;
 
     public ControlBarra() {
         totalEmpleadosParaLiquidar = 0;
@@ -51,6 +61,9 @@ public class ControlBarra implements Serializable {
         cambioImagen = true;
         liquidacionesAbiertas = null;
         liquidacionesCerradas = null;
+        altoScrollLiquidacionesAbiertas = "139";
+        altoScrollLiquidacionesCerradas = "139";
+        banderaFiltros = 0;
     }
 
     public void contarLiquidados() {
@@ -161,6 +174,10 @@ public class ControlBarra implements Serializable {
         mensajeEstado = "Oprima el boton liquidar para iniciar.";
         imagenEstado = "nom_parametros.gif";
         cambioImagen = true;
+        liquidacionesAbiertas = null;
+        liquidacionesCerradas = null;
+        filtradoLiquidacionesAbiertas = null;
+        filtradoLiquidacionesCerradas = null;
     }
 
     public void consultarDatos() {
@@ -178,14 +195,115 @@ public class ControlBarra implements Serializable {
             consultarDatos();
         }
     }
+
+    //CTRL + F11 ACTIVAR/DESACTIVAR FILTROS
+    public void activarCtrlF11() {
+        if (liquidacionesAbiertas != null && liquidacionesCerradas != null) {
+            if (banderaFiltros == 0) {
+                //LIQUIDACIONES CERRADAS
+                corte = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:corte");
+                corte.setFilterStyle("width: 45px;");
+                empresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:empresa");
+                empresa.setFilterStyle("width: 15px;");
+                proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:proceso");
+                proceso.setFilterStyle("width: 45px;");
+                totalEmpleados = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:totalEmpleados");
+                totalEmpleados.setFilterStyle("width: 15px;");
+                observacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:observacion");
+                observacion.setFilterStyle("width: 65px;");
+
+                //LIQUIDACIONES ABIERTAS
+                corteLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:corteLA");
+                corteLA.setFilterStyle("width: 45px;");
+                empresaLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:empresaLA");
+                empresaLA.setFilterStyle("width: 15px;");
+                procesoLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:procesoLA");
+                procesoLA.setFilterStyle("width: 45px;");
+                totalEmpleadosLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:totalEmpleadosLA");
+                totalEmpleadosLA.setFilterStyle("width: 15px;");
+                observacionLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:observacionLA");
+                observacionLA.setFilterStyle("width: 65px;");
+
+                altoScrollLiquidacionesCerradas = "116";
+                altoScrollLiquidacionesAbiertas = "116";
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosLiquidacionesCerradas");
+                context.update("form:datosLiquidacionesAbiertas");
+                banderaFiltros = 1;
+
+            } else if (banderaFiltros == 1) {
+                //LIQUIDACIONES CERRADAS
+                corte = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:corte");
+                corte.setFilterStyle("display: none; visibility: hidden;");
+                empresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:empresa");
+                empresa.setFilterStyle("display: none; visibility: hidden;");
+                proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:proceso");
+                proceso.setFilterStyle("display: none; visibility: hidden;");
+                totalEmpleados = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:totalEmpleados");
+                totalEmpleados.setFilterStyle("display: none; visibility: hidden;");
+                observacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesCerradas:observacion");
+                observacion.setFilterStyle("display: none; visibility: hidden;");
+
+                //LIQUIDACIONES ABIERTAS
+                corteLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:corteLA");
+                corteLA.setFilterStyle("display: none; visibility: hidden;");
+                empresaLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:empresaLA");
+                empresaLA.setFilterStyle("display: none; visibility: hidden;");
+                procesoLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:procesoLA");
+                procesoLA.setFilterStyle("display: none; visibility: hidden;");
+                totalEmpleadosLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:totalEmpleadosLA");
+                totalEmpleadosLA.setFilterStyle("display: none; visibility: hidden;");
+                observacionLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:observacionLA");
+                observacionLA.setFilterStyle("display: none; visibility: hidden;");
+
+                altoScrollLiquidacionesCerradas = "139";
+                altoScrollLiquidacionesAbiertas = "139";
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosLiquidacionesCerradas");
+                context.update("form:datosLiquidacionesAbiertas");
+                banderaFiltros = 0;
+                filtradoLiquidacionesAbiertas = null;
+                filtradoLiquidacionesCerradas = null;
+            }
+        }
+    }
+
+    public void exportPDF(int tablaExportar) throws IOException {
+        DataTable tabla;
+        Exporter exporter = new ExportarPDF();
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (tablaExportar == 0) {
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosLiquidacionesCerradasExportar");
+            exporter.export(context, tabla, "LiquidacionesCerradasPDF", false, false, "UTF-8", null, null);
+        } else {
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosLiquidacionesAbiertasExportar");
+            exporter.export(context, tabla, "LiquidacionesPrenominaPDF", false, false, "UTF-8", null, null);
+        }
+        context.responseComplete();
+    }
+
+    public void exportXLS(int tablaExportar) throws IOException {
+        DataTable tabla;
+        Exporter exporter = new ExportarXLS();
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (tablaExportar == 0) {
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosLiquidacionesCerradasExportar");
+            exporter.export(context, tabla, "LiquidacionesCerradasXLS", false, false, "UTF-8", null, null);
+        } else {
+            tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosLiquidacionesAbiertasExportar");
+            exporter.export(context, tabla, "LiquidacionesPrenominaXLS", false, false, "UTF-8", null, null);
+        }
+
+        context.responseComplete();
+    }
     //GETTER AND SETTER
 
     public Integer getTotalEmpleadosParaLiquidar() {
         totalEmpleadosParaLiquidar = administrarBarra.empleadosParaLiquidar();
-        if(totalEmpleadosParaLiquidar == 0){
+        if (totalEmpleadosParaLiquidar == 0) {
             botonLiquidar = true;
-        }else{
-            botonLiquidar = false; 
+        } else {
+            botonLiquidar = false;
         }
         return totalEmpleadosParaLiquidar;
     }
@@ -337,5 +455,13 @@ public class ControlBarra implements Serializable {
 
     public void setFiltradoLiquidacionesAbiertas(List<ConsultasLiquidaciones> filtradoLiquidacionesAbiertas) {
         this.filtradoLiquidacionesAbiertas = filtradoLiquidacionesAbiertas;
+    }
+
+    public String getAltoScrollLiquidacionesCerradas() {
+        return altoScrollLiquidacionesCerradas;
+    }
+
+    public String getAltoScrollLiquidacionesAbiertas() {
+        return altoScrollLiquidacionesAbiertas;
     }
 }

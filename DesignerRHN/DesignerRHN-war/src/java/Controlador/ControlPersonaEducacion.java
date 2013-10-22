@@ -129,12 +129,11 @@ public class ControlPersonaEducacion implements Serializable {
 
     public ControlPersonaEducacion() {
         permitirIndex = true;
-        secuenciaPersona = BigInteger.valueOf(10668967);
+        //secuenciaPersona = BigInteger.valueOf(10668967);
         aceptar = true;
         listaVigenciasNoFormalesBorrar = new ArrayList<VigenciasNoFormales>();
         listaVigenciasNoFormalesCrear = new ArrayList<VigenciasNoFormales>();
         listaVigenciasNoFormalesModificar = new ArrayList<VigenciasNoFormales>();
-
         listaVigenciasFormalesBorrar = new ArrayList<VigenciasFormales>();
         listaVigenciasFormalesCrear = new ArrayList<VigenciasFormales>();
         listaVigenciasFormalesModificar = new ArrayList<VigenciasFormales>();
@@ -171,7 +170,6 @@ public class ControlPersonaEducacion implements Serializable {
         cualInsertar = ":formularioDialogos:NuevoRegistroVigenciaFormal";
         cualNuevo = ":formularioDialogos:nuevaVigenciaFormal";
         m = 0;
-
     }
 
     public void recibirPersona(BigInteger secPersona) {
@@ -216,7 +214,6 @@ public class ControlPersonaEducacion implements Serializable {
             nombreArchivo = "VigenciasFormalesXML";
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:exportarXML");
-
             if (tipoLista == 0) {
                 secRegistro = listaVigenciasFormales.get(index).getSecuencia();
                 if (cualCelda == 1) {
@@ -2629,7 +2626,7 @@ public class ControlPersonaEducacion implements Serializable {
     }
 
     public List<TiposEducaciones> getListaTiposEducaciones() {
-        if (listaTiposEducaciones.isEmpty()) {
+        if (listaTiposEducaciones == null) {
             listaTiposEducaciones = administrarVigenciasFormales.lovTiposEducaciones();
         }
         return listaTiposEducaciones;
@@ -2648,7 +2645,7 @@ public class ControlPersonaEducacion implements Serializable {
     }
 
     public List<Profesiones> getListaProfesiones() {
-        if (listaProfesiones.isEmpty()) {
+        if (listaProfesiones == null) {
             listaProfesiones = administrarVigenciasFormales.lovProfesiones();
         }
         return listaProfesiones;
@@ -2667,7 +2664,7 @@ public class ControlPersonaEducacion implements Serializable {
     }
 
     public List<Instituciones> getListaInstituciones() {
-        if (listaInstituciones.isEmpty()) {
+        if (listaInstituciones == null) {
             listaInstituciones = administrarVigenciasFormales.lovInstituciones();
         }
         return listaInstituciones;
@@ -2686,7 +2683,7 @@ public class ControlPersonaEducacion implements Serializable {
     }
 
     public List<AdiestramientosF> getListaAdiestramientosFormales() {
-        if (listaAdiestramientosFormales.isEmpty()) {
+        if (listaAdiestramientosFormales == null) {
             listaAdiestramientosFormales = administrarVigenciasFormales.lovAdiestramientosF();
         }
         return listaAdiestramientosFormales;
