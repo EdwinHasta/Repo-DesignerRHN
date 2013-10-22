@@ -76,6 +76,17 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             System.out.println("Error buscarEmpresasSecuencia PersistenciaEmpresas");
             return empresas;
         }
-
+    }
+    //PANTALLA BARRA CONSULTAR DATOS DESPUES DE LIQUIDAR
+    public String estadoConsultaDatos(BigInteger secuenciaEmpresa) {
+        try {
+            Query query = em.createQuery("SELECT e.barraconsultadatos FROM Empresas e WHERE e.secuencia = :secuenciaEmpresa");
+            query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
+            String estado = (String) query.getSingleResult();
+            return estado;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEmpresas.estadoConsultaDatos");
+            return null;
+        }
     }
 }

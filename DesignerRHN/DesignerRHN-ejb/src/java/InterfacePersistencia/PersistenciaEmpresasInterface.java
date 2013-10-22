@@ -13,5 +13,6 @@ public interface PersistenciaEmpresasInterface {
     public Empresas buscarEmpresa(Object id);
     public List<Empresas> buscarEmpresas();
     public Empresas buscarEmpresasSecuencia(BigInteger secuencia);
+    public String estadoConsultaDatos(BigInteger secuenciaEmpresa);
     
 }
