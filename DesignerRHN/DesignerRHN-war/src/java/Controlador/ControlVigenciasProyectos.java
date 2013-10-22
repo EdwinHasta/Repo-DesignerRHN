@@ -38,6 +38,7 @@ public class ControlVigenciasProyectos implements Serializable {
     AdministrarProyectosInterface administrarProyectos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     private Empleados empleado;
