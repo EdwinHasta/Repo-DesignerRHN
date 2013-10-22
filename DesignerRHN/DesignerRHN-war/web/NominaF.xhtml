@@ -518,7 +518,7 @@
                                 <fieldset style="width: 390px; height: 400px; position: absolute; top: 50px; border-radius: 10px; left: 5px;">
                                     <legend style="font-size: 13px; font-weight: bold; color: #00F;">Herramientas Contables</legend>
 
-                                    <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
+                                    <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="cuenta" actionListener="#{controlCuenta.obtenerEmpresa()}"/>
                                     <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnTerceros" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="tercero" actionListener="#{controlTercero.obtenerEmpresa()}"/>
                                     <p:commandButton id="btnRepCont" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteContabilidad"/>
