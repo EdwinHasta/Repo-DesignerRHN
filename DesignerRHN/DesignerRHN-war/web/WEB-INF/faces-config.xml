@@ -63,6 +63,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/Cuenta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cuenta</from-outcome>
+            <to-view-id>/Cuenta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/EmplVacaPendiente.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
@@ -449,6 +466,21 @@
         <navigation-case>
             <from-outcome>ciudades</from-outcome>
             <to-view-id>/Ciudades.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Cuenta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cuentaRastro</from-outcome>
+            <to-view-id>/Cuenta.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
