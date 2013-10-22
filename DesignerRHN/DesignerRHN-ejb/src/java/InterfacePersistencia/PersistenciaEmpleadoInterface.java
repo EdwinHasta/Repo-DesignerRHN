@@ -17,4 +17,5 @@ public interface PersistenciaEmpleadoInterface {
     public Empleados buscarEmpleadoCodigo(BigInteger codigoEmpleado);
     public List<Empleados> empleadosComprobantes(String usuarioBD);
     public Empleados buscarEmpleadoTipo(BigInteger codigoEmpleado);
+    public List<Empleados> empleadosNovedad();
 }

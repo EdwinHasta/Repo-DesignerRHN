@@ -73,7 +73,7 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
         }
     }
     
-     //METODO PARA TRAER LAS VIGENCIAS DE UNA PERSONA
+     //METODO PARA TRAER LAS VIGENCIAS DE UN EMPLEADO
 
     @Override
     public List<VigenciasProyectos> vigenciasProyectosEmpleado(BigInteger secuenciaEmpleado) {
