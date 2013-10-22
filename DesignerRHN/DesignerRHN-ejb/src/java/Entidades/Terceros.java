@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -65,7 +66,7 @@ public class Terceros implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "NIT")
@@ -121,21 +122,21 @@ public class Terceros implements Serializable {
     public Terceros() {
     }
 
-    public Terceros(BigDecimal secuencia) {
+    public Terceros(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Terceros(BigDecimal secuencia, long nit, String nombre) {
+    public Terceros(BigInteger secuencia, long nit, String nombre) {
         this.secuencia = secuencia;
         this.nit = nit;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

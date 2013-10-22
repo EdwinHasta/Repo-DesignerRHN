@@ -101,7 +101,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public Long validacionTercerosVigenciaAfiliacion(BigInteger secuencia, Date fechaInicial, BigDecimal secuenciaTE, BigDecimal secuenciaTer) {
+    public Long validacionTercerosVigenciaAfiliacion(BigInteger secuencia, Date fechaInicial, BigDecimal secuenciaTE, BigInteger secuenciaTer) {
         try {
             Query query = em.createQuery("SELECT count(v)  FROM SolucionesNodos v where v.fechapago > :fechaInicial AND v.empleado.secuencia = :secuencia AND v.estado ='CERRADO' AND V.secuencia != :secuenciaTer AND exists (SELECT cs FROM ConceptosSoportes cs WHERE cs.concepto.secuencia = v.concepto.secuencia AND cs.tipoentidad.secuencia = :secuenciaT and cs.tipo='AUTOLIQUIDACION' AND cs.subgrupo='COTIZACION')");
             query.setParameter("secuencia", secuencia);
