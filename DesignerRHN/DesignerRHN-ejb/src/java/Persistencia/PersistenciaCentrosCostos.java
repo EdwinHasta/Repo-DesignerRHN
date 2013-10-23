@@ -102,6 +102,42 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
             CentrosCostos centrosCostos = null;
             return centrosCostos;
         }
-
+    }
+    
+    @Override
+    public List<CentrosCostos> buscarCentrosCostosEmpr(BigInteger secEmpresa) {
+        try {
+            Query query = em.createQuery("SELECT cce FROM CentrosCostos cce WHERE cce.empresa.secuencia = :secuenciaEmpr AND cce.comodin='N' ORDER BY cce.codigo ASC");
+            query.setParameter("secuenciaEmpr", secEmpresa);
+            List<CentrosCostos> centrosCostos = query.getResultList();
+            return centrosCostos;
+        } catch (Exception e) {
+            System.out.println("Error en Persistencia PersistenciaCentrosCostos BuscarCentrosCostosEmpr " + e);
+            return null;
+        }
+    }
+    
+        public long contadorSecuenciaEmpresa(BigInteger secEmpresa) {
+        long so = 0;
+        long vc = 0;
+        long vp = 0;
+        long total=0;
+        try {
+            Query query = em.createQuery("SELECT COUNT(so) FROM SolucionesNodos so WHERE so.secuencia = :secuenciaEmpr");
+            query.setParameter("secuenciaEmpr", secEmpresa);
+            so = query.getMaxResults();
+            Query qury = em.createQuery("SELECT COUNT(vc) FROM VigenciasCuentas vc WHERE vc.secuencia = :secuenciaEmpr");
+            qury.setParameter("secuenciaEmpr", secEmpresa);
+            vc = qury.getMaxResults();
+            Query que = em.createQuery("SELECT COUNT(vp) FROM VigenciasProrrateos vp WHERE vp.secuencia = :secuenciaEmpr");
+            que.setParameter("secuenciaEmpr", secEmpresa);
+            vp = que.getMaxResults();
+            total=so+vc+vp;
+        } catch (Exception e) {
+            System.out.println("Error en Persistencia PersistenciaCentrosCostos BuscarCentrosCostosEmpr " + e);
+            total = -1;
+        } finally {
+            return total;
+        }
     }
 }

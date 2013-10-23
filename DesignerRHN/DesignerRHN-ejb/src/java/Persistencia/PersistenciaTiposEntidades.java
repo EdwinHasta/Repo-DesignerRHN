@@ -14,7 +14,7 @@ import javax.persistence.Query;
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInterface{
+public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -82,6 +82,33 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
             TiposEntidades tiposEntidades = null;
             return tiposEntidades;
         }
+    }
 
+    public Long verificarBorrado(BigInteger secTipoEntidad) {
+        try {
+            Long conteo;
+            Query query = em.createQuery("SELECT COUNT(va) FROM VigenciasAfiliaciones va WHERE va.tipoentidad.secuencia = :secuencia");
+            query.setParameter("secuencia", secTipoEntidad);
+            conteo = (Long) query.getSingleResult();
+            return conteo;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaTiposEntidades.verificarBorrado.");
+            System.err.println("Exception: " + e);
+            return null;
+        }
+    }
+    
+    public Long verificarBorradoFCE(BigInteger secTipoEntidad) {
+        try {
+            Long conteo;
+            Query query = em.createQuery("SELECT COUNT(fce) FROM FormulasContratosEntidades fce WHERE fce.tipoentidad.secuencia = :secuencia");
+            query.setParameter("secuencia", secTipoEntidad);
+            conteo = (Long) query.getSingleResult();
+            return conteo;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaTiposEntidades.verificarBorradoFCE.");
+            System.err.println("Exception: " + e);
+            return null;
+        }
     }
 }

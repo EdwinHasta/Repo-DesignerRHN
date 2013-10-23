@@ -43,4 +43,8 @@ public interface PersistenciaTiposEntidadesInterface {
      */
     public TiposEntidades buscarTiposEntidadesSecuencia(BigInteger secuencia);
     
+    public Long verificarBorrado(BigInteger secTipoEntidad);
+    
+    public Long verificarBorradoFCE(BigInteger secTipoEntidad);
+    
 }
