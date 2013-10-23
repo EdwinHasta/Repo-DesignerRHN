@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -158,6 +159,8 @@ public class Empleados implements Serializable {
     private Collection<DetallesEmpresas> detallesempresasCollection3;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<VigenciasTiposTrabajadores> vigenciastipostrabajadoresCollection;
+    @Transient
+    private String estado;
 
     public Empleados() {
         persona = new Personas();
@@ -621,4 +624,14 @@ public class Empleados implements Serializable {
     public void setParametrosList(List<Parametros> parametrosList) {
         this.parametrosList = parametrosList;
     }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
+    
 }

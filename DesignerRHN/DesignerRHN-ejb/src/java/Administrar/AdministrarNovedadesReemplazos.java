@@ -58,7 +58,7 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
         return persistenciaEmpleados.buscarEmpleado(secEmpleado);
     }
 
-    //Listas de Tipos Reemplazos, Profesion, Instituciones, Adiestramiento
+    //Listas de Tipos Reemplazos, Motivos Reemplazos, Estructuras, Cargos
     @Override
     public List<Empleados> lovEmpleados() {
         return persistenciaEmpleados.buscarEmpleados();

@@ -28,6 +28,8 @@ import javax.persistence.SqlResultSetMapping;
         @FieldResult(name = "codigo", column = "CODIGO"),
         @FieldResult(name = "nombre", column = "NOMBRE"),
         @FieldResult(name = "valor", column = "VALOR"),
+        @FieldResult(name = "tipo", column = "TIPO"),
+        
             }
         )
 }
@@ -41,6 +43,7 @@ public class PruebaEmpleados implements Serializable {
     private BigInteger codigo;
     private String nombre;
     private BigInteger valor;
+    private String tipo;
     
     
     public BigInteger getId() {
@@ -74,6 +77,18 @@ public class PruebaEmpleados implements Serializable {
     public void setValor(BigInteger valor) {
         this.valor = valor;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+   
+    
+    
     
     @Override
     public int hashCode() {

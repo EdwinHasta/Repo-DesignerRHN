@@ -65,8 +65,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
          cq.select(cq.from(Empleados.class));
          return em.createQuery(cq).getResultList();
          */
-        List<Empleados> empleadosLista = (List<Empleados>) em.createNamedQuery("Empleados.findAll")
-                .getResultList();
+        List<Empleados> empleadosLista = (List<Empleados>) em.createNamedQuery("Empleados.findAll").getResultList();
         return empleadosLista;
     }
 
