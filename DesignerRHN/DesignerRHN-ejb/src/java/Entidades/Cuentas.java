@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")})
 public class Cuentas implements Serializable {
+
     @OneToMany(mappedBy = "cuentaconsolidacion")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @Size(max = 1)
@@ -54,7 +57,7 @@ public class Cuentas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -132,25 +135,39 @@ public class Cuentas implements Serializable {
     private Cuentas contracuentatesoreria;
     @OneToMany(mappedBy = "cuenta")
     private Collection<Rubrospresupuestales> rubrospresupuestalesCollection;
+    @Transient
+    private boolean checkManejaNit;
+    @Transient
+    private boolean checkCCEmpleado;
+    @Transient
+    private boolean checkProrrateo;
+    @Transient
+    private boolean checkConsolidaNITEmpresa;
+    @Transient
+    private boolean checkShortName;
+    @Transient
+    private boolean checkAsociadaSAP;
+    @Transient
+    private boolean checkSubCuenta;
 
     public Cuentas() {
     }
 
-    public Cuentas(BigDecimal secuencia) {
+    public Cuentas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Cuentas(BigDecimal secuencia, String codigo, String descripcion) {
+    public Cuentas(BigInteger secuencia, String codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -163,6 +180,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -171,6 +191,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getManejanit() {
+        if (manejanit == null) {
+            manejanit = "N";
+        }
         return manejanit;
     }
 
@@ -179,6 +202,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getProrrateo() {
+        if (prorrateo == null) {
+            prorrateo = "N";
+        }
         return prorrateo;
     }
 
@@ -187,6 +213,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getManejanitempleado() {
+        if (manejanitempleado == null) {
+            manejanitempleado = "N";
+        }
         return manejanitempleado;
     }
 
@@ -275,6 +304,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getConsolidanitempresa() {
+        if (consolidanitempresa == null) {
+            consolidanitempresa = "N";
+        }
         return consolidanitempresa;
     }
 
@@ -283,6 +315,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getIncluyeshortnamesapbo() {
+        if (incluyeshortnamesapbo == null) {
+            incluyeshortnamesapbo = "N";
+        }
         return incluyeshortnamesapbo;
     }
 
@@ -299,6 +334,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getCuentaasociadasap() {
+        if (cuentaasociadasap == null) {
+            cuentaasociadasap = "N";
+        }
         return cuentaasociadasap;
     }
 
@@ -427,6 +465,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getManejasubcuenta() {
+        if (manejasubcuenta == null) {
+            manejasubcuenta = "N";
+        }
         return manejasubcuenta;
     }
 
@@ -442,5 +483,151 @@ public class Cuentas implements Serializable {
     public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
         this.gruposProvisionesCollection = gruposProvisionesCollection;
     }
-    
+
+    public boolean isCheckManejaNit() {
+        getManejanit();
+        if (manejanit == null || manejanit.equalsIgnoreCase("N")) {
+            checkManejaNit = false;
+        }
+        if (manejanit.equalsIgnoreCase("S")) {
+            checkManejaNit = true;
+        }
+        return checkManejaNit;
+    }
+
+    public void setCheckManejaNit(boolean check) {
+        if (check == false) {
+            manejanit = "N";
+        }
+        if (check == true) {
+            manejanit = "S";
+        }
+        this.checkManejaNit = check;
+    }
+
+    public boolean isCheckCCEmpleado() {
+        getManejanitempleado();
+        if (manejanitempleado == null || manejanitempleado.equalsIgnoreCase("N")) {
+            checkCCEmpleado = false;
+        }
+        if (manejanitempleado.equalsIgnoreCase("S")) {
+            checkCCEmpleado = true;
+        }
+        return checkCCEmpleado;
+    }
+
+    public void setCheckCCEmpleado(boolean check) {
+        if (check == true) {
+            manejanitempleado = "S";
+        }
+        if (check == false) {
+            manejanitempleado = "N";
+        }
+        this.checkCCEmpleado = check;
+    }
+
+    public boolean isCheckProrrateo() {
+        getProrrateo();
+        if (prorrateo == null || prorrateo.equalsIgnoreCase("N")) {
+            checkProrrateo = false;
+        }
+        if (prorrateo.equalsIgnoreCase("S")) {
+            checkProrrateo = true;
+        }
+        return checkProrrateo;
+    }
+
+    public void setCheckProrrateo(boolean check) {
+        if (check == false) {
+            prorrateo = "N";
+        }
+        if (check == true) {
+            prorrateo = "S";
+        }
+        this.checkProrrateo = check;
+    }
+
+    public boolean isCheckConsolidaNITEmpresa() {
+        getConsolidanitempresa();
+        if (consolidanitempresa.equalsIgnoreCase("N") || consolidanitempresa == null) {
+            checkConsolidaNITEmpresa = false;
+        }
+        if (consolidanitempresa.equalsIgnoreCase("S")) {
+            checkConsolidaNITEmpresa = true;
+        }
+        return checkConsolidaNITEmpresa;
+    }
+
+    public void setCheckConsolidaNITEmpresa(boolean check) {
+        if (check == false) {
+            consolidanitempresa = "N";
+        }
+        if (check == true) {
+            consolidanitempresa = "S";
+        }
+        this.checkConsolidaNITEmpresa = check;
+    }
+
+    public boolean isCheckShortName() {
+        getIncluyeshortnamesapbo();
+        if (incluyeshortnamesapbo.equalsIgnoreCase("N") || incluyeshortnamesapbo == null) {
+            checkShortName = false;
+        }
+        if (incluyeshortnamesapbo.equalsIgnoreCase("S")) {
+            checkShortName = true;
+        }
+        return checkShortName;
+    }
+
+    public void setCheckShortName(boolean check) {
+        if (check == true) {
+            incluyeshortnamesapbo = "S";
+        }
+        if (check == false) {
+            incluyeshortnamesapbo = "N";
+        }
+        this.checkShortName = check;
+    }
+
+    public boolean isCheckAsociadaSAP() {
+        getCuentaasociadasap();
+        if (cuentaasociadasap == null || cuentaasociadasap.equalsIgnoreCase("N")) {
+            checkAsociadaSAP = false;
+        }
+        if (cuentaasociadasap.equalsIgnoreCase("S")) {
+            checkAsociadaSAP = true;
+        }
+        return checkAsociadaSAP;
+    }
+
+    public void setCheckAsociadaSAP(boolean check) {
+        if (check == true) {
+            cuentaasociadasap = "S";
+        }
+        if (check == false) {
+            cuentaasociadasap = "N";
+        }
+        this.checkAsociadaSAP = check;
+    }
+
+    public boolean isCheckSubCuenta() {
+        getManejasubcuenta();
+        if (manejasubcuenta == null || manejasubcuenta.equalsIgnoreCase("N")) {
+            checkSubCuenta = false;
+        }
+        if (manejasubcuenta.equalsIgnoreCase("S")) {
+            checkSubCuenta = true;
+        }
+        return checkSubCuenta;
+    }
+
+    public void setCheckSubCuenta(boolean check) {
+        if (check == false) {
+            manejasubcuenta = "N";
+        }
+        if (check == true) {
+            manejasubcuenta = "S";
+        }
+        this.checkSubCuenta = check;
+    }
 }

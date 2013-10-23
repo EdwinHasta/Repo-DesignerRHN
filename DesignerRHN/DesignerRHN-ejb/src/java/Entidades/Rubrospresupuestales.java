@@ -33,13 +33,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Rubrospresupuestales.findAll", query = "SELECT r FROM Rubrospresupuestales r")})
 public class Rubrospresupuestales implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @Size(max = 100)
@@ -93,11 +94,11 @@ public class Rubrospresupuestales implements Serializable {
     public Rubrospresupuestales() {
     }
 
-    public Rubrospresupuestales(BigDecimal secuencia) {
+    public Rubrospresupuestales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Rubrospresupuestales(BigDecimal secuencia, String plaTipres, String plaGrupos, String plaConcep, short plaItemes, short areCodigo) {
+    public Rubrospresupuestales(BigInteger secuencia, String plaTipres, String plaGrupos, String plaConcep, short plaItemes, short areCodigo) {
         this.secuencia = secuencia;
         this.plaTipres = plaTipres;
         this.plaGrupos = plaGrupos;
@@ -106,11 +107,11 @@ public class Rubrospresupuestales implements Serializable {
         this.areCodigo = areCodigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -123,6 +124,9 @@ public class Rubrospresupuestales implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -260,5 +264,4 @@ public class Rubrospresupuestales implements Serializable {
     public String toString() {
         return "Entidades.Rubrospresupuestales[ secuencia=" + secuencia + " ]";
     }
-    
 }

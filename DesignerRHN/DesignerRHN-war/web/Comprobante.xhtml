@@ -280,7 +280,7 @@
                                 <p:column width="20" style="padding: 0px"> 
                                     <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlComprobantes.parcialSolucionNodo(indiceER, 1)}"/>
                                 </p:column>
-                                
+
                                 <p:column id="codigoSNER" headerText="Codigo" sortBy="#{solucionNodoEmpleador.concepto.codigo}" width="50" filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -480,6 +480,7 @@
                                 </p:columnGroup>
                             </p:dataTable>
                         </fieldset>
+                        <p:commandButton style="position: absolute; left: 800px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos">
@@ -522,7 +523,7 @@
                             <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <p:dialog id="parcialesConcepto" header="Parciales del Concepto" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="150" width="330" style="font-size: 12px" closable="true">  
                         <p:inputTextarea value="#{controlComprobantes.parcialesSolucionNodos}" style="position: absolute; left: 10px; top: 10px; width: 300px; height: 125px; font-weight:bold; overflow: auto" readonly="true" />
                     </p:dialog>

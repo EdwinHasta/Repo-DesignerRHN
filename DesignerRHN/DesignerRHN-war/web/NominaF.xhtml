@@ -8,7 +8,6 @@
     <h:head>
     </h:head>
     <h:body>
-
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">
 
@@ -441,7 +440,7 @@
                                         <hr style="position: absolute; top: 50px; width: 254px; left: 5px;"/>
 
                                         <center><strong><h:outputText id="tipoPago" style="font-size: 11px; color: #00F; position: relative; top: 55px;" value="#{controlRemoto.tituloPago}"/></strong></center>
-                                        
+
                                         <h:outputText id="mensajePago" style=" font-size: 11px; overflow: auto; position: absolute; left: 9px; top: 80px; width: 250px; height: 53px; text-align: justify" value="#{controlRemoto.mensajePagos}" />
 
                                     </fieldset>
@@ -485,9 +484,9 @@
 
                                         <p:commandButton value=" " id="btnParametrosLiquidacion" style="position: absolute; left: 10px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_parametros.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="btnGenerarLiquidacion" style="position: absolute; left: 10px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_liquidar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnGenerarLiquidacion" style="position: absolute; left: 10px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_liquidar.gif);  background-repeat: no-repeat; background-size: 100% 100%; " update="confirmarLiquidacion" oncomplete="confirmarLiquidacion.show();"/>
 
-                                        <p:commandButton value=" " id="btnComprobantesPago" style="position: absolute; left: 10px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/nom_comprobante.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnComprobantesPago" style="position: absolute; left: 10px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/nom_comprobante.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="comprobante"/>
 
                                         <hr style="float: left; height: 250px; position: absolute; left: 270px; top: 0px;"/>
 
@@ -507,7 +506,13 @@
 
                                 <strong><h:outputText style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
 
-
+                                <p:dialog id="confirmarLiquidacion" header="ATENCIÓN...!" widgetVar="confirmarLiquidacion"  resizable="false" draggable="false" modal="true" height="120" width="420px" style="font-size: 12px" closable="false">  
+                                    <h:graphicImage value="Imagenes/alerta.jpg" width="100" height="70" style="position: absolute; left: 10px; top: 10px;"  />
+                                    <h:outputText value="Antes de liquidar, debe verificar que estén correctos todos los parametros de liquidación." style="position: absolute; left: 100px; top: 20px; width: 280px; font-weight:bold; text-align: center" />
+                                    <h:outputText value="¿Esta seguro que desea hacer la liquidación?" style="position: absolute; left: 110px; top: 55px; width: 300px; font-weight:bold" />
+                                    <p:commandButton value="Si" onclick="confirmarLiquidacion.hide();" action="liquidacion" style="position: absolute; top: 80px; left: 215px " process="@this" />
+                                    <p:commandButton value="No" onclick="confirmarLiquidacion.hide();" style="position: absolute; top: 80px; left: 255px" process="@this" />
+                                </p:dialog>
                             </p:tab>  
 
                             <p:tab title="Integración" id="Integracion">  
@@ -518,7 +523,7 @@
                                 <fieldset style="width: 390px; height: 400px; position: absolute; top: 50px; border-radius: 10px; left: 5px;">
                                     <legend style="font-size: 13px; font-weight: bold; color: #00F;">Herramientas Contables</legend>
 
-                                    <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
+                                    <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="cuenta" actionListener="#{controlCuenta.obtenerEmpresa()}"/>
                                     <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnTerceros" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="tercero" actionListener="#{controlTercero.obtenerEmpresa()}"/>
                                     <p:commandButton id="btnRepCont" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteContabilidad"/>
