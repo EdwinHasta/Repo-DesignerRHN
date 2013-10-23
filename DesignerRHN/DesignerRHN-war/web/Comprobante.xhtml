@@ -524,8 +524,16 @@
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog id="parcialesConcepto" header="Parciales del Concepto" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="150" width="330" style="font-size: 12px" closable="true">  
+                    <p:dialog id="parcialesConcepto" header="Parciales del Concepto" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
                         <p:inputTextarea value="#{controlComprobantes.parcialesSolucionNodos}" style="position: absolute; left: 10px; top: 10px; width: 300px; height: 125px; font-weight:bold; overflow: auto" readonly="true" />
+                        <p:commandButton value="Aceptar" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
+                                        confirmacionFormatoExtendido.show();"/>
+                    </p:dialog>
+
+                    <p:dialog id="confirmacionFormatoExtendido" header="Atención" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
+                        <h:outputText value="¿Desea ver el formato extendido de liquidación?" style="position: absolute; left: 10px; top: 10px; width: 280px; font-weight:bold;" />
+                        <h:outputText value="Aclaración, el formato extendido requiere haber configurado los operandos en el proceso, en caso de no estar configurado, su valor sera 0." style="position: absolute; left: 10px; top: 30px; width: 280px; font-weight:bold; text-align: justify" />
+                        <p:commandButton value="Si" style="position: absolute; top: 148px; left: 248px" onclick="confirmacionFormatoExtendido.hide();"/>
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">
