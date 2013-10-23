@@ -64,7 +64,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
             List<MotivosCambiosSueldos> motivosCambiosSueldos = (List<MotivosCambiosSueldos>) em.createNamedQuery("MotivosCambiosSueldos.findAll").getResultList();
             return motivosCambiosSueldos;
         } catch (Exception e) {
-            System.out.println("Error buscarMotivosCambiosSueldos PersistenciaMotivoCambioSueldo : "+e.toString());
+            System.out.println("Error buscarMotivosCambiosSueldos PersistenciaMotivoCambioSueldo : " + e.toString());
             return null;
         }
     }
@@ -82,6 +82,21 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
             MotivosCambiosSueldos motivosCambiosSueldos = null;
             return motivosCambiosSueldos;
         }
+    }
 
+    @Override
+    public Long verificarBorradoVigenciasSueldos(BigInteger secuencia) {
+        Long retorno = new Long(-1);
+        try {
+            Query query = em.createQuery("SELECT count(vs) FROM VigenciasSueldos vs WHERE vs.motivocambiosueldo.secuencia =:secMotivosCambiosSueldos ");
+            query.setParameter("secMotivosCambiosSueldos", secuencia);
+            retorno = (Long) query.getSingleResult();
+            System.err.println("PersistenciaMotivosCambiosSueldos retorno ==" + retorno.intValue());
+
+        } catch (Exception e) {
+            System.err.println("ERROR EN PersistenciaMotivosCambiosSueldos verificarBorradoVigenciasSueldos ERROR :" + e);
+        } finally {
+            return retorno;
+        }
     }
 }

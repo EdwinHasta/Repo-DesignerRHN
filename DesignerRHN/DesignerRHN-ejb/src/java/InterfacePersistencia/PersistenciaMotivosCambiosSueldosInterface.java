@@ -46,5 +46,6 @@ public interface PersistenciaMotivosCambiosSueldosInterface {
      * @return MotivosCambiosSueldos que cumple con la Secuencia
      */
     public MotivosCambiosSueldos buscarMotivoCambioSueldoSecuencia(BigInteger secuencia);
-    
+
+    public Long verificarBorradoVigenciasSueldos(BigInteger secuencia);
 }

@@ -45,5 +45,8 @@ public interface PersistenciaCentrosCostosInterface {
      * @return cC Centro Costo que cumple con la secuencia
      */
     public CentrosCostos buscarCentroCostoSecuencia(BigInteger secuencia);
+
+    public List<CentrosCostos> buscarCentrosCostosEmpr(BigInteger secEmpresa);
     
+    public long contadorSecuenciaEmpresa(BigInteger secEmpresa);
 }

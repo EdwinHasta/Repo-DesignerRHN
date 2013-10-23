@@ -49,7 +49,7 @@ public class CentrosCostos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
@@ -100,21 +100,21 @@ public class CentrosCostos implements Serializable {
     public CentrosCostos() {
     }
 
-    public CentrosCostos(BigDecimal secuencia) {
+    public CentrosCostos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public CentrosCostos(BigDecimal secuencia, String codigo, String nombre) {
+    public CentrosCostos(BigInteger secuencia, String codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
