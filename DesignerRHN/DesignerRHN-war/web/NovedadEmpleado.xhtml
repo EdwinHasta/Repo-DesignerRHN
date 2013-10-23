@@ -17,14 +17,17 @@
 
                         <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlVigenciasProyectos.empleado.persona.nombreCompleto}"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 200px; border-radius: 10px; ">
-                            <legend style="font-size: 13px; color: #14388B"><strong>Proyectos</strong></legend>
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 140px; border-radius: 10px; ">
+                            <legend style="font-size: 13px; color: #14388B"><strong>Empleados</strong></legend>
 
-                            <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesEmpleados.listaEmpleados}"
-                                         rowKey="#{empleados.id}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px"                           
-                                         scrollable="true" scrollHeight="65" scrollWidth="850" paginator="true" rows="2" filteredValue="#{controlNovedadesEmpleados.filtradosListaEmpleados}" 
-                                         emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         >
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 600px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" value="Buscar Empleado" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 600px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+
+                            <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesEmpleados.listaEmpleadosNovedad}"
+                                         rowKey="#{empleados.id}" rowIndexVar="indiceT" style="font-size: 10px; border: 1px; text-align: left; width: 550px"                           
+                                         scrollable="true" scrollHeight="80" scrollWidth="550" filteredValue="#{controlNovedadesEmpleados.filtradosListaEmpleadosNovedad}" 
+                                         emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesReemplazos.seleccionMostrar}"
+                                         editable="true" editMode="cell" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
 
@@ -56,7 +59,7 @@
                                         <h:outputText value="Nombre" />
                                     </f:facet>
                                 </p:column> 
-                                
+
                                 <p:column headerText="Asig. Basica" sortBy="#{empleados.valor}" filterBy="#{empleados.valor}" filterMatchMode="contains" id="eValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -70,9 +73,52 @@
                                         <h:outputText value="Asig. Basica" />
                                     </f:facet>
                                 </p:column> 
-                             </p:dataTable>
+                            </p:dataTable>
                         </fieldset>
                     </p:panel>
+                </h:form>
+                <h:form id="formularioDialogos">
+
+                    <!-- L.O.V EmpleadoFalso -->
+                    <p:dialog header="Buscar Empleado." widgetVar="empleadosDialogo" draggable="false" resizable="false" id="empleadosDialogo" closable="false"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="430" height="350" style="font-size: 12px">
+
+                        <p:dataTable  id="LOVEmpleados" style="font-size: 11px; width: 395px" var="emp" value="#{controlNovedadesEmpleados.listaEmpleados}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="410" widgetVar="LOVEmpleados" 
+                                      filteredValue="#{controlNovedadesEmpleados.filtradoslistaEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{emp.empleado.secuencia}" selection="#{controlNovedadesEmpleados.seleccionEmpleados}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesReemplazos.actualizarEmpleadosFalso()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 280px; position: relative; left: 15px;" />  
+                            </f:facet>
+
+                            <p:column sortBy="#{emp.empleado.persona.nombre}" filterBy="#{emp.empleado.persona.nombre}" width="200" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{emp.empleado.persona.nombre}" />  
+                            </p:column>
+
+                            <p:column sortBy="#{emp.empleado.codigoempleado}" filterBy="#{emp.empleado.codigoempleado}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Codigo" />
+                                </f:facet>
+                                <h:outputText value="#{emp.empleado.codigoempleado}" />  
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 282px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarEmpleadosNovedad()}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 355px; font-size: 12px" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesReemplazos.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
+                        </p:commandButton>
+
+                    </p:dialog>
+
                 </h:form>
             </ui:define>
         </ui:composition>
