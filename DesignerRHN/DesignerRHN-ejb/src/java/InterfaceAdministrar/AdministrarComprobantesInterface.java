@@ -4,6 +4,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.DetallesFormulas;
 import Entidades.Parametros;
 import Entidades.ParametrosEstructuras;
 import Entidades.SolucionesNodos;
@@ -20,4 +21,5 @@ public interface AdministrarComprobantesInterface {
     public ParametrosEstructuras parametroEstructura();
     public List<SolucionesNodos> solucionesNodosEmpleado(BigInteger secEmpleado);
     public List<SolucionesNodos> solucionesNodosEmpleador(BigInteger secEmpleado);
+    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
 }
