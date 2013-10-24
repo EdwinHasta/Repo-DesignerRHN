@@ -7,6 +7,7 @@ import Entidades.SolucionesNodos;
 import InterfaceAdministrar.AdministrarComprobantesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaDetallesFormulasInterface;
+import InterfacePersistencia.PersistenciaHistoriasformulasInterface;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
 import InterfacePersistencia.PersistenciaParametrosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
@@ -28,6 +29,8 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     @EJB
     PersistenciaDetallesFormulasInterface persistenciaDetallesFormulas;
+    @EJB
+    PersistenciaHistoriasformulasInterface persistenciaHistoriasformulas;
 
 
     public List<Parametros> parametrosComprobantes() {
@@ -53,7 +56,12 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
         return persistenciaSolucionesNodos.solucionNodoEmpleador(secEmpleado);
     }
     
+    @Override
     public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula){
         return persistenciaDetallesFormulas.detallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
+    }
+    
+    public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde){
+        return persistenciaHistoriasformulas.obtenerSecuenciaHistoriaFormula(secFormula, fechaDesde);
     }
 }

@@ -17,7 +17,7 @@ public class PersistenciaDetallesFormulas implements PersistenciaDetallesFormula
 
     public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula) {
         try {
-            String sqlQuery = "select LEVEL NIVEL, \n"
+            String sqlQuery = "select ROWNUM ID, LEVEL NIVEL, \n"
                     + "        POSICION,\n"
                     + "        decode(descripcion, null,\n"
                     + "          lpad(' ',level*5,' ')||signo,\n"
@@ -30,13 +30,13 @@ public class PersistenciaDetallesFormulas implements PersistenciaDetallesFormula
                     + "        formulahijo FORMULAHIJO, \n"
                     + "        HISTORIAFORMULA, \n"
                     + "        HISTORIAFORMULAHIJO,\n"
-                    + "        LIQUIDACIONESLOGS_PKG.ConsultarValor(?, operandos_pkg.ObtenerCodigo(operando), to_date(?,'ddmmyyyy'), to_date(?,'ddmmyyyy'), procesos_pkg.ObtenerCodigo(?))\n"
+                    + "        LIQUIDACIONESLOGS_PKG.ConsultarValor(?, operandos_pkg.ObtenerCodigo(operando), to_date(?,'dd/mm/yyyy'), to_date(?,'dd/mm/yyyy'), procesos_pkg.ObtenerCodigo(?))\n"
                     + "          VALOR\n"
                     + "      from vwarbolesformulas\n"
                     + "      START WITH historiaFORMULA= ?\n"
                     + "      CONNECT BY PRIOR formulahijo = FORMULA\n"
-                    + "      ORDER BY LEVEL, POSICION;";
-            Query query = em.createNativeQuery(sqlQuery, "ConsultasLiquidacionesEmpresa");
+                    + "      ORDER BY LEVEL, POSICION";
+            Query query = em.createNativeQuery(sqlQuery, "DetallesFormulasComprobantes");
             query.setParameter(1, secEmpleado);
             query.setParameter(2, fechaDesde);
             query.setParameter(3, fechaHasta);
