@@ -4,7 +4,10 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.Empleados;
 import Entidades.PruebaEmpleados;
+import Entidades.VWActualesTiposTrabajadores;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -14,4 +17,7 @@ import java.util.List;
 public interface AdministrarNovedadesEmpleadosInterface {
 
    public List<PruebaEmpleados> empleadosAsignacion();
+   public List<Empleados> lovEmpleados();
+   public PruebaEmpleados novedadEmpleado(BigInteger secuenciaEmpleado);
+   public List<VWActualesTiposTrabajadores> tiposTrabajadores();
 }

@@ -7,6 +7,7 @@ package Persistencia;
 import Entidades.PruebaEmpleados;
 import InterfacePersistencia.PersistenciaPruebaEmpleadosInterface;
 import java.math.BigInteger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,12 +23,12 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
     public PruebaEmpleados empleadosAsignacion(BigInteger secEmpleado) {
         try {
             PruebaEmpleados pruebaEmpleado = null;
-            PruebaEmpleados pruebaEmpleado2 = null;
+            
             Query queryValidacion = em.createQuery("SELECT COUNT(vwa) FROM VWActualesSueldos vwa WHERE vwa.empleado.secuencia = :secEmpleado");
             queryValidacion.setParameter("secEmpleado", secEmpleado);
             Long resultado = (Long) queryValidacion.getSingleResult();
             if (resultado > 0) {
-                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWA.valor) VALOR \n"
+                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWA.valor) VALOR\n"
                         + "       FROM EMPLEADOS E, VWACTUALESSUELDOS VWA, PERSONAS P\n"
                         + "       WHERE E.persona = P.secuencia \n"
                         + "       AND VWA.empleado = E.secuencia\n"
@@ -43,7 +44,7 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
                 Long resultado2 = (Long) queryValidacion2.getSingleResult();
                 if(resultado2 > 0){
 
-                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWP.valor) VALOR \n"
+                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWP.valor) VALOR\n"
                         + "       FROM EMPLEADOS E, VWACTUALESPENSIONES VWP, PERSONAS P\n"
                         + "       WHERE E.persona = P.secuencia \n"
                         + "       AND VWP.empleado = E.secuencia\n"
@@ -51,7 +52,7 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
                         + "       GROUP BY E.secuencia, E.codigoempleado, P.nombre";
                 Query query = em.createNativeQuery(sqlQuery, "PruebaEmpleadosAsignacionBasica");
                 query.setParameter(1, secEmpleado);
-                pruebaEmpleado2 = (PruebaEmpleados) query.getSingleResult();
+                pruebaEmpleado = (PruebaEmpleados) query.getSingleResult();
                 }
             }
             return pruebaEmpleado;
@@ -60,4 +61,8 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
             return null;
         }
     }
+    
+   
+   
+    
 }

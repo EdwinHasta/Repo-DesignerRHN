@@ -11,4 +11,5 @@ public interface PersistenciaVWActualesTiposTrabajadoresInterface {
     public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(String tipo);
     public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores();
     public boolean verificarTipoTrabajador(Empleados empleado);
+    public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado();
 }

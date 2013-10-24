@@ -88,5 +88,21 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
             return false;
         }
     }
+    
+    @Override
+    public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado() {
+        try {
+            Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw where vw.tipoTrabajador.nombre IN (");
+            List<VWActualesTiposTrabajadores> tipoEmpleado = query.getResultList();
+            System.out.println("Tiene: " + tipoEmpleado.size()+ " registros");
+            return tipoEmpleado;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaVWActualesTiposTrabajadores.tipoTrabajadorEmpleado" + e);
+            return null;
+        }
+    }
+    
+    
+    
 
 }
