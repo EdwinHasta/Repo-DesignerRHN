@@ -4,14 +4,23 @@
  */
 package Administrar;
 
+import Entidades.Conceptos;
 import Entidades.Empleados;
+import Entidades.Formulas;
+import Entidades.Novedades;
+import Entidades.Periodicidades;
 import Entidades.PruebaEmpleados;
+import Entidades.Terceros;
 import Entidades.VWActualesTiposTrabajadores;
 import InterfaceAdministrar.AdministrarNovedadesEmpleadosInterface;
+import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaFormulasInterface;
+import InterfacePersistencia.PersistenciaNovedadesInterface;
+import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import InterfacePersistencia.PersistenciaPruebaEmpleadosInterface;
+import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaVWActualesTiposTrabajadoresInterface;
-import Persistencia.PersistenciaVWActualesTiposTrabajadores;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +36,20 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     PersistenciaEmpleadoInterface persistenciaEmpleados;
     @EJB
     PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
+    @EJB
+    PersistenciaNovedadesInterface persistenciaNovedades;
+    @EJB
+    PersistenciaConceptosInterface persistenciaConceptos;
+    @EJB
+    PersistenciaFormulasInterface persistenciaFormulas;
+    @EJB
+    PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
+    @EJB
+    PersistenciaTercerosInterface persistenciaTerceros;
 
+    //Trae los empleados con Novedades dependiendo el Tipo de Trabajador que sea.
     @Override
-    public List<PruebaEmpleados> empleadosAsignacion() {
+    public List<PruebaEmpleados> empleadosNovedad() {
         List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedad();
         List<PruebaEmpleados> listaEmpleadosNovedad = new ArrayList<PruebaEmpleados>();
         for (int i = 0; i < listaEmpleados.size(); i++) {
@@ -49,7 +69,19 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
         }
         return listaEmpleadosNovedad;
     }
-
+    
+    //Trae las novedades del empleado cuya secuencia se envía como parametro//
+    @Override
+    public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado) {
+        try {
+            return persistenciaNovedades.novedadesEmpleado(secuenciaEmpleado);
+        } catch (Exception e) {
+            System.err.println("Error AdministrarNovedadesEmpleados.novedadesEmpleado" + e);
+            return null;
+        }
+    }
+    
+    //Procesa un solo empleado para volverlo Pruebaempleado
     public PruebaEmpleados novedadEmpleado(BigInteger secuenciaEmpleado) {
         return persistenciaPruebaEmpleados.empleadosAsignacion(secuenciaEmpleado);
     }
@@ -58,7 +90,28 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     public List<Empleados> lovEmpleados() {
         return persistenciaEmpleados.empleadosNovedad();
     }
+    @Override
+    public List<Conceptos> lovConceptos() {
+        return persistenciaConceptos.buscarConceptos();
+    }
+    @Override
+    public List<Formulas> lovFormulas() {
+        return persistenciaFormulas.buscarFormulas();
+    }
+    
+    @Override
+    public List<Periodicidades> lovPeriodicidades() {
+        return persistenciaPeriodicidades.buscarPeriodicidades();
+    }
+    
+    @Override
+    public List<Terceros> lovTerceros() {
+        return persistenciaTerceros.buscarTerceros();
+    }
+    
+    
     // Que tipo de Trabajador es
+    @Override
     public List<VWActualesTiposTrabajadores> tiposTrabajadores(){
         return persistenciaVWActualesTiposTrabajadores.tipoTrabajadorEmpleado();
     }

@@ -28,12 +28,12 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
             queryValidacion.setParameter("secEmpleado", secEmpleado);
             Long resultado = (Long) queryValidacion.getSingleResult();
             if (resultado > 0) {
-                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWA.valor) VALOR\n"
+                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.PRIMERAPELLIDO||' '||P.SEGUNDOAPELLIDO||' '||P.NOMBRE NOMBRE, SUM(VWA.valor) VALOR\n"
                         + "       FROM EMPLEADOS E, VWACTUALESSUELDOS VWA, PERSONAS P\n"
                         + "       WHERE E.persona = P.secuencia \n"
                         + "       AND VWA.empleado = E.secuencia\n"
                         + "       AND VWA.empleado = ?\n"
-                        + "       GROUP BY E.secuencia, E.codigoempleado, P.nombre";
+                        + "       GROUP BY E.secuencia, E.codigoempleado, P.PRIMERAPELLIDO||' '||P.SEGUNDOAPELLIDO||' '||P.NOMBRE";
                 Query query = em.createNativeQuery(sqlQuery, "PruebaEmpleadosAsignacionBasica");
                 query.setParameter(1, secEmpleado);
                 pruebaEmpleado = (PruebaEmpleados) query.getSingleResult();

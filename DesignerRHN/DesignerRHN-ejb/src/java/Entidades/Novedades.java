@@ -357,6 +357,9 @@ public class Novedades implements Serializable {
     }
 
     public Terceros getTercero() {
+        if(tercero == null){
+            tercero = new Terceros();
+        }
         return tercero;
     }
 

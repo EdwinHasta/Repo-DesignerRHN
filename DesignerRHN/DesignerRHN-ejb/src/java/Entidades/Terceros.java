@@ -208,6 +208,10 @@ public class Terceros implements Serializable {
     }
 
     public String getNitalternativo() {
+        if(nitalternativo == null){
+           nitalternativo = (" ");
+        }
+       
         return nitalternativo;
     }
 

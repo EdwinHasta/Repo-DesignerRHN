@@ -92,7 +92,7 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
     @Override
     public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado() {
         try {
-            Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw where vw.tipoTrabajador.nombre IN (");
+            Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw where vw.tipoTrabajador.tipo IN ('ACTIVO','PENSIONADO','RETIRADO')");
             List<VWActualesTiposTrabajadores> tipoEmpleado = query.getResultList();
             System.out.println("Tiene: " + tipoEmpleado.size()+ " registros");
             return tipoEmpleado;
