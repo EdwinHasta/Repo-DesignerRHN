@@ -2,6 +2,7 @@ package Administrar;
 
 import Entidades.Comprobantes;
 import Entidades.CortesProcesos;
+import Entidades.DetallesFormulas;
 import Entidades.Empleados;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
@@ -9,7 +10,9 @@ import Entidades.Terceros;
 import InterfaceAdministrar.AdministrarEmplComprobantesInterface;
 import InterfacePersistencia.PersistenciaComprobantesInterface;
 import InterfacePersistencia.PersistenciaCortesProcesosInterface;
+import InterfacePersistencia.PersistenciaDetallesFormulasInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaHistoriasformulasInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
@@ -33,6 +36,10 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
     PersistenciaProcesosInterface persistenciaProcesos;
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
+    @EJB
+    PersistenciaDetallesFormulasInterface persistenciaDetallesFormulas;
+    @EJB
+    PersistenciaHistoriasformulasInterface persistenciaHistoriasformulas;
 
     public Empleados buscarEmpleado(BigInteger secuencia) {
         Empleados empleado;
@@ -158,5 +165,14 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
                 persistenciaSolucionesNodos.editar(listaSolucionesNodosEmpleador.get(i));
             }
         }
+    }
+    
+    @Override
+    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula){
+        return persistenciaDetallesFormulas.detallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
+    }
+    
+    public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde){
+        return persistenciaHistoriasformulas.obtenerSecuenciaHistoriaFormula(secFormula, fechaDesde);
     }
 }

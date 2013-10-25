@@ -6,6 +6,7 @@ package InterfaceAdministrar;
 
 import Entidades.Comprobantes;
 import Entidades.CortesProcesos;
+import Entidades.DetallesFormulas;
 import Entidades.Empleados;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
@@ -34,4 +35,6 @@ public interface AdministrarEmplComprobantesInterface {
     public List<Terceros> lovTerceros(BigInteger secEmpresa);
     public void modificarSolucionesNodosEmpleado(List<SolucionesNodos> listaSolucionesNodosEmpleado);
     public void modificarSolucionesNodosEmpleador(List<SolucionesNodos> listaSolucionesNodosEmpleado);
+    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
+    public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde);
 }

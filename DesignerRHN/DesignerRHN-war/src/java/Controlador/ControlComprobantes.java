@@ -1,5 +1,6 @@
 package Controlador;
 
+import Entidades.DetallesFormulas;
 import Entidades.Parametros;
 import Entidades.ParametrosEstructuras;
 import Entidades.SolucionesNodos;
@@ -9,7 +10,9 @@ import InterfaceAdministrar.AdministrarComprobantesInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import javax.ejb.EJB;
@@ -40,7 +43,7 @@ public class ControlComprobantes implements Serializable {
     private List<SolucionesNodos> listaSolucionesNodosEmpleador;
     private List<SolucionesNodos> filtradolistaSolucionesNodosEmpleador;
     //REGISTRO ACTUAL
-    private int registroActual;
+    private int registroActual, index, tablaActual;
     //OTROS
     private boolean aceptar, mostrarTodos;
     private Locale locale = new Locale("es", "CO");
@@ -55,6 +58,10 @@ public class ControlComprobantes implements Serializable {
     private String altoScrollSolucionesNodosEmpleado, altoScrollSolucionesNodosEmpleador;
     //PARCIALES 
     private String parcialesSolucionNodos;
+    //DETALLES FORMULAS
+    private List<DetallesFormulas> listaDetallesFormulas;
+    //FORMATO FECHAS
+    private SimpleDateFormat formatoFecha;
 
     public ControlComprobantes() {
         registroActual = 0;
@@ -67,6 +74,8 @@ public class ControlComprobantes implements Serializable {
         bandera = 0;
         altoScrollSolucionesNodosEmpleado = "105";
         altoScrollSolucionesNodosEmpleador = "105";
+        listaDetallesFormulas = null;
+        formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     }
 
     public void anteriorEmpleado() {
@@ -318,6 +327,8 @@ public class ControlComprobantes implements Serializable {
 
     //PARCIALES CONCEPTO
     public void parcialSolucionNodo(int indice, int tabla) {
+        index = indice;
+        tablaActual = tabla;
         if (tabla == 0) {
             parcialesSolucionNodos = listaSolucionesNodosEmpleado.get(indice).getParciales();
         } else if (tabla == 1) {
@@ -326,6 +337,13 @@ public class ControlComprobantes implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:parcialesConcepto");
         context.execute("parcialesConcepto.show();");
+    }
+
+    public void verDetallesFormula() {
+        listaDetallesFormulas = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:detallesFormulas");
+        context.execute("detallesFormulas.show();");
     }
 
     public void activarAceptar() {
@@ -345,7 +363,7 @@ public class ControlComprobantes implements Serializable {
     public Parametros getParametroActual() {
         if (parametroActual == null) {
             getListaParametros();
-            if (listaParametros != null) {
+            if (listaParametros != null && !listaParametros.isEmpty()) {
                 parametroActual = listaParametros.get(registroActual);
             }
         }
@@ -403,7 +421,7 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleado() {
-        if (listaSolucionesNodosEmpleado == null) {
+        if (listaSolucionesNodosEmpleado == null && parametroActual != null) {
             listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleado != null) {
                 subtotalPago = new BigDecimal(0);
@@ -437,7 +455,7 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
-        if (listaSolucionesNodosEmpleador == null) {
+        if (listaSolucionesNodosEmpleador == null && parametroActual != null) {
             listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleador != null) {
                 subtotalPasivo = new BigDecimal(0);
@@ -498,5 +516,38 @@ public class ControlComprobantes implements Serializable {
 
     public String getParcialesSolucionNodos() {
         return parcialesSolucionNodos;
+    }
+
+    public List<DetallesFormulas> getListaDetallesFormulas() {
+        if (listaDetallesFormulas == null) {
+            BigInteger secEmpleado = null, secProceso = null, secHistoriaFormula, secFormula = null;
+            String fechaDesde = null, fechaHasta = null;
+            if (tablaActual == 0) {
+                if (listaSolucionesNodosEmpleado != null && !listaSolucionesNodosEmpleado.isEmpty()) {
+                    secFormula = listaSolucionesNodosEmpleado.get(index).getFormula().getSecuencia();
+                    fechaDesde = formatoFecha.format(listaSolucionesNodosEmpleado.get(index).getFechadesde());
+                    fechaHasta = formatoFecha.format(listaSolucionesNodosEmpleado.get(index).getFechahasta());
+                    secEmpleado = listaSolucionesNodosEmpleado.get(index).getEmpleado().getSecuencia();
+                    secProceso = listaSolucionesNodosEmpleado.get(index).getProceso().getSecuencia();
+                }
+            } else if (tablaActual == 1) {
+                if (listaSolucionesNodosEmpleador != null && !listaSolucionesNodosEmpleador.isEmpty()) {
+                    secFormula = listaSolucionesNodosEmpleador.get(index).getFormula().getSecuencia();
+                    fechaDesde = formatoFecha.format(listaSolucionesNodosEmpleador.get(index).getFechadesde());
+                    fechaHasta = formatoFecha.format(listaSolucionesNodosEmpleador.get(index).getFechahasta());
+                    secEmpleado = listaSolucionesNodosEmpleador.get(index).getEmpleado().getSecuencia();
+                    secProceso = listaSolucionesNodosEmpleador.get(index).getProceso().getSecuencia();
+                }
+            }
+            if (secFormula != null && fechaDesde != null) {
+                secHistoriaFormula = administrarComprobantes.obtenerHistoriaFormula(secFormula, fechaDesde);
+                listaDetallesFormulas = administrarComprobantes.detallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
+            }
+        }
+        return listaDetallesFormulas;
+    }
+
+    public void setListaDetallesFormulas(List<DetallesFormulas> listaDetallesFormulas) {
+        this.listaDetallesFormulas = listaDetallesFormulas;
     }
 }

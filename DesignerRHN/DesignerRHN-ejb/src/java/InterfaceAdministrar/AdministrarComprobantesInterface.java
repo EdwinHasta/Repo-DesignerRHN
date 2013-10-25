@@ -22,4 +22,5 @@ public interface AdministrarComprobantesInterface {
     public List<SolucionesNodos> solucionesNodosEmpleado(BigInteger secEmpleado);
     public List<SolucionesNodos> solucionesNodosEmpleador(BigInteger secEmpleado);
     public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
+    public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde);
 }

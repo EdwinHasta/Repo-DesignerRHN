@@ -27,7 +27,8 @@ import javax.persistence.SqlResultSetMapping;
             entityClass = DetallesFormulas.class,
             fields = {
         @FieldResult(name = "nivel", column = "NIVEL"),
-        @FieldResult(name = "id", column = "POSICION"),
+        @FieldResult(name = "id", column = "ID"),
+        @FieldResult(name = "posicion", column = "POSICION"),
         @FieldResult(name = "nombreNodo", column = "NOMBRENODO"),
         @FieldResult(name = "nodo", column = "NODO"),
         @FieldResult(name = "operando", column = "OPERANDO"),
@@ -45,6 +46,7 @@ public class DetallesFormulas implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
+    private Integer posicion;
     private Integer nivel;
     private String nombreNodo;
     private BigInteger nodo;
@@ -145,6 +147,16 @@ public class DetallesFormulas implements Serializable {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
+
+    public Integer getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(Integer posicion) {
+        this.posicion = posicion;
+    }
+    
+    
     
     @Override
     public int hashCode() {

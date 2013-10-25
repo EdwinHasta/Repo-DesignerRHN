@@ -183,7 +183,7 @@
 
                                     <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleado()}" />   
                                     <!-- <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
-
+                                    <p:column width="0.5"/>
                                     <p:column id="codigoSNE" headerText="Codigo" width="40" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
                                     <p:column id="descripcionSNE" headerText="Descripción" sortBy="#{solucionNodoEmpleado.concepto.descripcion}"  filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
                                 </p:dataTable>
@@ -192,8 +192,12 @@
                             <div id="inferiorIzquierda"  style="height: 70px; width: 315px; overflow-y: hidden; position: absolute; top: 37px" >
                                 <p:dataTable id="tablaInferiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 315px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
                                              rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="315" 
-                                             widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names"
+                                             widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names" rowIndexVar="indiceEM"
                                              filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="No se encontrarón datos.">
+
+                                    <p:column width="20" style="padding: 0px"> 
+                                        <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlEmplComprobantes.parcialSolucionNodo(indiceEM, 0)}"/>
+                                    </p:column>
 
                                     <p:column id="codigoSNE2" headerText="Codigo" style="width: 40px" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleado.concepto.codigo}" />  
@@ -319,8 +323,8 @@
                                 <p:dataTable id="tablaSuperiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              rowKey="#{solucionNodoEmpleador.secuencia}" widgetVar="tablaSuperiorIzquierdaEM" styleClass="hide-row-names" filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}">
                                     <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleador()}" />
-                                    <!--  <p:ajax event="filter" update=":form:tablaInferiorDerechaEM, :form:tablaInferiorIzquierdaEM"/> -->
 
+                                    <p:column width="0.5"/>
                                     <p:column id="codigoSNEM" headerText="Codigo" width="40" sortBy="#{solucionNodoEmpleador.concepto.codigo}"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
                                     <p:column id="descripcionSNEM" headerText="Descripción" sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
                                 </p:dataTable>
@@ -329,8 +333,12 @@
                             <div id="inferiorIzquierdaEM" style="height: 70px; width: 315px; overflow-y: hidden; position: absolute; top: 37px; border: 5px; border-color: red" >
                                 <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 315px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="315"
-                                             widgetVar="tablaInferiorIzquierdaEM" styleClass="hide-column-names"
+                                             widgetVar="tablaInferiorIzquierdaEM" styleClass="hide-column-names" rowIndexVar="indiceER"
                                              filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="No se encontrarón datos.">
+
+                                    <p:column width="20" style="padding: 0px"> 
+                                        <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlEmplComprobantes.parcialSolucionNodo(indiceER, 1)}"/>
+                                    </p:column>
 
                                     <p:column id="codigoSNEM" headerText="Codigo" sortBy="#{solucionNodoEmpleador.concepto.codigo}" style="width: 40px;"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />  
@@ -746,6 +754,44 @@
                         <p:commandButton id="atrasT" style="position: relative; left: 245px" value="Atras" onclick="TercerosDialogo.hide(), lovTerceros.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarTercero()}" update="lovTerceros" process="@this">
                             <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
                         </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog id="parcialesConcepto" header="Parciales del Concepto" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
+                        <p:inputTextarea value="#{controlEmplComprobantes.parcialesSolucionNodos}" style="position: absolute; left: 10px; top: 10px; width: 300px; height: 125px; font-weight:bold; overflow: auto" readonly="true" />
+                        <p:commandButton value="Aceptar" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
+                            confirmacionFormatoExtendido.show();" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="confirmacionFormatoExtendido" header="Atención" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="100" width="380" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="¿Desea ver el formato extendido de liquidación?" style="position: absolute; left: 80px; top: 10px; width: 280px; font-weight:bold;" />
+                        <h:outputText value="Aclaración, el formato extendido requiere haber configurado los operandos en el proceso, en caso de no estar configurado, su valor sera 0." style="position: absolute; left: 80px; top: 25px; width: 280px; font-weight:bold; text-align: justify" />
+                        <p:commandButton value="Si" style="position: absolute; top: 75px; left: 280px" actionListener="#{controlEmplComprobantes.verDetallesFormula()}" onclick="confirmacionFormatoExtendido.hide();" process="@this"/>
+                        <p:commandButton value="No" style="position: absolute; top: 75px; left: 320px" onclick="confirmacionFormatoExtendido.hide();" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="detallesFormulas" header="Atención" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505" style="font-size: 12px" closable="false">  
+                        <fieldset style="position: absolute; top: 10px; width: 455px; height: 185px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Estructura de la formula</legend>
+                            <p:dataTable  id="detalleF" style="font-size: 11px; width: 440px" var="detalleFormula" value="#{controlEmplComprobantes.listaDetallesFormulas}"
+                                          scrollable="true" scrollHeight="127" scrollWidth="455" widgetVar="detalleF" 
+                                          emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                          rowKey="#{detalleFormula.id}">
+
+                                <p:column  headerText="Valor" width="80" style="padding: 0px">  
+                                    <p:inputText value="#{detalleFormula.valor}" style="border-radius: 0px; width: 87%" />  
+                                </p:column>  
+
+                                <p:column headerText="Formula" style="padding: 0px">  
+                                    <p:inputText value="#{detalleFormula.nombreNodo}" style="border-radius: 0px; width: 94.5%"/>  
+                                </p:column>  
+
+                                <p:column headerText="Descripción" style="padding: 0px">  
+                                    <p:inputText value="#{detalleFormula.descripcion}" style="border-radius: 0px; width: 94.5%"/>  
+                                </p:column> 
+                            </p:dataTable>
+                            <p:commandButton value="Aceptar" style="position: absolute; top: 163px; left: 378px" onclick="detallesFormulas.hide();" process="@this"/>
+                        </fieldset>
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">
