@@ -31,17 +31,11 @@
 
                                 <p:ajax event="rowSelect" listener="#{controlNovedadesReemplazos.cambiarEmpleado()}"/>
                                 <p:column headerText="Código" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" filterMatchMode="contains" id="nREmpleadosCodigos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
-
                                     <h:outputText value="#{empleados.codigoempleado}" />
-
                                 </p:column>
 
                                 <p:column headerText="Nombre" sortBy="#{empleados.persona.nombreCompleto}" filterBy="#{empleados.persona.nombreCompleto}" filterMatchMode="contains" id="nREmpleadosNombres" width="133" filterStyle="display: none; visibility: hidden;" >                                  
-
                                     <h:outputText value="#{empleados.persona.nombreCompleto}" />
-
-
-
                                 </p:column>
 
                             </p:dataTable>
