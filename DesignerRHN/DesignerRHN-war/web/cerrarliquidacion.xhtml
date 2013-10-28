@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:panel  id="PanelTotal" header="Cerrar Liquidación" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+                        <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 500px; height: 450px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Parametros Establecidos</legend>
+                            <h:outputText id="imagen" style="background-image: url(Imagenes/#{controlBarra.imagenEstado}); width: 150px; height: 140px; background-repeat: no-repeat; background-size: 100% 100%;; z-index: 1; position: absolute; top: 23px; left: 20px"/>
+                            <p:panel id="panelInf" style="border: none;">
+                                <fieldset style="position: absolute; left: 180px; top: 15px; font-size: 12px; width: 300px; height: 137px; border-radius: 10px; ">
+                                    <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Indicadores</legend>
+                                    <h:outputText value="Total trabajadores a liquidar: " style="font-weight: bold; position: absolute; top: 22px; left: 20px"/>
+                                    <p:inputText value="#{controlBarra.totalEmpleadosParaLiquidar}" style="position: absolute; left: 210px; text-align: right; width: 80px;" readonly="true"/>
+                                    <h:outputText value="Total trabajadores liquidados: " style="font-weight: bold; position: absolute; top: 52px; left: 20px"/>
+                                    <p:inputText id="empleadosLiquidados" value="#{controlBarra.totalEmpleadosLiquidados}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 50px" readonly="true" /> 
+                                    <h:outputText value="Hora inicial liquidación: " style="font-weight: bold; position: absolute; left: 20px; top: 83px"/>
+                                    <p:inputText id="horaI" value="#{controlBarra.horaInicialLiquidacion}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 82px" readonly="true"/>
+                                    <h:outputText value="Hora final liquidación: " style="font-weight: bold; position: absolute; top: 115px; left: 20px"/>
+                                    <p:inputText id="horaF" value="#{controlBarra.horaFinalLiquidacion}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 114px" readonly="true" /> 
+                                </fieldset>
+                            </p:panel>
+                            
+                             <p:panel style="border: none;">
+                                <fieldset style="position: absolute; left: 10px; top: 172px; font-size: 12px; width: 470px; height: 110px; border: inset; border-width: 2px">
+                                    <h:outputText value="Fecha inicial: " style="font-weight: bold; position: absolute; top: 10px; left: 20px"/>
+                                    <p:inputText value="#{controlBarra.parametroEstructura.fechadesdecausado}" style="position: absolute; left: 20px; width: 80px; top: 30px" readonly="true">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </p:inputText>
+                                    <h:outputText value="Estructura: " style="font-weight: bold; position: absolute; top: 10px; left: 120px"/>
+                                    <p:inputText value="#{controlBarra.parametroEstructura.estructura.nombre}" style="position: absolute; left: 120px; width: 340px; top: 30px" readonly="true"/>
+                                    <h:outputText value="Fecha final: " style="font-weight: bold; position: absolute; left: 20px; top: 65px"/>
+                                    <p:inputText value="#{controlBarra.parametroEstructura.fechahastacausado}" style="position: absolute; left: 20px; width: 80px; top: 85px" readonly="true">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </p:inputText>
+                                    <h:outputText value="Proceso: " style="font-weight: bold; position: absolute; top: 65px; left: 120px"/>
+                                    <p:inputText value="#{controlBarra.parametroEstructura.proceso.descripcion}" style="position: absolute; left: 120px; width: 160px; top: 85px" readonly="true" /> 
+                                    <h:outputText value="Tipo trabajador: " style="font-weight: bold; position: absolute; top: 65px; left: 300px"/>
+                                    <p:inputText value="#{controlBarra.parametroEstructura.tipotrabajador.nombre}" style="position: absolute; left: 300px; width: 160px; top: 85px" readonly="true" /> 
+                                </fieldset>
+                            </p:panel>
+                        </fieldset>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
