@@ -968,7 +968,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                 tipoLista = 0;
 
             }
-            //AGREGAR REGISTRO A LA LISTA ENCARGATURA .
+            //REGISTRO A LA LISTA ENCARGATURA .
             k++;
             l = BigInteger.valueOf(k);
             nuevaEncargatura.setSecuencia(l);
@@ -1073,10 +1073,8 @@ public class ControlNovedadesReemplazos implements Serializable {
                 for (int i = 0; i < listaEncargaturasCrear.size(); i++) {
                     System.out.println("Creando...");
                     
-
                     if (listaEncargaturasCrear.get(i).getMotivoreemplazo().getSecuencia() == null) {
                         listaEncargaturasCrear.get(i).setMotivoreemplazo(null);
-
                     }
                     if (listaEncargaturasCrear.get(i).getReemplazado().getSecuencia() == null) {
                         listaEncargaturasCrear.get(i).setReemplazado(null);
@@ -1097,7 +1095,6 @@ public class ControlNovedadesReemplazos implements Serializable {
                 administrarNovedadesReemplazos.modificarEncargatura(listaEncargaturasModificar);
                 listaEncargaturasModificar.clear();
             }
-
             System.out.println("Se guardaron los datos con exito");
             listaEncargaturas = null;
             RequestContext context = RequestContext.getCurrentInstance();
