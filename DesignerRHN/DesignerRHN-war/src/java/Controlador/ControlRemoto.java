@@ -103,7 +103,7 @@ public class ControlRemoto implements Serializable {
     private int numPestaña;
     //SELECT ONE RADIO
     private String mensajePagos, tituloPago;
-    private int pago;
+    private String pago;
 
     public ControlRemoto() {
         vwActualesCargos = new VWActualesCargos();
@@ -141,7 +141,7 @@ public class ControlRemoto implements Serializable {
         System.out.println("Se creo un nuevo BakingBean de NominaF");
         //Inicializar pestaña en 0
         numPestaña = 0;
-        pago = 1;
+        pago = "AUTOMATICO";
         tituloPago = "PAGOS AUTOMATICOS";
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
     }
@@ -594,7 +594,6 @@ public class ControlRemoto implements Serializable {
             context.update("form:tabMenu:Tablas");
         }
         tablaExportar = "data1";
-        System.out.println("Va a imprimir -->" + tablaExportar);
         filterListTablas = null;
     }
 
@@ -789,7 +788,8 @@ public class ControlRemoto implements Serializable {
     }
 
     public Usuarios getUsuarios() {
-        usuarios = administrarCarpetaPersonal.ConsultarUsuario();
+        String alias = administrarCarpetaPersonal.actualUsuario();
+        usuarios = administrarCarpetaPersonal.ConsultarUsuario(alias);
         return usuarios;
     }
 
@@ -879,11 +879,11 @@ public class ControlRemoto implements Serializable {
         return tituloPago;
     }
 
-    public int getPago() {
+    public String getPago() {
         return pago;
     }
 
-    public void setPago(int pago) {
+    public void setPago(String pago) {
         this.pago = pago;
     }
 
@@ -1022,12 +1022,12 @@ public class ControlRemoto implements Serializable {
 
     public void cambiarFormaPago() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (pago == 1) {
+        if (pago.equalsIgnoreCase("AUTOMATICO")) {
             tituloPago = "PAGOS AUTOMATICOS";
             mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
             context.update("form:tabMenu:tipoPago");
             context.update("form:tabMenu:mensajePago");
-        } else {
+        } else if(pago.equalsIgnoreCase("NO AUTOMATICO")) {
             tituloPago = "PAGOS POR FUERA DE NÓMINA";
             mensajePagos = "Genere pagos por fuera de nómina cuando necesite liquidar vacaciones por anticipado, viaticos, entre otros. esta liquidaciones se pueden efectuar por estructura o por empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
             context.update("form:tabMenu:tipoPago");

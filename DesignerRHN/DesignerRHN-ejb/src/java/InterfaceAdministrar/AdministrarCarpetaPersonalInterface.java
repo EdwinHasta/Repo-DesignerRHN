@@ -47,7 +47,7 @@ public interface AdministrarCarpetaPersonalInterface {
 
     public DetallesEmpresas ConsultarEmpresa();
 
-    public Usuarios ConsultarUsuario();
+    public Usuarios ConsultarUsuario(String alias);
 
     public ParametrosEstructuras ConsultarParametros();
 
@@ -62,4 +62,6 @@ public interface AdministrarCarpetaPersonalInterface {
     public Empleados buscarEmpleado(BigInteger secuencia);
 
     public void editarVigenciasCargos(VigenciasCargos vC);
+
+    public String actualUsuario();
 }

@@ -6,51 +6,104 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="Cerrar Liquidación" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
-                        <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 500px; height: 450px; border-radius: 10px; ">
+                    <p:panel  id="PanelTotal" header="Cerrar Liquidación" style=" font-size: 12px; position: absolute; width: 674px; height: 530px; text-align: left" >  
+                        <fieldset style="position: absolute; left: 10px; top: 40px; font-size: 12px; width: 520px; height: 470px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Parametros Establecidos</legend>
-                            <h:outputText id="imagen" style="background-image: url(Imagenes/#{controlBarra.imagenEstado}); width: 150px; height: 140px; background-repeat: no-repeat; background-size: 100% 100%;; z-index: 1; position: absolute; top: 23px; left: 20px"/>
+                            <p:commandButton id="btnBorrarComprobantes" value=" " ondblclick="abrirLiquidacion()" style="background-image: url(Imagenes/nom_cerrar.gif); width: 120px; height: 120px; background-repeat: no-repeat; background-size: 100% 100%;; z-index: 1; position: absolute; top: 40px; left: 10px"/>
                             <p:panel id="panelInf" style="border: none;">
-                                <fieldset style="position: absolute; left: 180px; top: 15px; font-size: 12px; width: 300px; height: 137px; border-radius: 10px; ">
-                                    <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Indicadores</legend>
-                                    <h:outputText value="Total trabajadores a liquidar: " style="font-weight: bold; position: absolute; top: 22px; left: 20px"/>
-                                    <p:inputText value="#{controlBarra.totalEmpleadosParaLiquidar}" style="position: absolute; left: 210px; text-align: right; width: 80px;" readonly="true"/>
-                                    <h:outputText value="Total trabajadores liquidados: " style="font-weight: bold; position: absolute; top: 52px; left: 20px"/>
-                                    <p:inputText id="empleadosLiquidados" value="#{controlBarra.totalEmpleadosLiquidados}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 50px" readonly="true" /> 
-                                    <h:outputText value="Hora inicial liquidación: " style="font-weight: bold; position: absolute; left: 20px; top: 83px"/>
-                                    <p:inputText id="horaI" value="#{controlBarra.horaInicialLiquidacion}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 82px" readonly="true"/>
-                                    <h:outputText value="Hora final liquidación: " style="font-weight: bold; position: absolute; top: 115px; left: 20px"/>
-                                    <p:inputText id="horaF" value="#{controlBarra.horaFinalLiquidacion}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 114px" readonly="true" /> 
-                                </fieldset>
+                                <h:outputText value="Total trabajadores: " style="font-weight: bold; position: absolute; top: 22px; left: 140px"/>
+                                <p:inputText value="#{controlCerrarLiquidacion.totalEmpleadosParaLiquidar}" style="position: absolute; left: 260px; top: 20px; text-align: right; width: 80px;" readonly="true"/>
+                                <h:outputText value="Estructura: " style="font-weight: bold; position: absolute; top: 50px; left: 140px"/>
+                                <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.estructura.nombre}" style="position: absolute; left: 260px; width: 225px; top: 48px" readonly="true"/>
+                                <h:outputText value="Fecha inicial: " style="font-weight: bold; position: absolute; top: 82px; left: 140px"/>
+                                <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.fechadesdecausado}" style="position: absolute; left: 260px; width: 80px; top: 78px" readonly="true">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <h:outputText value="Fecha final: " style="font-weight: bold; position: absolute; left: 360px; top: 82px"/>
+                                <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.fechahastacausado}" style="position: absolute; left: 430px; width: 80px; top: 78px" readonly="true">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <h:outputText value="Fecha pago (Corte): " style="font-weight: bold; position: absolute; top: 112px; left: 140px"/>
+                                <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.fechasistema}" style="position: absolute; left: 260px; width: 80px; top: 108px" readonly="true">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <h:outputText value="Proceso: " style="font-weight: bold; position: absolute; top: 144px; left: 140px"/>
+                                <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.proceso.descripcion}" style="position: absolute; left: 260px; width: 160px; top: 140px" readonly="true" /> 
+                                <h:outputText value="Tipo trabajador: " style="font-weight: bold; position: absolute; top: 176px; left: 140px"/>
+                                <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.tipotrabajador.nombre}" style="position: absolute; left: 260px; width: 160px; top: 172px" readonly="true" /> 
                             </p:panel>
-                            
-                             <p:panel style="border: none;">
-                                <fieldset style="position: absolute; left: 10px; top: 172px; font-size: 12px; width: 470px; height: 110px; border: inset; border-width: 2px">
-                                    <h:outputText value="Fecha inicial: " style="font-weight: bold; position: absolute; top: 10px; left: 20px"/>
-                                    <p:inputText value="#{controlBarra.parametroEstructura.fechadesdecausado}" style="position: absolute; left: 20px; width: 80px; top: 30px" readonly="true">
-                                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                                    </p:inputText>
-                                    <h:outputText value="Estructura: " style="font-weight: bold; position: absolute; top: 10px; left: 120px"/>
-                                    <p:inputText value="#{controlBarra.parametroEstructura.estructura.nombre}" style="position: absolute; left: 120px; width: 340px; top: 30px" readonly="true"/>
-                                    <h:outputText value="Fecha final: " style="font-weight: bold; position: absolute; left: 20px; top: 65px"/>
-                                    <p:inputText value="#{controlBarra.parametroEstructura.fechahastacausado}" style="position: absolute; left: 20px; width: 80px; top: 85px" readonly="true">
-                                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                                    </p:inputText>
-                                    <h:outputText value="Proceso: " style="font-weight: bold; position: absolute; top: 65px; left: 120px"/>
-                                    <p:inputText value="#{controlBarra.parametroEstructura.proceso.descripcion}" style="position: absolute; left: 120px; width: 160px; top: 85px" readonly="true" /> 
-                                    <h:outputText value="Tipo trabajador: " style="font-weight: bold; position: absolute; top: 65px; left: 300px"/>
-                                    <p:inputText value="#{controlBarra.parametroEstructura.tipotrabajador.nombre}" style="position: absolute; left: 300px; width: 160px; top: 85px" readonly="true" /> 
-                                </fieldset>
-                            </p:panel>
+
+                            <fieldset style="position: absolute; left: 10px; top: 200px; font-size: 12px; width: 492px; height: 230px; border-radius: 10px; ">
+                                <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Empleados a cerrar liquidación</legend>
+                                <p:dataTable id="datosEmpleadosParametros" var="empleadoParametro" style="font-size: 11px; width: 480px;" value="#{controlCerrarLiquidacion.listaParametros}"
+                                             scrollable="true" scrollWidth="495"  editable="true" editMode="cell"  scrollHeight="185" 
+                                             filteredValue="#{controlCerrarLiquidacion.filtradoListaParametros}" emptyMessage="Sin registros">
+
+                                    <p:column id="codigoEmpleado" headerText="Código" sortBy="#{empleadoParametro.empleado.codigoempleado}" width="80" filterBy="#{empleadoParametro.empleado.codigoempleado}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px" > 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{empleadoParametro.empleado.codigoempleado}"/>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{empleadoParametro.empleado.codigoempleado}" style="width: 87%; text-transform: uppercase" readonly="true"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column id="nombreEmpleado" headerText="Nombre Empleado" sortBy="#{empleadoParametro.empleado.persona.nombreCompleto}"  filterBy="#{empleadoParametro.empleado.persona.nombreCompleto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{empleadoParametro.empleado.persona.nombreCompleto}"/>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{empleadoParametro.empleado.persona.nombreCompleto}" style="width: 85%; text-transform: uppercase" readonly="true"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                </p:dataTable>
+                            </fieldset>
+
+                            <p:commandButton value="Cerrar liquidación" style="position: absolute; top: 448px; left: 322px" onclick="confirmarCerrar.show();"/>
+                            <p:commandButton value="Atras" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 448px; left: 452px" actionListener="#{controlCerrarLiquidacion.salir()}" action="nomina" process="@this"/>
                         </fieldset>
                     </p:panel>
+
+                    <p:remoteCommand name="abrirLiquidacion" actionListener="#{controlCerrarLiquidacion.confirmarAbrirLiquidacion()}"/>  
+                </h:form>
+                <h:form id="formularioDialogos">
+                    <p:dialog id="confirmarCerrar" header="ATENCIÓN...!" widgetVar="confirmarCerrar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="¿Esta completamente seguro que desea cerrar la liquidación?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="confirmarCerrar.hide();" actionListener="#{controlCerrarLiquidacion.confirmarCierreLiquidacion()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarCerrar.hide();" style="position: absolute; top: 60px; left: 290px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarCerrarConteoFallo" header="ATENCIÓN...!" widgetVar="confirmarCerrarConteoFallo"  resizable="false" draggable="false" modal="true" height="145" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 30px;"  />
+                        <h:outputText value="Existe una diferencia entre la cantidad de empleados parametrizados por el proceso y los dispuestos a cerrar en la Liquidación por el mismo proceso" style="position: absolute; left: 100px; top: 20px; width: 280px; text-align: justify" />
+                        <h:outputText value="¿Desea continuar?" style="position: absolute; left: 180px; top: 80px;" />
+                        <p:commandButton value="Aceptar" onclick="confirmarCerrarConteoFallo.hide();" actionListener="#{controlCerrarLiquidacion.cerrarLiquidacion()}" style="position: absolute; top: 110px; left: 215px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarCerrarConteoFallo.hide();" style="position: absolute; top: 110px; left: 290px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarBorrarComprobante" header="ATENCIÓN...!" widgetVar="confirmarBorrarComprobante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="Va a eliminar al comprobante el cual tiene el Proceso (#{controlCerrarLiquidacion.parametroEstructura.proceso.descripcion}). ¿Esta seguro?" style="position: absolute; left: 100px; top: 20px; width: 280px;" />
+                        <p:commandButton value="Aceptar" onclick="confirmarBorrarComprobante.hide();" actionListener="#{controlCerrarLiquidacion.abrirLiquidacion()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarBorrarComprobante.hide();" style="position: absolute; top: 60px; left: 290px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorComprobante" header="ATENCIÓN...!" widgetVar="errorComprobante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="Este proceso NO tiene acumulados de nómina, por tal motivo no lo puede eliminar" style="position: absolute; left: 100px; top: 20px; width: 280px;" />
+                        <p:commandButton value="Aceptar" onclick="errorComprobante.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
                 </h:form>
             </ui:define>
         </ui:composition>

@@ -66,7 +66,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             return null;
         }
     }
-    
+
     public void cancelarLiquidacion(String usuarioBD) {
         try {
             Query query = em.createQuery("UPDATE Candados c SET c.estado='CANCELAR' WHERE c.usuario.alias = :usuarioBD");
@@ -74,6 +74,26 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             int i = query.executeUpdate();
         } catch (Exception e) {
             System.out.println("Exepcion: cancelarLiquidacion " + e);
+        }
+    }
+
+    public void cerrarLiquidacionAutomatico() {
+        try {
+            String sqlQuery = "call UTL_FORMS.CERRARLIQUIDACION()";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error cerrarLiquidacion. " + e);
+        }
+    }
+    
+    public void cerrarLiquidacionNoAutomatico() {
+        try {
+            String sqlQuery = "call UTL_FORMS.CERRARLIQPAGOPORFUERA()";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error cerrarLiquidacion. " + e);
         }
     }
 }

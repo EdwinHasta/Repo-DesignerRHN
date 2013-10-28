@@ -142,4 +142,25 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             return null;
         }
     }
+
+    public Integer ContarProcesosSN(BigInteger secProceso) {
+        try {
+            String sqlQuery = "SELECT COUNT(distinct empleado)\n"
+                    + "  FROM solucionesnodos sn\n"
+                    + "  WHERE estado='LIQUIDADO'\n"
+                    + "  AND sn.proceso = ?\n"
+                    + "  AND exists (select 'x' from parametros p, usuarios u\n"
+                    + "              where u.secuencia = p.usuario\n"
+                    + "              and p.proceso = sn.proceso\n"
+                    + "              AND p.empleado = sn.empleado)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secProceso);
+            BigDecimal conteo = (BigDecimal) query.getSingleResult();
+            Integer conteoProcesosSN = conteo.intValueExact();
+            return conteoProcesosSN;
+        } catch (Exception e) {
+            System.out.println("Error ContarProcesosSN. " + e);
+            return null;
+        }
+    }
 }

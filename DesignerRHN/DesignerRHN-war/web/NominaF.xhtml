@@ -432,8 +432,8 @@
                                     <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 130px; top: 20px;">
 
                                         <p:selectOneRadio id="options" value="#{controlRemoto.pago}" style="font-size: 11px; font-weight: bold; position: absolute; top: -2px" layout="pageDirection" >  
-                                            <f:selectItem itemLabel="Pagos Automáticos" itemValue="1"/>  
-                                            <f:selectItem itemLabel="Pagos NO Automáticos" itemValue="2" />
+                                            <f:selectItem itemLabel="Pagos Automáticos" itemValue="AUTOMATICO"/>  
+                                            <f:selectItem itemLabel="Pagos NO Automáticos" itemValue="NO AUTOMATICO" />
                                             <p:ajax update="@this" listener="#{controlRemoto.cambiarFormaPago()}"/>
                                         </p:selectOneRadio> 
 
@@ -492,7 +492,7 @@
 
                                         <p:commandButton value=" " id="btnBorrarLiquidacion" style="position: absolute; left: 275px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_borrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
 
-                                        <p:commandButton value=" " id="btnCerrarLiquidacion" style="position: absolute; left: 275px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnCerrarLiquidacion" style="position: absolute; left: 275px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; " actionListener="#{controlCerrarLiquidacion.tipoLiquidacion(controlRemoto.pago)}" action="cerrarliq"/>
 
                                         <p:commandButton value=" " id="btnReportesNomina" style="position: absolute; left: 275px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteNomina"/>
 

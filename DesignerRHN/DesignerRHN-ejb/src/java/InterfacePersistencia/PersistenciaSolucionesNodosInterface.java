@@ -26,4 +26,5 @@ public interface PersistenciaSolucionesNodosInterface {
    public Long validacionTercerosVigenciaAfiliacion(BigInteger secuencia,Date fechaInicial,BigDecimal secuenciaTE, BigInteger secuenciaTer);
    public List<SolucionesNodos> solucionNodoEmpleado(BigInteger secuenciaEmpleado);
    public List<SolucionesNodos> solucionNodoEmpleador(BigInteger secuenciaEmpleado);
+   public Integer ContarProcesosSN(BigInteger secProceso);
 }

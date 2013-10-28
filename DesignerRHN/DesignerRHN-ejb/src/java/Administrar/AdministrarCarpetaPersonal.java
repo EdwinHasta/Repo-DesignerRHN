@@ -60,6 +60,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     PersistenciaPersonasInterface persistenciaPersonas;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    @EJB 
+    PersistenciaActualUsuarioInterface persistenciaActualUsuario;
+    
     public VWActualesCargos vwActualesCargos;
     public VWActualesTiposContratos vwActualesTiposContratos;
     public VWActualesNormasEmpleados vwActualesNormasEmpleados;
@@ -265,9 +268,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
-    public Usuarios ConsultarUsuario() {
+    public Usuarios ConsultarUsuario(String alias) {
         try {
-            usuarios = persistenciaUsuarios.buscarUsuario();
+            usuarios = persistenciaUsuarios.buscarUsuario(alias);
             return usuarios;
         } catch (Exception e) {
             usuarios = null;
@@ -342,4 +345,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             System.out.println("Excepcion Administrar - No Se Guardo Nada ¬¬");
         }
     }
+    
+    public String actualUsuario(){
+        return persistenciaActualUsuario.actualAliasBD();
+    }
+    
 }

@@ -19,4 +19,6 @@ public interface PersistenciaCortesProcesosInterface {
     public CortesProcesos buscarCorteProceso(Object id);
     public List<CortesProcesos> buscarCortesProcesos();
     public List<CortesProcesos> cortesProcesosComprobante(BigInteger secuenciaComprobante);
+    public Integer contarLiquidacionesCerradas(BigInteger secProceso, String fechaDesde, String fechaHasta);
+    public void eliminarComprobante(Short codigoProceso, String fechaDesde, String fechaHasta);
 }

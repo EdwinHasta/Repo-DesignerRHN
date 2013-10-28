@@ -14,4 +14,6 @@ public interface PersistenciaCandadosInterface {
     public String estadoLiquidacion(String usuarioBD);
     public Integer progresoLiquidacion(Integer totalEmpleadosALiquidar);
     public void cancelarLiquidacion(String usuarioBD);
+    public void cerrarLiquidacionAutomatico();
+    public void cerrarLiquidacionNoAutomatico();
 }
