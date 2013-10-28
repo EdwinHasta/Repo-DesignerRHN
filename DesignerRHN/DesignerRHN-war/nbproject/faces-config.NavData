@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
-    <Scope Scope="Project"/>
+    <Scope Scope="Project">
+        <Node id="NReporteNomina.xhtml" x="1650" y="300" zoom="true"/>
+        <Node id="libros.xhtml" x="1400" y="450" zoom="true"/>
+        <Node id="EmplVigenciaLocalizacion.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="EmplVigenciaJornada.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="Pruebas.xhtml" x="1150" y="450" zoom="true"/>
+        <Node id="ProgressBar.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="EmplVigenciaTipoContrato.xhtml" x="1776" y="582" zoom="true"/>
+        <Node id="EmplVigenciasCargos.xhtml" x="1221" y="592" zoom="true"/>
+        <Node id="vigenciasCargos.xhtml" x="900" y="750" zoom="true"/>
+        <Node id="NReportesContabilidad.xhtml" x="1150" y="600" zoom="true"/>
+        <Node id="TiposTelefonos.xhtml" x="150" y="1200" zoom="true"/>
+        <Node id="EmplVacaPendiente.xhtml" x="1900" y="300" zoom="true"/>
+        <Node id="NovedadPlano.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="PerTelefono.xhtml" x="1621" y="492" zoom="false"/>
+        <Node id="Concepto.xhtml" x="1650" y="450" zoom="true"/>
+        <Node id="Imagenes/Prueba.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="EmplVigenciaSueldo.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="NominaF.xhtml" x="382" y="840" zoom="true"/>
+        <Node id="OLDindex.xhtml" x="650" y="750" zoom="true"/>
+        <Node id="prueba2.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="Rastro.xhtml" x="1520" y="781" zoom="true"/>
+        <Node id="NReporteLaboral.xhtml" x="747" y="942" zoom="true"/>
+        <Node id="PaginaNoEncontrada.xhtml" x="2150" y="150" zoom="true"/>
+        <Node id="page1.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="EmplSets.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="PersonaEducacion.xhtml" x="1400" y="600" zoom="true"/>
+        <Node id="Template.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="NReporteBienestar.xhtml" x="1900" y="150" zoom="true"/>
+        <Node id="EmplUbicacionGeografica.xhtml" x="900" y="600" zoom="true"/>
+        <Node id="ListaValores.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="PruebasUnitariasComponentes.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="Parametro.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="PaginaPrincipalMini.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="EmpleadoIndividual.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="Status.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="EmplVigenciaReformaLaboral.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="Ciudades.xhtml" x="1451" y="902" zoom="true"/>
+        <Node id="EmplLegislacionLaboral.xhtml" x="650" y="450" zoom="true"/>
+        <Node id="PaginaPrincipal.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="index.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="EmplComprobante.xhtml" x="400" y="1050" zoom="true"/>
+        <Node id="NReportePersonal.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="Estructura.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="PerDirecciones.xhtml" x="1150" y="750" zoom="true"/>
+        <Node id="ReportesBancos.xhtml" x="613" y="858" zoom="true"/>
+        <Node id="EmplVigenciaTipoTrabajador.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="Imagenes/Puente.xhtml" x="150" y="900" zoom="true"/>
+    </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>
