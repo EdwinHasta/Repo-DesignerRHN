@@ -191,6 +191,7 @@ public class Conceptos implements Serializable {
     }
 
     public BigInteger getCodigo() {
+        
         return codigo;
     }
 

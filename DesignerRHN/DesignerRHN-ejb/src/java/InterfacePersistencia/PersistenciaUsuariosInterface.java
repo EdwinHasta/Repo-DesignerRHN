@@ -3,6 +3,6 @@ package InterfacePersistencia;
 import Entidades.Usuarios;
 
 public interface PersistenciaUsuariosInterface {
-        public Usuarios buscarUsuario();
+        public Usuarios buscarUsuario(String alias);
 
 }

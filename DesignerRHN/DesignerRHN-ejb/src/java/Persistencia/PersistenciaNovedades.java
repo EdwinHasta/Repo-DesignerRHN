@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 @Stateless
@@ -14,6 +15,32 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+    
+     @Override
+    public void crear(Novedades novedades) {
+        try {
+//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
+            em.merge(novedades);
+        } catch (PersistenceException ex) {
+            System.out.println("Error PersistenciaNovedades.crear");
+        }
+    }
+       
+     
+    // Editar Novedades. 
+     
+    @Override
+    public void editar(Novedades novedades) {
+        em.merge(novedades);
+    }
+
+    /*
+     *Borrar Novedades.
+     */
+    @Override
+    public void borrar(Novedades novedades) {
+        em.remove(em.merge(novedades));
+    }
 
     public List<Novedades> novedadesParaReversar(BigInteger usuarioBD, String documentoSoporte) {
         try {

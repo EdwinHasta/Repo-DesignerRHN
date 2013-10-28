@@ -29,7 +29,7 @@ public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultas
                     + "(select --+ rule\n"
                     + "emp.codigo EMPRESACODIGO, co.fecha CORTE, p.descripcion PROCESO, p.codigo CODIGO, count(distinct cp.empleado) TOTAL\n"
                     + "from  empresas emp, procesos p, cortesprocesos cp, empleados e, comprobantes co\n"
-                    + "where co.fecha between To_date('01/01/2013', 'dd/mm/yyyy') AND To_date('31/01/2013', 'dd/mm/yyyy')\n"
+                    + "where co.fecha between To_date( ?, 'dd/mm/yyyy') AND To_date( ?, 'dd/mm/yyyy')\n"
                     + "and cp.proceso=p.secuencia\n"
                     + "and e.secuencia = cp.empleado\n"
                     + "and co.secuencia=cp.comprobante\n"

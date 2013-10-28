@@ -2,6 +2,7 @@ package Persistencia;
 
 import Entidades.CortesProcesos;
 import InterfacePersistencia.PersistenciaCortesProcesosInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -10,7 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInterface{
+public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -67,6 +68,40 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
         } catch (Exception e) {
             System.out.println("Error: (PersistenciaCortesProcesos.cortesProcesosComprobante)" + e);
             return null;
+        }
+    }
+
+    public Integer contarLiquidacionesCerradas(BigInteger secProceso, String fechaDesde, String fechaHasta) {
+        try {
+            String sqlQuery = "SELECT nvl(COUNT(CP.SECUENCIA),0)\n"
+                    + "       FROM CORTESPROCESOS CP, empleados e, comprobantes co\n"
+                    + "       WHERE e.secuencia=cp.empleado\n"
+                    + "       AND co.secuencia=cp.comprobante\n"
+                    + "       AND co.fecha  between  To_date( ?, 'dd/mm/yyyy') and To_date( ?, 'dd/mm/yyyy')\n"
+                    + "       AND CP.proceso = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, fechaDesde);
+            query.setParameter(2, fechaHasta);
+            query.setParameter(3, secProceso);
+            BigDecimal conteo = (BigDecimal) query.getSingleResult();
+            Integer conteoLiquidacionCerradas = conteo.intValueExact();
+            return conteoLiquidacionCerradas;
+        } catch (Exception e) {
+            System.out.println("Error contarLiquidacionesCerradas. " + e);
+            return null;
+        }
+    }
+    
+    public void eliminarComprobante(Short codigoProceso, String fechaDesde, String fechaHasta) {
+        try {
+            String sqlQuery = "call CORTESPROCESOS_PKG.ELIMINARCOMPROBANTE(?, To_date( ?, 'dd/mm/yyyy'), To_date( ?, 'dd/mm/yyyy'))";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, codigoProceso);
+            query.setParameter(2, fechaDesde);
+            query.setParameter(3, fechaHasta);
+            query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error cerrarLiquidacion. " + e);
         }
     }
 }

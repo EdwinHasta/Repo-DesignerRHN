@@ -2,7 +2,6 @@ package Persistencia;
 
 import Entidades.Usuarios;
 import InterfacePersistencia.PersistenciaUsuariosInterface;
-import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,10 +17,10 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface{
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    public Usuarios buscarUsuario() {
-
+    public Usuarios buscarUsuario(String alias) {
         try {
-            Query query = em.createQuery("SELECT u FROM Usuarios u WHERE u.alias='PRODUCCION'");
+            Query query = em.createQuery("SELECT u FROM Usuarios u WHERE u.alias= :alias");
+            query.setParameter("alias", alias);
             Usuarios usuarios = (Usuarios) query.getSingleResult();
             return usuarios;
 
