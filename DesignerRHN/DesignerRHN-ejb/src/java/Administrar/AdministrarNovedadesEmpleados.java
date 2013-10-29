@@ -21,6 +21,7 @@ import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaNovedadesInterface;
 import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import InterfacePersistencia.PersistenciaPruebaEmpleadosInterface;
+import InterfacePersistencia.PersistenciaSolucionesFormulasInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaUsuariosInterface;
 import InterfacePersistencia.PersistenciaVWActualesTiposTrabajadoresInterface;
@@ -53,6 +54,8 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     @EJB
     PersistenciaUsuariosInterface persistenciaUsuarios;
+    @EJB
+    PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
 
     //Trae los empleados con Novedades dependiendo el Tipo de Trabajador que sea.
 
@@ -88,8 +91,17 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
         }
     }
     
+    //Ver si está en soluciones formulas y de ser asi no borrarlo
+    public int solucionesFormulas(BigInteger secuenciaNovedad){
+        return persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(secuenciaNovedad);
+    }
+    
     public String alias(){
         return persistenciaActualUsuario.actualAliasBD();
+    }
+    
+    public Usuarios usuarioBD(String alias){
+        return persistenciaUsuarios.buscarUsuario(alias);
     }
     
     //Procesa un solo empleado para volverlo Pruebaempleado

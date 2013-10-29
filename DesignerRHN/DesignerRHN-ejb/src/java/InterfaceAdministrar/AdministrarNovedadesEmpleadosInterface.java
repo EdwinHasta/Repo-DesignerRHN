@@ -21,6 +21,8 @@ import java.util.List;
  * @author Viktor
  */
 public interface AdministrarNovedadesEmpleadosInterface {
+    
+    public int solucionesFormulas(BigInteger secuenciaNovedad);
 
     public List<PruebaEmpleados> empleadosNovedad();
 
@@ -49,5 +51,8 @@ public interface AdministrarNovedadesEmpleadosInterface {
     public void modificarNovedades(List<Novedades> listaNovedadesModificar);
 
     public String alias();
+    
+    public Usuarios usuarioBD(String alias);
+     
      
 }
