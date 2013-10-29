@@ -93,7 +93,8 @@
                         <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
                         <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlNovedadesEmpleados.salir()}" action="individual" />
-
+                        <p:commandButton style="position: absolute; left: 200px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="TODAS" value="Todas las Novedades" actionListener="#{controlNovedadesEmpleados.todasNovedades()}" disabled="#{controlNovedadesEmpleados.todas}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 400px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACTUALES" value="Novedades Actuales" actionListener="#{controlNovedadesEmpleados.actualesNovedades()}" disabled="#{controlNovedadesEmpleados.actuales}" process="@this" />
 
                         <fieldset style="position: absolute; left: 10px; top: 230px; font-size: 10px; width: 100px; height: 250px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Conceptos de pago y/o descuento</strong></legend>
@@ -557,9 +558,9 @@
                                 <p:ajax  update="@this" />
                             </p:selectOneMenu>
 
-                            <p:commandButton id="limpiarDuplicadoNovedad" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 400px;" actionListener="#{controlNovedadesEmpleados.limpiarduplicarNovedades()}" update="duplicarNovedad" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoNovedad" value="Agregar" style="font-size: 11px; position: absolute; left: 210px; top: 400px;"  process="@this" actionListener="#{controlNovedadesEmpleados.confirmarDuplicar()}" />
-                            <p:commandButton id="cancelarDuplicadoNovedad" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 400px;" actionListener="#{controlNovedadesEmpleados.limpiarduplicarNovedades()}" update="duplicarNovedad" onclick="DuplicarRegistroEncargatura.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoNovedad" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 50px; top: 370px;" actionListener="#{controlNovedadesEmpleados.limpiarduplicarNovedades()}" update="duplicarNovedad" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoNovedad" value="Agregar" style="font-size: 11px; position: absolute; left: 550px; top: 370px;"  process="@this" actionListener="#{controlNovedadesEmpleados.confirmarDuplicar()}" />
+                            <p:commandButton id="cancelarDuplicadoNovedad" value="Cancelar" style="font-size: 11px; position: absolute; left: 650px; top: 370px;" actionListener="#{controlNovedadesEmpleados.limpiarduplicarNovedades()}" update="duplicarNovedad" onclick="DuplicarRegistroNovedad.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -667,17 +668,17 @@
 
                     <!-- L.O.V FORMULAS-->
                     <p:dialog header="Formulas" widgetVar="formulasDialogo" draggable="false" resizable="false" id="formulasDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="630" height="400" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="320" height="350" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVFormulas" style="font-size: 11px; width: 600px" var="formulas" value="#{controlNovedadesEmpleados.listaFormulas}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="600" widgetVar="LOVFormulas" 
+                        <p:dataTable  id="LOVFormulas" style="font-size: 11px; width: 300px" var="formulas" value="#{controlNovedadesEmpleados.listaFormulas}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="300" widgetVar="LOVFormulas" 
                                       filteredValue="#{controlNovedadesEmpleados.filtradoslistaFormulas}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{formulas.secuencia}" selection="#{controlNovedadesEmpleados.seleccionFormulas}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.activarAceptar()}" update=":formularioDialogos:aceptarF"/>
                             <p:ajax event="rowDblselect" listener="#{controlNovedadesEmpleados.actualizarFormulas()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 150px; position: relative; left: 60px;" />  
                             </f:facet>
 
                             <p:column sortBy="#{formulas.nombrelargo}" filterBy="#{formulas.nombrelargo}" width="200" filterMatchMode="contains" > 
@@ -689,10 +690,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarF" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 282px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarFormulas()}" onclick="LOVFormulas.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarF" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 155px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarFormulas()}" onclick="LOVFormulas.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormulas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasF" value="Atras" style="position: absolute; top: 305px; left: 355px; font-size: 12px" onclick="formulasDialogo.hide(), LOVFormulas.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioFormulas()}" update="LOVFormulas, aceptarF" process="@this">
+                        <p:commandButton id="atrasF" value="Atras" style="position: absolute; top: 305px; left: 230px; font-size: 12px" onclick="formulasDialogo.hide(), LOVFormulas.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioFormulas()}" update="LOVFormulas, aceptarF" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormulas:globalFilter"/>
                         </p:commandButton>
 
@@ -700,10 +701,10 @@
 
                     <!-- L.O.V CONCEPTOS-->
                     <p:dialog header="Conceptos" widgetVar="conceptosDialogo" draggable="false" resizable="false" id="conceptosDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="630" height="400" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
 
                         <p:dataTable  id="LOVConceptos" style="font-size: 11px; width: 600px" var="conceptos" value="#{controlNovedadesEmpleados.listaConceptos}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="600" widgetVar="LOVConceptos" 
+                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVConceptos" 
                                       filteredValue="#{controlNovedadesEmpleados.filtradoslistaConceptos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{conceptos.secuencia}" selection="#{controlNovedadesEmpleados.seleccionConceptos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
@@ -713,21 +714,21 @@
                                 <p:inputText id="globalFilter" onkeyup="LOVConceptos.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{conceptos.codigo}" filterBy="#{conceptos.codigo}" width="200" filterMatchMode="contains" > 
+                            <p:column sortBy="#{conceptos.codigo}" filterBy="#{conceptos.codigo}" width="100" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{conceptos.codigo}" />  
                             </p:column>
 
-                            <p:column sortBy="#{conceptos.descripcion}" filterBy="#{conceptos.descripcion}" width="200" filterMatchMode="contains" > 
+                            <p:column sortBy="#{conceptos.descripcion}" filterBy="#{conceptos.descripcion}" width="300" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Descripcion" />
                                 </f:facet>
                                 <h:outputText value="#{conceptos.descripcion}" />  
                             </p:column>
 
-                            <p:column sortBy="#{conceptos.empresa.nombre}" filterBy="#{conceptos.empresa.nombre}" width="200" filterMatchMode="contains" > 
+                            <p:column sortBy="#{conceptos.empresa.nombre}" filterBy="#{conceptos.empresa.nombre}" width="100" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Descripcion" />
                                 </f:facet>
@@ -736,10 +737,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarC" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 282px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarConceptos()}" onclick="LOVConceptos.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarC" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarConceptos()}" onclick="LOVConceptos.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVConceptos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasC" value="Atras" style="position: absolute; top: 305px; left: 355px; font-size: 12px" onclick="conceptosDialogo.hide(), LOVConceptos.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" update="LOVConceptos, aceptarC" process="@this">
+                        <p:commandButton id="atrasC" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="conceptosDialogo.hide(), LOVConceptos.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" update="LOVConceptos, aceptarC" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVConceptos:globalFilter"/>
                         </p:commandButton>
 
@@ -748,20 +749,20 @@
 
                     <!-- L.O.V PERIODICIDAD-->
                     <p:dialog header="Periodicidad" widgetVar="periodicidadesDialogo" draggable="false" resizable="false" id="periodicidadesDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="630" height="400" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="370" height="350" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVPeriodicidades" style="font-size: 11px; width: 600px" var="periodicidades" value="#{controlNovedadesEmpleados.listaPeriodicidades}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="600" widgetVar="LOVPeriodicidades" 
+                        <p:dataTable  id="LOVPeriodicidades" style="font-size: 11px; width: 340px" var="periodicidades" value="#{controlNovedadesEmpleados.listaPeriodicidades}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="340" widgetVar="LOVPeriodicidades" 
                                       filteredValue="#{controlNovedadesEmpleados.filtradoslistaPeriodicidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{periodicidades.secuencia}" selection="#{controlNovedadesEmpleados.seleccionPeriodicidades}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlNovedadesEmpleados.actualizarPeriodicidades()}" process="@this" onstart="LOVPeriodicidades.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVPeriodicidades.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVPeriodicidades.filter();" style="width: 200px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{periodicidades.codigo}" filterBy="#{periodicidades.codigo}" width="200" filterMatchMode="contains" > 
+                            <p:column sortBy="#{periodicidades.codigo}" filterBy="#{periodicidades.codigo}" width="30" filterMatchMode="contains" filterStyle="width:40px" > 
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
@@ -776,10 +777,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 282px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 150px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 355px; font-size: 12px" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" update="LOVPeriodicidades, aceptarP" process="@this">
+                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" update="LOVPeriodicidades, aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
 
@@ -787,20 +788,20 @@
 
                     <!-- L.O.V TERCEROS-->
                     <p:dialog header="Terceros" widgetVar="tercerosDialogo" draggable="false" resizable="false" id="tercerosDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="630" height="400" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="400" height="350" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVTerceros" style="font-size: 11px; width: 600px" var="terceros" value="#{controlNovedadesEmpleados.listaTerceros}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="600" widgetVar="LOVTerceros" 
+                        <p:dataTable  id="LOVTerceros" style="font-size: 11px; width: 370px" var="terceros" value="#{controlNovedadesEmpleados.listaTerceros}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="370" widgetVar="LOVTerceros" 
                                       filteredValue="#{controlNovedadesEmpleados.filtradoslistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{terceros.secuencia}" selection="#{controlNovedadesEmpleados.seleccionTerceros}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
                             <p:ajax event="rowDblselect" listener="#{controlNovedadesEmpleados.actualizarPeriodicidades()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 200px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{terceros.nitalternativo}" filterBy="#{terceros.nitalternativo}" width="200" filterMatchMode="contains" > 
+                            <p:column sortBy="#{terceros.nitalternativo}" filterBy="#{terceros.nitalternativo}" width="100" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="NIT" />
                                 </f:facet>
@@ -815,10 +816,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarT" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 282px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarT" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 150px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasT" value="Atras" style="position: absolute; top: 305px; left: 355px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" update="LOVTerceros, aceptarT" process="@this">
+                        <p:commandButton id="atrasT" value="Atras" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" update="LOVTerceros, aceptarT" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
 
@@ -826,10 +827,10 @@
 
                     <!-- L.O.V Empleado-->
                     <p:dialog header="Buscar Empleado." widgetVar="empleadosDialogo" draggable="false" resizable="false" id="empleadosDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="630" height="400" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
 
                         <p:dataTable  id="LOVEmpleados" style="font-size: 11px; width: 600px" var="emp" value="#{controlNovedadesEmpleados.listaEmpleados}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="600" widgetVar="LOVEmpleados" 
+                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVEmpleados" 
                                       filteredValue="#{controlNovedadesEmpleados.filtradoslistaEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{emp.empleado.secuencia}" selection="#{controlNovedadesEmpleados.seleccionEmpleados}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
@@ -862,10 +863,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 282px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarEmpleadosNovedad()}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarEmpleadosNovedad()}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 355px; font-size: 12px" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
+                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
                         </p:commandButton>
 
@@ -876,7 +877,14 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="El registro se encuentra en la tabla SOLUCIONES FORMULAS, no se puede eliminar." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
-
+                    
+                    <!-- DIALOGO CAMBIO DE EMPLEADO -->
+                    <p:dialog id="cambiar" header="ATENCIÓN" widgetVar="cambiar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Aún hay cambios sin guardar, ¿desea guardar los cambios?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="cambiar.hide();" actionListener="#{controlNovedadesEmpleados.guardarCambiosNovedades()}" style="position: absolute; top: 63px; left: 230px" process="@this" />
+                        <p:commandButton value="No" onclick="cambiar.hide();" actionListener="#{controlNovedadesEmpleados.limpiarListas()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  

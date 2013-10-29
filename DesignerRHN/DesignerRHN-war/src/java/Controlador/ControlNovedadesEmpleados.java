@@ -50,6 +50,7 @@ public class ControlNovedadesEmpleados implements Serializable {
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     //LISTA NOVEDADES
+    private List<Novedades> todasNovedades;
     private List<Novedades> listaNovedades;
     private List<Novedades> filtradosListaNovedades;
     //LISTA QUE NO ES LISTA - 1 SOLO ELEMENTO
@@ -117,13 +118,18 @@ public class ControlNovedadesEmpleados implements Serializable {
     private Usuarios usuarioBD;
     //VALIDAR SI EL QUE SE VA A BORRAR ESTÁ EN SOLUCIONES FORMULAS
     private int resultado;
+    private boolean todas;
+    private boolean actuales;
 
     public ControlNovedadesEmpleados() {
+        todasNovedades = null;
         permitirIndex = true;
         listaNovedades = null;
         listaEmpleados = null;
         listaFormulas = null;
         listaConceptos = null;
+        todas = false;
+        actuales = true;
         listaPeriodicidades = null;
         listaEmpleadosNovedad = null;
         permitirIndex = true;
@@ -142,9 +148,9 @@ public class ControlNovedadesEmpleados implements Serializable {
         nuevaNovedad.setPeriodicidad(new Periodicidades());
         nuevaNovedad.setFechareporte(new Date());
         nuevaNovedad.setTipo("FIJA");
-        
+
     }
-    
+
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -195,9 +201,9 @@ public class ControlNovedadesEmpleados implements Serializable {
         resultado = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosNovedadesEmpleado");
-        
+
     }
-    
+
     public void salir() {
 
         if (bandera == 1) {
@@ -247,18 +253,33 @@ public class ControlNovedadesEmpleados implements Serializable {
         permitirIndex = true;
     }
 
+    public void limpiarListas() {
+        listaNovedadesCrear.clear();
+        listaNovedadesBorrar.clear();
+        listaNovedadesModificar.clear();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosNovedadesEmpleado");
+    }
     //Ubicacion Celda Arriba 
+
     public void cambiarEmpleado() {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
         //{
-        secuenciaEmpleado = seleccionMostrar.getId();
-        listaNovedades = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosNovedadesEmpleado");
-        //}
-        listaNovedadesCrear.clear();
-        listaNovedadesModificar.clear();
-        listaNovedadesBorrar.clear();
+        if (listaNovedadesCrear.isEmpty() && listaNovedadesBorrar.isEmpty() && listaNovedadesModificar.isEmpty()) {
+            secuenciaEmpleado = seleccionMostrar.getId();
+            listaNovedades = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosNovedadesEmpleado");
+            //}
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:cambiar");
+            context.execute("cambiar.show()");
+
+        }
+        /*listaNovedadesCrear.clear();
+         listaNovedadesModificar.clear();
+         listaNovedadesBorrar.clear();*/
     }
 
     public void seleccionarTipoNuevaNovedad(String tipo, int tipoNuevo) {
@@ -339,7 +360,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 context.execute("solucionesFormulas.show()");
                 listaNovedadesBorrar.clear();
             }
-            
+
 
             if (!listaNovedadesBorrar.isEmpty() && pasas == 0) {
                 for (int i = 0; i < listaNovedadesBorrar.size(); i++) {
@@ -433,25 +454,25 @@ public class ControlNovedadesEmpleados implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
-        
+
         for (int i = 0; i < listaEmpleados.size(); i++) {
-                if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                    emp2 = listaEmpleados.get(i).getEmpleado();
-                    if(nuevaNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0){
-                       context.update("formularioDialogos:inconsistencia");
-                       context.execute("inconsistencia.show()");
-                       pasa2++;
-                    }
+            if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
+                emp2 = listaEmpleados.get(i).getEmpleado();
+                if (nuevaNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0) {
+                    context.update("formularioDialogos:inconsistencia");
+                    context.execute("inconsistencia.show()");
+                    pasa2++;
                 }
-                
             }
-        
-        if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getFechafinal())> 0){
-            context.update("formularioDialogos:fechas");
-            context.execute("fechas.show()");
-            pasa2++;
+
         }
-        
+
+        /*  if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getFechafinal()) > 0) {
+         context.update("formularioDialogos:fechas");
+         context.execute("fechas.show()");
+         pasa2++;
+         }*/
+
         if (nuevaNovedad.getConcepto() == null) {
             System.out.println("Entro a Concepto");
             mensajeValidacion = mensajeValidacion + " * Concepto\n";
@@ -467,18 +488,18 @@ public class ControlNovedadesEmpleados implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Valor\n";
             pasa++;
         }
-        
-        if (nuevaNovedad.getTipo()== null) {
+
+        if (nuevaNovedad.getTipo() == null) {
             System.out.println("Entro a Tipo");
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
         }
-        
+
         for (int i = 0; i < listaEmpleados.size(); i++) {
-                if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                    emp = listaEmpleados.get(i).getEmpleado();
-                }
+            if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
+                emp = listaEmpleados.get(i).getEmpleado();
             }
+        }
 
         System.out.println("Valor Pasa: " + pasa);
         if (pasa != 0) {
@@ -579,8 +600,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         } else {
         }
     }
-    
-    
+
     public void confirmarDuplicar() throws UnknownHostException {
 
         int pasa2 = 0;
@@ -594,21 +614,21 @@ public class ControlNovedadesEmpleados implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
-        
+
         for (int i = 0; i < listaEmpleados.size(); i++) {
-                if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                    emp2 = listaEmpleados.get(i).getEmpleado();
-                    if(duplicarNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0){
-                       context.update("formularioDialogos:inconsistencia");
-                       context.execute("inconsistencia.show()");
-                       pasa2++;
-                    }
+            if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
+                emp2 = listaEmpleados.get(i).getEmpleado();
+                if (duplicarNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0) {
+                    context.update("formularioDialogos:inconsistencia");
+                    context.execute("inconsistencia.show()");
+                    pasa2++;
                 }
-                
             }
-        
-        
-        
+
+        }
+
+
+
         if (duplicarNovedad.getConcepto() == null) {
             System.out.println("Entro a Concepto");
             mensajeValidacion = mensajeValidacion + " * Concepto\n";
@@ -624,25 +644,25 @@ public class ControlNovedadesEmpleados implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Valor\n";
             pasa++;
         }
-        
-        if (duplicarNovedad.getTipo()== null) {
+
+        if (duplicarNovedad.getTipo() == null) {
             System.out.println("Entro a Tipo");
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
         }
-        
+
         for (int i = 0; i < listaEmpleados.size(); i++) {
-                if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                    emp = listaEmpleados.get(i).getEmpleado();
-                }
+            if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
+                emp = listaEmpleados.get(i).getEmpleado();
             }
+        }
 
         System.out.println("Valor Pasa: " + pasa);
         if (pasa != 0) {
             context.update("formularioDialogos:validacionNuevaNovedadEmpleado");
             context.execute("validacionNuevaNovedadEmpleado.show()");
         }
-        
+
 
         if (pasa2 == 0) {
             listaNovedades.add(duplicarNovedad);
@@ -656,40 +676,40 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
             if (bandera == 1) {
                 nEConceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEConceptoCodigo");
-            nEConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nEConceptoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEConceptoDescripcion");
-            nEConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            nEFechasInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFechasInicial");
-            nEFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-            nEFechasFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFechasFinal");
-            nEFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-            nEValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEValor");
-            nEValor.setFilterStyle("display: none; visibility: hidden;");
-            nESaldo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nESaldo");
-            nESaldo.setFilterStyle("display: none; visibility: hidden;");
-            nEPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEPeriodicidadCodigo");
-            nEPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nEDescripcionPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEDescripcionPeriodicidad");
-            nEDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            nETercerosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nETercerosNit");
-            nETercerosNit.setFilterStyle("display: none; visibility: hidden;");
-            nETercerosNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nETercerosNombre");
-            nETercerosNombre.setFilterStyle("display: none; visibility: hidden;");
-            nEFormulas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFormulas");
-            nEFormulas.setFilterStyle("display: none; visibility: hidden;");
-            nEHorasDias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEHorasDias");
-            nEHorasDias.setFilterStyle("display: none; visibility: hidden;");
-            nEMinutosHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEMinutosHoras");
-            nEMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-            nETipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nETipo");
-            nETipo.setFilterStyle("display: none; visibility: hidden;");
+                nEConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
+                nEConceptoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEConceptoDescripcion");
+                nEConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                nEFechasInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFechasInicial");
+                nEFechasInicial.setFilterStyle("display: none; visibility: hidden;");
+                nEFechasFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFechasFinal");
+                nEFechasFinal.setFilterStyle("display: none; visibility: hidden;");
+                nEValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEValor");
+                nEValor.setFilterStyle("display: none; visibility: hidden;");
+                nESaldo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nESaldo");
+                nESaldo.setFilterStyle("display: none; visibility: hidden;");
+                nEPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEPeriodicidadCodigo");
+                nEPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
+                nEDescripcionPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEDescripcionPeriodicidad");
+                nEDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
+                nETercerosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nETercerosNit");
+                nETercerosNit.setFilterStyle("display: none; visibility: hidden;");
+                nETercerosNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nETercerosNombre");
+                nETercerosNombre.setFilterStyle("display: none; visibility: hidden;");
+                nEFormulas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFormulas");
+                nEFormulas.setFilterStyle("display: none; visibility: hidden;");
+                nEHorasDias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEHorasDias");
+                nEHorasDias.setFilterStyle("display: none; visibility: hidden;");
+                nEMinutosHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nEMinutosHoras");
+                nEMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
+                nETipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:nETipo");
+                nETipo.setFilterStyle("display: none; visibility: hidden;");
 
-            RequestContext.getCurrentInstance().update("form:datosNovedadesEmpleado");
-            bandera = 0;
-            filtradosListaNovedades = null;
-            tipoLista = 0;
+                RequestContext.getCurrentInstance().update("form:datosNovedadesEmpleado");
+                bandera = 0;
+                filtradosListaNovedades = null;
+                tipoLista = 0;
             }
-            
+
             // OBTENER EL TERMINAL 
             HttpServletRequest request = (HttpServletRequest) (FacesContext.getCurrentInstance().getExternalContext().getRequest());
             String equipo = null;
@@ -707,14 +727,12 @@ public class ControlNovedadesEmpleados implements Serializable {
             getUsuarioBD();
             System.out.println("UsuarioBD: " + usuarioBD);
             duplicarNovedad.setTerminal(localMachine.getHostName());
-            
+
             duplicarNovedad = new Novedades();
             context.update("formularioDialogos:DuplicarRegistroNovedad");
             context.execute("DuplicarRegistroNovedad.hide()");
         }
     }
-    
-    
 
     public void asignarIndex(Integer indice, int dlg, int LND) {
 
@@ -1393,10 +1411,10 @@ public class ControlNovedadesEmpleados implements Serializable {
             nuevaNovedad.setFormula(seleccionFormulas);
             context.update("formularioDialogos:nuevaNovedad");
         } else if (tipoActualizacion == 2) {
-         duplicarNovedad.setFormula(seleccionFormulas);
-         context.update("formularioDialogos:duplicarNovedad");
+            duplicarNovedad.setFormula(seleccionFormulas);
+            context.update("formularioDialogos:duplicarNovedad");
 
-         }
+        }
         filtradoslistaFormulas = null;
         seleccionFormulas = null;
         aceptar = true;
@@ -1440,10 +1458,10 @@ public class ControlNovedadesEmpleados implements Serializable {
             nuevaNovedad.setConcepto(seleccionConceptos);
             context.update("formularioDialogos:nuevaNovedad");
         } else if (tipoActualizacion == 2) {
-         duplicarNovedad.setConcepto(seleccionConceptos);
-         context.update("formularioDialogos:duplicarNovedad");
+            duplicarNovedad.setConcepto(seleccionConceptos);
+            context.update("formularioDialogos:duplicarNovedad");
 
-         }
+        }
         filtradoslistaConceptos = null;
         seleccionConceptos = null;
         aceptar = true;
@@ -1487,10 +1505,10 @@ public class ControlNovedadesEmpleados implements Serializable {
             nuevaNovedad.setPeriodicidad(seleccionPeriodicidades);
             context.update("formularioDialogos:nuevaNovedad");
         } else if (tipoActualizacion == 2) {
-         duplicarNovedad.setPeriodicidad(seleccionPeriodicidades);
-         context.update("formularioDialogos:duplicarNovedad");
+            duplicarNovedad.setPeriodicidad(seleccionPeriodicidades);
+            context.update("formularioDialogos:duplicarNovedad");
 
-         }
+        }
         filtradoslistaPeriodicidades = null;
         seleccionPeriodicidades = null;
         aceptar = true;
@@ -1534,10 +1552,10 @@ public class ControlNovedadesEmpleados implements Serializable {
             nuevaNovedad.setTercero(seleccionTerceros);
             context.update("formularioDialogos:nuevaNovedad");
         } else if (tipoActualizacion == 2) {
-         duplicarNovedad.setTercero(seleccionTerceros);
-         context.update("formularioDialogos:duplicarNovedad");
+            duplicarNovedad.setTercero(seleccionTerceros);
+            context.update("formularioDialogos:duplicarNovedad");
 
-         }
+        }
         filtradoslistaTerceros = null;
         seleccionTerceros = null;
         aceptar = true;
@@ -1573,7 +1591,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
     }
-    
+
     //DUPLICAR ENCARGATURA
     public void duplicarEN() {
         if (index >= 0) {
@@ -1581,7 +1599,7 @@ public class ControlNovedadesEmpleados implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             Empleados emple = new Empleados();
-            
+
             for (int i = 0; i < listaEmpleados.size(); i++) {
                 if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
                     emple = listaEmpleados.get(i).getEmpleado();
@@ -1688,6 +1706,29 @@ public class ControlNovedadesEmpleados implements Serializable {
         permitirIndex = true;
     }
 
+    public void todasNovedades() {
+        listaNovedades.clear();
+        listaNovedades = administrarNovedadesEmpleados.todasNovedades(seleccionMostrar.getId());
+        RequestContext context = RequestContext.getCurrentInstance();
+        todas = true;
+        actuales = false;
+        context.update("form:datosNovedadesEmpleado");
+        context.update("form:TODAS");
+        context.update("form:ACTUALES");
+        
+    }
+    
+    public void actualesNovedades() {
+        listaNovedades.clear();
+        listaNovedades = administrarNovedadesEmpleados.novedadesEmpleado(seleccionMostrar.getId());
+        RequestContext context = RequestContext.getCurrentInstance();
+        todas = false;
+        actuales = true;
+        context.update("form:datosNovedadesEmpleado");
+        context.update("form:TODAS");
+        context.update("form:ACTUALES");
+    }
+
     //EXPORTAR
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNovedadesExportar");
@@ -1726,9 +1767,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         secRegistro = null;
         resultado = 0;
     }
-    
-    //LIMPIAR DUPLICAR
 
+    //LIMPIAR DUPLICAR
     /**
      * Metodo que limpia los datos de un duplicar Encargaturas
      */
@@ -1744,7 +1784,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         duplicarNovedad.setUsuarioreporta(new Usuarios());
         duplicarNovedad.setTerminal(" ");
         duplicarNovedad.setFechareporte(new Date());
-        
+
     }
 
     //RASTROS 
@@ -2098,9 +2138,32 @@ public class ControlNovedadesEmpleados implements Serializable {
         if (!listaNovedadesBorrar.isEmpty()) {
             for (int i = 0; i < listaNovedadesBorrar.size(); i++) {
                 resultado = administrarNovedadesEmpleados.solucionesFormulas(listaNovedadesBorrar.get(i).getSecuencia());
-                
+
             }
         }
         return resultado;
     }
+
+    public List<Novedades> getTodasNovedades() {
+        if (todasNovedades == null) {
+            todasNovedades = administrarNovedadesEmpleados.todasNovedades(seleccionMostrar.getId());
+
+        }
+
+        return todasNovedades;
+    }
+
+    public void setTodasNovedades(List<Novedades> todasNovedades) {
+        this.todasNovedades = todasNovedades;
+    }
+
+    public boolean isTodas() {
+        return todas;
+    }
+
+    public boolean isActuales() {
+        return actuales;
+    }
+    
+    
 }
