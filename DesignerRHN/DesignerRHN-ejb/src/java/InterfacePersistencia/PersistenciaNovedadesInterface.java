@@ -17,4 +17,6 @@ public interface PersistenciaNovedadesInterface {
     public void editar(Novedades novedades);
 
     public void borrar(Novedades novedades);
+    
+    public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado);
 }

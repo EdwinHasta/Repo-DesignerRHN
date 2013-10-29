@@ -53,6 +53,8 @@ public interface AdministrarNovedadesEmpleadosInterface {
     public String alias();
     
     public Usuarios usuarioBD(String alias);
+    
+    public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado);
      
      
 }

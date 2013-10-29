@@ -91,6 +91,15 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
         }
     }
     
+    public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado){
+        try {
+            return persistenciaNovedades.todasNovedades(secuenciaEmpleado);
+        } catch (Exception e) {
+            System.err.println("Error AdministrarNovedadesEmpleados.todasNovedades" + e);
+            return null;
+        }
+    }
+    
     //Ver si está en soluciones formulas y de ser asi no borrarlo
     public int solucionesFormulas(BigInteger secuenciaNovedad){
         return persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(secuenciaNovedad);
@@ -157,6 +166,8 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     public void crearNovedades(Novedades novedades) {
         persistenciaNovedades.crear(novedades);
     }
+    
+    
 
     @Override
     public void modificarNovedades(List<Novedades> listaNovedadesModificar) {

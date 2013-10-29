@@ -54,6 +54,18 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
+    
+    public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado) {
+        try {
+            Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia = :secuenciaEmpleado");
+            query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            List<Novedades> todasNovedades = query.getResultList();
+            return todasNovedades;
+        } catch (Exception e) {
+            System.out.println("Error: (todasNovedades)" + e);
+            return null;
+        }
+    }
 
     public int reversarNovedades(BigInteger usuarioBD, String documentoSoporte) {
         try {
@@ -96,4 +108,5 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
+    
 }
