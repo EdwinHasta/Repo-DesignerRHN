@@ -764,6 +764,12 @@
                         <h:outputText value="No puede existir un Cargo y un empleado Reemplazado dentro de una misma encargatura" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="inconsistencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
+                    
+                    <p:dialog id="fechas" header="ATENCIÓN...!" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="La fecha inicial de la novedad NO puede ser mayor a la fecha final." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="fechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
 
                 </h:form>
 
