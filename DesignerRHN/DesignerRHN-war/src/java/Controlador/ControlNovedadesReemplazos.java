@@ -389,9 +389,6 @@ public class ControlNovedadesReemplazos implements Serializable {
             //nombreArchivo = "VigenciasFormalesXML";
             //RequestContext context = RequestContext.getCurrentInstance();
             //context.update("form:exportarXML");
-
-
-
             if (tipoLista == 0) {
                 secRegistro = listaEncargaturas.get(index).getSecuencia();
                 if (cualCelda == 0) {
@@ -405,7 +402,6 @@ public class ControlNovedadesReemplazos implements Serializable {
                 } else if (cualCelda == 7) {
                     Estructura = listaEncargaturas.get(index).getEstructura().getNombre();
                 }
-
             } else {
                 secRegistro = filtradosListaEncargaturas.get(index).getSecuencia();
                 if (cualCelda == 0) {
@@ -459,7 +455,6 @@ public class ControlNovedadesReemplazos implements Serializable {
             context.update("formularioDialogos:empleadosAbajoDialogo");
             context.execute("empleadosAbajoDialogo.show()");
         }
-
     }
 
     public void mostrarTodos() {
@@ -488,8 +483,6 @@ public class ControlNovedadesReemplazos implements Serializable {
     }
 
     public void actualizarEmpleadosFalso() {
-
-
         RequestContext context = RequestContext.getCurrentInstance();
         if (!listaFalsaEmpleados.isEmpty()) {
             listaFalsaEmpleados.clear();

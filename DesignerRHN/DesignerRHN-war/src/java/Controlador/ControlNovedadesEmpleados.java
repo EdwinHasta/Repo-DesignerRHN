@@ -1042,10 +1042,8 @@ public class ControlNovedadesEmpleados implements Serializable {
     //Ubicacion Celda Indice Abajo. //Van los que no son NOT NULL.
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
-
             index = indice;
             cualCelda = celda;
-
             if (tipoLista == 0) {
                 secRegistro = listaNovedades.get(index).getSecuencia();
                 if (cualCelda == 0) {
