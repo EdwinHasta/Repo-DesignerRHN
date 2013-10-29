@@ -47,10 +47,11 @@ public class ControlNovedadesEmpleados implements Serializable {
     AdministrarNovedadesEmpleadosInterface administrarNovedadesEmpleados;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
+    
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     //LISTA NOVEDADES
-    private List<Novedades> todasNovedades;
     private List<Novedades> listaNovedades;
     private List<Novedades> filtradosListaNovedades;
     //LISTA QUE NO ES LISTA - 1 SOLO ELEMENTO
@@ -122,7 +123,6 @@ public class ControlNovedadesEmpleados implements Serializable {
     private boolean actuales;
 
     public ControlNovedadesEmpleados() {
-        todasNovedades = null;
         permitirIndex = true;
         listaNovedades = null;
         listaEmpleados = null;
@@ -2144,18 +2144,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         return resultado;
     }
 
-    public List<Novedades> getTodasNovedades() {
-        if (todasNovedades == null) {
-            todasNovedades = administrarNovedadesEmpleados.todasNovedades(seleccionMostrar.getId());
-
-        }
-
-        return todasNovedades;
-    }
-
-    public void setTodasNovedades(List<Novedades> todasNovedades) {
-        this.todasNovedades = todasNovedades;
-    }
+    
 
     public boolean isTodas() {
         return todas;
