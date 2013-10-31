@@ -15,30 +15,30 @@
 
                     <p:panel  id="PanelTotal" header="Novedades fijas y ocasionales por empleado." style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 140px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 140px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Empleados</strong></legend>
 
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 600px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" value="Buscar Empleado" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 600px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" value="Buscar Empleado" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
 
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesEmpleados.listaEmpleadosNovedad}"
-                                         rowKey="#{empleados.codigo}" rowIndexVar="indiceT" style="font-size: 10px; border: 1px; text-align: left; width: 550px"                           
-                                         scrollable="true" scrollHeight="80" scrollWidth="550" filteredValue="#{controlNovedadesEmpleados.filtradosListaEmpleadosNovedad}" 
+                                         rowKey="#{empleados.codigo}" rowIndexVar="indiceT" style="font-size: 10px; border: 1px; text-align: left; width: 560px"                           
+                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesEmpleados.filtradosListaEmpleadosNovedad}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesEmpleados.seleccionMostrar}"
                                          editable="true" editMode="cell" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.cambiarEmpleado()}"/>
 
-                                <p:column headerText="Código" sortBy="#{empleados.codigo}" filterBy="#{empleados.codigo}" filterMatchMode="contains" id="nEEmpleadosCodigos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Código" sortBy="#{empleados.codigo}" filterBy="#{empleados.codigo}" filterMatchMode="contains" id="nEEmpleadosCodigos" width="30" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{empleados.codigo}" />
                                 </p:column>
 
-                                <p:column headerText="Nombre" sortBy="#{empleados.nombre}" filterBy="#{empleados.nombre}" filterMatchMode="contains" id="nEEmpleadosNombres" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Nombre" sortBy="#{empleados.nombre}" filterBy="#{empleados.nombre}" filterMatchMode="contains" id="nEEmpleadosNombres" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{empleados.nombre}" />
                                 </p:column>
 
-                                <p:column headerText="Valor" sortBy="#{empleados.valor}" filterBy="#{empleados.valor}" filterMatchMode="contains" id="nEEmpleadosValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Valor" sortBy="#{empleados.valor}" filterBy="#{empleados.valor}" filterMatchMode="contains" id="nEEmpleadosValor" width="30" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{empleados.valor}" />
                                 </p:column>
                             </p:dataTable>
@@ -107,12 +107,12 @@
 
                                 <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
 
-                                <p:column headerText="Concepto" sortBy= "#{novedades.concepto.codigo}" filterBy="#{novedades.concepto.codigo}" filterMatchMode="contains" id="nEConceptoCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Concepto" sortBy= "#{novedades.concepto.codigoSTR}" filterBy="#{novedades.concepto.codigoSTR}" filterMatchMode="contains" id="nEConceptoCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{novedades.concepto.codigo}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{novedades.concepto.codigoSTR}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{novedades.concepto.codigo}" id="editarConceptoCodigo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CODIGO', novedades.concepto.codigo)}"/>
+                                            <p:inputText value="#{novedades.concepto.codigoSTR}" id="editarConceptoCodigo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CODIGO', novedades.concepto.codigoSTR)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadesEmpleados.cambiarIndice(indice, 0)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlNovedadesEmpleados.asignarIndex(indice, 1, 0)}"/>
                                             </p:inputText>
@@ -128,14 +128,14 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.concepto.descripcion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{novedades.concepto.descripcion}" id="editarCantidadPersonas" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                            <p:inputText readonly="true" value="#{novedades.concepto.descripcion}" id="editarDescripcionConcepto" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlNovedadesEmpleados.cambiarIndice(indice, 1)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="P.C." />
+                                        <h:outputText value="Descripcion Concepto" />
                                     </f:facet>
                                 </p:column>
 
@@ -217,12 +217,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Codigo" sortBy= "#{novedades.periodicidad.codigo}" filterBy="#{novedades.periodicidad.codigo}" filterMatchMode="contains" id="nEPeriodicidadCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Codigo" sortBy= "#{novedades.periodicidad.codigoStr}" filterBy="#{novedades.periodicidad.codigoStr}" filterMatchMode="contains" id="nEPeriodicidadCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{novedades.periodicidad.codigo}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{novedades.periodicidad.codigoStr}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{novedades.periodicidad.codigo}" id="editarPeriodicidadCodigo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CODIGOPERIDIOCIDAD', novedades.periodicidad.codigo)}"/>
+                                            <p:inputText value="#{novedades.periodicidad.codigoStr}" id="editarPeriodicidadCodigo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CODIGOPERIODICIDAD', novedades.periodicidad.codigoStr)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadesEmpleados.cambiarIndice(indice, 6)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlNovedadesEmpleados.asignarIndex(indice, 3, 0)}"/>
                                             </p:inputText>
@@ -230,7 +230,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooPeriodicidad" value="Periodicidad"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooPeriodicidad" value="Codigo"/>
                                     </f:facet>
                                 </p:column>
 
@@ -367,9 +367,9 @@
                         <p:panel id="nuevaNovedad" style="border: none;">
 
                             <strong><h:outputText value="Concepto: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:inputText id="nuevoConcepto" value="#{controlNovedadesEmpleados.nuevaNovedad.concepto.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoConcepto" value="#{controlNovedadesEmpleados.nuevaNovedad.concepto.codigoSTR}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNovedadesEmpleados.valoresBackupAutocompletar(1, 'CONCEPTO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.autocompletarNuevoyDuplicado('CONCEPTO', controlNovedadesEmpleados.nuevaNovedad.concepto.codigo, 1)}" />
+                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.autocompletarNuevoyDuplicado('CONCEPTO', controlNovedadesEmpleados.nuevaNovedad.concepto.codigoSTR, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlNovedadesEmpleados.asignarIndex(indice, 1, 1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 65px;  " id="btnNuevoConcepto" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 1, 1)}" icon="ui-icon-search" process="@this" />
@@ -404,9 +404,9 @@
                             </p:inputText>
 
                             <strong><h:outputText value="Codigo: " style="font-size: 12px; position: absolute; top: 305px" /></strong>
-                            <p:inputText id="nuevaPeriodicidadCodigo" value="#{controlNovedadesEmpleados.nuevaNovedad.periodicidad.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 305px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevaPeriodicidadCodigo" value="#{controlNovedadesEmpleados.nuevaNovedad.periodicidad.codigoStr}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 305px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNovedadesEmpleados.valoresBackupAutocompletar(1, 'CODIGO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.autocompletarNuevoyDuplicado('CODIGO', controlNovedadesEmpleados.nuevaNovedad.periodicidad.codigo, 1)}" />
+                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.autocompletarNuevoyDuplicado('CODIGO', controlNovedadesEmpleados.nuevaNovedad.periodicidad.codigoStr, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlNovedadesEmpleados.asignarIndex(indice, 3, 1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 305px;  " id="btnNuevaPeriodicidad" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 3, 1)}" icon="ui-icon-search" process="@this" />
@@ -675,10 +675,10 @@
                                       filteredValue="#{controlNovedadesEmpleados.filtradoslistaFormulas}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{formulas.secuencia}" selection="#{controlNovedadesEmpleados.seleccionFormulas}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.activarAceptar()}" update=":formularioDialogos:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesEmpleados.actualizarFormulas()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesEmpleados.actualizarFormulas()}" process="@this" onstart="LOVFormulas.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 150px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVFormulas.filter();" style="width: 150px; position: relative; left: 60px;" />  
                             </f:facet>
 
                             <p:column sortBy="#{formulas.nombrelargo}" filterBy="#{formulas.nombrelargo}" width="200" filterMatchMode="contains" > 
@@ -780,7 +780,7 @@
                         <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlNovedadesEmpleados.aceptar}" style="position: absolute; top: 305px; left: 150px; font-size: 12px" actionListener="#{controlNovedadesEmpleados.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" update="LOVPeriodicidades, aceptarP" process="@this">
+                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadesEmpleados.cancelarCambioPeriodicidades()}" update="LOVPeriodicidades, aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
 
