@@ -301,6 +301,9 @@ public class Novedades implements Serializable {
     }
 
     public Conceptos getConcepto() {
+        if(concepto == null){
+            concepto = new Conceptos();
+        }
         return concepto;
     }
 
@@ -325,6 +328,9 @@ public class Novedades implements Serializable {
     }
 
     public Empleados getEmpleado() {
+        if(empleado == null){
+            empleado = new Empleados();
+        }
         return empleado;
     }
 
@@ -333,6 +339,9 @@ public class Novedades implements Serializable {
     }
 
     public Formulas getFormula() {
+        if(formula == null){
+            formula = new Formulas();
+        }
         return formula;
     }
 
@@ -341,6 +350,9 @@ public class Novedades implements Serializable {
     }
 
     public Periodicidades getPeriodicidad() {
+        if (periodicidad == null){
+            periodicidad = new Periodicidades();
+        }
         return periodicidad;
     }
 

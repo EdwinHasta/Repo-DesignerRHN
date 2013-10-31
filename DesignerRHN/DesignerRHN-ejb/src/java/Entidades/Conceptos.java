@@ -167,6 +167,8 @@ public class Conceptos implements Serializable {
     private boolean independienteConcepto;
     @Transient
     private String informacionConcepto;
+    @Transient
+    private String codigoSTR;
 
     public Conceptos() {
     }
@@ -645,4 +647,24 @@ public class Conceptos implements Serializable {
     public void setInformacionConcepto(String informacionConcepto) {
         this.informacionConcepto = informacionConcepto;
     }
+
+    public String getCodigoSTR() {
+        
+        if (codigo!= null) {
+            codigoSTR = codigo.toString();
+            System.out.println("CodigoConceptoSTR: " + codigoSTR);
+        } else {
+            codigoSTR = " ";
+            codigo = BigInteger.valueOf(0);
+            
+        }
+        return codigoSTR;
+    }
+
+    public void setCodigoSTR(String codigoSTR) {
+        codigo = new BigInteger(codigoSTR);
+        this.codigoSTR = codigoSTR;
+    }
+    
+    
 }

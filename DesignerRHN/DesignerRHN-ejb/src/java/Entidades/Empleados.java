@@ -42,6 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<Parametros> parametrosList;
     @OneToMany(mappedBy = "nombregerente")
@@ -64,7 +65,6 @@ public class Empleados implements Serializable {
     private Collection<VigenciasProyectos> vigenciasProyectosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<VigenciasEventos> vigenciasEventosCollection;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<VigenciasUbicaciones> vigenciasubicacionesCollection;
     private static final long serialVersionUID = 1L;
@@ -161,6 +161,8 @@ public class Empleados implements Serializable {
     private Collection<VigenciasTiposTrabajadores> vigenciastipostrabajadoresCollection;
     @Transient
     private String estado;
+    @Transient
+    private String codigoempleadoSTR;
 
     public Empleados() {
         persona = new Personas();
@@ -336,7 +338,7 @@ public class Empleados implements Serializable {
     }
 
     public Personas getPersona() {
-            return persona;
+        return persona;
     }
 
     public void setPersona(Personas persona) {
@@ -632,6 +634,20 @@ public class Empleados implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
+
+    public String getCodigoempleadoSTR() {
+        if (codigoempleado != null) {
+            codigoempleadoSTR = codigoempleado.toString();
+        } else {
+            codigoempleadoSTR = " ";
+            codigoempleado = BigInteger.valueOf(0);
+
+        }
+        return codigoempleadoSTR;
+    }
+
+    public void setCodigoempleadoSTR(String codigoempleadoSTR) {
+        codigoempleado = new BigInteger(codigoempleadoSTR);
+        this.codigoempleadoSTR = codigoempleadoSTR;
+    }
 }

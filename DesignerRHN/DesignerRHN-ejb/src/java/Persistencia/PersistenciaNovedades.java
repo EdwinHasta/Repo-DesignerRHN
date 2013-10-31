@@ -54,6 +54,18 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
+    //Trae las Novedades del Concepto seleccionado
+    public List<Novedades> conceptosNovedades(BigInteger secuenciaNovedad){
+        try {
+            Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaNovedad");
+            query.setParameter("secuenciaNovedad", secuenciaNovedad);
+            List<Novedades> todasNovedades = query.getResultList();
+            return todasNovedades;
+        } catch (Exception e) {
+            System.out.println("Error: (todasNovedades)" + e);
+            return null;
+        } 
+    }
     
     public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado) {
         try {
@@ -63,6 +75,18 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return todasNovedades;
         } catch (Exception e) {
             System.out.println("Error: (todasNovedades)" + e);
+            return null;
+        }
+    }
+    
+    public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto) {
+        try {
+            Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaConcepto");
+            query.setParameter("secuenciaConcepto", secuenciaConcepto);
+            List<Novedades> todasNovedades = query.getResultList();
+            return todasNovedades;
+        } catch (Exception e) {
+            System.out.println("Error: (todasNovedadesConcepto)" + e);
             return null;
         }
     }

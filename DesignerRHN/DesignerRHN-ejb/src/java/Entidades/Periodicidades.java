@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Periodicidades.findAll", query = "SELECT p FROM Periodicidades p")})
 public class Periodicidades implements Serializable {
+
     @OneToMany(mappedBy = "periodicidadcorte")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(mappedBy = "periodicidad")
@@ -47,7 +49,7 @@ public class Periodicidades implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
+    private Short codigo;
     @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
@@ -62,6 +64,8 @@ public class Periodicidades implements Serializable {
     private Unidades unidadbase;
     @OneToMany(mappedBy = "minimaperiodicidad")
     private Collection<Empresas> empresasCollection;
+    @Transient
+    private String codigoStr;
 
     public Periodicidades() {
     }
@@ -83,11 +87,11 @@ public class Periodicidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Short codigo) {
         this.codigo = codigo;
     }
 
@@ -174,5 +178,19 @@ public class Periodicidades implements Serializable {
     public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
         this.gruposProvisionesCollection = gruposProvisionesCollection;
     }
-    
+
+    public String getCodigoStr() {
+        if (codigo != null) {
+            codigoStr = String.valueOf(codigo);
+        } else {
+            codigoStr = " ";
+            codigo = 0;
+        }
+        return codigoStr;
+    }
+
+    public void setCodigoStr(String codigoStr) {
+        codigo = Short.parseShort(codigoStr);
+        this.codigoStr = codigoStr;
+    }
 }
