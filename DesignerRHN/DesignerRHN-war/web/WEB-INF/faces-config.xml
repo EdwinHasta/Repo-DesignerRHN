@@ -121,16 +121,16 @@
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>aficiones</from-outcome>
-            <to-view-id>/page1.xhtml</to-view-id>
+            <from-outcome>normalaboral</from-outcome>
+            <to-view-id>/emplvigencianormalaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/page1.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <from-outcome>vigenciaaficion</from-outcome>
+            <to-view-id>/vigenciaaficion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -770,6 +770,14 @@
         <navigation-case>
             <from-outcome>proyecto</from-outcome>
             <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciaaficion</from-outcome>
+            <to-view-id>/vigenciaaficion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
