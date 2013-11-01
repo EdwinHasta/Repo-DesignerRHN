@@ -166,6 +166,14 @@ public class ControlNovedadesConceptos {
          listaNovedadesModificar.clear();
          listaNovedadesBorrar.clear();*/
     }
+    
+    public void limpiarListas() {
+        listaNovedadesCrear.clear();
+        listaNovedadesBorrar.clear();
+        listaNovedadesModificar.clear();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosNovedadesConcepto");
+    }
 
     public void activarAceptar() {
         aceptar = false;
@@ -296,7 +304,6 @@ public class ControlNovedadesConceptos {
     }
 
     public void asignarIndex(Integer indice, int dlg, int LND) {
-
 
         index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1088,15 +1095,7 @@ public class ControlNovedadesConceptos {
                 context.update("formularioDialogos:editarPeriodicidadesDescripciones");
                 context.execute("editarPeriodicidadesDescripciones.show()");
                 cualCelda = -1;
-            } else if (cualCelda == 8) {
-                context.update("formularioDialogos:editarTercerosNit");
-                context.execute("editarTercerosNit.show()");
-                cualCelda = -1;
-            } else if (cualCelda == 9) {
-                context.update("formularioDialogos:editarTercerosNombres");
-                context.execute("editarTercerosNombres.show()");
-                cualCelda = -1;
-            } else if (cualCelda == 10) {
+            }  else if (cualCelda == 10) {
                 context.update("formularioDialogos:editarFormulas");
                 context.execute("editarFormulas.show()");
                 cualCelda = -1;
@@ -1411,7 +1410,24 @@ public class ControlNovedadesConceptos {
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
         }
-
+        
+         for (int i = 0; i < listaEmpleados.size(); i++) {
+            if (duplicarNovedad.getEmpleado().getSecuencia().compareTo(listaEmpleados.get(i).getSecuencia()) == 0) {
+                
+                if (duplicarNovedad.getFechainicial().compareTo(duplicarNovedad.getEmpleado().getFechacreacion()) < 0) {
+                    context.update("formularioDialogos:inconsistencia");
+                    context.execute("inconsistencia.show()");
+                    pasa2++;
+                }
+            }
+        }
+        
+        if (duplicarNovedad.getFechainicial().compareTo(duplicarNovedad.getFechafinal()) > 0) {
+         context.update("formularioDialogos:fechas");
+         context.execute("fechas.show()");
+         pasa2++;
+         }
+        
         System.out.println("Valor Pasa: " + pasa);
         if (pasa != 0) {
             context.update("formularioDialogos:validacionNuevaNovedadConcepto");
@@ -1667,8 +1683,40 @@ public class ControlNovedadesConceptos {
                 }
             }
         }
+    }
+    
+    //RASTROS 
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("lol");
+        if (!listaNovedades.isEmpty()) {
+            if (secRegistro != null) {
+                System.out.println("lol 2");
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "NOVEDADES");
+                System.out.println("resultado: " + resultado);
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("NOVEDADES")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
 
-
+        }
+        index = -1;
     }
 
     //CANCELAR MODIFICACIONES
@@ -1791,7 +1839,7 @@ public class ControlNovedadesConceptos {
         RequestContext context = RequestContext.getCurrentInstance();
         todas = false;
         actuales = true;
-        context.update("form:datosNovedadesEmpleado");
+        context.update("form:datosNovedadesConcepto");
         context.update("form:TODAS");
         context.update("form:ACTUALES");
     }
@@ -1849,7 +1897,7 @@ public class ControlNovedadesConceptos {
     public void setListaNovedades(List<Novedades> listaNovedades) {
         this.listaNovedades = listaNovedades;
     }
-
+    
     public List<Novedades> getFiltradosListaNovedades() {
         return filtradosListaNovedades;
     }

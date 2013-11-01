@@ -1829,7 +1829,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         index = -1;
     }
 
-    //BORRAR Novedades
+    //BORRAR NOVEDADES
     public void borrarNovedades() {
 
         if (index >= 0) {
