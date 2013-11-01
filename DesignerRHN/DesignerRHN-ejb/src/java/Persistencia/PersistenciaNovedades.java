@@ -90,6 +90,18 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
+    
+    public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero) {
+        try {
+            Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.tercero.secuencia= :secuenciaTercero");
+            query.setParameter("secuenciaTercero", secuenciaTercero);
+            List<Novedades> todasNovedades = query.getResultList();
+            return todasNovedades;
+        } catch (Exception e) {
+            System.out.println("Error: (todasNovedadesTercero)" + e);
+            return null;
+        }
+    }
 
     public int reversarNovedades(BigInteger usuarioBD, String documentoSoporte) {
         try {

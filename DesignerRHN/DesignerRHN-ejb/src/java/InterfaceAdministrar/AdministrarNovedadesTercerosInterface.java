@@ -9,10 +9,8 @@ import Entidades.Empleados;
 import Entidades.Formulas;
 import Entidades.Novedades;
 import Entidades.Periodicidades;
-import Entidades.PruebaEmpleados;
 import Entidades.Terceros;
 import Entidades.Usuarios;
-import Entidades.VWActualesTiposTrabajadores;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -20,16 +18,12 @@ import java.util.List;
  *
  * @author user
  */
-public interface AdministrarNovedadesConceptosInterface {
-
-    public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto);
-
+public interface AdministrarNovedadesTercerosInterface {
+    
     public int solucionesFormulas(BigInteger secuenciaNovedad);
 
     public List<Empleados> lovEmpleados();
 
-    public List<Conceptos> Conceptos();
-    
     public List<Terceros> Terceros();
 
     public List<Formulas> lovFormulas();
@@ -37,6 +31,8 @@ public interface AdministrarNovedadesConceptosInterface {
     public List<Periodicidades> lovPeriodicidades();
 
     public List<Terceros> lovTerceros();
+    
+    public List<Conceptos> lovConceptos();
 
     public void borrarNovedades(Novedades novedades);
 
@@ -48,9 +44,9 @@ public interface AdministrarNovedadesConceptosInterface {
 
     public Usuarios usuarioBD(String alias);
     
-    public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto);
+    public List<Novedades> novedadesTercero(BigInteger secuenciaTercero);
     
-    public List<Novedades> novedadesTerceros(BigInteger secuenciaTercero);
-
-   
+    public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero);
+    
+    
 }

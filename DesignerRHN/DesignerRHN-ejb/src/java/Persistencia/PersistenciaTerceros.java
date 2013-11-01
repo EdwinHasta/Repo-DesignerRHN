@@ -54,7 +54,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
 
     }
 
-    @Override
+
     public List<Terceros> buscarTerceros() {
         try {
             Query query = em.createQuery("SELECT t FROM Terceros t, Empresas e, TercerosSucursales ts  WHERE t.secuencia = ts.tercero.secuencia AND t.empresa.secuencia = e.secuencia");

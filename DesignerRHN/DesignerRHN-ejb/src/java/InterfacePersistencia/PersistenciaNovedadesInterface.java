@@ -23,4 +23,7 @@ public interface PersistenciaNovedadesInterface {
     public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto);
     
     public List<Novedades> conceptosNovedades(BigInteger secuenciaNovedad);
+    
+     public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero); 
+     
 }

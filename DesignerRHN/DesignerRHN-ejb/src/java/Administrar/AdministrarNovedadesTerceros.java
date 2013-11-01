@@ -11,7 +11,7 @@ import Entidades.Novedades;
 import Entidades.Periodicidades;
 import Entidades.Terceros;
 import Entidades.Usuarios;
-import InterfaceAdministrar.AdministrarNovedadesConceptosInterface;
+import InterfaceAdministrar.AdministrarNovedadesTercerosInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -27,13 +27,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
-
-/**
- *
- * @author user
- */
 @Stateful
-public class AdministrarNovedadesConceptos implements AdministrarNovedadesConceptosInterface {
+public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercerosInterface {
     
     @EJB
     PersistenciaNovedadesInterface persistenciaNovedades;
@@ -55,34 +50,24 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
     PersistenciaUsuariosInterface persistenciaUsuarios;
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
-
+    
+    
+    
     
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
-  
-    public List<Novedades> novedadesTerceros(BigInteger secuenciaTercero) {
+   
+    @Override
+    public List<Novedades> novedadesTercero(BigInteger secuenciaTercero) {
         try {
             return persistenciaNovedades.todasNovedadesTercero(secuenciaTercero);
         } catch (Exception e) {
-            System.err.println("Error AdministrarNovedadesTerceros.todasNovedadesTercero" + e);
+            System.err.println("Error AdministrarNovedadesTerceros.novedadesTercero" + e);
             return null;
         }
-    }
-    //Trae las novedades del empleado cuya secuencia se envía como parametro//
-    @Override
-    public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto) {
-        try {
-            return persistenciaNovedades.conceptosNovedades(secuenciaConcepto);
-        } catch (Exception e) {
-            System.err.println("Error AdministrarNovedadesConceptos.conceptosNovedades" + e);
-            return null;
-        }
-    }
-    //Listas de Conceptos, Formulas, Periodicidades, Terceros
-
-    public List<Conceptos> Conceptos() {
-        return persistenciaConceptos.buscarConceptos();
     }
     
+    //Listas de Conceptos, Formulas, Periodicidades, Terceros
+
     public List<Terceros> Terceros() {
         return persistenciaTerceros.buscarTerceros();
     }
@@ -105,6 +90,11 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
     @Override
     public List<Empleados> lovEmpleados() {
         return persistenciaEmpleados.empleadosNovedad();
+    }
+    
+    @Override
+    public List<Conceptos> lovConceptos() {
+        return persistenciaConceptos.buscarConceptos();
     }
     
     //Ver si está en soluciones formulas y de ser asi no borrarlo
@@ -134,9 +124,7 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
     public void modificarNovedades(List<Novedades> listaNovedadesModificar) {
         for (int i = 0; i < listaNovedadesModificar.size(); i++) {
             System.out.println("Modificando...");
-            if (listaNovedadesModificar.get(i).getTercero().getSecuencia() == null) {
-                listaNovedadesModificar.get(i).setTercero(null);
-            }
+            
             if (listaNovedadesModificar.get(i).getPeriodicidad().getSecuencia() == null) {
                 listaNovedadesModificar.get(i).setPeriodicidad(null);
             }
@@ -153,12 +141,13 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
         }
     }
     
-    public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto){
+    public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero){
         try {
-            return persistenciaNovedades.todasNovedadesConcepto(secuenciaConcepto);
+            return persistenciaNovedades.todasNovedadesTercero(secuenciaTercero);
         } catch (Exception e) {
-            System.err.println("Error AdministrarNovedadesConceptos.todasNovedadesConcepto" + e);
+            System.err.println("Error AdministrarNovedadesTerceros.todasNovedadesConcepto" + e);
             return null;
         }
     }
+
 }
