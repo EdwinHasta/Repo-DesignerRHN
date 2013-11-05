@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -90,6 +91,14 @@ public class ControlEmplNovedad implements Serializable {
      *
      * @param indice Fila en la cual se realizo el cambio
      */
+    public void sencillo() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        System.out.println("Celda : " + name + " / Indice : " + type);
+    }
+
     public void modificarNovedades(int indice) {
         if (tipoLista == 0) {
             listNovedadesEmpleado.set(indice, actualNovedad);
