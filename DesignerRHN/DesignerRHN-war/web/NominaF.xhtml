@@ -50,16 +50,16 @@
                                     <p:tooltip style="font-size: 12px" for="TipoPersonal">
                                         CARGOS DESEMPEÑADOS: Observe y/o ingrese todos los cargos<br/>que el empleado ha desempeñado dentro de la empresa.
                                     </p:tooltip>
-                                    <p:commandButton id="Activos" value="Activos" style="position: absolute; width: 110px;left: 87px; top: 16px; font-size: 11px;" actionListener="#{controlRemoto.activos()}" update="data, :form:alerta, TipoPersonal, panelInf " />
+                                    <p:commandButton id="Activos" value="Activos" style="position: absolute; width: 110px;left: 87px; top: 16px; font-size: 11px;" actionListener="#{controlRemoto.activos()}" update="data, :form:alerta, TipoPersonal, data:panelInf " />
                                     <p:tooltip style="font-size: 12px" for="Activos" value="Ver información del Personal Activo"  />
 
-                                    <p:commandButton id="Pensionados" value="Pensionados" style="position: absolute; left: 87px; top: 43px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.pensionados()}" update="data, :form:alerta, TipoPersonal, panelInf"/>
+                                    <p:commandButton id="Pensionados" value="Pensionados" style="position: absolute; left: 87px; top: 43px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.pensionados()}" update="data, :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip style="font-size: 12px" for="Pensionados" value="Ver información del Personal Pensionado"  />
 
-                                    <p:commandButton id="Retirados" value="Retirados" style="position: absolute; left: 87px; top: 70px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.retirados()}" update="data, data:info, :form:alerta, TipoPersonal, panelInf"/>
+                                    <p:commandButton id="Retirados" value="Retirados" style="position: absolute; left: 87px; top: 70px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.retirados()}" update="data, data:info, :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip style="font-size: 12px" for="Retirados" value="Ver información del Personal Retirado"  />
 
-                                    <p:commandButton id="Aspirantes" value="Aspirantes"  style="position: absolute; left: 87px; top: 98px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, panelInf"/>
+                                    <p:commandButton id="Aspirantes" value="Aspirantes"  style="position: absolute; left: 87px; top: 98px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip style="font-size: 12px" for="Aspirantes" value="Ver información del Personal Aspirante"  />
 
                                 </fieldset>
@@ -224,7 +224,7 @@
                                             JORNADAS: Observe y/o ingrese las diferentes<br/> jornadas de trabajo que ha tenido el empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="MenorValorRetencio" value="" style="position: absolute; background-image: url(Imagenes/retencion.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="MenorValorRetencio" value="" style="position: absolute; background-image: url(Imagenes/retencion.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" disabled="#{controlRemoto.acumulado}" action="mvrsEmpl" actionListener="#{controlEmplMvr.recibirEmpleado(item.empleado.secuencia)}"/>
                                         <p:tooltip style="font-size: 12px" for="MenorValorRetencio" >
                                             MENORES VALORES DE RETENCION: Observe<br/> y/o ingrese todos los M.V.R.
                                         </p:tooltip>
@@ -290,7 +290,7 @@
                                         <p:inputText id="VComprobantes" style="position: absolute; left: 585px; top: 208px; width: 210px; font-family: Tahoma, Geneva, sans-serif; font-size: 11px;"  />
                                     </fieldset>
 
-                                </p:dataGrid>
+                                
 
 
                                 <p:panel id="panelInf" style="border: none" >
@@ -304,7 +304,7 @@
                                             ACUMULADOS DE NÓMINA: Observe todos los acumulados<br/> de nómina que el empleado ha tenido desde su ingreso.
                                         </p:tooltip>
 
-                                        <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="position: absolute; background-image: url(Imagenes/novedad.gif); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; left: 47px; top: 2px;" />
+                                        <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="position: absolute; background-image: url(Imagenes/novedad.gif); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; left: 47px; top: 2px;" action="novedadEmpl" actionListener="#{controlEmplNovedad.recibirEmpleado(item.empleado.secuencia)}"/>
                                         <!--     <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" value="NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas y/o ocacionales que el empleado ha tenido desde su ingreso."  /> -->
                                         <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" >
                                             NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas 
@@ -396,6 +396,7 @@
                                     <strong><h:outputText id="Empresa"  style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
 
                                 </p:panel>
+                                    </p:dataGrid>
                             </p:tab>  
 
                             <p:tab title="Nomina" id="Nomina">  
@@ -761,7 +762,7 @@
                             </p:column>
                         </p:dataTable> 
 
-                        <p:commandButton id="buscarRap" value="Aceptar" actionListener="#{controlRemoto.busquedaRapida}"   update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:panelInf, buscarRap, form:tabMenu:data:MostrarTodos" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 580px"  disabled="#{controlRemoto.buscar}">
+                        <p:commandButton id="buscarRap" value="Aceptar" actionListener="#{controlRemoto.busquedaRapida}"   update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:data:panelInf, buscarRap, form:tabMenu:data:MostrarTodos" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 580px"  disabled="#{controlRemoto.buscar}">
                             <p:resetInput target=":form:lvBusquedaRapida:globalFilter" />
                         </p:commandButton>
                         <p:commandButton value="Atras" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 653px" actionListener="#{controlRemoto.busquedaRapidaAtras()}" update="buscarRap, lvBusquedaRapida">
