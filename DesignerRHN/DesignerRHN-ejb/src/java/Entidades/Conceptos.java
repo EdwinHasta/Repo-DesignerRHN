@@ -193,7 +193,7 @@ public class Conceptos implements Serializable {
     }
 
     public BigInteger getCodigo() {
-        
+
         return codigo;
     }
 
@@ -202,6 +202,9 @@ public class Conceptos implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -649,14 +652,14 @@ public class Conceptos implements Serializable {
     }
 
     public String getCodigoSTR() {
-        
-        if (codigo!= null) {
+
+        if (codigo != null) {
             codigoSTR = codigo.toString();
             System.out.println("CodigoConceptoSTR: " + codigoSTR);
         } else {
             codigoSTR = " ";
             codigo = BigInteger.valueOf(0);
-            
+
         }
         return codigoSTR;
     }
@@ -665,6 +668,4 @@ public class Conceptos implements Serializable {
         codigo = new BigInteger(codigoSTR);
         this.codigoSTR = codigoSTR;
     }
-    
-    
 }

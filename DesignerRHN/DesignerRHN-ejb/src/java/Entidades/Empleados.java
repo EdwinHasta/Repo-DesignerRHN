@@ -42,6 +42,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<OtrosCertificados> otrosCertificadosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<Mvrs> mvrsCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<Parametros> parametrosList;
@@ -649,5 +653,23 @@ public class Empleados implements Serializable {
     public void setCodigoempleadoSTR(String codigoempleadoSTR) {
         codigoempleado = new BigInteger(codigoempleadoSTR);
         this.codigoempleadoSTR = codigoempleadoSTR;
+    }
+
+    @XmlTransient
+    public Collection<OtrosCertificados> getOtrosCertificadosCollection() {
+        return otrosCertificadosCollection;
+    }
+
+    public void setOtrosCertificadosCollection(Collection<OtrosCertificados> otrosCertificadosCollection) {
+        this.otrosCertificadosCollection = otrosCertificadosCollection;
+    }
+
+    @XmlTransient
+    public Collection<Mvrs> getMvrsCollection() {
+        return mvrsCollection;
+    }
+
+    public void setMvrsCollection(Collection<Mvrs> mvrsCollection) {
+        this.mvrsCollection = mvrsCollection;
     }
 }

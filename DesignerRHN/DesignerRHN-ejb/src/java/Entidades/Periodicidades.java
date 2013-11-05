@@ -35,6 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Periodicidades.findAll", query = "SELECT p FROM Periodicidades p")})
 public class Periodicidades implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Short codigo;
     @OneToMany(mappedBy = "periodicidadcorte")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(mappedBy = "periodicidad")
@@ -46,10 +50,6 @@ public class Periodicidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODIGO")
-    private Short codigo;
     @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
@@ -87,15 +87,10 @@ public class Periodicidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Short codigo) {
-        this.codigo = codigo;
-    }
-
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -192,5 +187,16 @@ public class Periodicidades implements Serializable {
     public void setCodigoStr(String codigoStr) {
         codigo = Short.parseShort(codigoStr);
         this.codigoStr = codigoStr;
+    }
+
+    public short getCodigo() {
+        if (codigo == null) {
+            codigo = 0;
+        }
+        return codigo;
+    }
+
+    public void setCodigo(short codigo) {
+        this.codigo = codigo;
     }
 }

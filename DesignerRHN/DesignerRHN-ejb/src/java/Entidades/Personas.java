@@ -666,11 +666,11 @@ public class Personas implements Serializable {
         this.direccionesCollection = direccionesCollection;
     }
 
-    public BigInteger getNumerodocumento() {
+    public BigInteger  getNumerodocumento() {
         return numerodocumento;
     }
 
-    public void setNumerodocumento(BigInteger numerodocumento) {
+    public void setNumerodocumento(BigInteger  numerodocumento) {
         this.numerodocumento = numerodocumento;
     }
 }

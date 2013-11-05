@@ -15,8 +15,8 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
-     @Override
+
+    @Override
     public void crear(Novedades novedades) {
         try {
 //            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
@@ -25,10 +25,8 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             System.out.println("Error PersistenciaNovedades.crear");
         }
     }
-       
-     
+
     // Editar Novedades. 
-     
     @Override
     public void editar(Novedades novedades) {
         em.merge(novedades);
@@ -55,7 +53,8 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         }
     }
     //Trae las Novedades del Concepto seleccionado
-    public List<Novedades> conceptosNovedades(BigInteger secuenciaNovedad){
+
+    public List<Novedades> conceptosNovedades(BigInteger secuenciaNovedad) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaNovedad");
             query.setParameter("secuenciaNovedad", secuenciaNovedad);
@@ -64,9 +63,9 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         } catch (Exception e) {
             System.out.println("Error: (todasNovedades)" + e);
             return null;
-        } 
+        }
     }
-    
+
     public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia = :secuenciaEmpleado");
@@ -78,7 +77,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
-    
+
     public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaConcepto");
@@ -90,7 +89,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
-    
+
     public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.tercero.secuencia= :secuenciaTercero");
@@ -132,7 +131,6 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado) {
         try {
-            System.out.println("Llega: " + secuenciaEmpleado);
             List<Novedades> listaNovedades;
             String sqlQuery = "SELECT * FROM Novedades n WHERE  n.empleado = ? AND n.tipo IN ('FIJA','PAGO POR FUERA','OCASIONAL') and ((n.fechafinal IS NULL AND NVL(SALDO,99999) > 0) OR (n.saldo > 0 and n.fechainicial >= (SELECT fechadesdecausado FROM vwactualesfechas)) OR n.fechafinal > (SELECT fechadesdecausado FROM vwactualesfechas )) ORDER BY n.fechafinal";
             Query query = em.createNativeQuery(sqlQuery, Novedades.class);
@@ -144,5 +142,17 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
-    
+
+    public List<Novedades> novedadesEmpleadoTotales(BigInteger secuenciaEmpleado) {
+        try {
+            List<Novedades> listNovedades;
+            Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia =:secuencia");
+            query.setParameter("secuencia", secuenciaEmpleado);
+            listNovedades = (List<Novedades>) query.getResultList();
+            return listNovedades;
+        } catch (Exception e) {
+            System.out.println("Error novedadesEmpladoTotales PersistenciaNovedades : " + e.toString());
+            return null;
+        }
+    }
 }

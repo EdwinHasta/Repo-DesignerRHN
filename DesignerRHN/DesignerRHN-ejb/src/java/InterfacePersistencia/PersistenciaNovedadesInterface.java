@@ -17,13 +17,14 @@ public interface PersistenciaNovedadesInterface {
     public void editar(Novedades novedades);
 
     public void borrar(Novedades novedades);
-    
+
     public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado);
-    
+
     public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto);
-    
+
     public List<Novedades> conceptosNovedades(BigInteger secuenciaNovedad);
-    
-     public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero); 
-     
+
+    public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero);
+
+    public List<Novedades> novedadesEmpleadoTotales(BigInteger secuenciaEmpleado);
 }
