@@ -17,7 +17,7 @@
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 140px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Conceptos</strong></legend>
 
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarConceptos" actionListener="#{controlNovedadesConceptos.asignarIndex(indice, 4, 0)}" value="Buscar Concepto" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarConceptos" actionListener="#{controlNovedadesConceptos.asignarIndex(indice, 1, 0)}" value="Buscar Concepto" process="@this"/>
                             <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesConceptos.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
 
                             <p:dataTable id="datosConceptos" var="conceptos" value="#{controlNovedadesConceptos.listaConceptosNovedad}"
@@ -27,13 +27,13 @@
                                          editable="true" editMode="cell" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlNovedadesConceptos.eventoFiltrar()}"/>
-                                <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.cambiarEmpleado()}"/>
+                                <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.cambiarConcepto()}"/>
 
                                 <p:column headerText="Código" sortBy="#{conceptos.codigo}" filterBy="#{conceptos.codigo}" filterMatchMode="contains" id="nCConceptosCodigos" width="1" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{conceptos.codigo}" />
                                 </p:column>
 
-                                <p:column headerText="Nombre" sortBy="#{conceptos.descripcion}" filterBy="#{conceptos.descripcion}" filterMatchMode="contains" id="nCConceptosDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripcion del Concepto" sortBy="#{conceptos.descripcion}" filterBy="#{conceptos.descripcion}" filterMatchMode="contains" id="nCConceptosDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{conceptos.descripcion}" />
                                 </p:column>
 
@@ -342,6 +342,10 @@
                                     <f:facet name="footer">
                                         <h:outputText value="Tipo" />
                                     </f:facet>
+                                </p:column>
+                                
+                                <p:column width="20" style="padding: 0px"> 
+                                    <p:commandButton value="" style="width: 20px; height: 20px;" action="rastro"/>
                                 </p:column>
 
 

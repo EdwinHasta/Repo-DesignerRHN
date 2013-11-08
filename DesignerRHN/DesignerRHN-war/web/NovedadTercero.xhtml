@@ -11,13 +11,13 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Novedades fijas y ocasionales por concepto." style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
+                    <p:panel  id="PanelTotal" header="Novedades fijas y ocasionales por tercero." style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 140px; border-radius: 10px; ">
-                            <legend style="font-size: 13px; color: #14388B"><strong>Conceptos</strong></legend>
+                            <legend style="font-size: 13px; color: #14388B"><strong>Terceros</strong></legend>
 
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarTerceros" actionListener="#{controlNovedadesConceptos.asignarIndex(indice, 1, 0)}" value="Buscar Tercero" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesConceptos.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarTerceros" actionListener="#{controlNovedadesTerceros.asignarIndex(indice, 4, 0)}" value="Buscar Tercero" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesTerceros.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
 
                             <p:dataTable id="datosTerceros" var="terceros" value="#{controlNovedadesTerceros.listaTercerosNovedad}"
                                          rowKey="#{terceros.secuencia}" rowIndexVar="indiceT" style="font-size: 10px; border: 1px; text-align: left; width: 560px"                           
@@ -26,13 +26,13 @@
                                          editable="true" editMode="cell" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlNovedadesTerceros.eventoFiltrar()}"/>
-                                <p:ajax event="rowSelect" listener="#{controlNovedadesTerceros.cambiarEmpleado()}"/>
+                                <p:ajax event="rowSelect" listener="#{controlNovedadesTerceros.cambiarTercero()}"/>
 
                                 <p:column headerText="NIT" sortBy="#{terceros.nit}" filterBy="#{terceros.nit}" filterMatchMode="contains" id="nTTercerosNit" width="1" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{terceros.nit}" />
                                 </p:column>
 
-                                <p:column headerText="Nombre" sortBy="#{terceros.nombre}" filterBy="#{terceros.nombre}" filterMatchMode="contains" id="nTTercerosNombre" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripcion del Tercero" sortBy="#{terceros.nombre}" filterBy="#{terceros.nombre}" filterMatchMode="contains" id="nTTercerosNombre" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{terceros.nombre}" />
                                 </p:column>
 
@@ -343,6 +343,11 @@
                                         <h:outputText value="Tipo" />
                                     </f:facet>
                                 </p:column>
+                                
+                                <p:column width="20" style="padding: 0px"> 
+                                    <p:commandButton value="" style="width: 20px; height: 20px;" action="rastro"/>
+                                </p:column>
+                                
                             </p:dataTable>
                         </fieldset>
                     </p:panel>
@@ -601,7 +606,7 @@
                     </p:dialog>
 
                     <p:dialog id="editarConceptosDescripciones" header="Concepto Descripcion" widgetVar="editarConceptosDescripciones" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlNovedadesEmpleados.editarNovedades.concepto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlNovedadesTerceros.editarNovedades.concepto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarConceptosDescripciones" value="Atras" onclick="editarConceptosDescripciones.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
@@ -710,6 +715,14 @@
 
                     <!--HotKey-->
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlNovedadesTerceros.activarCtrlF11()}" process="@this"/> 
+                    
+                    <!-- DIALOGO CAMBIO DE EMPLEADO -->
+                    <p:dialog id="cambiar" header="ATENCIÓN" widgetVar="cambiar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Aún hay cambios sin guardar, ¿desea guardar los cambios?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="cambiar.hide();" actionListener="#{controlNovedadesTerceros.guardarCambiosNovedades()}" style="position: absolute; top: 63px; left: 230px" process="@this" />
+                        <p:commandButton value="No" onclick="cambiar.hide();" actionListener="#{controlNovedadesTerceros.limpiarListas()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
 
                     <!-- L.O.V CONCEPTOS-->
                     <p:dialog header="Conceptos" widgetVar="conceptosDialogo" draggable="false" resizable="false" id="conceptosDialogo" closable="false"  
@@ -899,10 +912,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarT" value="Aceptar" disabled="#{controlNovedadesTerceros.aceptar}" style="position: absolute; top: 305px; left: 150px; font-size: 12px" actionListener="#{controlNovedadesTerceros.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarT" value="Aceptar" disabled="#{controlNovedadesTerceros.aceptar}" style="position: absolute; top: 305px; left: 150px; font-size: 12px" actionListener="#{controlNovedadesTerceros.actualizarTercerosNovedad()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasT" value="Atras" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesTerceros.cancelarCambioConceptos()}" update="LOVTerceros, aceptarT" process="@this">
+                        <p:commandButton id="atrasT" value="Atras" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesTerceros.cancelarCambioTerceros()}" update="LOVTerceros, aceptarT" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
 
@@ -915,8 +928,6 @@
                                  value="#{controlNovedadesTerceros.listaNovedades}"> 
 
                         <!--COLUMNAS TABLA NOVEDADES--> 
-                        
-                        
                         <p:column headerText="Codigo">                                  
                             <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
                             <h:outputText value="#{novedades.empleado.codigoempleado}" />

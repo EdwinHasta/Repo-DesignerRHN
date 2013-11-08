@@ -857,7 +857,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/PerTelefono.xhtml</from-view-id>
         <navigation-case>
@@ -931,7 +930,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NovedadConcepto</from-view-id>
+        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
