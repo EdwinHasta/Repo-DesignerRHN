@@ -56,17 +56,7 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
 
-    
-    //Trae las novedades del empleado cuya secuencia se envía como parametro//
-  
-    public List<Novedades> novedadesTerceros(BigInteger secuenciaTercero) {
-        try {
-            return persistenciaNovedades.todasNovedadesTercero(secuenciaTercero);
-        } catch (Exception e) {
-            System.err.println("Error AdministrarNovedadesTerceros.todasNovedadesTercero" + e);
-            return null;
-        }
-    }
+
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
     @Override
     public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto) {
@@ -77,6 +67,7 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
             return null;
         }
     }
+    
     //Listas de Conceptos, Formulas, Periodicidades, Terceros
 
     public List<Conceptos> Conceptos() {

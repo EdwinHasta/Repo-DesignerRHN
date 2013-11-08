@@ -655,7 +655,7 @@ public class Conceptos implements Serializable {
 
         if (codigo != null) {
             codigoSTR = codigo.toString();
-            System.out.println("CodigoConceptoSTR: " + codigoSTR);
+            
         } else {
             codigoSTR = " ";
             codigo = BigInteger.valueOf(0);

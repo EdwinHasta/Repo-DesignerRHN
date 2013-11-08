@@ -48,5 +48,4 @@ public interface AdministrarNovedadesTercerosInterface {
     
     public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero);
     
-    
 }

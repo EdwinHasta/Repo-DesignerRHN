@@ -42,7 +42,7 @@ public class Soausentismos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA")
@@ -83,7 +83,7 @@ public class Soausentismos implements Serializable {
     @Column(name = "FORMALIQUIDACION")
     private String formaliquidacion;
     @Column(name = "PORCENTAJEINDIVIDUAL")
-    private BigInteger porcentajeindividual;
+    private BigDecimal porcentajeindividual;
     @Size(max = 30)
     @Column(name = "USUARIOBD")
     private String usuariobd;
@@ -124,20 +124,20 @@ public class Soausentismos implements Serializable {
     public Soausentismos() {
     }
 
-    public Soausentismos(BigDecimal secuencia) {
+    public Soausentismos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Soausentismos(BigDecimal secuencia, Date fecha) {
+    public Soausentismos(BigInteger secuencia, Date fecha) {
         this.secuencia = secuencia;
         this.fecha = fecha;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -245,11 +245,11 @@ public class Soausentismos implements Serializable {
         this.formaliquidacion = formaliquidacion;
     }
 
-    public BigInteger getPorcentajeindividual() {
+    public BigDecimal getPorcentajeindividual() {
         return porcentajeindividual;
     }
 
-    public void setPorcentajeindividual(BigInteger porcentajeindividual) {
+    public void setPorcentajeindividual(BigDecimal porcentajeindividual) {
         this.porcentajeindividual = porcentajeindividual;
     }
 

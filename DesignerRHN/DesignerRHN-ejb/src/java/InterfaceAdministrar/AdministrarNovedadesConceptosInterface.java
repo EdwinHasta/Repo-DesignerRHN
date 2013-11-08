@@ -49,8 +49,5 @@ public interface AdministrarNovedadesConceptosInterface {
     public Usuarios usuarioBD(String alias);
     
     public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto);
-    
-    public List<Novedades> novedadesTerceros(BigInteger secuenciaTercero);
-
-   
+  
 }
