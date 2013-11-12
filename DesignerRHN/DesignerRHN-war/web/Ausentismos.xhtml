@@ -312,6 +312,18 @@
                                 </p:column>
                                 
                                 <!-- Aca va lo de Diagnostico indice = 16-->
+                                <p:column>                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.diagnosticocategoria.descripcion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{ausentismos.diagnosticocategoria.descripcion}" id="editarDiagnostico" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'AD', ausentismos.accidente.descripcioncaso)}"/>
+                                                <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 13)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 7, 0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
                                 <!-- Aca va lo de Prorroga indice = 17 -->
 
                                 <!-- Periodo Relacionado-->

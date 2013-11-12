@@ -123,6 +123,7 @@ public class ControlAusentismos implements Serializable {
     public ControlAusentismos() {
         listaIBCS = null;
         listaAccidentes = null;
+        listaDiagnosticos = null;
         listaPorcentaje = new ArrayList<String>();
         listaPorcentaje.add("50");
         listaPorcentaje.add("66.6666");
@@ -775,34 +776,34 @@ public class ControlAusentismos implements Serializable {
                 context.execute("accidentesDialogo.show()");
                 tipoActualizacion = 0;
             }
-        }  /*else if (confirmarCambio.equalsIgnoreCase("DIAGNOSTICO")) {
-         if (tipoLista == 0) {
-         listaAusentismos.get(indice).getDiagnosticocategoria().setCodigo(Diagnostico);
-         } else {
-         filtradosListaAusentismos.get(indice).getDiagnosticocategoria().setCodigo(Diagnostico);
-         }
+        } else if (confirmarCambio.equalsIgnoreCase("DIAGNOSTICO")) {
+            if (tipoLista == 0) {
+                listaAusentismos.get(indice).getDiagnosticocategoria().setCodigo(Diagnostico);
+            } else {
+                filtradosListaAusentismos.get(indice).getDiagnosticocategoria().setCodigo(Diagnostico);
+            }
 
-         for (int i = 0; i < listaAusentismos.size(); i++) {
-         if (listaAusentismos.get(i).getDiagnosticocategoria().getCodigo().startsWith(valorConfirmar.toUpperCase())) {
-         indiceUnicoElemento = i;
-         coincidencias++;
-         }
-         }
-         if (coincidencias == 1) {
-         if (tipoLista == 0) {
-         listaAusentismos.get(indice).setAccidente(listaDiagnostico.get(indiceUnicoElemento));
-         } else {
-         filtradosListaAusentismos.get(indice).setAccidente(listaAccidentes.get(indiceUnicoElemento));
-         }
-         listaAccidentes.clear();
-         getListaAccidentes();
-         } else {
-         permitirIndex = false;
-         context.update("formularioDialogos:accidentesDialogo");
-         context.execute("accidentesDialogo.show()");
-         tipoActualizacion = 0;
-         }/*
-         }/* else if (confirmarCambio.equalsIgnoreCase("ENFERMEDAD")) {
+            for (int i = 0; i < listaAusentismos.size(); i++) {
+                if (listaAusentismos.get(i).getDiagnosticocategoria().getCodigo().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                if (tipoLista == 0) {
+                    listaAusentismos.get(indice).setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
+                } else {
+                    filtradosListaAusentismos.get(indice).setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
+                }
+                listaDiagnosticos.clear();
+                getListaDiagnosticos();
+            } else {
+                permitirIndex = false;
+                context.update("formularioDialogos:diagnosticosDialogo");
+                context.execute("diagnosticosDialogo.show()");
+                tipoActualizacion = 0;
+            }
+        }/* else if (confirmarCambio.equalsIgnoreCase("ENFERMEDAD")) {
          if (tipoLista == 0) {
          listaAusentismos.get(indice).getEnfermedad().setDescripcion(Enfermedad);
          } else {
@@ -1175,7 +1176,7 @@ public class ControlAusentismos implements Serializable {
 
     public List<Diagnosticoscategorias> getListaDiagnosticos() {
         if (listaDiagnosticos == null) {
-            //Falta Diagnosticos
+            listaDiagnosticos = administrarAusentismos.lovDiagnosticos();
         }
         return listaDiagnosticos;
     }
