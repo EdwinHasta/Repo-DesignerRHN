@@ -67,6 +67,24 @@
         </navigation-case>
     </navigation-rule>
     
+    
+    <navigation-rule>
+        <from-view-id>/Cuenta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detalleCuenta</from-outcome>
+            <to-view-id>/DetalleCuenta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/DetalleCuenta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cuentasBack</from-outcome>
+            <to-view-id>/Cuenta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Cuenta.xhtml</from-view-id>
         <navigation-case>
@@ -515,6 +533,7 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -522,6 +541,24 @@
         <navigation-case>
             <from-outcome>cuentaRastro</from-outcome>
             <to-view-id>/Cuenta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+   
+   <navigation-rule>
+        <from-view-id>/DetalleCuenta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detalleCuentaRastro</from-outcome>
+            <to-view-id>/DetalleCuenta.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
    
@@ -530,6 +567,7 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -537,6 +575,7 @@
         <navigation-case>
             <from-outcome>novedadRastro</from-outcome>
             <to-view-id>/EmplNovedad.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -545,6 +584,7 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -552,6 +592,7 @@
         <navigation-case>
             <from-outcome>mvrRastro</from-outcome>
             <to-view-id>/EmplMvrs.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     

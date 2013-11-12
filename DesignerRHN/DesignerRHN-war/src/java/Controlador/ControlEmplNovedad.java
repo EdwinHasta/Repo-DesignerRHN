@@ -86,17 +86,16 @@ public class ControlEmplNovedad implements Serializable {
         empleado = administrarEmplNovedad.actualEmpleado(empl);
     }
 
-    /**
-     * Metodo que modifica los cambios efectuados en la tabla Sets de la pagina
-     *
-     * @param indice Fila en la cual se realizo el cambio
-     */
+    
     public void sencillo() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
         String name = map.get("n"); // name attribute of node
         String type = map.get("t"); // type attribute of node
         System.out.println("Celda : " + name + " / Indice : " + type);
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndice(indice, columna);
     }
 
     public void modificarNovedades(int indice) {
@@ -379,13 +378,7 @@ public class ControlEmplNovedad implements Serializable {
     }
 
     //GETTERS AND SETTERS
-    /**
-     * Metodo que obtiene la lista de Sets de un Empleado, en caso de que sea
-     * null hace el llamado al metodo de obtener Sets del empleado, en caso
-     * contrario no genera operaciones
-     *
-     * @return listS Lista de Sets de un Empleado
-     */
+   
     public List<Novedades> getListNovedadesEmpleado() {
         try {
             if (listNovedadesEmpleado == null) {
@@ -411,8 +404,8 @@ public class ControlEmplNovedad implements Serializable {
         }
     }
 
-    public void setListNovedadesEmpleado(List<Novedades> sets) {
-        this.listNovedadesEmpleado = sets;
+    public void setListNovedadesEmpleado(List<Novedades> listNovedadesEmpleado) {
+        this.listNovedadesEmpleado = listNovedadesEmpleado;
     }
 
     /**
@@ -437,8 +430,8 @@ public class ControlEmplNovedad implements Serializable {
         return filtrarListNovedadesEmpleado;
     }
 
-    public void setFiltrarListNovedadesEmpleado(List<Novedades> filtrarSet) {
-        this.filtrarListNovedadesEmpleado = filtrarSet;
+    public void setFiltrarListNovedadesEmpleado(List<Novedades> filtrarListNovedadesEmpleado) {
+        this.filtrarListNovedadesEmpleado = filtrarListNovedadesEmpleado;
     }
 
     public boolean isAceptar() {
@@ -449,8 +442,8 @@ public class ControlEmplNovedad implements Serializable {
         return editarNovedad;
     }
 
-    public void setEditarNovedad(Novedades editarSet) {
-        this.editarNovedad = editarSet;
+    public void setEditarNovedad(Novedades editarNov) {
+        this.editarNovedad = editarNov;
     }
 
     public BigInteger getSecRegistro() {

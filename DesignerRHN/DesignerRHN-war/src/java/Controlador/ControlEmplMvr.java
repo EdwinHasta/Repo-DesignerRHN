@@ -2039,4 +2039,14 @@ public class ControlEmplMvr implements Serializable {
     public void setNombreTablaRastro(String nombreTablaRastro) {
         this.nombreTablaRastro = nombreTablaRastro;
     }
+
+    public BigInteger getBackUpSecRegistroMvrs() {
+        return backUpSecRegistroMvrs;
+    }
+
+    public void setBackUpSecRegistroMvrs(BigInteger backUpSecRegistroMvrs) {
+        this.backUpSecRegistroMvrs = backUpSecRegistroMvrs;
+    }
+    
+    
 }
