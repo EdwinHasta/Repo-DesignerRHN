@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaInformacionesAdicionales implements PersistenciaInformacionesAdicionalesInterface{
+public class PersistenciaInformacionesAdicionales implements PersistenciaInformacionesAdicionalesInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -79,6 +79,18 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
             return null;
         } catch (Exception e) {
             System.out.println("Error PersistenciaInformacionesAdicionales.informacionAdicionalPersona" + e);
+            return null;
+        }
+    }
+
+    public List<InformacionesAdicionales> informacionAdicionalEmpleadoSecuencia(BigInteger secuenciaEmpleado) {
+        try {
+            Query query = em.createQuery("SELECT ia FROM InformacionesAdicionales ia WHERE ia.empleado.secuencia = :secuenciaEmpleado");
+            query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            List<InformacionesAdicionales> resultado = (List<InformacionesAdicionales>) query.getResultList();
+            return resultado;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInformacionesAdicionales.informacionAdicionalEmpleadoSecuencia : " + e.toString());
             return null;
         }
     }

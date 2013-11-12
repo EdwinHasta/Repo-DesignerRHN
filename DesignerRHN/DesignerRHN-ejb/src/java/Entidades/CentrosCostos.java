@@ -35,6 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "CentrosCostos.findAll", query = "SELECT c FROM CentrosCostos c")})
 public class CentrosCostos implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consolidadord")
+    private Collection<VigenciasCuentas> vigenciasCuentasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consolidadorc")
+    private Collection<VigenciasCuentas> vigenciasCuentasCollection1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "centrocostod")
     private Collection<SolucionesNodos> solucionesnodosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "centrocostoc")
@@ -316,6 +320,24 @@ public class CentrosCostos implements Serializable {
 
     public void setNovedadesCollection1(Collection<Novedades> novedadesCollection1) {
         this.novedadesCollection1 = novedadesCollection1;
+    }
+
+    @XmlTransient
+    public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {
+        return vigenciasCuentasCollection;
+    }
+
+    public void setVigenciasCuentasCollection(Collection<VigenciasCuentas> vigenciasCuentasCollection) {
+        this.vigenciasCuentasCollection = vigenciasCuentasCollection;
+    }
+
+    @XmlTransient
+    public Collection<VigenciasCuentas> getVigenciasCuentasCollection1() {
+        return vigenciasCuentasCollection1;
+    }
+
+    public void setVigenciasCuentasCollection1(Collection<VigenciasCuentas> vigenciasCuentasCollection1) {
+        this.vigenciasCuentasCollection1 = vigenciasCuentasCollection1;
     }
     
 }

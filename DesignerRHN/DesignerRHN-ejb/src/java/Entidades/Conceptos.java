@@ -38,6 +38,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private BigInteger codigo;
+    @Column(name = "CONJUNTO")
+    private Short conjunto;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+    private Collection<VigenciasCuentas> vigenciasCuentasCollection;
 
     @OneToMany(mappedBy = "concepto")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
@@ -56,9 +64,6 @@ public class Conceptos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @Column(name = "CODIGO")
-    private BigInteger codigo;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -118,8 +123,6 @@ public class Conceptos implements Serializable {
     @Size(max = 8)
     @Column(name = "ACTIVO")
     private String activo;
-    @Column(name = "CONJUNTO")
-    private int conjunto;
     @Size(max = 15)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
@@ -190,15 +193,6 @@ public class Conceptos implements Serializable {
 
     public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public BigInteger getCodigo() {
-
-        return codigo;
-    }
-
-    public void setCodigo(BigInteger codigo) {
-        this.codigo = codigo;
     }
 
     public String getDescripcion() {
@@ -365,17 +359,6 @@ public class Conceptos implements Serializable {
 
     public void setActivo(String activo) {
         this.activo = activo;
-    }
-
-    public int getConjunto() {
-        if (conjunto == 0) {
-            conjunto = 1;
-        }
-        return conjunto;
-    }
-
-    public void setConjunto(int conjunto) {
-        this.conjunto = conjunto;
     }
 
     public String getCodigoalternativo() {
@@ -667,5 +650,30 @@ public class Conceptos implements Serializable {
     public void setCodigoSTR(String codigoSTR) {
         codigo = new BigInteger(codigoSTR);
         this.codigoSTR = codigoSTR;
+    }
+
+    public BigInteger getCodigo() {
+        return codigo; 
+    }
+
+    public void setCodigo(BigInteger codigo) {
+        this.codigo = codigo; 
+    }
+
+    public Short getConjunto() {
+        return conjunto;
+    }
+
+    public void setConjunto(Short conjunto) {
+        this.conjunto = conjunto;
+    }
+
+    @XmlTransient
+    public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {
+        return vigenciasCuentasCollection;
+    }
+
+    public void setVigenciasCuentasCollection(Collection<VigenciasCuentas> vigenciasCuentasCollection) {
+        this.vigenciasCuentasCollection = vigenciasCuentasCollection;
     }
 }

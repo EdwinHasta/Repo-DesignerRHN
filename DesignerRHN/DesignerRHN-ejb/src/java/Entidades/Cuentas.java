@@ -35,6 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")})
 public class Cuentas implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentad")
+    private Collection<VigenciasCuentas> vigenciasCuentasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentac")
+    private Collection<VigenciasCuentas> vigenciasCuentasCollection1;
 
     @OneToMany(mappedBy = "cuentaconsolidacion")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
@@ -629,5 +633,23 @@ public class Cuentas implements Serializable {
             manejasubcuenta = "S";
         }
         this.checkSubCuenta = check;
+    }
+
+    @XmlTransient
+    public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {
+        return vigenciasCuentasCollection;
+    }
+
+    public void setVigenciasCuentasCollection(Collection<VigenciasCuentas> vigenciasCuentasCollection) {
+        this.vigenciasCuentasCollection = vigenciasCuentasCollection;
+    }
+
+    @XmlTransient
+    public Collection<VigenciasCuentas> getVigenciasCuentasCollection1() {
+        return vigenciasCuentasCollection1;
+    }
+
+    public void setVigenciasCuentasCollection1(Collection<VigenciasCuentas> vigenciasCuentasCollection1) {
+        this.vigenciasCuentasCollection1 = vigenciasCuentasCollection1;
     }
 }
