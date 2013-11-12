@@ -5,6 +5,7 @@
 package InterfacePersistencia;
 
 import Entidades.Diagnosticoscategorias;
+import java.util.List;
 
 /**
  *
@@ -17,4 +18,7 @@ public interface PersistenciaDiagnosticosCategoriasInterface {
     public void editar(Diagnosticoscategorias diagnosticosCategorias);
 
     public void borrar(Diagnosticoscategorias diagnosticosCategorias);
+
+    public List<Diagnosticoscategorias> buscarDiagnosticos();
+
 }

@@ -6,14 +6,16 @@ package Persistencia;
 
 import Entidades.Diagnosticoscategorias;
 import InterfacePersistencia.PersistenciaDiagnosticosCategoriasInterface;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosticosCategoriasInterface{
+public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosticosCategoriasInterface {
 
-     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
@@ -31,17 +33,14 @@ public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosti
         em.remove(em.merge(diagnosticosCategorias));
     }
 
-   /* public List<EnfermeadadesProfesionales> buscarEPPorEmpleado(BigInteger secEmpleado) {
+    public List<Diagnosticoscategorias> buscarDiagnosticos() {
         try {
-            Query query = em.createQuery("SELECT ep FROM EnfermeadadesProfesionales ep WHERE ep.empleado.secuencia = :secuenciaEmpl ORDER BY ep.fechanotificacion DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
-
-            List<EnfermeadadesProfesionales> enfermedadesProfesionales = query.getResultList();
-            return enfermedadesProfesionales;
+            Query query = em.createQuery("SELECT d FROM Diagnosticoscategorias d ORDER BY d.codigo DESC");
+            List<Diagnosticoscategorias> diagnosticosCategorias = query.getResultList();
+            return diagnosticosCategorias;
         } catch (Exception e) {
-            System.out.println("Error en PersistenciaEnfermedadesProfesionales Por Empleados ERROR" + e);
+            System.out.println("Error en PersistenciaDiagnosticosCategorias buscarDiagnosticos ERROR" + e);
             return null;
         }
-    }*/
-    
+    }
 }

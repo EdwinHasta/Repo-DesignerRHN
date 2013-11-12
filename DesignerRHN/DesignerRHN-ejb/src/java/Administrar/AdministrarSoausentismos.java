@@ -6,6 +6,7 @@ package Administrar;
 
 import Entidades.Causasausentismos;
 import Entidades.Clasesausentismos;
+import Entidades.Diagnosticoscategorias;
 import Entidades.Empleados;
 import Entidades.EnfermeadadesProfesionales;
 import Entidades.Ibcs;
@@ -16,6 +17,7 @@ import Entidades.Tiposausentismos;
 import InterfaceAdministrar.AdministrarSoausentismosInterface;
 import InterfacePersistencia.PersistenciaCausasAusentismosInterface;
 import InterfacePersistencia.PersistenciaClasesAusentismosInterface;
+import InterfacePersistencia.PersistenciaDiagnosticosCategoriasInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaEnfermedadesProfesionalesInterface;
 import InterfacePersistencia.PersistenciaIBCSInterface;
@@ -49,6 +51,8 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     PersistenciaIBCSInterface persistenciaIBCS;
     @EJB
     PersistenciaEnfermedadesProfesionalesInterface persistenciaEP;
+    @EJB
+    PersistenciaDiagnosticosCategoriasInterface persistenciaDiagnosticos;
 
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
     @Override
@@ -84,6 +88,10 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     
     public List<Terceros> lovTerceros(){
         return persistenciaTerceros.buscarTerceros();
+    }
+    
+    public List<Diagnosticoscategorias> lovDiagnosticos(){
+        return persistenciaDiagnosticos.buscarDiagnosticos();
     }
     
     public List<Ibcs> empleadosIBCS(BigInteger secuenciaEmpleado){
