@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -32,6 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Diagnosticoscategorias.findAll", query = "SELECT d FROM Diagnosticoscategorias d")})
 public class Diagnosticoscategorias implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoria")
+    private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -132,6 +135,15 @@ public class Diagnosticoscategorias implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Diagnosticoscategorias[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<EnfermeadadesProfesionales> getEnfermeadadesProfesionalesCollection() {
+        return enfermeadadesProfesionalesCollection;
+    }
+
+    public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
+        this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
     }
     
 }

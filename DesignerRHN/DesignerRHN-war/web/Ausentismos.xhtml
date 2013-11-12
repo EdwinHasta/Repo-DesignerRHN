@@ -59,7 +59,7 @@
                                         <p:column rowspan="1" colspan="7" headerText="Fechas" />  
                                         <p:column rowspan="1" colspan="3" headerText="Base Manual Liquidación" />
                                         <p:column rowspan="1" colspan="9" headerText="Incapacidades Salud Ocupacionesl" />
-                                        
+
                                     </p:row>
 
                                     <p:row>  
@@ -75,8 +75,10 @@
                                         <p:column headerText="Fin Pago" filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinpago}"/>  
                                         <p:column headerText="%" filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.porcentajeindividual}"/>  
                                         <p:column headerText="Base Liquidacion" filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.baseliquidacion}"/>  
-                                        <p:column headerText="Forma Liquidacion" filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}"/>
-                                        
+                                        <p:column headerText="Forma Liquidacion" filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}"/>  
+                                        <p:column headerText="AT" filterBy="#{ausentismos.accidente.descripcioncaso}" filterMatchMode="contains" id="ADescripcionCaso" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.accidente.descripcioncaso}" />
+                                        <p:column headerText="EP" filterBy="#{ausentismos.enfermedad.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.enfermedad.descripcion}" />
+                                        <p:column headerText="No.Certificado" filterBy="#{ausentismos.numerocertificado}" filterMatchMode="contains" id="ANumero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.numerocertificado}" />
                                     </p:row>
 
                                 </p:columnGroup>
@@ -281,8 +283,92 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                 </p:column>
+                                <!-- Descripcion Accidente -->
+                                <p:column>                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.accidente.descripcioncaso}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{ausentismos.accidente.descripcioncaso}" id="editarDescripcionAccidente" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'AD', ausentismos.accidente.descripcioncaso)}"/>
+                                                <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 13)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 7, 0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                                <!-- Aca va lo de enfermedad  indice = 14-->
 
+                                <!-- Numero Certificado -->
+                                <p:column >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.numerocertificado}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{ausentismos.numerocertificado}" id="editarNumeroCertificado" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.numerocertificado)}"/>
+                                                <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 15)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                                
+                                <!-- Aca va lo de Diagnostico indice = 16-->
+                                <p:column>                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.diagnosticocategoria.descripcion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{ausentismos.diagnosticocategoria.descripcion}" id="editarDiagnostico" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'AD', ausentismos.accidente.descripcioncaso)}"/>
+                                                <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 13)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 7, 0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                                <!-- Aca va lo de Prorroga indice = 17 -->
 
+                                <!-- Periodo Relacionado-->
+                                <p:column >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.relacionada}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{ausentismos.relacionada}" id="editarPeriodoRelacionado" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.relacionada)}"/>
+                                                <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 18)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                                <!-- Aca va el CheckBox ese ficti -->
+                                
+                                <!-- Tercero -->
+                                <p:column>                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.tercero.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{ausentismos.tercero.nombre}" id="editarTercero" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'TERCERO', ausentismos.tercero.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 19)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 8, 0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                                
+                                <!-- Observacion -->
+                                <p:column >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.observaciones}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{ausentismos.observaciones}" id="editarObservaciones" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.observaciones)}"/>
+                                                <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 20)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                                
+                                
+                                
                             </p:dataTable>
                         </fieldset>
                     </p:panel>
@@ -441,6 +527,70 @@
                             <p:resetInput target=":formularioDialogos:LOVFormas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
+
+                    <!-- L.O.V ACCIDENTES-->
+                    <p:dialog header="Accidentes" widgetVar="accidentesDialogo" draggable="false" resizable="false" id="accidentesDialogo" closable="false"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
+
+                        <p:dataTable  id="LOVAccidentes" style="font-size: 11px; width: 600px" var="accidentes" value="#{controlAusentismos.listaAccidentes}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVAccidentes" 
+                                      filteredValue="#{controlAusentismos.filtradoslistaAccidentes}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{accidentes.secuencia}" selection="#{controlAusentismos.seleccionAccidentes}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarAD"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" onstart="LOVAccidentes.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Accidentes "  style="position: absolute; left: 27px; top: 15px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVIbcs.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                            </f:facet>
+
+                            <p:column sortBy="#{accidentes.hora}" filterBy="#{accidentes.hora}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Hora" />
+                                </f:facet>
+                                <h:outputText value="#{accidentes.hora}" />  
+                            </p:column>
+
+                            <p:column sortBy="#{accidentes.expediente}" filterBy="#{accidentes.expediente}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Expediente" />
+                                </f:facet>
+                                <h:outputText value="#{accidentes.expediente}" />  
+                            </p:column>
+
+                            <p:column sortBy="#{accidentes.fecha}" filterBy="#{accidentes.fecha}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha" />
+                                </f:facet>
+                                <h:outputText value="#{accidentes.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+
+                                </h:outputText>  
+                            </p:column>
+
+                            <p:column sortBy="#{accidentes.descripcioncaso}" filterBy="#{accidentes.descripcioncaso}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Descripcion" />
+                                </f:facet>
+                                <h:outputText value="#{accidentes.descripcioncaso}" />  
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:commandButton id="aceptarAD" value="Aceptar" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlAusentismos.actualizarAD()}" onclick="LOVAccidentes.clearFilters();" update="@this" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVAccidentes:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasAD" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="accidentesDialogo.hide(), LOVAccidentes.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioAD()}" update="LOVAccidentes, aceptarAD" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVAccidentes:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+
+
+
+
+
+
+
                 </h:form>
             </ui:define>
         </ui:composition>

@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Diagnosticossecciones.findAll", query = "SELECT d FROM Diagnosticossecciones d")})
 public class Diagnosticossecciones implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccion")
+    private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -133,6 +135,15 @@ public class Diagnosticossecciones implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Diagnosticossecciones[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<EnfermeadadesProfesionales> getEnfermeadadesProfesionalesCollection() {
+        return enfermeadadesProfesionalesCollection;
+    }
+
+    public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
+        this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
     }
     
 }

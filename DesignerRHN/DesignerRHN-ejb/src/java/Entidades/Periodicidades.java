@@ -38,7 +38,7 @@ public class Periodicidades implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private Short codigo;
+    private short codigo;
     @OneToMany(mappedBy = "periodicidadcorte")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(mappedBy = "periodicidad")
@@ -175,7 +175,7 @@ public class Periodicidades implements Serializable {
     }
 
     public String getCodigoStr() {
-        if (codigo != null) {
+        if (String.valueOf(codigo) != null) {
             codigoStr = String.valueOf(codigo);
         } else {
             codigoStr = " ";
