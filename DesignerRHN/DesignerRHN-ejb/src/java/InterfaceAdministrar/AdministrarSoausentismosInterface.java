@@ -6,6 +6,7 @@ package InterfaceAdministrar;
 
 import Entidades.Causasausentismos;
 import Entidades.Clasesausentismos;
+import Entidades.Diagnosticoscategorias;
 import Entidades.Empleados;
 import Entidades.EnfermeadadesProfesionales;
 import Entidades.Ibcs;
@@ -35,4 +36,6 @@ public interface AdministrarSoausentismosInterface {
     public List<Soaccidentes> lovAccidentes(BigInteger secuenciaEmpleado);
     
     public List<Terceros> lovTerceros();
+    
+    public List<Diagnosticoscategorias> lovDiagnosticos();
 }
