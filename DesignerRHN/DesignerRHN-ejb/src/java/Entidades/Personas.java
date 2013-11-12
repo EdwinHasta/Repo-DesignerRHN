@@ -42,6 +42,8 @@ public class Personas implements Serializable {
     @NotNull
     @Column(name = "NUMERODOCUMENTO")
     private BigInteger numerodocumento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsable")
+    private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -670,7 +672,16 @@ public class Personas implements Serializable {
         return numerodocumento;
     }
 
-    public void setNumerodocumento(BigInteger  numerodocumento) {
+    public void setNumerodocumento(BigInteger numerodocumento) {
         this.numerodocumento = numerodocumento;
+    }
+
+    @XmlTransient
+    public Collection<EnfermeadadesProfesionales> getEnfermeadadesProfesionalesCollection() {
+        return enfermeadadesProfesionalesCollection;
+    }
+
+    public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
+        this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
     }
 }

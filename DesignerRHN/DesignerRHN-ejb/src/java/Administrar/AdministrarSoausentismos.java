@@ -7,15 +7,21 @@ package Administrar;
 import Entidades.Causasausentismos;
 import Entidades.Clasesausentismos;
 import Entidades.Empleados;
+import Entidades.EnfermeadadesProfesionales;
 import Entidades.Ibcs;
+import Entidades.Soaccidentes;
 import Entidades.Soausentismos;
+import Entidades.Terceros;
 import Entidades.Tiposausentismos;
 import InterfaceAdministrar.AdministrarSoausentismosInterface;
 import InterfacePersistencia.PersistenciaCausasAusentismosInterface;
 import InterfacePersistencia.PersistenciaClasesAusentismosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaEnfermedadesProfesionalesInterface;
 import InterfacePersistencia.PersistenciaIBCSInterface;
+import InterfacePersistencia.PersistenciaSoaccidentesInterface;
 import InterfacePersistencia.PersistenciaSoausentismosInterface;
+import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaTiposAusentismosInterface;
 import java.math.BigInteger;
 import java.util.List;
@@ -28,7 +34,11 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
     @EJB
+    PersistenciaTercerosInterface persistenciaTerceros;
+    @EJB
     PersistenciaSoausentismosInterface persistenciaSoausentismos;
+    @EJB
+    PersistenciaSoaccidentesInterface persistenciaSoaccdicentes;
     @EJB
     PersistenciaTiposAusentismosInterface persistenciaTiposAusentismos;
     @EJB
@@ -37,6 +47,8 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     PersistenciaCausasAusentismosInterface persistenciaCausasAusentismos;
     @EJB
     PersistenciaIBCSInterface persistenciaIBCS;
+    @EJB
+    PersistenciaEnfermedadesProfesionalesInterface persistenciaEP;
 
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
     @Override
@@ -66,8 +78,20 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
         return persistenciaCausasAusentismos.buscarCausasAusentismos();
     }
     
+    public List<Soaccidentes> lovAccidentes(BigInteger secuenciaEmpleado){
+        return persistenciaSoaccdicentes.accidentesEmpleado(secuenciaEmpleado);
+    }
+    
+    public List<Terceros> lovTerceros(){
+        return persistenciaTerceros.buscarTerceros();
+    }
+    
     public List<Ibcs> empleadosIBCS(BigInteger secuenciaEmpleado){
         return persistenciaIBCS.buscarIbcsPorEmpleado(secuenciaEmpleado);
+    }
+    
+    public List<EnfermeadadesProfesionales> empleadosEP(BigInteger secuenciaEmpleado){
+        return persistenciaEP.buscarEPPorEmpleado(secuenciaEmpleado);
     }
     
 }
