@@ -10,56 +10,91 @@ import InterfacePersistencia.PersistenciaMotivosCambiosCargosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 
 /**
  *
  * @author Administrator
  */
-@Stateless
+@Stateful
 public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambiosCargosInterface {
 
-    
     @EJB
     PersistenciaMotivosCambiosCargosInterface persistenciaMotivosCambiosCargos;
-    
-    private List<MotivosCambiosCargos> motivosCambiosCargos;
-    private List<String> nombresMotivosCambiosCargos;
-    private MotivosCambiosCargos mcc=null;
-/*
-    public AdministrarMotivosCambiosCargos() {
-        persistenciaMotivosCambiosCargos = new PersistenciaMotivosCambiosCargos();
-        nombresMotivosCambiosCargos = new ArrayList<String>();
-        mcc=null;
-    }
-*/
+
     @Override
-    public List<MotivosCambiosCargos> consultarTodo() {
+    public List<MotivosCambiosCargos> consultarMotivosCambiosCargos() {
+        List<MotivosCambiosCargos> motivosCambiosCargos = null;
         try {
             motivosCambiosCargos = persistenciaMotivosCambiosCargos.buscarMotivosCambiosCargos();
         } catch (Exception e) {
             motivosCambiosCargos = null;
+            System.out.println("AdministrarMotivosCambiosCargos.consultarMotivosCambiosCargos.");
+            System.out.println("Excepcion.");
+            System.out.println(e);
+        } finally {
+            return motivosCambiosCargos;
         }
-        return motivosCambiosCargos;
     }
+
     @Override
-    public MotivosCambiosCargos consultarPorSecuencia(BigInteger secuenciaMCC) {
+    public MotivosCambiosCargos consultarMotivosCambiosCargosPorSec(BigInteger secuenciaMCC) {
+        MotivosCambiosCargos mcc = null;
         try {
             mcc = persistenciaMotivosCambiosCargos.buscarMotivoCambioCargo(secuenciaMCC);
         } catch (Exception e) {
             mcc = null;
+        } finally{
+            return mcc;
         }
-        return mcc;
     }
-    @Override
-    public List<String> consultarNombreTodo() {
-        try {            
-            nombresMotivosCambiosCargos = persistenciaMotivosCambiosCargos.buscarNombresMotivosCambiosCargos();            
-        } catch (Exception e) {
-            System.out.println("AdministrarMotivosCambiosCargos: consultarNombreTodo trae null");
-            nombresMotivosCambiosCargos = null;
-        }
-        return nombresMotivosCambiosCargos;
-    }        
 
+    @Override
+    public List<String> consultarNombresMotivosCambiosCargos() {
+        List<String> nombresMotivosCambiosCargos = null;
+        try {
+            nombresMotivosCambiosCargos = persistenciaMotivosCambiosCargos.buscarNombresMotivosCambiosCargos();
+        } catch (Exception e) {
+            System.out.println("AdministrarMotivosCambiosCargos.consultarNombresMotivosCambiosCargos.");
+            System.err.println("Excepcion.");
+            nombresMotivosCambiosCargos = null;
+        } finally {
+            return nombresMotivosCambiosCargos;
+        }
+    }
+
+    @Override
+    public void modificarMotivosCambiosCargos(List<MotivosCambiosCargos> listMotivosCambiosCargosModificadas) {
+        MotivosCambiosCargos motivoCambioCargoSeleccionado;
+        System.out.println("AdmnistrarMotivosCambiosCargos.modificarMotivosCambiosCargos.");
+        System.out.println("Modificando...");
+        for (int i = 0; i < listMotivosCambiosCargosModificadas.size(); i++) {
+            motivoCambioCargoSeleccionado = listMotivosCambiosCargosModificadas.get(i);
+            persistenciaMotivosCambiosCargos.editar(motivoCambioCargoSeleccionado);
+        }
+    }
+
+    @Override
+    public void borrarMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos) {
+        persistenciaMotivosCambiosCargos.borrar(motivosCambiosCargos);
+    }
+
+    @Override
+    public void crearMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos) {
+        persistenciaMotivosCambiosCargos.crear(motivosCambiosCargos);
+    }
+
+    @Override
+    public Long verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo) {
+        Long verificadorVC = null;
+        try {
+            verificadorVC = persistenciaMotivosCambiosCargos.verificarBorradoVigenciasCargos(secuenciaMovitoCambioCargo);
+        } catch (Exception e) {
+            System.out.println("AdministrarMotivosCambiosCargos.verificarBorradoVC.");
+            System.err.println("Excepcion.");
+            System.out.println(e);
+        } finally {
+            return verificadorVC;
+        }
+    }
 }

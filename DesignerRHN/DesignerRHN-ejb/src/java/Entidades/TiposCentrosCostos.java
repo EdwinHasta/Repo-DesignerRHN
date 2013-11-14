@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -33,15 +34,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposCentrosCostos.findAll", query = "SELECT t FROM TiposCentrosCostos t")})
 public class TiposCentrosCostos implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocc")
-    private Collection<VigenciasCuentas> vigenciasCuentasCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -60,21 +59,21 @@ public class TiposCentrosCostos implements Serializable {
     public TiposCentrosCostos() {
     }
 
-    public TiposCentrosCostos(BigDecimal secuencia) {
+    public TiposCentrosCostos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposCentrosCostos(BigDecimal secuencia, short codigo, String nombre) {
+    public TiposCentrosCostos(BigInteger secuencia, short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -134,15 +133,6 @@ public class TiposCentrosCostos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Tiposcentroscostos[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {
-        return vigenciasCuentasCollection;
-    }
-
-    public void setVigenciasCuentasCollection(Collection<VigenciasCuentas> vigenciasCuentasCollection) {
-        this.vigenciasCuentasCollection = vigenciasCuentasCollection;
     }
     
 }

@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,7 +38,7 @@ public class NormasLaborales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -52,21 +52,21 @@ public class NormasLaborales implements Serializable {
     public NormasLaborales() {
     }
 
-    public NormasLaborales(BigDecimal secuencia) {
+    public NormasLaborales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public NormasLaborales(BigDecimal secuencia, short codigo, String nombre) {
+    public NormasLaborales(BigInteger secuencia, short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
