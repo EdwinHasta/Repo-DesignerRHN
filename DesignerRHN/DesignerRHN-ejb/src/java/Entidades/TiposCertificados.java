@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TiposCertificados implements Serializable {
 
     @Column(name = "CODIGO")
-    private BigInteger codigo;
+    private Short codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocertificado")
     private Collection<OtrosCertificados> otrosCertificadosCollection;
     private static final long serialVersionUID = 1L;
@@ -98,11 +98,11 @@ public class TiposCertificados implements Serializable {
         return "Entidades.Tiposcertificados[ secuencia=" + secuencia + " ]";
     }
 
-    public BigInteger getCodigo() {
+    public Short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Short codigo) {
         this.codigo = codigo;
     }
 

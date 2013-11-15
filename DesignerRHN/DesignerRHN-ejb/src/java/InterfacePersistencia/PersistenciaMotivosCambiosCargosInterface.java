@@ -44,5 +44,6 @@ public interface PersistenciaMotivosCambiosCargosInterface {
      * existentes en la base de datos
      */
     public List<String> buscarNombresMotivosCambiosCargos();
-    
+
+    public Long verificarBorradoVigenciasCargos(BigInteger secuencia);
 }
