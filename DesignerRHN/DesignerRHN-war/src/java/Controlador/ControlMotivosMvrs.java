@@ -4,7 +4,7 @@
  */
 package Controlador;
 
-import Entidades.MotivosMvrs;
+import Entidades.Motivosmvrs;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarMotivosMvrsInterface;
@@ -36,14 +36,14 @@ public class ControlMotivosMvrs implements Serializable {
      @EJB
     AdministrarRastrosInterface administrarRastros;
    
-    private List<MotivosMvrs> listMotivosMvrs;
-    private List<MotivosMvrs> filtrarMotivosMvrs;
-    private List<MotivosMvrs> crearMotivoMvrs;
-    private List<MotivosMvrs> modificarMotivoMvrs;
-    private List<MotivosMvrs> borrarMotivoMvrs;
-    private MotivosMvrs nuevoMotivoMvr;
-    private MotivosMvrs duplicarMotivosMvrs;
-    private MotivosMvrs editarMotivosMvrs;
+    private List<Motivosmvrs> listMotivosMvrs;
+    private List<Motivosmvrs> filtrarMotivosMvrs;
+    private List<Motivosmvrs> crearMotivoMvrs;
+    private List<Motivosmvrs> modificarMotivoMvrs;
+    private List<Motivosmvrs> borrarMotivoMvrs;
+    private Motivosmvrs nuevoMotivoMvr;
+    private Motivosmvrs duplicarMotivosMvrs;
+    private Motivosmvrs editarMotivosMvrs;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -60,13 +60,13 @@ public class ControlMotivosMvrs implements Serializable {
 
     public ControlMotivosMvrs() {
         listMotivosMvrs = null;
-        crearMotivoMvrs = new ArrayList<MotivosMvrs>();
-        modificarMotivoMvrs = new ArrayList<MotivosMvrs>();
-        borrarMotivoMvrs = new ArrayList<MotivosMvrs>();
+        crearMotivoMvrs = new ArrayList<Motivosmvrs>();
+        modificarMotivoMvrs = new ArrayList<Motivosmvrs>();
+        borrarMotivoMvrs = new ArrayList<Motivosmvrs>();
         permitirIndex = true;
-        editarMotivosMvrs = new MotivosMvrs();
-        nuevoMotivoMvr = new MotivosMvrs();
-        duplicarMotivosMvrs = new MotivosMvrs();
+        editarMotivosMvrs = new Motivosmvrs();
+        nuevoMotivoMvr = new Motivosmvrs();
+        duplicarMotivosMvrs = new Motivosmvrs();
     }
 
     public void eventoFiltrar() {
@@ -486,7 +486,7 @@ public class ControlMotivosMvrs implements Serializable {
             crearMotivoMvrs.add(nuevoMotivoMvr);
 
             listMotivosMvrs.add(nuevoMotivoMvr);
-            nuevoMotivoMvr = new MotivosMvrs();
+            nuevoMotivoMvr = new Motivosmvrs();
 
             context.update("form:datosMotivoMvr");
             if (guardado == true) {
@@ -507,7 +507,7 @@ public class ControlMotivosMvrs implements Serializable {
 
     public void limpiarNuevoMotivoMvrs() {
         System.out.println("limpiarNuevoMotivoMvrs");
-        nuevoMotivoMvr = new MotivosMvrs();
+        nuevoMotivoMvr = new Motivosmvrs();
         secRegistro = null;
         index = -1;
 
@@ -517,7 +517,7 @@ public class ControlMotivosMvrs implements Serializable {
     public void duplicarMotivoMvrs() {
         System.out.println("duplicarMotivoMvr");
         if (index >= 0) {
-            duplicarMotivosMvrs = new MotivosMvrs();
+            duplicarMotivosMvrs = new Motivosmvrs();
             k++;
             l = BigInteger.valueOf(k);
 
@@ -604,7 +604,7 @@ public class ControlMotivosMvrs implements Serializable {
                 filtrarMotivosMvrs = null;
                 tipoLista = 0;
             }
-            duplicarMotivosMvrs = new MotivosMvrs();
+            duplicarMotivosMvrs = new Motivosmvrs();
             RequestContext.getCurrentInstance().execute("duplicarRegistroMotivosMvr.hide()");
 
         } else {
@@ -615,7 +615,7 @@ public class ControlMotivosMvrs implements Serializable {
     }
 
     public void limpiarDuplicarMotivosMvrs() {
-        duplicarMotivosMvrs = new MotivosMvrs();
+        duplicarMotivosMvrs = new Motivosmvrs();
     }
 
     public void exportPDF() throws IOException {
@@ -673,38 +673,38 @@ public class ControlMotivosMvrs implements Serializable {
         index = -1;
     }
  //-----------------------------------------------------------------------------   
-    public List<MotivosMvrs> getListMotivosMvrs() {
+    public List<Motivosmvrs> getListMotivosMvrs() {
         if (listMotivosMvrs == null) {
             listMotivosMvrs = administrarMotivosMvrs.mostrarMotivosMvrs();
         }
         return listMotivosMvrs;
     }
 
-    public void setListMotivosMvrs(List<MotivosMvrs> listMotivosMvrs) {
+    public void setListMotivosMvrs(List<Motivosmvrs> listMotivosMvrs) {
         this.listMotivosMvrs = listMotivosMvrs;
     }
 
-    public List<MotivosMvrs> getFiltrarMotivosMvrs() {
+    public List<Motivosmvrs> getFiltrarMotivosMvrs() {
         return filtrarMotivosMvrs;
     }
 
-    public void setFiltrarMotivosMvrs(List<MotivosMvrs> filtrarMotivosMvrs) {
+    public void setFiltrarMotivosMvrs(List<Motivosmvrs> filtrarMotivosMvrs) {
         this.filtrarMotivosMvrs = filtrarMotivosMvrs;
     }
 
-    public MotivosMvrs getDuplicarMotivosMvrs() {
+    public Motivosmvrs getDuplicarMotivosMvrs() {
         return duplicarMotivosMvrs;
     }
 
-    public void setDuplicarMotivosMvrs(MotivosMvrs duplicarMotivosMvrs) {
+    public void setDuplicarMotivosMvrs(Motivosmvrs duplicarMotivosMvrs) {
         this.duplicarMotivosMvrs = duplicarMotivosMvrs;
     }
 
-    public MotivosMvrs getEditarMotivosMvrs() {
+    public Motivosmvrs getEditarMotivosMvrs() {
         return editarMotivosMvrs;
     }
 
-    public void setEditarMotivosMvrs(MotivosMvrs editarMotivosMvrs) {
+    public void setEditarMotivosMvrs(Motivosmvrs editarMotivosMvrs) {
         this.editarMotivosMvrs = editarMotivosMvrs;
     }
 
@@ -724,11 +724,11 @@ public class ControlMotivosMvrs implements Serializable {
         this.mensajeValidacion = mensajeValidacion;
     }
 
-    public MotivosMvrs getNuevoMotivoMvr() {
+    public Motivosmvrs getNuevoMotivoMvr() {
         return nuevoMotivoMvr;
     }
 
-    public void setNuevoMotivoMvr(MotivosMvrs nuevoMotivoMvr) {
+    public void setNuevoMotivoMvr(Motivosmvrs nuevoMotivoMvr) {
         this.nuevoMotivoMvr = nuevoMotivoMvr;
     }
 

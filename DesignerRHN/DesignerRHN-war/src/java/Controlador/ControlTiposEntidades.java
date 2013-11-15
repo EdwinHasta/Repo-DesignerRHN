@@ -4,7 +4,7 @@
  */
 package Controlador;
 
-import Entidades.GruposTiposEntidades;
+import Entidades.Grupostiposentidades;
 import Entidades.TiposEntidades;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
@@ -45,9 +45,9 @@ public class ControlTiposEntidades implements Serializable {
     private TiposEntidades duplicarTipoEntidad;
     private TiposEntidades editarTipoEntidad;
     //lov gruposTiposEntidades
-    private GruposTiposEntidades grupoTipoEntidadSeleccionada;
-    private List<GruposTiposEntidades> filtradoGruposTiposEntidades;
-    private List<GruposTiposEntidades> listaGruposTiposEntidades;
+    private Grupostiposentidades grupoTipoEntidadSeleccionada;
+    private List<Grupostiposentidades> filtradoGruposTiposEntidades;
+    private List<Grupostiposentidades> listaGruposTiposEntidades;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -73,7 +73,7 @@ public class ControlTiposEntidades implements Serializable {
         permitirIndex = true;
         editarTipoEntidad = new TiposEntidades();
         nuevoTipoEntidad = new TiposEntidades();
-        nuevoTipoEntidad.setGrupo(new GruposTiposEntidades());
+        nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
 
     }
 
@@ -509,7 +509,7 @@ public class ControlTiposEntidades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTipoEntidad.getNombreTE().equals(" ")) {
+        if (nuevoTipoEntidad.getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener Un  Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -573,7 +573,7 @@ public class ControlTiposEntidades implements Serializable {
 
             listTiposEntidades.add(nuevoTipoEntidad);
             nuevoTipoEntidad = new TiposEntidades();
-            nuevoTipoEntidad.setGrupo(new GruposTiposEntidades());
+            nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
 
             context.update("form:datosTipoEntidad");
             if (guardado == true) {
@@ -593,7 +593,7 @@ public class ControlTiposEntidades implements Serializable {
     public void limpiarNuevoTipoEntidad() {
         System.out.println("LimpiarNuevoTipoEntidad");
         nuevoTipoEntidad = new TiposEntidades();
-        nuevoTipoEntidad.setGrupo(new GruposTiposEntidades());
+        nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
         secRegistro = null;
         index = -1;
 
@@ -744,12 +744,12 @@ public class ControlTiposEntidades implements Serializable {
                 duplicarTipoEntidad.setSecuencia(l);
                 duplicarTipoEntidad.setCodigo(listTiposEntidades.get(index).getCodigo());
                 duplicarTipoEntidad.setGrupo(listTiposEntidades.get(index).getGrupo());
-                duplicarTipoEntidad.setNombreTE(listTiposEntidades.get(index).getNombreTE());
+                duplicarTipoEntidad.setNombre(listTiposEntidades.get(index).getNombre());
             }
             if (tipoLista == 1) {
                 duplicarTipoEntidad.setCodigo(filtrarTiposEntidades.get(index).getCodigo());
                 duplicarTipoEntidad.setGrupo(filtrarTiposEntidades.get(index).getGrupo());
-                duplicarTipoEntidad.setNombreTE(filtrarTiposEntidades.get(index).getNombreTE());
+                duplicarTipoEntidad.setNombre(filtrarTiposEntidades.get(index).getNombre());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -769,7 +769,7 @@ public class ControlTiposEntidades implements Serializable {
         a = null;
         System.err.println("ConfirmarDuplicar codigo " + duplicarTipoEntidad.getCodigo());
         System.err.println("ConfirmarDuplicar grupo " + duplicarTipoEntidad.getGrupo().getNombre());
-        System.err.println("ConfirmarDuplicar nombre " + duplicarTipoEntidad.getNombreTE());
+        System.err.println("ConfirmarDuplicar nombre " + duplicarTipoEntidad.getNombre());
 
         if (duplicarTipoEntidad.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
@@ -789,7 +789,7 @@ public class ControlTiposEntidades implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTipoEntidad.getNombreTE().isEmpty()) {
+        if (duplicarTipoEntidad.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -961,30 +961,30 @@ public class ControlTiposEntidades implements Serializable {
         this.filtrarTiposEntidades = filtrarTiposEntidades;
     }
 
-    public List<GruposTiposEntidades> getFiltradoGruposTiposEntidades() {
+    public List<Grupostiposentidades> getFiltradoGruposTiposEntidades() {
         return filtradoGruposTiposEntidades;
     }
 
-    public void setFiltradoGruposTiposEntidades(List<GruposTiposEntidades> filtradoGruposTiposEntidades) {
+    public void setFiltradoGruposTiposEntidades(List<Grupostiposentidades> filtradoGruposTiposEntidades) {
         this.filtradoGruposTiposEntidades = filtradoGruposTiposEntidades;
     }
 
-    public List<GruposTiposEntidades> getListaGruposTiposEntidades() {
+    public List<Grupostiposentidades> getListaGruposTiposEntidades() {
         if (listaGruposTiposEntidades == null) {
             listaGruposTiposEntidades = administrarTipoEntidad.mostrarGruposTiposEntidades();
         }
         return listaGruposTiposEntidades;
     }
 
-    public void setListaGruposTiposEntidades(List<GruposTiposEntidades> listaGruposTiposEntidades) {
+    public void setListaGruposTiposEntidades(List<Grupostiposentidades> listaGruposTiposEntidades) {
         this.listaGruposTiposEntidades = listaGruposTiposEntidades;
     }
 
-    public GruposTiposEntidades getGruposTiposEntidadesSeleccionada() {
+    public Grupostiposentidades getGruposTiposEntidadesSeleccionada() {
         return grupoTipoEntidadSeleccionada;
     }
 
-    public void setGruposTiposEntidadesSeleccionada(GruposTiposEntidades gruposTiposEntidadesSeleccionada) {
+    public void setGruposTiposEntidadesSeleccionada(Grupostiposentidades gruposTiposEntidadesSeleccionada) {
         this.grupoTipoEntidadSeleccionada = gruposTiposEntidadesSeleccionada;
     }
 
