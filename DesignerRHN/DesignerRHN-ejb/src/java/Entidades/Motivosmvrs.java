@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -40,7 +41,7 @@ public class Motivosmvrs implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
@@ -56,21 +57,21 @@ public class Motivosmvrs implements Serializable {
     public Motivosmvrs() {
     }
 
-    public Motivosmvrs(BigDecimal secuencia) {
+    public Motivosmvrs(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Motivosmvrs(BigDecimal secuencia, String nombre, short codigo) {
+    public Motivosmvrs(BigInteger secuencia, String nombre, short codigo) {
         this.secuencia = secuencia;
         this.nombre = nombre;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
