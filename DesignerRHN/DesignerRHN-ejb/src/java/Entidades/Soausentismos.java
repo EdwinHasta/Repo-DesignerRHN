@@ -7,9 +7,11 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,9 +20,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,6 +40,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Soausentismos.findAll", query = "SELECT s FROM Soausentismos s")})
 public class Soausentismos implements Serializable {
+
+    @Column(name = "PORCENTAJEINDIVIDUAL")
+    private BigInteger porcentajeindividual;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "soausentismos")
+    private RelacionesIncapacidades relacionesIncapacidades;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -82,8 +91,6 @@ public class Soausentismos implements Serializable {
     @Size(max = 50)
     @Column(name = "FORMALIQUIDACION")
     private String formaliquidacion;
-    @Column(name = "PORCENTAJEINDIVIDUAL")
-    private BigDecimal porcentajeindividual;
     @Size(max = 30)
     @Column(name = "USUARIOBD")
     private String usuariobd;
@@ -105,7 +112,7 @@ public class Soausentismos implements Serializable {
     private Soaccidentes accidente;
     @JoinColumn(name = "ENFERMEDAD", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Enfermedades enfermedad;
+    private EnfermeadadesProfesionales enfermedad;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
@@ -120,6 +127,12 @@ public class Soausentismos implements Serializable {
     private Causasausentismos causa;
     @OneToMany(mappedBy = "soausentismo")
     private Collection<NovedadesSistema> novedadessistemaCollection;
+    @Transient
+    private String relacion;
+    @Transient
+    private String prorrogaAusentismo;
+    @Transient
+    private Boolean relacionadaBool;
 
     public Soausentismos() {
     }
@@ -245,14 +258,6 @@ public class Soausentismos implements Serializable {
         this.formaliquidacion = formaliquidacion;
     }
 
-    public BigDecimal getPorcentajeindividual() {
-        return porcentajeindividual;
-    }
-
-    public void setPorcentajeindividual(BigDecimal porcentajeindividual) {
-        this.porcentajeindividual = porcentajeindividual;
-    }
-
     public String getUsuariobd() {
         return usuariobd;
     }
@@ -278,11 +283,40 @@ public class Soausentismos implements Serializable {
     }
 
     public Terceros getTercero() {
+        if (tercero == null) {
+            tercero = new Terceros();
+        }
         return tercero;
     }
 
     public void setTercero(Terceros tercero) {
         this.tercero = tercero;
+    }
+
+    public String getRelacion() {
+        return relacion;
+    }
+
+    public void setRelacion(String relacion) {
+        this.relacion = relacion;
+    }
+
+    public String getProrrogaAusentismo() {
+        SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yyyy");
+        if (fecha != null) {
+            if (numerocertificado == null) {
+                prorrogaAusentismo = ("Falta # Certificado" + ": " + dt.format(fecha) + "->" + dt.format(fechafinaus)).toUpperCase();
+            } else {
+                prorrogaAusentismo = (numerocertificado + ": " + dt.format(fecha) + "->" + dt.format(fechafinaus)).toUpperCase();
+            }
+        } else {
+            prorrogaAusentismo = null;
+        }
+        return prorrogaAusentismo;
+    }
+
+    public void setProrrogaAusentismo(String prorrogaAusentismo) {
+        this.prorrogaAusentismo = prorrogaAusentismo;
     }
 
     @XmlTransient
@@ -295,6 +329,9 @@ public class Soausentismos implements Serializable {
     }
 
     public Soausentismos getProrroga() {
+        if (prorroga == null) {
+            prorroga = new Soausentismos();
+        }
         return prorroga;
     }
 
@@ -310,11 +347,11 @@ public class Soausentismos implements Serializable {
         this.accidente = accidente;
     }
 
-    public Enfermedades getEnfermedad() {
+    public EnfermeadadesProfesionales getEnfermedad() {
         return enfermedad;
     }
 
-    public void setEnfermedad(Enfermedades enfermedad) {
+    public void setEnfermedad(EnfermeadadesProfesionales enfermedad) {
         this.enfermedad = enfermedad;
     }
 
@@ -327,6 +364,9 @@ public class Soausentismos implements Serializable {
     }
 
     public Diagnosticoscategorias getDiagnosticocategoria() {
+        if (diagnosticocategoria == null) {
+            diagnosticocategoria = new Diagnosticoscategorias();
+        }
         return diagnosticocategoria;
     }
 
@@ -348,6 +388,32 @@ public class Soausentismos implements Serializable {
 
     public void setCausa(Causasausentismos causa) {
         this.causa = causa;
+    }
+
+    public Boolean getRelacionadaBool() {
+        if (relacionada != null) {
+            if (relacionada.equals("S")) {
+                relacionadaBool = true;
+            } else {
+                relacionadaBool = false;
+            }
+        } else {
+            relacionadaBool = null;
+        }
+        return relacionadaBool;
+    }
+
+    public void setRelacionadaBool(Boolean relacionadaBool) {
+        if (relacionadaBool != null) {
+            if (relacionadaBool == true) {
+                relacionada = ("S");
+            } else {
+                relacionada = ("N");
+            }
+        } else {
+            relacionada = null;
+        }
+        this.relacionadaBool = relacionadaBool;
     }
 
     @XmlTransient
@@ -383,5 +449,20 @@ public class Soausentismos implements Serializable {
     public String toString() {
         return "Entidades.Soausentismos[ secuencia=" + secuencia + " ]";
     }
-    
+
+    public BigInteger getPorcentajeindividual() {
+        return porcentajeindividual;
+    }
+
+    public void setPorcentajeindividual(BigInteger porcentajeindividual) {
+        this.porcentajeindividual = porcentajeindividual;
+    }
+
+    public RelacionesIncapacidades getRelacionesIncapacidades() {
+        return relacionesIncapacidades;
+    }
+
+    public void setRelacionesIncapacidades(RelacionesIncapacidades relacionesIncapacidades) {
+        this.relacionesIncapacidades = relacionesIncapacidades;
+    }
 }

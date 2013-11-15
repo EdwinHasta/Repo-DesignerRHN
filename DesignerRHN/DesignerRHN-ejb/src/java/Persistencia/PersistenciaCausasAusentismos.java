@@ -50,7 +50,7 @@ public class PersistenciaCausasAusentismos implements PersistenciaCausasAusentis
             List<Causasausentismos> todasCausasAusentismos = query.getResultList();
             return todasCausasAusentismos;
         } catch (Exception e) {
-            System.out.println("Error: (todasNovedades)" + e);
+            System.out.println("Error: (todasCausas)" + e);
             return null;
         }
     }

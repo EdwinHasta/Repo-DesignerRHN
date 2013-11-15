@@ -9,9 +9,11 @@ import Entidades.Clasesausentismos;
 import Entidades.Diagnosticoscategorias;
 import Entidades.Empleados;
 import Entidades.EnfermeadadesProfesionales;
+import Entidades.Enfermedades;
 import Entidades.Ibcs;
 import Entidades.Soaccidentes;
 import Entidades.Soausentismos;
+import Entidades.SoausentismosProrrogas;
 import Entidades.Terceros;
 import Entidades.Tiposausentismos;
 import java.math.BigInteger;
@@ -38,4 +40,13 @@ public interface AdministrarSoausentismosInterface {
     public List<Terceros> lovTerceros();
     
     public List<Diagnosticoscategorias> lovDiagnosticos();
+    
+    public List<Enfermedades> enfermedades();
+    
+    public String mostrarProrroga(BigInteger secuenciaProrroga);
+    
+    public String mostrarRelacion(BigInteger secuenciaAusentismo);
+    
+    public List<Soausentismos> lovProrrogas(BigInteger secEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo);
+    
 }

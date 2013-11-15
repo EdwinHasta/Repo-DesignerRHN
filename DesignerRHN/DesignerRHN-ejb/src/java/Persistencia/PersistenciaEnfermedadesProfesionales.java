@@ -50,7 +50,7 @@ public class PersistenciaEnfermedadesProfesionales implements PersistenciaEnferm
     
     public List<EnfermeadadesProfesionales> buscarEPPorEmpleado(BigInteger secEmpleado) {
         try {
-            Query query = em.createQuery("SELECT ep FROM EnfermeadadesProfesionales ep WHERE ep.empleado.secuencia = :secuenciaEmpl ORDER BY ep.fechanotificacion DESC");
+            Query query = em.createQuery("SELECT ep.fechanotificacion,d.descripcion,d.codigo FROM EnfermeadadesProfesionales ep, Diagnosticoscategorias d WHERE ep.empleado.secuencia = :secuenciaEmpl ORDER BY ep.fechanotificacion DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
 
             List<EnfermeadadesProfesionales> enfermedadesProfesionales = query.getResultList();
@@ -60,5 +60,4 @@ public class PersistenciaEnfermedadesProfesionales implements PersistenciaEnferm
             return null;
         }
     }
-    
 }

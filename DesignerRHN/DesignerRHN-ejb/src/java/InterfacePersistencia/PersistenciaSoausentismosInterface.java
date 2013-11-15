@@ -14,5 +14,7 @@ public interface PersistenciaSoausentismosInterface {
     public void editar(Soausentismos soausentismos);
     public void borrar(Soausentismos soausentismos);
     public List<Soausentismos> ausentismosEmpleado (BigInteger secuenciaEmpleado);
-    
+    public String prorrogaMostrar(BigInteger secuenciaProrroga);
+    public List<Soausentismos> prorrogas(BigInteger secuenciaEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo);
+   
 }

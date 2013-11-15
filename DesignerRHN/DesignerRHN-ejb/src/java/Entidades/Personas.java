@@ -668,14 +668,6 @@ public class Personas implements Serializable {
         this.direccionesCollection = direccionesCollection;
     }
 
-    public BigInteger  getNumerodocumento() {
-        return numerodocumento;
-    }
-
-    public void setNumerodocumento(BigInteger numerodocumento) {
-        this.numerodocumento = numerodocumento;
-    }
-
     @XmlTransient
     public Collection<EnfermeadadesProfesionales> getEnfermeadadesProfesionalesCollection() {
         return enfermeadadesProfesionalesCollection;
@@ -683,5 +675,13 @@ public class Personas implements Serializable {
 
     public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
         this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
+    }
+
+    public BigInteger getNumerodocumento() {
+        return numerodocumento;
+    }
+
+    public void setNumerodocumento(BigInteger numerodocumento) {
+        this.numerodocumento = numerodocumento;
     }
 }

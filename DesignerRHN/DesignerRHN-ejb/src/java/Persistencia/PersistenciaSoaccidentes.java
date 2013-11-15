@@ -49,6 +49,7 @@ public class PersistenciaSoaccidentes implements PersistenciaSoaccidentesInterfa
     }
 
     //Trae los Accidentes de un Empleado
+    @Override
     public List<Soaccidentes> accidentesEmpleado(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT soa FROM Soaccidentes soa WHERE soa.empleado.secuencia = :secuenciaEmpleado");

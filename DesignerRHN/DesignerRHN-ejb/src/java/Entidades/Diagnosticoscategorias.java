@@ -88,6 +88,9 @@ public class Diagnosticoscategorias implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = (" ");
+        }
         return descripcion;
     }
 
