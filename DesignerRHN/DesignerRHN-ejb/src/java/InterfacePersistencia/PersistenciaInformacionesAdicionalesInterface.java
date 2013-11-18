@@ -19,4 +19,5 @@ public interface PersistenciaInformacionesAdicionalesInterface {
     public InformacionesAdicionales buscarinformacionAdicional(BigInteger id);
     public List<InformacionesAdicionales> buscarinformacionesAdicionales();
     public List<InformacionesAdicionales> informacionAdicionalPersona(BigInteger secuenciaEmpleado);
+    public List<InformacionesAdicionales> informacionAdicionalEmpleadoSecuencia(BigInteger secuenciaEmpleado);
 }

@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GruposInfAdicionales.findAll", query = "SELECT g FROM GruposInfAdicionales g")})
 public class GruposInfAdicionales implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -85,6 +86,9 @@ public class GruposInfAdicionales implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -133,5 +137,4 @@ public class GruposInfAdicionales implements Serializable {
     public String toString() {
         return "Entidades.GruposInfAdicionales[ secuencia=" + secuencia + " ]";
     }
-    
 }

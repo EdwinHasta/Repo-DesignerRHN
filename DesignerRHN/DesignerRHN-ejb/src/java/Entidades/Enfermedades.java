@@ -44,8 +44,6 @@ public class Enfermedades implements Serializable {
     private String descripcion;
     @Column(name = "CODIGO")
     private Short codigo;
-    @OneToMany(mappedBy = "enfermedad")
-    private Collection<Soausentismos> soausentismosCollection;
 
     public Enfermedades() {
     }
@@ -81,15 +79,6 @@ public class Enfermedades implements Serializable {
 
     public void setCodigo(Short codigo) {
         this.codigo = codigo;
-    }
-
-    @XmlTransient
-    public Collection<Soausentismos> getSoausentismosCollection() {
-        return soausentismosCollection;
-    }
-
-    public void setSoausentismosCollection(Collection<Soausentismos> soausentismosCollection) {
-        this.soausentismosCollection = soausentismosCollection;
     }
 
     @Override

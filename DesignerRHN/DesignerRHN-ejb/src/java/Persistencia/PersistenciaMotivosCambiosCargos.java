@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
@@ -14,8 +15,8 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author Administrator
  */
 @Stateless
-public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCambiosCargosInterface{
-    
+public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCambiosCargosInterface {
+
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -37,13 +38,11 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
         }
     }
 
-
     @Override
     public void borrar(MotivosCambiosCargos motivoCambioCargo) {
         //revisar        
         em.remove(em.merge(motivoCambioCargo));
     }
-
 
     @Override
     public MotivosCambiosCargos buscarMotivoCambioCargo(BigInteger secuencia) {
@@ -54,14 +53,12 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
         }
     }
 
-
     @Override
     public List<MotivosCambiosCargos> buscarMotivosCambiosCargos() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(MotivosCambiosCargos.class));
         return em.createQuery(cq).getResultList();
     }
-
 
     @Override
     public List<String> buscarNombresMotivosCambiosCargos() {
@@ -71,6 +68,22 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
         } catch (Exception e) {
             System.out.println("PersistenciaMotivosCambiosCargos: buscarNombresMotivosCambios trae null");
             return null;
+        }
+    }
+
+    @Override
+    public Long verificarBorradoVigenciasCargos(BigInteger secuencia) {
+        Long retorno = new Long(-1);
+        try {
+            Query query = em.createQuery("SELECT count(vc) FROM VigenciasCargos vc WHERE vc.motivocambiocargo.secuencia =:secTipoCentroCosto ");
+            query.setParameter("secTipoCentroCosto", secuencia);
+            retorno = (Long) query.getSingleResult();
+            System.err.println("PersistenciaTiposCentrosCostos retorno ==" + retorno.intValue());
+
+        } catch (Exception e) {
+            System.err.println("ERROR EN PersistenciaMotivosCambiosCargos verificarBorrado ERROR :" + e);
+        } finally {
+            return retorno;
         }
     }
 }

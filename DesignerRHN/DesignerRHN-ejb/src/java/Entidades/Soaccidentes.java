@@ -42,7 +42,7 @@ public class Soaccidentes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA")
@@ -156,11 +156,11 @@ public class Soaccidentes implements Serializable {
     public Soaccidentes() {
     }
 
-    public Soaccidentes(BigDecimal secuencia) {
+    public Soaccidentes(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Soaccidentes(BigDecimal secuencia, Date fecha, String lugartrabajo, String tarearealizada, String descripcioncaso, String detalleproteccion, String dia, String estadoproteccion, String estadoproteccionlabor, String analisisposiblecausa, String recomendacion, String horaantes) {
+    public Soaccidentes(BigInteger secuencia, Date fecha, String lugartrabajo, String tarearealizada, String descripcioncaso, String detalleproteccion, String dia, String estadoproteccion, String estadoproteccionlabor, String analisisposiblecausa, String recomendacion, String horaantes) {
         this.secuencia = secuencia;
         this.fecha = fecha;
         this.lugartrabajo = lugartrabajo;
@@ -175,11 +175,11 @@ public class Soaccidentes implements Serializable {
         this.horaantes = horaantes;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -296,6 +296,9 @@ public class Soaccidentes implements Serializable {
     }
 
     public String getDescripcioncaso() {
+        if(descripcioncaso == null){
+            descripcioncaso = (" ");
+        }
         return descripcioncaso;
     }
 

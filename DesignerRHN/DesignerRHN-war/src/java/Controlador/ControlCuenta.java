@@ -88,9 +88,11 @@ public class ControlCuenta implements Serializable {
     private String nombreTablaRastro;
     private int indexAux;
     private String cuenta, rubroP;
+    private Cuentas cuentaActual;
 
     public ControlCuenta() {
 
+        cuentaActual = null;
         indexAux = 0;
         listRubros = null;
         listCuentasTesoreria = null;
@@ -145,6 +147,7 @@ public class ControlCuenta implements Serializable {
         empresaActual = getEmpresaActual();
     }
 
+   
     /**
      * Modifica los elementos de la tabla VigenciaLocalizacion que no usan
      * autocomplete
@@ -294,6 +297,7 @@ public class ControlCuenta implements Serializable {
         index = indice;
         indexAux = indice;
         secRegistroCuentas = listCuentas.get(index).getSecuencia();
+        cuentaActual = listCuentas.get(index);
 
         if (cualCelda == 5) {
             cuenta = listCuentas.get(index).getContracuentatesoreria().getDescripcion();
@@ -390,6 +394,7 @@ public class ControlCuenta implements Serializable {
         listCuentasTesoreria = null;
         guardado = true;
         cambiosCuentas = false;
+        cuentaActual = null;
         getListCuentas();
         getListCuentasTesoreria();
         RequestContext context = RequestContext.getCurrentInstance();
@@ -439,9 +444,9 @@ public class ControlCuenta implements Serializable {
 
     public void validarIngresoNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:NuevoRegistroCuenta");
-            context.execute("NuevoRegistroCuenta.show()");
-        
+        context.update("form:NuevoRegistroCuenta");
+        context.execute("NuevoRegistroCuenta.show()");
+
     }
 
     public void validarDuplicadoRegistro() {
@@ -823,6 +828,9 @@ public class ControlCuenta implements Serializable {
         listCuentasModificar.clear();
         index = -1;
         secRegistroCuentas = null;
+        listCuentas = null;
+        listEmpresas = null;
+        empresaActual = null;
         k = 0;
         listCuentas = null;
         guardado = true;
@@ -1166,8 +1174,8 @@ public class ControlCuenta implements Serializable {
 
     public void dialogoSeleccionarCuenta() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:BuscarTerceroDialogo");
-        context.execute("BuscarTerceroDialogo.show()");
+        context.update("form:BuscarCuentasDialogo");
+        context.execute("BuscarCuentasDialogo.show()");
     }
 
     public void cancelarSeleccionCuenta() {
@@ -1183,7 +1191,7 @@ public class ControlCuenta implements Serializable {
             listCuentas.add(cuentaSeleccionada);
             cuentaSeleccionada = new Cuentas();
             filtrarListCuentasTesoreria = null;
-            context.update("form:datosTerceros");
+            context.update("form:datosCuenta");
         } else {
             cuentaSeleccionada = new Cuentas();
             filtrarListCuentasTesoreria = null;
@@ -1196,7 +1204,8 @@ public class ControlCuenta implements Serializable {
         if (cambiosCuentas == false) {
             listCuentas = null;
             getListCuentas();
-            context.update("form:datosTerceros");
+            context.update("form:datosCuenta");
+            cuentaActual = null;
         } else {
             context.execute("confirmarGuardar.show()");
         }
@@ -1268,6 +1277,7 @@ public class ControlCuenta implements Serializable {
             backUpEmpresaActual = empresaActual;
             listCuentas = null;
             listCuentasTesoreria = null;
+            cuentaActual = null;
             getListCuentas();
             getListCuentasTesoreria();
             context.update("form:datosCuenta");
@@ -1547,5 +1557,13 @@ public class ControlCuenta implements Serializable {
 
     public void setCuentaSeleccionada(Cuentas seleccionado) {
         this.cuentaSeleccionada = seleccionado;
+    }
+
+    public Cuentas getCuentaActual() {
+        return cuentaActual;
+    }
+
+    public void setCuentaActual(Cuentas cuentaActual) {
+        this.cuentaActual = cuentaActual;
     }
 }

@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Periodicidades.findAll", query = "SELECT p FROM Periodicidades p")})
 public class Periodicidades implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Short codigo;
     @OneToMany(mappedBy = "periodicidadcorte")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(mappedBy = "periodicidad")
@@ -42,11 +49,7 @@ public class Periodicidades implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODIGO")
-    private short codigo;
+    private BigInteger secuencia;
     @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
@@ -61,36 +64,33 @@ public class Periodicidades implements Serializable {
     private Unidades unidadbase;
     @OneToMany(mappedBy = "minimaperiodicidad")
     private Collection<Empresas> empresasCollection;
+    @Transient
+    private String codigoStr;
 
     public Periodicidades() {
     }
 
-    public Periodicidades(BigDecimal secuencia) {
+    public Periodicidades(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Periodicidades(BigDecimal secuencia, short codigo) {
+    public Periodicidades(BigInteger secuencia, short codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(short codigo) {
-        this.codigo = codigo;
-    }
-
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -173,5 +173,30 @@ public class Periodicidades implements Serializable {
     public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
         this.gruposProvisionesCollection = gruposProvisionesCollection;
     }
-    
+
+    public String getCodigoStr() {
+        if (codigo != null) {
+            codigoStr = String.valueOf(codigo);
+        } else {
+            codigoStr = " ";
+            codigo = 0;
+        }
+        return codigoStr;
+    }
+
+    public void setCodigoStr(String codigoStr) {
+        codigo = Short.parseShort(codigoStr);
+        this.codigoStr = codigoStr;
+    }
+
+    public short getCodigo() {
+        if (codigo == null) {
+            codigo = 0;
+        }
+        return codigo;
+    }
+
+    public void setCodigo(short codigo) {
+        this.codigo = codigo;
+    }
 }

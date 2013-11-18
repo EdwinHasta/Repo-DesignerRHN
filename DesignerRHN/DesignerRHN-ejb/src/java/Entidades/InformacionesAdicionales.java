@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,7 +38,7 @@ public class InformacionesAdicionales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -75,22 +75,22 @@ public class InformacionesAdicionales implements Serializable {
     public InformacionesAdicionales() {
     }
 
-    public InformacionesAdicionales(BigDecimal secuencia) {
+    public InformacionesAdicionales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public InformacionesAdicionales(BigDecimal secuencia, Date fechafinal, Date fechainicial, String tipodato) {
+    public InformacionesAdicionales(BigInteger secuencia, Date fechafinal, Date fechainicial, String tipodato) {
         this.secuencia = secuencia;
         this.fechafinal = fechafinal;
         this.fechainicial = fechainicial;
         this.tipodato = tipodato;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

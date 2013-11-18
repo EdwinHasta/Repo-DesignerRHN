@@ -16,9 +16,11 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosCambiosCargosInterface {
 
-    public List<MotivosCambiosCargos> consultarTodo();
-
-    public MotivosCambiosCargos consultarPorSecuencia(BigInteger secuenciaMCC);
-
-    public List<String> consultarNombreTodo();
+    public List<MotivosCambiosCargos> consultarMotivosCambiosCargos();
+    public MotivosCambiosCargos consultarMotivosCambiosCargosPorSec(BigInteger secuenciaMCC);
+    public List<String> consultarNombresMotivosCambiosCargos();
+    public void modificarMotivosCambiosCargos(List<MotivosCambiosCargos> listMotivosCambiosCargosModificadas);
+    public void borrarMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos);
+    public void crearMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos);
+    public Long verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo);
 }

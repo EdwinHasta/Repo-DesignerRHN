@@ -43,7 +43,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Otroscertificados> otroscertificadosCollection;
+    private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<OtrosCertificados> otrosCertificadosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<Mvrs> mvrsCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private List<Parametros> parametrosList;
     @OneToMany(mappedBy = "nombregerente")
@@ -66,7 +71,6 @@ public class Empleados implements Serializable {
     private Collection<VigenciasProyectos> vigenciasProyectosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<VigenciasEventos> vigenciasEventosCollection;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<VigenciasUbicaciones> vigenciasubicacionesCollection;
     private static final long serialVersionUID = 1L;
@@ -163,6 +167,8 @@ public class Empleados implements Serializable {
     private Collection<VigenciasTiposTrabajadores> vigenciastipostrabajadoresCollection;
     @Transient
     private String estado;
+    @Transient
+    private String codigoempleadoSTR;
 
     public Empleados() {
         persona = new Personas();
@@ -338,7 +344,7 @@ public class Empleados implements Serializable {
     }
 
     public Personas getPersona() {
-            return persona;
+        return persona;
     }
 
     public void setPersona(Personas persona) {
@@ -635,14 +641,46 @@ public class Empleados implements Serializable {
         this.estado = estado;
     }
 
-    @XmlTransient
-    public Collection<Otroscertificados> getOtroscertificadosCollection() {
-        return otroscertificadosCollection;
+    public String getCodigoempleadoSTR() {
+        if (codigoempleado != null) {
+            codigoempleadoSTR = codigoempleado.toString();
+        } else {
+            codigoempleadoSTR = " ";
+            codigoempleado = BigInteger.valueOf(0);
+
+        }
+        return codigoempleadoSTR;
     }
 
-    public void setOtroscertificadosCollection(Collection<Otroscertificados> otroscertificadosCollection) {
-        this.otroscertificadosCollection = otroscertificadosCollection;
+    public void setCodigoempleadoSTR(String codigoempleadoSTR) {
+        codigoempleado = new BigInteger(codigoempleadoSTR);
+        this.codigoempleadoSTR = codigoempleadoSTR;
     }
-    
-    
+
+    @XmlTransient
+    public Collection<OtrosCertificados> getOtrosCertificadosCollection() {
+        return otrosCertificadosCollection;
+    }
+
+    public void setOtrosCertificadosCollection(Collection<OtrosCertificados> otrosCertificadosCollection) {
+        this.otrosCertificadosCollection = otrosCertificadosCollection;
+    }
+
+    @XmlTransient
+    public Collection<Mvrs> getMvrsCollection() {
+        return mvrsCollection;
+    }
+
+    public void setMvrsCollection(Collection<Mvrs> mvrsCollection) {
+        this.mvrsCollection = mvrsCollection;
+    }
+
+    @XmlTransient
+    public Collection<EnfermeadadesProfesionales> getEnfermeadadesProfesionalesCollection() {
+        return enfermeadadesProfesionalesCollection;
+    }
+
+    public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
+        this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
+    }
 }

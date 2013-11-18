@@ -273,7 +273,7 @@ public class ControlVigenciasCargos implements Serializable {
     //MotivosCambiosCargos---------------------------------
 
     public List<MotivosCambiosCargos> getMotivosCambiosCargos() {
-        return motivosCambiosCargos = administrarMotivosCambiosCargos.consultarTodo();
+        return motivosCambiosCargos = administrarMotivosCambiosCargos.consultarMotivosCambiosCargos();
     }
 
     public void setMotivosCambiosCargos(List<MotivosCambiosCargos> motivosCambiosCargos) {

@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -31,13 +32,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Motivosmvrs.findAll", query = "SELECT m FROM Motivosmvrs m")})
 public class Motivosmvrs implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivo")
+    private Collection<Mvrs> mvrsCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
@@ -53,25 +57,28 @@ public class Motivosmvrs implements Serializable {
     public Motivosmvrs() {
     }
 
-    public Motivosmvrs(BigDecimal secuencia) {
+    public Motivosmvrs(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Motivosmvrs(BigDecimal secuencia, String nombre, short codigo) {
+    public Motivosmvrs(BigInteger secuencia, String nombre, short codigo) {
         this.secuencia = secuencia;
         this.nombre = nombre;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -120,5 +127,13 @@ public class Motivosmvrs implements Serializable {
     public String toString() {
         return "Entidades.Motivosmvrs[ secuencia=" + secuencia + " ]";
     }
-    
+
+    @XmlTransient
+    public Collection<Mvrs> getMvrsCollection() {
+        return mvrsCollection;
+    }
+
+    public void setMvrsCollection(Collection<Mvrs> mvrsCollection) {
+        this.mvrsCollection = mvrsCollection;
+    }
 }

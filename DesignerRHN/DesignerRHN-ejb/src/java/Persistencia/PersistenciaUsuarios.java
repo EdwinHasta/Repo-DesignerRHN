@@ -18,9 +18,10 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface{
     private EntityManager em;
 
     public Usuarios buscarUsuario(String alias) {
+
         try {
             Query query = em.createQuery("SELECT u FROM Usuarios u WHERE u.alias= :alias");
-            query.setParameter("alias", alias);
+            query.setParameter("alias",alias);
             Usuarios usuarios = (Usuarios) query.getSingleResult();
             return usuarios;
 

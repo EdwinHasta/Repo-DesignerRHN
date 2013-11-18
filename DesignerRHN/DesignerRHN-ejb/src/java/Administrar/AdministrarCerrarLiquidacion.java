@@ -34,6 +34,7 @@ public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacio
     PersistenciaCortesProcesosInterface persistenciaCortesProcesos; 
 
     
+     @Override
     public Integer empleadosParaLiquidar() {
         return persistenciaParametrosEstados.empleadosParaLiquidar();
     }

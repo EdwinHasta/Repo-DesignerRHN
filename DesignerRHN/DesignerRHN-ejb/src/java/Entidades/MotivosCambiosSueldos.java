@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,7 +39,7 @@ public class MotivosCambiosSueldos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -52,25 +54,27 @@ public class MotivosCambiosSueldos implements Serializable {
     private String sueldopromedio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivocambiosueldo")
     private Collection<VigenciasSueldos> vigenciassueldosCollection;
+    @Transient
+    private Boolean estadoSueldoPromedio;
 
     public MotivosCambiosSueldos() {
     }
 
-    public MotivosCambiosSueldos(BigDecimal secuencia) {
+    public MotivosCambiosSueldos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public MotivosCambiosSueldos(BigDecimal secuencia, short codigo, String nombre) {
+    public MotivosCambiosSueldos(BigInteger secuencia, short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -107,6 +111,14 @@ public class MotivosCambiosSueldos implements Serializable {
         this.vigenciassueldosCollection = vigenciassueldosCollection;
     }
 
+    public Boolean getEstadoSueldoPromedio() {
+        return estadoSueldoPromedio;
+    }
+
+    public void setEstadoSueldoPromedio(Boolean estadoSueldoPromedio) {
+        this.estadoSueldoPromedio = estadoSueldoPromedio;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
