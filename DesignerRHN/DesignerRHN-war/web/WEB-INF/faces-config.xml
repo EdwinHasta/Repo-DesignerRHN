@@ -31,8 +31,7 @@
             <to-view-id>/Barra.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>
-    
+    </navigation-rule>    
     <navigation-rule>
         <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
         <navigation-case>
@@ -545,7 +544,7 @@
         </navigation-case>
     </navigation-rule>
    
-   <navigation-rule>
+    <navigation-rule>
         <from-view-id>/DetalleCuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -579,7 +578,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/EmplMvrs.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -999,6 +998,22 @@
         <navigation-case>
             <from-outcome>novedadtercero</from-outcome>
             <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/iniciored.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>salir</from-outcome>
+            <to-view-id>/iniciored.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
