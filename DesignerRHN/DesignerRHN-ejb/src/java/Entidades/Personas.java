@@ -46,10 +46,6 @@ public class Personas implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "NUMERODOCUMENTO")
-    private BigInteger numerodocumento;
     @Size(max = 1)
     @Column(name = "FACTORRH")
     private String factorrh;
@@ -120,6 +116,10 @@ public class Personas implements Serializable {
     @Size(max = 30)
     @Column(name = "SEGUNDONOMBRE")
     private String segundonombre;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUMERODOCUMENTO")
+    private BigInteger numerodocumento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
     private Collection<Empleados> empleadosCollection;
     @JoinColumn(name = "TIPODOCUMENTO", referencedColumnName = "SECUENCIA")
