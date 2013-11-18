@@ -52,7 +52,7 @@ public class PersistenciaIBCS implements PersistenciaIBCSInterface {
     /**
      *
      */
-    @Override
+
     public List<Ibcs> buscarIbcsPorEmpleado(BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT ib FROM Ibcs ib WHERE ib.empleado.secuencia = :secuenciaEmpl ORDER BY ib.fechainicial DESC");
