@@ -33,9 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TiposCertificados implements Serializable {
 
     @Column(name = "CODIGO")
-    private BigInteger codigo;
+    private Short codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocertificado")
-    private Collection<Otroscertificados> otroscertificadosCollection;
+    private Collection<OtrosCertificados> otroscertificadosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -99,20 +99,20 @@ public class TiposCertificados implements Serializable {
     }
 
     @XmlTransient
-    public BigInteger getCodigo() {
+    public Short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Short codigo) {
         this.codigo = codigo;
     }
 
     @XmlTransient
-    public Collection<Otroscertificados> getOtroscertificadosCollection() {
+    public Collection<OtrosCertificados> getOtroscertificadosCollection() {
         return otroscertificadosCollection;
     }
 
-    public void setOtroscertificadosCollection(Collection<Otroscertificados> otroscertificadosCollection) {
+    public void setOtroscertificadosCollection(Collection<OtrosCertificados> otroscertificadosCollection) {
         this.otroscertificadosCollection = otroscertificadosCollection;
     }
 }
