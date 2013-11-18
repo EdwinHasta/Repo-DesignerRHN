@@ -14,4 +14,5 @@ import java.util.List;
 public interface PersistenciaParametrosInterface {
 
     public List<Parametros> parametrosComprobantes(String usuarioBD);
+    public List<Parametros> empleadosParametros();
 }

@@ -4,6 +4,8 @@
  */
 package InterfacePersistencia;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author Administrator
@@ -12,4 +14,5 @@ public interface PersistenciaParametrosEstadosInterface {
     public Integer empleadosParaLiquidar();
     public Integer empleadosLiquidados();
     public void inicializarParametrosEstados();
+    public String parametrosComprobantes(BigInteger secuenciaParametro);
 }

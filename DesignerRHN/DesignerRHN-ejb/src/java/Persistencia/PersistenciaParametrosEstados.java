@@ -2,6 +2,7 @@ package Persistencia;
 
 import InterfacePersistencia.PersistenciaParametrosEstadosInterface;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -57,6 +58,18 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
             int i = query.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error PersistenciaParametrosEstados.inicializarParametrosEstados " + e);
+        }
+    }
+    
+    public String parametrosComprobantes(BigInteger secuenciaParametro) {
+        try {
+            Query query = em.createQuery("SELECT pe.estado FROM ParametrosEstados pe WHERE pe.parametros.secuencia = :secuenciaParametro");
+            query.setParameter("secuenciaParametro", secuenciaParametro);
+            String estadoParametro = (String) query.getSingleResult();
+            return estadoParametro;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaParametrosEstados.parametrosComprobantes" + e);
+            return null;
         }
     }
 }

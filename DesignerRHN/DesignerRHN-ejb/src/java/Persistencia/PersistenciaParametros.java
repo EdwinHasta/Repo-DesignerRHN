@@ -26,4 +26,15 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface{
             return null;
         }
     }
+    
+    public List<Parametros> empleadosParametros() {
+        try {
+            Query query = em.createQuery("SELECT p FROM Parametros p WHERE p.empleado IS NOT NULL");
+            List<Parametros> listaParametros = query.getResultList();
+            return listaParametros;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaParametros.empleadosParametros" + e);
+            return null;
+        }
+    }
 }

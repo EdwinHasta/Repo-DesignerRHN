@@ -185,5 +185,5 @@ public class Pantallas implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Pantallas[ secuencia=" + secuencia + " ]";
-    }    
+    }
 }

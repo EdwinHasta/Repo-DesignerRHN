@@ -6,10 +6,8 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,15 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")})
 public class Usuarios implements Serializable {
     @OneToMany(mappedBy = "usuario")
-    private List<Parametros> parametrosList;
-    @OneToOne(mappedBy = "usuario")
-    private Candados candados;
-    @OneToMany(mappedBy = "usuario")
-    private List<UsuariosInstancias> usuariosInstanciasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioreporta")
-    private Collection<Novedades> novedadesCollection;
-    @OneToMany(mappedBy = "usuarioaprueba")
-    private Collection<Novedades> novedadesCollection1;
+    private List<Recordatorios> recordatoriosList;
+    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -157,50 +148,14 @@ public class Usuarios implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Usuarios[ secuencia=" + secuencia + " ]";
-    }
+    } 
 
     @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
+    public List<Recordatorios> getRecordatoriosList() {
+        return recordatoriosList;
     }
 
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
+    public void setRecordatoriosList(List<Recordatorios> recordatoriosList) {
+        this.recordatoriosList = recordatoriosList;
     }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection1() {
-        return novedadesCollection1;
-    }
-
-    public void setNovedadesCollection1(Collection<Novedades> novedadesCollection1) {
-        this.novedadesCollection1 = novedadesCollection1;
-    }
-
-    @XmlTransient
-    public List<UsuariosInstancias> getUsuariosInstanciasList() {
-        return usuariosInstanciasList;
-    }
-
-    public void setUsuariosInstanciasList(List<UsuariosInstancias> usuariosInstanciasList) {
-        this.usuariosInstanciasList = usuariosInstanciasList;
-    }
-
-    public Candados getCandados() {
-        return candados;
-    }
-
-    public void setCandados(Candados candados) {
-        this.candados = candados;
-    }
-
-    @XmlTransient
-    public List<Parametros> getParametrosList() {
-        return parametrosList;
-    }
-
-    public void setParametrosList(List<Parametros> parametrosList) {
-        this.parametrosList = parametrosList;
-    }
-    
 }

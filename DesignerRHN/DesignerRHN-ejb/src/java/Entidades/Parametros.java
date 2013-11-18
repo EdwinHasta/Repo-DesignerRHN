@@ -51,7 +51,7 @@ public class Parametros implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHASTACAUSADO")
@@ -77,26 +77,28 @@ public class Parametros implements Serializable {
     @ManyToOne(optional = false)
     private Empleados empleado;
     @Transient
+    private String estadoParametro;
+    @Transient
     private String fechasParametros;
 
     public Parametros() {
     }
 
-    public Parametros(BigDecimal secuencia) {
+    public Parametros(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Parametros(BigDecimal secuencia, Date fechahastacausado, Date fechadesdecausado) {
+    public Parametros(BigInteger secuencia, Date fechahastacausado, Date fechadesdecausado) {
         this.secuencia = secuencia;
         this.fechahastacausado = fechahastacausado;
         this.fechadesdecausado = fechadesdecausado;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -157,6 +159,14 @@ public class Parametros implements Serializable {
         this.empleado = empleado;
     }
 
+    public String getEstadoParametro() {
+        return estadoParametro;
+    }
+
+    public void setEstadoParametro(String estadoParametro) {
+        this.estadoParametro = estadoParametro;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -3,6 +3,7 @@ package InterfacePersistencia;
 import Entidades.Empresas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 
 public interface PersistenciaEmpresasInterface {
@@ -14,5 +15,6 @@ public interface PersistenciaEmpresasInterface {
     public List<Empresas> buscarEmpresas();
     public Empresas buscarEmpresasSecuencia(BigInteger secuencia);
     public String estadoConsultaDatos(BigInteger secuenciaEmpresa);
+    public String nombreEmpresa(EntityManager entity);
     
 }

@@ -6,186 +6,389 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Parametro</title> 
-
-        <style type="text/css">
-            .ui-datagrid-no-border>.ui-datagrid-content {
-                border: none;
-            }
-
-            .ui-datagrid .ui-paginator {
-                font-size: 10px;
-                height: 20px;
-                width: 375px;
-                position: absolute;
-                top: 50px;
-                left: 270px;
-            }
-
-            .ui-datagrid .ui-paginator .ui-paginator-next,
-            .ui-datagrid .ui-paginator .ui-paginator-last,
-            .ui-datagrid .ui-paginator .ui-paginator-first,
-            .ui-datagrid .ui-paginator .ui-paginator-prev{
-                height: 15px;
-            }
-
-        </style>
-
     </h:head>
     <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form">            
+                    <p:panel  id="PanelTotal" header="Parametros de liquidación" style=" font-size: 12px; position: absolute; width: 874px; height: 530px;" >  
 
-        <h:form id="formulario" >
+                        <fieldset style="position: absolute; left: 5px; top: 70px; font-size: 11px; width: 835px; height: 100px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue"><strong>Departamento a liquidar</strong></legend>
+                            <p:panel id="panelParametro" style="border: none;">
+                                <h:outputText value="Fecha desde: " style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 7px;"/>
+                                <p:calendar value="#{controlParametro.parametroLiquidacion.fechadesdecausado}"  style="font-size: 12px; position: absolute; top: 35px; left: 7px;"  id="fechaDesde" styleClass="ui-datepicker, calendarParametro"  
+                                            navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                    <p:ajax event="dateSelect" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
+                                    <p:ajax event="change" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:calendar>
 
-            <p:dataGrid   id="data" var="item" value="#{controlRemoto.empl}" rows="1" paginator="true"  
-                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
-                          {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-datagrid-no-border" >
+                                <h:outputText value="Fecha hasta: " style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 109px"/>
+                                <p:calendar value="#{controlParametro.parametroLiquidacion.fechahastacausado}" style="font-size: 12px; position: absolute; top: 35px; left: 109px"  id="fechaHasta" styleClass="ui-datepicker, calendarParametro"  
+                                            navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                    <p:ajax event="dateSelect" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
+                                    <p:ajax event="change" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputText value="Fecha corte: " style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 210px"/>
+                                <p:calendar value="#{controlParametro.parametroLiquidacion.fechasistema}" style="font-size: 12px; position: absolute; top: 35px; left: 210px"  id="fechaCorte" styleClass="ui-datepicker, calendarParametro"  
+                                            navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                    <p:ajax event="dateSelect" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
+                                    <p:ajax event="change" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputText value="Estructura: " style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 311px"/>
+                                <p:inputText id="Estructura" value="#{controlParametro.parametroLiquidacion.estructura.nombre}" style="position: absolute; top: 35px; left: 311px; width: 180px; font-weight: bold" 
+                                             ondblclick="llamarLov(([{name: 'LOV', value: 'ESTRUCTURA'}]));" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlParametro.valoresBackupAutocompletar('ESTRUCTURA')}"/>
+                                    <p:ajax event="change" listener="#{controlParametro.autocompletar('ESTRUCTURA', controlParametro.parametroLiquidacion.estructura.nombre)}"/>
+                                </p:inputText>
+                                <h:outputText value="Codigo C.C.: " style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 504px"/>
+                                <p:inputText id="codigoCC" value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.codigo}" style="position: absolute; top: 35px; left: 504px; width: 70px" readonly="true"/>
+                                <h:outputText value="Nombre centro costo: " style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 587px"/>
+                                <p:inputText id="nombreCC" value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.nombre}" style="position: absolute; top: 35px; left: 587px; width: 240px" readonly="true"/>
+
+                                <h:outputText value="Tipo trabajador: " style="font-weight: bold; color: #14388B; position: absolute; top: 62px; left: 7px"/>
+                                <p:inputText id="tipoTrabajador" value="#{controlParametro.parametroLiquidacion.tipotrabajador.nombre}" style="position: absolute; top: 77px; width: 239px; left: 7px" 
+                                             ondblclick="llamarLov(([{name: 'LOV', value: 'TIPO TRABAJADOR'}]));" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlParametro.valoresBackupAutocompletar('TIPO TRABAJADOR')}"/>
+                                    <p:ajax event="change" listener="#{controlParametro.autocompletar('TIPO TRABAJADOR', controlParametro.parametroLiquidacion.tipotrabajador.nombre)}"/>
+                                </p:inputText>
+                                <h:outputText value="Proceso: " style="font-weight: bold; color: #14388B; position: absolute; top: 62px; left: 260px"/>
+                                <p:inputText id="proceso" value="#{controlParametro.parametroLiquidacion.proceso.descripcion}" style="position: absolute; top: 77px; left: 260px; width: 240px" 
+                                             ondblclick="llamarLov(([{name: 'LOV', value: 'PROCESO'}]));" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlParametro.valoresBackupAutocompletar('PROCESO')}"/>
+                                    <p:ajax event="change" listener="#{controlParametro.autocompletar('PROCESO', controlParametro.parametroLiquidacion.proceso.descripcion)}"/>
+                                </p:inputText>
+                            </p:panel>
+                            <p:commandButton value="[ Adicionar los empleados a liquidar ]" style=" font-size: 15px; font-family: 'Book Antiqua'; font-weight: bold; position: absolute; top: 67px; left: 521px; width: 320px" />
+                        </fieldset>
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 12px; height: 23px">   
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlParametro.guardarCambios()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator style="position: relative; top: -10px;"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator style="position: relative; top: -10px;"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlParametro.exportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:empleadosParametrosExportar" fileName="EmpleadosParametrosXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <fieldset style="position: absolute; left: 5px; top: 190px; font-size: 11px; width: 835px; height: 305px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue"><strong>Empleados a liquidar</strong></legend>
+
+                            <p:dataTable id="empleadosParametros" var="empleadoParametro" rowKey="#{empleadoParametro.secuencia}" rowIndexVar="indice" style="font-size: 12px; border: 1px;"                            
+                                         value="#{controlParametro.empleadosParametros}" scrollable="true" scrollHeight="245" scrollWidth="840"
+                                         filteredValue="#{controlParametro.filtradoEmpleadosParametros}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" >
+
+                                <p:column headerText="" width="60" style="padding: 0px">                                  
+                                    <p:commandButton value="Quitar >" style="font-size: 10px; border-radius: 0px"/>
+                                </p:column>  
+
+                                <p:column headerText="Desde" sortBy="#{empleadoParametro.fechadesdecausado}" filterBy="#{empleadoParametro.fechadesdecausado}" filterMatchMode="contains"  width="60" id="FechaDesde" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header"> 
+                                        <h:outputText value="Desde" />
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{empleadoParametro.fechadesdecausado}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText  value="#{empleadoParametro.fechadesdecausado}" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Hasta" sortBy="#{empleadoParametro.fechahastacausado}" filterBy="#{empleadoParametro.fechahastacausado}" filterMatchMode="contains"  width="60" id="FechaHasta" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="Hasta" />
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{empleadoParametro.fechahastacausado}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText  value="#{empleadoParametro.fechahastacausado}" readonly="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Código" sortBy="#{empleadoParametro.empleado.codigoempleado}" filterBy="#{empleadoParametro.empleado.codigoempleado}" filterMatchMode="contains" id="Codigo" width="80" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header"><h:outputText value="Código"/> </f:facet> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{empleadoParametro.empleado.codigoempleado}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleadoParametro.empleado.codigoempleado}" readonly="true" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"/> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>  
+
+                                <p:column headerText="Primer Apellido" sortBy="#{empleadoParametro.empleado.persona.primerapellido}" filterBy="#{empleadoParametro.empleado.persona.primerapellido}" filterMatchMode="contains" id="pApellido" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header"><h:outputText value="Primer Apellido"/> </f:facet> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{empleadoParametro.empleado.persona.primerapellido}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleadoParametro.empleado.persona.primerapellido}" readonly="true" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"/> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>  
+
+                                <p:column headerText="Segundo Apellido" sortBy="#{empleadoParametro.empleado.persona.segundoapellido}" filterBy="#{empleadoParametro.empleado.persona.segundoapellido}" filterMatchMode="contains" id="sApellido" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header"><h:outputText value="Segundo Apellido"/> </f:facet> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{empleadoParametro.empleado.persona.segundoapellido}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleadoParametro.empleado.persona.segundoapellido}" readonly="true" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"/> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>  
+
+                                <p:column headerText="Nombre" sortBy="#{empleadoParametro.empleado.persona.nombre}" filterBy="#{empleadoParametro.empleado.persona.nombre}" filterMatchMode="contains" id="nombre" width="145" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header"><h:outputText value="Nombre"/> </f:facet> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{empleadoParametro.empleado.persona.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleadoParametro.empleado.persona.nombre}" readonly="true" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"/> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>  
+
+                                <p:column headerText="Estado" sortBy="#{empleadoParametro.estadoParametro}" filterBy="#{empleadoParametro.estadoParametro}" filterMatchMode="contains" id="estadoParametro" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header"><h:outputText value="Estado"/> </f:facet> 
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{empleadoParametro.estadoParametro}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{empleadoParametro.estadoParametro}" readonly="true"  style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"/> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>  
+                            </p:dataTable>
+                        </fieldset>
+                    </p:panel>
+                    <p:remoteCommand name="llamarLov" actionListener="#{controlParametro.llamarLov()}" process="@this"/>
+                </h:form>
+                <h:form id="formularioDialogos">
+                    <p:dialog header="Estructuras" widgetVar="estructurasDialogo" draggable="false" resizable="false" id="estructurasDialogo"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="718" height="420" style="font-size: 12px" closable="false">
+
+                        <p:dataTable  id="lOVEstructuras" style="font-size: 11px; width: 690px" var="estructura" value="#{controlParametro.lovEstructuras}"
+                                      scrollable="true" scrollHeight="300" scrollWidth="705" widgetVar="lOVEstructuras" 
+                                      filteredValue="#{controlParametro.filtradoLovEstructuras}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{estructura.secuencia}" selection="#{controlParametro.seleccionEstructura}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarE"/> 
+                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarEstructura()}" process="@this" onstart="lOVEstructuras.clearFilters()"/>
+
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Estructura: "  style="position: absolute; left: 27px; top: 15px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lOVEstructuras.filter();" style="width: 250px; position: relative; left: -90px;" />  
+                            </f:facet>                       
+                            <p:column headerText="Nombre" width="200"  filterBy="#{estructura.nombre}" filterMatchMode="contains" >  
+                                <h:outputText value="#{estructura.nombre}" />  
+                            </p:column>  
+                            <p:column headerText="Codigo C. C." width="70" filterBy="#{estructura.centrocosto.codigo}" filterMatchMode="contains" filterStyle="width: 50px">  
+                                <h:outputText value="#{estructura.centrocosto.codigo}" />  
+                            </p:column>                             
+                            <p:column headerText="Nombre Centro Costo" filterBy="#{estructura.centrocosto.nombre}" filterMatchMode="contains" filterStyle="width: 200px">  
+                                <h:outputText value="#{estructura.centrocosto.nombre}" />  
+                            </p:column>
+                        </p:dataTable>                         
+                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlParametro.aceptar}" style="position: absolute; top: 390px; left: 572px; font-size: 12px" onclick="lOVEstructuras.clearFilters();" actionListener="#{controlParametro.actualizarEstructura()}" update="aceptarE" process="@this">
+                            <p:resetInput target=":formularioDialogos:lOVEstructuras:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 390px; left: 644px; font-size: 12px" onclick="estructurasDialogo.hide(), lOVEstructuras.clearFilters();" actionListener="#{controlParametro.cancelarCambioEstructura()}" update="lOVEstructuras" process="@this">
+                            <p:resetInput target=":formularioDialogos:lOVEstructuras:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Tipo Trabajador" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
+                              showEffect="fade" hideEffect="fade" width="415" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovTipoTrabajador" style="font-size: 11px; width: 385px" var="tipoTrabajador" value="#{controlParametro.lovTiposTrabajadores}" rowKey="#{tipoTrabajador.secuencia}"
+                                     selection="#{controlParametro.seleccionTipoTrabajador}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollHeight="250" scrollWidth="400"
+                                     filteredValue="#{controlParametro.filtradoLovTiposTrabajadores}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+
+                            <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarTT"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarTipoTrabajador()}" process="@this" onstart="lovTipoTrabajador.clearFilters()"/>
+
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Tipo Trabajador: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: 5px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tipoTrabajador.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Codigo" />
+                                </f:facet>
+                                <h:outputText  value="#{tipoTrabajador.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{tipoTrabajador.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripción del Tipo de Trabajador" />
+                                </f:facet>
+                                <h:outputText value="#{tipoTrabajador.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarTT" style="position: relative; left: 270px" value="Aceptar" disabled="#{controlParametro.aceptar}" onclick="ovTipoTrabajador.clearFilters();" actionListener="#{controlParametro.actualizarTipoTrabajador()}" update="aceptarTT" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovTipoTrabajador:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTT" style="position: relative; left: 270px" value="Atras" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlParametro.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovTipoTrabajador:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog> 
 
 
-                <fieldset id="set" style="height: 90px; width: 460px; display: block; position: absolute; border-radius: 10px; left: 165px; top: 70px;">
-                    <legend style="color: #00F; font-family: Tahoma, Geneva, sans-serif; font-size: 12px;">Personal Activo </legend>
+                    <p:dialog header="Procesos" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovProcesos" style="font-size: 11px; width: 310px" var="proceso" value="#{controlParametro.lovProcesos}" rowKey="#{proceso.secuencia}"
+                                     selection="#{controlParametro.seleccionProcesos}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="330" scrollHeight="250"
+                                     filteredValue="#{controlParametro.filtradoLovProcesos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarProceso()}" process="@this" onstart="lovProcesos.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Proceso: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:100px; position: relative; left: 40px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{proceso.descripcion}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripción" />
+                                </f:facet>
+                                <h:outputText  value="#{proceso.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarP" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarProceso()}" update="aceptarP" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasP" style="position: relative; left: 200px" value="Atras" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlParametro.cancelarCambioProceso()}" update="lovProcesos" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
 
-                    <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.empl}" rows="1" styleClass="ui-datagrid-no-border">
+                    <p:dialog id="editarFechaDesde" header="Fecha desde" widgetVar="editarFechaDesde" resizable="false" closable="true" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.fechadesdecausado}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputTextarea>
+                    </p:dialog>
 
+                    <p:dialog id="editarFechaHasta" header="Fecha hasta" widgetVar="editarFechaHasta" resizable="false" closable="true" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.fechahastacausado}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputTextarea>
+                    </p:dialog>
 
+                    <p:dialog id="editarFechaCorte" header="Fecha corte" widgetVar="editarFechaCorte" resizable="false" closable="true" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.fechasistema}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputTextarea>
+                    </p:dialog>
 
-                        <p:outputLabel value="Codigo" id="cod" style="position: absolute; left: 12px; color: #006; font-family: Tahoma, Geneva, sans-serif;
-                                       font-size: 10px; width: 63px; height: 20px; top: 37px;"/>
-                        <p:inputText id="codigo" readonly="true"  value="#{item.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)};"
-                                     style="position: absolute; left: 12px; top: 50px; width: 56px; height: 20px; font-family: Tahoma, Geneva, sans-serif;
-                                     font-size: 10px;"/>
-                        <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
+                    <p:dialog id="editarEstructura" header="Estructura" widgetVar="editarEstructura" resizable="false" closable="true"  draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.estructura.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
 
-                        <p:outputLabel value="Primer Apellido" id="pa" style="position: absolute; left: 80px; font-family: Tahoma, Geneva,sans-serif;
-                                       color: #006; font-size: 10px; top: 37px;"  />
-                        <p:inputText id="primerApellido" readonly="true" value="#{item.persona.primerapellido}" style="position: absolute;left: 80px;
-                                     top: 50px; width: 85px; height: 20px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"/>
+                    <p:dialog id="editarCodigoCC" header="Codigo Centro Costo" widgetVar="editarCodigoCC" resizable="false" draggable="false" closable="true"  modal="true" height="93" width="240" style="font-size: 12px" >  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
 
-                        <p:outputLabel value="Segundo Apellido" id="sa" style="position: absolute; left: 177px; font-family: Tahoma, Geneva, sans-serif;
-                                       color: #006; font-size: 10px; top: 37px;" />
-                        <p:inputText id="segundoApellido" readonly="true" value="#{item.persona.segundoapellido}" style="position: absolute;
-                                     left: 177px; top: 50px; height: 20px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; width: 85px;" />
+                    <p:dialog id="editarNombreCentroCosto" header="Centro Costo" widgetVar="editarNombreCentroCosto" resizable="false" closable="true"  draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
 
-                        <p:outputLabel value="Nombre" id="n" style="position: absolute; left: 274px; font-family: Tahoma, Geneva, sans-serif; color: #006;
-                                       font-size: 10px; top: 37px;"  />
-                        <p:inputText id="nombre" readonly="true" value="#{item.persona.nombre}" style="position: absolute; left: 274px; top: 50px; 
-                                     height: 20px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; width: 108px;" />
+                    <p:dialog id="editarTipoTrabajador" header="Tipo Trabajador" widgetVar="editarTipoTrabajador" resizable="false" closable="true"  draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
 
+                    <p:dialog id="editarProceso" header="Proceso" widgetVar="editarProceso" resizable="false" closable="true"  draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlParametro.parametroLiquidacion.proceso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                </h:form>
+                <h:form id="formExportar">
+                    <p:dataTable id="empleadosParametrosExportar" var="info" style="visibility: hidden; display: none;"                           
+                                 value="#{controlParametro.empleadosParametros}">
 
-                    </p:dataGrid>
+                        <p:column headerText="Fecha_Desde">  
+                            <f:facet name="header"><h:outputText value="Fecha desde" /></f:facet>
+                            <h:outputText value="#{info.fechadesdecausado}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
 
+                        <p:column headerText="Fecha_Hasta">  
+                            <f:facet name="header"><h:outputText value="Fecha hasta" /></f:facet>
+                            <h:outputText value="#{info.fechahastacausado}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
 
+                        <p:column headerText="Fecha_Corte">  
+                            <f:facet name="header"><h:outputText value="Fecha corte" /></f:facet>
+                            <h:outputText value="#{info.fechasistema}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
 
+                        <p:column>                                  
+                            <f:facet name="header"><h:outputText value="Codigo"/></f:facet> 
+                            <h:outputText value="#{info.empleado.codigoempleado}" />
+                        </p:column>  
 
-                    <!-- Botones Con Imagen (3) -->
+                        <p:column headerText="Primer_Apellido">      
+                            <f:facet name="header"><h:outputText value="Primer Apellido"/></f:facet>
+                            <h:outputText value="#{info.empleado.persona.primerapellido}" />
+                        </p:column>
 
-                    <p:commandButton style="background-image: url(Imagenes/buscarlaboral1.gif); position: absolute; top: 82px; width: 23px; height: 23px; background-size: 100% 100%; left: 12px; background-repeat: no-repeat; " id="buscarLaboral" value="" />
+                        <p:column headerText="Segundo_Apellido">                                                              
+                            <f:facet name="header"> 
+                                <h:outputText value="Segundo apellido"/>
+                            </f:facet>
+                            <h:outputText value="#{info.empleado.persona.segundoapellido}" />
+                        </p:column>  
 
-                    <p:commandButton style="background-image: url(Imagenes/buscarpersonal1.gif); position: absolute; left: 38px; top: 82px; width: 23px; height: 23px; background-size: 100% 100%; background-repeat: no-repeat; " id="buscarPersonal" value="" />
+                        <p:column>                                                              
+                            <f:facet name="header"> 
+                                <h:outputText value="Nombre"/>
+                            </f:facet>
+                            <h:outputText value="#{info.empleado.persona.nombre}" />
+                        </p:column>  
 
-                    <p:commandButton style="background-image: url(Imagenes/buscarrapida1.gif); position: absolute; left: 64px; top: 82px; width: 23px; height: 23px; background-size: 100% 100%; background-repeat: no-repeat; " id="busquedaRapida" value="" />
-
-                    <!-- Botones Buscar Empleado y Mostrar Todos --> 
-
-                    <p:commandButton style="position: absolute; left: 195px; top: 82px; font-family: Tahoma, Geneva, sans-serif; font-size: 9px; width: 114px;"  id="BuscarEmpleado" value="Buscar Empleado..." />
-
-                    <p:commandButton style="position: absolute; left: 310px; top: 82px; font-family: Tahoma, Geneva, sans-serif; font-size: 9px;  width: 94px;" id="MostrarTodos" value="Mostrar Todos" />
-
-                    <!-- Boton Hoja de Vida -->
-
-                    <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/birrete1.gif); left: 415px; top: 10px; width: 49px; height: 60px; background-repeat: no-repeat;"/>
-
-
-                    <strong><h:outputText style="position: absolute; left: 408px; top: 75px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px; color: #006; width: 89.25px;" value="Hoja de Vida"/></strong>
-                </fieldset>
-
-
-                <!-- Panel Central -->
-
-
-                <fieldset id="field" style="height: 230px; width: 610px; display: block; position: absolute; border-radius: 10px; top: 175px;">
-                    <legend style="color: #00F; font-family: Tahoma, Geneva, sans-serif; font-size: 12px;">Información Laboral</legend>
-
-                    <!-- Etiquetas Panel Central -->
-
-
-
-
-                    <p style="font-family: Tahoma, Geneva, sans-serif; color: #006"> 
-
-                        <h:outputText style="position: absolute; left: 45px; top: 15px; font-size: 12px" value="Cargo desempeñado"/>
-                        <h:outputText style="position: absolute; left: 45px; top: 52px; font-size: 12px" value="Fecha Contratación"/>
-                        <h:outputText style="position: absolute; left: 45px; top: 87px; font-size: 12px" value="Norma Laboral"/>
-                        <h:outputText style="position: absolute; left: 45px; top: 123px; font-size: 12px" value="Afiliaciones"/>
-                        <h:outputText style="position: absolute; left: 45px; top: 159px; font-size: 12px" value="I.B.C"/>
-                        <h:outputText style="position: absolute; left: 45px; top: 194px; font-size: 12px" value="Tipo Viajero"/>
-                        <h:outputText style="position: absolute; left: 250px; top: 15px; font-size: 12px" value="Centro de Costo - Localización"/>
-                        <h:outputText style="position: absolute; left: 250px; top: 52px; font-size: 12px" value="Tipo Trabajador"/>
-                        <h:outputText style="position: absolute; left: 250px; top: 87px; font-size: 12px" value="Legislación Laboral"/>
-                        <h:outputText style="position: absolute; left: 250px; top: 123px; font-size: 12px" value="Jornada"/>
-                        <h:outputText style="position: absolute; left: 250px; top: 159px; font-size: 12px" value="Menor Valor Retención"/>
-                        <h:outputText style="position: absolute; left: 250px; top: 194px; font-size: 12px" value="Vacaciones (Solo Consulta)"/>
-                        <h:outputText style="position: absolute; left: 455px; top: 15px; font-size: 12px" value="Sueldo"/>
-                        <h:outputText style="position: absolute; left: 455px; top: 52px; font-size: 12px" value="Tipo Salario (Reforma Laboral)"/>
-                        <h:outputText style="position: absolute; left: 455px; top: 87px; font-size: 12px" value="Ubicación Geográfica"/>
-                        <h:outputText style="position: absolute; left: 455px; top: 123px; font-size: 12px" value="Forma de Pago"/>
-                        <h:outputText style="position: absolute; left: 455px; top: 159px; font-size: 12px" value="S.E.T."/>
-                        <h:outputText style="position: absolute; left: 455px; top: 194px; font-size: 12px" value="Comprobantes de Pago"/>
-                    </p>
-
-                    <!-- Botones Panel Central -->
-
-                    <p:commandButton id="CargoDesempeñado" value="" style="position: absolute; background-image: url(Imagenes/cargo.gif); width: 29px; height: 35px; top: 15px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                    <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/tipocontrato.gif); width: 29px; height: 35px; top: 52px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                    <p:commandButton id="NormaLaboral" value="" style="position: absolute; background-image: url(Imagenes/normalaboral.gif); width: 29px; height: 35px; top: 87px;left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                    <p:commandButton id="Afiliaciones" value="" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 29px; height: 35px; top: 123px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                    <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/ibc.gif); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                    <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/viajero.gif); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" />
-
-                    <p:commandButton id="CentroDeCosto" value="" style="position: absolute; background-image: url(Imagenes/localizacion.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
-                    <p:commandButton id="TipoTrabajador" value="" style="position: absolute; background-image: url(Imagenes/tipotrabajador.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
-                    <p:commandButton id="LegislacionLaboral" value="" style="position: absolute; background-image: url(Imagenes/contrato.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
-                    <p:commandButton id="Jornada" value="" style="position: absolute; background-image: url(Imagenes/jornadalaboral.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
-                    <p:commandButton id="MenorValorRetencio" value="" style="position: absolute; background-image: url(Imagenes/retencion.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
-                    <p:commandButton id="Vacaciones" value="" style="position: absolute; background-image: url(Imagenes/vacacion.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 215px;" />
-
-                    <p:commandButton id="Sueldo" value="" style="position: absolute; background-image: url(Imagenes/sueldo.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
-                    <p:commandButton id="TipoSalario" value="" style="position: absolute; background-image: url(Imagenes/reformalaboral.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
-                    <p:commandButton id="Ubicacion" value="" style="position: absolute; background-image: url(Imagenes/origen.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
-                    <p:commandButton id="FormaDePago" value="" style="position: absolute; background-image: url(Imagenes/pasivoestimado.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
-                    <p:commandButton id="SET" value="" style="position: absolute; background-image: url(Imagenes/notacontable.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
-                    <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 420px;" />
-
-                    <!-- Cajas de Texto -->
-
-                    <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesCargos.cargo.nombre}"  /> -->
-                    <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
-                    <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
-                    <p:inputText id="VAfiliaciones" style="position: absolute; left: 45px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesAfiliacionesSalud.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesSalud.tercerosSucursales.tercero.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tercerosSucursales.tercero.nombre}" />
-                    <p:inputText id="VIBC" style="position: absolute; left: 45px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
-                    <p:inputText id="VTipoViajero" style="position: absolute; left: 45px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  readonly="true" value="#{controlRemoto.vwActualesVigenciasViajeros.tipoViajero.nombre}"/>
-
-                    <p:inputText id="VCentroDeCosto" style="position: absolute; left: 250px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
-                    <p:inputText id="VTipoTrabajador" style="position: absolute; left: 250px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
-                    <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 250px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
-                    <p:inputText id="VJornada" style="position: absolute; left: 250px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
-                    <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 250px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
-                    <p:inputText id="VVacaciones" style="position: absolute; left: 250px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
-
-                    <p:inputText id="VSueldo" style="position: absolute; left: 455px; top: 30px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.sueldo}"  />
-                    <p:inputText id="VTipoSalario" style="position: absolute; left: 455px; top: 66px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
-                    <p:inputText id="VUbicacion" style="position: absolute; left: 455px; top: 101px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
-                    <p:inputText id="VFormaDePago" style="position: absolute; left: 455px; top: 137px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
-                    <p:inputText id="VSET" style="position: absolute; left: 455px; top: 173px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
-                    <p:inputText id="VComprobantes" style="position: absolute; left: 455px; top: 208px; width: 147px; font-family: Tahoma, Geneva, sans-serif; font-size: 10px;"  />
-
-
-                </fieldset>
-
-            </p:dataGrid>
-        </h:form>
-
-
+                        <p:column >                                                                                              
+                            <f:facet name="header"><h:outputText value="Estado"/></f:facet>
+                            <h:outputText value="#{info.estadoParametro}" />
+                        </p:column>  
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
     </h:body>
-
 </html>
 
