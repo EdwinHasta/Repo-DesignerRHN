@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ParametroEestructuras.findAll", query = "SELECT p FROM ParametrosEstructuras p")})
 public class ParametrosEstructuras implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -125,6 +126,9 @@ public class ParametrosEstructuras implements Serializable {
     }
 
     public TiposTrabajadores getTipotrabajador() {
+        if(tipotrabajador == null){
+            tipotrabajador = new TiposTrabajadores();
+        }
         return tipotrabajador;
     }
 
@@ -141,6 +145,9 @@ public class ParametrosEstructuras implements Serializable {
     }
 
     public Estructuras getEstructura() {
+        if (estructura == null) {
+            estructura = new Estructuras();
+        }
         return estructura;
     }
 
@@ -189,5 +196,4 @@ public class ParametrosEstructuras implements Serializable {
     public void setParametrosList(List<Parametros> parametrosList) {
         this.parametrosList = parametrosList;
     }
-    
 }

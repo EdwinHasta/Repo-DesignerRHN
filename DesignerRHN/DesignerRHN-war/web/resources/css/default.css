@@ -54,6 +54,10 @@ a:link:hover, a:visited:hover  {
     border-radius: 0px;
     height: 15px
 }
+/*CALENDARIOS PARAMETRO.XHTML*/
+.calendarParametro input {
+    width: 88px;
+}
 /*CALENDARIO NREPORTES*/
 .calendarioReportes input {
     width: 65px;

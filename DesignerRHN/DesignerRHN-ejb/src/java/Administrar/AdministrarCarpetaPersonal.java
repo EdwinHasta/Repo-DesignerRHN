@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -62,6 +63,8 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB 
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
+    @EJB
+    EntityManagerGlobalInterface entityManagerGlobal;
     
     public VWActualesCargos vwActualesCargos;
     public VWActualesTiposContratos vwActualesTiposContratos;
@@ -86,10 +89,12 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     public List<VigenciasCargos> vigenciasCargos;
     public Empleados empleado;
     public Personas persona;
+    private EntityManager em;
 
+    
     public VWActualesCargos ConsultarCargo(BigInteger secuenciaEmpleado) {
         try {
-            vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(secuenciaEmpleado);
+            vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(entityManagerGlobal.getEmf().createEntityManager(), secuenciaEmpleado);
             return vwActualesCargos;
         } catch (Exception e) {
             vwActualesCargos = null;

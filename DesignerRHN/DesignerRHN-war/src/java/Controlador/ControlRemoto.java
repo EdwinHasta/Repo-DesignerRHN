@@ -145,6 +145,10 @@ public class ControlRemoto implements Serializable {
         tituloPago = "PAGOS AUTOMATICOS";
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
     }
+    
+    public void datosIniciales(int pestaña){
+        numPestaña = pestaña;
+    }
 
     public void cancelarModificacion() {
         //vigenciasCargosEmpleado = null;

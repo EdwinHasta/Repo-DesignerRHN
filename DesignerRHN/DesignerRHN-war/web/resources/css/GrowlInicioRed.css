@@ -1,0 +1,34 @@
+root { 
+    display: block;
+}
+
+.ui-growl{
+    position: absolute;
+    top: 10px;
+    left: 1117px;
+    width: 240px;
+}
+.ui-growl-image-info{
+    visibility: hidden;
+    display: none;
+}
+.ui-growl-item-container{
+    border-radius: 4px;
+    background-color: #EFDB78;
+}
+.ui-growl-item{
+    border-radius: 4px;
+    background-color: #EFDB78;
+}
+.ui-growl-message{
+    background-color: #EFDB78;
+}
+.ui-growl-message p{
+    font-size: 14px;
+    padding-left: 10px;
+    color: black;
+    font-family: "Arial";
+    text-shadow: none;
+    font-weight: bold;
+}
+

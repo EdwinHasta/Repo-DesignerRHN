@@ -35,7 +35,7 @@ public class TiposCertificados implements Serializable {
     @Column(name = "CODIGO")
     private Short codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocertificado")
-    private Collection<OtrosCertificados> otrosCertificadosCollection;
+    private Collection<OtrosCertificados> otroscertificadosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -98,6 +98,7 @@ public class TiposCertificados implements Serializable {
         return "Entidades.Tiposcertificados[ secuencia=" + secuencia + " ]";
     }
 
+    @XmlTransient
     public Short getCodigo() {
         return codigo;
     }
@@ -107,11 +108,11 @@ public class TiposCertificados implements Serializable {
     }
 
     @XmlTransient
-    public Collection<OtrosCertificados> getOtrosCertificadosCollection() {
-        return otrosCertificadosCollection;
+    public Collection<OtrosCertificados> getOtroscertificadosCollection() {
+        return otroscertificadosCollection;
     }
 
-    public void setOtrosCertificadosCollection(Collection<OtrosCertificados> otrosCertificadosCollection) {
-        this.otrosCertificadosCollection = otrosCertificadosCollection;
+    public void setOtroscertificadosCollection(Collection<OtrosCertificados> otroscertificadosCollection) {
+        this.otroscertificadosCollection = otroscertificadosCollection;
     }
 }

@@ -38,10 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")})
 public class Personas implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "NUMERODOCUMENTO")
-    private BigInteger numerodocumento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsable")
     private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
 
@@ -122,6 +118,10 @@ public class Personas implements Serializable {
     @Size(max = 30)
     @Column(name = "SEGUNDONOMBRE")
     private String segundonombre;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUMERODOCUMENTO")
+    private BigInteger numerodocumento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
     private Collection<Empleados> empleadosCollection;
     @JoinColumn(name = "TIPODOCUMENTO", referencedColumnName = "SECUENCIA")

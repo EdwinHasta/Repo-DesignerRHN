@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "TIPOSTRABAJADORES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TiposTrabajadores.findAll", query = "SELECT t FROM TiposTrabajadores t"),
+    @NamedQuery(name = "TiposTrabajadores.findAll", query = "SELECT t FROM TiposTrabajadores t ORDER BY t.nombre"),
     @NamedQuery(name = "TiposTrabajadores.findByCodigo", query = "SELECT t FROM TiposTrabajadores t WHERE t.codigo = :codigo")})
 public class TiposTrabajadores implements Serializable {
     @OneToMany(mappedBy = "tipotrabajador")

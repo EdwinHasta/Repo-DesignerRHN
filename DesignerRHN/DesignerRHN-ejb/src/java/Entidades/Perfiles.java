@@ -6,7 +6,9 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,13 +32,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Perfiles.findAll", query = "SELECT p FROM Perfiles p")})
 public class Perfiles implements Serializable {
+    @OneToMany(mappedBy = "perfil")
+    private List<Usuarios> usuariosList;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -49,27 +53,25 @@ public class Perfiles implements Serializable {
     @Size(max = 50)
     @Column(name = "PWD")
     private String pwd;
-    @OneToMany(mappedBy = "perfil")
-    private Collection<Usuarios> usuariosCollection;
 
     public Perfiles() {
     }
 
-    public Perfiles(BigDecimal secuencia) {
+    public Perfiles(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Perfiles(BigDecimal secuencia, short codigo, String descripcion) {
+    public Perfiles(BigInteger secuencia, short codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -96,15 +98,7 @@ public class Perfiles implements Serializable {
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
-
-    @XmlTransient
-    public Collection<Usuarios> getUsuariosCollection() {
-        return usuariosCollection;
-    }
-
-    public void setUsuariosCollection(Collection<Usuarios> usuariosCollection) {
-        this.usuariosCollection = usuariosCollection;
-    }
+    
 
     @Override
     public int hashCode() {
@@ -129,6 +123,15 @@ public class Perfiles implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Perfiles[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public List<Usuarios> getUsuariosList() {
+        return usuariosList;
+    }
+
+    public void setUsuariosList(List<Usuarios> usuariosList) {
+        this.usuariosList = usuariosList;
     }
     
 }

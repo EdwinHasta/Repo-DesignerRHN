@@ -78,6 +78,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         }
     }
     //PANTALLA BARRA CONSULTAR DATOS DESPUES DE LIQUIDAR
+
     public String estadoConsultaDatos(BigInteger secuenciaEmpresa) {
         try {
             Query query = em.createQuery("SELECT e.barraconsultadatos FROM Empresas e WHERE e.secuencia = :secuenciaEmpresa");
@@ -86,6 +87,25 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return estado;
         } catch (Exception e) {
             System.out.println("Error PersistenciaEmpresas.estadoConsultaDatos");
+            return null;
+        }
+    }
+
+    public String nombreEmpresa(EntityManager entity) {
+        try {
+            Query query = entity.createQuery("SELECT COUNT(e) FROM Empresas e WHERE e.codigo > 0");
+            Long resultado = (Long) query.getSingleResult();
+            if (resultado == 1) {
+                query = entity.createQuery("SELECT e.nombre FROM Empresas e WHERE e.codigo > 0");
+                String nombreE = (String) query.getSingleResult();
+                return nombreE;
+            } else if (resultado > 1) {
+                return "(MULTIEMPRESA)";
+            } else {
+                return "SIN REGISTRAR";
+            }
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaEmpleados.nombreEmpresa" + e);
             return null;
         }
     }

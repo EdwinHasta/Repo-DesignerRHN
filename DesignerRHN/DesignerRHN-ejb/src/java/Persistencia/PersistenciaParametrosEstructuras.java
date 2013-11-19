@@ -1,7 +1,9 @@
 package Persistencia;
 
+import Entidades.Cargos;
 import Entidades.ParametrosEstructuras;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +19,12 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+    
 
+    public void editar(ParametrosEstructuras parametroEstructura) {
+        em.merge(parametroEstructura);
+    }
+    
     public ParametrosEstructuras buscarParametros() {
 
         try {
@@ -45,12 +52,19 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     @Override
     public ParametrosEstructuras estructurasComprobantes(String usuarioBD) {
         try {
-            Query query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
+            Query query = em.createQuery("SELECT COUNT(pe) FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
-            ParametrosEstructuras parametroEstructura = (ParametrosEstructuras) query.getSingleResult();
-            return parametroEstructura;
+            Long resultado = (Long) query.getSingleResult();
+            if (resultado > 0) {
+                query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
+                query.setParameter("usuarioBD", usuarioBD);
+                ParametrosEstructuras parametroEstructura = (ParametrosEstructuras) query.getSingleResult();
+                return parametroEstructura;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEstructuras.estructurasComprobantes" + e);
+            System.out.println("Error PersistenciaParametrosEstructuras.estructurasComprobantes" + e);
             return null;
         }
     }
