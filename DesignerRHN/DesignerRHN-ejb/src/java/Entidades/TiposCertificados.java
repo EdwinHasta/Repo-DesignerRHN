@@ -99,20 +99,19 @@ public class TiposCertificados implements Serializable {
     }
 
     @XmlTransient
-    public Short getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Short codigo) {
-        this.codigo = codigo;
-    }
-
-    @XmlTransient
     public Collection<OtrosCertificados> getOtroscertificadosCollection() {
         return otroscertificadosCollection;
     }
 
     public void setOtroscertificadosCollection(Collection<OtrosCertificados> otroscertificadosCollection) {
         this.otroscertificadosCollection = otroscertificadosCollection;
+    }
+
+    public Short getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Short codigo) {
+        this.codigo = codigo;
     }
 }
