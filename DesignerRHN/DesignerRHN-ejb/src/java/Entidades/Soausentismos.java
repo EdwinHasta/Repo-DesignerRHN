@@ -132,7 +132,7 @@ public class Soausentismos implements Serializable {
     @Transient
     private String prorrogaAusentismo;
     @Transient
-    private Boolean relacionadaBool;
+    private boolean relacionadaBool;
 
     public Soausentismos() {
     }
@@ -187,6 +187,9 @@ public class Soausentismos implements Serializable {
     }
 
     public String getRelacionada() {
+        if(relacionada == null){
+            relacionada = "N";
+        }
         return relacionada;
     }
 
@@ -251,6 +254,9 @@ public class Soausentismos implements Serializable {
     }
 
     public String getFormaliquidacion() {
+        if (formaliquidacion == null) {
+            formaliquidacion = (" ");
+        }
         return formaliquidacion;
     }
 
@@ -267,6 +273,9 @@ public class Soausentismos implements Serializable {
     }
 
     public BigInteger getBaseliquidacion() {
+        if (baseliquidacion == null) {
+            baseliquidacion = BigInteger.valueOf(0);
+        }
         return baseliquidacion;
     }
 
@@ -275,6 +284,10 @@ public class Soausentismos implements Serializable {
     }
 
     public Tiposausentismos getTipo() {
+        if (tipo == null) {
+            tipo = new Tiposausentismos();
+        }
+
         return tipo;
     }
 
@@ -340,6 +353,9 @@ public class Soausentismos implements Serializable {
     }
 
     public Soaccidentes getAccidente() {
+        if (accidente == null) {
+            accidente = new Soaccidentes();
+        }
         return accidente;
     }
 
@@ -348,6 +364,9 @@ public class Soausentismos implements Serializable {
     }
 
     public EnfermeadadesProfesionales getEnfermedad() {
+        if (enfermedad == null) {
+            enfermedad = new EnfermeadadesProfesionales();
+        }
         return enfermedad;
     }
 
@@ -375,6 +394,9 @@ public class Soausentismos implements Serializable {
     }
 
     public Clasesausentismos getClase() {
+        if (clase == null) {
+            clase = new Clasesausentismos();
+        }
         return clase;
     }
 
@@ -383,6 +405,9 @@ public class Soausentismos implements Serializable {
     }
 
     public Causasausentismos getCausa() {
+        if (causa == null) {
+            causa = new Causasausentismos();
+        }
         return causa;
     }
 
@@ -390,7 +415,8 @@ public class Soausentismos implements Serializable {
         this.causa = causa;
     }
 
-    public Boolean getRelacionadaBool() {
+    public boolean getRelacionadaBool() {
+        getRelacionada();
         if (relacionada != null) {
             if (relacionada.equals("S")) {
                 relacionadaBool = true;
@@ -398,20 +424,16 @@ public class Soausentismos implements Serializable {
                 relacionadaBool = false;
             }
         } else {
-            relacionadaBool = null;
+            relacionadaBool = false;
         }
         return relacionadaBool;
     }
 
-    public void setRelacionadaBool(Boolean relacionadaBool) {
-        if (relacionadaBool != null) {
-            if (relacionadaBool == true) {
-                relacionada = ("S");
-            } else {
-                relacionada = ("N");
-            }
+    public void setRelacionadaBool(boolean relacionadaBool) {
+        if (relacionadaBool == true) {
+            relacionada = "S";
         } else {
-            relacionada = null;
+            relacionada = "N";
         }
         this.relacionadaBool = relacionadaBool;
     }
@@ -451,6 +473,9 @@ public class Soausentismos implements Serializable {
     }
 
     public BigInteger getPorcentajeindividual() {
+        if (porcentajeindividual == null) {
+            porcentajeindividual = BigInteger.valueOf(0);
+        }
         return porcentajeindividual;
     }
 

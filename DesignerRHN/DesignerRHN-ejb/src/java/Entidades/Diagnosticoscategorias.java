@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Diagnosticoscategorias.findAll", query = "SELECT d FROM Diagnosticoscategorias d")})
 public class Diagnosticoscategorias implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoria")
     private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
     private static final long serialVersionUID = 1L;
@@ -88,7 +89,7 @@ public class Diagnosticoscategorias implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
+        if (descripcion == null) {
             descripcion = (" ");
         }
         return descripcion;
@@ -148,5 +149,4 @@ public class Diagnosticoscategorias implements Serializable {
     public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
         this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
     }
-    
 }

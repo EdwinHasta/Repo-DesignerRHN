@@ -545,7 +545,7 @@
         </navigation-case>
     </navigation-rule>
    
-   <navigation-rule>
+    <navigation-rule>
         <from-view-id>/DetalleCuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -579,7 +579,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/EmplMvrs.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -999,6 +999,22 @@
         <navigation-case>
             <from-outcome>novedadtercero</from-outcome>
             <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ausentismos</from-outcome>
+            <to-view-id>/Atausentismos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

@@ -44,7 +44,7 @@
                         <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNovedadesEmpleados.guardarCambiosNovedades()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlAusentismos.guardarCambiosAusentismos()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.editarCelda()}" process="@this"/>
@@ -54,29 +54,33 @@
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
                                 <p:separator />
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlNovedadesEmpleados.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlAusentismos.exportXLS()}" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.limpiarNuevaNovedad()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosNovedadesExportar" fileName="NovedadesXML" encoding="UTF-8"/> 
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosAusentismosExportar" fileName="AusentismosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.borrarNovedades()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Novedades" />
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoAusentismoEmpleado.show()" update=":formularioDialogos:nuevoAusentismo" process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Ausentismos" /> 
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.duplicarEN()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Novedad" />
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.borrarAusentismos()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Ausentismos" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.duplicarA()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Ausentismo" />
 
                                 <p:separator /> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
 
                             </p:toolbarGroup>  
@@ -85,7 +89,7 @@
                         <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 270px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Detalles del Ausentismo</strong></legend>
                             <p:dataTable id="datosAusentismosEmpleado" var="ausentismos" value="#{controlAusentismos.listaAusentismos}"
-                                         rowKey="#{ausentismos.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px; "                           
+                                         rowKey="#{ausentismos.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 840px; "                           
                                          scrollable="true" scrollHeight="130" scrollWidth="850" rows="5"  
                                          filteredValue="#{controlAusentismos.filtradosListaAusentismos}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
@@ -105,26 +109,102 @@
                                         <p:column headerText="Causa" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" />  
                                         <p:column headerText="Dias" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}"/>
                                         <p:column headerText="Horas" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.horas}"/>
-                                        <p:column headerText="I. Ausencia" filterBy="#{ausentismos.fecha}" filterMatchMode="contains" id="AFecha" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fecha}"/>  
-                                        <p:column headerText="F. Ausencia" filterBy="#{ausentismos.fechafinaus}" filterMatchMode="contains" id="AFechaFinaus" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinaus}"/>  
+
+                                        <p:column filterBy="#{ausentismos.fecha}" filterMatchMode="contains" id="AFecha" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fecha}">
+                                            <f:facet name="header">
+                                                <h:outputText id="fechaHead" value="I.Ausencia" />
+                                                <p:tooltip for="fechaHead" value="Fecha de Inicio de la Ausencia" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet>
+                                        </p:column>
+
+                                        <p:column filterBy="#{ausentismos.fechafinaus}" filterMatchMode="contains" id="AFechaFinaus" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinaus}">
+                                            <f:facet name="header">
+                                                <h:outputText id="fechafinausHead" value="F.Ausencia" />
+                                                <p:tooltip for="fechafinausHead" value="Fecha de finalizacion de la Ausencia" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
                                         <p:column headerText="Expedicion" filterBy="#{ausentismos.fechaexpedicion}" filterMatchMode="contains" id="AFechaExpedicion" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechaexpedicion}"/>  
-                                        <p:column headerText="I. Pago" filterBy="#{ausentismos.fechainipago}" filterMatchMode="contains" id="AFechaInipago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechainipago}"/>  
-                                        <p:column headerText="F. Pago" filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinpago}"/>  
-                                        <p:column headerText="%" filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.porcentajeindividual}"/>  
-                                        <p:column headerText="B. Liquidacion" filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.baseliquidacion}"/>  
-                                        <p:column headerText="F. Liquidacion" filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}"/>  
-                                        <p:column headerText="AT" filterBy="#{ausentismos.accidente.descripcioncaso}" filterMatchMode="contains" id="ADescripcionCaso" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.accidente.descripcioncaso}" />
-                                        <p:column headerText="EP" filterBy="#{ausentismos.enfermedad.categoria.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.enfermedad.categoria.descripcion}" />
+
+                                        <p:column filterBy="#{ausentismos.fechainipago}" filterMatchMode="contains" id="AFechaInipago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechainipago}">
+                                            <f:facet name="header">
+                                                <h:outputText id="fechainipagoHead" value="I.Pago" />
+                                                <p:tooltip for="fechainipagoHead" value="Fecha de Inicio del Pago" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
+                                        <p:column filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinpago}">
+                                            <f:facet name="header">
+                                                <h:outputText id="fechafinpagoHead" value="F.Pago" />
+                                                <p:tooltip for="fechafinpagoHead" value="Fecha de Finalizacion del Pago" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
+                                        <p:column filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.porcentajeindividual}">  
+                                            <f:facet name="header">
+                                                <h:outputText id="porcentajeHead" value="%" />
+                                                <p:tooltip for="porcentajeHead" value="Porcentaje Individual"/>
+                                            </f:facet> 
+                                        </p:column>
+
+                                        <p:column filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.baseliquidacion}">  
+                                            <f:facet name="header">
+                                                <h:outputText id="baseHead" value="B. Liquidacion" />
+                                                <p:tooltip for="baseHead" value="Base Liquidación"/>
+                                            </f:facet> 
+                                        </p:column>
+
+                                        <p:column filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}">
+                                            <f:facet name="header">
+                                                <h:outputText id="fliquidacionHead" value="F. Liquidacion" />
+                                                <p:tooltip for="fliquidacionHead" value="Forma Liquidacion"/>
+                                            </f:facet> 
+                                        </p:column>
+                                        <p:column filterBy="#{ausentismos.accidente.descripcioncaso}" filterMatchMode="contains" id="ADescripcionCaso" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.accidente.descripcioncaso}" >
+                                            <f:facet name="header">
+                                                <h:outputText id="atHead" value="AT" />
+                                                <p:tooltip for="atHead" value="Descripcion del Accidente" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
+                                        <p:column filterBy="#{ausentismos.enfermedad.categoria.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.enfermedad.categoria.descripcion}" >
+                                            <f:facet name="header">
+                                                <h:outputText id="epHead" value="EP" />
+                                                <p:tooltip for="epHead" value="Descripcion de la Enfermedad" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
                                         <p:column headerText="No.Certificado" filterBy="#{ausentismos.numerocertificado}" filterMatchMode="contains" id="ANumero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.numerocertificado}" />
-                                        <p:column headerText="C. Diagnostico" filterBy="#{ausentismos.diagnosticocategoria.codigo}" filterMatchMode="contains" id="ADiagnostico" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.diagnosticocategoria.codigo}" />
+
+                                        <p:column filterBy="#{ausentismos.diagnosticocategoria.codigo}" filterMatchMode="contains" id="ADiagnostico" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.diagnosticocategoria.codigo}" >
+                                            <f:facet name="header">
+                                                <h:outputText id="cdiagnosticoHead" value="C. Diagnostico" />
+                                                <p:tooltip for="cdiagnosticoHead" value="Codigo Diagnóstico" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
                                         <p:column headerText="Prorrogas" filterBy="#{ausentismos.prorroga}" filterMatchMode="contains" id="AProrroga" filterStyle="display none; visibility: hidden;" sortBy="#{controlAusentismos.prorroga}" />
-                                        <p:column headerText="Periodo" filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display none; visibility: hidden;" sortBy="#{controlAusentismos.relacion}"/>
-                                        <p:column headerText=" " filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.relacionada}"/>
+
+                                        <p:column headerText="Periodo" filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display none; visibility: hidden;" sortBy="#{controlAusentismos.relacion}">
+                                            <f:facet name="header">
+                                                <h:outputText id="periodoHead" value="Periodo" />
+                                                <p:tooltip for="periodoHead" value="Periodo relacionada para cruce de cuentas con el tercero." showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
+
+                                        <p:column filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.relacionada}">
+                                            <f:facet name="header">
+                                                <h:outputText id="relacionadaHead" value=" " />
+                                                <p:tooltip for="relacionadaHead" value="Reportada a la Entidad" showEffect="fade" hideEffect="fade"/>
+                                            </f:facet> 
+                                        </p:column>
+
                                         <p:column headerText="Tercero" filterBy="#{ausentismos.tercero.nombre}" filterMatchMode="contains" id="ATercero" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.tercero.nombre}"/>
                                         <p:column headerText="Observaciones" filterBy="#{ausentismos.observaciones}" filterMatchMode="contains" id="AObservaciones" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.observaciones}"/>
                                     </p:row>
-
                                 </p:columnGroup>
+
                                 <!--Tipo Ausentismo-->
                                 <p:column >                                  
                                     <p:cellEditor>  
@@ -403,6 +483,7 @@
                                 <!-- Aca va el CheckBox ese ficti -->
                                 <p:column >         
                                     <p:selectBooleanCheckbox value="#{ausentismos.relacionadaBool}" id="editarRelacionada" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.relacionadaBool)}"/>
                                     </p:selectBooleanCheckbox>
                                 </p:column>
                                 <!-- Tercero -->
@@ -439,6 +520,381 @@
 
                 <h:form id ="formularioDialogos">
 
+                    <!-- DIALOGO NUEVO REGISTRO -->
+                    <p:dialog id="NuevoAusentismoEmpleado" header="Nuevo Registro" widgetVar="NuevoAusentismoEmpleado" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="800" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar una nueva novedad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevoAusentismo" style="border: none;">
+
+                            <strong><h:outputText value="Tipo: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <p:inputText id="nuevoTipo" value="#{controlAusentismos.nuevoAusentismo.tipo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'TIPO')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('TIPO', controlAusentismos.nuevoAusentismo.tipo.descripcion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 1, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 65px;  " id="btnNuevoTipo" actionListener="#{controlAusentismos.asignarIndex(indice, 1, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Clase: " style="font-size: 12px; position: absolute; top: 105px" /></strong>
+                            <p:inputText id="nuevaClase" value="#{controlAusentismos.nuevoAusentismo.clase.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'CLASE')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('CLASE', controlAusentismos.nuevoAusentismo.clase.descripcion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 2, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnNuevaClase" actionListener="#{controlAusentismos.asignarIndex(indice, 2, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Causa: " style="font-size: 12px; position: absolute; top: 145px" /></strong>
+                            <p:inputText id="nuevaCausa" value="#{controlAusentismos.nuevoAusentismo.causa.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'CAUSA')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('CAUSA', controlAusentismos.nuevoAusentismo.causa.descripcion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 3, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 145px;  " id="btnNuevaCausa" actionListener="#{controlAusentismos.asignarIndex(indice, 3, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Dias:" style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                            <p:inputText id="nuevoDia" value="#{controlAusentismos.nuevoAusentismo.dias}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+
+                            <strong><h:outputText value="Horas:" style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                            <p:inputText id="nuevaHora" value="#{controlAusentismos.nuevoAusentismo.horas}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+
+                            <strong><h:outputText value="Inicio Ausencia: " style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                            <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; top: 265px; left: 200px;" value="#{controlAusentismos.nuevoAusentismo.fecha}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFecha"/>
+                                <p:ajax event="change" update="nuevaFecha"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Final Ausencia: " style="font-size: 12px; position: absolute; top: 305px" /></strong>
+                            <p:calendar  id="nuevaFechaFinaus" style="font-size: 10px; position: absolute; top: 305px; left: 200px;" value="#{controlAusentismos.nuevoAusentismo.fechafinaus}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaFinaus"/>
+                                <p:ajax event="change" update="nuevaFechaFinaus"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Expedicion: " style="font-size: 12px; position: absolute; top: 65px; left: 460px" /></strong>
+                            <p:calendar  id="nuevaFechaExpedicion" style="font-size: 10px; position: absolute; top: 65px; left: 560px" value="#{controlAusentismos.nuevoAusentismo.fechaexpedicion}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaExpedicion"/>
+                                <p:ajax event="change" update="nuevaFechaExpedicion"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Inicio Pago: " style="font-size: 12px; position: absolute; top: 105px; left: 460px"  /></strong>
+                            <p:calendar  id="nuevaFechaInipago" style="font-size: 10px; position: absolute; top: 105px; left: 560px;" value="#{controlAusentismos.nuevoAusentismo.fechainipago}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaInipago"/>
+                                <p:ajax event="change" update="nuevaFechaInipago"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Final Pago: " style="font-size: 12px; position: absolute; top: 145px; left:460px" /></strong>
+                            <p:calendar  id="nuevaFechaFinpago" style="font-size: 10px; position: absolute; top: 145px; left: 560px;" value="#{controlAusentismos.nuevoAusentismo.fechafinpago}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaFinpago"/>
+                                <p:ajax event="change" update="nuevaFechaFinpago"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="%: " style="font-size: 12px; position: absolute; top: 185px; left: 460px"/></strong>
+                            <p:inputText id="nuevoPorcentaje" value="#{controlAusentismos.nuevoAusentismo.porcentajeindividual}" style="font-size: 12px; width: 122px; position: absolute; left: 560px; top: 185px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'PORCENTAJE')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('PORCENTAJE', controlAusentismos.nuevoAusentismo.porcentajeindividual, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 4, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 185px;  " id="btnNuevoPorcentaje" actionListener="#{controlAusentismos.asignarIndex(indice, 4, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Base Liquidacion: " style="font-size: 12px; position: absolute; top: 225px; left:460px" /></strong>
+                            <p:inputText id="nuevaBase" value="#{controlAusentismos.nuevoAusentismo.baseliquidacion}" style="font-size: 12px; width: 122px; position: absolute; left: 580px; top: 225px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'BASE')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('BASE', controlAusentismos.nuevoAusentismo.baseliquidacion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 5, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 225px;  " id="btnNuevaBase" actionListener="#{controlAusentismos.asignarIndex(indice, 5, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Forma Liquidacion: " style="font-size: 12px; position: absolute; top: 265px; left: 460px" /></strong>
+                            <p:inputText id="nuevaForma" value="#{controlAusentismos.nuevoAusentismo.formaliquidacion}" style="font-size: 12px; width: 122px; position: absolute; left: 580px; top: 265px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'FORMA')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('FORMA', controlAusentismos.nuevoAusentismo.formaliquidacion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 6, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 265px;  " id="btnNuevaForma" actionListener="#{controlAusentismos.asignarIndex(indice, 6, 1)}" icon="ui-icon-search" process="@this" />
+
+                            <!-- MODULO DE SALUD OCUPACIONAL -->
+                            <p:panel id="panel" header="MODULO DE SALUD OCUPACIONAL" toggleable="true" style="position: absolute; top: 300px; width: 700px" toggleSpeed="700" closeSpeed="500" widgetVar="panel">  
+                                <strong><h:outputText value="Accidente:" style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                                <p:inputText id="nuevoAccidente" value="#{controlAusentismos.nuevoAusentismo.accidente.descripcioncaso}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'AD')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('AD', controlAusentismos.nuevoAusentismo.accidente.descripcioncaso, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 7, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 65px;  " id="btnNuevoAccidente" actionListener="#{controlAusentismos.asignarIndex(indice, 7, 1)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="Enfermedad:" style="font-size: 12px; position: absolute; top: 105px" /></strong>
+                                <p:inputText id="nuevaEnfermedad" value="#{controlAusentismos.nuevoAusentismo.enfermedad.categoria.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'ENFERMEDAD')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('ENFERMEDAD', controlAusentismos.nuevoAusentismo.enfermedad.categoria.descripcion, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnNuevaEnfermedad" actionListener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="No.Certificado: " style="font-size: 12px; position: absolute; top: 145px" /></strong>
+                                <p:inputText id="nuevoNumero" value="#{controlAusentismos.nuevoAusentismo.dias}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="@this"/>
+                                </p:inputText>
+
+                                <strong><h:outputText value="Cod.Diagnostico" style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                                <p:inputText id="nuevoDiagnostico" value="#{controlAusentismos.nuevoAusentismo.diagnosticocategoria.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'DIAGNOSTICO')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('DIAGNOSTICO', controlAusentismos.nuevoAusentismo.diagnosticocategoria.codigo, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 185px;  " id="btnNuevoDiagnostico" actionListener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="Prorroga" style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                                <p:inputText id="nuevaProrroga" value="#{controlAusentismos.nuevoAusentismo.prorroga.prorrogaAusentismo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'PRORROGA')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('PRORROGA', controlAusentismos.nuevoAusentismo.prorroga.prorrogaAusentismo, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 10, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnNuevaProrroga" actionListener="#{controlAusentismos.asignarIndex(indice, 10, 1)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="Tercero" style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                                <p:inputText id="nuevoTercero" value="#{controlAusentismos.nuevoAusentismo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'TERCERO')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('TERCERO', controlAusentismos.nuevoAusentismo.tercero.nombre, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 265px;  " id="btnNuevoTercero" actionListener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" icon="ui-icon-search" process="@this" />
+
+
+                            </p:panel>  
+
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 50px; top: 1000px;" actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" update="nuevoAusentismo" process="@this"/>
+                            <p:commandButton id="agregarNA" value="Agregar" style="font-size: 11px; position: absolute; left: 550px; top: 1000px;"  actionListener="#{controlAusentismos.agregarNuevoAusentismo()}" process="@this"/>
+                            <p:commandButton id="cancelarNA" value="Cancelar" style="font-size: 11px; position: absolute; left: 650px; top: 1000px;" actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" update="nuevoAusentismo" onclick="NuevoAusentismoEmpleado.hide();" process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="validacionNuevoAusentismo" header="ATENCIÓN...!" widgetVar="validacionNuevoAusentismo"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar un nuevo ausentismo es necesario adicionar: #{controlAusentismos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevoAusentismo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesTerceros.guardarCambiosNovedades()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <!-- DIALOGO NUEVO REGISTRO -->
+                    <p:dialog id="DuplicarAusentismoEmpleado" header="Duplicar Registro" widgetVar="DuplicarAusentismoEmpleado" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="800" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar una nueva novedad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarAusentismo" style="border: none;">
+
+                            <strong><h:outputText value="Tipo: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <p:inputText id="duplicarTipo" value="#{controlAusentismos.duplicarAusentismo.tipo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'TIPO')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('TIPO', controlAusentismos.duplicarAusentismo.tipo.descripcion, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 1, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 65px;  " id="btnDuplicarTipo" actionListener="#{controlAusentismos.asignarIndex(indice, 1, 2)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Clase: " style="font-size: 12px; position: absolute; top: 105px" /></strong>
+                            <p:inputText id="duplicarClase" value="#{controlAusentismos.duplicarAusentismo.clase.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'CLASE')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('CLASE', controlAusentismos.duplicarAusentismo.clase.descripcion, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 2, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnDuplicarClase" actionListener="#{controlAusentismos.asignarIndex(indice, 2, 2)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Causa: " style="font-size: 12px; position: absolute; top: 145px" /></strong>
+                            <p:inputText id="duplicarCausa" value="#{controlAusentismos.duplicarAusentismo.causa.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'CAUSA')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('CAUSA', controlAusentismos.duplicarAusentismo.causa.descripcion, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 3, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 145px;  " id="btnDuplicarCausa" actionListener="#{controlAusentismos.asignarIndex(indice, 3, 2)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Dias:" style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                            <p:inputText id="duplicarDia" value="#{controlAusentismos.duplicarAusentismo.dias}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+
+                            <strong><h:outputText value="Horas:" style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                            <p:inputText id="duplicarHora" value="#{controlAusentismos.duplicarAusentismo.horas}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+
+                            <strong><h:outputText value="Inicio Ausencia: " style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                            <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; top: 265px; left: 200px;" value="#{controlAusentismos.duplicarAusentismo.fecha}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFecha"/>
+                                <p:ajax event="change" update="duplicarFecha"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Final Ausencia: " style="font-size: 12px; position: absolute; top: 305px" /></strong>
+                            <p:calendar  id="duplicarFechaFinaus" style="font-size: 10px; position: absolute; top: 305px; left: 200px;" value="#{controlAusentismos.duplicarAusentismo.fechafinaus}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaFinaus"/>
+                                <p:ajax event="change" update="duplicarFechaFinaus"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Expedicion: " style="font-size: 12px; position: absolute; top: 65px; left: 460px" /></strong>
+                            <p:calendar  id="duplicarFechaExpedicion" style="font-size: 10px; position: absolute; top: 65px; left: 560px" value="#{controlAusentismos.duplicarAusentismo.fechaexpedicion}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaExpedicion"/>
+                                <p:ajax event="change" update="duplicarFechaExpedicion"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Inicio Pago: " style="font-size: 12px; position: absolute; top: 105px; left: 460px"  /></strong>
+                            <p:calendar  id="duplicarFechaInipago" style="font-size: 10px; position: absolute; top: 105px; left: 560px;" value="#{controlAusentismos.duplicarAusentismo.fechainipago}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaInipago"/>
+                                <p:ajax event="change" update="duplicarFechaInipago"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Final Pago: " style="font-size: 12px; position: absolute; top: 145px; left:460px" /></strong>
+                            <p:calendar  id="duplicarFechaFinpago" style="font-size: 10px; position: absolute; top: 145px; left: 560px;" value="#{controlAusentismos.duplicarAusentismo.fechafinpago}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFechaFinpago"/>
+                                <p:ajax event="change" update="duplicarFechaFinpago"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="%: " style="font-size: 12px; position: absolute; top: 185px; left: 460px"/></strong>
+                            <p:inputText id="duplicarPorcentaje" value="#{controlAusentismos.duplicarAusentismo.porcentajeindividual}" style="font-size: 12px; width: 122px; position: absolute; left: 560px; top: 185px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'PORCENTAJE')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('PORCENTAJE', controlAusentismos.duplicarAusentismo.porcentajeindividual, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 4, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 185px;  " id="btnDuplicarPorcentaje" actionListener="#{controlAusentismos.asignarIndex(indice, 4, 2)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Base Liquidacion: " style="font-size: 12px; position: absolute; top: 225px; left:460px" /></strong>
+                            <p:inputText id="duplicarBase" value="#{controlAusentismos.duplicarAusentismo.baseliquidacion}" style="font-size: 12px; width: 122px; position: absolute; left: 580px; top: 225px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'BASE')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('BASE', controlAusentismos.duplicarAusentismo.baseliquidacion, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 5, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 225px;  " id="btnDuplicarBase" actionListener="#{controlAusentismos.asignarIndex(indice, 5, 2)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Forma Liquidacion: " style="font-size: 12px; position: absolute; top: 265px; left: 460px" /></strong>
+                            <p:inputText id="duplicarForma" value="#{controlAusentismos.duplicarAusentismo.formaliquidacion}" style="font-size: 12px; width: 122px; position: absolute; left: 580px; top: 265px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'FORMA')}" />
+                                <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('FORMA', controlAusentismos.duplicarAusentismo.formaliquidacion, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 6, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 265px;  " id="btnDuplicarForma" actionListener="#{controlAusentismos.asignarIndex(indice, 6, 2)}" icon="ui-icon-search" process="@this" />
+
+                            <!-- MODULO DE SALUD OCUPACIONAL -->
+                            <p:panel id="pnlDuplicar" header="MODULO DE SALUD OCUPACIONAL" toggleable="true" style="position: absolute; top: 300px; width: 700px" toggleSpeed="700" closeSpeed="500" widgetVar="pnlDuplicar" >  
+                                <strong><h:outputText value="Accidente:" style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                                <p:inputText id="duplicarAccidente" value="#{controlAusentismos.duplicarAusentismo.accidente.descripcioncaso}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'AD')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('AD', controlAusentismos.duplicarAusentismo.accidente.descripcioncaso, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 7, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 65px;  " id="btnDuplicarAccidente" actionListener="#{controlAusentismos.asignarIndex(indice, 7, 2)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="Enfermedad:" style="font-size: 12px; position: absolute; top: 105px" /></strong>
+                                <p:inputText id="duplicarEnfermedad" value="#{controlAusentismos.duplicarAusentismo.enfermedad.categoria.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'ENFERMEDAD')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('ENFERMEDAD', controlAusentismos.duplicarAusentismo.enfermedad.categoria.descripcion, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 8, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnDuplicarEnfermedad" actionListener="#{controlAusentismos.asignarIndex(indice, 8, 2)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="No.Certificado: " style="font-size: 12px; position: absolute; top: 145px" /></strong>
+                                <p:inputText id="duplicarNumero" value="#{controlAusentismos.duplicarAusentismo.dias}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="@this"/>
+                                </p:inputText>
+
+                                <strong><h:outputText value="Cod.Diagnostico" style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                                <p:inputText id="duplicarDiagnostico" value="#{controlAusentismos.duplicarAusentismo.diagnosticocategoria.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'DIAGNOSTICO')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('DIAGNOSTICO', controlAusentismos.duplicarAusentismo.diagnosticocategoria.codigo, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 9, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 185px;  " id="btnDuplicarDiagnostico" actionListener="#{controlAusentismos.asignarIndex(indice, 9, 2)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="Prorroga" style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                                <p:inputText id="duplicarProrroga" value="#{controlAusentismos.duplicarAusentismo.prorroga.prorrogaAusentismo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 225px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'PRORROGA')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('PRORROGA', controlAusentismos.duplicarAusentismo.prorroga.prorrogaAusentismo, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 10, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnDuplicarProrroga" actionListener="#{controlAusentismos.asignarIndex(indice, 10, 2)}" icon="ui-icon-search" process="@this" />
+
+                                <strong><h:outputText value="Tercero" style="font-size: 12px; position: absolute; top: 265px" /></strong>
+                                <p:inputText id="duplicarTercero" value="#{controlAusentismos.duplicarAusentismo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 265px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'TERCERO')}" />
+                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('TERCERO', controlAusentismos.duplicarAusentismo.tercero.nombre, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 11, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 265px;  " id="btnDuplicarTercero" actionListener="#{controlAusentismos.asignarIndex(indice, 11, 2)}" icon="ui-icon-search" process="@this" />
+                            </p:panel>  
+
+                            <p:commandButton id="limpiarDuplicado" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 50px; top: 600px;" actionListener="#{controlAusentismos.limpiarduplicarAusentismos()}" update="duplicarAusentismo" process="@this"/>
+                            <p:commandButton id="agregarNADuplicado" value="Agregar" style="font-size: 11px; position: absolute; left: 550px; top: 600px;"  actionListener="#{controlAusentismos.confirmarDuplicar()}" process="@this"/>
+                            <p:commandButton id="cancelarNADuplicado" value="Cancelar" style="font-size: 11px; position: absolute; left: 650px; top: 600px;" actionListener="#{controlAusentismos.limpiarduplicarAusentismos()}" update="duplicarAusentismo" onclick="DuplicarAusentismoEmpleado.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+                    
+                    <!-- DIALOGOS RASTROS -->
+
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'SOAUSENTISMOS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlAusentismos.secRegistro, 'Soausentismos', 'ausentismos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla NOVEDADES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Soausentismos', 'ausentismos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlAusentismos.secRegistro, 'Soausentismos', 'soausentismos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'SOAUSENTISMOS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <!--HotKey-->
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlAusentismos.activarCtrlF11()}" process="@this"/> 
+                    
                     <!-- DIALOGOS EDITAR -->
 
                     <p:dialog id="editarTiposAusentismos" header="Tipos Ausentismos" widgetVar="editarTiposAusentismos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
@@ -593,7 +1049,7 @@
                             <p:resetInput target=":formularioDialogos:LOVTiposAusentismos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <!-- L.O.V CLASES AUSENTISMOS-->
                     <p:dialog header="Clases Ausentismos" widgetVar="clasesAusentismosDialogo" draggable="false" resizable="false" id="clasesAusentismosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="330" height="250" style="font-size: 12px">
@@ -631,8 +1087,8 @@
                             <p:resetInput target=":formularioDialogos:LOVClasesAusentismos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
-                    
+
+
                     <!-- L.O.V CAUSAS AUSENTISMOS-->
                     <p:dialog header="Causas Ausentismos" widgetVar="causasAusentismosDialogo" draggable="false" resizable="false" id="causasAusentismosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="330" height="360" style="font-size: 12px">
@@ -826,10 +1282,10 @@
 
                     <!-- L.O.V ACCIDENTES-->
                     <p:dialog header="Accidentes" widgetVar="accidentesDialogo" draggable="false" resizable="false" id="accidentesDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="730" height="350" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVAccidentes" style="font-size: 11px; width: 600px" var="accidentes" value="#{controlAusentismos.listaAccidentes}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVAccidentes" 
+                        <p:dataTable  id="LOVAccidentes" style="font-size: 11px; width: 700px" var="accidentes" value="#{controlAusentismos.listaAccidentes}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="700" widgetVar="LOVAccidentes" 
                                       filteredValue="#{controlAusentismos.filtradoslistaAccidentes}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{accidentes.secuencia}" selection="#{controlAusentismos.seleccionAccidentes}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarAD"/>
@@ -1002,7 +1458,7 @@
                             <p:resetInput target=":formularioDialogos:LOVProrrogas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <!-- L.O.V TERCEROS-->
                     <p:dialog header="Terceros" widgetVar="tercerosDialogo" draggable="false" resizable="false" id="tercerosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
@@ -1081,7 +1537,143 @@
                             <p:resetInput target=":formularioDialogos:LOVEnfermedades:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
+                </h:form>
 
+                <h:form id="formExportar">
+                    <p:dataTable id="datosAusentismosExportar" var="ausentismos" style="visibility: hidden; display: none;"                           
+                                 value="#{controlAusentismos.listaAusentismos}"> 
+
+                        <!--COLUMNAS TABLA NOVEDADES--> 
+                        <p:column headerText="Tipo">                                  
+                            <f:facet name="header"><h:outputText value="Tipo"/> </f:facet> 
+                            <h:outputText value="#{ausentismos.tipo.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Clase">                                  
+                            <f:facet name="header"><h:outputText value="Clase"/> </f:facet> 
+                            <h:outputText value="#{ausentismos.clase.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Causa">                                  
+                            <f:facet name="header"><h:outputText value="Causa"/> </f:facet> 
+                            <h:outputText value="#{ausentismos.causa.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Dias">                                  
+                            <f:facet name="header"><h:outputText value="Dias"/> </f:facet> 
+                            <h:outputText value="#{ausentismos.dias}" />
+                        </p:column>
+
+                        <p:column headerText="Horas">                                  
+                            <f:facet name="header"><h:outputText value="Horas"/> </f:facet> 
+                            <h:outputText value="#{ausentismos.horas}" />
+                        </p:column>
+
+                        <p:column headerText="I_Ausencia">  
+                            <f:facet name="header">
+                                <h:outputText value="I.Ausencia" />
+                            </f:facet>
+                            <h:outputText value="#{ausentismos.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="F_Ausencia">  
+                            <f:facet name="header">
+                                <h:outputText value="F.Ausencia" />
+                            </f:facet>
+                            <h:outputText value="#{ausentismos.fechafinaus}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Expedicion">  
+                            <f:facet name="header">
+                                <h:outputText value="Expedicion" />
+                            </f:facet>
+                            <h:outputText value="#{ausentismos.fechaexpedicion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="I.Pago">  
+                            <f:facet name="header">
+                                <h:outputText value="I.Pago" />
+                            </f:facet>
+                            <h:outputText value="#{ausentismos.fechainipago}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="F.Pago">  
+                            <f:facet name="header">
+                                <h:outputText value="F.Pago" />
+                            </f:facet>
+                            <h:outputText value="#{ausentismos.fechafinpago}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Porcentaje">                                  
+                            <f:facet name="header"><h:outputText value="Porcentaje"/> </f:facet> 
+                            <h:outputText value="#{ausentismos.porcentajeindividual}" />
+                        </p:column>  
+
+                        <p:column headerText="B_Liquidacion">      
+                            <f:facet name="header"><h:outputText value="B.Liquidacion"/></f:facet>
+                            <h:outputText value="#{ausentismos.baseliquidacion}" />
+                        </p:column>
+
+                        <p:column headerText="F_Liquidacion">      
+                            <f:facet name="header"><h:outputText value="F.Liquidacion"/></f:facet>
+                            <h:outputText value="#{ausentismos.formaliquidacion}" />
+                        </p:column>
+
+                        <p:column headerText="AT">      
+                            <f:facet name="header"><h:outputText value="AT"/></f:facet>
+                            <h:outputText value="#{ausentismos.accidente.descripcioncaso}" />
+                        </p:column>
+
+                        <p:column headerText="EP">      
+                            <f:facet name="header"><h:outputText value="EP"/></f:facet>
+                            <h:outputText value="#{ausentismos.enfermedad.categoria.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="No_Certificado">      
+                            <f:facet name="header"><h:outputText value="No.Certificado"/></f:facet>
+                            <h:outputText value="#{ausentismos.numerocertificado}" />
+                        </p:column>
+
+                        <p:column headerText="C_Diagnostico">      
+                            <f:facet name="header"><h:outputText value="C.Diagnostico"/></f:facet>
+                            <h:outputText value="#{ausentismos.diagnosticocategoria.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Prorrogas">      
+                            <f:facet name="header"><h:outputText value="Prorrogas"/></f:facet>
+                            <h:outputText value="#{ausentismos.prorroga.prorrogaAusentismo}" />
+                        </p:column>
+
+                        <p:column headerText="Periodo">
+                            <f:facet name="header"><h:outputText value="Periodo"/></f:facet>
+                            <h:outputText value="#{ausentismos.relacion}" />
+                        </p:column>
+
+                        <p:column headerText="Relacionada">
+                            <f:facet name="header"><h:outputText value="Relacionada"/></f:facet>
+                            <h:outputText value="#{ausentismos.relacionada}" />
+                        </p:column>
+
+                        <p:column headerText="Tercero">
+                            <f:facet name="header"><h:outputText value="Tercero"/></f:facet>
+                            <h:outputText value="#{ausentismos.tercero.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Observacion">
+                            <f:facet name="header"><h:outputText value="Observacion"/></f:facet>
+                            <h:outputText value="#{ausentismos.observaciones}" />
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
             </ui:define>
         </ui:composition>

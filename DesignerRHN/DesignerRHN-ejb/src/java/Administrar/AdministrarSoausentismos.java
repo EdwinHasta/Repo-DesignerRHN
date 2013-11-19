@@ -66,6 +66,79 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     @EJB
     PersistenciaRelacionesIncapacidadesInterface persistenciaRelacionesIncapacidades;
     
+
+    public void borrarAusentismos(Soausentismos ausentismos) {
+        persistenciaSoausentismos.borrar(ausentismos);
+    }
+
+    @Override
+    public void crearAusentismos(Soausentismos ausentismos) {
+        persistenciaSoausentismos.crear(ausentismos);
+    }
+
+    @Override
+    public void modificarAusentismos(List<Soausentismos> listaAusentismosModificar) {
+        for (int i = 0; i < listaAusentismosModificar.size(); i++) {
+            System.out.println("Modificando...");
+
+                    if (listaAusentismosModificar.get(i).getDias() == null) {
+                        listaAusentismosModificar.get(i).setDias(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getHoras() == null) {
+                        listaAusentismosModificar.get(i).setHoras(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getFechafinaus()== null) {
+                        listaAusentismosModificar.get(i).setFechafinaus(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getFechaexpedicion()== null) {
+                        listaAusentismosModificar.get(i).setFechaexpedicion(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getFechainipago()== null) {
+                        listaAusentismosModificar.get(i).setFechainipago(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getFechafinpago()== null) {
+                        listaAusentismosModificar.get(i).setFechafinpago(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getPorcentajeindividual()== null) {
+                        listaAusentismosModificar.get(i).setPorcentajeindividual(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getBaseliquidacion()== null) {
+                        listaAusentismosModificar.get(i).setBaseliquidacion(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getFormaliquidacion()== null) {
+                        listaAusentismosModificar.get(i).setFormaliquidacion(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getAccidente().getSecuencia()== null) {
+                        listaAusentismosModificar.get(i).setAccidente(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getEnfermedad().getSecuencia()== null) {
+                        listaAusentismosModificar.get(i).setEnfermedad(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getNumerocertificado() == null) {
+                        listaAusentismosModificar.get(i).setNumerocertificado(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getDiagnosticocategoria().getSecuencia()== null) {
+                        listaAusentismosModificar.get(i).setDiagnosticocategoria(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getProrroga().getSecuencia()== null) {
+                        listaAusentismosModificar.get(i).setProrroga(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getRelacion()== null) {
+                        listaAusentismosModificar.get(i).setRelacion(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getRelacionadaBool()== false) {
+                        listaAusentismosModificar.get(i).setRelacionada("N");
+                    }
+                    if (listaAusentismosModificar.get(i).getTercero().getSecuencia()== null) {
+                        listaAusentismosModificar.get(i).setTercero(null);
+                    }
+                    if (listaAusentismosModificar.get(i).getObservaciones()== null) {
+                        listaAusentismosModificar.get(i).setObservaciones(null);
+                    }
+            persistenciaSoausentismos.editar(listaAusentismosModificar.get(i));
+        }
+    }
+    
     //Trae los ausentismos del empleado cuya secuencia se envía como parametro//
     @Override
     public List<Soausentismos> ausentismosEmpleado(BigInteger secuenciaEmpleado) {
