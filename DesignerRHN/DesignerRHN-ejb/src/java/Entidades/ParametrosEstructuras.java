@@ -38,7 +38,7 @@ public class ParametrosEstructuras implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
     @Basic(optional = false)
@@ -74,22 +74,22 @@ public class ParametrosEstructuras implements Serializable {
     public ParametrosEstructuras() {
     }
 
-    public ParametrosEstructuras(BigDecimal secuencia) {
+    public ParametrosEstructuras(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public ParametrosEstructuras(BigDecimal secuencia, Date fechadesdecausado, Date fechahastacausado, Date fechasistema, BigInteger usuario) {
+    public ParametrosEstructuras(BigInteger secuencia, Date fechadesdecausado, Date fechahastacausado, Date fechasistema, BigInteger usuario) {
         this.secuencia = secuencia;
         this.fechadesdecausado = fechadesdecausado;
         this.fechahastacausado = fechahastacausado;
         this.fechasistema = fechasistema;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

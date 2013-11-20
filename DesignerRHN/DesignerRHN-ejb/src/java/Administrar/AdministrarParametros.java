@@ -40,10 +40,11 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
     @EJB
     PersistenciaUsuariosInterface persistenciaUsuarios;
 
-    public Usuarios usuarioActual(){
+    public Usuarios usuarioActual() {
         String usuarioBD = persistenciaActualUsuario.actualAliasBD();
         return persistenciaUsuarios.buscarUsuario(usuarioBD);
     }
+
     @Override
     public ParametrosEstructuras parametrosLiquidacion() {
         String usuarioBD = persistenciaActualUsuario.actualAliasBD();
@@ -54,27 +55,46 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
     public List<Estructuras> lovEstructuras() {
         return persistenciaEstructuras.estructuras();
     }
-    
+
     public List<TiposTrabajadores> lovTiposTrabajadores() {
         return persistenciaTiposTrabajadores.buscarTiposTrabajadores();
     }
-    
+
     @Override
     public List<Procesos> lovProcesos() {
         return persistenciaProcesos.lovProcesos();
     }
-    
+
     @Override
     public List<Parametros> empleadosParametros() {
         return persistenciaParametros.empleadosParametros();
     }
-    
+
     @Override
     public String estadoParametro(BigInteger secuenciaParametro) {
         return persistenciaParametrosEstados.parametrosComprobantes(secuenciaParametro);
     }
-    
-    public void crearParametroEstructura(ParametrosEstructuras parametroEstructura){
+
+    public void crearParametroEstructura(ParametrosEstructuras parametroEstructura) {
         persistenciaParametrosEstructuras.editar(parametroEstructura);
+    }
+
+    public void eliminarParametros(List<Parametros> listaParametros) {
+        for (int i = 0; i < listaParametros.size(); i++) {
+            persistenciaParametros.borrar(listaParametros.get(i));
+        }
+    }
+
+    @Override
+    public void adicionarEmpleados(BigInteger secParametroEstructura) {
+        persistenciaParametrosEstructuras.adicionarEmpleados(secParametroEstructura);
+    }
+
+    public void borrarParametros(BigInteger secParametroEstructura) {
+        persistenciaParametros.borrarParametros(secParametroEstructura);
+    }
+    
+    public Integer empleadosParametrizados(BigInteger secProceso){
+        return persistenciaParametrosEstructuras.empleadosParametrizados(secProceso);
     }
 }

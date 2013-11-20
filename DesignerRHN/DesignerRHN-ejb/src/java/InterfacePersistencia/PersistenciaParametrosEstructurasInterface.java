@@ -9,4 +9,6 @@ public interface PersistenciaParametrosEstructurasInterface {
     public BigInteger buscarEmpresaParametros(String usuarioBD);
     public ParametrosEstructuras estructurasComprobantes(String usuarioBD);
     public void editar(ParametrosEstructuras parametroEstructura);
+    public void adicionarEmpleados(BigInteger secParametroEstructura);
+    public Integer empleadosParametrizados(BigInteger secProceso);
 }
