@@ -39,7 +39,7 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
     /*
      *Borrar Ausentismos.
      */
-    @Override
+    
     public void borrar(Soausentismos soausentismos) {
         em.remove(em.merge(soausentismos));
     }

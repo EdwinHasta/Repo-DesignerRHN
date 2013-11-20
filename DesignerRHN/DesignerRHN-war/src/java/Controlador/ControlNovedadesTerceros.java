@@ -843,7 +843,7 @@ public class ControlNovedadesTerceros implements Serializable {
         context.update("form:datosNovedadesTercero");
     }
 
-    //DUPLICAR ENCARGATURA
+    //DUPLICAR TERCERO NOVEDAD
     public void duplicarTN() {
         if (index >= 0) {
             duplicarNovedad = new Novedades();

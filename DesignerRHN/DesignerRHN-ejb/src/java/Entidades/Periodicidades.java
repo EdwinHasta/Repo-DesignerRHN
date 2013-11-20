@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -190,9 +189,6 @@ public class Periodicidades implements Serializable {
     }
 
     public short getCodigo() {
-        if (codigo == null) {
-            codigo = 0;
-        }
         return codigo;
     }
 

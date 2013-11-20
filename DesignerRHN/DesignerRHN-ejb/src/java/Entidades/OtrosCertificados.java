@@ -25,22 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author user
+ * @author Viktor
  */
 @Entity
 @Table(name = "OTROSCERTIFICADOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "OtrosCertificados.findAll", query = "SELECT o FROM OtrosCertificados o"),
-    @NamedQuery(name = "OtrosCertificados.findBySecuencia", query = "SELECT o FROM OtrosCertificados o WHERE o.secuencia = :secuencia"),
-    @NamedQuery(name = "OtrosCertificados.findByEstado", query = "SELECT o FROM OtrosCertificados o WHERE o.estado = :estado"),
-    @NamedQuery(name = "OtrosCertificados.findByFechainicial", query = "SELECT o FROM OtrosCertificados o WHERE o.fechainicial = :fechainicial"),
-    @NamedQuery(name = "OtrosCertificados.findByFechafinal", query = "SELECT o FROM OtrosCertificados o WHERE o.fechafinal = :fechafinal"),
-    @NamedQuery(name = "OtrosCertificados.findByValor", query = "SELECT o FROM OtrosCertificados o WHERE o.valor = :valor"),
-    @NamedQuery(name = "OtrosCertificados.findByBaselimite", query = "SELECT o FROM OtrosCertificados o WHERE o.baselimite = :baselimite"),
-    @NamedQuery(name = "OtrosCertificados.findByBasedesde", query = "SELECT o FROM OtrosCertificados o WHERE o.basedesde = :basedesde"),
-    @NamedQuery(name = "OtrosCertificados.findByBasehasta", query = "SELECT o FROM OtrosCertificados o WHERE o.basehasta = :basehasta"),
-    @NamedQuery(name = "OtrosCertificados.findByDiascontratados", query = "SELECT o FROM OtrosCertificados o WHERE o.diascontratados = :diascontratados")})
+    @NamedQuery(name = "OtrosCertificados.findAll", query = "SELECT o FROM OtrosCertificados o")})
 public class OtrosCertificados implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

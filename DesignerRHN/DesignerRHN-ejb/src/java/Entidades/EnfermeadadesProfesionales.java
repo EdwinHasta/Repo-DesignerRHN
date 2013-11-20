@@ -133,6 +133,9 @@ public class EnfermeadadesProfesionales implements Serializable {
     }
 
     public Diagnosticoscategorias getCategoria() {
+        if(categoria == null){
+            categoria = new Diagnosticoscategorias();
+        }
         return categoria;
     }
 
