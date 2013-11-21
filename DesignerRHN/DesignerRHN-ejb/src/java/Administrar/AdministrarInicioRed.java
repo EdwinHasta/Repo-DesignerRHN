@@ -165,7 +165,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
     public int cambioClave(String usuario, String nuevaClave) {
         if (FactoryGlobal.getEmf() != null && FactoryGlobal.getEmf().isOpen()) {
             return persistenciaConexionInicial.cambiarClave(em, usuario, nuevaClave);
-        }else{
+        } else {
             return -1;
         }
     }

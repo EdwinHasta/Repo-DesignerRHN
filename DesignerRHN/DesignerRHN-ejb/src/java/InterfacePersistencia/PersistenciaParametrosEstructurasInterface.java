@@ -11,4 +11,5 @@ public interface PersistenciaParametrosEstructurasInterface {
     public void editar(ParametrosEstructuras parametroEstructura);
     public void adicionarEmpleados(BigInteger secParametroEstructura);
     public Integer empleadosParametrizados(BigInteger secProceso);
+    public Integer diasDiferenciaFechas(String fechaInicial, String fechaFinal);
 }

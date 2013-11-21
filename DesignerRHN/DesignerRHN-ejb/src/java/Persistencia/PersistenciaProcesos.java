@@ -97,4 +97,21 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
             return null;
         }
     }
+
+    public List<Procesos> procesosParametros() {
+        try {
+            String sqlQuery = "SELECT P.* FROM PROCESOS P\n"
+                    + "                   WHERE EXISTS (SELECT 'x' FROM usuariosprocesos up, usuarios u \n"
+                    + "		                           WHERE up.proceso=p.secuencia \n"
+                    + "					   AND u.secuencia = up.usuario \n"
+                    + "					   AND u.alias = user)\n"
+                    + "                   and nvl(p.automatico,'S') = 'S'";
+            Query query = em.createNativeQuery(sqlQuery, Procesos.class);
+            List<Procesos> listaProcesosParametros = query.getResultList();
+            return listaProcesosParametros;
+        } catch (Exception e) {
+            System.out.println("Error en PersistenciaProcesos.procesosParametros: " + e);
+            return null;
+        }
+    }
 }

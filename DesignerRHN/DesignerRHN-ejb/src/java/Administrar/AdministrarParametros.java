@@ -62,7 +62,7 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
 
     @Override
     public List<Procesos> lovProcesos() {
-        return persistenciaProcesos.lovProcesos();
+        return persistenciaProcesos.procesosParametros();
     }
 
     @Override
@@ -93,8 +93,12 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
     public void borrarParametros(BigInteger secParametroEstructura) {
         persistenciaParametros.borrarParametros(secParametroEstructura);
     }
-    
-    public Integer empleadosParametrizados(BigInteger secProceso){
+
+    public Integer empleadosParametrizados(BigInteger secProceso) {
         return persistenciaParametrosEstructuras.empleadosParametrizados(secProceso);
+    }
+
+    public Integer diferenciaDias(String fechaInicial, String fechaFinal) {
+        return persistenciaParametrosEstructuras.diasDiferenciaFechas(fechaInicial, fechaFinal);
     }
 }

@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="DesignerRHN-ejbPU" transaction-type="JTA">
-    <jta-data-source>SOPORTE9</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>ALL</shared-cache-mode>
-    <validation-mode>NONE</validation-mode>
-    <properties>
-      <property name="eclipselink.canonicalmodel.subpackage" value="one"/>
-    </properties>
-  </persistence-unit>
-  <persistence-unit name="SOPORTE9" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <non-jta-data-source/>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>ALL</shared-cache-mode>
-    <validation-mode>NONE</validation-mode>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@SOPORTE9:1521:SOPORTE9"/>
-      <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
-      <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
-      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-      <property name="eclipselink.canonicalmodel.subpackage" value="two"/>
-    </properties>
-  </persistence-unit>
-  <persistence-unit name="XE" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>ALL</shared-cache-mode>
-    <validation-mode>NONE</validation-mode>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@SOPORTEXE:1521:XE"/>
-      <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
-      <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
-      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-      <property name="eclipselink.canonicalmodel.subpackage" value="three"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="DesignerRHN-ejbPU" transaction-type="JTA">
+        <jta-data-source>SOPORTE9</jta-data-source>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="eclipselink.canonicalmodel.subpackage" value="one"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="SOPORTE9" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@SOPORTE9:1521:SOPORTE9"/>
+            <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
+            <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="eclipselink.canonicalmodel.subpackage" value="two"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="XE" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@SOPORTEXE:1521:XE"/>
+            <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
+            <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="eclipselink.canonicalmodel.subpackage" value="three"/>
+        </properties>
+    </persistence-unit>
 </persistence>

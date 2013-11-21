@@ -97,4 +97,19 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
             return null;
         }
     }
+
+    public Integer diasDiferenciaFechas(String fechaInicial, String fechaFinal) {
+        try {
+            String sqlQuery = "SELECT DIAS360(to_date( ?, 'dd/MM/yyyy'), to_date( ?, 'dd/MM/yyyy')) Dias FROM dual";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            BigDecimal a = (BigDecimal) query.getSingleResult();
+            Integer empeladosALiquidar = a.intValueExact();
+            return empeladosALiquidar;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaParametrosEstructuras.diasDiferenciaFechas " + e);
+            return null;
+        }
+    }
 }

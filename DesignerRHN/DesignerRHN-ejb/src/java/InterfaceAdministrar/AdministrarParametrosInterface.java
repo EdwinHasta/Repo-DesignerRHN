@@ -30,4 +30,5 @@ public interface AdministrarParametrosInterface {
     public void adicionarEmpleados(BigInteger secParametroEstructura);
     public void borrarParametros(BigInteger secParametroEstructura);
     public Integer empleadosParametrizados(BigInteger secProceso);
+    public Integer diferenciaDias(String fechaInicial, String fechaFinal);
 }
