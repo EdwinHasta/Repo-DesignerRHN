@@ -26,4 +26,9 @@ public interface AdministrarParametrosInterface {
     public List<Parametros> empleadosParametros();
     public String estadoParametro(BigInteger secuenciaParametro);
     public void crearParametroEstructura(ParametrosEstructuras parametroEstructura);
+    public void eliminarParametros(List<Parametros> listaParametros);
+    public void adicionarEmpleados(BigInteger secParametroEstructura);
+    public void borrarParametros(BigInteger secParametroEstructura);
+    public Integer empleadosParametrizados(BigInteger secProceso);
+    public Integer diferenciaDias(String fechaInicial, String fechaFinal);
 }

@@ -178,19 +178,19 @@ public class ControlAusentismos implements Serializable {
         listaAusentismosModificar = new ArrayList<Soausentismos>();
 
         //Crear VC
-        duplicarAusentismo = new Soausentismos();
-        duplicarAusentismo.setTipo(new Tiposausentismos());
-        duplicarAusentismo.setClase(new Clasesausentismos());
-        duplicarAusentismo.setCausa(new Causasausentismos());
-        duplicarAusentismo.setPorcentajeindividual(BigInteger.valueOf(0));
-        duplicarAusentismo.setBaseliquidacion(BigInteger.valueOf(0));
-        duplicarAusentismo.setFormaliquidacion(" ");
-        duplicarAusentismo.setRelacionadaBool(false);
-        duplicarAusentismo.setAccidente(new Soaccidentes());
-        duplicarAusentismo.setEnfermedad(new EnfermeadadesProfesionales());
-        duplicarAusentismo.setDiagnosticocategoria(new Diagnosticoscategorias());
-        duplicarAusentismo.setProrroga(new Soausentismos());
-        duplicarAusentismo.setTercero(new Terceros());
+        nuevoAusentismo = new Soausentismos();
+        nuevoAusentismo.setTipo(new Tiposausentismos());
+        nuevoAusentismo.setClase(new Clasesausentismos());
+        nuevoAusentismo.setCausa(new Causasausentismos());
+        nuevoAusentismo.setPorcentajeindividual(BigInteger.valueOf(0));
+        nuevoAusentismo.setBaseliquidacion(BigInteger.valueOf(0));
+        nuevoAusentismo.setFormaliquidacion(" ");
+        nuevoAusentismo.setRelacionadaBool(false);
+        nuevoAusentismo.setAccidente(new Soaccidentes());
+        nuevoAusentismo.setEnfermedad(new EnfermeadadesProfesionales());
+        nuevoAusentismo.setDiagnosticocategoria(new Diagnosticoscategorias());
+        nuevoAusentismo.setProrroga(new Soausentismos());
+        nuevoAusentismo.setTercero(new Terceros());
     }
 
     //Ubicacion Celda Arriba 
@@ -1626,67 +1626,67 @@ public class ControlAusentismos implements Serializable {
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
         if (Campo.equals("TIPO")) {
             if (tipoNuevo == 1) {
-                TipoAusentismo = duplicarAusentismo.getTipo().getDescripcion();
+                TipoAusentismo = nuevoAusentismo.getTipo().getDescripcion();
             } else if (tipoNuevo == 2) {
                 TipoAusentismo = duplicarAusentismo.getTipo().getDescripcion();
             }
         } else if (Campo.equals("CLASE")) {
             if (tipoNuevo == 1) {
-                ClaseAusentismo = duplicarAusentismo.getClase().getDescripcion();
+                ClaseAusentismo = nuevoAusentismo.getClase().getDescripcion();
             } else if (tipoNuevo == 2) {
                 ClaseAusentismo = duplicarAusentismo.getClase().getDescripcion();
             }
         } else if (Campo.equals("CAUSA")) {
             if (tipoNuevo == 1) {
-                CausaAusentismo = duplicarAusentismo.getCausa().getDescripcion();
+                CausaAusentismo = nuevoAusentismo.getCausa().getDescripcion();
             } else if (tipoNuevo == 2) {
                 CausaAusentismo = duplicarAusentismo.getCausa().getDescripcion();
             }
         } else if (Campo.equals("PORCENTAJE")) {
             if (tipoNuevo == 1) {
-                Porcentaje = duplicarAusentismo.getPorcentajeindividual().toString();
+                Porcentaje = nuevoAusentismo.getPorcentajeindividual().toString();
             } else if (tipoNuevo == 2) {
                 Porcentaje = duplicarAusentismo.getPorcentajeindividual().toString();
             }
         } else if (Campo.equals("BASE")) {
             if (tipoNuevo == 1) {
-                BaseLiquidacion = duplicarAusentismo.getBaseliquidacion().toString();
+                BaseLiquidacion = nuevoAusentismo.getBaseliquidacion().toString();
             } else if (tipoNuevo == 2) {
                 BaseLiquidacion = duplicarAusentismo.getBaseliquidacion().toString();
             }
         } else if (Campo.equals("FORMA")) {
             if (tipoNuevo == 1) {
-                Forma = duplicarAusentismo.getFormaliquidacion();
+                Forma = nuevoAusentismo.getFormaliquidacion();
             } else if (tipoNuevo == 2) {
                 Forma = duplicarAusentismo.getFormaliquidacion();
             }
         } else if (Campo.equals("AD")) {
             if (tipoNuevo == 1) {
-                AD = duplicarAusentismo.getAccidente().getDescripcioncaso();
+                AD = nuevoAusentismo.getAccidente().getDescripcioncaso();
             } else if (tipoNuevo == 2) {
                 AD = duplicarAusentismo.getAccidente().getDescripcioncaso();
             }
         } else if (Campo.equals("ENFERMEDADES")) {
             if (tipoNuevo == 1) {
-                Enfermedad = duplicarAusentismo.getEnfermedad().getCategoria().getDescripcion();
+                Enfermedad = nuevoAusentismo.getEnfermedad().getCategoria().getDescripcion();
             } else if (tipoNuevo == 2) {
                 Enfermedad = duplicarAusentismo.getEnfermedad().getCategoria().getDescripcion();
             }
         } else if (Campo.equals("DIAGNOSTICO")) {
             if (tipoNuevo == 1) {
-                Diagnostico = duplicarAusentismo.getDiagnosticocategoria().getCodigo();
+                Diagnostico = nuevoAusentismo.getDiagnosticocategoria().getCodigo();
             } else if (tipoNuevo == 2) {
                 Diagnostico = duplicarAusentismo.getDiagnosticocategoria().getCodigo();
             }
         } else if (Campo.equals("PRORROGA")) {
             if (tipoNuevo == 1) {
-                Prorroga = duplicarAusentismo.getProrroga().getProrrogaAusentismo();
+                Prorroga = nuevoAusentismo.getProrroga().getProrrogaAusentismo();
             } else if (tipoNuevo == 2) {
                 Prorroga = duplicarAusentismo.getProrroga().getProrrogaAusentismo();
             }
         } else if (Campo.equals("TERCERO")) {
             if (tipoNuevo == 1) {
-                Tercero = duplicarAusentismo.getTercero().getNombre();
+                Tercero = nuevoAusentismo.getTercero().getNombre();
             } else if (tipoNuevo == 2) {
                 Tercero = duplicarAusentismo.getTercero().getNombre();
             }
@@ -1699,7 +1699,7 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TIPO")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getTipo().setDescripcion(TipoAusentismo);
+                nuevoAusentismo.getTipo().setDescripcion(TipoAusentismo);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.getTipo().setDescripcion(TipoAusentismo);
             }
@@ -1711,7 +1711,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
+                    nuevoAusentismo.setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarTipo");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
@@ -1731,9 +1731,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CLASE")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getClase().setDescripcion(ClaseAusentismo);
+                nuevoAusentismo.getClase().setDescripcion(ClaseAusentismo);
             } else if (tipoNuevo == 2) {
-                duplicarAusentismo.getClase().setDescripcion(ClaseAusentismo);
+                nuevoAusentismo.getClase().setDescripcion(ClaseAusentismo);
             }
 
             for (int i = 0; i < listaClasesAusentismos.size(); i++) {
@@ -1744,7 +1744,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setClase(listaClasesAusentismos.get(indiceUnicoElemento));
+                    nuevoAusentismo.setClase(listaClasesAusentismos.get(indiceUnicoElemento));
                     context.update("formularioDialogos:nuevaClase");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setClase(listaClasesAusentismos.get(indiceUnicoElemento));
@@ -1766,7 +1766,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CAUSA")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getCausa().setDescripcion(CausaAusentismo);
+                nuevoAusentismo.getCausa().setDescripcion(CausaAusentismo);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.getCausa().setDescripcion(CausaAusentismo);
             }
@@ -1779,7 +1779,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setCausa(listaCausasAusentismos.get(indiceUnicoElemento));
+                    nuevoAusentismo.setCausa(listaCausasAusentismos.get(indiceUnicoElemento));
                     context.update("formularioDialogos:nuevaCausa");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setCausa(listaCausasAusentismos.get(indiceUnicoElemento));
@@ -1799,7 +1799,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("PORCENTAJE")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.setPorcentajeindividual(new BigInteger(Porcentaje));
+                nuevoAusentismo.setPorcentajeindividual(new BigInteger(Porcentaje));
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.setPorcentajeindividual(new BigInteger(Porcentaje));
             }
@@ -1812,7 +1812,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setPorcentajeindividual(new BigInteger(listaPorcentaje.get(indiceUnicoElemento)));
+                    nuevoAusentismo.setPorcentajeindividual(new BigInteger(listaPorcentaje.get(indiceUnicoElemento)));
                     context.update("formularioDialogos:duplicarPorcentaje");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setPorcentajeindividual(new BigInteger(listaPorcentaje.get(indiceUnicoElemento)));
@@ -1832,7 +1832,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("BASE")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.setBaseliquidacion(new BigInteger(BaseLiquidacion));
+                nuevoAusentismo.setBaseliquidacion(new BigInteger(BaseLiquidacion));
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.setBaseliquidacion(new BigInteger(BaseLiquidacion));
             }
@@ -1845,7 +1845,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setBaseliquidacion(listaIBCS.get(indiceUnicoElemento).getValor().toBigInteger());
+                    nuevoAusentismo.setBaseliquidacion(listaIBCS.get(indiceUnicoElemento).getValor().toBigInteger());
                     context.update("formularioDialogos:duplicarIBCS");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setBaseliquidacion(listaIBCS.get(indiceUnicoElemento).getValor().toBigInteger());
@@ -1865,7 +1865,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("FORMA")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.setFormaliquidacion(Forma);
+                nuevoAusentismo.setFormaliquidacion(Forma);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.setFormaliquidacion(Forma);
             }
@@ -1878,7 +1878,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setFormaliquidacion(listaForma.get(indiceUnicoElemento));
+                    nuevoAusentismo.setFormaliquidacion(listaForma.get(indiceUnicoElemento));
                     context.update("formularioDialogos:nuevaForma");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setFormaliquidacion(listaForma.get(indiceUnicoElemento));
@@ -1898,7 +1898,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("AD")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getAccidente().setDescripcioncaso(AD);
+                nuevoAusentismo.getAccidente().setDescripcioncaso(AD);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.getAccidente().setDescripcioncaso(AD);
             }
@@ -1911,7 +1911,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setAccidente(listaAccidentes.get(indiceUnicoElemento));
+                    nuevoAusentismo.setAccidente(listaAccidentes.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarAccidente");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setAccidente(listaAccidentes.get(indiceUnicoElemento));
@@ -1931,7 +1931,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("ENFERMEDADES")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getEnfermedad().getCategoria().setDescripcion(Enfermedad);
+                nuevoAusentismo.getEnfermedad().getCategoria().setDescripcion(Enfermedad);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.getEnfermedad().getCategoria().setDescripcion(Enfermedad);
             }
@@ -1944,7 +1944,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setEnfermedad(listaEnfermeadadesProfesionales.get(indiceUnicoElemento));
+                    nuevoAusentismo.setEnfermedad(listaEnfermeadadesProfesionales.get(indiceUnicoElemento));
                     context.update("formularioDialogos:nuevaEnfermedad");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setEnfermedad(listaEnfermeadadesProfesionales.get(indiceUnicoElemento));
@@ -1964,7 +1964,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("DIAGNOSTICO")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getDiagnosticocategoria().setDescripcion(Diagnostico);
+                nuevoAusentismo.getDiagnosticocategoria().setDescripcion(Diagnostico);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.getDiagnosticocategoria().setDescripcion(Diagnostico);
             }
@@ -1977,7 +1977,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
+                    nuevoAusentismo.setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarDiagnostico");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
@@ -1997,7 +1997,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("PRORROGA")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getProrroga().setProrrogaAusentismo(Prorroga);
+                nuevoAusentismo.getProrroga().setProrrogaAusentismo(Prorroga);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.getProrroga().setProrrogaAusentismo(Prorroga);
             }
@@ -2010,7 +2010,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setProrroga(listaProrrogas.get(indiceUnicoElemento));
+                    nuevoAusentismo.setProrroga(listaProrrogas.get(indiceUnicoElemento));
                     context.update("formularioDialogos:nuevaProrroga");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setProrroga(listaProrrogas.get(indiceUnicoElemento));
@@ -2030,7 +2030,7 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("TERCERO")) {
             if (tipoNuevo == 1) {
-                duplicarAusentismo.getTercero().setNombre(Tercero);
+                nuevoAusentismo.getTercero().setNombre(Tercero);
             } else if (tipoNuevo == 2) {
                 duplicarAusentismo.getTercero().setNombre(Tercero);
             }
@@ -2043,7 +2043,7 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    duplicarAusentismo.setTercero(listaTerceros.get(indiceUnicoElemento));
+                    nuevoAusentismo.setTercero(listaTerceros.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarTercero");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setTercero(listaTerceros.get(indiceUnicoElemento));
@@ -2132,10 +2132,10 @@ public class ControlAusentismos implements Serializable {
 
     //LIMPIAR NUEVO AUSENTISMO
     public void limpiarNuevoAusentismo() {
-        duplicarAusentismo = new Soausentismos();
-        duplicarAusentismo.setTipo(new Tiposausentismos());
-        duplicarAusentismo.setCausa(new Causasausentismos());
-        duplicarAusentismo.setClase(new Clasesausentismos());
+        nuevoAusentismo = new Soausentismos();
+        nuevoAusentismo.setTipo(new Tiposausentismos());
+        nuevoAusentismo.setCausa(new Causasausentismos());
+        nuevoAusentismo.setClase(new Clasesausentismos());
         index = -1;
         secRegistro = null;
     }
@@ -2300,30 +2300,30 @@ public class ControlAusentismos implements Serializable {
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (duplicarAusentismo.getFecha() == null) {
+        if (nuevoAusentismo.getFecha() == null) {
             System.out.println("Entro a Fecha ");
             mensajeValidacion = mensajeValidacion + " * Fecha Inicio Ausentismo\n";
             pasa++;
         }
 
-        if (duplicarAusentismo.getTipo().getDescripcion().equals(" ") || duplicarAusentismo.getTipo().getDescripcion().equals("")) {
+        if (nuevoAusentismo.getTipo().getDescripcion().equals(" ") || nuevoAusentismo.getTipo().getDescripcion().equals("")) {
             System.out.println("Entro a Tipo");
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
         }
 
-        if (duplicarAusentismo.getCausa().getDescripcion().equals(" ")) {
+        if (nuevoAusentismo.getCausa().getDescripcion().equals(" ")) {
             System.out.println("Entro a Causa");
             mensajeValidacion = mensajeValidacion + " * Causa\n";
             pasa++;
         }
-        if (duplicarAusentismo.getClase().getDescripcion().equals(" ")) {
+        if (nuevoAusentismo.getClase().getDescripcion().equals(" ")) {
             System.out.println("Entro a Clase");
             mensajeValidacion = mensajeValidacion + " * Clase\n";
             pasa++;
         }
         
-        if (duplicarAusentismo.getFormaliquidacion().equals(" ")){
+        if (nuevoAusentismo.getFormaliquidacion().equals(" ")){
             System.out.println("Entro a Forma");
             mensajeValidacion = mensajeValidacion + " * Forma Liquidación\n";
             pasa++;
@@ -2394,23 +2394,23 @@ public class ControlAusentismos implements Serializable {
             //AGREGAR REGISTRO A LA LISTA NOVEDADES .
             k++;
             l = BigInteger.valueOf(k);
-            duplicarAusentismo.setSecuencia(l);
-            duplicarAusentismo.setEmpleado(seleccionMostrar);
-            listaAusentismosCrear.add(duplicarAusentismo);
-            listaAusentismos.add(duplicarAusentismo);
-            duplicarAusentismo = new Soausentismos();
-            duplicarAusentismo.setTipo(new Tiposausentismos());
-            duplicarAusentismo.setClase(new Clasesausentismos());
-            duplicarAusentismo.setCausa(new Causasausentismos());
-            duplicarAusentismo.setPorcentajeindividual(BigInteger.valueOf(0));
-            duplicarAusentismo.setBaseliquidacion(BigInteger.valueOf(0));
-            duplicarAusentismo.setFormaliquidacion(" ");
-            duplicarAusentismo.setRelacionadaBool(false);
-            duplicarAusentismo.setAccidente(new Soaccidentes());
-            duplicarAusentismo.setEnfermedad(new EnfermeadadesProfesionales());
-            duplicarAusentismo.setDiagnosticocategoria(new Diagnosticoscategorias());
-            duplicarAusentismo.setProrroga(new Soausentismos());
-            duplicarAusentismo.setTercero(new Terceros());
+            nuevoAusentismo.setSecuencia(l);
+            nuevoAusentismo.setEmpleado(seleccionMostrar);
+            listaAusentismosCrear.add(nuevoAusentismo);
+            listaAusentismos.add(nuevoAusentismo);
+            nuevoAusentismo = new Soausentismos();
+            nuevoAusentismo.setTipo(new Tiposausentismos());
+            nuevoAusentismo.setClase(new Clasesausentismos());
+            nuevoAusentismo.setCausa(new Causasausentismos());
+            nuevoAusentismo.setPorcentajeindividual(BigInteger.valueOf(0));
+            nuevoAusentismo.setBaseliquidacion(BigInteger.valueOf(0));
+            nuevoAusentismo.setFormaliquidacion(" ");
+            nuevoAusentismo.setRelacionadaBool(false);
+            nuevoAusentismo.setAccidente(new Soaccidentes());
+            nuevoAusentismo.setEnfermedad(new EnfermeadadesProfesionales());
+            nuevoAusentismo.setDiagnosticocategoria(new Diagnosticoscategorias());
+            nuevoAusentismo.setProrroga(new Soausentismos());
+            nuevoAusentismo.setTercero(new Terceros());
 
             context.update("form:datosAusentismosEmpleado");
             if (guardado == true) {

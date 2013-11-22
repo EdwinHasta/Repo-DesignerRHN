@@ -5,7 +5,6 @@
 package InterfacePersistencia;
 
 import Entidades.Perfiles;
-import Entidades.Usuarios;
 import java.math.BigInteger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

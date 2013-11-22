@@ -18,10 +18,12 @@ public class EntityManagerGlobal implements EntityManagerGlobalInterface, Serial
 
     public boolean crearFactoryInicial(String baseDatos) {
         try {
+            System.out.println("Entro y la bd es: " + baseDatos);
             emf = Persistence.createEntityManagerFactory(baseDatos);
             return true;
         } catch (Exception e) {
-            //System.out.println(e);
+            System.out.println("Se estallo... PUM!");
+            System.out.println(e);
             return false;
         }
     }

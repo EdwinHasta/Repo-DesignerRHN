@@ -19,12 +19,11 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
 
     public void editar(ParametrosEstructuras parametroEstructura) {
         em.merge(parametroEstructura);
     }
-    
+
     public ParametrosEstructuras buscarParametros() {
 
         try {
@@ -65,6 +64,51 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
             }
         } catch (Exception e) {
             System.out.println("Error PersistenciaParametrosEstructuras.estructurasComprobantes" + e);
+            return null;
+        }
+    }
+
+    public void adicionarEmpleados(BigInteger secParametroEstructura) {
+        try {
+            String sqlQuery = "call PARAMETROS_PKG.InsertarParametrosProceso(?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secParametroEstructura);
+            query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("PersistenciaParametrosEstructuras.adicionarEmpleados: " + e);
+        }
+    }
+
+    public Integer empleadosParametrizados(BigInteger secProceso) {
+        try {
+            String sqlQuery = "SELECT COUNT(*)\n"
+                    + "FROM PARAMETROSESTRUCTURAS P \n"
+                    + "WHERE P.PROCESO = ?\n"
+                    + "AND P.USUARIO <> (SELECT SECUENCIA FROM USUARIOS WHERE ALIAS=USER)\n"
+                    + "AND EXISTS (SELECT * FROM USUARIOSESTRUCTURAS UE, EMPRESAS E WHERE UE.USUARIO=P.USUARIO\n"
+                    + "AND UE.EMPRESA = E.SECUENCIA)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secProceso);
+            BigDecimal a = (BigDecimal) query.getSingleResult();
+            Integer empeladosALiquidar = a.intValueExact();
+            return empeladosALiquidar;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaParametrosEstructuras.empleadosParametrizados " + e);
+            return null;
+        }
+    }
+
+    public Integer diasDiferenciaFechas(String fechaInicial, String fechaFinal) {
+        try {
+            String sqlQuery = "SELECT DIAS360(to_date( ?, 'dd/MM/yyyy'), to_date( ?, 'dd/MM/yyyy')) Dias FROM dual";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            BigDecimal a = (BigDecimal) query.getSingleResult();
+            Integer empeladosALiquidar = a.intValueExact();
+            return empeladosALiquidar;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaParametrosEstructuras.diasDiferenciaFechas " + e);
             return null;
         }
     }

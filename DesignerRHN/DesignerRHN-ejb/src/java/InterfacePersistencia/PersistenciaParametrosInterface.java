@@ -5,6 +5,7 @@
 package InterfacePersistencia;
 
 import Entidades.Parametros;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -15,4 +16,6 @@ public interface PersistenciaParametrosInterface {
 
     public List<Parametros> parametrosComprobantes(String usuarioBD);
     public List<Parametros> empleadosParametros();
+    public void borrar(Parametros parametro);
+    public void borrarParametros(BigInteger secParametrosEstructuras);
 }

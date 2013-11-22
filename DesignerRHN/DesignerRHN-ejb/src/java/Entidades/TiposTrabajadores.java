@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -52,9 +51,9 @@ public class TiposTrabajadores implements Serializable {
     @Size(max = 1)
     @Column(name = "MODALIDAD")
     private String modalidad;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    //@Basic(optional = true)
+    //@NotNull
+   // @Size(min = 1, max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 15)
@@ -147,9 +146,9 @@ public class TiposTrabajadores implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
+        /*if (nombre == null) {
             nombre = " ";
-        }
+        }*/
         return nombre;
     }
 
