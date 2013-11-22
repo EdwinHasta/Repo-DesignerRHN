@@ -891,7 +891,7 @@
                                       filteredValue="#{controlNovedadesTerceros.filtradoslistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{terceros.secuencia}" selection="#{controlNovedadesTerceros.seleccionTerceros}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesTerceros.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesTerceros.actualizarPeriodicidades()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesTerceros.actualizarTercerosNovedad()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 200px; position: relative; left: 60px;" />  

@@ -29,7 +29,7 @@
                                 <p:ajax event="filter" listener="#{controlAusentismos.eventoFiltrar()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlAusentismos.cambiarEmpleado()}"/>
 
-                                <p:column headerText="Codigo" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" filterMatchMode="contains" id="AEmpleadosCodigo" width="1" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Codigo" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" filterMatchMode="contains" id="AEmpleadosCodigo" width="3" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{empleados.codigoempleado}" />
                                 </p:column>
 
@@ -84,13 +84,18 @@
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
 
                             </p:toolbarGroup>  
-                        </p:toolbar> 
+                        </p:toolbar>
+                        
+                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosAusentismosEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlAusentismos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlAusentismos.salir()}" action="individual" />
+                        
 
-                        <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 270px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 220px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Detalles del Ausentismo</strong></legend>
                             <p:dataTable id="datosAusentismosEmpleado" var="ausentismos" value="#{controlAusentismos.listaAusentismos}"
                                          rowKey="#{ausentismos.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 840px; "                           
-                                         scrollable="true" scrollHeight="130" scrollWidth="850" rows="5"  
+                                         scrollable="true" scrollHeight="130" scrollWidth="840" rows="5"  
                                          filteredValue="#{controlAusentismos.filtradosListaAusentismos}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell">
@@ -103,105 +108,98 @@
                                         <p:column width="900" rowspan="1" colspan="9" headerText="Incapacidades Salud Ocupacional" />
                                     </p:row>
 
-                                    <p:row>  
-                                        <p:column headerText="Tipo" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
-                                        <p:column headerText="Clase" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" />  
-                                        <p:column headerText="Causa" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" />  
-                                        <p:column headerText="Dias" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}"/>
-                                        <p:column headerText="Horas" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.horas}"/>
-
-                                        <p:column filterBy="#{ausentismos.fecha}" filterMatchMode="contains" id="AFecha" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fecha}">
+                                    <p:row>
+                                        <p:column width="86" headerText="Tipo" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
+                                        <p:column width="86" headerText="Clase" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" />  
+                                        <p:column width="86" headerText="Causa" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" />  
+                                       
+                                        <p:column width="82" headerText="Dias" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}"/>
+                                        <p:column width="82" headerText="Horas" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.horas}"/>
+                                        <p:column width="82" filterBy="#{ausentismos.fecha}" filterMatchMode="contains" id="AFecha" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fecha}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechaHead" value="I.Ausencia" />
                                                 <p:tooltip for="fechaHead" value="Fecha de Inicio de la Ausencia" showEffect="fade" hideEffect="fade"/>
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column filterBy="#{ausentismos.fechafinaus}" filterMatchMode="contains" id="AFechaFinaus" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinaus}">
+                                        <p:column width="82" filterBy="#{ausentismos.fechafinaus}" filterMatchMode="contains" id="AFechaFinaus" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinaus}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechafinausHead" value="F.Ausencia" />
                                                 <p:tooltip for="fechafinausHead" value="Fecha de finalizacion de la Ausencia" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column headerText="Expedicion" filterBy="#{ausentismos.fechaexpedicion}" filterMatchMode="contains" id="AFechaExpedicion" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechaexpedicion}"/>  
+                                        <p:column width="82" headerText="Expedicion" filterBy="#{ausentismos.fechaexpedicion}" filterMatchMode="contains" id="AFechaExpedicion" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechaexpedicion}"/>  
 
-                                        <p:column filterBy="#{ausentismos.fechainipago}" filterMatchMode="contains" id="AFechaInipago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechainipago}">
+                                        <p:column width="82" filterBy="#{ausentismos.fechainipago}" filterMatchMode="contains" id="AFechaInipago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechainipago}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechainipagoHead" value="I.Pago" />
                                                 <p:tooltip for="fechainipagoHead" value="Fecha de Inicio del Pago" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinpago}">
+                                        <p:column width="82" filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinpago}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechafinpagoHead" value="F.Pago" />
                                                 <p:tooltip for="fechafinpagoHead" value="Fecha de Finalizacion del Pago" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.porcentajeindividual}">  
+                                        <p:column width="86" filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.porcentajeindividual}">  
                                             <f:facet name="header">
                                                 <h:outputText id="porcentajeHead" value="%" />
                                                 <p:tooltip for="porcentajeHead" value="Porcentaje Individual"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.baseliquidacion}">  
+                                        <p:column width="86" filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.baseliquidacion}">  
                                             <f:facet name="header">
                                                 <h:outputText id="baseHead" value="B. Liquidacion" />
                                                 <p:tooltip for="baseHead" value="Base Liquidación"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}">
+                                        <p:column width="86" filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}">
                                             <f:facet name="header">
                                                 <h:outputText id="fliquidacionHead" value="F. Liquidacion" />
                                                 <p:tooltip for="fliquidacionHead" value="Forma Liquidacion"/>
                                             </f:facet> 
                                         </p:column>
-                                        <p:column filterBy="#{ausentismos.accidente.descripcioncaso}" filterMatchMode="contains" id="ADescripcionCaso" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.accidente.descripcioncaso}" >
+                                        
+                                        <p:column width="81" filterBy="#{ausentismos.accidente.descripcioncaso}" filterMatchMode="contains" id="ADescripcionCaso" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.accidente.descripcioncaso}" >
                                             <f:facet name="header">
                                                 <h:outputText id="atHead" value="AT" />
                                                 <p:tooltip for="atHead" value="Descripcion del Accidente" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-
-                                        <p:column filterBy="#{ausentismos.enfermedad.categoria.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.enfermedad.categoria.descripcion}" >
+                                        <p:column width="81" filterBy="#{ausentismos.enfermedad.categoria.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.enfermedad.categoria.descripcion}" >
                                             <f:facet name="header">
                                                 <h:outputText id="epHead" value="EP" />
                                                 <p:tooltip for="epHead" value="Descripcion de la Enfermedad" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-
-                                        <p:column headerText="No.Certificado" filterBy="#{ausentismos.numerocertificado}" filterMatchMode="contains" id="ANumero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.numerocertificado}" />
-
-                                        <p:column filterBy="#{ausentismos.diagnosticocategoria.codigo}" filterMatchMode="contains" id="ADiagnostico" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.diagnosticocategoria.codigo}" >
+                                        <p:column width="81" headerText="No.Certificado" filterBy="#{ausentismos.numerocertificado}" filterMatchMode="contains" id="ANumero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.numerocertificado}" />
+                                        <p:column width="81" filterBy="#{ausentismos.diagnosticocategoria.codigo}" filterMatchMode="contains" id="ADiagnostico" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.diagnosticocategoria.codigo}" >
                                             <f:facet name="header">
                                                 <h:outputText id="cdiagnosticoHead" value="C. Diagnostico" />
                                                 <p:tooltip for="cdiagnosticoHead" value="Codigo Diagnóstico" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-
-                                        <p:column headerText="Prorrogas" filterBy="#{ausentismos.prorroga}" filterMatchMode="contains" id="AProrroga" filterStyle="display none; visibility: hidden;" sortBy="#{controlAusentismos.prorroga}" />
-
-                                        <p:column headerText="Periodo" filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display none; visibility: hidden;" sortBy="#{controlAusentismos.relacion}">
+                                        <p:column width="81" headerText="Prorrogas" filterBy="#{ausentismos.prorroga}" filterMatchMode="contains" id="AProrroga" filterStyle="display none; visibility: hidden;" sortBy="#{controlAusentismos.prorroga}" />
+                                        <p:column width="81" headerText="Periodo" filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display none; visibility: hidden;" sortBy="#{controlAusentismos.relacion}">
                                             <f:facet name="header">
                                                 <h:outputText id="periodoHead" value="Periodo" />
                                                 <p:tooltip for="periodoHead" value="Periodo relacionada para cruce de cuentas con el tercero." showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-
-
-                                        <p:column filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.relacionada}">
+                                        <p:column width="81" filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.relacionada}">
                                             <f:facet name="header">
                                                 <h:outputText id="relacionadaHead" value=" " />
                                                 <p:tooltip for="relacionadaHead" value="Reportada a la Entidad" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-
-                                        <p:column headerText="Tercero" filterBy="#{ausentismos.tercero.nombre}" filterMatchMode="contains" id="ATercero" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.tercero.nombre}"/>
-                                        <p:column headerText="Observaciones" filterBy="#{ausentismos.observaciones}" filterMatchMode="contains" id="AObservaciones" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.observaciones}"/>
+                                        <p:column width="81" headerText="Tercero" filterBy="#{ausentismos.tercero.nombre}" filterMatchMode="contains" id="ATercero" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.tercero.nombre}"/>
+                                        <p:column width="81" headerText="Observaciones" filterBy="#{ausentismos.observaciones}" filterMatchMode="contains" id="AObservaciones" filterStyle="display none; visibility: hidden;" sortBy="#{ausentismos.observaciones}"/>
                                     </p:row>
                                 </p:columnGroup>
 
@@ -481,13 +479,13 @@
                                     </p:cellEditor>
                                 </p:column>
                                 <!-- Aca va el CheckBox ese ficti -->
-                                <p:column >         
+                                <p:column>         
                                     <p:selectBooleanCheckbox value="#{ausentismos.relacionadaBool}" id="editarRelacionada" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.relacionadaBool)}"/>
                                     </p:selectBooleanCheckbox>
                                 </p:column>
                                 <!-- Tercero -->
-                                <p:column colspan="1" >                                  
+                                <p:column colspan="1">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{ausentismos.tercero.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -499,9 +497,8 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                 </p:column>
-
                                 <!-- Observacion -->
-                                <p:column colspan="1" >                                  
+                                <p:column colspan="1">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{ausentismos.observaciones}" /></f:facet>  
                                         <f:facet name="input">
@@ -685,7 +682,7 @@
                     <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesTerceros.guardarCambiosNovedades()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlAusentismos.guardarCambiosAusentismos()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                         <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
@@ -894,6 +891,14 @@
 
                     <!--HotKey-->
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlAusentismos.activarCtrlF11()}" process="@this"/> 
+                    
+                    <!-- DIALOGO CAMBIO DE EMPLEADO -->
+                    <p:dialog id="cambiar" header="ATENCIÓN" widgetVar="cambiar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Aún hay cambios sin guardar, ¿desea guardar los cambios?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="cambiar.hide();" actionListener="#{controlAusentismos.guardarCambiosAusentismos()}" style="position: absolute; top: 63px; left: 230px" process="@this" />
+                        <p:commandButton value="No" onclick="cambiar.hide();" actionListener="#{controlAusentismos.limpiarListas()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
                     
                     <!-- DIALOGOS EDITAR -->
 
@@ -1168,20 +1173,20 @@
 
                     <!-- L.O.V Porcentajes-->
                     <p:dialog header="Porcentajes." widgetVar="porcentajesDialogo" draggable="false" resizable="false" id="porcentajesDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="330" height="300" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVPorcentajes" style="font-size: 11px; width: 600px" var="por" value="#{controlAusentismos.listaPorcentaje}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVPorcentajes" 
+                        <p:dataTable  id="LOVPorcentajes" style="font-size: 11px; width: 300px" var="por" value="#{controlAusentismos.listaPorcentaje}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="300" widgetVar="LOVPorcentajes" 
                                       filteredValue="#{controlAusentismos.filtradosListaPorcentajes}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{por}" selection="#{controlAusentismos.seleccionPorcentajes}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" onstart="LOVPorcentajes.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Porcentaje: "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVPorcentajes.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVPorcentajes.filter();" style="width: 150px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{por}" filterBy="#{por}" width="150" filterMatchMode="contains" > 
+                            <p:column sortBy="#{por}" filterBy="#{por}" width="20" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Porcentaje" />
                                 </f:facet>
@@ -1190,10 +1195,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlAusentismos.actualizarPorcentajes()}" onclick="LOVPorcentajes.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 230px; left: 100px; font-size: 12px" actionListener="#{controlAusentismos.actualizarPorcentajes()}" onclick="LOVPorcentajes.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPorcentajes:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="porcentajesDialogo.hide(), LOVPorcentajes.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioEmpleados()}" update="LOVPorcentajes, aceptarP" process="@this">
+                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 230px; left: 200px; font-size: 12px" onclick="porcentajesDialogo.hide(), LOVPorcentajes.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioEmpleados()}" update="LOVPorcentajes, aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPorcentajes:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -1251,20 +1256,20 @@
                     </p:dialog>
                     <!-- L.O.V Formas-->
                     <p:dialog header="Forma de Pago." widgetVar="formasDialogo" draggable="false" resizable="false" id="formasDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="330" height="300" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVFormas" style="font-size: 11px; width: 600px" var="for" value="#{controlAusentismos.listaForma}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVFormas" 
+                        <p:dataTable  id="LOVFormas" style="font-size: 11px; width: 300px" var="for" value="#{controlAusentismos.listaForma}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="300" widgetVar="LOVFormas" 
                                       filteredValue="#{controlAusentismos.filtradosListaForma}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{for}" selection="#{controlAusentismos.seleccionForma}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarFP"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" onstart="LOVFormas.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Formas de PAgo "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVFormas.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVFormas.filter();" style="width: 150px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{for}" filterBy="#{for}" width="150" filterMatchMode="contains" > 
+                            <p:column sortBy="#{for}" filterBy="#{for}" width="40" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Forma Liquidacion" />
                                 </f:facet>
@@ -1272,10 +1277,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarFP" value="Aceptar" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlAusentismos.actualizarFormas()}" onclick="LOVFormas.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarFP" value="Aceptar" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 270px; left: 100px; font-size: 12px" actionListener="#{controlAusentismos.actualizarFormas()}" onclick="LOVFormas.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasFP" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="formasDialogo.hide(), LOVFormas.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioFormas()}" update="LOVFormas, aceptarFP" process="@this">
+                        <p:commandButton id="atrasFP" value="Atras" style="position: absolute; top: 270px; left: 200px; font-size: 12px" onclick="formasDialogo.hide(), LOVFormas.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioFormas()}" update="LOVFormas, aceptarFP" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -1350,7 +1355,7 @@
                                 <p:inputText id="globalFilter" onkeyup="LOVDiagnosticos.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{diagnosticos.codigo}" filterBy="#{diagnosticos.codigo}" width="10" filterMatchMode="contains" > 
+                            <p:column sortBy="#{diagnosticos.codigo}" filterBy="#{diagnosticos.codigo}" width="10" filterMatchMode="contains" filterStyle="width: 30px"> 
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
@@ -1380,13 +1385,13 @@
                               showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
 
                         <p:dataTable  id="LOVProrrogas" style="font-size: 11px; width: 600px" var="prorrogas" value="#{controlAusentismos.listaProrrogas}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVProrrogas" 
+                                      scrollable="true" scrollHeight="200" scrollWidth="600" widgetVar="LOVProrrogas" 
                                       filteredValue="#{controlAusentismos.filtradoslistaProrrogas}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{prorrogas.secuencia}" selection="#{controlAusentismos.seleccionProrrogas}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarPR"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEnfermedades()}" process="@this" onstart="LOVProrrogas.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="Prorrogas: "  style="position: absolute; left: 27px; top: 15px;"/>  
+                                <h:outputText value="Prorrogas: "  style="width: 100px; position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVProrrogas.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
 
@@ -1461,20 +1466,20 @@
 
                     <!-- L.O.V TERCEROS-->
                     <p:dialog header="Terceros" widgetVar="tercerosDialogo" draggable="false" resizable="false" id="tercerosDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
+                              showEffect="fade" hideEffect="fade" modal="true" width="340" height="320" style="font-size: 12px">
 
-                        <p:dataTable  id="LOVTerceros" style="font-size: 11px; width: 600px" var="terceros" value="#{controlAusentismos.listaTerceros}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVTerceros" 
+                        <p:dataTable  id="LOVTerceros" style="font-size: 11px; width: 320px" var="terceros" value="#{controlAusentismos.listaTerceros}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="320" widgetVar="LOVTerceros" 
                                       filteredValue="#{controlAusentismos.filtradoslistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{terceros.secuencia}" selection="#{controlAusentismos.seleccionTerceros}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarTER"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="Accidentes "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <h:outputText value="Terceros "  style="position: absolute; left: 27px; top: 15px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 150px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{terceros.nombre}" filterBy="#{terceros.nombre}" width="150" filterMatchMode="contains" > 
+                            <p:column sortBy="#{terceros.nombre}" filterBy="#{terceros.nombre}" width="40" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
@@ -1482,10 +1487,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarTER" value="Aceptar" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlAusentismos.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarTER" value="Aceptar" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 300px; left: 100px; font-size: 12px" actionListener="#{controlAusentismos.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTER" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioTerceros()}" update="LOVTerceros, aceptarTER" process="@this">
+                        <p:commandButton id="atrasTER" value="Atras" style="position: absolute; top: 300px; left: 200px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioTerceros()}" update="LOVTerceros, aceptarTER" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -1495,7 +1500,7 @@
                               showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
 
                         <p:dataTable  id="LOVEnfermedades" style="font-size: 11px; width: 600px" var="enfermedades" value="#{controlAusentismos.listaEnfermeadadesProfesionales}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVEnfermedades" 
+                                      scrollable="true" scrollHeight="200" scrollWidth="610" widgetVar="LOVEnfermedades" 
                                       filteredValue="#{controlAusentismos.filtradoslistaEnfermeadadesProfesionales}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{enfermedades.secuencia}" selection="#{controlAusentismos.seleccionEnfermeadadesProfesionales}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarEP"/>
