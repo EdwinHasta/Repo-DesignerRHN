@@ -190,6 +190,9 @@ public class NovedadesSistema implements Serializable {
     }
 
     public BigInteger getDias() {
+        if (dias == null) {
+            dias = BigInteger.valueOf(0);
+        }
         return dias;
     }
 
@@ -198,6 +201,9 @@ public class NovedadesSistema implements Serializable {
     }
 
     public String getTipo() {
+        if (tipo == null) {
+            tipo = (" ");
+        }
         return tipo;
     }
 
@@ -206,6 +212,9 @@ public class NovedadesSistema implements Serializable {
     }
 
     public String getSubtipo() {
+        if (subtipo == null) {
+            subtipo = (" ");
+        }
         return subtipo;
     }
 
@@ -425,17 +434,17 @@ public class NovedadesSistema implements Serializable {
     }
 
     public Boolean getIndemnizaBool() {
-        if (indemnizaBool == null) {
-            if (indemniza != null) {
-                if (indemniza.equals("S")) {
-                    indemnizaBool = true;
-                } else {
-                    indemnizaBool = false;
-                }
+        getIndemniza();
+        if (indemniza != null) {
+            if (indemniza.equals("S")) {
+                indemnizaBool = true;
             } else {
                 indemnizaBool = false;
             }
+        } else {
+            indemnizaBool = false;
         }
+
         return indemnizaBool;
     }
 

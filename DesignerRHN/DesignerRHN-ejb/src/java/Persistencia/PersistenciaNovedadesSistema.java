@@ -52,7 +52,7 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
 
     public List<NovedadesSistema> novedadesEmpleado(BigInteger secuenciaEmpleado) {
         try {
-            Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.tipo = 'DEFINITIVA' and n.empleado.secuencia = :secuenciaEmpleado and n.fechainicialdisfrute = (select MAX(no.fechainicialdisfrute) from NovedadesSistema no)");
+            Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.tipo = 'DEFINITIVA' and n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             List<NovedadesSistema> novedadesSistema = query.getResultList();
             return novedadesSistema;
