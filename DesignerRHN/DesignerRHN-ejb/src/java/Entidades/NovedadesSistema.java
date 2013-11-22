@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,13 +34,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "NovedadesSistema.findAll", query = "SELECT n FROM NovedadesSistema n")})
 public class NovedadesSistema implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAINICIALDISFRUTE")
@@ -153,15 +155,17 @@ public class NovedadesSistema implements Serializable {
     @JoinColumn(name = "CAUSAAUSENTISMO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Causasausentismos causaausentismo;
+    @Transient
+    private Boolean indemnizaBool;
 
     public NovedadesSistema() {
     }
 
-    public NovedadesSistema(BigDecimal secuencia) {
+    public NovedadesSistema(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public NovedadesSistema(BigDecimal secuencia, Date fechainicialdisfrute, BigInteger dias, String tipo, String subtipo) {
+    public NovedadesSistema(BigInteger secuencia, Date fechainicialdisfrute, BigInteger dias, String tipo, String subtipo) {
         this.secuencia = secuencia;
         this.fechainicialdisfrute = fechainicialdisfrute;
         this.dias = dias;
@@ -169,11 +173,11 @@ public class NovedadesSistema implements Serializable {
         this.subtipo = subtipo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -410,11 +414,38 @@ public class NovedadesSistema implements Serializable {
     }
 
     public String getIndemniza() {
+        if (indemniza == null) {
+            indemniza = "N";
+        }
         return indemniza;
     }
 
     public void setIndemniza(String indemniza) {
         this.indemniza = indemniza;
+    }
+
+    public Boolean getIndemnizaBool() {
+        if (indemnizaBool == null) {
+            if (indemniza != null) {
+                if (indemniza.equals("S")) {
+                    indemnizaBool = true;
+                } else {
+                    indemnizaBool = false;
+                }
+            } else {
+                indemnizaBool = false;
+            }
+        }
+        return indemnizaBool;
+    }
+
+    public void setIndemnizaBool(Boolean indemnizaBool) {
+        if (indemnizaBool == true) {
+            indemniza = "S";
+        } else {
+            indemniza = "N";
+        }
+        this.indemnizaBool = indemnizaBool;
     }
 
     public Vacaciones getVacacion() {
@@ -450,6 +481,9 @@ public class NovedadesSistema implements Serializable {
     }
 
     public MotivosRetiros getMotivoretiro() {
+        if (motivoretiros == null) {
+            motivoretiros = new MotivosRetiros();
+        }
         return motivoretiros;
     }
 
@@ -458,6 +492,9 @@ public class NovedadesSistema implements Serializable {
     }
 
     public Motivosdefinitivas getMotivodefinitiva() {
+        if (motivodefinitiva == null) {
+            motivodefinitiva = new Motivosdefinitivas();
+        }
         return motivodefinitiva;
     }
 
@@ -513,5 +550,4 @@ public class NovedadesSistema implements Serializable {
     public String toString() {
         return "Entidades.Novedadessistema[ secuencia=" + secuencia + " ]";
     }
-    
 }

@@ -57,7 +57,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      *Encontrar todos los empleados. 
      */
-    @Override
+
     public List<Empleados> buscarEmpleados() {
 
         //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
