@@ -86,16 +86,16 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooContratos" value="Legislación Laboral"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooGrupos" value="Grupo"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Tipo Dato" style="padding: 0"  filterMatchMode="contains" id="infoAdTipoDato" width="70" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Tipo Dato" style="padding: 0"  filterMatchMode="contains" id="infoAdTipoDato" width="100" filterStyle="display: none; visibility: hidden;" >                                  
 
                                     <p:selectOneMenu id="editarTipoDato" value="#{info.tipodato}" style="width: 99%; font-weight: bold;text-transform: uppercase">  
-                                        <f:selectItem itemLabel="CARACTER" itemValue="CERRADO" />  
-                                        <f:selectItem itemLabel="FECHA" itemValue="FECHA" /> 
-                                        <f:selectItem itemLabel="NUMERICO" itemValue="NUMERICO" /> 
+                                        <f:selectItem itemLabel="CARACTER" itemValue="C" />  
+                                        <f:selectItem itemLabel="FECHA" itemValue="F" /> 
+                                        <f:selectItem itemLabel="NUMERICO" itemValue="N" /> 
                                         <p:ajax event="change" listener="#{controlEmplInformacionAdicional.modificarInfoAd(indice)}" update="editarTipoDato"/>
                                     </p:selectOneMenu>
 
@@ -201,7 +201,7 @@
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplInformacionAdicional.limpiarNuevaInfoAd()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosVCEmpleadoExportar" fileName="VigenciasContratosXML" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target=":formExportar:datosIAEmpleadoExportar" fileName="InformacionAdicionalXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
@@ -209,14 +209,14 @@
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVC.show()" update=":formularioDialogos:nuevaVC" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Contratos" />
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroInfoAd.show()" update=":formularioDialogos:nuevaInfoAd" process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplInformacionAdicional.borrarInfoAd()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Contratos" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplInformacionAdicional.duplicarInfoAd()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Contratos" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro" />
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplInformacionAdicional.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
@@ -228,7 +228,7 @@
                         <!-- DIALOGO L.O.V ESTATICO TIPOSCONTRATOS -->
                         <p:dialog header="Grupos Informaciones Adicionales" widgetVar="GrupoDialogo" draggable="false" resizable="false" closable="false" id="GrupoDialogo"  
                                   showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                            <p:dataTable id="lovGrupo" style="font-size: 11px; width: 430px" var="grupo" value="#{controlEmplInformacionAdicional.listGruposInfAdicional}" rowKey="#{tiposContratos.secuencia}"
+                            <p:dataTable id="lovGrupo" style="font-size: 11px; width: 430px" var="grupo" value="#{controlEmplInformacionAdicional.listGruposInfAdicional}" rowKey="#{grupo.secuencia}"
                                          selection="#{controlEmplInformacionAdicional.grupoSelecionado}" selectionMode="single" widgetVar="lovGrupo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlEmplInformacionAdicional.filtrarListGruposInfAdicional}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplInformacionAdicional.activarAceptar()}" update=":form:aceptarG"/>
@@ -253,9 +253,9 @@
 
 
 
-                        <p:commandButton style="position: absolute; left: 600px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosInfoAdEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 40px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplInformacionAdicional.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlEmplInformacionAdicional.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 680px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosInfoAdEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplInformacionAdicional.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 780px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlEmplInformacionAdicional.salir()}" action="individualEmpl" process="@this" />
 
                     </p:panel>
 
@@ -314,7 +314,7 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplInformacionAdicional.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
-                    <p:dialog id="NuevoRegistroInfoAd" header="Nuevo Registro" widgetVar="NuevoRegistroInfoAd" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroInfoAd" header="Nuevo Registro" widgetVar="NuevoRegistroInfoAd" closable="false" resizable="false"  draggable="false" modal="true" height="440" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -326,63 +326,63 @@
                                 <p:ajax event="change" update="nuevaFechaInicial"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.fechafinal}"  styleClass="ui-datepicker, myClass2"  
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 200px;" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
                                 <p:ajax event="change" update="nuevaFechaFinal"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Grupo: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
-                            <p:inputText id="nuevaGrupo" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.grupo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
+                            <strong><h:outputText value="Grupo: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaGrupo" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.grupo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;">
                                 <p:ajax event="dblclick" listener="#{controlEmplInformacionAdicional.asignarIndex(indice,0,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplInformacionAdicional.valoresBackupAutocompletar(1, 'GRUPO')}" />
                                 <p:ajax event="change" listener="#{controlEmplInformacionAdicional.autocompletarNuevoyDuplicado('GRUPO', controlEmplInformacionAdicional.nuevaInfoAdicional.grupo.descripcion, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnNuevoGrupo" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplInformacionAdicional.asignarIndex(indice,0,1)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoGrupo" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplInformacionAdicional.asignarIndex(indice,0,1)}"/>   
                             <p:watermark for="nuevaGrupo" value="Grupo" />
 
-                            <strong><h:outputText value="Tipo Dato: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:selectOneMenu id="nuevaTipoDato" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.tipodato}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 220px;text-transform: uppercase" >
-                                <f:selectItem itemLabel="CARACTER" itemValue="CERRADO" />  
-                                <f:selectItem itemLabel="FECHA" itemValue="FECHA" /> 
-                                <f:selectItem itemLabel="NUMERICO" itemValue="NUMERICO" /> 
+                            <strong><h:outputText value="Tipo Dato: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:selectOneMenu id="nuevaTipoDato" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.tipodato}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 190px;text-transform: uppercase" >
+                                <f:selectItem itemLabel="CARACTER" itemValue="C" />  
+                                <f:selectItem itemLabel="FECHA" itemValue="F" /> 
+                                <f:selectItem itemLabel="NUMERICO" itemValue="N" /> 
                                 <p:ajax event="change" update="nuevaTipoDato"/>
                             </p:selectOneMenu>
 
 
-                            <strong><h:outputText value="Caracter: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCaracter" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadocaracter}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
+                            <strong><h:outputText value="Caracter: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCaracter" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadocaracter}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 230px;">
                                 <p:ajax event="change" update="nuevoCaracter" />
                             </p:inputText>
                             <p:watermark for="nuevoCaracter" value="Caracter" />
-                            
-                            <strong><h:outputText value="Numerico: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:inputText id="nuevoNumerico" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
+
+                            <strong><h:outputText value="Numerico: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="nuevoNumerico" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;">
                                 <p:ajax event="change" update="nuevoNumerico" />
                             </p:inputText>
                             <p:watermark for="nuevoNumerico" value="Numerico" />
-                            
-                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; left: 200px; top: 220px;" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadofecha}"  styleClass="ui-datepicker, myClass2"  
+
+                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 310px; left: 50px" /></strong>
+                            <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; left: 200px; top: 310px;" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadofecha}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFecha"/>
                                 <p:ajax event="change" update="nuevaFecha"/>
                             </p:calendar>
-                            
-                            <strong><h:outputText value="Observacion: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:inputTextarea id="nuevoObservacion" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
+
+                            <strong><h:outputText value="Observacion: " style="font-size: 14px; position: absolute; top: 350px; left: 50px" /></strong>
+                            <p:inputTextarea id="nuevoObservacion" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 350px;">
                                 <p:ajax event="change" update="nuevoObservacion" />
                             </p:inputTextarea>
                             <p:watermark for="nuevoObservacion" value="Observaciones" />
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlEmplInformacionAdicional.limpiarNuevaInfoAd()}" update="nuevaInfoAd" process="@this"/>
-                            <p:commandButton id="agregarNIA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.agregarNuevaInfoAd()}" onclick="NuevoRegistroInfoAd.hide();"  />
-                            <p:commandButton id="cancelarNIA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlEmplInformacionAdicional.limpiarNuevaInfoAd()}" update="nuevaInfoAd" onclick="NuevoRegistroInfoAd.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarNIA" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarNuevaInfoAd()}" update="nuevaInfoAd" process="@this"/>
+                            <p:commandButton id="agregarNIA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 415px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.agregarNuevaInfoAd()}" onclick="NuevoRegistroInfoAd.hide();"  />
+                            <p:commandButton id="cancelarNIA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarNuevaInfoAd()}" update="nuevaInfoAd" onclick="NuevoRegistroInfoAd.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroInfoAd" header="Duplicar Registro" widgetVar="DuplicarRegistroInfoAd" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroInfoAd" header="Duplicar Registro" widgetVar="DuplicarRegistroInfoAd" closable="false" resizable="false"  draggable="false" modal="true" height="440" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -394,91 +394,107 @@
                                 <p:ajax event="change" update="duplicarFechaInicial"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.fechafinal}"  styleClass="ui-datepicker, myClass2"  
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 200px;" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
                                 <p:ajax event="change" update="duplicarFechaFinal"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Grupo: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
-                            <p:inputText id="duplicarGrupo" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.grupo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
+                            <strong><h:outputText value="Grupo: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarGrupo" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.grupo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;">
                                 <p:ajax event="dblclick" listener="#{controlEmplInformacionAdicional.asignarIndex(indice,0,2)}"/>
                                 <p:ajax event="click" listener="#{controlEmplInformacionAdicional.valoresBackupAutocompletar(2, 'GRUPO')}" />
                                 <p:ajax event="change" listener="#{controlEmplInformacionAdicional.autocompletarNuevoyDuplicado('GRUPO', controlEmplInformacionAdicional.duplicarInfoAdicional.grupo.descripcion, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnDuplicarGrupo" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplInformacionAdicional.asignarIndex(indice,0,2)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarGrupo" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplInformacionAdicional.asignarIndex(indice,0,2)}"/>   
                             <p:watermark for="duplicarGrupo" value="Grupo" />
 
-                            <strong><h:outputText value="Tipo Dato: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:selectOneMenu id="duplicarTipoDato" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.tipodato}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 220px;text-transform: uppercase" >
-                                <f:selectItem itemLabel="CARACTER" itemValue="CERRADO" />  
-                                <f:selectItem itemLabel="FECHA" itemValue="FECHA" /> 
-                                <f:selectItem itemLabel="NUMERICO" itemValue="NUMERICO" /> 
+                            <strong><h:outputText value="Tipo Dato: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:selectOneMenu id="duplicarTipoDato" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.tipodato}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 190px;text-transform: uppercase" >
+                                <f:selectItem itemLabel="CARACTER" itemValue="C" />  
+                                <f:selectItem itemLabel="FECHA" itemValue="F" /> 
+                                <f:selectItem itemLabel="NUMERICO" itemValue="N" /> 
                                 <p:ajax event="change" update="duplicarTipoDato"/>
                             </p:selectOneMenu>
 
 
-                            <strong><h:outputText value="Caracter: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCaracter" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadocaracter}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
+                            <strong><h:outputText value="Caracter: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCaracter" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadocaracter}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 230px;">
                                 <p:ajax event="change" update="duplicarCaracter" />
                             </p:inputText>
                             <p:watermark for="duplicarCaracter" value="Caracter" />
-                            
-                            <strong><h:outputText value="Numerico: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:inputText id="duplicarNumerico" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
+
+                            <strong><h:outputText value="Numerico: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="duplicarNumerico" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;">
                                 <p:ajax event="change" update="duplicarNumerico" />
                             </p:inputText>
                             <p:watermark for="duplicarNumerico" value="Numerico" />
-                            
-                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; left: 200px; top: 220px;" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadofecha}"  styleClass="ui-datepicker, myClass2"  
+
+                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 310px; left: 50px" /></strong>
+                            <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; left: 200px; top: 310px;" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadofecha}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFecha"/>
                                 <p:ajax event="change" update="duplicarFecha"/>
                             </p:calendar>
-                            
-                            <strong><h:outputText value="Observacion: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
-                            <p:inputTextarea id="duplicarObservacion" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
+
+                            <strong><h:outputText value="Observacion: " style="font-size: 14px; position: absolute; top: 350px; left: 50px" /></strong>
+                            <p:inputTextarea id="duplicarObservacion" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.resultadonumerico}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 350px;">
                                 <p:ajax event="change" update="duplicarObservacion" />
                             </p:inputTextarea>
                             <p:watermark for="duplicarObservacion" value="Observaciones" />
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlEmplInformacionAdicional.limpiarduplicarInfoAd()}" update="duplicarInfoAd" process="@this"/>
-                            <p:commandButton id="agregarDIA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.confirmarDuplicar()}" onclick="DuplicarRegistroInfoAd.hide();"  />
-                            <p:commandButton id="cancelarDIA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlEmplInformacionAdicional.limpiarduplicarInfoAd()}" update="duplicarInfoAd" onclick="DuplicarRegistroInfoAd.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDIA" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarduplicarInfoAd()}" update="duplicarInfoAd" process="@this"/>
+                            <p:commandButton id="agregarDIA" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 415px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.confirmarDuplicar()}" onclick="DuplicarRegistroInfoAd.hide();"  />
+                            <p:commandButton id="cancelarDIA" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarduplicarInfoAd()}" update="duplicarInfoAd" onclick="DuplicarRegistroInfoAd.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
+
                     <p:dialog id="editarFechaInicialD" header="Fecha Inicial Info. Adicional" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplInformacionAdicional.editarVC.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplInformacionAdicional.editarInfoAdicional.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicial" value="Atras" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinal" header="Fecha Final Vigencia Contratos" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplInformacionAdicional.editarVC.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaFinalD" header="Fecha Final Vigencia Contratos" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplInformacionAdicional.editarInfoAdicional.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinal.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinalD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarContrato" header="Legislación Laboral" widgetVar="editarContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlEmplInformacionAdicional.editarVC.contrato.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarContrato" value="Atras" onclick="editarContrato.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    <p:dialog id="editarGrupoD" header="Grupo Informacion Adicional" widgetVar="editarGrupoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlEmplInformacionAdicional.editarInfoAdicional.grupo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarGrupo" value="Atras" onclick="editarGrupoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoContrato" header="Tipo Contrato" widgetVar="editarTipoContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlEmplInformacionAdicional.editarVC.tipocontrato.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTipoContrato" value="Atras" onclick="editarTipoContrato.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    <p:dialog id="editarCaracterD" header="Caracter Informacion Adicional" widgetVar="editarCaracterD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlEmplInformacionAdicional.editarInfoAdicional.resultadocaracter}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCaracter" value="Atras" onclick="editarCaracterD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
+                    <p:dialog id="editarNumericoD" header="Caracter Informacion Adicional" widgetVar="editarNumericoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlEmplInformacionAdicional.editarInfoAdicional.resultadonumerico}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarNumerico" value="Atras" onclick="editarNumericoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
 
+                    <p:dialog id="editarFechaD" header="Fecha Final Vigencia Contratos" widgetVar="editarFechaD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplInformacionAdicional.editarInfoAdicional.resultadofecha}" id="editFechaCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFechaD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarObservacionD" header="Tipo Contrato" widgetVar="editarObservacionD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlEmplInformacionAdicional.editarInfoAdicional.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarObservacion" value="Atras" onclick="editarObservacionD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
 
                 </h:form>
                 <h:form id="formExportar">
-                    <p:dataTable id="datosVCEmpleadoExportar" var="info" style="visibility: hidden; display: none;"                           
-                                 value="#{controlEmplInformacionAdicional.vigenciasContratosEmpleado}"> 
+                    <p:dataTable id="datosIAEmpleadoExportar" var="info" style="visibility: hidden; display: none;"                           
+                                 value="#{controlEmplInformacionAdicional.listInformacionAdicional}"> 
                         <!--COLUMNAS TABLA DATOS VIGENCIAS CONTRATOS DE UN EMPLEADO --> 
                         <p:column>  
                             <f:facet name="header">
@@ -498,14 +514,38 @@
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Legislación Laboral">                                  
-                            <f:facet name="header"><h:outputText value="Legislacion Laboral"/> </f:facet> 
-                            <h:outputText value="#{info.contrato.descripcion}" />
+                        <p:column headerText="Grupo">                                  
+                            <f:facet name="header"><h:outputText value="Grupo"/> </f:facet> 
+                            <h:outputText value="#{info.grupo.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="Tipo Contrato">                                  
-                            <f:facet name="header"><h:outputText value="Tipo Contrato"/> </f:facet> 
-                            <h:outputText value="#{info.tipocontrato.nombre}" />
+                        <p:column headerText="Tipo Dato">                                  
+                            <f:facet name="header"><h:outputText value="Tipo Dato"/> </f:facet> 
+                            <h:outputText value="#{info.tipoDatoCompleto}" />
+                        </p:column>
+
+                        <p:column headerText="Caracter">                                  
+                            <f:facet name="header"><h:outputText value="Caracter"/> </f:facet> 
+                            <h:outputText value="#{info.resultadocaracter}" />
+                        </p:column>
+
+                        <p:column headerText="Numerico">                                  
+                            <f:facet name="header"><h:outputText value="Numerico"/> </f:facet> 
+                            <h:outputText value="#{info.resultadonumerico}" />
+                        </p:column>
+
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Fecha" />
+                            </f:facet>
+                            <h:outputText value="#{info.resultadofecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Observación">                                  
+                            <f:facet name="header"><h:outputText value="Observación"/> </f:facet> 
+                            <h:outputText value="#{info.descripcion}" />
                         </p:column>
 
 
