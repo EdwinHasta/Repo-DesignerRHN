@@ -42,7 +42,7 @@ public class PryPlataformas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @Basic(optional = false)
@@ -59,20 +59,20 @@ public class PryPlataformas implements Serializable {
     public PryPlataformas() {
     }
 
-    public PryPlataformas(BigDecimal secuencia) {
+    public PryPlataformas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public PryPlataformas(BigDecimal secuencia, String descripcion) {
+    public PryPlataformas(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

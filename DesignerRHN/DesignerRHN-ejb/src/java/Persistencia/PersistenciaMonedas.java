@@ -7,6 +7,7 @@ package Persistencia;
 import Entidades.Monedas;
 import InterfacePersistencia.PersistenciaMonedasInterface;
 import java.math.BigInteger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,5 +39,16 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface{
         }
 
     }
+     @Override
+     public List<Monedas> listMonedas(){
+         try{
+             Query query = em.createQuery("SELECT m FROM Monedas m");
+             List<Monedas> moendas = (List<Monedas>) query.getResultList();
+            return moendas;
+         }catch(Exception e){
+             System.out.println("Error listMonedas PersistenciaMonedas : "+e.toString());
+             return null;
+         }
+     }
 
 }

@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "InformacionesAdicionales.findAll", query = "SELECT i FROM InformacionesAdicionales i")})
 public class InformacionesAdicionales implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -71,6 +73,8 @@ public class InformacionesAdicionales implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
+    @Transient
+    private String tipoDatoCompleto;
 
     public InformacionesAdicionales() {
     }
@@ -166,6 +170,27 @@ public class InformacionesAdicionales implements Serializable {
         this.empleado = empleado;
     }
 
+    public String getTipoDatoCompleto() {
+        getTipodato();
+        if (tipodato == null) {
+            tipoDatoCompleto = " ";
+        }
+        if (tipodato.equalsIgnoreCase("C")) {
+            tipoDatoCompleto = "CARACTER";
+        }
+        if (tipodato.equalsIgnoreCase("F")) {
+            tipoDatoCompleto = "FECHA";
+        }
+        if (tipodato.equalsIgnoreCase("N")) {
+            tipoDatoCompleto = "NUMERICO";
+        }
+        return tipoDatoCompleto;
+    }
+
+    public void setTipoDatoCompleto(String tipoDatoCompleto) {
+        this.tipoDatoCompleto = tipoDatoCompleto;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -190,5 +215,4 @@ public class InformacionesAdicionales implements Serializable {
     public String toString() {
         return "Entidades.InformacionesAdicionales[ secuencia=" + secuencia + " ]";
     }
-    
 }

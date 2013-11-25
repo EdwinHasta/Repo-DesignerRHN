@@ -39,7 +39,7 @@ public class VigenciasEventos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
@@ -68,21 +68,21 @@ public class VigenciasEventos implements Serializable {
     public VigenciasEventos() {
     }
 
-    public VigenciasEventos(BigDecimal secuencia) {
-        this.secuencia = secuencia;
+    public VigenciasEventos(BigInteger secuencia) {
+        this.secuencia = secuencia; 
     }
 
-    public VigenciasEventos(BigDecimal secuencia, Date fechainicial) {
-        this.secuencia = secuencia;
+    public VigenciasEventos(BigInteger secuencia, Date fechainicial) {
+        this.secuencia = secuencia; 
         this.fechainicial = fechainicial;
     }
 
-    public BigDecimal getSecuencia() {
-        return secuencia;
+    public BigInteger getSecuencia() {
+        return secuencia; 
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
-        this.secuencia = secuencia;
+    public void setSecuencia(BigInteger secuencia) {
+        this.secuencia = secuencia; 
     }
 
     public Date getFechafinal() {

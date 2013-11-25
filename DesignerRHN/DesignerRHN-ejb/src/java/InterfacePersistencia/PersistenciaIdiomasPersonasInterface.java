@@ -13,5 +13,14 @@ import java.util.List;
  * @author Administrator
  */
 public interface PersistenciaIdiomasPersonasInterface {
+
     public List<IdiomasPersonas> idiomasPersona(BigInteger secuenciaPersona);
+
+    public List<IdiomasPersonas> totalIdiomasPersonas();
+
+    public void crear(IdiomasPersonas idiomasPersonas);
+
+    public void editar(IdiomasPersonas idiomasPersonas);
+
+    public void borrar(IdiomasPersonas idiomasPersonas);
 }

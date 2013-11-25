@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Monedas.findByNombre", query = "SELECT m FROM Monedas m WHERE m.nombre = :nombre"),
     @NamedQuery(name = "Monedas.findByCodigoalternativo", query = "SELECT m FROM Monedas m WHERE m.codigoalternativo = :codigoalternativo")})
 public class Monedas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -87,6 +88,9 @@ public class Monedas implements Serializable {
     }
 
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -135,5 +139,4 @@ public class Monedas implements Serializable {
     public String toString() {
         return "Entidades.Monedas[ secuencia=" + secuencia + " ]";
     }
-    
 }

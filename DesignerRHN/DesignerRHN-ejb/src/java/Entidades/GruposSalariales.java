@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -33,13 +34,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GruposSalariales.findAll", query = "SELECT g FROM GruposSalariales g")})
 public class GruposSalariales implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gruposalarial")
+    private Collection<VigenciasGruposSalariales> vigenciasGruposSalarialesCollection;
+    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
     @Basic(optional = false)
@@ -58,20 +62,20 @@ public class GruposSalariales implements Serializable {
     public GruposSalariales() {
     }
 
-    public GruposSalariales(BigDecimal secuencia) {
+    public GruposSalariales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public GruposSalariales(BigDecimal secuencia, String descripcion) {
+    public GruposSalariales(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -140,5 +144,15 @@ public class GruposSalariales implements Serializable {
     public String toString() {
         return "Entidades.Grupossalariales[ secuencia=" + secuencia + " ]";
     }
+
+    @XmlTransient
+    public Collection<VigenciasGruposSalariales> getVigenciasGruposSalarialesCollection() {
+        return vigenciasGruposSalarialesCollection;
+    }
+
+    public void setVigenciasGruposSalarialesCollection(Collection<VigenciasGruposSalariales> vigenciasGruposSalarialesCollection) {
+        this.vigenciasGruposSalarialesCollection = vigenciasGruposSalarialesCollection;
+    }
+
     
 }
