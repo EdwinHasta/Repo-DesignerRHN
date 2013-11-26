@@ -23,7 +23,7 @@ public interface AdministrarNovedadesSistemaInterface {
 
     public void crearNovedades(NovedadesSistema novedades);
 
-    public void modificarNovedades(List<NovedadesSistema> listaNovedadesModificar);
+    public void modificarNovedades(NovedadesSistema novedades);
 
     public List<Empleados> buscarEmpleados();
     

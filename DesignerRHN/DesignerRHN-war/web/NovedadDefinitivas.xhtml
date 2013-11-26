@@ -13,22 +13,22 @@
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Novedades de liquidación definitiva" style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 140px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 250px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>Empleados</strong></legend>
 
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesDefinitivas.asignarIndex(0, 0)}" value="Buscar Empleado" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesDefinitivas.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 100px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesDefinitivas.asignarIndex(0, 0)}" value="Buscar Empleado" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 130px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesDefinitivas.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
 
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesDefinitivas.listaEmpleadosNovedad}"
-                                         rowKey="#{empleados.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 560px"                           
-                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesDefinitivas.filtradosListaEmpleadosNovedad}" 
+                                         rowKey="#{empleados.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 560px; height: 300px"                           
+                                         scrollable="true" scrollHeight="200" scrollWidth="575" filteredValue="#{controlNovedadesDefinitivas.filtradosListaEmpleadosNovedad}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesDefinitivas.seleccionMostrar}"
                                          editable="true" editMode="cell" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlNovedadesDefinitivas.eventoFiltrar()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlNovedadesDefinitivas.cambiarEmpleado()}"/>
 
-                                <p:column headerText="Código" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" filterMatchMode="contains" id="nDEmpleadosCodigos" width="1" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Código" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" filterMatchMode="contains" id="nDEmpleadosCodigos" width="10" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{empleados.codigoempleado}" />
                                 </p:column>
 
@@ -43,7 +43,7 @@
                         <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlAusentismos.guardarCambiosAusentismos()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNovedadesDefinitivas.guardarCambiosNovedades()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesDefinitivas.editarCelda()}" process="@this"/>
@@ -69,72 +69,134 @@
                                 <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Novedad" /> 
 
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.borrarAusentismos()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesDefinitivas.borrarNovedades()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Novedad" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.duplicarA()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesDefinitivas.duplicarN()}"  process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Novedad" />
 
                                 <p:separator /> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesDefinitivas.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
+                        
+                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:formularioNovedades" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlNovedadesDefinitivas.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlNovedadesDefinitivas.salir()}" action="individual" />
+                        
+
+                        <p:panel id="formularioNovedades" style="position: absolute; top: 350px; border: none;">
+                            <fieldset style="position: absolute; left: -8px; top: 10px; font-size: 10px; width: 840px; height: 120px; border-radius: 10px; ">
+                                <legend style="font-size: 13px; color: #14388B"><strong>Novedades de Liquidación Definitiva</strong></legend>
+
+                                <h:outputText value="Fecha Liquidacion Definitiva" style="font-size: 10px; top: 30px; left:10px; position:absolute"/>
+                                <p:calendar value="#{controlNovedadesDefinitivas.mostrar.fechainicialdisfrute}"  style="font-size: 12px; position: absolute; top: 25px; left: 170px;"  id="fechaLiquidacion" styleClass="ui-datepicker, calendarParametro"  
+                                            navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
+                                    <p:ajax event="dateSelect" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="fechaLiquidacion" process="@this"/>
+                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="fechaLiquidacion" process="@this"/>
+                                    <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('FECHA')}" process="@this"/>
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:calendar>
+
+                                <h:outputText value="Motivo Liquidacion Definitiva" style="font-size: 10px; top: 30px; left: 300px; position: absolute">
+                                </h:outputText>
+                                <p:inputText id="motivoLiquidacion" value="#{controlNovedadesDefinitivas.mostrar.motivodefinitiva.nombre}" style="top: 25px;left:460px;width: 330px; position: absolute">
+                                    <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(1, 0)}" process="@this"/>
+                                    <p:ajax event="select" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('MOTIVO')}" process="@this"/>
+                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('MOTIVO', controlNovedadesDefinitivas.mostrar.motivodefinitiva.nombre)}" process="@this"/>
+                                    <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('MOTIVO')}" process="@this"/>
+
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 24px; position: absolute; left: 795px; top: 26px;  " id="btnPantallaMotivos" icon="ui-icon-arrow-1-n" process="@this" />
+
+                                <h:outputText value="Motivo Retiro" style="left: 90px; font-size: 10px; position: absolute; top:60px;">
+                                </h:outputText>
+                                <p:inputText id="motivoRetiro" value="#{controlNovedadesDefinitivas.mostrar.motivoretiro.nombre}" style="left:170px;position: absolute;width:470px;top:55px">
+                                    <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(2, 0)}" process="@this"/>
+                                    <p:ajax event="select" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('RETIRO')}" process="@this"/>
+                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('RETIRO', controlNovedadesDefinitivas.mostrar.motivoretiro.nombre)}" process="@this"/>
+                                    <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('RETIRO')}" process="@this"/>
+
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 24px; position: absolute; left: 645px; top: 56px;  " id="btnPantallaMotivosRetiros" icon="ui-icon-arrow-1-n" process="@this" />
+
+                                <h:outputText value="Tiene Indemnizacion" style="left: 680px; font-size: 10px; position: absolute; top:60px;">
+                                </h:outputText>
+                                <p:selectBooleanCheckbox value="#{controlNovedadesDefinitivas.mostrar.indemnizaBool}" id="indemnizacion" style="position: absolute; left: 805px; top:58px; font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="indemnizacion" process="@this"/>
+                                </p:selectBooleanCheckbox>
+
+                                <h:outputText value="Observaciones" style="font-size: 10px; top: 88px; left: 80px; position: absolute">
+                                </h:outputText>
+                                <p:inputText id="observaciones" onclick="select();" value="#{controlNovedadesDefinitivas.mostrar.observaciones}" style="top: 84px;left:170px;width: 650px; position: absolute;text-transform: uppercase" >
+                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" process="@this" />
+                                    <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('OBSERVACION')}" process="@this"/>
+                                </p:inputText>
+                            </fieldset>
+                        </p:panel>
+                        
                     </p:panel>
                 </h:form>
 
-                <h:form id="formularioNovedades" style="position: absolute;left: 250px;top :125px">
-                    <fieldset style="position: absolute; left: 10px; top: 290px; font-size: 10px; width: 840px; height: 120px; border-radius: 10px; ">
-                        <legend style="font-size: 13px; color: #14388B"><strong>Novedades de Liquidación Definitiva</strong></legend>
-
-                        <h:outputText value="Fecha Liquidacion Definitiva" style="font-size: 10px; top: 30px; left:10px; position:absolute"/>
-                        <p:calendar value="#{controlNovedadesDefinitivas.mostrar.fechainicialdisfrute}"  style="font-size: 12px; position: absolute; top: 25px; left: 170px;"  id="fechaLiquidacion" styleClass="ui-datepicker, calendarParametro"  
-                                    navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                            <p:ajax event="dateSelect" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="@this"/>
-                            <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="@this"/>
-                            <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('FECHA')}"/>
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </p:calendar>
-
-                        <h:outputText value="Motivo Liquidacion Definitiva" style="font-size: 10px; top: 30px; left: 300px; position: absolute">
-                        </h:outputText>
-                        <p:inputText id="motivoLiquidacion" value="#{controlNovedadesDefinitivas.mostrar.motivodefinitiva.nombre}" style="top: 25px;left:460px;width: 330px; position: absolute">
-                            <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(1, 0)}"/>
-                            <p:ajax event="select" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('MOTIVO')}"/>
-                            <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('MOTIVO', controlNovedadesDefinitivas.mostrar.motivodefinitiva.nombre)}"/>
-                            <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('MOTIVO')}"/>
-
-                        </p:inputText>
-                        <p:commandButton style="width: 23px; height: 24px; position: absolute; left: 795px; top: 26px;  " id="btnPantallaMotivos" icon="ui-icon-arrow-1-n" process="@this" />
-
-                        <h:outputText value="Motivo Retiro" style="left: 90px; font-size: 10px; position: absolute; top:60px;">
-                        </h:outputText>
-                        <p:inputText id="motivoRetiro" value="#{controlNovedadesDefinitivas.mostrar.motivoretiro.nombre}" style="left:170px;position: absolute;width:470px;top:55px">
-                            <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(2, 0)}"/>
-                            <p:ajax event="select" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('RETIRO')}"/>
-                            <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('RETIRO', controlNovedadesDefinitivas.mostrar.motivoretiro.nombre)}"/>
-                            <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('RETIRO')}"/>
-
-                        </p:inputText>
-                        <p:commandButton style="width: 23px; height: 24px; position: absolute; left: 645px; top: 56px;  " id="btnPantallaMotivosRetiros" icon="ui-icon-arrow-1-n" process="@this" />
-
-                        <h:outputText value="Tiene Indemnizacion" style="left: 680px; font-size: 10px; position: absolute; top:60px;">
-                        </h:outputText>
-                        <p:selectBooleanCheckbox value="#{controlNovedadesDefinitivas.mostrar.indemnizaBool}" id="editarIndemniza" style="position: absolute; left: 805px; top:58px; font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                            <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}"/>
-                        </p:selectBooleanCheckbox>
-
-                        <h:outputText value="Observaciones" style="font-size: 10px; top: 88px; left: 80px; position: absolute">
-                        </h:outputText>
-                        <p:inputText id="observaciones" value="#{controlNovedadesDefinitivas.mostrar.observaciones}" style="top: 84px;left:170px;width: 650px; position: absolute;text-transform: uppercase" >
-                            <p:ajax event="change" update="@this"/>
-                            <p:ajax event="select" listener="#{controlNovedadesDefinitivas.celda('OBSERVACION')}" update="@this"/>
-                        </p:inputText>
-                    </fieldset>
-                </h:form>
-
                 <h:form id="formularioDialogos">
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesDefinitivas.guardarCambiosNovedades()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <!-- DIALOGOS RASTROS -->
+
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'NOVEDADESSISTEMA' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesDefinitivas.secRegistro, 'Novedadessistema', 'novedadessistema')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla NOVEDADESSISTEMA tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Novedadessistema', 'novedadessistema')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesDefinitivas.secRegistro, 'Novedadessistema', 'novedadessistema')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'NOVEDADESSISTEMA' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
                     <!-- DIALOGO NUEVO REGISTRO -->
                     <p:dialog id="NuevaNovedadEmpleado" header="Nuevo Registro" widgetVar="NuevaNovedadEmpleado" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
@@ -176,14 +238,56 @@
                             <p:commandButton id="cancelarNN" value="Cancelar" style="font-size: 11px; position: absolute; left: 300px; top: 250px;" actionListener="#{controlNovedadesDefinitivas.limpiarNuevaNovedad()}" update="nuevaNovedad" onclick="NuevaNovedadEmpleado.hide();" process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
+
+                    <!-- DIALOGO DUPLICAR REGISTRO -->
+                    <p:dialog id="DuplicarNovedadEmpleado" header="Nuevo Registro" widgetVar="DuplicarNovedadEmpleado" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar una nueva novedad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarNovedad" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Liquidacion Definitiva: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; top: 65px; left: 200px;" value="#{controlNovedadesDefinitivas.duplicarNovedad.fechainicialdisfrute}"  styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFecha"/>
+                                <p:ajax event="change" update="duplicarFecha"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Motivo Liquidacion Definitiva: " style="font-size: 12px; position: absolute; top: 105px" /></strong>
+                            <p:inputText id="duplicarMotivo" value="#{controlNovedadesDefinitivas.duplicarNovedad.motivodefinitiva.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('MOTIVO')}" />
+                                <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('MOTIVO', controlNovedadesDefinitivas.duplicarNovedad.motivodefinitiva.nombre)}" />
+                                <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(1, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 105px;  " id="btnDuplicarMotivo" actionListener="#{controlNovedadesDefinitivas.asignarIndex(1, 2)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Motivo Retiro: " style="font-size: 12px; position: absolute; top: 145px" /></strong>
+                            <p:inputText id="duplicarRetiro" value="#{controlNovedadesDefinitivas.duplicarNovedad.motivoretiro.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('RETIRO')}" />
+                                <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('RETIRO', controlNovedadesDefinitivas.duplicarNovedad.motivoretiro.nombre)}" />
+                                <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(2, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 145px;  " id="btnDuplicarRetiro" actionListener="#{controlNovedadesDefinitivas.asignarIndex(2,2)}" icon="ui-icon-search" process="@this" />
+
+                            <strong><h:outputText value="Observacion" style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                            <p:inputText id="duplicarObservacion" value="#{controlNovedadesDefinitivas.duplicarNovedad.observaciones}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+
+                            <p:commandButton id="limpiarDuplicar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 50px; top: 250px;" actionListener="#{controlNovedadesDefinitivas.limpiarduplicarNovedad()}" update="duplicarNovedad" process="@this"/>
+                            <p:commandButton id="agregarNovedadDuplicada" value="Agregar" style="font-size: 11px; position: absolute; left: 200px; top: 250px;"  actionListener="#{controlNovedadesDefinitivas.confirmarDuplicar()}" process="@this"/>
+                            <p:commandButton id="cancelarNovedadDuplicada" value="Cancelar" style="font-size: 11px; position: absolute; left: 300px; top: 250px;" actionListener="#{controlNovedadesDefinitivas.limpiarduplicarNovedad}" update="duplicarNovedad" onclick="DuplicarNovedadEmpleado.hide();" process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+
                     <p:dialog id="existeRegistro" header="RECUERDE..." widgetVar="existeRegistro"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="Ya existen registros de novedades para éste empleado." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="existeRegistro.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
-                    <p:dialog id="validacionNuevaNovedad" header="ATENCIÓN...!" widgetVar="validacionNuevoAusentismo"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+
+                    <p:dialog id="validacionNuevaNovedad" header="ATENCIÓN...!" widgetVar="validacionNuevaNovedad"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="Para agregar una nueva novedad es necesario adicionar: #{controlNovedadesDefinitivas.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="validacionNuevaNovedad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
@@ -201,7 +305,7 @@
                     </p:dialog>
 
                     <p:dialog id="editarObservaciones" header="Observacion" widgetVar="editarObservaciones" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlNovedadesDefinitivas.mostrar.observaciones}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlNovedadesDefinitivas.mostrar.observaciones}" style="overflow: auto; width: 200px; height: 40px; text-transform: uppercase" readonly="true" />
                         <p:commandButton id="cancelarEditarObservaciones" value="Atras" onclick="editarObservaciones.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
