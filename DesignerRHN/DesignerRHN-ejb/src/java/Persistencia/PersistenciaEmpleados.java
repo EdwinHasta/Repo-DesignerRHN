@@ -180,16 +180,4 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
     
-    @Override
-    public Empleados buscarEmpleadoPorPersonaSecuencia(BigInteger secuenciaP){
-        try{
-            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.persona.secuencia =:secuencia");
-            query.setParameter("secuencia", secuenciaP);
-            Empleados empl = (Empleados) query.getSingleResult();
-            return empl;
-        }catch(Exception e){
-            System.out.println("Error");
-            return null;
-        }
-    }
 }
