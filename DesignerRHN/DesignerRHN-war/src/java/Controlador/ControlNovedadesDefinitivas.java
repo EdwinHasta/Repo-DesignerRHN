@@ -42,6 +42,8 @@ public class ControlNovedadesDefinitivas implements Serializable {
     //LISTA NOVEDADES
     private List<NovedadesSistema> listaNovedades;
     private NovedadesSistema mostrar;
+    private NovedadesSistema mostrarBorrar;
+    private NovedadesSistema mostrarCrear;
     private List<NovedadesSistema> filtradosListaNovedades;
     //Consultas sobre novedad
     private NovedadesSistema novedadParametro;
@@ -98,9 +100,8 @@ public class ControlNovedadesDefinitivas implements Serializable {
         secRegistro = null;
         guardado = true;
         tipoLista = 0;
-        listaNovedadesBorrar = new ArrayList<NovedadesSistema>();
-        listaNovedadesCrear = new ArrayList<NovedadesSistema>();
-        listaNovedadesModificar = new ArrayList<NovedadesSistema>();
+        listaNovedades = null;
+
         nuevaNovedad = new NovedadesSistema();
         nuevaNovedad.setMotivodefinitiva(new Motivosdefinitivas());
         nuevaNovedad.setMotivoretiro(new MotivosRetiros());
@@ -135,46 +136,30 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
     public void mostrarTodos() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (!listaEmpleadosNovedad.isEmpty()) {
-            listaEmpleadosNovedad.clear();
-            listaEmpleadosNovedad = administrarNovedadesSistema.buscarEmpleados();
-        } else {
-            listaEmpleadosNovedad = administrarNovedadesSistema.buscarEmpleados();
-        }
-        if (!listaEmpleadosNovedad.isEmpty()) {
-            seleccionMostrar = listaEmpleadosNovedad.get(0);
-            listaEmpleadosNovedad = null;
-            getListaEmpleadosNovedad();
-        }
-
-        context.update("form:datosEmpleados");
+        listaEmpleadosNovedad = null;
+        listaNovedades = null;
+        getListaEmpleadosNovedad();
         //ACTUALIZAR CADA COMPONENTE
         context.update("form:datosEmpleados");
-        context.update("formularioNovedades:fechaLiquidacion");
-        context.update("formularioNovedades:motivoLiquidacion");
-        context.update("formularioNovedades:motivoRetiro");
-        context.update("formularioNovedades:observaciones");
+        context.update("form:formularioNovedades");
+        System.out.println("valor mostrar: " + mostrar);
         filtradosListaEmpleadosNovedad = null;
         aceptar = true;
         secRegistro = null;
         tipoActualizacion = -1;
-
     }
 
-    //Ubicacion Celda Arriba 
+//Ubicacion Celda Arriba 
     public void cambiarEmpleado() {
         secuenciaEmpleado = seleccionMostrar.getSecuencia();
         listaNovedades = null;
         getListaNovedades();
-        getMostrar();
-
-
         RequestContext context = RequestContext.getCurrentInstance();//ACTUALIZAR CADA 
         context.update("form:datosEmpleados");
-        context.update("formularioNovedades:fechaLiquidacion");
-        context.update("formularioNovedades:motivoLiquidacion");
-        context.update("formularioNovedades:motivoRetiro");
-        context.update("formularioNovedades:observaciones");
+        context.update("form:formularioNovedades");
+        getMostrar();
+        context.update("form:datosEmpleados");
+        context.update("form:formularioNovedades");
     }
 
     public void valoresBackupAutocompletar(String Campo) {
@@ -202,13 +187,13 @@ public class ControlNovedadesDefinitivas implements Serializable {
             }
             if (coincidencias == 1) {
                 mostrar.setMotivodefinitiva(listaMotivos.get(indiceUnicoElemento));
-                context.update("formularioNovedades:motivoLiquidacion");
+                context.update("form:formularioNovedades:motivoLiquidacion");
                 listaMotivos.clear();
                 getListaMotivos();
             } else {
                 context.update("formularioDialogos:motivosDialogo");
                 context.execute("motivosDialogo.show()");
-                context.update("formularioNovedades:motivoLiquidacion");
+                context.update("form:formularioNovedades:motivoLiquidacion");
             }
         } else if (confirmarCambio.equalsIgnoreCase("RETIRO")) {
             mostrar.getMotivoretiro().setNombre(motivoRetiro);
@@ -220,13 +205,13 @@ public class ControlNovedadesDefinitivas implements Serializable {
             }
             if (coincidencias == 1) {
                 mostrar.setMotivoretiro(listaRetiros.get(indiceUnicoElemento));
-                context.update("formularioNovedades:motivoRetiro");
+                context.update("form:formularioNovedades:motivoRetiro");
                 listaRetiros.clear();
                 getListaRetiros();
             } else {
                 context.update("formularioDialogos:retirosDialogo");
                 context.execute("retirosDialogo.show()");
-                context.update("formularioNovedades:motivoRetiro");
+                context.update("form:formularioNovedades:motivoRetiro");
             }
         }
     }
@@ -236,7 +221,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
     }
 
     public void celda(String Campo) {
-        RequestContext context = RequestContext.getCurrentInstance();
+        secRegistro = mostrar.getSecuencia();
         if (Campo.equals("MOTIVO")) {
             cualCelda = 0;
         } else if (Campo.equals("RETIRO")) {
@@ -246,11 +231,13 @@ public class ControlNovedadesDefinitivas implements Serializable {
         } else if (Campo.equals("OBSERVACION")) {
             cualCelda = 3;
         }
+        System.out.println("Cual celda : " + cualCelda);
     }
 
     public void editarCelda() {
         System.out.println("CualCelda =" + cualCelda);
         RequestContext context = RequestContext.getCurrentInstance();
+
         if (cualCelda == 0) {
             System.out.println("Motivos");
             context.update("formularioDialogos:editarMotivos");
@@ -282,32 +269,38 @@ public class ControlNovedadesDefinitivas implements Serializable {
             listaEmpleadosNovedad.clear();
             listaEmpleadosNovedad.add(seleccionEmpleados);
             seleccionMostrar = listaEmpleadosNovedad.get(0);
+            context.execute("empleadosDialogo.hide()");
+            context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+            context.update("formularioDialogos:LOVEmpleados");
+            context.update("form:datosEmpleados");
+            context.update("form:formularioNovedades");
         } else {
             listaEmpleadosNovedad.add(seleccionEmpleados);
+            seleccionMostrar = listaEmpleadosNovedad.get(0);
+            context.execute("empleadosDialogo.hide()");
+            context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+            context.update("formularioDialogos:LOVEmpleados");
+            context.update("form:datosEmpleados");
+            context.update("form:formularioNovedades");
         }
 
         secuenciaEmpleado = listaEmpleadosNovedad.get(0).getSecuencia();
         listaNovedades = null;
         getListaNovedades();
-        mostrar = listaNovedades.get(0);
+        getMostrar();
 
         context.execute("empleadosDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.update("formularioDialogos:LOVEmpleados");
         context.update("form:datosEmpleados");
-        context.update("formularioDetalles:fechaLiquidacion");
-        context.update("formularioDetalles:motivoLiquidacion");
-        context.update("formularioDetalles:motivoRetiro");
-        context.update("formularioDetalles:observaciones");
+        context.update("form:formularioNovedades");
 
         listaEmpleados = null;
         filtradosListaEmpleadosNovedad = null;
         seleccionEmpleados = null;
         aceptar = true;
-        index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        cualCelda = -1;
     }
 
     public void listaValoresBoton() {
@@ -361,7 +354,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
             }
             permitirIndex = true;
             mostrar.setMotivodefinitiva(seleccionMotivos);
-            context.update("formularioNovedades:motivoLiquidacion");
+            context.update("form:formularioNovedades:motivoLiquidacion");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setMotivodefinitiva(seleccionMotivos);
             context.update("formularioDialogos:nuevaNovedad");
@@ -387,13 +380,13 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
     //CREAR NOVEDADES
     public void agregarNuevaNovedad() {
-
+        getListaNovedades();
         int pasa = 0;
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
 
 
-        if (!listaNovedades.isEmpty()) {
+        if (listaNovedades != null) {
             context.update("formularioDialogos:existeRegistro");
             context.execute("existeRegistro.show()");
         }
@@ -425,19 +418,32 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
         if (pasa == 0) {
             //AGREGAR REGISTRO A LA LISTA NOVEDADES .
+
             k++;
             l = BigInteger.valueOf(k);
             nuevaNovedad.setSecuencia(l);
             nuevaNovedad.setEmpleado(seleccionMostrar);
+            nuevaNovedad.setTipo("DEFINITIVA");
+            nuevaNovedad.setSubtipo("DINERO");
+            nuevaNovedad.setDias(BigInteger.valueOf(0));
             listaNovedades.add(nuevaNovedad);
+            mostrarCrear = nuevaNovedad;
+            mostrarCrear.setTipo("DEFINITIVA");
+            mostrarCrear.setSubtipo("DINERO");
+            mostrarCrear.setDias(BigInteger.valueOf(0));
+            mostrar.setFechainicialdisfrute(nuevaNovedad.getFechainicialdisfrute());
+            mostrar.setMotivoretiro(nuevaNovedad.getMotivoretiro());
+            mostrar.setMotivodefinitiva(nuevaNovedad.getMotivodefinitiva());
+            mostrar.setObservaciones(nuevaNovedad.getObservaciones());
+            context.update("form:formularioNovedades");
+
             nuevaNovedad = new NovedadesSistema();
             nuevaNovedad.setMotivodefinitiva(new Motivosdefinitivas());
             nuevaNovedad.setMotivoretiro(new MotivosRetiros());
             nuevaNovedad.setDias(BigInteger.valueOf(0));
-            nuevaNovedad.setTipo(" ");
-            nuevaNovedad.setSubtipo(" ");
+            nuevaNovedad.setTipo("DEFINITIVA");
+            nuevaNovedad.setSubtipo("DINERO");
 
-            context.update("form:datosNovedadesEmpleado");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:aceptar");
@@ -449,6 +455,162 @@ public class ControlNovedadesDefinitivas implements Serializable {
         }
     }
 
+    //GUARDAR
+    public void guardarCambiosNovedades() {
+
+        if (guardado == false) {
+            System.out.println("Realizando Operaciones Ausentismos" + mostrarBorrar);
+
+            if (mostrarBorrar != null) {
+                System.out.println("Entra 0");
+                administrarNovedadesSistema.borrarNovedades(mostrarBorrar);
+                System.out.println("Borrar");
+                mostrarBorrar = null;
+            }
+            //CREAR
+            if (mostrarCrear != null) {
+                administrarNovedadesSistema.crearNovedades(mostrarCrear);
+                System.out.println("Crear");
+                mostrarCrear = null;
+            }
+            //MODIFICAR
+            if (mostrar != null && mostrarCrear == null && mostrarBorrar == null) {
+                mostrar.setEmpleado(seleccionMostrar);
+                mostrar.setTipo("DEFINITIVA");
+                mostrar.setSubtipo("DINERO");
+                administrarNovedadesSistema.modificarNovedades(mostrar);
+                System.out.println("Modificar");
+            }
+            System.out.println("Se guardaron los datos con exito");
+            listaNovedades = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosAusentismosEmpleado");
+            guardado = true;
+            permitirIndex = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+        }
+        secRegistro = null;
+    }
+
+    //BORRAR Novedades
+    public void borrarNovedades() {
+        getListaNovedades();
+        if (listaNovedades != null && !listaNovedades.isEmpty()) {
+            mostrarBorrar = listaNovedades.get(0);
+            System.out.println("Iguales");
+            listaNovedades.remove(listaNovedades.get(0));
+        }
+        System.out.println("Realizado");
+        getMostrar();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:formularioNovedades");
+        secRegistro = null;
+
+        if (guardado == true) {
+            guardado = false;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+        }
+
+    }
+
+    //DUPLICAR NOVEDAD
+    public void duplicarN() {
+
+        duplicarNovedad = new NovedadesSistema();
+        getMostrar();
+        k++;
+        l = BigInteger.valueOf(k);
+        if (tipoLista == 0) {
+            duplicarNovedad.setSecuencia(l);
+            duplicarNovedad.setEmpleado(seleccionMostrar);
+            duplicarNovedad.setTipo(mostrar.getTipo());
+            duplicarNovedad.setSubtipo(mostrar.getSubtipo());
+            duplicarNovedad.setDias(mostrar.getDias());
+            duplicarNovedad.setFechainicialdisfrute(mostrar.getFechainicialdisfrute());
+            duplicarNovedad.setMotivodefinitiva(mostrar.getMotivodefinitiva());
+            duplicarNovedad.setMotivoretiro(mostrar.getMotivoretiro());
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:duplicarNovedad");
+        context.execute("DuplicarNovedadEmpleado.show()");
+
+        secRegistro = null;
+    }
+
+    public void confirmarDuplicar() {
+        int pasa = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (duplicarNovedad.getFechainicialdisfrute() == null) {
+            System.out.println("Entro a Fecha ");
+            mensajeValidacion = mensajeValidacion + " * Fecha Liquidacion Definitiva\n";
+            pasa++;
+        }
+
+        if (duplicarNovedad.getMotivodefinitiva().getNombre().equals(" ")) {
+            System.out.println("Entro a Motivo");
+            mensajeValidacion = mensajeValidacion + " * Motivo Liquidacion Definitiva\n";
+            pasa++;
+        }
+        if (duplicarNovedad.getMotivoretiro().getNombre().equals(" ")) {
+            System.out.println("Entro a Retiro");
+            mensajeValidacion = mensajeValidacion + " * Motivo Retiro\n";
+            pasa++;
+        }
+
+        System.out.println("Valor Pasa: " + pasa);
+
+        if (pasa != 0) {
+            context.update("formularioDialogos:validacionNuevaNovedad");
+            context.execute("validacionNuevaNovedad.show()");
+        }
+
+        if (pasa == 0) {
+            //AGREGAR REGISTRO A LA LISTA NOVEDADES .
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarNovedad.setSecuencia(l);
+            duplicarNovedad.setEmpleado(seleccionMostrar);
+            duplicarNovedad.setTipo("DEFINITIVA");
+            duplicarNovedad.setSubtipo("DINERO");
+            listaNovedades.add(duplicarNovedad);
+
+            mostrar.setFechainicialdisfrute(duplicarNovedad.getFechainicialdisfrute());
+            mostrar.setMotivoretiro(duplicarNovedad.getMotivoretiro());
+            mostrar.setMotivodefinitiva(duplicarNovedad.getMotivodefinitiva());
+            mostrar.setObservaciones(duplicarNovedad.getObservaciones());
+            mostrar.setIndemnizaBool(duplicarNovedad.getIndemnizaBool());
+
+            duplicarNovedad = new NovedadesSistema();
+            duplicarNovedad.setMotivodefinitiva(new Motivosdefinitivas());
+            duplicarNovedad.setMotivoretiro(new MotivosRetiros());
+            duplicarNovedad.setDias(BigInteger.valueOf(0));
+            duplicarNovedad.setTipo("DEFINITIVA");
+            duplicarNovedad.setSubtipo("DINERO");
+            context.update("form:formularioNovedades");
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+            context.execute("DuplicarNovedadEmpleado.hide()");
+            secRegistro = null;
+        } else {
+        }
+    }
+
+    //LIMPIAR DUPLICAR
+    /**
+     * Metodo que limpia los datos de un duplicar Novedad
+     */
+    public void limpiarduplicarNovedad() {
+        duplicarNovedad = new NovedadesSistema();
+        duplicarNovedad.setTipo("DEFINITIVA");
+        duplicarNovedad.setSubtipo("DINERO");
+        duplicarNovedad.setMotivodefinitiva(new Motivosdefinitivas());
+        duplicarNovedad.setMotivoretiro(new MotivosRetiros());
+        secRegistro = null;
+    }
+
     public void actualizarRetiros() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
@@ -458,7 +620,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
             }
             permitirIndex = true;
             mostrar.setMotivoretiro(seleccionRetiros);
-            context.update("formularioNovedades:motivoRetiro");
+            context.update("form:formularioNovedades:motivoRetiro");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setMotivoretiro(seleccionRetiros);
             context.update("formularioDialogos:nuevaNovedad");
@@ -484,6 +646,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
         aceptar = true;
         secRegistro = null;
         tipoActualizacion = -1;
+        cualCelda = -1;
     }
 
     public void cancelarCambioRetiros() {
@@ -491,6 +654,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
         aceptar = true;
         secRegistro = null;
         tipoActualizacion = -1;
+        cualCelda = -1;
     }
 
     public void eventoFiltrar() {
@@ -514,7 +678,64 @@ public class ControlNovedadesDefinitivas implements Serializable {
         permitirIndex = true;
     }
 
-//GETTERS & SETTERS
+    //RASTROS 
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("lol");
+        if (!listaNovedades.isEmpty()) {
+            if (secRegistro != null) {
+                System.out.println("lol 2");
+                int result = administrarRastros.obtenerTabla(secRegistro, "NOVEDADESSISTEMA");
+                System.out.println("resultado: " + result);
+                if (result == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (result == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (result == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (result == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (result == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("NOVEDADESSISTEMA")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+
+        }
+        index = -1;
+    }
+    
+    //SALIR
+    public void salir() {
+        secRegistro = null;
+        listaNovedades = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:formularioNovedades");
+    }
+    
+     //CANCELAR MODIFICACIONES
+    public void cancelarModificacion() {
+        cualCelda = -1;
+        secRegistro = null;
+        listaNovedades = null;
+        getListaNovedades();
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:formularioNovedades");
+    }
+
+    
+    //GETTERS & SETTERS
     public List<NovedadesSistema> getListaNovedades() {
         if (listaNovedades == null) {
             listaNovedades = administrarNovedadesSistema.novedadesEmpleado(secuenciaEmpleado);
@@ -537,6 +758,12 @@ public class ControlNovedadesDefinitivas implements Serializable {
     public List<Empleados> getListaEmpleadosNovedad() {
         if (listaEmpleadosNovedad == null) {
             listaEmpleadosNovedad = administrarNovedadesSistema.buscarEmpleados();
+            if (listaEmpleadosNovedad != null && !listaEmpleadosNovedad.isEmpty()) {
+                seleccionMostrar = listaEmpleadosNovedad.get(0);
+                secuenciaEmpleado = seleccionMostrar.getSecuencia();
+                getListaNovedades();
+                getMostrar();
+            }
         }
         return listaEmpleadosNovedad;
     }
@@ -554,6 +781,9 @@ public class ControlNovedadesDefinitivas implements Serializable {
     }
 
     public Empleados getSeleccionMostrar() {
+        if (seleccionMostrar == null) {
+            getListaEmpleadosNovedad();
+        }
         return seleccionMostrar;
     }
 
@@ -573,7 +803,6 @@ public class ControlNovedadesDefinitivas implements Serializable {
     public List<Empleados> getListaEmpleados() {
         if (listaEmpleados == null) {
             listaEmpleados = administrarNovedadesSistema.lovEmpleados();
-            seleccionMostrar = listaEmpleados.get(0);
         }
         return listaEmpleados;
     }
@@ -600,13 +829,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
     public NovedadesSistema getMostrar() {
         if (listaNovedades != null && !listaNovedades.isEmpty()) {
-
             mostrar = listaNovedades.get(0);
-            RequestContext context = RequestContext.getCurrentInstance();//ACTUALIZAR CADA 
-            context.update("formularioNovedades:fechaLiquidacion");
-            context.update("formularioNovedades:motivoLiquidacion");
-            context.update("formularioNovedades:motivoRetiro");
-            context.update("formularioNovedades:observaciones");
         } else {
             mostrar = new NovedadesSistema();
         }
@@ -696,4 +919,14 @@ public class ControlNovedadesDefinitivas implements Serializable {
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
+    }
+    
+    
 }

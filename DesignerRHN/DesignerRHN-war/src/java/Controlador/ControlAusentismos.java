@@ -991,7 +991,6 @@ public class ControlAusentismos implements Serializable {
         }
         index = -1;
     }
-
     //AUTOCOMPLETAR
     public void modificarAusentismos(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
@@ -2864,7 +2863,7 @@ public class ControlAusentismos implements Serializable {
     public List<Empleados> getListaEmpleadosAusentismo() {
         if (listaEmpleadosAusentismo == null) {
             listaEmpleadosAusentismo = administrarAusentismos.lovEmpleados();
-            seleccionMostrar = listaEmpleadosAusentismo.get(1);
+            seleccionMostrar = listaEmpleadosAusentismo.get(0);
             System.out.println(seleccionMostrar.getSecuencia());
         }
         return listaEmpleadosAusentismo;
