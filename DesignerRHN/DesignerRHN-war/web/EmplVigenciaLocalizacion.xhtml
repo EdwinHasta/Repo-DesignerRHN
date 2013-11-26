@@ -11,11 +11,11 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos de Localizaciones" style=" font-size: 12px; position: absolute; width: 874px; height: 545px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Históricos de Localizaciones" style=" font-size: 13px; position: absolute; width: 874px; height: 545px; text-align: left" >  
                         <h:outputText style="position: absolute; top: 45px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaLocalizacion.empleado.persona.primerapellido} #{controlVigenciaLocalizacion.empleado.persona.segundoapellido} #{controlVigenciaLocalizacion.empleado.persona.nombre}">
                         </h:outputText>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaLocalizacion.guardadoGeneral()}" process="@this" />
@@ -62,7 +62,7 @@
                         </p:toolbar> 
 
                         <fieldset style="position: absolute; left: 10px; top: 75px; font-size: 10px; width: 820px; height: 222px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>Localización del Empleado</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Localización del Empleado</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
                             <p:dataTable id="datosVLEmpleado" var="infoDVL" rowKey="#{infoDVL.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 820px"   
@@ -73,7 +73,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha" sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Fecha" sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVL.fechavigencia}" >
@@ -96,7 +96,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Centro Costos" sortBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterMatchMode="contains" id="vlCentroCosto" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                <p:column style="font-size: 11px" headerText="Centro Costos" sortBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterMatchMode="contains" id="vlCentroCosto" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.centrocosto.codigoNombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -108,11 +108,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooNombreJornada" value="Centro Costo"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooNombreJornada" value="Centro Costo"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Localizacion" sortBy="#{infoDVL.localizacion.nombre}" filterBy="#{infoDVL.localizacion.nombre}" filterMatchMode="contains" id="vlLocalizacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Localizacion" sortBy="#{infoDVL.localizacion.nombre}" filterBy="#{infoDVL.localizacion.nombre}" filterMatchMode="contains" id="vlLocalizacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.nombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -122,11 +122,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooLocalizacion" value="Localizacion"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooLocalizacion" value="Localizacion"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Motivo" sortBy="#{infoDVL.motivo.descripcion}" filterBy="#{infoDVL.motivo.descripcion}" filterMatchMode="contains" id="vlMotivo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Motivo" sortBy="#{infoDVL.motivo.descripcion}" filterBy="#{infoDVL.motivo.descripcion}" filterMatchMode="contains" id="vlMotivo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVL.motivo.descripcion}" />
@@ -141,11 +141,11 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooMotivo" value="Motivo"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooMotivo" value="Motivo"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Proyecto" sortBy="#{infoDVL.proyecto.nombreproyecto}" filterBy="#{infoDVL.proyecto.nombreproyecto}" filterMatchMode="contains" id="vlProyecto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Proyecto" sortBy="#{infoDVL.proyecto.nombreproyecto}" filterBy="#{infoDVL.proyecto.nombreproyecto}" filterMatchMode="contains" id="vlProyecto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVL.proyecto.nombreproyecto}" /></f:facet>  
                                         <f:facet name="input">
@@ -157,14 +157,14 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooProyecto" value="Proyecto"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooProyecto" value="Proyecto"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
                         </fieldset>
   
                         <fieldset style="position: absolute;top: 312px;left: 10px;height: 200px;width: 390px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 10px; color: blue"><strong>Prorrateo por Centros de Costo</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Prorrateo por Centros de Costo</strong></legend>
                             
                             <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" 
                                          value="#{controlVigenciaLocalizacion.vigenciasProrrateosVigencia}" style="font-size: 10px; border: 1px;width:390px"
@@ -184,7 +184,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCentroCostoVP" value="Centro de Costos"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooCentroCostoVP" value="Centro de Costos"/>
                                     </f:facet>
                                 </p:column>
 
@@ -199,7 +199,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="P(%)" style="font-size: 9px" id="fooComentarioVCT"/>
+                                        <h:outputText value="P(%)"  id="fooComentarioVCT"/>
                                     </f:facet>
                                 </p:column>
 
@@ -222,7 +222,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Inicial" style="font-size: 9px" id="fooFechaInicialVCT"/>
+                                        <h:outputText value="Fecha Inicial"  id="fooFechaInicialVCT"/>
                                     </f:facet>
                                 </p:column>
 
@@ -244,7 +244,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVCT"/>
+                                        <h:outputText value="Fecha Final"  id="fooFechaFinalVCT"/>
                                     </f:facet>
                                 </p:column>
 
@@ -260,7 +260,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Proyecto" style="font-size: 9px" id="fooProyectoVP"/>
+                                        <h:outputText value="Proyecto"  id="fooProyectoVP"/>
                                     </f:facet>
                                 </p:column>
 
@@ -275,7 +275,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="SubPorcentaje" style="font-size: 9px" id="fooSubPorcentajeVP"/>
+                                        <h:outputText value="SubPorcentaje"  id="fooSubPorcentajeVP"/>
                                     </f:facet>
                                 </p:column> 
 
@@ -284,7 +284,7 @@
 
 
                         <fieldset style="position: absolute;top: 312px;left: 440px;height: 200px;width: 390px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 10px; color: blue"><strong>Prorrateo por Proyecto</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Prorrateo por Proyecto</strong></legend>
                             <p:dataTable id="datosVPPVigencia" var="info2" rowKey="#{info2.secuencia}" rowIndexVar="indiceVPP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectosVigencia}" 
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosProyectosVigencia}" editable="true" editMode="cell" rows="3"
                                          scrollable="true" scrollHeight="65" scrollWidth="390" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width:390px"  paginator="true"
@@ -317,7 +317,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="P(%)" style="font-size: 9px"/>
+                                        <h:outputText value="P(%)" />
                                     </f:facet>
                                 </p:column>
 
@@ -339,7 +339,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Inicial" style="font-size: 9px" id="fooFechaInicialVPP"/>
+                                        <h:outputText value="Fecha Inicial"  id="fooFechaInicialVPP"/>
                                     </f:facet>
                                 </p:column>
 
@@ -361,7 +361,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVPP"/>
+                                        <h:outputText value="Fecha Final"  id="fooFechaFinalVPP"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>

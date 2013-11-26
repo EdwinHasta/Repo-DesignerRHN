@@ -1,0 +1,348 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Historia Demandas" style=" font-size: 13px; position: absolute; width: 874px; 
+                              height: 495px; text-align: left" >  
+
+                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplDemanda.empleado.persona.primerapellido} #{controlEmplDemanda.empleado.persona.segundoapellido} #{controlEmplDemanda.empleado.persona.nombre}">
+                        </h:outputText>
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;" actionListener="#{controlEmplDemanda.guardadoGeneral()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEmplDemanda.verificarExportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.limpiarNuevaD()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportarD:datosDemandaExportar" fileName="DemandasXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.validarExportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroD.show()" update=":formularioDialogos:nuevaD"  process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Demanda" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.validarBorradoDemanda()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Demanda" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.verificarDuplicarDemanda()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Demanda" />
+                                <p:separator /> 
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplDemanda.verificarRastro()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 330px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 12px; color: blue"><strong>Demandas</strong></legend>
+                            <p:dataTable id="datosDemanda" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceD" value="#{controlEmplDemanda.listDemandasEmpleado}" 
+                                         filteredValue="#{controlEmplDemanda.filtrarListDemandasEmpleado}" editable="true" editMode="cell" rows="7" 
+                                         scrollable="true" scrollWidth="830" scrollHeight="180" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width: 830px"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+
+                                <p:column headerText="Fecha" sortBy="#{info.fecha}" filterBy="#{info.fecha}" filterMatchMode="contains" id="dFecha" width="100"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fecha}" style="width: 100px; font-size: 11px">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:calendar value="#{info.fecha}" id="editarFechaD" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                        locale="es" pattern="dd/MM/yyyy">
+                                                <p:ajax event="dateSelect" listener="#{controlEmplDemanda.modificarDemanda(indiceD)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplDemanda.modificarDemanda(indiceD)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplDemanda.cambiarIndiceD(indiceD,0)}" process="@this"/> 
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </p:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Seguimiento" sortBy="#{info.seguimiento}" filterBy="#{info.seguimiento}" filterMatchMode="contains" width="133"
+                                          id="dSeguimiento" filterStyle="display: none; visibility: hidden;"  style="width: 70px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.seguimiento}" style="width: 100px; font-size: 11px;text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.seguimiento}" id="editarSeguimiento" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlEmplDemanda.cambiarIndiceD(indiceD,1)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlEmplDemanda.modificarDemanda(indiceD)}" process="@this" update="editarSeguimiento"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText  value="Descripcion"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Motivo" sortBy="#{info.motivo.descripcion}" filterBy="#{info.motivo.descripcion}" filterMatchMode="contains" width="133"
+                                          id="dMotivo" filterStyle="display: none; visibility: hidden;"  style="width: 70px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.motivo.descripcion}" style="width: 100px; font-size: 11px;text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.motivo.descripcion}" id="editarMotivo" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="select" listener="#{controlEmplDemanda.cambiarIndiceD(indiceD,2)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlEmplDemanda.asignarIndex(indiceD,0,0)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplDemanda.modificarDemanda(indiceD, 'MOTIVOS', info.motivo.descripcion)}" process="@this" update="editarMotivo"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" value="Motivo"/>
+                                    </f:facet>
+                                </p:column>                               
+
+                            </p:dataTable>
+                        </fieldset>
+
+                        <p:dialog header="Demandas" widgetVar="DemandaDialogo" draggable="false" resizable="false" closable="false" id="DemandaDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="400" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovDemanda" style="font-size: 11px; width: 380px" var="demanda" value="#{controlEmplDemanda.listMotivosDemandas}" rowKey="#{demanda.secuencia}"
+                                         selection="#{controlEmplDemanda.motivoDemandaSeleccionado}" selectionMode="single" widgetVar="lovDemanda" scrollable="true" scrollWidth="380" scrollHeight="250"
+                                         filteredValue="#{controlEmplDemanda.filtrarListMotivosDemandas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlEmplDemanda.activarAceptar()}" update=":form:aceptarD"/>
+
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Motivo Demanda: "  style="position: absolute; left: 17px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovDemanda.filter();" style="width:150px; position: relative; left: 40px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{demanda.descripcion}" width="140"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Descripcion Motivo Demanda" />
+                                    </f:facet>
+                                    <h:outputText value="#{demanda.descripcion}" />
+                                </p:column>
+
+                            </p:dataTable>
+                            <p:commandButton id="aceptarD" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlEmplDemanda.aceptar}" onclick="DemandaDialogo.hide(), lovDemanda.clearFilters();" actionListener="#{controlEmplDemanda.actualizarMotivo()}" update="lovDemanda, aceptarD, datosDemanda" process="@this">
+                                <p:resetInput target=":form:lovDemanda:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasD" style="position: relative; left: 250px" value="Atras" onclick="DemandaDialogo.hide(), lovDemanda.clearFilters();" actionListener="#{controlEmplDemanda.cancelarCambioMotivo()}" update="lovDemanda" process="@this">
+                                <p:resetInput target=":form:lovDemanda:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+
+                        <p:commandButton style="position: absolute; left: 710px; top: 455px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosDemanda" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 455px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplDemanda.cancelarModificacionD()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 455px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplDemanda.salir()}" action="infoEmplIndividual" process="@this" />
+
+                    </p:panel>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplDemanda.guardadoGeneral()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla DEMANDAS tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplDemanda.backUpSecRegistro, 'Demandas', 'demandaRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla DEMANDAS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Demandas', 'demandaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplDemanda.backUpSecRegistro, 'Demandas', 'demandaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplDemanda.activarCtrlF11()}"/> 
+                    <p:dialog id="errorFechas" header="ATENCIÓN...!" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Error de fechas. La fecha ingresada debe ser mayor a 1-Enero-1990." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Cancelar" onclick="errorFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                </h:form>
+                <h:form id="formularioDialogos" >
+
+                    <p:dialog id="NuevoRegistroD" header="Nuevo Registro Demandas" widgetVar="NuevoRegistroD" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información para demanda" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaD" style="border: none;">
+
+                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="nuevaFechaD" value="#{controlEmplDemanda.nuevaDemandaEmpleado.fecha}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="nuevaFechaD"/>
+                                <p:ajax event="change" update="nuevaFechaD"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Seguimiento: " style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
+                            <p:inputText id="nuevaSeguimiento" value="#{controlEmplDemanda.nuevaDemandaEmpleado.seguimiento}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="nuevaSeguimiento"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaSeguimiento" value="Seguimiento" />
+
+                            <strong><h:outputText value="Motivo Demanda: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaMotivo" value="#{controlEmplDemanda.nuevaDemandaEmpleado.motivo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlEmplDemanda.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="click" listener="#{controlEmplDemanda.valoresBackupAutocompletarDemanda(1, 'MOTIVOS')}" />
+                                <p:ajax event="change" listener="#{controlEmplDemanda.autocompletarNuevoyDuplicadoDemanda('MOTIVOS', controlEmplDemanda.nuevaDemandaEmpleado.motivo.descripcion,1)}" process="@this" update="nuevaMotivo"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevaMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplDemanda.asignarIndex(indice,0,1)}" update="nuevaMotivo"/>   
+                            <p:watermark for="nuevaMotivo" value="Motivo Retiro" />
+
+
+                            <p:commandButton id="limpiarND" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlEmplDemanda.limpiarNuevaD()}" update="nuevaD" process="@this"/>
+                            <p:commandButton id="agregarND" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;" actionListener="#{controlEmplDemanda.agregarNuevaD()}" process="@this"/>
+                            <p:commandButton id="cancelarND" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlEmplDemanda.limpiarNuevaD()}" update="nuevaD" onclick="NuevoRegistroD.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroD" header="Nuevo Registro Demanda" widgetVar="DuplicarRegistroD" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información para demanda" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarD" style="border: none;">
+
+                            <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <p:calendar  id="duplicarFecha" value="#{controlEmplDemanda.duplicarDemandaEmpleado.fecha}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
+                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                <p:ajax event="dateSelect" update="duplicarFecha"/>
+                                <p:ajax event="change" update="duplicarFecha"/>
+                            </p:calendar>
+
+                            <strong><h:outputText value="Seguimiento: " style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
+                            <p:inputText id="duplicarSeguimiento" value="#{controlEmplDemanda.duplicarDemandaEmpleado.seguimiento}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="duplicarSeguimiento"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarSeguimiento" value="Seguimiento" />
+
+                            <strong><h:outputText value="Motivo Demanda: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarMotivo" value="#{controlEmplDemanda.duplicarDemandaEmpleado.motivo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlEmplDemanda.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="click" listener="#{controlEmplDemanda.valoresBackupAutocompletarDemanda(2, 'MOTIVOS')}" />
+                                <p:ajax event="change" listener="#{controlEmplDemanda.autocompletarNuevoyDuplicadoDemanda('MOTIVOS', controlEmplDemanda.duplicarDemandaEmpleado.motivo.descripcion,2)}" process="@this" update="duplicarMotivo"/>
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicaMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplDemanda.asignarIndex(indice,0,2)}" update="duplicarMotivo"/>   
+                            <p:watermark for="duplicarMotivo" value="Motivo Demanda" />
+
+
+                            <p:commandButton id="limpiarDD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlEmplDemanda.limpiarduplicarD()}" update="duplicarD" process="@this"/>
+                            <p:commandButton id="agregarDD" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;" actionListener="#{controlEmplDemanda.confirmarDuplicarD()}" process="@this"/>
+                            <p:commandButton id="cancelarDD" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlEmplDemanda.limpiarduplicarD()}" update="duplicarD" onclick="DuplicarRegistroD.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <!-- ////// ////// ////// -->
+
+                    <p:dialog id="editarFechaDD" header="Fecha Demanda" widgetVar="editarFechaDD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplDemanda.editarDemandaEmpleado.fecha}" id="editFechaCelda"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFechaDD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                   
+                    <p:dialog id="editarSeguimientoD" header="Seguimiento Demanda" widgetVar="editarSeguimientoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlEmplDemanda.editarDemandaEmpleado.seguimiento}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarSeguimiento" value="Atras" onclick="editarSeguimientoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarMotivoD" header="Motivo Demanda" widgetVar="editarMotivoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlEmplDemanda.editarDemandaEmpleado.motivo.descripcion}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarMotivo" value="Atras" onclick="editarMotivoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+
+                </h:form>
+                <h:form id="formExportarD">
+                    <p:dataTable id="datosDemandaExportar" var="infoDmd" style="visibility: hidden; display: none;"                           
+                                 value="#{controlEmplDemanda.listDemandasEmpleado}"> 
+
+                        <p:column headerText="Fecha">                                  
+                            <f:facet name="header"><h:outputText value="Fecha"/> </f:facet> 
+                            <h:outputText value="#{infoDmd.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Seguimiento">                                  
+                            <f:facet name="header"><h:outputText value="Seguimiento"/> </f:facet> 
+                            <h:outputText value="#{infoDmd.seguimiento}" style="text-transform: uppercase" />
+                        </p:column>
+
+                        <p:column headerText="Motivo">                                  
+                            <f:facet name="header"><h:outputText value="Motivo"/> </f:facet> 
+                            <h:outputText value="#{infoDmd.motivo.descripcion}" style="text-transform: uppercase"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -272,7 +272,7 @@ public class ControlEmplVigenciaEvento implements Serializable{
             index = indice;
             cualCelda = celda;
             secRegistro = listVigenciasEventos.get(index).getSecuencia();
-            if (cualCelda == 0) {
+            if (cualCelda == 2) {
                 evento = listVigenciasEventos.get(index).getEvento().getDescripcion();
             }
         }
@@ -386,7 +386,7 @@ public class ControlEmplVigenciaEvento implements Serializable{
                 context.update("formularioDialogos:editarGrupalD");
                 context.execute("editarGrupalD.show()");
                 cualCelda = -1;
-            } else if (cualCelda == 5) {
+            } else if (cualCelda == 6) {
                 context.update("formularioDialogos:editarCGrupalD");
                 context.execute("editarCGrupalD.show()");
                 cualCelda = -1;
@@ -465,24 +465,31 @@ public class ControlEmplVigenciaEvento implements Serializable{
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                /*
+                
                  duplicarVigenciaEvento.setSecuencia(l);
-                 duplicarVigenciaEvento.setEscritura(listVigenciasEventos.get(index).getEscritura());
-                 duplicarVigenciaEvento.setHabla(listVigenciasEventos.get(index).getHabla());
-                 duplicarVigenciaEvento.setIdioma(listVigenciasEventos.get(index).getIdioma());
-                 duplicarVigenciaEvento.setLectura(listVigenciasEventos.get(index).getLectura());
-                 duplicarVigenciaEvento.setPersona(listVigenciasEventos.get(index).getPersona());
-                 */
+                 duplicarVigenciaEvento.setFechafinal(listVigenciasEventos.get(index).getFechafinal());
+                 duplicarVigenciaEvento.setFechainicial(listVigenciasEventos.get(index).getFechainicial());
+                 duplicarVigenciaEvento.setEmpleado(listVigenciasEventos.get(index).getEmpleado());
+                 duplicarVigenciaEvento.setValorcualitativo(listVigenciasEventos.get(index).getValorcualitativo());
+                 duplicarVigenciaEvento.setValorcualitativogrupo(listVigenciasEventos.get(index).getValorcualitativogrupo());
+                 duplicarVigenciaEvento.setValorcuantitativo(listVigenciasEventos.get(index).getValorcuantitativo());
+                 duplicarVigenciaEvento.setValorcuantitativogrupo(listVigenciasEventos.get(index).getValorcuantitativogrupo());
+                 duplicarVigenciaEvento.setEvento(listVigenciasEventos.get(index).getEvento());
+                 
+                 
             }
             if (tipoLista == 1) {
-                /*
-                 duplicarVigenciaEvento.setSecuencia(l);
-                 duplicarVigenciaEvento.setEscritura(filtrarListVigenciasEventos.get(index).getEscritura());
-                 duplicarVigenciaEvento.setHabla(filtrarListVigenciasEventos.get(index).getHabla());
-                 duplicarVigenciaEvento.setIdioma(filtrarListVigenciasEventos.get(index).getIdioma());
-                 duplicarVigenciaEvento.setLectura(filtrarListVigenciasEventos.get(index).getLectura());
-                 duplicarVigenciaEvento.setPersona(filtrarListVigenciasEventos.get(index).getPersona());
-                 */
+                
+                duplicarVigenciaEvento.setSecuencia(l);
+                 duplicarVigenciaEvento.setFechafinal(filtrarListVigenciasEventos.get(index).getFechafinal());
+                 duplicarVigenciaEvento.setFechainicial(filtrarListVigenciasEventos.get(index).getFechainicial());
+                 duplicarVigenciaEvento.setEmpleado(filtrarListVigenciasEventos.get(index).getEmpleado());
+                 duplicarVigenciaEvento.setValorcualitativo(filtrarListVigenciasEventos.get(index).getValorcualitativo());
+                 duplicarVigenciaEvento.setValorcualitativogrupo(filtrarListVigenciasEventos.get(index).getValorcualitativogrupo());
+                 duplicarVigenciaEvento.setValorcuantitativo(filtrarListVigenciasEventos.get(index).getValorcuantitativo());
+                 duplicarVigenciaEvento.setValorcuantitativogrupo(filtrarListVigenciasEventos.get(index).getValorcuantitativogrupo());
+                 duplicarVigenciaEvento.setEvento(filtrarListVigenciasEventos.get(index).getEvento());
+                 
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -726,6 +733,8 @@ public class ControlEmplVigenciaEvento implements Serializable{
                 //RequestContext.getCurrentInstance().update("form:aceptar");
             }
             permitirIndex = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVigenciaEventos");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaEvento.setEvento(eventoSeleccionado);
             RequestContext context = RequestContext.getCurrentInstance();
@@ -764,7 +773,7 @@ public class ControlEmplVigenciaEvento implements Serializable{
     public void listaValoresBoton() {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
-            if (cualCelda == 0) {
+            if (cualCelda == 2) {
                 context.update("form:EventosDialogo");
                 context.execute("EventosDialogo.show()");
                 tipoActualizacion = 0;

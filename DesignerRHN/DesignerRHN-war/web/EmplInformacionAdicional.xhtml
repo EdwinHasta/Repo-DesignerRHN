@@ -11,23 +11,23 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Informaciones Adicionales" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Informaciones Adicionales" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <h:outputText style="position: absolute;top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px; "  id="nombreEmpleado" value="#{controlEmplInformacionAdicional.empleado.persona.primerapellido} #{controlEmplInformacionAdicional.empleado.persona.segundoapellido} #{controlEmplInformacionAdicional.empleado.persona.nombre}"/>  
 
-                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 820px; height: 285px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue;text-align: left"><strong>Informacion Adicional Del Empleado</strong></legend>
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 820px; height: 330px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue;text-align: left"><strong>Informacion Adicional Del Empleado</strong></legend>
                             <!-- TABLA EMPLVIGENCIACONTRATOS -->
 
                             <p:dataTable id="datosInfoAdEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 820px"                           
-                                         value="#{controlEmplInformacionAdicional.listInformacionAdicional}" scrollable="true" scrollHeight="150" scrollWidth="820"
+                                         value="#{controlEmplInformacionAdicional.listInformacionAdicional}" scrollable="true" scrollHeight="190" scrollWidth="820"
                                          filteredValue="#{controlEmplInformacionAdicional.filtrarListInformacionAdicional}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" rows="6"  
+                                         editable="true" editMode="cell" paginator="true" rows="9"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:ajax event="filter" listener="#{controlEmplInformacionAdicional.eventoFiltrar()}"/>
 
-                                <p:column headerText="Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="infoAdFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="infoAdFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechainicial}" >
@@ -50,7 +50,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="infoAdFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="infoAdFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechafinal}" >
@@ -73,7 +73,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Grupo" sortBy="#{info.grupo.descripcion}" filterBy="#{info.grupo.descripcion}" filterMatchMode="contains" id="infoAdGrupo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Grupo" sortBy="#{info.grupo.descripcion}" filterBy="#{info.grupo.descripcion}" filterMatchMode="contains" id="infoAdGrupo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.grupo.descripcion}" /></f:facet>  
                                         <f:facet name="input">
@@ -90,7 +90,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Tipo Dato" style="padding: 0"  filterMatchMode="contains" id="infoAdTipoDato" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="Tipo Dato" style="padding: 0;font-size: 11px"  filterMatchMode="contains" id="infoAdTipoDato" width="100" filterStyle="display: none; visibility: hidden;" >                                  
 
                                     <p:selectOneMenu id="editarTipoDato" value="#{info.tipodato}" style="width: 99%; font-weight: bold;text-transform: uppercase">  
                                         <f:selectItem itemLabel="CARACTER" itemValue="C" />  
@@ -104,7 +104,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Caracter" sortBy="#{info.resultadocaracter}" filterBy="#{info.resultadocaracter}" filterMatchMode="contains" id="infoAdCaracter" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Caracter" sortBy="#{info.resultadocaracter}" filterBy="#{info.resultadocaracter}" filterMatchMode="contains" id="infoAdCaracter" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.resultadocaracter}" /></f:facet>  
                                         <f:facet name="input">
@@ -120,7 +120,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Numerico" sortBy="#{info.resultadonumerico}" filterBy="#{info.resultadonumerico}" filterMatchMode="contains" id="infoAdNumerico" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Numerico" sortBy="#{info.resultadonumerico}" filterBy="#{info.resultadonumerico}" filterMatchMode="contains" id="infoAdNumerico" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.resultadonumerico}" /></f:facet>  
                                         <f:facet name="input">
@@ -136,7 +136,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha" sortBy="#{info.resultadofecha}" filterBy="#{info.resultadofecha}" filterMatchMode="contains"  width="72" id="infoAdFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Fecha" sortBy="#{info.resultadofecha}" filterBy="#{info.resultadofecha}" filterMatchMode="contains"  width="72" id="infoAdFecha" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.resultadofecha}" >
@@ -159,7 +159,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Observacion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="infoAdObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Observacion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="infoAdObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.descripcion}" /></f:facet>  
                                         <f:facet name="input">
@@ -178,7 +178,7 @@
                             </p:dataTable>  
                         </fieldset>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 30px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlEmplInformacionAdicional.guardarCambiosInfoAd()}" process="@this" />
@@ -253,9 +253,9 @@
 
 
 
-                        <p:commandButton style="position: absolute; left: 680px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosInfoAdEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 20px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplInformacionAdicional.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 780px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlEmplInformacionAdicional.salir()}" action="individualEmpl" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosInfoAdEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplInformacionAdicional.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlEmplInformacionAdicional.salir()}" action="individualEmpl" process="@this" />
 
                     </p:panel>
 

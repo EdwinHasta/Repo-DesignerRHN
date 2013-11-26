@@ -194,7 +194,7 @@
                                             AFILIACIONES: Observe y/o ingrese todos las afiliaciones<br/> que el empleado tiene con los diferentes terceros.
                                         </p:tooltip>
 
-                                        <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/ibc.gif); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/ibc.gif); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="ibcs" actionListener="#{controlIbcAutoliquid.obtenerTipoEntidad(item.empleado.secuencia)}"/>
                                         <p:tooltip style="font-size: 12px" for="IBC" value="I.B.C.: Observe y/o ingrese todos los históricos de I.B.C."  />
 
                                         <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/viajero.gif); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}"/>

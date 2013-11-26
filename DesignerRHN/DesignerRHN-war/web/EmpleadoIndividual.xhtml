@@ -323,11 +323,11 @@
                                 <h:outputText value="Entrevistas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
                                 <p:inputText id="entrevistas" value="#{controlEmpleadoIndividual.entrevistasP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
 
-                                <p:commandButton id="btnCensos" value="" style="background-image: url(Imagenes/indicadorgestion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
+                                <p:commandButton id="btnCensos" value="" style="background-image: url(Imagenes/indicadorgestion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this" action="vigenciasIndicadores" actionListener="#{controlEmplVigenciaIndicador.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <h:outputText value="Censos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
                                 <p:inputText id="censos" value="#{controlEmpleadoIndividual.indicadoresP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
 
-                                <p:commandButton id="btnDemandas" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this"/>
+                                <p:commandButton id="btnDemandas" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this" action="demandaEmpl" actionListener="#{controlEmplDemanda.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <h:outputText value="Demandas" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
                                 <p:inputText id="demandas" value="#{controlEmpleadoIndividual.demandasP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 165px"/>
 
@@ -342,11 +342,11 @@
                                 <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/evento.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px " process="@this" action="vigenciasEvents" actionListener="#{controlEmplVigenciaEvento.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <h:outputText value="Eventos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 10px" />
                                 <p:inputText id="eventos" value="#{controlEmpleadoIndividual.eventosP}" readonly="true" style="position: absolute; left: 45px; top: 23px; width: 140px"/>
-                                <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/deporte.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; " process="@this"/>
+                                <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/deporte.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; " process="@this" action="infoDeportesPersona" actionListener="#{controlVigenciaDeporte.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <h:outputText value="Deporte" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 50px" />
                                 <p:inputText id="deporte" value="#{controlEmpleadoIndividual.deportesP}" readonly="true" style="position: absolute; left: 45px; top: 63px; width: 140px"/>
 
-                                <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/aficion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px; left: 218px " action="vigenciaaficion" process="@this"/>
+                                <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/aficion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px; left: 218px " action="infoAficionesPersona" actionListener="#{controlVigenciaAficion.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
                                 <h:outputText value="Aficiones" style="position: absolute; left: 258px; font-weight: bold; color: #14388B; top: 10px;" />
                                 <p:inputText id="aficiones" value="#{controlEmpleadoIndividual.aficionesP}" readonly="true" style="position: absolute; left: 256px; top: 23px; width: 140px"/>
 

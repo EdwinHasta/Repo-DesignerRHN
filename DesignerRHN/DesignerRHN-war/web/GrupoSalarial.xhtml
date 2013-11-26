@@ -12,15 +12,15 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Grupos Salariales" style=" font-size: 12px; position: absolute; width: 874px; height: 530px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Grupos Salariales" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 680px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosGrupoSalarial" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosGrupoSalarial" process="@this" />
                         <p:commandButton style="position: absolute; left: 20px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlGrupoSalarial.cancelarModificacionGeneral()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 780px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlGrupoSalarial.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlGrupoSalarial.salir()}" action="nomina" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 830px; height: 220px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue"><strong>Grupos Salariales</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Grupos Salariales</strong></legend>
                             <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
 
                             <p:dataTable id="datosGrupoSalarial" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;"                           
@@ -31,7 +31,7 @@
 
                                 <p:ajax event="filter" listener="#{controlGrupoSalarial.eventoFiltrar()}"/>
 
-                                <p:column headerText="Codigo" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="gsCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Codigo" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="gsCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
@@ -47,7 +47,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="gsDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="gsDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.descripcion}" /></f:facet>  
                                         <f:facet name="input">
@@ -63,7 +63,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Salario" sortBy="#{info.salario}" filterBy="#{info.salario}" filterMatchMode="contains" id="gsSalario" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Salario" sortBy="#{info.salario}" filterBy="#{info.salario}" filterMatchMode="contains" id="gsSalario" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.salario}" >
                                                 <f:convertNumber currencySymbol="$" type="currency" />
@@ -84,7 +84,7 @@
                             </p:dataTable>  
                         </fieldset> 
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlGrupoSalarial.guardarGeneral()}" process="@this" />
@@ -132,7 +132,7 @@
 
 
                         <fieldset style="position: absolute; left: 10px; top: 315px; font-size: 10px; width: 830px; height: 177px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue"><strong>Vigencias Grupos Salariales</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Vigencias Grupos Salariales</strong></legend>
                             <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
 
                             <p:dataTable id="datosVigenciaGrupoSalarial" var="infoV" rowKey="#{infoV.secuencia}" rowIndexVar="indiceV" style="font-size: 10px; border: 1px; text-align: left;"                           
@@ -143,7 +143,7 @@
 
                                 <p:ajax event="filter" listener="#{controlGrupoSalarial.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha Vigencia" sortBy="#{infoV.fechavigencia}" filterBy="#{infoV.fechavigencia}" filterMatchMode="contains"  width="72" id="vgsFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Fecha Vigencia" sortBy="#{infoV.fechavigencia}" filterBy="#{infoV.fechavigencia}" filterMatchMode="contains"  width="72" id="vgsFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoV.fechavigencia}" >
@@ -163,7 +163,7 @@
                                 </p:column>
 
 
-                                <p:column headerText="Valor" sortBy="#{infoV.valor}" filterBy="#{infoV.valor}" filterMatchMode="contains" id="vgsValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Valor" sortBy="#{infoV.valor}" filterBy="#{infoV.valor}" filterMatchMode="contains" id="vgsValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoV.valor}" >
                                                 <f:convertNumber currencySymbol="$" type="currency" />

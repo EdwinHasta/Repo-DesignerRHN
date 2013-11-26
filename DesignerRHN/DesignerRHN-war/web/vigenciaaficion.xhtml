@@ -12,27 +12,26 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Histórico de Eventos" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Histórico de Aficiones" style=" font-size: 13px; position: absolute; width: 874px; height: 490px; text-align: left" >  
 
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplVigenciaEvento.empleado.persona.primerapellido} #{controlEmplVigenciaEvento.empleado.persona.segundoapellido} #{controlEmplVigenciaEvento.empleado.persona.nombre}">
+                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaAficion.empleado.persona.primerapellido} #{controlVigenciaAficion.empleado.persona.segundoapellido} #{controlVigenciaAficion.empleado.persona.nombre}">
                         </h:outputText>
 
-                        <p:commandButton style="position: absolute; left: 710px; top: 460px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" icon="ui-icon-check" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciaEventos" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 460px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplVigenciaEvento.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 460px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplVigenciaEvento.salir()}" action="emplIndv" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 435px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" icon="ui-icon-check" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVigenciasAficiones" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 435px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciaAficion.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 435px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaAficion.salir()}" action="vigAfiEmplInd" process="@this" />
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 830px; height: 340px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue;text-align:left"><strong>Eventos por Empleado</strong></legend>
-                            <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 830px; height: 330px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue;text-align:left"><strong>Aficiones por Persona</strong></legend>
 
-                            <p:dataTable id="datosVigenciaEventos" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 820px"                           
-                                         value="#{controlEmplVigenciaEvento.listVigenciasEventos}" scrollable="true" scrollHeight="200" scrollWidth="820"
-                                         filteredValue="#{controlEmplVigenciaEvento.filtrarListVigenciasEventos}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" rows="9"  
+                            <p:dataTable id="datosVigenciasAficiones" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 820px"                           
+                                         value="#{controlVigenciaAficion.listVigenciasAficiones}" scrollable="true" scrollHeight="200" scrollWidth="820"
+                                         filteredValue="#{controlVigenciaAficion.filtrarListVigenciasAficiones}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="8"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                                <p:ajax event="filter" listener="#{controlEmplVigenciaEvento.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlVigenciaAficion.eventoFiltrar()}"/>
 
                                 <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="veFechaInicial" filterStyle="display: none; visibility: hidden;" style="width: 110px; font-size: 11px" >  
                                     <p:cellEditor>  
@@ -44,9 +43,9 @@
                                         <f:facet name="input">
                                             <p:calendar  style="font-size: 10px;" value="#{info.fechainicial}" id="editFechaInicialVigencia"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" update="editFechaInicialVigencia" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" update="editFechaInicialVigencia" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaEvento.cambiarIndice(indice,0)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" update="editFechaInicialVigencia" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" update="editFechaInicialVigencia" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaAficion.cambiarIndice(indice,0)}" process="@this"/> 
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -67,9 +66,9 @@
                                         <f:facet name="input">
                                             <p:calendar  style="font-size: 10px;" value="#{info.fechafinal}" id="editFechaFinalVigencia"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" update="editFechaFinalVigencia" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" update="editFechaFinalVigencia" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaEvento.cambiarIndice(indice,1)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" update="editFechaFinalVigencia" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" update="editFechaFinalVigencia" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaAficion.cambiarIndice(indice,1)}" process="@this"/> 
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
@@ -80,21 +79,21 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Descripcion" sortBy="#{info.evento.descripcion}" filterBy="#{info.evento.descripcion}" style="width: 110px; font-size: 11px"
+                                <p:column headerText="Descripcion" sortBy="#{info.aficion.descripcion}" filterBy="#{info.aficion.descripcion}" style="width: 110px; font-size: 11px"
                                           filterMatchMode="contains" id="veDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.evento.descripcion}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.aficion.descripcion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.evento.descripcion}" id="editarDescripcionVigencia" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice, 'EVENTOS', info.evento.descripcion)}"/>
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaEvento.cambiarIndice(indice, 2)}" />
-                                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaEvento.asignarIndex(indice, 0)}"/>
+                                            <p:inputText value="#{info.aficion.descripcion}" id="editarDescripcionVigencia" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice, 'AFICIONES', info.aficion.descripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaAficion.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaAficion.asignarIndex(indice, 0)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooDescripcion" value="Descripcion"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooDescripcion" value="Descripcion"/>
                                     </f:facet>
                                 </p:column>  
 
@@ -104,8 +103,8 @@
                                         <f:facet name="output"><h:outputText value="#{info.valorcuantitativo}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText  value="#{info.valorcuantitativo}" id="editarIndividual" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaEvento.cambiarIndice(indice,3)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" process="@this" update="editarIndividual"/>                                   
+                                                <p:ajax event="select" listener="#{controlVigenciaAficion.cambiarIndice(indice,3)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" process="@this" update="editarIndividual"/>                                   
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -120,8 +119,8 @@
                                         <f:facet name="output"><h:outputText value="#{info.valorcualitativo}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText  value="#{info.valorcualitativo}" id="editarCIndividual" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaEvento.cambiarIndice(indice,4)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" process="@this" update="editarCIndividual"/>                                   
+                                                <p:ajax event="select" listener="#{controlVigenciaAficion.cambiarIndice(indice,4)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" process="@this" update="editarCIndividual"/>                                   
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -136,13 +135,13 @@
                                         <f:facet name="output"><h:outputText value="#{info.valorcuantitativogrupo}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText  value="#{info.valorcuantitativogrupo}" id="editarGrupal" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaEvento.cambiarIndice(indice,5)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" process="@this" update="editarGrupal"/>                                   
+                                                <p:ajax event="select" listener="#{controlVigenciaAficion.cambiarIndice(indice,5)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" process="@this" update="editarGrupal"/>                                   
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText  id="fooGrupal" value="Puntaje Grupal"/>
+                                        <h:outputText id="fooGrupal" value="Puntaje Grupal"/>
                                     </f:facet>
                                 </p:column>
 
@@ -152,8 +151,8 @@
                                         <f:facet name="output"><h:outputText value="#{info.valorcuantitativogrupo}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText  value="#{info.valorcuantitativogrupo}" id="editarCGrupal" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaEvento.cambiarIndice(indice,6)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.modificarVigenciaEvento(indice)}" process="@this" update="editarCGrupal"/>                                   
+                                                <p:ajax event="select" listener="#{controlVigenciaAficion.cambiarIndice(indice,6)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciaAficion.modificarVigenciaAficion(indice)}" process="@this" update="editarCGrupal"/>                                   
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -161,79 +160,78 @@
                                         <h:outputText  id="fooCGrupal" value="Puntaje Cualitativo Grupal"/>
                                     </f:facet>
                                 </p:column>
-
                             </p:dataTable>  
                         </fieldset> 
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlEmplVigenciaEvento.guardarCambios()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaAficion.guardarCambios()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
 
                                 <p:separator />
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
 
                                 <p:separator />
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEmplVigenciaEvento.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciaAficion.exportXLS()}" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.limpiarNuevaVigenciaEvento()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosVigenciaExportar" fileName="VigenciasEventosXML" encoding="UTF-8"/> 
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.limpiarNuevaVigenciaAficion()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosVigenciaExportar" fileName="VigenciasAficionesXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVigencias.show()" update=":formularioDialogos:nuevaVigencias" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Evento" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Aficion" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.borrarVigenciaEvento()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Evento" />
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.borrarVigenciaAficion()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Aficion" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.duplicarVigenciaEventoM()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Evento" />
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.duplicarVigenciaAficionM()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Aficion" />
                                 <p:separator /> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaEvento.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaAficion.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <p:dialog header="Evento" widgetVar="EventosDialogo" draggable="false" resizable="false" closable="false" id="EventosDialogo"  
+                        <p:dialog header="Aficiones" widgetVar="AficionesDialogo" draggable="false" resizable="false" closable="false" id="AficionesDialogo"  
                                   showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                            <p:dataTable id="lovEventos" style="font-size: 11px; width: 430px" var="eventos" value="#{controlEmplVigenciaEvento.listEventos}" rowKey="#{eventos.secuencia}"
-                                         selection="#{controlEmplVigenciaEvento.eventoSeleccionado}" selectionMode="single" widgetVar="lovEventos" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                         filteredValue="#{controlEmplVigenciaEvento.filtrarListEventos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
-                                <p:ajax event="rowSelect" listener="#{controlEmplVigenciaEvento.activarAceptar()}" update=":form:aceptarE"/>
+                            <p:dataTable id="lovAficiones" style="font-size: 11px; width: 430px" var="aficion" value="#{controlVigenciaAficion.listAficiones}" rowKey="#{aficion.secuencia}"
+                                         selection="#{controlVigenciaAficion.aficionSeleccionada}" selectionMode="single" widgetVar="lovAficiones" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlVigenciaAficion.filtrarListAficiones}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlVigenciaAficion.activarAceptar()}" update=":form:aceptarA"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Evento: "  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovEventos.filter();" style="width:250px; position: relative; left: 30px;" />  
+                                    <h:outputText value="Buscar Aficion: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovAficiones.filter();" style="width:250px; position: relative; left: 30px;" />  
                                 </f:facet>
 
-                                <p:column filterBy="#{eventos.descripcion}" width="100" filterMatchMode="contains" filterStyle="width: 80px">
+                                <p:column filterBy="#{aficion.descripcion}" width="100" filterMatchMode="contains" filterStyle="width: 80px">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="Descripcion" />
+                                        <h:outputText style="text-align: center" value="Descripcion Aficion" />
                                     </f:facet>
-                                    <h:outputText  value="#{eventos.descripcion}" />
+                                    <h:outputText  value="#{aficion.descripcion}" />
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarE" style="position: relative; left: 230px" value="Aceptar" disabled="#{controlEmplVigenciaEvento.aceptar}" onclick="EventosDialogo.hide(), lovEventos.clearFilters();" actionListener="#{controlEmplVigenciaEvento.actualizarEvento()}" update="lovEventos, aceptarE, datosVigenciaEventos" process="@this">
-                                <p:resetInput target=":form:lovEventos:globalFilter"/>
+                            <p:commandButton id="aceptarA" style="position: relative; left: 230px" value="Aceptar" disabled="#{controlVigenciaAficion.aceptar}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlVigenciaAficion.actualizarAficion()}" update="lovAficiones, aceptarA, datosVigenciasAficiones" process="@this">
+                                <p:resetInput target=":form:lovAficiones:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasE" style="position: relative; left: 250px" value="Atras" onclick="EventosDialogo.hide(), lovEventos.clearFilters();" actionListener="#{controlEmplVigenciaEvento.cancelarCambioEvento()}" update="lovEventos" process="@this">
-                                <p:resetInput target=":form:lovEventos:globalFilter"/>
+                            <p:commandButton id="atrasA" style="position: relative; left: 250px" value="Atras" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlVigenciaAficion.cancelarCambioAficion()}" update="lovAficiones" process="@this">
+                                <p:resetInput target=":form:lovAficiones:globalFilter"/>
                             </p:commandButton>
                         </p:dialog> 
 
@@ -242,21 +240,21 @@
                     <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaEvento.guardarCambios()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaAficion.guardarCambios()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                         <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla VIGENCIASEVENTOS tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplVigenciaEvento.backUpSecRegistro, 'VigenciasEventos', 'vigenciasERastros')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla VIGENCIASAFICIONES tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaAficion.backUpSecRegistro, 'VigenciasAficiones', 'vigenciaAfiRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla VIGENCIASEVENTOS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasEventos', 'vigenciasERastros')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla VIGENCIASAFICIONES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasAficiones', 'vigenciaAfiRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -273,7 +271,7 @@
                     <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplVigenciaEvento.backUpSecRegistro, 'VigenciasEventos', 'vigenciasERastros')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaAficion.backUpSecRegistro, 'VigenciasAficiones', 'vigenciaAfiRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -291,7 +289,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplVigenciaEvento.activarCtrlF11()}"/> 
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaAficion.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
 
@@ -302,55 +300,55 @@
                         <p:panel id="nuevaVigencias" style="border: none;">
 
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlEmplVigenciaEvento.nuevaVigenciaEvento.fechainicial}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlVigenciaAficion.nuevaVigenciaAficion.fechainicial}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaInicial"/>
                                 <p:ajax event="change" update="nuevaFechaInicial"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 220px;" value="#{controlEmplVigenciaEvento.nuevaVigenciaEvento.fechafinal}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 220px;" value="#{controlVigenciaAficion.nuevaVigenciaAficion.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
                                 <p:ajax event="change" update="nuevaFechaFinal"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Descripcion: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
-                            <p:inputText id="nuevaDescripcion" value="#{controlEmplVigenciaEvento.nuevaVigenciaEvento.evento.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px;">
-                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaEvento.asignarIndex(indice,1)}"/>
-                                <p:ajax event="click" listener="#{controlEmplVigenciaEvento.valoresBackupAutocompletar(1, 'EVENTOS')}" />
-                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.autocompletarNuevoyDuplicado('EVENTOS', controlEmplVigenciaEvento.nuevaVigenciaEvento.evento.descripcion, 1)}" />
+                            <p:inputText id="nuevaDescripcion" value="#{controlVigenciaAficion.nuevaVigenciaAficion.aficion.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaAficion.asignarIndex(indice,1)}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaAficion.valoresBackupAutocompletar(1, 'AFICIONES')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaAficion.autocompletarNuevoyDuplicado('AFICIONES', controlVigenciaAficion.nuevaVigenciaAficion.aficion.descripcion, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 351px; top: 150px;  " id="btnNuevaDescripcion" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaEvento.asignarIndex(indice,1)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 351px; top: 150px;  " id="btnNuevaDescripcion" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaAficion.asignarIndex(indice,1)}"/>   
                             <p:watermark for="nuevaDescripcion" value="Descripcion" />
 
                             <strong><h:outputText value="Puntaje Individual: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
-                            <p:inputText id="nuevaIndividual" value="#{controlEmplVigenciaEvento.nuevaVigenciaEvento.valorcuantitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px;">
+                            <p:inputText id="nuevaIndividual" value="#{controlVigenciaAficion.nuevaVigenciaAficion.valorcuantitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px;">
                                 <p:ajax event="change" update="nuevaIndividual"/>
                             </p:inputText>
                             <p:watermark for="nuevaIndividual" value="Puntaje Ind." />
 
                             <strong><h:outputText value="Puntaje Cualitativo Ind.: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
-                            <p:inputText id="nuevaGIndividual" value="#{controlEmplVigenciaEvento.nuevaVigenciaEvento.valorcualitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px;">
+                            <p:inputText id="nuevaGIndividual" value="#{controlVigenciaAficion.nuevaVigenciaAficion.valorcualitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px;">
                                 <p:ajax event="change" update="nuevaGIndividual"/>
                             </p:inputText>
                             <p:watermark for="nuevaGIndividual" value="Puntaje Cualitativo Ind." />
 
                             <strong><h:outputText value="Puntaje Grupal: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
-                            <p:inputText id="nuevaGrupal" value="#{controlEmplVigenciaEvento.nuevaVigenciaEvento.valorcuantitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 270px;">
+                            <p:inputText id="nuevaGrupal" value="#{controlVigenciaAficion.nuevaVigenciaAficion.valorcuantitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 270px;">
                                 <p:ajax event="change" update="nuevaGrupal"/>
                             </p:inputText>
                             <p:watermark for="nuevaGrupal" value="Puntaje Grup." />
 
                             <strong><h:outputText value="Puntaje Cualitativo Grp.: " style="font-size: 14px; position: absolute; top: 310px; left: 50px" /></strong>
-                            <p:inputText id="nuevaCGrupal" value="#{controlEmplVigenciaEvento.nuevaVigenciaEvento.valorcualitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 310px;">
+                            <p:inputText id="nuevaCGrupal" value="#{controlVigenciaAficion.nuevaVigenciaAficion.valorcualitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 310px;">
                                 <p:ajax event="change" update="nuevaCGrupal"/>
                             </p:inputText>
                             <p:watermark for="nuevaCGrupal" value="Puntaje Cualitativo Grup." />
 
-                            <p:commandButton id="limpiarV" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 370px;" actionListener="#{controlEmplVigenciaEvento.limpiarNuevaVigenciaEvento()}" update="nuevaVigencias" process="@this"/>
-                            <p:commandButton id="agregarV" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlEmplVigenciaEvento.agregarNuevaVigenciaEvento()}" onclick="NuevoRegistroVigencias.hide();"  />
-                            <p:commandButton id="cancelarV" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlEmplVigenciaEvento.limpiarNuevaVigenciaEvento()}" update="nuevaVigencias" onclick="NuevoRegistroVigencias.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarV" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 370px;" actionListener="#{controlVigenciaAficion.limpiarNuevaVigenciaAficion()}" update="nuevaVigencias" process="@this"/>
+                            <p:commandButton id="agregarV" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlVigenciaAficion.agregarNuevaVigenciaAficion()}" onclick="NuevoRegistroVigencias.hide();"  />
+                            <p:commandButton id="cancelarV" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlVigenciaAficion.limpiarNuevaVigenciaAficion()}" update="nuevaVigencias" onclick="NuevoRegistroVigencias.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -361,101 +359,101 @@
                         <p:panel id="duplicarVigencias" style="border: none;">
 
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlEmplVigenciaEvento.duplicarVigenciaEvento.fechainicial}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlVigenciaAficion.duplicarVigenciaAficion.fechainicial}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaInicial"/>
                                 <p:ajax event="change" update="duplicarFechaInicial"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 220px;" value="#{controlEmplVigenciaEvento.duplicarVigenciaEvento.fechafinal}"  styleClass="ui-datepicker, myClass2"  
+                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 220px;" value="#{controlVigenciaAficion.duplicarVigenciaAficion.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
                                 <p:ajax event="change" update="duplicarFechaFinal"/>
                             </p:calendar>
 
                             <strong><h:outputText value="Descripcion: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
-                            <p:inputText id="duplicarDescripcion" value="#{controlEmplVigenciaEvento.duplicarVigenciaEvento.evento.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px;">
-                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaEvento.asignarIndex(indice,2)}"/>
-                                <p:ajax event="click" listener="#{controlEmplVigenciaEvento.valoresBackupAutocompletar(2, 'EVENTOS')}" />
-                                <p:ajax event="change" listener="#{controlEmplVigenciaEvento.autocompletarNuevoyDuplicado('EVENTOS', controlEmplVigenciaEvento.duplicarVigenciaEvento.evento.descripcion, 2)}" />
+                            <p:inputText id="duplicarDescripcion" value="#{controlVigenciaAficion.duplicarVigenciaAficion.aficion.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px;">
+                                <p:ajax event="dblclick" listener="#{controlVigenciaAficion.asignarIndex(indice,2)}"/>
+                                <p:ajax event="click" listener="#{controlVigenciaAficion.valoresBackupAutocompletar(2, 'AFICIONES')}" />
+                                <p:ajax event="change" listener="#{controlVigenciaAficion.autocompletarNuevoyDuplicado('AFICIONES', controlVigenciaAficion.duplicarVigenciaAficion.aficion.descripcion, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 351px; top: 150px;  " id="btnDuplicarDescripcion" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaEvento.asignarIndex(indice,1)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 351px; top: 150px;  " id="btnDuplicarDescripcion" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaAficion.asignarIndex(indice,2)}"/>   
                             <p:watermark for="duplicarDescripcion" value="Descripcion" />
 
                             <strong><h:outputText value="Puntaje Individual: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
-                            <p:inputText id="duplicarIndividual" value="#{controlEmplVigenciaEvento.duplicarVigenciaEvento.valorcuantitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px;">
+                            <p:inputText id="duplicarIndividual" value="#{controlVigenciaAficion.duplicarVigenciaAficion.valorcuantitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px;">
                                 <p:ajax event="change" update="duplicarIndividual"/>
                             </p:inputText>
                             <p:watermark for="duplicarIndividual" value="Puntaje Ind." />
 
                             <strong><h:outputText value="Puntaje Cualitativo Ind.: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
-                            <p:inputText id="duplicarGIndividual" value="#{controlEmplVigenciaEvento.duplicarVigenciaEvento.valorcualitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px;">
+                            <p:inputText id="duplicarGIndividual" value="#{controlVigenciaAficion.duplicarVigenciaAficion.valorcualitativo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px;">
                                 <p:ajax event="change" update="duplicarGIndividual"/>
                             </p:inputText>
                             <p:watermark for="duplicarGIndividual" value="Puntaje Cualitativo Ind." />
 
                             <strong><h:outputText value="Puntaje Grupal: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
-                            <p:inputText id="duplicarGrupal" value="#{controlEmplVigenciaEvento.duplicarVigenciaEvento.valorcuantitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 270px;">
+                            <p:inputText id="duplicarGrupal" value="#{controlVigenciaAficion.duplicarVigenciaAficion.valorcuantitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 270px;">
                                 <p:ajax event="change" update="duplicarGrupal"/>
                             </p:inputText>
                             <p:watermark for="duplicarGrupal" value="Puntaje Grup." />
 
                             <strong><h:outputText value="Puntaje Cualitativo Grp.: " style="font-size: 14px; position: absolute; top: 310px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCGrupal" value="#{controlEmplVigenciaEvento.duplicarVigenciaEvento.valorcualitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 310px;">
+                            <p:inputText id="duplicarCGrupal" value="#{controlVigenciaAficion.duplicarVigenciaAficion.valorcualitativogrupo}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 310px;">
                                 <p:ajax event="change" update="duplicarCGrupal"/>
                             </p:inputText>
                             <p:watermark for="duplicarCGrupal" value="Puntaje Cualitativo Grup." />
 
-                            <p:commandButton id="limpiarDuplicadoE" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top:370px;" actionListener="#{controlEmplVigenciaEvento.limpiarDuplicar()}" update="duplicarVigencias" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoE" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlEmplVigenciaEvento.confirmarDuplicar()}" onclick="DuplicarRegistroVigencias.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoE" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlEmplVigenciaEvento.limpiarDuplicar()}" update="duplicarVigencias" onclick="DuplicarRegistroVigencias.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top:370px;" actionListener="#{controlVigenciaAficion.limpiarDuplicar()}" update="duplicarVigencias" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoD" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlVigenciaAficion.confirmarDuplicar()}" onclick="DuplicarRegistroVigencias.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoD" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlVigenciaAficion.limpiarDuplicar()}" update="duplicarVigencias" onclick="DuplicarRegistroVigencias.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialD" header="Fecha Inicial Vigencias Eventos" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplVigenciaEvento.editarVigenciaEvento.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaInicialD" header="Fecha Inicial Vigencias Aficiones" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaAficion.editarVigenciaAficion.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicial" value="Atras" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalD" header="Fecha Final Vigencias Eventos" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplVigenciaEvento.editarVigenciaEvento.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaFinalD" header="Fecha Final Vigencias Aficiones" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciaAficion.editarVigenciaAficion.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinalD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarDescripcionD" header="Descripcion Vigencia Evento" widgetVar="editarDescripcionD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlEmplVigenciaEvento.editarVigenciaEvento.evento.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarDescripcionD" header="Descripcion Vigencias Aficiones" widgetVar="editarDescripcionD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlVigenciaAficion.editarVigenciaAficion.aficion.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarDescripcion" value="Atras" onclick="editarDescripcionD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarIndividualD" header="Puntaje Individual" widgetVar="editarIndividualD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlEmplVigenciaEvento.editarVigenciaEvento.valorcuantitativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlVigenciaAficion.editarVigenciaAficion.valorcuantitativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarIndividual" value="Atras" onclick="editarIndividualD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarCIndividualD" header="Puntaje Cualitativo Individual" widgetVar="editarCIndividualD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlEmplVigenciaEvento.editarVigenciaEvento.valorcualitativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlVigenciaAficion.editarVigenciaAficion.valorcualitativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCIndividual" value="Atras" onclick="editarCIndividualD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarGrupalD" header="Puntaje Grupal" widgetVar="editarGrupalD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlEmplVigenciaEvento.editarVigenciaEvento.valorcuantitativogrupo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlVigenciaAficion.editarVigenciaAficion.valorcuantitativogrupo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarGrupal" value="Atras" onclick="editarGrupalD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarCGrupalD" header="Puntaje Grupal" widgetVar="editarCGrupalD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlEmplVigenciaEvento.editarVigenciaEvento.valorcualitativogrupo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlVigenciaAficion.editarVigenciaAficion.valorcualitativogrupo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCGrupal" value="Atras" onclick="editarCGrupalD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="datosVigenciaExportar" var="info2" style="visibility: hidden; display: none;"                           
-                                 value="#{controlEmplVigenciaEvento.listVigenciasEventos}"> 
+                                 value="#{controlVigenciaAficion.listVigenciasAficiones}"> 
 
 
                         <p:column>  
@@ -478,7 +476,7 @@
 
                         <p:column headerText="Descripcion">                                  
                             <f:facet name="header"><h:outputText value="Descripcion"/> </f:facet> 
-                            <h:outputText value="#{info2.evento.descripcion}" />
+                            <h:outputText value="#{info2.aficion.descripcion}" />
                         </p:column>  
 
                         <p:column headerText="Puntaje Individual">                                  

@@ -11,12 +11,12 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Cuentas" style=" font-size: 12px; position: absolute; width: 874px; height: 540px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Cuentas" style=" font-size: 13px; position: absolute; width: 874px; height: 540px; text-align: left" >  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #009;font-weight: bold;text-align: right;width: 240px;left: 300px;" value="Cuenta: "/>
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: left;width: 240px;left: 550px;" id="nombreCuenta" value="#{controlDetalleCuenta.cuentaActual.codigo} - #{controlDetalleCuenta.cuentaActual.descripcion}">
                         </h:outputText>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;" />
@@ -63,7 +63,7 @@
                         </p:toolbar> 
 
                         <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 830px; height: 210px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>Cuenta Credito</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Cuenta Credito</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
                             <p:dataTable id="datosCuentaCredito" var="infoCredito" rowKey="#{infoCredito.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 830px"   
@@ -74,7 +74,7 @@
 
                                 <p:ajax event="filter" listener="#{controlDetalleCuenta.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{infoCredito.fechainicial}" filterBy="#{infoCredito.fechainicial}" filterMatchMode="contains" 
+                                <p:column style="font-size: 11px" headerText="Fecha Inicial" sortBy="#{infoCredito.fechainicial}" filterBy="#{infoCredito.fechainicial}" filterMatchMode="contains" 
                                           width="72" id="creditoFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -96,7 +96,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Final" sortBy="#{infoCredito.fechafinal}" filterBy="#{infoCredito.fechafinal}" 
+                                <p:column style="font-size: 11px" headerText="Fecha Final" sortBy="#{infoCredito.fechafinal}" filterBy="#{infoCredito.fechafinal}" 
                                           filterMatchMode="contains"  width="72" id="creditoFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -118,7 +118,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Codigo" sortBy="#{infoCredito.concepto.codigo}" filterBy="#{infoCredito.concepto.codigo}" filterMatchMode="contains" 
+                                <p:column style="font-size: 11px" headerText="Codigo" sortBy="#{infoCredito.concepto.codigo}" filterBy="#{infoCredito.concepto.codigo}" filterMatchMode="contains" 
                                           id="creditoCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -136,7 +136,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Descripcion" sortBy="#{infoCredito.concepto.descripcion}" filterBy="#{infoCredito.concepto.descripcion}" 
+                                <p:column style="font-size: 11px" headerText="Descripcion" sortBy="#{infoCredito.concepto.descripcion}" filterBy="#{infoCredito.concepto.descripcion}" 
                                           filterMatchMode="contains" id="creditoDescripcion" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoCredito.concepto.descripcion}"/></f:facet>  
@@ -151,7 +151,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Descripcion CC" sortBy="#{infoCredito.consolidadorc.nombre}" filterBy="#{infoCredito.consolidadorc.nombre}" 
+                                <p:column style="font-size: 11px" headerText="Descripcion CC" sortBy="#{infoCredito.consolidadorc.nombre}" filterBy="#{infoCredito.consolidadorc.nombre}" 
                                           filterMatchMode="contains" id="creditoDescripcionCC" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -169,7 +169,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="CC" sortBy="#{infoCredito.consolidadorc.codigo}" filterBy="#{infoCredito.consolidadorc.codigo}" 
+                                <p:column style="font-size: 11px" headerText="CC" sortBy="#{infoCredito.consolidadorc.codigo}" filterBy="#{infoCredito.consolidadorc.codigo}" 
                                           filterMatchMode="contains" id="creditoCC" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -187,7 +187,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Tipo" sortBy="#{infoCredito.tipocc.nombre}" filterBy="#{infoCredito.tipocc.nombre}" 
+                                <p:column style="font-size: 11px" headerText="Tipo" sortBy="#{infoCredito.tipocc.nombre}" filterBy="#{infoCredito.tipocc.nombre}" 
                                           filterMatchMode="contains" id="creditoTipo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -209,7 +209,7 @@
                         </fieldset>
 
                         <fieldset style="position: absolute;top: 320px;left: 10px;height: 160px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>Cuenta Debito</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Cuenta Debito</strong></legend>
                             <p:dataTable id="datosCuentaDebito" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceD" value="#{controlDetalleCuenta.listCuentasDebito}" 
                                          filteredValue="#{controlDetalleCuenta.filtrarListCuentasDebito}" editable="true" editMode="cell" rows="2" 
                                          scrollable="true" scrollHeight="62" scrollWidth="830" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width: 830px">

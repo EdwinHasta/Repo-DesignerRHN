@@ -11,23 +11,23 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos Legislaciones Laborales" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Históricos Legislaciones Laborales" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                        <h:outputText style="position: absolute;top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px; "  id="nombreEmpleado" value="#{controlVigenciasContratos.empleado.persona.primerapellido} #{controlVigenciasContratos.empleado.persona.segundoapellido} #{controlVigenciasContratos.empleado.persona.nombre}"/>  
 
-                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 820px; height: 285px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue;text-align: left"><strong>Legislación Laboral</strong></legend>
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 820px; height: 315px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue;text-align: left"><strong>Legislación Laboral</strong></legend>
                             <!-- TABLA EMPLVIGENCIACONTRATOS -->
 
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 820px"                           
-                                         value="#{controlVigenciasContratos.vigenciasContratosEmpleado}" scrollable="true" scrollHeight="150" scrollWidth="820"
+                                         value="#{controlVigenciasContratos.vigenciasContratosEmpleado}" scrollable="true" scrollHeight="180" scrollWidth="820"
                                          filteredValue="#{controlVigenciasContratos.filtrarVC}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" rows="6"  
+                                         editable="true" editMode="cell" paginator="true" rows="8"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:ajax event="filter" listener="#{controlVigenciasContratos.eventoFiltrar()}"/>
 
-                                <p:column headerText="Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="vcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="vcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechainicial}" >
@@ -50,7 +50,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="vcFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="vcFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechafinal}" >
@@ -73,7 +73,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Legislación Laboral" sortBy="#{info.contrato.descripcion}" filterBy="#{info.contrato.descripcion}" filterMatchMode="contains" id="vcContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Legislación Laboral" sortBy="#{info.contrato.descripcion}" filterBy="#{info.contrato.descripcion}" filterMatchMode="contains" id="vcContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.contrato.descripcion}" /></f:facet>  
                                         <f:facet name="input">
@@ -86,10 +86,10 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooContratos" value="Legislación Laboral"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooContratos" value="Legislación Laboral"/>
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="Tipo Contrato" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains" id="vcTipoContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Tipo Contrato" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains" id="vcTipoContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tipocontrato.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -102,13 +102,13 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTiposContratos" value="Tipo Contrato"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooTiposContratos" value="Tipo Contrato"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
                         </fieldset>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 30px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasContratos.guardarCambiosVC()}" process="@this" />
@@ -219,9 +219,9 @@
 
 
 
-                        <p:commandButton style="position: absolute; left: 600px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 40px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

@@ -11,11 +11,11 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos Jornadas" style=" font-size: 12px; position: absolute; width: 874px; height: 545px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Históricos Jornadas" style=" font-size: 13px; position: absolute; width: 874px; height: 545px; text-align: left" >  
                         <h:outputText style="position: absolute; top: 60px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px; " id="nombreEmpleado" value="#{controlVigenciaJornada.empleado.persona.primerapellido} #{controlVigenciaJornada.empleado.persona.segundoapellido} #{controlVigenciaJornada.empleado.persona.nombre}">
                         </h:outputText>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaJornada.guardadoGeneral()}" process="@this" />
@@ -62,7 +62,7 @@
                         </p:toolbar> 
 
                         <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 820px; height: 222px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>Jornada del Trabajador</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Jornada del Trabajador</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
                             <p:dataTable id="datosVJEmpleado" var="infoVJ" rowKey="#{infoVJ.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 820px"   
@@ -73,7 +73,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha" sortBy="#{infoVJ.fechavigencia}" filterBy="#{infoVJ.fechavigencia}" filterMatchMode="contains"  width="72" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Fecha" sortBy="#{infoVJ.fechavigencia}" filterBy="#{infoVJ.fechavigencia}" filterMatchMode="contains"  width="72" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoVJ.fechavigencia}" >
@@ -96,7 +96,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Nombre Jornada" sortBy="#{infoVJ.jornadatrabajo.descripcion}" filterBy="#{infoVJ.jornadatrabajo.descripcion}" filterMatchMode="contains" id="vJNombreJornada" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                <p:column style="font-size: 11px" headerText="Nombre Jornada" sortBy="#{infoVJ.jornadatrabajo.descripcion}" filterBy="#{infoVJ.jornadatrabajo.descripcion}" filterMatchMode="contains" id="vJNombreJornada" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoVJ.jornadatrabajo.descripcion}"/></f:facet>  
                                         <f:facet name="input">
@@ -108,11 +108,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooNombreJornada" value="Nombre Jornada"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooNombreJornada" value="Nombre Jornada"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Tipo Descanso" sortBy="#{infoVJ.tipodescanso.descripcion}" filterBy="#{infoVJ.tipodescanso.descripcion}" filterMatchMode="contains" id="vJTipoDescanso" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                <p:column style="font-size: 11px" headerText="Tipo Descanso" sortBy="#{infoVJ.tipodescanso.descripcion}" filterBy="#{infoVJ.tipodescanso.descripcion}" filterMatchMode="contains" id="vJTipoDescanso" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoVJ.tipodescanso.descripcion}"/></f:facet>  
                                         <f:facet name="input">
@@ -124,14 +124,14 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTIpoDescanso" value="Tipo Descanso"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooTIpoDescanso" value="Tipo Descanso"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
                         </fieldset>
 
                         <fieldset style="position: absolute;top: 327px;left: 10px;height: 180px;width: 390px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 10px; color: blue"><strong>Descanso tomado en tiempo</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Descanso tomado en tiempo</strong></legend>
                             <p:dataTable id="datosVigenciaCT" var="info" rowKey="" rowIndexVar="indiceVCT" value="#{controlVigenciaJornada.listVigenciasCompensacionesTiempo}"
                                          editable="true" editMode="cell" rows="3" filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesTiempo}"
                                          scrollable="true" scrollHeight="100" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;">
@@ -149,13 +149,13 @@
                                                         locale="es" pattern="dd/MM/yyyy">
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" update="editarFechaInicialVCT" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" process="@this" update="editarFechaInicialVCT"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCT(indiceVCT,'0')}" process="@this"/> 
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCT(indiceVCT,0)}" process="@this"/> 
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Inicial" style="font-size: 9px" id="fooFechaInicialVCT"/>
+                                        <h:outputText value="Fecha Inicial"  id="fooFechaInicialVCT"/>
                                     </f:facet>
                                 </p:column>
 
@@ -177,7 +177,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVCT"/>
+                                        <h:outputText value="Fecha Final" id="fooFechaFinalVCT"/>
                                     </f:facet>
                                 </p:column>
 
@@ -192,7 +192,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Comentario" style="font-size: 9px" id="fooComentarioVCT"/>
+                                        <h:outputText value="Comentario" id="fooComentarioVCT"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -200,7 +200,7 @@
 
 
                         <fieldset style="position: absolute;top: 327px;left: 440px;height: 180px;width: 390px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 10px; color: blue"><strong>Descanso tomado en dinero</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Descanso tomado en dinero</strong></legend>
                             <p:dataTable id="datosVigenciaCD" var="info2" rowKey="" rowIndexVar="indiceVCD" value="#{controlVigenciaJornada.listVigenciasCompensacionesDinero}"
                                          editable="true" editMode="cell" rows="3" filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesDinero}"
                                          scrollable="true" scrollHeight="100"  emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;">
@@ -246,7 +246,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Final" style="font-size: 9px" id="fooFechaFinalVCD"/>
+                                        <h:outputText value="Fecha Final" id="fooFechaFinalVCD"/>
                                     </f:facet>
                                 </p:column>
 
@@ -263,7 +263,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Comentario" style="font-size: 9px" id="fooComentarioVCD"/>
+                                        <h:outputText value="Comentario"  id="fooComentarioVCD"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>

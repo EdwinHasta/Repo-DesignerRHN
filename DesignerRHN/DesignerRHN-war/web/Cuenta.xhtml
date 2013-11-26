@@ -10,16 +10,16 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Cuentas" style=" font-size: 12px; position: absolute; width: 874px; height: 525px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="Cuentas" style=" font-size: 13px; position: absolute; width: 874px; height: 525px; text-align: left;" >  
 
-                        <h:outputText value="Empresa : " style="position: absolute; top: 45px;left: 400px;color: #14388B;font-weight: bold"/>
+                        <h:outputText value="Empresa : " style="position: absolute; top: 45px;left: 395px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreEmpresa" value="#{controlCuenta.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 460px;"/>
                         <h:outputText value="NIT : " style="position: absolute; top: 45px;left: 730px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nitEmpresa" value="#{controlCuenta.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 760px;"/>
 
 
                         <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 830px; height: 400px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>Cuentas</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Cuentas</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
                             <p:dataTable id="datosCuenta" var="infoC" rowKey="#{infoC.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 830px"   

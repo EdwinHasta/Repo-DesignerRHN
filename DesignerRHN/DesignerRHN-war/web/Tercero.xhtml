@@ -11,16 +11,16 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Mantenimiento de Terceros" style=" font-size: 12px; position: absolute; width: 874px; height: 540px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="Mantenimiento de Terceros" style=" font-size: 13px; position: absolute; width: 874px; height: 540px; text-align: left;" >  
 
-                        <h:outputText value="Empresa : " style="position: absolute; top: 45px;left: 400px;color: #14388B;font-weight: bold"/>
+                        <h:outputText value="Empresa : " style="position: absolute; top: 45px;left: 395px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreEmpresa" value="#{controlTercero.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 460px;"/>
-                        <h:outputText value="NIT : " style="position: absolute; top: 45px;left: 630px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nitEmpresa" value="#{controlTercero.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 660px;"/>
+                        <h:outputText value="NIT : " style="position: absolute; top: 45px;left: 730px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nitEmpresa" value="#{controlTercero.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 760px;"/>
 
 
                         <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 830px; height: 260px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>Terceros</strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>Terceros</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
                             <p:dataTable id="datosTerceros" var="infoT" rowKey="#{infoT.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"   
@@ -30,7 +30,7 @@
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:ajax event="filter" listener="#{controlTercero.eventoFiltrar()}"/>
-                                <p:column headerText="Nombre" sortBy="#{infoT.nombre}" filterBy="#{infoT.nombre}" 
+                                <p:column style="font-size: 11px" headerText="Nombre" sortBy="#{infoT.nombre}" filterBy="#{infoT.nombre}" 
                                           filterMatchMode="contains" id="terceroNombre" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.nombre}"/></f:facet>  
@@ -42,11 +42,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroNombre" value="Nombre"/>
+                                        <h:outputText  id="fooTerceroNombre" value="Nombre"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="NIT" sortBy="#{infoT.nit}" filterBy="#{infoT.nit}" filterMatchMode="contains" 
-                                          id="terceroNIT" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroNIT" width="133" filterStyle="display: none; visibility: hidden" style="font-size: 11px" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.nit}"/></f:facet>  
                                         <f:facet name="input">
@@ -57,11 +57,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroNIT" value="NIT"/>
+                                        <h:outputText  id="fooTerceroNIT" value="NIT"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="Digito Verificacion" sortBy="#{infoT.digitoverificacion}" filterBy="#{infoT.digitoverificacion}" filterMatchMode="contains" 
-                                          id="terceroDigitoVerificacion" width="100" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroDigitoVerificacion" width="100" filterStyle="display: none; visibility: hidden" style="font-size: 11px" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.digitoverificacion}"/></f:facet>  
                                         <f:facet name="input">
@@ -72,11 +72,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroDigitoV" value="Digito Verificacion"/>
+                                        <h:outputText  id="fooTerceroDigitoV" value="Digito Verificacion"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="NIT Alternativo" sortBy="#{infoT.nitalternativo}" filterBy="#{infoT.nitalternativo}" filterMatchMode="contains" 
-                                          id="terceroNITAlternativo" width="100" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroNITAlternativo" width="100" filterStyle="display: none; visibility: hidden" style="font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.nitalternativo}"/></f:facet>  
                                         <f:facet name="input">
@@ -87,11 +87,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroNITA" value="NIT Alternativo"/>
+                                        <h:outputText id="fooTerceroNITA" value="NIT Alternativo"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="C.SS" sortBy="#{infoT.codigoss}" filterBy="#{infoT.codigoss}" filterMatchMode="contains" 
-                                          id="terceroCodigoSS" width="100" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroCodigoSS" width="100" filterStyle="display: none; visibility: hidden" style="font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.codigoss}"/></f:facet>  
                                         <f:facet name="input">
@@ -102,11 +102,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroCSS" value="C.SS"/>
+                                        <h:outputText id="fooTerceroCSS" value="C.SS"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="C.SP" sortBy="#{infoT.codigosp}" filterBy="#{infoT.codigosp}" filterMatchMode="contains" 
-                                          id="terceroCodigoSP" width="100" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroCodigoSP" width="100" filterStyle="display: none; visibility: hidden" style="font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.codigosp}"/></f:facet>  
                                         <f:facet name="input">
@@ -117,11 +117,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroCSP" value="C.SS"/>
+                                        <h:outputText  id="fooTerceroCSP" value="C.SS"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="C.SC" sortBy="#{infoT.codigosc}" filterBy="#{infoT.codigosc}" filterMatchMode="contains" 
-                                          id="terceroCodigoSC" width="100" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroCodigoSC" width="100" filterStyle="display: none; visibility: hidden" style="font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.codigosc}"/></f:facet>  
                                         <f:facet name="input">
@@ -132,11 +132,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroCSC" value="C.SS"/>
+                                        <h:outputText  id="fooTerceroCSC" value="C.SS"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="Tercero Consolidador" sortBy="#{infoT.terceroconsolidador.nombre}" filterBy="#{infoT.terceroconsolidador.nombre}" filterMatchMode="contains" 
-                                          id="terceroTConsolidador" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroTConsolidador" width="133" filterStyle="display: none; visibility: hidden" style="font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.terceroconsolidador.nombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -148,11 +148,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroConsolidador" value="Tercero Consolidador"/>
+                                        <h:outputText  id="fooTerceroConsolidador" value="Tercero Consolidador"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="NIT Consolida" sortBy="#{infoT.terceroconsolidador.nit}" filterBy="#{infoT.terceroconsolidador.nit}" filterMatchMode="contains" 
-                                          id="terceroNITConsolidado" width="100" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroNITConsolidado" width="100" filterStyle="display: none; visibility: hidden" style="font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.terceroconsolidador.nit}"/></f:facet>  
                                         <f:facet name="input">
@@ -163,11 +163,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroConsolidadorNIT" value="NIT Consolidado"/>
+                                        <h:outputText  id="fooTerceroConsolidadorNIT" value="NIT Consolidado"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="Ciudad" sortBy="#{infoT.ciudad.nombre}" filterBy="#{infoT.ciudad.nombre}" filterMatchMode="contains" 
-                                          id="terceroCiudad" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroCiudad" width="133" filterStyle="display: none; visibility: hidden" style="font-size: 11px" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.ciudad.nombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -179,11 +179,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroCiudad" value="Ciudad"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooTerceroCiudad" value="Ciudad"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="Codigo Alterno" sortBy="#{infoT.codigoalternativo}" filterBy="#{infoT.codigoalternativo}" filterMatchMode="contains" 
-                                          id="terceroCodigoAlterno" width="100" filterStyle="display: none; visibility: hidden" >                                  
+                                          id="terceroCodigoAlterno" width="100" filterStyle="display: none; visibility: hidden" style="font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoT.codigoalternativo}"/></f:facet>  
                                         <f:facet name="input">
@@ -194,11 +194,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTerceroCodigoAlt" value="Ciudad"/>
+                                        <h:outputText id="fooTerceroCodigoAlt" value="Ciudad"/>
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="Tipo NIT" style="padding: 0"  filterMatchMode="contains" id="terceroTipoNIT" width="120" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:selectOneMenu id="editarTerceroTipoNIT" value="#{infoT.tiponit}" style="width: 99%; font-weight: bold;text-transform: uppercase">  
+                                <p:column  headerText="Tipo NIT" style="padding: 0;font-size: 11px"  filterMatchMode="contains" id="terceroTipoNIT" width="120" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:selectOneMenu id="editarTerceroTipoNIT" value="#{infoT.tiponit}" style="width: 99%; font-weight: bold;text-transform: uppercase;">  
                                         <f:selectItem itemLabel="" itemValue="null" /> 
                                         <f:selectItem itemLabel="NATURAL" itemValue="N" />  
                                         <f:selectItem itemLabel="JURIDICA" itemValue="J" /> 
@@ -210,7 +210,7 @@
                                         <h:outputText value="Tipo NIT" />
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="Codigo SAP" style="padding: 0"  filterMatchMode="contains" 
+                                <p:column  headerText="Codigo SAP" style="padding: 0;font-size: 11px"  filterMatchMode="contains" 
                                           id="terceroCodigoSAP" width="120" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:selectOneMenu id="editarTerceroCodigoSAP" value="#{infoT.codigotercerosap}" style="width: 99%; font-weight: bold;text-transform: uppercase">  
                                         <f:selectItem itemLabel="" itemValue="null" /> 
@@ -248,7 +248,7 @@
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:ajax event="filter" listener="#{controlTercero.eventoFiltrar()}"/>
-                                <p:column headerText="Sucursal" sortBy="#{infoTS.codigosucursal}" filterBy="#{infoTS.codigosucursal}" 
+                                <p:column style="font-size: 11px" headerText="Sucursal" sortBy="#{infoTS.codigosucursal}" filterBy="#{infoTS.codigosucursal}" 
                                           filterMatchMode="contains" id="terceroSucursalCodigo" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoTS.codigosucursal}"/></f:facet>  
@@ -261,7 +261,7 @@
                                     </p:cellEditor>
 
                                 </p:column>
-                                <p:column headerText="Patronal" sortBy="#{infoTS.codigopatronal}" filterBy="#{infoTS.codigopatronal}" filterMatchMode="contains" 
+                                <p:column style="font-size: 11px" headerText="Patronal" sortBy="#{infoTS.codigopatronal}" filterBy="#{infoTS.codigopatronal}" filterMatchMode="contains" 
                                           id="terceroSucursalPatronal" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoTS.codigopatronal}"/></f:facet>  
@@ -274,7 +274,7 @@
                                     </p:cellEditor>
 
                                 </p:column>
-                                <p:column headerText="Observaciones" sortBy="#{infoTS.descripcion}" filterBy="#{infoTS.descripcion}" filterMatchMode="contains" 
+                                <p:column style="font-size: 11px" headerText="Observaciones" sortBy="#{infoTS.descripcion}" filterBy="#{infoTS.descripcion}" filterMatchMode="contains" 
                                           id="terceroSucursalObservacion" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoTS.descripcion}"/></f:facet>  
@@ -287,7 +287,7 @@
                                     </p:cellEditor>
 
                                 </p:column>
-                                <p:column headerText="Ciudad" sortBy="#{infoTS.ciudad.nombre}" filterBy="#{infoTS.ciudad.nombre}" filterMatchMode="contains" 
+                                <p:column style="font-size: 11px" headerText="Ciudad" sortBy="#{infoTS.ciudad.nombre}" filterBy="#{infoTS.ciudad.nombre}" filterMatchMode="contains" 
                                           id="terceroSucursalCiudad" width="133" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoTS.ciudad.nombre}"/></f:facet>  

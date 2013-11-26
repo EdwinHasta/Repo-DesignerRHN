@@ -12,11 +12,11 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Novedades Fijas y Ocasionales del Empleado" style=" font-size: 12px; position: absolute; width: 874px; height: 530px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Novedades Fijas y Ocasionales del Empleado" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;  text-align: left" >  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute; color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplNovedad.empleado.persona.primerapellido} #{controlEmplNovedad.empleado.persona.segundoapellido} #{controlEmplNovedad.empleado.persona.nombre}"/>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 50px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " process="@this" />
@@ -62,8 +62,8 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 830px; height: 355px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue"><strong>Novedades del Empleado</strong></legend>
+                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 830px; height: 355px; border-radius: 10px; ">
+                            <legend style="font-size: 12px; color: blue"><strong>Novedades del Empleado</strong></legend>
                             <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
 
                             <p:dataTable id="datosNovedadesEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 830px"                           
@@ -74,7 +74,7 @@
 
                                 <p:ajax event="filter" listener="#{controlEmplNovedad.eventoFiltrar()}"/>
 
-                                <p:column headerText="Codigo Concepto" sortBy="#{info.concepto.codigo}" filterBy="#{info.concepto.codigo}" filterMatchMode="contains" id="novedadCodigoConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Codigo Concepto" sortBy="#{info.concepto.codigo}" filterBy="#{info.concepto.codigo}" filterMatchMode="contains" id="novedadCodigoConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.concepto.codigo}" /></f:facet>  
                                         <f:facet name="input">
@@ -90,7 +90,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Descripcion Concepto" sortBy="#{info.concepto.descripcion}" filterBy="#{info.concepto.descripcion}" filterMatchMode="contains" id="novedadDescripcionConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Descripcion Concepto" sortBy="#{info.concepto.descripcion}" filterBy="#{info.concepto.descripcion}" filterMatchMode="contains" id="novedadDescripcionConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.concepto.descripcion}" /></f:facet>  
                                         <f:facet name="input">
@@ -107,7 +107,7 @@
                                 </p:column>
 
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="novedadFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="novedadFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.fechainicial}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -129,7 +129,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="novedadFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="novedadFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.fechafinal}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -150,7 +150,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Valor Total" sortBy="#{info.valortotal}" filterBy="#{info.valortotal}" filterMatchMode="contains" id="novedadValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Valor Total" sortBy="#{info.valortotal}" filterBy="#{info.valortotal}" filterMatchMode="contains" id="novedadValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.valortotal}" >
                                             <f:convertNumber currencySymbol="$" type="currency" />
@@ -169,7 +169,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Saldo" sortBy="#{info.saldo}" filterBy="#{info.saldo}" filterMatchMode="contains" id="novedadSaldo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Saldo" sortBy="#{info.saldo}" filterBy="#{info.saldo}" filterMatchMode="contains" id="novedadSaldo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.saldo}" >
                                             <f:convertNumber currencySymbol="$" type="currency" />
@@ -188,7 +188,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Codigo Periodicidad" sortBy="#{info.periodicidad.codigo}" filterBy="#{info.periodicidad.codigo}" filterMatchMode="contains" id="novedadCodigoPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Codigo Periodicidad" sortBy="#{info.periodicidad.codigo}" filterBy="#{info.periodicidad.codigo}" filterMatchMode="contains" id="novedadCodigoPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.periodicidad.codigo}" /></f:facet>  
                                         <f:facet name="input">
@@ -204,7 +204,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Nombre Periodicidad" sortBy="#{info.periodicidad.nombre}" filterBy="#{info.periodicidad.nombre}" filterMatchMode="contains" id="novedadDescripcionPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Nombre Periodicidad" sortBy="#{info.periodicidad.nombre}" filterBy="#{info.periodicidad.nombre}" filterMatchMode="contains" id="novedadDescripcionPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.periodicidad.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -220,7 +220,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Nombre Tercero" sortBy="#{info.tercero.nombre}" filterBy="#{info.tercero.nombre}" filterMatchMode="contains" id="novedadTercero" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Nombre Tercero" sortBy="#{info.tercero.nombre}" filterBy="#{info.tercero.nombre}" filterMatchMode="contains" id="novedadTercero" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tercero.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -236,7 +236,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Observaciones" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="novedadObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Observaciones" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="novedadObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.observaciones}" /></f:facet>  
                                         <f:facet name="input">
@@ -252,7 +252,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Ingresada" sortBy="#{info.fechareporte}" filterBy="#{info.fechareporte}" filterMatchMode="contains"  width="72" id="novedadFechaReporte" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Fecha Ingresada" sortBy="#{info.fechareporte}" filterBy="#{info.fechareporte}" filterMatchMode="contains"  width="72" id="novedadFechaReporte" filterStyle="display: none; visibility: hidden;"  >  
 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.fechareporte}" >
@@ -278,9 +278,9 @@
 
                         <p:remoteCommand name="prueba" actionListener="#{controlEmplNovedad.sencillo()}"/>
 
-                        <p:commandButton style="position: absolute; left: 680px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 780px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplNovedad.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 485px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 485px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 485px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplNovedad.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
