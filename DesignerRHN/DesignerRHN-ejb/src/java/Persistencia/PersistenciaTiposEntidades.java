@@ -97,7 +97,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
             return null;
         }
     }
-    
+
     public Long verificarBorradoFCE(BigInteger secTipoEntidad) {
         try {
             Long conteo;
@@ -109,6 +109,19 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
             System.err.println("Error PersistenciaTiposEntidades.verificarBorradoFCE.");
             System.err.println("Exception: " + e);
             return null;
+        }
+    }
+
+    @Override
+    public List<TiposEntidades> buscarTiposEntidadesIBCS() {
+        try {
+            Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE EXISTS (SELECT gte FROM Grupostiposentidades gte WHERE gte.secuencia = te.grupo.secuencia AND gte.codigo IN(1,8))");
+            List<TiposEntidades> tiposEntidades = (List<TiposEntidades>) query.getResultList();
+            return tiposEntidades;
+        } catch (Exception e) {
+            System.out.println("Error buscarTiposEntidadesIBCS PersistenciaTiposEntidades : "+e.toString());
+            List<TiposEntidades> tiposEntidades = null;
+            return tiposEntidades;
         }
     }
 }

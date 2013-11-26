@@ -10,10 +10,37 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaVigenciasDeportes implements PersistenciaVigenciasDeportesInterface{
+public class PersistenciaVigenciasDeportes implements PersistenciaVigenciasDeportesInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+
+    @Override
+    public void crear(VigenciasDeportes vigenciasDeportes) {
+        try {
+            em.persist(vigenciasDeportes);
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasDeportes)");
+        }
+    }
+
+    @Override
+    public void editar(VigenciasDeportes vigenciasDeportes) {
+        try {
+            em.merge(vigenciasDeportes);
+        } catch (Exception e) {
+            System.out.println("No se pudo modificar la VigenciasDeportes");
+        }
+    }
+
+    @Override
+    public void borrar(VigenciasDeportes vigenciasDeportes) {
+        try {
+            em.remove(em.merge(vigenciasDeportes));
+        } catch (Exception e) {
+            System.out.println("la VigenciasDeportes no se ha podido eliminar");
+        }
+    }
 
     @Override
     public List<VigenciasDeportes> deportePersona(BigInteger secuenciaPersona) {
@@ -30,6 +57,19 @@ public class PersistenciaVigenciasDeportes implements PersistenciaVigenciasDepor
             return null;
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasDeportes.deportePersona" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<VigenciasDeportes> deportesTotalesSecuenciaPersona(BigInteger secuenciaP) {
+        try {
+            Query queryFinal = em.createQuery("SELECT vd FROM VigenciasDeportes vd WHERE vd.persona.secuencia = :secuenciaPersona");
+            queryFinal.setParameter("secuenciaPersona", secuenciaP);
+            List<VigenciasDeportes> listaVigenciasDeportes = queryFinal.getResultList();
+            return listaVigenciasDeportes;
+        } catch (Exception e) {
+            System.out.println("Error deportesTotalesSecuenciaPersona PersistenciaVigenciasDeportes : " + e.toString());
             return null;
         }
     }

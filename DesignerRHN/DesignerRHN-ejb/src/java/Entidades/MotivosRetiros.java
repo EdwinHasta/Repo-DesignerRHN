@@ -7,6 +7,7 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MotivosRetiros.findByCodigo", query = "SELECT m FROM MotivosRetiros m WHERE m.codigo = :codigo"),
     @NamedQuery(name = "MotivosRetiros.findByNombre", query = "SELECT m FROM MotivosRetiros m WHERE m.nombre = :nombre")})
 public class MotivosRetiros implements Serializable {
+    @OneToMany(mappedBy = "motivoretiro")
+    private List<HvExperienciasLaborales> hvExperienciasLaboralesList;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -139,5 +142,14 @@ public class MotivosRetiros implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Motivosretiros[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public List<HvExperienciasLaborales> getHvExperienciasLaboralesList() {
+        return hvExperienciasLaboralesList;
+    }
+
+    public void setHvExperienciasLaboralesList(List<HvExperienciasLaborales> hvExperienciasLaboralesList) {
+        this.hvExperienciasLaboralesList = hvExperienciasLaboralesList;
     }
 }

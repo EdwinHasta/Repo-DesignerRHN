@@ -9,10 +9,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -24,14 +25,19 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Administrator
+ * @author user
  */
 @Entity
-@Table(name = "TIPOSINDICADORES")
+@Table(name = "SECTORESECONOMICOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TiposIndicadores.findAll", query = "SELECT t FROM TiposIndicadores t")})
-public class TiposIndicadores implements Serializable {
+    @NamedQuery(name = "SectoresEconomicos.findAll", query = "SELECT s FROM SectoresEconomicos s"),
+    @NamedQuery(name = "SectoresEconomicos.findBySecuencia", query = "SELECT s FROM SectoresEconomicos s WHERE s.secuencia = :secuencia"),
+    @NamedQuery(name = "SectoresEconomicos.findByCodigo", query = "SELECT s FROM SectoresEconomicos s WHERE s.codigo = :codigo"),
+    @NamedQuery(name = "SectoresEconomicos.findByDescripcion", query = "SELECT s FROM SectoresEconomicos s WHERE s.descripcion = :descripcion")})
+public class SectoresEconomicos implements Serializable {
+    @OneToMany(mappedBy = "sectoreconomico")
+    private Collection<HvExperienciasLaborales> hvExperienciasLaboralesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -41,26 +47,26 @@ public class TiposIndicadores implements Serializable {
     private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 10)
     @Column(name = "CODIGO")
-    private short codigo;
+    private String codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "tipoindicador")
-    private Collection<VigenciasIndicadores> vigenciasIndicadoresCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoindicador")
-    private Collection<Indicadores> indicadoresCollection;
+    @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Empresas empresa;
 
-    public TiposIndicadores() {
+    public SectoresEconomicos() {
     }
 
-    public TiposIndicadores(BigInteger secuencia) {
+    public SectoresEconomicos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposIndicadores(BigInteger secuencia, short codigo, String descripcion) {
+    public SectoresEconomicos(BigInteger secuencia, String codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -74,18 +80,15 @@ public class TiposIndicadores implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 
@@ -93,22 +96,12 @@ public class TiposIndicadores implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
-    public Collection<VigenciasIndicadores> getVigenciasIndicadoresCollection() {
-        return vigenciasIndicadoresCollection;
+    public Empresas getEmpresa() {
+        return empresa;
     }
 
-    public void setVigenciasIndicadoresCollection(Collection<VigenciasIndicadores> vigenciasIndicadoresCollection) {
-        this.vigenciasIndicadoresCollection = vigenciasIndicadoresCollection;
-    }
-
-    @XmlTransient
-    public Collection<Indicadores> getIndicadoresCollection() {
-        return indicadoresCollection;
-    }
-
-    public void setIndicadoresCollection(Collection<Indicadores> indicadoresCollection) {
-        this.indicadoresCollection = indicadoresCollection;
+    public void setEmpresa(Empresas empresa) {
+        this.empresa = empresa;
     }
 
     @Override
@@ -121,10 +114,10 @@ public class TiposIndicadores implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TiposIndicadores)) {
+        if (!(object instanceof SectoresEconomicos)) {
             return false;
         }
-        TiposIndicadores other = (TiposIndicadores) object;
+        SectoresEconomicos other = (SectoresEconomicos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -133,7 +126,16 @@ public class TiposIndicadores implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.TiposIndicadores[ secuencia=" + secuencia + " ]";
+        return "Entidades.SectoresEconomicos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<HvExperienciasLaborales> getHvExperienciasLaboralesCollection() {
+        return hvExperienciasLaboralesCollection;
+    }
+
+    public void setHvExperienciasLaboralesCollection(Collection<HvExperienciasLaborales> hvExperienciasLaboralesCollection) {
+        this.hvExperienciasLaboralesCollection = hvExperienciasLaboralesCollection;
     }
     
 }

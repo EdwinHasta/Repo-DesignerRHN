@@ -47,4 +47,6 @@ public interface PersistenciaTiposEntidadesInterface {
     
     public Long verificarBorradoFCE(BigInteger secTipoEntidad);
     
+    public List<TiposEntidades> buscarTiposEntidadesIBCS();
+    
 }

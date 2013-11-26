@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -39,7 +39,7 @@ public class Indicadores implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
     @Basic(optional = false)
@@ -56,20 +56,20 @@ public class Indicadores implements Serializable {
     public Indicadores() {
     }
 
-    public Indicadores(BigDecimal secuencia) {
+    public Indicadores(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Indicadores(BigDecimal secuencia, String descripcion) {
+    public Indicadores(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -82,6 +82,9 @@ public class Indicadores implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 

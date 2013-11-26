@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,7 +38,7 @@ public class VigenciasIndicadores implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
@@ -59,20 +60,20 @@ public class VigenciasIndicadores implements Serializable {
     public VigenciasIndicadores() {
     }
 
-    public VigenciasIndicadores(BigDecimal secuencia) {
+    public VigenciasIndicadores(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public VigenciasIndicadores(BigDecimal secuencia, Date fechainicial) {
+    public VigenciasIndicadores(BigInteger secuencia, Date fechainicial) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

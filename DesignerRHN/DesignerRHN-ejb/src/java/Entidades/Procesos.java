@@ -35,6 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Procesos.findAll", query = "SELECT p FROM Procesos p")})
 public class Procesos implements Serializable {
+    @OneToMany(mappedBy = "proceso")
+    private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection;
+    @OneToMany(mappedBy = "procesoliquidado")
+    private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
     private List<Parametros> parametrosList;
     @OneToMany(mappedBy = "proceso")
@@ -322,6 +326,24 @@ public class Procesos implements Serializable {
 
     public void setParametrosList(List<Parametros> parametrosList) {
         this.parametrosList = parametrosList;
+    }
+
+    @XmlTransient
+    public Collection<IbcsAutoliquidaciones> getIbcsAutoliquidacionesCollection() {
+        return ibcsAutoliquidacionesCollection;
+    }
+
+    public void setIbcsAutoliquidacionesCollection(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection) {
+        this.ibcsAutoliquidacionesCollection = ibcsAutoliquidacionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<IbcsAutoliquidaciones> getIbcsAutoliquidacionesCollection1() {
+        return ibcsAutoliquidacionesCollection1;
+    }
+
+    public void setIbcsAutoliquidacionesCollection1(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection1) {
+        this.ibcsAutoliquidacionesCollection1 = ibcsAutoliquidacionesCollection1;
     }
     
 }

@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
+    private Collection<SectoresEconomicos> sectoresEconomicosCollection;
     @OneToMany(mappedBy = "empresas")
     private Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection;
     @Size(max = 1)
@@ -1151,6 +1153,15 @@ public class Empresas implements Serializable {
 
     public void setRelacionesIncapacidadesCollection(Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection) {
         this.relacionesIncapacidadesCollection = relacionesIncapacidadesCollection;
+    }
+
+    @XmlTransient
+    public Collection<SectoresEconomicos> getSectoresEconomicosCollection() {
+        return sectoresEconomicosCollection;
+    }
+
+    public void setSectoresEconomicosCollection(Collection<SectoresEconomicos> sectoresEconomicosCollection) {
+        this.sectoresEconomicosCollection = sectoresEconomicosCollection;
     }
     
 

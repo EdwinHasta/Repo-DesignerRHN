@@ -39,7 +39,7 @@ public class VigenciasAficiones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAINICIAL")
@@ -68,20 +68,20 @@ public class VigenciasAficiones implements Serializable {
     public VigenciasAficiones() {
     }
 
-    public VigenciasAficiones(BigDecimal secuencia) {
+    public VigenciasAficiones(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public VigenciasAficiones(BigDecimal secuencia, Date fechainicial) {
+    public VigenciasAficiones(BigInteger secuencia, Date fechainicial) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

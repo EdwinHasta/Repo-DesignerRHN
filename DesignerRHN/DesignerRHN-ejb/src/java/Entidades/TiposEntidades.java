@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposEntidades.findAll", query = "SELECT t FROM TiposEntidades t")})
 public class TiposEntidades implements Serializable {
     @OneToMany(mappedBy = "tipoentidad")
+    private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection;
+    @OneToMany(mappedBy = "tipoentidad")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -146,6 +148,15 @@ public class TiposEntidades implements Serializable {
 
     public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
         this.conceptosSoportesCollection = conceptosSoportesCollection;
+    }
+
+    @XmlTransient
+    public Collection<IbcsAutoliquidaciones> getIbcsAutoliquidacionesCollection() {
+        return ibcsAutoliquidacionesCollection;
+    }
+
+    public void setIbcsAutoliquidacionesCollection(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection) {
+        this.ibcsAutoliquidacionesCollection = ibcsAutoliquidacionesCollection;
     }
     
 }

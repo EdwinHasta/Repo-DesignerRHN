@@ -13,5 +13,16 @@ import java.util.List;
  * @author Administrator
  */
 public interface PersistenciaHvExperienciasLaboralesInterface {
+
     public List<HvExperienciasLaborales> experienciaLaboralPersona(BigInteger secuenciaHV);
+
+    public List<HvExperienciasLaborales> experienciasLaboralesSecuenciaEmpleado(BigInteger secuencia);
+
+    public void crear(HvExperienciasLaborales experienciasLaborales);
+
+    public void editar(HvExperienciasLaborales experienciasLaborales);
+
+    public void borrar(HvExperienciasLaborales experienciasLaborales);
+
+    public HvExperienciasLaborales buscarHvExperienciaLaboral(BigInteger secuencia);
 }

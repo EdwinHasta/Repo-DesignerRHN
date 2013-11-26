@@ -13,5 +13,14 @@ import java.util.List;
  * @author Administrator
  */
 public interface PersistenciaDemandasInterface {
+
     public List<Demandas> demandasPersona(BigInteger secuenciaEmpl);
+
+    public void crear(Demandas demandas);
+
+    public void editar(Demandas demandas);
+
+    public void borrar(Demandas demandas);
+
+    public List<Demandas> listDemandasSecuenciaEmpleado(BigInteger secuencia);
 }

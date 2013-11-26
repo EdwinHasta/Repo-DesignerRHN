@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -32,13 +32,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HvExperienciasLaborales.findAll", query = "SELECT h FROM HvExperienciasLaborales h")})
 public class HvExperienciasLaborales implements Serializable {
+    @JoinColumn(name = "SECTORESECONOMICOS", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private SectoresEconomicos sectoreconomico;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 50)
     @Column(name = "EMPRESA")
     private String empresa;
@@ -71,20 +74,20 @@ public class HvExperienciasLaborales implements Serializable {
     public HvExperienciasLaborales() {
     }
 
-    public HvExperienciasLaborales(BigDecimal secuencia) {
+    public HvExperienciasLaborales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public HvExperienciasLaborales(BigDecimal secuencia, Date fechadesde) {
+    public HvExperienciasLaborales(BigInteger secuencia, Date fechadesde) {
         this.secuencia = secuencia;
         this.fechadesde = fechadesde;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -184,5 +187,14 @@ public class HvExperienciasLaborales implements Serializable {
     public String toString() {
         return "Entidades.HvExperienciasLaborales[ secuencia=" + secuencia + " ]";
     }
+
+    public SectoresEconomicos getSectoreconomico() {
+        return sectoreconomico;
+    }
+
+    public void setSectoreconomico(SectoresEconomicos sectoreconomico) {
+        this.sectoreconomico = sectoreconomico;
+    }
+
     
 }

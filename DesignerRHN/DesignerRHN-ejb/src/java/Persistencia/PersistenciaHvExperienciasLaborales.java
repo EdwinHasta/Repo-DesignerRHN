@@ -10,10 +10,35 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperienciasLaboralesInterface{
+public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperienciasLaboralesInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+
+    @Override
+    public void crear(HvExperienciasLaborales experienciasLaborales) {
+        em.persist(experienciasLaborales);
+    }
+
+    @Override
+    public void editar(HvExperienciasLaborales experienciasLaborales) {
+        em.merge(experienciasLaborales);
+    }
+
+    @Override
+    public void borrar(HvExperienciasLaborales experienciasLaborales) {
+        em.remove(em.merge(experienciasLaborales));
+    }
+
+    @Override
+    public HvExperienciasLaborales buscarHvExperienciaLaboral(BigInteger secuencia) {
+        try {
+            return em.find(HvExperienciasLaborales.class, secuencia);
+        } catch (Exception e) {
+            System.out.println("Error en la PersistenciaHvExperienciasLaborales ERROR : " + e);
+            return null;
+        }
+    }
 
     @Override
     public List<HvExperienciasLaborales> experienciaLaboralPersona(BigInteger secuenciaHV) {
@@ -30,6 +55,19 @@ public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperi
             return null;
         } catch (Exception e) {
             System.out.println("Error PersistenciaHvExperienciasLaborales.experienciaLaboralPersona" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<HvExperienciasLaborales> experienciasLaboralesSecuenciaEmpleado(BigInteger secuencia) {
+        try {
+            Query queryFinal = em.createQuery("SELECT hve FROM HvExperienciasLaborales hve WHERE hve.hojadevida.secuencia = :secuenciaHV");
+            queryFinal.setParameter("secuenciaHV", secuencia);
+            List<HvExperienciasLaborales> listaExperienciasLaborales = queryFinal.getResultList();
+            return listaExperienciasLaborales;
+        } catch (Exception e) {
+            System.out.println("Error experienciasLaboralesSecuenciaEmpleado PersistenciaHvExperienciasLaborales : "+e.toString());
             return null;
         }
     }
