@@ -33,4 +33,49 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
             return null;
         }
     }
+
+    @Override
+    public List<IdiomasPersonas> totalIdiomasPersonas() {
+        try {
+            Query query = em.createQuery("SELECT ip FROM IdiomasPersonas ip");
+            List<IdiomasPersonas> resultado = (List<IdiomasPersonas>) query.getResultList();
+            return resultado;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaIdiomasPersonas.totalIdiomasPersonas" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public void crear(IdiomasPersonas idiomasPersonas) {
+        try {
+            em.persist(idiomasPersonas);
+        } catch (Exception e) {
+            System.out.println("Error crear PersistenciaIdiomasPersonas : " + e.toString());
+        }
+    }
+
+    /*
+     *Editar Proyectos
+     */
+    @Override
+    public void editar(IdiomasPersonas idiomasPersonas) {
+        try {
+            em.merge(idiomasPersonas);
+        } catch (Exception e) {
+            System.out.println("Error editar PersistenciaIdiomasPersonas : " + e.toString());
+        }
+    }
+
+    /*
+     *Borrar Proyectos
+     */
+    @Override
+    public void borrar(IdiomasPersonas idiomasPersonas) {
+        try {
+            em.remove(em.merge(idiomasPersonas));
+        } catch (Exception e) {
+            System.out.println("Error borrar PersistenciaIdiomasPersonas : " + e.toString());
+        }
+    }
 }

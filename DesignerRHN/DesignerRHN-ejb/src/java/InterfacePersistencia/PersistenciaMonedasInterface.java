@@ -6,6 +6,7 @@ package InterfacePersistencia;
 
 import Entidades.Monedas;
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
@@ -14,5 +15,6 @@ import java.math.BigInteger;
 public interface PersistenciaMonedasInterface {
     
     public Monedas buscarMonedaSecuencia(BigInteger secuencia);
+    public List<Monedas> listMonedas();
     
 }

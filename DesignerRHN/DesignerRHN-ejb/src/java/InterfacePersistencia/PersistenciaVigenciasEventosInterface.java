@@ -15,4 +15,12 @@ import java.util.List;
 public interface PersistenciaVigenciasEventosInterface {
 
     public List<VigenciasEventos> eventosPersona(BigInteger secuenciaEmpl);
+
+    public void crear(VigenciasEventos vigenciasEventos);
+
+    public void editar(VigenciasEventos vigenciasEventos);
+
+    public void borrar(VigenciasEventos vigenciasEventos);
+
+    public List<VigenciasEventos> vigenciasEventosSecuenciaEmpleado(BigInteger secuencia);
 }

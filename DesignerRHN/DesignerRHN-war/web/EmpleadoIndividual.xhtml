@@ -265,12 +265,12 @@
                                 <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/direccion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " action="direccionespersona" actionListener="#{controlPerDirecciones.recibirPersona(controlEmpleadoIndividual.empleado.persona.secuencia)}" process="@this"/>
                                 <h:outputText value="Direcciones" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
                                 <p:inputText id="direcciones" value="#{controlEmpleadoIndividual.direccionP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px" readonly="true"/>
-                                
+
                                 <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/estadocivil.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
                                 <h:outputText value="Estado civil" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
                                 <p:inputText id="estadoCivil" value="#{controlEmpleadoIndividual.estadoCivilP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px" readonly="true"/>
 
-                                <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/relacione.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this"/>
+                                <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/relacione.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 150px;" process="@this" action="infoAdicional" actionListener="#{controlEmplInformacionAdicional.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <h:outputText value="Información Adicional" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 150px" />
                                 <p:inputText id="informacionAdicional" value="#{controlEmpleadoIndividual.informacionAdicionalP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 165px" readonly="true"/>
 
@@ -339,7 +339,7 @@
 
                             <fieldset style="position: absolute; width: 397px; height: 81px; border-radius: 7px; left: 208px; top: 240px ">
                                 <legend style="font-size: 11px; color: blue"><strong>Actividades de bienestar y familiares</strong></legend>
-                                <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/evento.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px " process="@this"/>
+                                <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/evento.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px " process="@this" action="vigenciasEvents" actionListener="#{controlEmplVigenciaEvento.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <h:outputText value="Eventos" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 10px" />
                                 <p:inputText id="eventos" value="#{controlEmpleadoIndividual.eventosP}" readonly="true" style="position: absolute; left: 45px; top: 23px; width: 140px"/>
                                 <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/deporte.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; " process="@this"/>

@@ -10,10 +10,25 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEventosInterface{
+public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEventosInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+
+    @Override
+    public void crear(VigenciasEventos vigenciasEventos) {
+        em.persist(vigenciasEventos);
+    }
+
+    @Override
+    public void editar(VigenciasEventos vigenciasEventos) {
+        em.merge(vigenciasEventos);
+    }
+
+    @Override
+    public void borrar(VigenciasEventos vigenciasEventos) {
+        em.remove(em.merge(vigenciasEventos));
+    }
 
     @Override
     public List<VigenciasEventos> eventosPersona(BigInteger secuenciaEmpl) {
@@ -30,6 +45,19 @@ public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEvento
             return null;
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasEventos.eventosPersona" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<VigenciasEventos> vigenciasEventosSecuenciaEmpleado(BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT ve FROM VigenciasEventos ve WHERE ve.empleado.secuencia = :secuenciaEmpl");
+            query.setParameter("secuenciaEmpl", secuencia);
+            List<VigenciasEventos> resultado = (List<VigenciasEventos>) query.getResultList();
+            return resultado;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasEventos.vigenciasEventosSecuenciaEmpleado" + e);
             return null;
         }
     }

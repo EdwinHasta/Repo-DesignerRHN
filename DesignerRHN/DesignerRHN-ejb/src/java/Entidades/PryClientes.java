@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PryClientes.findByTelefono", query = "SELECT p FROM PryClientes p WHERE p.telefono = :telefono"),
     @NamedQuery(name = "PryClientes.findByContacto", query = "SELECT p FROM PryClientes p WHERE p.contacto = :contacto")})
 public class PryClientes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -80,6 +81,9 @@ public class PryClientes implements Serializable {
     }
 
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -144,5 +148,4 @@ public class PryClientes implements Serializable {
     public String toString() {
         return "Entidades.PryClientes[ secuencia=" + secuencia + " ]";
     }
-    
 }

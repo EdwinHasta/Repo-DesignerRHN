@@ -3052,28 +3052,23 @@ public class ControlVigenciaLocalizacion implements Serializable {
     
     public void verificarRastroTabla() {
         if (vigenciaLocalizaciones == null || vigenciasProrrateosProyectosVigencia == null || vigenciasProrrateosVigencia == null) {
-            System.out.println("Cero");
             //Dialogo para seleccionar el rato de la tabla deseada
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("verificarRastrosTablas.show()");
         }
 
         if ((vigenciaLocalizaciones != null) && (vigenciasProrrateosProyectosVigencia != null) && (vigenciasProrrateosVigencia != null)) {
-            System.out.println("Uno");
             if (index >= 0) {
-                System.out.println("Uno . Uno");
                 verificarRastroVigenciaLocalizacion();
                 index = -1;
                 
             }
             if (indexVP >= 0) {
-                System.out.println("Uno . Dos");
                 //Metodo Rastro Vigencias Afiliaciones
                 verificarRastroVigenciaProrrateo();
                 indexVP = -1;
             }
             if (indexVPP >= 0) {
-                System.out.println("Uno . Tres");
                 //Metodo Rastro Vigencias Afiliaciones
                 verificarRastroVigenciaProrrateoProyecto();
                 indexVPP = -1;

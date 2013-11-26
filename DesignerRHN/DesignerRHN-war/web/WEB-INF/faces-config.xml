@@ -628,6 +628,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/EmplComprobante.xhtml</from-view-id>
         <navigation-case>
@@ -649,6 +650,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -663,6 +665,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -677,6 +680,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -691,6 +695,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -705,6 +710,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -721,6 +727,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -735,6 +742,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -751,6 +759,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -765,6 +774,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -781,6 +791,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -795,6 +806,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -811,6 +823,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -825,6 +838,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -841,6 +855,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -857,6 +872,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -873,6 +889,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -889,6 +906,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
         <navigation-case>
@@ -905,6 +923,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/PerTelefono.xhtml</from-view-id>
         <navigation-case>
@@ -921,6 +940,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Comprobante.xhtml</from-view-id>
         <navigation-case>
@@ -937,6 +957,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/cerrarliquidacion.xhtml</from-view-id>
         <navigation-case>
@@ -953,6 +974,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
         <navigation-case>
@@ -969,6 +991,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NovedadConcepto.xhtml</from-view-id>
         <navigation-case>
@@ -985,6 +1008,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NovedadTercero.xhtml</from-view-id>
         <navigation-case>
@@ -1001,6 +1025,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Atausentismos.xhtml</from-view-id>
         <navigation-case>
@@ -1017,6 +1042,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/iniciored.xhtml</from-view-id>
         <navigation-case>
@@ -1033,6 +1059,69 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/GrupoSalarial.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroGrupoSalarial</from-outcome>
+            <to-view-id>/GrupoSalarial.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+     
+    <navigation-rule>
+        <from-view-id>/IdiomaPersona.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>idiomaRastro</from-outcome>
+            <to-view-id>/IdiomaPersona.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Proyecto.xhtml
+        </from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>proyectoRastro</from-outcome>
+            <to-view-id>/Proyecto.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>infoAdicionalRastro</from-outcome>
+            <to-view-id>/EmplInformacionAdicional.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Parametro.xhtml</from-view-id>
         <navigation-case>
@@ -1049,12 +1138,78 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>pageProyectos</from-outcome>
+            <to-view-id>/Proyecto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>proyects</from-outcome>
+            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciasEvents</from-outcome>
+            <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaEvento.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplIndv</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+     
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaEvento.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciasERastros</from-outcome>
+            <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>individualEmpl</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>infoAdicional</from-outcome>
+            <to-view-id>/EmplInformacionAdicional.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NovedadDefinitivas.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
-            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -1062,7 +1217,7 @@
         <navigation-case>
             <from-outcome>novedadessistema</from-outcome>
             <to-view-id>/NovedadDefinitivas.xhtml</to-view-id>
-            <redirect />
         </navigation-case>
     </navigation-rule>
+    
 </faces-config>
