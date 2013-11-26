@@ -55,23 +55,17 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
     
 
     @Override
-    public void modificarNovedades(List<NovedadesSistema> listaNovedadesModificar) {
-        for (int i = 0; i < listaNovedadesModificar.size(); i++) {
-            System.out.println("Modificando...");
-            if (listaNovedadesModificar.get(i).getTercero().getSecuencia() == null) {
-                listaNovedadesModificar.get(i).setTercero(null);
-            }
-            
-            persistenciaNovedades.editar(listaNovedadesModificar.get(i));
-        }
+    public void modificarNovedades(NovedadesSistema novedades) {
+            persistenciaNovedades.editar(novedades);
+        
     }
     
     public List<Empleados> buscarEmpleados(){
-        return persistenciaEmpleados.buscarEmpleados();
+        return persistenciaEmpleados.todosEmpleados();
     }
     
     public List<Empleados> lovEmpleados(){
-        return persistenciaEmpleados.buscarEmpleados();
+        return persistenciaEmpleados.todosEmpleados();
     }
     
     public List<Motivosdefinitivas> lovMotivos(){

@@ -58,8 +58,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
      *Encontrar todos los empleados. 
      */
 
+    @Override
     public List<Empleados> buscarEmpleados() {
-
         //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         /*CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
          cq.select(cq.from(Empleados.class));
@@ -67,6 +67,18 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
          */
         List<Empleados> empleadosLista = (List<Empleados>) em.createNamedQuery("Empleados.findAll").getResultList();
         return empleadosLista;
+    }
+    
+    public List<Empleados> todosEmpleados(){
+        try {
+            Query query = em.createQuery("SELECT e FROM Empleados e ORDER BY e.codigoempleado");
+            List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e);
+            return null;
+        }
+        
     }
 
     @Override
