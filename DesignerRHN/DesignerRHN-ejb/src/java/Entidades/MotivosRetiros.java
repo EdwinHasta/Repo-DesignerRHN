@@ -55,7 +55,7 @@ public class MotivosRetiros implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(mappedBy = "motivoretiros")
+    @OneToMany(mappedBy = "motivoretiro")
     private Collection<Retirados> retiradosCollection;
     @JoinColumn(name = "TIPOTRABAJADORRETIRO", referencedColumnName = "SECUENCIA")
     @ManyToOne

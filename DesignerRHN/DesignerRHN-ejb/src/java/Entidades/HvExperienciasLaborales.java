@@ -66,7 +66,7 @@ public class HvExperienciasLaborales implements Serializable {
     private String alcance;
     @JoinColumn(name = "MOTIVORETIRO", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private MotivosRetiros motivoretiros;
+    private MotivosRetiros motivoretiro;
     @JoinColumn(name = "HOJADEVIDA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private HVHojasDeVida hojadevida;
@@ -148,11 +148,11 @@ public class HvExperienciasLaborales implements Serializable {
     }
 
     public MotivosRetiros getMotivoretiro() {
-        return motivoretiros;
+        return motivoretiro;
     }
 
     public void setMotivoretiro(MotivosRetiros motivoretiro) {
-        this.motivoretiros = motivoretiro;
+        this.motivoretiro = motivoretiro;
     }
 
     public HVHojasDeVida getHojadevida() {
