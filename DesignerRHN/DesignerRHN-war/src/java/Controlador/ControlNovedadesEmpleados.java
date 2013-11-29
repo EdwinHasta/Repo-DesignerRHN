@@ -95,7 +95,7 @@ public class ControlNovedadesEmpleados implements Serializable {
     private List<Conceptos> listaConceptos;
     private List<Conceptos> filtradoslistaConceptos;
     private Conceptos seleccionConceptos;
-    //L.O.V CONCEPTOS
+    //L.O.V Periodicidades
     private List<Periodicidades> listaPeriodicidades;
     private List<Periodicidades> filtradoslistaPeriodicidades;
     private Periodicidades seleccionPeriodicidades;
@@ -251,6 +251,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         permitirIndex = true;
     }
     //Ubicacion Celda Arriba 
+
     public void cambiarEmpleado() {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
         //{
@@ -266,7 +267,7 @@ public class ControlNovedadesEmpleados implements Serializable {
             context.execute("cambiar.show()");
         }
     }
-    
+
     public void limpiarListas() {
         listaNovedadesCrear.clear();
         listaNovedadesBorrar.clear();
@@ -446,10 +447,12 @@ public class ControlNovedadesEmpleados implements Serializable {
         for (int i = 0; i < listaEmpleados.size(); i++) {
             if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
                 emp2 = listaEmpleados.get(i).getEmpleado();
-                if (nuevaNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0) {
-                    context.update("formularioDialogos:inconsistencia");
-                    context.execute("inconsistencia.show()");
-                    pasa2++;
+                if (nuevaNovedad.getFechainicial() != null) {
+                    if (nuevaNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0) {
+                        context.update("formularioDialogos:inconsistencia");
+                        context.execute("inconsistencia.show()");
+                        pasa2++;
+                    }
                 }
             }
         }

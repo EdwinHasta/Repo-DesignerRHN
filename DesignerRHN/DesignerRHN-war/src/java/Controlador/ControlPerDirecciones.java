@@ -79,7 +79,7 @@ public class ControlPerDirecciones implements Serializable {
 
     public ControlPerDirecciones() {
         permitirIndex = true;
-        //secuenciaPersona = BigInteger.valueOf(10668967);
+        //  secuenciaPersona = BigInteger.valueOf(10668967);
         aceptar = true;
         tipoLista = 0;
         nuevaDireccion = new Direcciones();
@@ -96,7 +96,7 @@ public class ControlPerDirecciones implements Serializable {
         nuevaDireccion.setTiposecundario("K");
         nuevaDireccion.setTipovivienda("CASA");
         nuevaDireccion.setHipoteca("N");
-        
+
     }
 
     public void recibirPersona(BigInteger secPersona) {
@@ -136,13 +136,63 @@ public class ControlPerDirecciones implements Serializable {
         }
     }
 
+    public void pregunta(int tipoNuevo) {
+        if(tipoNuevo == 1){
+        if (nuevaDireccion.getTipoppal() != null && nuevaDireccion.getPpal() != null && nuevaDireccion.getSecundario() != null && nuevaDireccion.getTiposecundario() != null) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:pregunta");
+            context.execute("pregunta.show()");
+        }}
+        else if (tipoNuevo == 2){
+         if (duplicarDireccion.getTipoppal() != null && duplicarDireccion.getPpal() != null && duplicarDireccion.getSecundario() != null && duplicarDireccion.getTiposecundario() != null) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:pregunta");
+            context.execute("pregunta.show()");
+        }   
+        }
+    }
+
+    public void copiarDireccion(int tipoNuevo) {
+        if(tipoNuevo == 1){
+        nuevaDireccion.setDireccionalternativa(nuevaDireccion.getEstadoTipoPpal()+(" ")+ nuevaDireccion.getPpal() +(" ")+ nuevaDireccion.getEstadoTipoSecundario()+(" ")+ nuevaDireccion.getSecundario());
+        RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:nuevaDireccion");
+        } else {
+            duplicarDireccion.setDireccionalternativa(nuevaDireccion.getTipoppal() +(" ")+ duplicarDireccion.getPpal() +(" ")+ duplicarDireccion.getTiposecundario()+(" ")+ duplicarDireccion.getSecundario());
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:duplicarDireccion");
+        }
+        
+    }
+
     //CREAR DIRECCION
     public void agregarNuevaDireccion() {
         int pasa = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
+        
+        if (nuevaDireccion.getFechavigencia()== null) {
+            mensajeValidacion = mensajeValidacion + " * Fecha Vigencia\n";
+            pasa++;
+        }
+        
         if (nuevaDireccion.getTipoppal() == null) {
             mensajeValidacion = mensajeValidacion + " * Ubicacion Principal\n";
+            pasa++;
+        }
+        
+        if (nuevaDireccion.getPpal()== null) {
+            mensajeValidacion = mensajeValidacion + " * Descripcion U. Principal\n";
+            pasa++;
+        }
+        
+        if (nuevaDireccion.getTiposecundario()== null) {
+            mensajeValidacion = mensajeValidacion + " * Ubicacion Secundaria\n";
+            pasa++;
+        }
+        
+        if (nuevaDireccion.getCiudad().getNombre().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + " * Ciudad \n";
             pasa++;
         }
 
@@ -533,7 +583,7 @@ public class ControlPerDirecciones implements Serializable {
             duplicarDireccion.setPersona(persona);
             //listaDireccionesCrear.add(duplicarDireccion);
             //listaDirecciones.add(duplicarDireccion);
-            
+
             context.update("formularioDialogos:duplicarDireccion");
             context.execute("DuplicarRegistroDireccion.show()");
             index = -1;
@@ -548,15 +598,10 @@ public class ControlPerDirecciones implements Serializable {
             if (!listaDireccionesBorrar.isEmpty()) {
                 for (int i = 0; i < listaDireccionesBorrar.size(); i++) {
                     System.out.println("Borrando...");
-                    if (listaDireccionesBorrar.get(i).getCiudad().getSecuencia() == null) {
-
-                        listaDireccionesBorrar.get(i).setCiudad(null);
-                        administrarDirecciones.borrarDireccion(listaDireccionesBorrar.get(i));
-                    } else {
-
-                        administrarDirecciones.borrarDireccion(listaDireccionesBorrar.get(i));
+                    if( listaDireccionesBorrar.get(i).getHipoteca() == null) {
+                        listaDireccionesBorrar.get(i).setHipoteca("N");
                     }
-
+                    administrarDirecciones.borrarDireccion(listaDireccionesBorrar.get(i));
                 }
                 System.out.println("Entra");
                 listaDireccionesBorrar.clear();
@@ -564,12 +609,11 @@ public class ControlPerDirecciones implements Serializable {
             if (!listaDireccionesCrear.isEmpty()) {
                 for (int i = 0; i < listaDireccionesCrear.size(); i++) {
                     System.out.println("Creando...");
-                    if (listaDireccionesCrear.get(i).getCiudad().getSecuencia() == null) {
-                        listaDireccionesCrear.get(i).setCiudad(null);
-                        administrarDirecciones.crearDireccion(listaDireccionesCrear.get(i));
-                    } else {
-                        administrarDirecciones.crearDireccion(listaDireccionesCrear.get(i));
+                    
+                    if( listaDireccionesCrear.get(i).getHipoteca() == null) {
+                        listaDireccionesCrear.get(i).setHipoteca("N");
                     }
+                        administrarDirecciones.crearDireccion(listaDireccionesCrear.get(i));
                 }
                 listaDireccionesCrear.clear();
             }
@@ -616,9 +660,7 @@ public class ControlPerDirecciones implements Serializable {
             bandera = 0;
             filtradosListaDirecciones = null;
             tipoLista = 0;
-
         }
-
         listaDireccionesBorrar.clear();
         listaDireccionesCrear.clear();
         listaDireccionesModificar.clear();
@@ -628,7 +670,6 @@ public class ControlPerDirecciones implements Serializable {
         listaDirecciones = null;
         guardado = true;
         permitirIndex = true;
-
     }
 
     public void cancelarCambioCiudades() {
@@ -1200,7 +1241,7 @@ public class ControlPerDirecciones implements Serializable {
     }
 
 //GETTER & SETTER
-public List<Direcciones> getListaDirecciones() {
+    public List<Direcciones> getListaDirecciones() {
 
         if (listaDirecciones == null) {
             listaDirecciones = administrarDirecciones.direccionesPersona(secuenciaPersona);

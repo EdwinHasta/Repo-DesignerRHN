@@ -25,7 +25,7 @@
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="true" rows="5"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
->
+                                >
 
                                 <p:ajax event="filter" listener="#{controlPerDirecciones.eventoFiltrar()}"/>
 
@@ -285,10 +285,16 @@
                 </h:form>
                 <!-- NUEVO REGISTRO --> 
                 <h:form id="formularioDialogos" >
+
+                    <p:dialog id="pregunta" header="ATENCIÓN...!" widgetVar="pregunta"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea copiar la direccion principal?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="pregunta.hide();" actionListener="#{controlPerDirecciones.copiarDireccion(1)}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="pregunta.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                    </p:dialog>
+                    
                     <p:dialog id="NuevoRegistroDireccion" header="Nuevo Registro" widgetVar="NuevoRegistroDireccion" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
-
                         <center><strong><h:outputText value="Ingresar una nueva Direccion" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-
                         <p:panel id="nuevaDireccion" style="border: none;">
                             <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 85px" /></strong>
                             <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; top: 80px; left: 200px;" value="#{controlPerDirecciones.nuevaDireccion.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
@@ -357,7 +363,6 @@
                                 <f:selectItem itemLabel="Finca" itemValue="FINCA" />  
                                 <p:ajax listener="#{controlPerDirecciones.seleccionarTipoViviendaNuevaDireccion(controlPerDirecciones.nuevaDireccion.estadoTipoVivienda, 1)}" update="@this" />
                             </p:selectOneMenu>
-
                             <p:watermark for="nuevoTipoVivienda" value="Tipo Vivienda" />
 
                             <strong><h:outputText value="Hipoteca: "  style="font-size: 12px; position: absolute; top: 328px" /></strong>
@@ -371,6 +376,7 @@
                             <strong><h:outputText value="Direccion Alternativa: "  style="font-size: 12px; position: absolute; top: 358px" /></strong>
                             <p:inputText id="nuevaDireccionAlternativa" value="#{controlPerDirecciones.nuevaDireccion.direccionalternativa}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 358px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="nuevaDireccionAlternativa"/>
+                                <p:ajax event="click" listener="#{controlPerDirecciones.pregunta(1)}"/>
                             </p:inputText>
                             <p:watermark for="nuevaDireccionAlternativa" value="Direccion Alternativa" />
 
@@ -450,7 +456,7 @@
                                 <p:ajax listener="#{controlPerDirecciones.seleccionarTipoPpalNuevaDireccion(controlPerDirecciones.duplicarDireccion.estadoTipoPpal, 2)}" update="@this" />
                             </p:selectOneMenu>
                             <p:watermark for="duplicarUbicacionPrincipal" value="Ubicacion Principal" />
-                            
+
                             <strong><h:outputText value="Descripcion U. Principal:  " style="font-size: 12px; position: absolute; top: 148px" /></strong>
                             <p:inputText id="duplicarDescripcionUbicacionPrincipal" value="#{controlPerDirecciones.duplicarDireccion.ppal}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 149px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarDireccion"/>
@@ -511,6 +517,7 @@
                             <strong><h:outputText value="Direccion Alternativa: "  style="font-size: 12px; position: absolute; top: 358px" /></strong>
                             <p:inputText id="duplicarDireccionAlternativa" value="#{controlPerDirecciones.duplicarDireccion.direccionalternativa}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 358px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarDireccion"/>
+                                <p:ajax event="click" listener="#{controlPerDirecciones.pregunta(2)}"/>
                             </p:inputText>
                             <p:watermark for="duplicarDireccionAlternativa" value="Direccion Alternativa" />
 

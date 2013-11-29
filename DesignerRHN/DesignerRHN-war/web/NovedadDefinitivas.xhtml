@@ -10,7 +10,8 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form"> 
+                <h:form id="form" > 
+                    <p:growl id="growl" showDetail="true" sticky="true"/> 
                     <p:panel  id="PanelTotal" header="Novedades de liquidación definitiva" style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 250px; border-radius: 10px; ">
@@ -81,18 +82,17 @@
 
                             </p:toolbarGroup>  
                         </p:toolbar>
-                        
+
                         <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:formularioNovedades" process="@this" />
                         <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlNovedadesDefinitivas.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlNovedadesDefinitivas.salir()}" action="individual" />
-                        
 
                         <p:panel id="formularioNovedades" style="position: absolute; top: 350px; border: none;">
                             <fieldset style="position: absolute; left: -8px; top: 10px; font-size: 10px; width: 840px; height: 120px; border-radius: 10px; ">
                                 <legend style="font-size: 13px; color: #14388B"><strong>Novedades de Liquidación Definitiva</strong></legend>
 
                                 <h:outputText value="Fecha Liquidacion Definitiva" style="font-size: 10px; top: 30px; left:10px; position:absolute"/>
-                                <p:calendar value="#{controlNovedadesDefinitivas.mostrar.fechainicialdisfrute}"  style="font-size: 12px; position: absolute; top: 25px; left: 170px;"  id="fechaLiquidacion" styleClass="ui-datepicker, calendarParametro"  
+                                <p:calendar disabled="#{controlNovedadesDefinitivas.activate}" value="#{controlNovedadesDefinitivas.mostrar.fechainicialdisfrute}"  style="font-size: 12px; position: absolute; top: 25px; left: 170px;"  id="fechaLiquidacion" styleClass="ui-datepicker, calendarParametro"  
                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                     <p:ajax event="dateSelect" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="fechaLiquidacion" process="@this"/>
                                     <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="fechaLiquidacion" process="@this"/>
@@ -102,7 +102,7 @@
 
                                 <h:outputText value="Motivo Liquidacion Definitiva" style="font-size: 10px; top: 30px; left: 300px; position: absolute">
                                 </h:outputText>
-                                <p:inputText id="motivoLiquidacion" value="#{controlNovedadesDefinitivas.mostrar.motivodefinitiva.nombre}" style="top: 25px;left:460px;width: 330px; position: absolute">
+                                <p:inputText disabled="#{controlNovedadesDefinitivas.activate}" id="motivoLiquidacion" value="#{controlNovedadesDefinitivas.mostrar.motivodefinitiva.nombre}" style="top: 25px;left:460px;width: 330px; position: absolute">
                                     <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(1, 0)}" process="@this"/>
                                     <p:ajax event="select" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('MOTIVO')}" process="@this"/>
                                     <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('MOTIVO', controlNovedadesDefinitivas.mostrar.motivodefinitiva.nombre)}" process="@this"/>
@@ -113,10 +113,10 @@
 
                                 <h:outputText value="Motivo Retiro" style="left: 90px; font-size: 10px; position: absolute; top:60px;">
                                 </h:outputText>
-                                <p:inputText id="motivoRetiro" value="#{controlNovedadesDefinitivas.mostrar.motivoretiro.nombre}" style="left:170px;position: absolute;width:470px;top:55px">
+                                <p:inputText disabled="#{controlNovedadesDefinitivas.activate}" id="motivoRetiro" value="#{controlNovedadesDefinitivas.mostrar.motivoretiro.nombre}" style="left:170px;position: absolute;width:470px;top:55px">
                                     <p:ajax event="dblclick" listener="#{controlNovedadesDefinitivas.asignarIndex(2, 0)}" process="@this"/>
                                     <p:ajax event="select" listener="#{controlNovedadesDefinitivas.valoresBackupAutocompletar('RETIRO')}" process="@this"/>
-                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('RETIRO', controlNovedadesDefinitivas.mostrar.motivoretiro.nombre)}" process="@this"/>
+                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.autocompletar('RETIRO', controlNovedadesDefinitivas.mostrar.motivoretiro.nombre)}" process="@this" update="@this"/>
                                     <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('RETIRO')}" process="@this"/>
 
                                 </p:inputText>
@@ -124,19 +124,19 @@
 
                                 <h:outputText value="Tiene Indemnizacion" style="left: 680px; font-size: 10px; position: absolute; top:60px;">
                                 </h:outputText>
-                                <p:selectBooleanCheckbox value="#{controlNovedadesDefinitivas.mostrar.indemnizaBool}" id="indemnizacion" style="position: absolute; left: 805px; top:58px; font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                <p:selectBooleanCheckbox disabled="#{controlNovedadesDefinitivas.activate}" value="#{controlNovedadesDefinitivas.mostrar.indemnizaBool}" id="indemnizacion" style="position: absolute; left: 805px; top:58px; font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
                                     <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" update="indemnizacion" process="@this"/>
                                 </p:selectBooleanCheckbox>
 
                                 <h:outputText value="Observaciones" style="font-size: 10px; top: 88px; left: 80px; position: absolute">
                                 </h:outputText>
-                                <p:inputText id="observaciones" onclick="select();" value="#{controlNovedadesDefinitivas.mostrar.observaciones}" style="top: 84px;left:170px;width: 650px; position: absolute;text-transform: uppercase" >
-                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" process="@this" />
+                                <p:inputText disabled="#{controlNovedadesDefinitivas.activate}" id="observaciones" onclick="select();" value="#{controlNovedadesDefinitivas.mostrar.observaciones}" style="top: 84px;left:170px;width: 650px; position: absolute;text-transform: uppercase" >
+                                    <p:ajax event="change" listener="#{controlNovedadesDefinitivas.cambiosCampos()}" process="@this" update="@this"/>
                                     <p:ajax event="click" listener="#{controlNovedadesDefinitivas.celda('OBSERVACION')}" process="@this"/>
                                 </p:inputText>
                             </fieldset>
                         </p:panel>
-                        
+
                     </p:panel>
                 </h:form>
 
@@ -149,7 +149,7 @@
                         <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
@@ -228,7 +228,7 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 145px;  " id="btnNuevoRetiro" actionListener="#{controlNovedadesDefinitivas.asignarIndex(2,1)}" icon="ui-icon-search" process="@this" />
 
-                            <strong><h:outputText value="Observacion" style="font-size: 12px; position: absolute; top: 185px" /></strong>
+                            <strong><h:outputText value="Observacion: " style="font-size: 12px; position: absolute; top: 185px" /></strong>
                             <p:inputText id="nuevaObservacion" value="#{controlNovedadesDefinitivas.nuevaNovedad.observaciones}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
@@ -285,6 +285,12 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="Ya existen registros de novedades para éste empleado." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Aceptar" onclick="existeRegistro.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="fechaRepetida" header="ATENCIÓN...!" widgetVar="fechaRepetida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="No pueden haber novedades con fecha repetida." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="fechaRepetida.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="validacionNuevaNovedad" header="ATENCIÓN...!" widgetVar="validacionNuevaNovedad"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
@@ -346,10 +352,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarM" value="Aceptar" disabled="#{controlNovedadesDefinitivas.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadesDefinitivas.actualizarMotivo()}" onclick="LOVMotivos.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarM" value="Aceptar" disabled="#{controlNovedadesDefinitivas.aceptar}" style="position: absolute; top: 305px; left: 470px; font-size: 12px" actionListener="#{controlNovedadesDefinitivas.actualizarMotivo()}" onclick="LOVMotivos.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVMotivos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasM" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="motivosDialogo.hide(), LOVMotivos.clearFilters();" actionListener="#{controlNovedadesDefinitivas.cancelarCambioMotivos()}" update="LOVMotivos, aceptarM" process="@this">
+                        <p:commandButton id="atrasM" value="Atras" style="position: absolute; top: 305px; left: 550px; font-size: 12px" onclick="motivosDialogo.hide(), LOVMotivos.clearFilters();" actionListener="#{controlNovedadesDefinitivas.cancelarCambioMotivos()}" update="LOVMotivos, aceptarM" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVMotivos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -384,10 +390,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarR" value="Aceptar" disabled="#{controlNovedadesDefinitivas.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadesDefinitivas.actualizarRetiros()}" onclick="LOVRetiros.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarR" value="Aceptar" disabled="#{controlNovedadesDefinitivas.aceptar}" style="position: absolute; top: 305px; left: 470px; font-size: 12px" actionListener="#{controlNovedadesDefinitivas.actualizarRetiros()}" onclick="LOVRetiros.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVRetiros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasR" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="retirosDialogo.hide(), LOVRetiros.clearFilters();" actionListener="#{controlNovedadesDefinitivas.cancelarCambioRetiros()}" update="LOVRetiros, aceptarR" process="@this">
+                        <p:commandButton id="atrasR" value="Atras" style="position: absolute; top: 305px; left: 550px; font-size: 12px" onclick="retirosDialogo.hide(), LOVRetiros.clearFilters();" actionListener="#{controlNovedadesDefinitivas.cancelarCambioRetiros()}" update="LOVRetiros, aceptarR" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVRetiros:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -422,10 +428,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesDefinitivas.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadesDefinitivas.actualizarEmpleadosNovedad()}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesDefinitivas.aceptar}" style="position: absolute; top: 305px; left: 470px; font-size: 12px" actionListener="#{controlNovedadesDefinitivas.actualizarEmpleadosNovedad()}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesDefinitivas.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
+                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 550px; font-size: 12px" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesDefinitivas.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
                         </p:commandButton>
 

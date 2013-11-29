@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+
+                    <p:panel  id="PanelTotal" header="Novedades de Vacaciones" style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
+
+                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 140px; border-radius: 10px; ">
+                            <legend style="font-size: 13px; color: #14388B"><strong>Empleados</strong></legend>
+
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" value="Buscar Empleado" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+
+                            <!-- Botones Buscar Empleado y Mostrar Todos--> 
+
+                            <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesVacaciones.listaEmpleadosNovedad}"
+                                         rowKey="#{empleados.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 560px"                           
+                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesVacaciones.filtradosListaEmpleadosNovedad}" 
+                                         emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesVacaciones.seleccionMostrar}"
+                                         editable="true" editMode="cell" selectionMode="single" >
+
+                                <p:ajax event="filter" listener="#{controlNovedadesVacaciones.eventoFiltrar()}"/>
+                                <p:ajax event="rowSelect" listener="#{controlNovedadesVacaciones.cambiarEmpleado()}"/>
+
+                                <p:column headerText="Código" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" filterMatchMode="contains" id="nEEmpleadosCodigos" width="30" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <h:outputText value="#{empleados.codigoempleado}" />
+                                </p:column>
+
+                                <p:column headerText="Nombre" sortBy="#{empleados.persona.nombreCompleto}" filterBy="#{empleados.persona.nombreCompleto}" filterMatchMode="contains" id="nEEmpleadosNombres" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <h:outputText value="#{empleados.persona.nombreCompleto}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </fieldset>
+                    </p:panel>
+                </h:form>
+                
+            <h:form id="formularioDialogos">
+                
+                <!-- L.O.V Empleado-->
+                    <p:dialog header="Buscar Empleado." widgetVar="empleadosDialogo" draggable="false" resizable="false" id="empleadosDialogo" closable="false"  
+                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
+
+                        <p:dataTable  id="LOVEmpleados" style="font-size: 11px; width: 600px" var="emp" value="#{controlNovedadesVacaciones.listaEmpleados}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVEmpleados" 
+                                      filteredValue="#{controlNovedadesVacaciones.filtradoslistaEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      rowKey="#{emp.secuencia}" selection="#{controlNovedadesVacaciones.seleccionEmpleados}" selectionMode="single">
+                            <p:ajax event="rowSelect" listener="#{controlNovedadesVacaciones.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesEmpleados.actualizarEmpleadosNovedad()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                            </f:facet>
+
+                            <p:column sortBy="#{emp.persona.nombreCompleto}" filterBy="#{emp.persona.nombreCompleto}" width="200" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{emp.persona.nombreCompleto}" />  
+                            </p:column>
+
+                            <p:column sortBy="#{emp.codigoempleado}" filterBy="#{emp.codigoempleado}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="Codigo" />
+                                </f:facet>
+                                <h:outputText value="#{emp.codigoempleado}" />  
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesVacaciones.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
+                        </p:commandButton>
+
+                    </p:dialog>
+                
+            </h:form> 
+            
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

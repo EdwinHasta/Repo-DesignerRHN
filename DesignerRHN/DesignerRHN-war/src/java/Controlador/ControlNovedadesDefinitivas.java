@@ -18,9 +18,11 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
@@ -90,6 +92,8 @@ public class ControlNovedadesDefinitivas implements Serializable {
     //AUTOCOMPLETAR
     private String motivoDefinitiva, motivoRetiro;
     private String celda;
+    //Desactivar Campos
+    private Boolean activate;
 
     public ControlNovedadesDefinitivas() {
         permitirIndex = true;
@@ -154,6 +158,9 @@ public class ControlNovedadesDefinitivas implements Serializable {
         secuenciaEmpleado = seleccionMostrar.getSecuencia();
         listaNovedades = null;
         getListaNovedades();
+        if (listaNovedades.isEmpty()) {
+            mostrar = null;
+        }
         RequestContext context = RequestContext.getCurrentInstance();//ACTUALIZAR CADA 
         context.update("form:datosEmpleados");
         context.update("form:formularioNovedades");
@@ -354,7 +361,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
             }
             permitirIndex = true;
             mostrar.setMotivodefinitiva(seleccionMotivos);
-            context.update("form:formularioNovedades:motivoLiquidacion");
+            context.update("form:motivoLiquidacion");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setMotivodefinitiva(seleccionMotivos);
             context.update("formularioDialogos:nuevaNovedad");
@@ -365,10 +372,8 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
         seleccionMotivos = null;
         aceptar = true;
-        index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        cualCelda = -1;
         context.execute("motivosDialogo.hide()");
         context.reset("formularioDialogos:LOVMotivos:globalFilter");
         context.update("formularioDialogos:LOVMotivos");
@@ -382,13 +387,19 @@ public class ControlNovedadesDefinitivas implements Serializable {
     public void agregarNuevaNovedad() {
         getListaNovedades();
         int pasa = 0;
+        int pasa2 = 0;
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
 
 
-        if (listaNovedades != null) {
-            context.update("formularioDialogos:existeRegistro");
-            context.execute("existeRegistro.show()");
+        if (!listaNovedades.isEmpty()) {
+            for (int i = 0; i < listaNovedades.size(); i++) {
+                if (nuevaNovedad.getFechainicialdisfrute() != null && (nuevaNovedad.getFechainicialdisfrute().equals(listaNovedades.get(i).getFechainicialdisfrute()))) {
+                    context.update("formularioDialogos:fechaRepetida");
+                    context.execute("fechaRepetida.show()");
+                    pasa2++;
+                }
+            }
         }
 
         if (nuevaNovedad.getFechainicialdisfrute() == null) {
@@ -416,7 +427,12 @@ public class ControlNovedadesDefinitivas implements Serializable {
             context.execute("validacionNuevaNovedad.show()");
         }
 
-        if (pasa == 0) {
+        if (pasa == 0 && !listaNovedades.isEmpty()) {
+            context.update("formularioDialogos:existeRegistro");
+            context.execute("existeRegistro.show()");
+        }
+
+        if (pasa == 0 && pasa2 == 0) {
             //AGREGAR REGISTRO A LA LISTA NOVEDADES .
 
             k++;
@@ -435,7 +451,11 @@ public class ControlNovedadesDefinitivas implements Serializable {
             mostrar.setMotivoretiro(nuevaNovedad.getMotivoretiro());
             mostrar.setMotivodefinitiva(nuevaNovedad.getMotivodefinitiva());
             mostrar.setObservaciones(nuevaNovedad.getObservaciones());
+            if (mostrar != null) {
+                activate = false;
+            }
             context.update("form:formularioNovedades");
+
 
             nuevaNovedad = new NovedadesSistema();
             nuevaNovedad.setMotivodefinitiva(new Motivosdefinitivas());
@@ -454,10 +474,15 @@ public class ControlNovedadesDefinitivas implements Serializable {
         } else {
         }
     }
+    
+    public void save(ActionEvent actionEvent) {  
+        FacesContext context = FacesContext.getCurrentInstance();  
+        context.addMessage(null, new FacesMessage("Guardado Exitoso","Los cambios han sido guardados con éxito"));
+    }  
 
     //GUARDAR
     public void guardarCambiosNovedades() {
-
+        FacesContext context2 = FacesContext.getCurrentInstance();
         if (guardado == false) {
             System.out.println("Realizando Operaciones Ausentismos" + mostrarBorrar);
 
@@ -481,10 +506,14 @@ public class ControlNovedadesDefinitivas implements Serializable {
                 administrarNovedadesSistema.modificarNovedades(mostrar);
                 System.out.println("Modificar");
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Guardado Exitoso", "Los cambios han sido guardados exitosamente"));
+            context.update("form:growl");
+            
             System.out.println("Se guardaron los datos con exito");
             listaNovedades = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosAusentismosEmpleado");
+            
+            context.update("form:datosEmpleados");
             guardado = true;
             permitirIndex = true;
             RequestContext.getCurrentInstance().update("form:aceptar");
@@ -529,6 +558,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
             duplicarNovedad.setFechainicialdisfrute(mostrar.getFechainicialdisfrute());
             duplicarNovedad.setMotivodefinitiva(mostrar.getMotivodefinitiva());
             duplicarNovedad.setMotivoretiro(mostrar.getMotivoretiro());
+            duplicarNovedad.setObservaciones(mostrar.getObservaciones());
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:duplicarNovedad");
@@ -539,7 +569,18 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
     public void confirmarDuplicar() {
         int pasa = 0;
+        int pasa2 = 0;
         RequestContext context = RequestContext.getCurrentInstance();
+        
+        if (!listaNovedades.isEmpty()) {
+            for (int i = 0; i < listaNovedades.size(); i++) {
+                if (nuevaNovedad.getFechainicialdisfrute() != null && (nuevaNovedad.getFechainicialdisfrute().equals(listaNovedades.get(i).getFechainicialdisfrute()))) {
+                    context.update("formularioDialogos:fechaRepetida");
+                    context.execute("fechaRepetida.show()");
+                    pasa2++;
+                }
+            }
+        }
 
         if (duplicarNovedad.getFechainicialdisfrute() == null) {
             System.out.println("Entro a Fecha ");
@@ -565,7 +606,9 @@ public class ControlNovedadesDefinitivas implements Serializable {
             context.execute("validacionNuevaNovedad.show()");
         }
 
-        if (pasa == 0) {
+
+
+        if (pasa == 0 && pasa2 == 0) {
             //AGREGAR REGISTRO A LA LISTA NOVEDADES .
             k++;
             l = BigInteger.valueOf(k);
@@ -620,7 +663,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
             }
             permitirIndex = true;
             mostrar.setMotivoretiro(seleccionRetiros);
-            context.update("form:formularioNovedades:motivoRetiro");
+            context.update("form:motivoRetiro");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setMotivoretiro(seleccionRetiros);
             context.update("formularioDialogos:nuevaNovedad");
@@ -632,7 +675,6 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
         seleccionRetiros = null;
         aceptar = true;
-        index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
@@ -711,7 +753,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
         }
         index = -1;
     }
-    
+
     //SALIR
     public void salir() {
         secRegistro = null;
@@ -721,8 +763,8 @@ public class ControlNovedadesDefinitivas implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:formularioNovedades");
     }
-    
-     //CANCELAR MODIFICACIONES
+
+    //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         cualCelda = -1;
         secRegistro = null;
@@ -734,11 +776,17 @@ public class ControlNovedadesDefinitivas implements Serializable {
         context.update("form:formularioNovedades");
     }
 
-    
     //GETTERS & SETTERS
     public List<NovedadesSistema> getListaNovedades() {
         if (listaNovedades == null) {
             listaNovedades = administrarNovedadesSistema.novedadesEmpleado(secuenciaEmpleado);
+        }
+        if (listaNovedades.isEmpty()) {
+            activate = true;
+            mostrar = new NovedadesSistema();
+        } else {
+            activate = false;
+            getMostrar();
         }
         return listaNovedades;
     }
@@ -927,6 +975,12 @@ public class ControlNovedadesDefinitivas implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
-    
+
+    public Boolean getActivate() {
+        return activate;
+    }
+
+    public void setActivate(Boolean activate) {
+        this.activate = activate;
+    }
 }
