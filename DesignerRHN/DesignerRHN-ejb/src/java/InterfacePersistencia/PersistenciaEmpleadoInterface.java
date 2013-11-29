@@ -20,4 +20,5 @@ public interface PersistenciaEmpleadoInterface {
     public Empleados buscarEmpleadoTipo(BigInteger codigoEmpleado);
     public List<Empleados> empleadosNovedad();
     public List<Empleados> todosEmpleados();
+    public List<Empleados> empleadosVacaciones();
 }

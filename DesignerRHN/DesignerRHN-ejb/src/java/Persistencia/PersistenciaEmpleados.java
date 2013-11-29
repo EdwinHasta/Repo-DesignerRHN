@@ -14,7 +14,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
     /*
      * Crear empleado.
      */
@@ -57,7 +56,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     /*
      *Encontrar todos los empleados. 
      */
-
     @Override
     public List<Empleados> buscarEmpleados() {
         //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -68,8 +66,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         List<Empleados> empleadosLista = (List<Empleados>) em.createNamedQuery("Empleados.findAll").getResultList();
         return empleadosLista;
     }
-    
-    public List<Empleados> todosEmpleados(){
+
+    public List<Empleados> todosEmpleados() {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e ORDER BY e.codigoempleado");
             List<Empleados> listaEmpleados = query.getResultList();
@@ -78,7 +76,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e);
             return null;
         }
-        
+
     }
 
     @Override
@@ -179,5 +177,19 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
-    
+
+    public List<Empleados> empleadosVacaciones() {
+        try {
+            String sqlQuery = "select * from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
+                    + "where tt.secuencia = vtt.tipotrabajador\n"
+                    + "and vtt.empleado = v.secuencia\n"
+                    + "and tt.tipo IN ('ACTIVO'))";
+            Query query = em.createNativeQuery(sqlQuery, Empleados.class);
+            List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosVacaciones" + e);
+            return null;
+        }
+    }
 }

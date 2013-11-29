@@ -57,7 +57,7 @@ public class Retirados implements Serializable {
     private VigenciasTiposTrabajadores vigenciatipotrabajador;
     @JoinColumn(name = "MOTIVORETIRO", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private MotivosRetiros motivoretiros;
+    private MotivosRetiros motivoretiro;
 
     public Retirados() {
     }
@@ -104,11 +104,11 @@ public class Retirados implements Serializable {
     }
 
     public MotivosRetiros getMotivoretiro() {
-        return motivoretiros;
+        return motivoretiro;
     }
 
     public void setMotivoretiro(MotivosRetiros motivoretiro) {
-        this.motivoretiros = motivoretiro;
+        this.motivoretiro = motivoretiro;
     }
 
     @Override
