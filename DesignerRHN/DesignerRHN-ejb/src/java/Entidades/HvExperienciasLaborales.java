@@ -32,9 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HvExperienciasLaborales.findAll", query = "SELECT h FROM HvExperienciasLaborales h")})
 public class HvExperienciasLaborales implements Serializable {
-    @JoinColumn(name = "SECTORESECONOMICOS", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
-    private SectoresEconomicos sectoreconomico;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -70,6 +68,9 @@ public class HvExperienciasLaborales implements Serializable {
     @JoinColumn(name = "HOJADEVIDA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private HVHojasDeVida hojadevida;
+    @JoinColumn(name = "SECTORECONOMICO", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private SectoresEconomicos sectoreconomico;
 
     public HvExperienciasLaborales() {
     }
@@ -195,6 +196,4 @@ public class HvExperienciasLaborales implements Serializable {
     public void setSectoreconomico(SectoresEconomicos sectoreconomico) {
         this.sectoreconomico = sectoreconomico;
     }
-
-    
 }

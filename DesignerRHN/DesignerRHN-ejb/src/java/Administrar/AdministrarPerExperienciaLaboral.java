@@ -23,7 +23,7 @@ import javax.ejb.Stateful;
  * @author user
  */
 @Stateful
-public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienciaLaboralInterface{
+public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienciaLaboralInterface {
 
     @EJB
     PersistenciaHvExperienciasLaboralesInterface persistenciaHvExperienciasLaborales;
@@ -74,6 +74,16 @@ public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienc
                 if (listHEL.get(i).getMotivoretiro().getSecuencia() == null) {
                     listHEL.get(i).setMotivoretiro(null);
                 }
+                if (listHEL.get(i).getSectoreconomico().getSecuencia() == null) {
+                    listHEL.get(i).setSectoreconomico(null);
+                }
+                String aux1, aux2, aux3;
+                aux1 = listHEL.get(i).getAlcance().toUpperCase();
+                listHEL.get(i).setAlcance(aux1);
+                aux2 = listHEL.get(i).getJefeinmediato().toUpperCase();
+                listHEL.get(i).setJefeinmediato(aux2);
+                aux3 = listHEL.get(i).getEmpresa().toUpperCase();
+                listHEL.get(i).setEmpresa(aux3);
                 persistenciaHvExperienciasLaborales.crear(listHEL.get(i));
             }
         } catch (Exception e) {
@@ -88,6 +98,16 @@ public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienc
                 if (listHEL.get(i).getMotivoretiro().getSecuencia() == null) {
                     listHEL.get(i).setMotivoretiro(null);
                 }
+                if (listHEL.get(i).getSectoreconomico().getSecuencia() == null) {
+                    listHEL.get(i).setSectoreconomico(null);
+                }
+                String aux1, aux2, aux3;
+                aux1 = listHEL.get(i).getAlcance().toUpperCase();
+                listHEL.get(i).setAlcance(aux1);
+                aux2 = listHEL.get(i).getJefeinmediato().toUpperCase();
+                listHEL.get(i).setJefeinmediato(aux2);
+                aux3 = listHEL.get(i).getEmpresa().toUpperCase();
+                listHEL.get(i).setEmpresa(aux3);
                 persistenciaHvExperienciasLaborales.editar(listHEL.get(i));
             }
         } catch (Exception e) {
@@ -102,6 +122,9 @@ public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienc
                 if (listHEL.get(i).getMotivoretiro().getSecuencia() == null) {
                     listHEL.get(i).setMotivoretiro(null);
                 }
+                if (listHEL.get(i).getSectoreconomico().getSecuencia() == null) {
+                    listHEL.get(i).setSectoreconomico(null);
+                }
                 persistenciaHvExperienciasLaborales.borrar(listHEL.get(i));
             }
         } catch (Exception e) {
@@ -115,7 +138,7 @@ public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienc
             List<HvExperienciasLaborales> retorno = persistenciaHvExperienciasLaborales.experienciasLaboralesSecuenciaEmpleado(secuencia);
             return retorno;
         } catch (Exception e) {
-            System.out.println("Error listExperienciasLaboralesSecuenciaEmpleado Admi : "+e.toString());
+            System.out.println("Error listExperienciasLaboralesSecuenciaEmpleado Admi : " + e.toString());
             return null;
         }
     }

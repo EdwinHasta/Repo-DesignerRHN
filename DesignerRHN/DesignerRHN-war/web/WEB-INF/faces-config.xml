@@ -1361,6 +1361,25 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>experienciasLabRastro</from-outcome>
+            <to-view-id>/perexperiencialaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/perexperiencialaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
     
     <navigation-rule>
         <from-view-id>/empldemanda.xhtml</from-view-id>

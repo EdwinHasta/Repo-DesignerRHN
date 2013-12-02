@@ -62,9 +62,10 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
 
     }
 
+    @Override
     public List<SectoresEconomicos> buscarSectoresEconomicos() {
         try {
-            Query query = em.createQuery("SELECT t FROM Terceros t");
+            Query query = em.createQuery("SELECT se FROM SectoresEconomicos se");
             List<SectoresEconomicos> sectoresEconomicos = (List<SectoresEconomicos>) query.getResultList();
             return sectoresEconomicos;
         } catch (Exception e) {

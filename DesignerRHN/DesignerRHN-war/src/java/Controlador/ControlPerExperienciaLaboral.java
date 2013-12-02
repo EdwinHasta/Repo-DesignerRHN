@@ -13,9 +13,11 @@ import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarPerExperienciaLaboralInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -32,7 +34,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlPerExperienciaLaboral {
+public class ControlPerExperienciaLaboral implements Serializable {
 
     @EJB
     AdministrarPerExperienciaLaboralInterface administrarPerExperienciaLaboral;
@@ -54,7 +56,7 @@ public class ControlPerExperienciaLaboral {
     //Activo/Desactivo VP Crtl + F11
     private int bandera;
     //Columnas Tabla VP
-    private Column pryEmpresa, pryCodigo, pryNombre, pryCliente, pryPlataforma, pryMonto, pryMoneda, pryPersonas, pryFechaInicial, pryFechaFinal, pryDescripcion;
+    private Column expEmpresa, expCargoDes, expJefe, expTelefono, expSectorEco, expMotivos, expFechaInicio, expFechaRetiro;
     //Otros
     private boolean aceptar;
     //modificar
@@ -82,9 +84,16 @@ public class ControlPerExperienciaLaboral {
     private BigInteger backUpSecRegistro;
     private String logrosAlcanzados;
     private Empleados empleado;
+    private BigInteger secuenciaPersona;
+    private boolean readOnlyLogros;
+    private boolean cambiosLogros;
+    private Date fechaDesde;
 
     public ControlPerExperienciaLaboral() {
-
+        fechaDesde = new Date();
+        cambiosLogros = false;
+        readOnlyLogros = false;
+        secuenciaPersona = new BigInteger("10675984");
         empleado = new Empleados();
         logrosAlcanzados = "";
         backUpSecRegistro = null;
@@ -97,10 +106,9 @@ public class ControlPerExperienciaLaboral {
         editarExperienciaLaboral = new HvExperienciasLaborales();
         tipoLista = 0;
         guardado = true;
-
         bandera = 0;
         permitirIndex = true;
-        index = -1;
+        index = 0;
         secRegistro = null;
         cualCelda = -1;
         listMotivosRetiros = null;
@@ -122,46 +130,78 @@ public class ControlPerExperienciaLaboral {
         }
     }
 
-   
-    public void modificarExperiencia(int indice) {
-
-        if (tipoLista == 0) {
-            index = indice;
-            if (!listExperienciaLaboralCrear.contains(listExperienciaLaboralEmpl.get(indice))) {
-                if (listExperienciaLaboralModificar.isEmpty()) {
-                    listExperienciaLaboralModificar.add(listExperienciaLaboralEmpl.get(indice));
-                } else if (!listExperienciaLaboralModificar.contains(listExperienciaLaboralEmpl.get(indice))) {
-                    listExperienciaLaboralModificar.add(listExperienciaLaboralEmpl.get(indice));
-                }
-                if (guardado == true) {
-                    guardado = false;
-                }
+    public boolean validarCamposRegistro(int i) {
+        boolean retorno = false;
+        if (i == 0) {
+            System.out.println("listExperienciaLaboralEmpl.get(index).getFechadesde() : " + listExperienciaLaboralEmpl.get(index).getFechadesde().toString());
+            if (listExperienciaLaboralEmpl.get(index).getFechadesde() == null) {
+                retorno = false;
+            } else {
+                retorno = true;
             }
-            cambioExperiencia = true;
-            index = -1;
-            secRegistro = null;
-        } else {
-            int ind = listExperienciaLaboralEmpl.indexOf(filtrarListExperienciaLaboralEmpl.get(indice));
-            index = ind;
-
-            if (!listExperienciaLaboralCrear.contains(filtrarListExperienciaLaboralEmpl.get(indice))) {
-                if (listExperienciaLaboralModificar.isEmpty()) {
-                    listExperienciaLaboralModificar.add(filtrarListExperienciaLaboralEmpl.get(indice));
-                } else if (!listExperienciaLaboralModificar.contains(filtrarListExperienciaLaboralEmpl.get(indice))) {
-                    listExperienciaLaboralModificar.add(filtrarListExperienciaLaboralEmpl.get(indice));
-                }
-                if (guardado == true) {
-                    guardado = false;
-                }
-            }
-            cambioExperiencia = true;
-            index = -1;
-            secRegistro = null;
-
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosExperiencia");
+        if (i == 1) {
+            if (nuevaExperienciaLaboral.getFechadesde() == null) {
+                retorno = false;
+            } else {
+                retorno = true;
+            }
+        }
+        if (i == 2) {
+            if (duplicarExperienciaLaboral.getFechadesde() == null) {
+                retorno = false;
+            } else {
+                retorno = true;
+            }
+        }
+        System.out.println("Retorno : " + retorno);
+        return retorno;
+    }
 
+    public void modificarExperiencia(int indice) {
+        if (validarCamposRegistro(0)) {
+            if (tipoLista == 0) {
+                index = indice;
+                listExperienciaLaboralEmpl.get(index).setAlcance(logrosAlcanzados);
+                if (!listExperienciaLaboralCrear.contains(listExperienciaLaboralEmpl.get(indice))) {
+                    if (listExperienciaLaboralModificar.isEmpty()) {
+                        listExperienciaLaboralModificar.add(listExperienciaLaboralEmpl.get(indice));
+                    } else if (!listExperienciaLaboralModificar.contains(listExperienciaLaboralEmpl.get(indice))) {
+                        listExperienciaLaboralModificar.add(listExperienciaLaboralEmpl.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                }
+                cambioExperiencia = true;
+                index = -1;
+                secRegistro = null;
+            } else {
+                int ind = listExperienciaLaboralEmpl.indexOf(filtrarListExperienciaLaboralEmpl.get(indice));
+                index = ind;
+                listExperienciaLaboralEmpl.get(index).setAlcance(logrosAlcanzados);
+                if (!listExperienciaLaboralCrear.contains(filtrarListExperienciaLaboralEmpl.get(indice))) {
+                    if (listExperienciaLaboralModificar.isEmpty()) {
+                        listExperienciaLaboralModificar.add(filtrarListExperienciaLaboralEmpl.get(indice));
+                    } else if (!listExperienciaLaboralModificar.contains(filtrarListExperienciaLaboralEmpl.get(indice))) {
+                        listExperienciaLaboralModificar.add(filtrarListExperienciaLaboralEmpl.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                }
+                cambioExperiencia = true;
+                index = -1;
+                secRegistro = null;
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosExperiencia");
+        } else {
+            listExperienciaLaboralEmpl.get(index).setFechadesde(fechaDesde);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosExperiencia");
+            context.execute("form:errorIngresoReg.show()");
+        }
     }
 
     public void modificarExperiencia(int indice, String confirmarCambio, String valorConfirmar) {
@@ -297,10 +337,10 @@ public class ControlPerExperienciaLaboral {
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
                     nuevaExperienciaLaboral.setSectoreconomico(listSectoresEconomicos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaEmpresaP");
+                    context.update("formularioDialogos:nuevaSectorEP");
                 } else if (tipoNuevo == 2) {
                     duplicarExperienciaLaboral.setSectoreconomico(listSectoresEconomicos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarEmpresaP");
+                    context.update("formularioDialogos:duplicarSectorEP");
                 }
                 listSectoresEconomicos = null;
                 getListSectoresEconomicos();
@@ -309,9 +349,9 @@ public class ControlPerExperienciaLaboral {
                 context.execute("SectorDialogo.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaEmpresaP");
+                    context.update("formularioDialogos:nuevaSectorEP");
                 } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarEmpresaP");
+                    context.update("formularioDialogos:duplicarSectorEP");
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("MOTIVOS")) {
@@ -330,10 +370,10 @@ public class ControlPerExperienciaLaboral {
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
                     nuevaExperienciaLaboral.setMotivoretiro(listMotivosRetiros.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaClienteP");
+                    context.update("formularioDialogos:nuevaMotivoEP");
                 } else if (tipoNuevo == 2) {
                     duplicarExperienciaLaboral.setMotivoretiro(listMotivosRetiros.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarClienteP");
+                    context.update("formularioDialogos:duplicarMotivoEP");
                 }
                 listMotivosRetiros = null;
                 getListMotivosRetiros();
@@ -342,26 +382,52 @@ public class ControlPerExperienciaLaboral {
                 context.execute("MotivosDialogo.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaClienteP");
+                    context.update("formularioDialogos:nuevaMotivoEP");
                 } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarClienteP");
+                    context.update("formularioDialogos:duplicarMotivoEP");
                 }
             }
         }
     }
 
-    public void cambiarIndice(int indice, int celda) {
+    public void posicionLogros(int cel) {
         if (permitirIndex == true) {
-            index = indice;
-            cualCelda = celda;
-            secRegistro = listExperienciaLaboralEmpl.get(index).getSecuencia();
-            if (cualCelda == 0) {
-                sector = listExperienciaLaboralEmpl.get(index).getSectoreconomico().getDescripcion();
+            if (index >= 0) {
+                cualCelda = cel;
+                secRegistro = listExperienciaLaboralEmpl.get(index).getSecuencia();
             }
-            if (cualCelda == 3) {
-                motivo = listExperienciaLaboralEmpl.get(index).getMotivoretiro().getNombre();
+        }
+    }
+
+    public void modificarLogros() {
+        if (index >= 0) {
+            modificarExperiencia(index);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:editarLogrosEP");
+            cambiosLogros = true;
+        }
+    }
+
+    public void cambiarIndice(int indice, int celda) {
+        if (cambiosLogros == false) {
+            if (permitirIndex == true) {
+                index = indice;
+                cualCelda = celda;
+                secRegistro = listExperienciaLaboralEmpl.get(index).getSecuencia();
+                if (cualCelda == 6) {
+                    sector = listExperienciaLaboralEmpl.get(index).getSectoreconomico().getDescripcion();
+                }
+                if (cualCelda == 7) {
+                    motivo = listExperienciaLaboralEmpl.get(index).getMotivoretiro().getNombre();
+                }
+                fechaDesde = listExperienciaLaboralEmpl.get(index).getFechadesde();
+                logrosAlcanzados = listExperienciaLaboralEmpl.get(index).getAlcance();
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:editarLogrosEP");
             }
-            logrosAlcanzados = listExperienciaLaboralEmpl.get(index).getAlcance();
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
         }
     }
 
@@ -372,6 +438,7 @@ public class ControlPerExperienciaLaboral {
     public void guardadoGeneral() {
         guardarCambios();
         guardado = true;
+        cambiosLogros = false;
         RequestContext.getCurrentInstance().update("form:aceptar");
     }
 
@@ -401,31 +468,26 @@ public class ControlPerExperienciaLaboral {
         secRegistro = null;
     }
 
-  
     public void cancelarModificacion() {
         if (bandera == 1) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryEmpresa");
-            pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCodigo");
-            pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryNombre");
-            pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCliente");
-            pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPlataforma");
-            pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMonto");
-            pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMoneda");
-            pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPersonas");
-            pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaInicial");
-            pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaFinal");
-            pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryDescripcion");
-            pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            expEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expEmpresa");
+            expEmpresa.setFilterStyle("display: none; visibility: hidden;");
+            expCargoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expCargoDes");
+            expCargoDes.setFilterStyle("display: none; visibility: hidden;");
+            expJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expJefe");
+            expJefe.setFilterStyle("display: none; visibility: hidden;");
+            expTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expTelefono");
+            expTelefono.setFilterStyle("display: none; visibility: hidden;");
+            expSectorEco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expSectorEco");
+            expSectorEco.setFilterStyle("display: none; visibility: hidden;");
+            expMotivos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expMotivos");
+            expMotivos.setFilterStyle("display: none; visibility: hidden;");
+
+            expFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaInicio");
+            expFechaInicio.setFilterStyle("display: none; visibility: hidden;");
+            expFechaRetiro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaRetiro");
+            expFechaRetiro.setFilterStyle("display: none; visibility: hidden;");
+
             RequestContext.getCurrentInstance().update("form:datosExperiencia");
             bandera = 0;
             filtrarListExperienciaLaboralEmpl = null;
@@ -443,13 +505,14 @@ public class ControlPerExperienciaLaboral {
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosExperiencia");
+        logrosAlcanzados = " ";
+        context.update("form:editarLogrosEP");
         cambioExperiencia = false;
         nuevaExperienciaLaboral = new HvExperienciasLaborales();
         nuevaExperienciaLaboral.setSectoreconomico(new SectoresEconomicos());
         nuevaExperienciaLaboral.setMotivoretiro(new MotivosRetiros());
     }
 
-    
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -491,67 +554,68 @@ public class ControlPerExperienciaLaboral {
                 context.update("formularioDialogos:editarMotivoD");
                 context.execute("editarMotivoD.show()");
                 cualCelda = -1;
-            } 
+            } else if (cualCelda == 8) {
+                context.update("formularioDialogos:editarLogroD");
+                context.execute("editarLogroD.show()");
+                cualCelda = -1;
+            }
         }
         index = -1;
         secRegistro = null;
     }
 
-    
     public void agregarNuevaE() {
-        cambioExperiencia = true;
-        //CERRAR FILTRADO
-        if (bandera == 1) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryEmpresa");
-            pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCodigo");
-            pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryNombre");
-            pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCliente");
-            pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPlataforma");
-            pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMonto");
-            pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMoneda");
-            pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPersonas");
-            pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaInicial");
-            pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaFinal");
-            pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryDescripcion");
-            pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosExperiencia");
-            bandera = 0;
-            filtrarListExperienciaLaboralEmpl = null;
-            tipoLista = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaExperienciaLaboral.setSecuencia(l);
-        listExperienciaLaboralEmpl.add(nuevaExperienciaLaboral);
-        listExperienciaLaboralCrear.add(nuevaExperienciaLaboral);
-        //
-        nuevaExperienciaLaboral = new HvExperienciasLaborales();
-        nuevaExperienciaLaboral.setSectoreconomico(new SectoresEconomicos());
-        nuevaExperienciaLaboral.setMotivoretiro(new MotivosRetiros());
-        limpiarNuevaE();
-        //
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-        }
-        index = -1;
-        secRegistro = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosExperiencia");
-        context.execute("NuevoRegistro.hide()");
+        if (validarCamposRegistro(1)) {
+            cambioExperiencia = true;
+            //CERRAR FILTRADO
+            if (bandera == 1) {
+                expEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expEmpresa");
+                expEmpresa.setFilterStyle("display: none; visibility: hidden;");
+                expCargoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expCargoDes");
+                expCargoDes.setFilterStyle("display: none; visibility: hidden;");
+                expJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expJefe");
+                expJefe.setFilterStyle("display: none; visibility: hidden;");
+                expTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expTelefono");
+                expTelefono.setFilterStyle("display: none; visibility: hidden;");
+                expSectorEco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expSectorEco");
+                expSectorEco.setFilterStyle("display: none; visibility: hidden;");
+                expMotivos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expMotivos");
+                expMotivos.setFilterStyle("display: none; visibility: hidden;");
 
-
+                expFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaInicio");
+                expFechaInicio.setFilterStyle("display: none; visibility: hidden;");
+                expFechaRetiro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaRetiro");
+                expFechaRetiro.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosExperiencia");
+                bandera = 0;
+                filtrarListExperienciaLaboralEmpl = null;
+                tipoLista = 0;
+            }
+            //AGREGAR REGISTRO A LA LISTA VIGENCIAS
+            k++;
+            l = BigInteger.valueOf(k);
+            nuevaExperienciaLaboral.setSecuencia(l);
+            listExperienciaLaboralEmpl.add(nuevaExperienciaLaboral);
+            listExperienciaLaboralCrear.add(nuevaExperienciaLaboral);
+            //
+            nuevaExperienciaLaboral = new HvExperienciasLaborales();
+            nuevaExperienciaLaboral.setSectoreconomico(new SectoresEconomicos());
+            nuevaExperienciaLaboral.setMotivoretiro(new MotivosRetiros());
+            limpiarNuevaE();
+            //
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+            index = -1;
+            secRegistro = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosExperiencia");
+            context.execute("NuevoRegistro.hide()");
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("form:errorIngresoReg.show()");
+        }
     }
 
     /**
@@ -574,14 +638,12 @@ public class ControlPerExperienciaLaboral {
         cambioExperiencia = false;
     }
 
-   
     public void verificarDuplicarExperiencia() {
         if (index >= 0) {
             duplicarVigenciaE();
         }
     }
 
-    
     public void duplicarVigenciaE() {
         if (index >= 0) {
             duplicarExperienciaLaboral = new HvExperienciasLaborales();
@@ -618,7 +680,7 @@ public class ControlPerExperienciaLaboral {
             }
             cambioExperiencia = true;
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarP");
+            context.update("formularioDialogos:duplicarEP");
             context.execute("DuplicarRegistro.show()");
             index = -1;
             secRegistro = null;
@@ -626,53 +688,53 @@ public class ControlPerExperienciaLaboral {
     }
 
     public void confirmarDuplicarE() {
-        cambioExperiencia = true;
-        k++;
-        l = BigInteger.valueOf(k);
-        duplicarExperienciaLaboral.setSecuencia(l);
-        listExperienciaLaboralEmpl.add(duplicarExperienciaLaboral);
-        listExperienciaLaboralCrear.add(duplicarExperienciaLaboral);
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
-        }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryEmpresa");
-            pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCodigo");
-            pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryNombre");
-            pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCliente");
-            pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPlataforma");
-            pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMonto");
-            pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMoneda");
-            pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPersonas");
-            pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaInicial");
-            pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaFinal");
-            pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryDescripcion");
-            pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosExperiencia");
-            bandera = 0;
-            filtrarListExperienciaLaboralEmpl = null;
-            tipoLista = 0;
-        }
-        duplicarExperienciaLaboral = new HvExperienciasLaborales();
-        limpiarduplicarE();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosExperiencia");
-        context.execute("DuplicarRegistro.hide()");
+        if (validarCamposRegistro(2)) {
+            cambioExperiencia = true;
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarExperienciaLaboral.setSecuencia(l);
+            listExperienciaLaboralEmpl.add(duplicarExperienciaLaboral);
+            listExperienciaLaboralCrear.add(duplicarExperienciaLaboral);
+            index = -1;
+            secRegistro = null;
+            if (guardado == true) {
+                guardado = false;
+                //RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+            if (bandera == 1) {
+                //CERRAR FILTRADO
+                expEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expEmpresa");
+                expEmpresa.setFilterStyle("display: none; visibility: hidden;");
+                expCargoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expCargoDes");
+                expCargoDes.setFilterStyle("display: none; visibility: hidden;");
+                expJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expJefe");
+                expJefe.setFilterStyle("display: none; visibility: hidden;");
+                expTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expTelefono");
+                expTelefono.setFilterStyle("display: none; visibility: hidden;");
+                expSectorEco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expSectorEco");
+                expSectorEco.setFilterStyle("display: none; visibility: hidden;");
+                expMotivos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expMotivos");
+                expMotivos.setFilterStyle("display: none; visibility: hidden;");
 
+                expFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaInicio");
+                expFechaInicio.setFilterStyle("display: none; visibility: hidden;");
+                expFechaRetiro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaRetiro");
+                expFechaRetiro.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosExperiencia");
+                bandera = 0;
+                filtrarListExperienciaLaboralEmpl = null;
+                tipoLista = 0;
+            }
+            duplicarExperienciaLaboral = new HvExperienciasLaborales();
+            limpiarduplicarE();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosExperiencia");
+            context.update("form:editarLogrosEP");
+            context.execute("DuplicarRegistro.hide()");
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("form:errorIngresoReg.show()");
+        }
     }
 
     public void limpiarduplicarE() {
@@ -690,14 +752,17 @@ public class ControlPerExperienciaLaboral {
         secRegistro = null;
     }
 
-    
     public void validarBorradoExperiencia() {
-        if (index >= 0) {
-            borrarE();
+        if (logrosAlcanzados.isEmpty()) {
+            if (index >= 0) {
+                borrarE();
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorBorradoReg.show()");
         }
     }
 
-   
     public void borrarE() {
         cambioExperiencia = true;
         if (tipoLista == 0) {
@@ -730,15 +795,15 @@ public class ControlPerExperienciaLaboral {
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosExperiencia");
+
+        context.update("form:editarLogrosEP");
         index = -1;
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
         }
-
     }
 
-    
     public void activarCtrlF11() {
         filtradoExperiencia();
     }
@@ -747,54 +812,43 @@ public class ControlPerExperienciaLaboral {
      */
     public void filtradoExperiencia() {
         if (bandera == 0) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryEmpresa");
-            pryEmpresa.setFilterStyle("width: 90px");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCodigo");
-            pryCodigo.setFilterStyle("width: 60px");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryNombre");
-            pryNombre.setFilterStyle("width: 80px");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCliente");
-            pryCliente.setFilterStyle("width: 80px");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPlataforma");
-            pryPlataforma.setFilterStyle("width: 90px");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMonto");
-            pryMonto.setFilterStyle("width: 60px");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMoneda");
-            pryMoneda.setFilterStyle("width: 90px");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPersonas");
-            pryPersonas.setFilterStyle("width: 60px");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaInicial");
-            pryFechaInicial.setFilterStyle("width: 60px");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaFinal");
-            pryFechaFinal.setFilterStyle("width: 60px");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryDescripcion");
-            pryDescripcion.setFilterStyle("width: 200px");
+            expEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expEmpresa");
+            expEmpresa.setFilterStyle("width: 90px");
+            expCargoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expCargoDes");
+            expCargoDes.setFilterStyle("width: 60px");
+            expJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expJefe");
+            expJefe.setFilterStyle("width: 80px");
+            expTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expTelefono");
+            expTelefono.setFilterStyle("width: 80px");
+            expSectorEco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expSectorEco");
+            expSectorEco.setFilterStyle("width: 90px");
+            expMotivos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expMotivos");
+            expMotivos.setFilterStyle("width: 90px");
+            expFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaInicio");
+            expFechaInicio.setFilterStyle("width: 60px");
+            expFechaRetiro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaRetiro");
+            expFechaRetiro.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosExperiencia");
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryEmpresa");
-            pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCodigo");
-            pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryNombre");
-            pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCliente");
-            pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPlataforma");
-            pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMonto");
-            pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMoneda");
-            pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPersonas");
-            pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaInicial");
-            pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaFinal");
-            pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryDescripcion");
-            pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            expEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expEmpresa");
+            expEmpresa.setFilterStyle("display: none; visibility: hidden;");
+            expCargoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expCargoDes");
+            expCargoDes.setFilterStyle("display: none; visibility: hidden;");
+            expJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expJefe");
+            expJefe.setFilterStyle("display: none; visibility: hidden;");
+            expTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expTelefono");
+            expTelefono.setFilterStyle("display: none; visibility: hidden;");
+            expSectorEco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expSectorEco");
+            expSectorEco.setFilterStyle("display: none; visibility: hidden;");
+            expMotivos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expMotivos");
+            expMotivos.setFilterStyle("display: none; visibility: hidden;");
+
+            expFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaInicio");
+            expFechaInicio.setFilterStyle("display: none; visibility: hidden;");
+            expFechaRetiro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaRetiro");
+            expFechaRetiro.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosExperiencia");
             bandera = 0;
             filtrarListExperienciaLaboralEmpl = null;
@@ -808,28 +862,23 @@ public class ControlPerExperienciaLaboral {
      */
     public void salir() {
         if (bandera == 1) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryEmpresa");
-            pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCodigo");
-            pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryNombre");
-            pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryCliente");
-            pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPlataforma");
-            pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMonto");
-            pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryMoneda");
-            pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryPersonas");
-            pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaInicial");
-            pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryFechaFinal");
-            pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:pryDescripcion");
-            pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            expEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expEmpresa");
+            expEmpresa.setFilterStyle("display: none; visibility: hidden;");
+            expCargoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expCargoDes");
+            expCargoDes.setFilterStyle("display: none; visibility: hidden;");
+            expJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expJefe");
+            expJefe.setFilterStyle("display: none; visibility: hidden;");
+            expTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expTelefono");
+            expTelefono.setFilterStyle("display: none; visibility: hidden;");
+            expSectorEco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expSectorEco");
+            expSectorEco.setFilterStyle("display: none; visibility: hidden;");
+            expMotivos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expMotivos");
+            expMotivos.setFilterStyle("display: none; visibility: hidden;");
+
+            expFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaInicio");
+            expFechaInicio.setFilterStyle("display: none; visibility: hidden;");
+            expFechaRetiro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExperiencia:expFechaRetiro");
+            expFechaRetiro.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosExperiencia");
             bandera = 0;
             filtrarListExperienciaLaboralEmpl = null;
@@ -866,23 +915,15 @@ public class ControlPerExperienciaLaboral {
         } else if (LND == 2) {
             tipoActualizacion = 2;
         }
-        if (dlg == 0) {
+        if (dlg == 1) {
             context.update("form:SectorDialogo");
             context.execute("SectorDialogo.show()");
-        } else if (dlg == 1) {
+        } else if (dlg == 2) {
             context.update("form:MotivosDialogo");
             context.execute("MotivosDialogo.show()");
-        } else if (dlg == 2) {
-            context.update("form:PlataformasDialogo");
-            context.execute("PlataformasDialogo.show()");
-        } else if (dlg == 3) {
-            context.update("form:MonedasDialogo");
-            context.execute("MonedasDialogo.show()");
         }
-
     }
 
-   
     public void actualizarSector() {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -917,15 +958,15 @@ public class ControlPerExperienciaLaboral {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarEmpresaP");
+            context.update(":form:datosExperiencia");
         } else if (tipoActualizacion == 1) {
             nuevaExperienciaLaboral.setSectoreconomico(sectorSeleccionada);
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:nuevaEmpresaP");
+            context.update("formularioDialogos:nuevaSectorEP");
         } else if (tipoActualizacion == 2) {
             duplicarExperienciaLaboral.setSectoreconomico(sectorSeleccionada);
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarEmpresaP");
+            context.update("formularioDialogos:duplicarSectorEP");
         }
         filtrarListSectoresEconomicos = null;
         sectorSeleccionada = null;
@@ -935,7 +976,6 @@ public class ControlPerExperienciaLaboral {
         tipoActualizacion = -1;
     }
 
-    
     public void cancelarCambioSector() {
         filtrarListSectoresEconomicos = null;
         sectorSeleccionada = null;
@@ -946,7 +986,6 @@ public class ControlPerExperienciaLaboral {
         permitirIndex = true;
     }
 
-    
     public void actualizarMotivo() {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -974,15 +1013,15 @@ public class ControlPerExperienciaLaboral {
             cambioExperiencia = true;
             permitirIndex = true;
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarClienteP");
+            context.update(":form:datosExperiencia");
         } else if (tipoActualizacion == 1) {
             nuevaExperienciaLaboral.setMotivoretiro(motivoSeleccionado);
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:nuevaClienteP");
+            context.update("formularioDialogos:nuevaMotivoEP");
         } else if (tipoActualizacion == 2) {
             duplicarExperienciaLaboral.setMotivoretiro(motivoSeleccionado);
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarClienteP");
+            context.update("formularioDialogos:duplicarMotivoEP");
         }
         filtrarListMotivosRetiros = null;
         motivoSeleccionado = null;
@@ -992,7 +1031,6 @@ public class ControlPerExperienciaLaboral {
         tipoActualizacion = -1;
     }
 
-    
     public void cancelarCambioMotivo() {
         filtrarListMotivosRetiros = null;
         motivoSeleccionado = null;
@@ -1006,24 +1044,14 @@ public class ControlPerExperienciaLaboral {
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
-            if (cualCelda == 0) {
+            if (cualCelda == 6) {
                 context.update("form:SectorDialogo");
                 context.execute("SectorDialogo.show()");
                 tipoActualizacion = 0;
             }
-            if (cualCelda == 3) {
+            if (cualCelda == 7) {
                 context.update("form:MotivosDialogo");
                 context.execute("MotivosDialogo.show()");
-                tipoActualizacion = 0;
-            }
-            if (cualCelda == 4) {
-                context.update("form:PlataformasDialogo");
-                context.execute("PlataformasDialogo.show()");
-                tipoActualizacion = 0;
-            }
-            if (cualCelda == 6) {
-                context.update("form:MonedasDialogo");
-                context.execute("MonedasDialogo.show()");
                 tipoActualizacion = 0;
             }
         }
@@ -1055,7 +1083,7 @@ public class ControlPerExperienciaLaboral {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosExperienciaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "ProyectosPDF", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "ExperienciasLaboralesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1079,7 +1107,7 @@ public class ControlPerExperienciaLaboral {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosExperienciaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "ProyectosXLS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "ExperienciasLaboralesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1135,7 +1163,7 @@ public class ControlPerExperienciaLaboral {
         try {
             if (listExperienciaLaboralEmpl == null) {
                 listExperienciaLaboralEmpl = new ArrayList<HvExperienciasLaborales>();
-                listExperienciaLaboralEmpl = administrarPerExperienciaLaboral.listExperienciasLaboralesSecuenciaEmpleado(empleado.getPersona().getSecuencia());
+                listExperienciaLaboralEmpl = administrarPerExperienciaLaboral.listExperienciasLaboralesSecuenciaEmpleado(secuenciaPersona);
                 for (int i = 0; i < listExperienciaLaboralEmpl.size(); i++) {
                     if (listExperienciaLaboralEmpl.get(i).getSectoreconomico() == null) {
                         listExperienciaLaboralEmpl.get(i).setSectoreconomico(new SectoresEconomicos());
@@ -1145,6 +1173,7 @@ public class ControlPerExperienciaLaboral {
                     }
                 }
             }
+
             return listExperienciaLaboralEmpl;
         } catch (Exception e) {
             System.out.println("Error en getListProyectos : " + e.toString());
@@ -1308,5 +1337,27 @@ public class ControlPerExperienciaLaboral {
 
     public void setLogrosAlcanzados(String logrosAlcanzados) {
         this.logrosAlcanzados = logrosAlcanzados;
+    }
+
+    public boolean isReadOnlyLogros() {
+        if (listExperienciaLaboralEmpl.isEmpty()) {
+            readOnlyLogros = true;
+        } else {
+            readOnlyLogros = false;
+        }
+        return readOnlyLogros;
+    }
+
+    public void setReadOnlyLogros(boolean readOnlyLogros) {
+        this.readOnlyLogros = readOnlyLogros;
+    }
+
+    public Empleados getEmpleado() {
+        empleado = administrarPerExperienciaLaboral.empleadoActual(BigInteger.valueOf(10661474));
+        return empleado;
+    }
+
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
     }
 }
