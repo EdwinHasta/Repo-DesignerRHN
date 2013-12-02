@@ -11,66 +11,66 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Comprobante" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    <f:loadBundle basename="Recursos.comprobante" var="msg"/>
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
                         <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 835px; height: 83px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue;text-align: left"><strong>Empleado</strong></legend>
+                            <legend style="font-size: 14px; color: blue;text-align: left"><strong>#{msg['empleado']}</strong></legend>
                             <p:panel id="panelInf" style="border: none">
-                                <h:outputText value="Código" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 20px; left: 9px"/>
+                                <h:outputText value="#{msg['codigo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 20px; left: 9px"/>
                                 <p:inputText value="#{controlComprobantes.parametroActual.empleado.codigoempleado}"  readonly="true" style="position: absolute; top: 35px; width: 70px; left: 9px"/>
-                                <h:outputText value="Primer Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 90px; top: 20px"/>
+                                <h:outputText value="#{msg['pa']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 90px; top: 20px"/>
                                 <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.primerapellido}" readonly="true" style="position: absolute; top: 35px; left: 90px; width: 110px"/>
-                                <h:outputText value="Segundo Apellido" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 211px; top: 20px"/>
+                                <h:outputText value="#{msg['sa']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 211px; top: 20px"/>
                                 <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.segundoapellido}" readonly="true" style="position: absolute; top: 35px; left: 211px; width: 110px" />
-                                <h:outputText value="Nombre" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 332px; top: 20px"/>
+                                <h:outputText value="#{msg['nombre']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 332px; top: 20px"/>
                                 <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.nombre}" readonly="true" style="position: absolute; top: 35px; left: 332px; width: 213px"/>
-                                <h:outputText value="Correo Electrónico" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 556px; top: 20px"/>
+                                <h:outputText value="#{msg['correo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 556px; top: 20px"/>
                                 <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.email}" readonly="true" style="position: absolute; top: 35px; left: 556px; width: 240px"/>
 
-                                <h:outputText value="Periódo de liquidación:" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px"/>
+                                <h:outputText value="#{msg['periodo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px"/>
                                 <h:outputText value="#{controlComprobantes.parametroActual.fechasParametros}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 155px"/>
-                                <h:outputText value="Estructura liquidada: " style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 300px"/>
+                                <h:outputText value="#{msg['estructura']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 300px"/>
                                 <h:outputText value="#{controlComprobantes.parametroEstructura.estructura.nombre}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 425px"/>
 
                                 <p:commandButton style="position: absolute; left: 815px; top: 24px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value="" actionListener="#{controlComprobantes.anteriorEmpleado()}" process="@this" />
                                 <p:commandButton style="position: absolute; left: 815px; top: 45px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value=""  actionListener="#{controlComprobantes.siguienteEmpleado()}" process="@this" />
-                                <p:commandButton style="position: absolute; left: 620px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarEmpleado" value="Buscar Empleado"  process="@this" oncomplete="buscarEmpleadoDialogo.show();" update=":formularioDialogos:buscarEmpleadoDialogo" />
-                                <p:commandButton style="position: absolute; left: 740px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlComprobantes.mostrarTodos}" id="mostrarTodos" value="Mostrar Todos" actionListener="#{controlComprobantes.mostarTodosEmpleados()}" process="@this" />
+                                <p:commandButton style="position: absolute; left: 620px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarEmpleado" value="#{msg['buscar']}"  process="@this" oncomplete="buscarEmpleadoDialogo.show();" update=":formularioDialogos:buscarEmpleadoDialogo" />
+                                <p:commandButton style="position: absolute; left: 740px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlComprobantes.mostrarTodos}" id="mostrarTodos" value="#{msg['mostrar']}" actionListener="#{controlComprobantes.mostarTodosEmpleados()}" process="@this" />
                             </p:panel>
                         </fieldset>
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 31px; left: 11px; height: 23px">  
                             <p:toolbarGroup align="left">
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
-
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
                                 <p:separator />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlComprobantes.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosSolucionesNodosEmpleadoExportar" fileName="SolucionesNodosEmpleadoXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
                             </p:toolbarGroup>  
                         </p:toolbar>
 
                         <fieldset style="position: absolute; top: 160px; font-size: 11px; width: 835px; height: 158px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['empleado']}</legend>
 
                             <p:dataTable id="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" style="font-size: 11px; width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
                                          rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" rowIndexVar="indice"
-                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="Sin registros">
+                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="#{msg['sinregistros']}">
 
                                 <p:column width="20" style="padding: 0px"> 
                                     <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlComprobantes.parcialSolucionNodo(indice,0)}"/>
                                 </p:column>
 
-                                <p:column id="codigoSNE" headerText="Codigo" sortBy="#{solucionNodoEmpleado.concepto.codigo}" width="50" filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="codigoSNE" headerText="#{msg['codigo']}" sortBy="#{solucionNodoEmpleado.concepto.codigo}" width="50" filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.concepto.codigo}" />
@@ -81,7 +81,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="descipcionSNE" headerText="Descripción" sortBy="#{solucionNodoEmpleado.concepto.descripcion}" width="200" filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="descipcionSNE" headerText="#{msg['descripcion']}" sortBy="#{solucionNodoEmpleado.concepto.descripcion}" width="200" filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.concepto.descripcion}" />
@@ -92,7 +92,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="unidadSNE" headerText="U" sortBy="#{solucionNodoEmpleado.unidades}" width="40" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="unidadSNE" headerText="#{msg['u']}" sortBy="#{solucionNodoEmpleado.unidades}" width="40" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.unidades}" />
@@ -104,7 +104,7 @@
                                 </p:column>
 
                                 <p:column id="pagoSNE"  sortBy="#{solucionNodoEmpleado.pago}" width="116.5" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
-                                    <f:facet name="header"><h:outputText value="Pago" /></f:facet>
+                                    <f:facet name="header"><h:outputText value="#{msg['pago']}" /></f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.pago}" style="text-align: right">
@@ -118,7 +118,7 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="descuentoSNE" headerText="Descuento" sortBy="#{solucionNodoEmpleado.descuento}" width="116.5"  filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="descuentoSNE" headerText="#{msg['descuento']}" sortBy="#{solucionNodoEmpleado.descuento}" width="116.5"  filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.descuento}">
@@ -132,7 +132,7 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="terceroSNE" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleado.nit.nombre}" width="200" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="terceroSNE" headerText="#{msg['tercero']}" sortBy="#{solucionNodoEmpleado.nit.nombre}" width="200" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.nit.nombre}" />
@@ -143,7 +143,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="fechaHastaSNE" headerText="Hasta" sortBy="#{solucionNodoEmpleado.fechahasta}" width="50" filterBy="#{solucionNodoEmpleado.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="fechaHastaSNE" headerText="#{msg['hasta']}" sortBy="#{solucionNodoEmpleado.fechahasta}" width="50" filterBy="#{solucionNodoEmpleado.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.fechahasta}" >
@@ -158,7 +158,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="debitoSNE" headerText="Debito" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" width="60" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                <p:column id="debitoSNE" headerText="#{msg['debito']}" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" width="60" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.cuentad.codigo}" />
@@ -169,7 +169,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="centroCostoDSNE" headerText="CC-D" sortBy="#{solucionNodoEmpleado.centrocostod.nombre}" width="100" filterBy="#{solucionNodoEmpleado.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="centroCostoDSNE" headerText="#{msg['ccd']}" sortBy="#{solucionNodoEmpleado.centrocostod.nombre}" width="100" filterBy="#{solucionNodoEmpleado.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.centrocostod.nombre}" />
@@ -179,7 +179,7 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="creditoSNE" headerText="Credito" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" width="60" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="creditoSNE" headerText="#{msg['credito']}" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" width="60" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.cuentac.codigo}" />
@@ -190,7 +190,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="centroCostoCSNE" headerText="CC-C" sortBy="#{solucionNodoEmpleado.centrocostoc.nombre}" width="100" filterBy="#{solucionNodoEmpleado.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                <p:column id="centroCostoCSNE" headerText="#{msg['ccc']}" sortBy="#{solucionNodoEmpleado.centrocostoc.nombre}" width="100" filterBy="#{solucionNodoEmpleado.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.centrocostoc.nombre}" />
@@ -201,7 +201,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="saldoSNE" headerText="Saldo" sortBy="#{solucionNodoEmpleado.saldo}" width="100" filterBy="#{solucionNodoEmpleado.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="saldoSNE" headerText="#{msg['saldo']}" sortBy="#{solucionNodoEmpleado.saldo}" width="100" filterBy="#{solucionNodoEmpleado.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.saldo}" />
@@ -212,7 +212,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleado.fechadesde}" width="50"  filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">                                    
+                                <p:column id="fechaDesdeSNE" headerText="#{msg['desde']}" sortBy="#{solucionNodoEmpleado.fechadesde}" width="50"  filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.fechadesde}" >
@@ -227,7 +227,7 @@
                                     </p:cellEditor>
                                 </p:column> 
 
-                                <p:column id="fechaPagoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.fechapago}" width="50" filterBy="#{solucionNodoEmpleado.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="fechaPagoSNE" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleado.fechapago}" width="50" filterBy="#{solucionNodoEmpleado.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.fechapago}" >
@@ -242,7 +242,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="FechaModificacioSNE" headerText="Fecha Mod." sortBy="#{solucionNodoEmpleado.ultimamodificacion}" width="90" filterBy="#{solucionNodoEmpleado.ultimamodificacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="FechaModificacioSNE" headerText="#{msg['fecha']}" sortBy="#{solucionNodoEmpleado.ultimamodificacion}" width="90" filterBy="#{solucionNodoEmpleado.ultimamodificacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleado.ultimamodificacion}" >
@@ -261,7 +261,7 @@
                                         <p:column footerText="" style="visibility: hidden; border: none"/>
                                         <p:column footerText="" style="visibility: hidden; border: none"/>
                                         <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="Totales: " style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B"/>
+                                        <p:column footerText="#{msg['totales']}" style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B"/>
                                         <p:column footerText="#{controlComprobantes.pago}" style="text-align:right; position: relative; left: 17px; padding-left: 0px; border: none"/>
                                         <p:column footerText="#{controlComprobantes.descuento}" style="text-align:right; position: relative; left: 25px; padding-left: 0px; border: none"/> 
                                         <p:column footerText="&nbsp;&nbsp;&nbsp; Neto: &nbsp;&nbsp;&nbsp; #{controlComprobantes.netoTotal}"  style=" text-align: left; position: relative; padding-left: 0px; border: none; left: 22px; border: none"/>
@@ -271,17 +271,17 @@
                         </fieldset>
 
                         <fieldset style="position: absolute; top: 332px; font-size: 11px; width: 835px; height: 158px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleador</legend>
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['empleador']}</legend>
 
                             <p:dataTable id="datosSolucionesNodosEmpleador" var="solucionNodoEmpleador" style="font-size: 11px; width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
                                          rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" rowIndexVar="indiceER"
-                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleador}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="Sin registros">
+                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleador}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="#{msg['sinregistros']}">
 
                                 <p:column width="20" style="padding: 0px"> 
                                     <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlComprobantes.parcialSolucionNodo(indiceER, 1)}"/>
                                 </p:column>
 
-                                <p:column id="codigoSNER" headerText="Codigo" sortBy="#{solucionNodoEmpleador.concepto.codigo}" width="50" filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="codigoSNER" headerText="#{msg['codigo']}" sortBy="#{solucionNodoEmpleador.concepto.codigo}" width="50" filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />
@@ -292,7 +292,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="descipcionSNER" headerText="Descripción" sortBy="#{solucionNodoEmpleador.concepto.descripcion}" width="200" filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="descipcionSNER" headerText="#{msg['descripcion']}" sortBy="#{solucionNodoEmpleador.concepto.descripcion}" width="200" filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.concepto.descripcion}" />
@@ -303,7 +303,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="unidadSNER" headerText="U" sortBy="#{solucionNodoEmpleador.unidades}" width="40" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="unidadSNER" headerText="#{msg['u']}" sortBy="#{solucionNodoEmpleador.unidades}" width="40" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.unidades}" />
@@ -314,7 +314,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="pasivoSNER" headerText="Pasivo" sortBy="#{solucionNodoEmpleador.pasivo}" width="116.5" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
+                                <p:column id="pasivoSNER" headerText="#{msg['pasivo']}" sortBy="#{solucionNodoEmpleador.pasivo}" width="116.5" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.pasivo}">
@@ -328,7 +328,7 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="gastoSNER" headerText="Gasto" sortBy="#{solucionNodoEmpleador.gasto}" width="116.5"  filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="gastoSNER" headerText="#{msg['gasto']}" sortBy="#{solucionNodoEmpleador.gasto}" width="116.5"  filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.gasto}" >
@@ -342,7 +342,7 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="terceroSNER" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleador.nit.nombre}" width="200" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="terceroSNER" headerText="#{msg['tercero']}" sortBy="#{solucionNodoEmpleador.nit.nombre}" width="200" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.nit.nombre}" />
@@ -353,7 +353,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="fechaHastaSNER" headerText="Hasta" sortBy="#{solucionNodoEmpleador.fechahasta}" width="50" filterBy="#{solucionNodoEmpleador.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="fechaHastaSNER" headerText="#{msg['hasta']}" sortBy="#{solucionNodoEmpleador.fechahasta}" width="50" filterBy="#{solucionNodoEmpleador.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.fechahasta}" >
@@ -368,7 +368,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="debitoSNER" headerText="Debito" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" width="60" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                <p:column id="debitoSNER" headerText="#{msg['debito']}" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" width="60" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.cuentad.codigo}" />
@@ -379,7 +379,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="centroCostoDSNER" headerText="CC-D" sortBy="#{solucionNodoEmpleador.centrocostod.nombre}" width="100" filterBy="#{solucionNodoEmpleador.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="centroCostoDSNER" headerText="#{msg['ccd']}" sortBy="#{solucionNodoEmpleador.centrocostod.nombre}" width="100" filterBy="#{solucionNodoEmpleador.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.centrocostod.nombre}" />
@@ -389,7 +389,7 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column id="creditoSNER" headerText="Credito" sortBy="#{solucionNodoEmpleador.cuentac.codigo}" width="60" filterBy="#{solucionNodoEmpleador.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="creditoSNER" headerText="#{msg['credito']}" sortBy="#{solucionNodoEmpleador.cuentac.codigo}" width="60" filterBy="#{solucionNodoEmpleador.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.cuentac.codigo}" />
@@ -400,7 +400,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="centroCostoCSNER" headerText="CC-C" sortBy="#{solucionNodoEmpleador.centrocostoc.nombre}" width="100" filterBy="#{solucionNodoEmpleador.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                <p:column id="centroCostoCSNER" headerText="#{msg['ccc']}" sortBy="#{solucionNodoEmpleador.centrocostoc.nombre}" width="100" filterBy="#{solucionNodoEmpleador.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.centrocostoc.nombre}" />
@@ -411,7 +411,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="saldoSNER" headerText="Saldo" sortBy="#{solucionNodoEmpleador.saldo}" width="100" filterBy="#{solucionNodoEmpleador.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="saldoSNER" headerText="#{msg['saldo']}" sortBy="#{solucionNodoEmpleador.saldo}" width="100" filterBy="#{solucionNodoEmpleador.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.saldo}" />
@@ -422,7 +422,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="fechaDesdeSNER" headerText="Desde" sortBy="#{solucionNodoEmpleador.fechadesde}" width="50"  filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">                                    
+                                <p:column id="fechaDesdeSNER" headerText="#{msg['desde']}" sortBy="#{solucionNodoEmpleador.fechadesde}" width="50"  filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.fechadesde}" >
@@ -437,7 +437,7 @@
                                     </p:cellEditor>
                                 </p:column> 
 
-                                <p:column id="fechaPagoSNER" headerText="Pago" sortBy="#{solucionNodoEmpleador.fechapago}" width="50" filterBy="#{solucionNodoEmpleador.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="fechaPagoSNER" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleador.fechapago}" width="50" filterBy="#{solucionNodoEmpleador.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.fechapago}" >
@@ -452,7 +452,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="FechaModificacioSNER" headerText="Fecha Mod." sortBy="#{solucionNodoEmpleador.ultimamodificacion}" width="90" filterBy="#{solucionNodoEmpleador.ultimamodificacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                <p:column id="FechaModificacioSNER" headerText="#{msg['fecha']}" sortBy="#{solucionNodoEmpleador.ultimamodificacion}" width="90" filterBy="#{solucionNodoEmpleador.ultimamodificacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{solucionNodoEmpleador.ultimamodificacion}" >
@@ -472,7 +472,7 @@
                                         <p:column footerText="" style="visibility: hidden; border: none"/>
                                         <p:column footerText="" style="visibility: hidden; border: none"/>
                                         <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="Totales: " style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B"/>
+                                        <p:column footerText="#{msg['totales']}" style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B"/>
                                         <p:column footerText="#{controlComprobantes.pasivo}" style="text-align:right; position: relative; left: 17px; padding-left: 0px; border: none"/>
                                         <p:column footerText="#{controlComprobantes.gasto}" style="text-align:right; position: relative; left: 25px; padding-left: 0px; border: none"/> 
                                         <p:column footerText=""  style=" visibility: hidden; position: relative; padding-left: 0px; border: none; left: 22px; border: none"/>
@@ -480,173 +480,173 @@
                                 </p:columnGroup>
                             </p:dataTable>
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 800px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 800px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos">
-                    <p:dialog id="buscarEmpleadoDialogo" header="Empleados" widgetVar="buscarEmpleadoDialogo"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
+                    <p:dialog id="buscarEmpleadoDialogo" header="#{msg['empleados']}" widgetVar="buscarEmpleadoDialogo"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
                         <p:dataTable  id="lovEmpleados" style="font-size: 11px; width: 700px" var="parametro" value="#{controlComprobantes.listaParametrosLOV}"
                                       scrollable="true" scrollHeight="162" scrollWidth="720" widgetVar="lovEmpleados" 
-                                      filteredValue="#{controlComprobantes.filtradoListaParametrosLOV}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlComprobantes.filtradoListaParametrosLOV}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{parametro.empleado.secuencia}" selection="#{controlComprobantes.parametroSeleccionado}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlComprobantes.seleccionarEmpleado()}" process="@this" onstart="lovEmpleados.clearFilters()"/>
 
                             <f:facet name="header" >  
-                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 22px; top: 18px;"/>  
+                                <h:outputText value="#{msg['buscar']}"  style="position: absolute; left: 22px; top: 18px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleados.filter();" style="width:150px; position: relative; left: -150px;"/>
-                                <p:watermark for="globalFilter" value="Ingresar valor a buscar" />
+                                <p:watermark for="globalFilter" value="#{msg['ingresar']}" />
                             </f:facet>
 
-                            <p:column  headerText="Codigo Empleado" filterOptions="" filterBy="#{parametro.empleado.codigoempleado}" filterMatchMode="contains">  
+                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{parametro.empleado.codigoempleado}" filterMatchMode="contains">  
                                 <h:outputText value="#{parametro.empleado.codigoempleado}" />  
                             </p:column>  
 
-                            <p:column headerText="Primer Apellido" filterBy="#{parametro.empleado.persona.primerapellido}" filterMatchMode="contains">  
+                            <p:column headerText="#{msg['pa']}" filterBy="#{parametro.empleado.persona.primerapellido}" filterMatchMode="contains">  
                                 <h:outputText value="#{parametro.empleado.persona.primerapellido}" />  
                             </p:column>  
 
-                            <p:column headerText="Segundo Apellido" filterBy="#{parametro.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
+                            <p:column headerText="#{msg['sa']}" filterBy="#{parametro.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
                                 <h:outputText value="#{parametro.empleado.persona.segundoapellido}" />  
                             </p:column>  
 
-                            <p:column headerText="Nombre" width="160" filterBy="#{parametro.empleado.persona.nombre}" filterMatchMode="contains">  
+                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{parametro.empleado.persona.nombre}" filterMatchMode="contains">  
                                 <h:outputText value="#{parametro.empleado.persona.nombre}" />  
                             </p:column> 
                         </p:dataTable> 
 
-                        <p:commandButton id="aceptarP" style="position: relative; left: 567px" value="Aceptar" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}" update="aceptarP" process="@this">
+                        <p:commandButton id="aceptarP" style="position: relative; left: 567px" value="#{msg['aceptar']}" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}" update="aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 567px" value="Atras" onclick="buscarEmpleadoDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlComprobantes.cancelarSeleccionEmpleado()}" update="lovEmpleados, aceptarP" process="@this">
+                        <p:commandButton id="atrasP" style="position: relative; left: 567px" value="#{msg['atras']}" onclick="buscarEmpleadoDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlComprobantes.cancelarSeleccionEmpleado()}" update="lovEmpleados, aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog id="parcialesConcepto" header="Parciales del Concepto" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
+                    <p:dialog id="parcialesConcepto" header="#{msg['parciales']}" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
                         <p:inputTextarea value="#{controlComprobantes.parcialesSolucionNodos}" style="position: absolute; left: 10px; top: 10px; width: 300px; height: 125px; font-weight:bold; overflow: auto" readonly="true" />
-                        <p:commandButton value="Aceptar" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
+                        <p:commandButton value="#{msg['aceptar']}" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
                                         confirmacionFormatoExtendido.show();"/>
                     </p:dialog>
 
-                    <p:dialog id="confirmacionFormatoExtendido" header="Atención" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="100" width="380" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmacionFormatoExtendido" header="#{msg['atencion']}" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="100" width="380" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="¿Desea ver el formato extendido de liquidación?" style="position: absolute; left: 80px; top: 10px; width: 280px; font-weight:bold;" />
-                        <h:outputText value="Aclaración, el formato extendido requiere haber configurado los operandos en el proceso, en caso de no estar configurado, su valor sera 0." style="position: absolute; left: 80px; top: 25px; width: 280px; font-weight:bold; text-align: justify" />
+                        <h:outputText value="#{msg['formato']}" style="position: absolute; left: 80px; top: 10px; width: 280px; font-weight:bold;" />
+                        <h:outputText value="#{msg['aclaracion']}" style="position: absolute; left: 80px; top: 25px; width: 280px; font-weight:bold; text-align: justify" />
                         <p:commandButton value="Si" style="position: absolute; top: 75px; left: 280px" actionListener="#{controlComprobantes.verDetallesFormula()}" onclick="confirmacionFormatoExtendido.hide();"/>
                         <p:commandButton value="No" style="position: absolute; top: 75px; left: 320px" onclick="confirmacionFormatoExtendido.hide();"/>
                     </p:dialog>
 
-                    <p:dialog id="detallesFormulas" header="Atención" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505" style="font-size: 12px" closable="false">  
+                    <p:dialog id="detallesFormulas" header="#{msg['atencion']}" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505" style="font-size: 12px" closable="false">  
                         <fieldset style="position: absolute; top: 10px; width: 455px; height: 185px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Estructura de la formula</legend>
                             <p:dataTable  id="detalleF" style="font-size: 11px; width: 440px" var="detalleFormula" value="#{controlComprobantes.listaDetallesFormulas}"
                                           scrollable="true" scrollHeight="127" scrollWidth="455" widgetVar="detalleF" 
-                                          emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                          emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{detalleFormula.id}">
 
-                                <p:column  headerText="Valor" width="80" style="padding: 0px">  
+                                <p:column  headerText="#{msg['valor']}" width="80" style="padding: 0px">  
                                     <p:inputText value="#{detalleFormula.valor}" style="border-radius: 0px; width: 87%" />  
                                 </p:column>  
 
-                                <p:column headerText="Formula" style="padding: 0px">  
+                                <p:column headerText="#{msg['formula']}" style="padding: 0px">  
                                     <p:inputText value="#{detalleFormula.nombreNodo}" style="border-radius: 0px; width: 94.5%"/>  
                                 </p:column>  
 
-                                <p:column headerText="Descripción" style="padding: 0px">  
+                                <p:column headerText="#{msg['descripcion']}" style="padding: 0px">  
                                     <p:inputText value="#{detalleFormula.descripcion}" style="border-radius: 0px; width: 94.5%"/>  
                                 </p:column> 
                             </p:dataTable>
-                            <p:commandButton value="Aceptar" style="position: absolute; top: 163px; left: 378px" onclick="detallesFormulas.hide();"/>
+                            <p:commandButton value="#{msg['aceptar']}" style="position: absolute; top: 163px; left: 378px" onclick="detallesFormulas.hide();"/>
                         </fieldset>
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="datosSolucionesNodosEmpleadoExportar" var="solucionNodoEmpleadoE" style="display: none; visibility: hidden" value="#{controlComprobantes.listaSolucionesNodosEmpleado}">
 
-                        <p:column headerText="Codigo">
-                            <f:facet name="header"><h:outputText value="Código" /></f:facet>
+                        <p:column headerText="#{msg['codigo']}">
+                            <f:facet name="header"><h:outputText value="#{msg['codigo']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.concepto.codigo}"/>
                         </p:column>
 
-                        <p:column headerText="Descripción"> 
-                            <f:facet name="header"><h:outputText value="Descripción" /></f:facet>
+                        <p:column headerText="#{msg['descripcion']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['descripcion']}"/></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.concepto.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="U">
-                            <f:facet name="header"><h:outputText value="U" /></f:facet>
+                        <p:column headerText="#{msg['u']}">
+                            <f:facet name="header"><h:outputText value="#{msg['u']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.unidades}" />
                         </p:column>
 
                         <p:column>                                    
-                            <f:facet name="header"><h:outputText value="Pago" /></f:facet>
+                            <f:facet name="header"><h:outputText value="#{msg['pago']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.pago}" style="text-align: right">
                                 <f:convertNumber currencyCode="COP"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Descuento">
-                            <f:facet name="header"><h:outputText value="Descuento" /></f:facet>
+                        <p:column headerText="#{msg['descuento']}">
+                            <f:facet name="header"><h:outputText value="#{msg['descuento']}"/></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.descuento}">
                                 <f:convertNumber currencyCode="COP"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Nombre_del_Tercero">
-                            <f:facet name="header"><h:outputText value="Nombre del Tercero" /></f:facet>
+                        <p:column headerText="#{msg['terceroE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['tercero']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.nit.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Hasta">
-                            <f:facet name="header"><h:outputText value="Hasta" /></f:facet>
+                        <p:column headerText="#{msg['hasta']}">
+                            <f:facet name="header"><h:outputText value="#{msg['hasta']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.fechahasta}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> 
                         </p:column>
 
-                        <p:column headerText="Debito">
-                            <f:facet name="header"><h:outputText value="Debito" /></f:facet>
+                        <p:column headerText="#{msg['debito']}">
+                            <f:facet name="header"><h:outputText value="#{msg['debito']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.cuentad.codigo}" />
                         </p:column>
 
-                        <p:column headerText="CC-D">
-                            <f:facet name="header"><h:outputText value="CC-D" /></f:facet>
+                        <p:column headerText="#{msg['ccd']}">
+                            <f:facet name="header"><h:outputText value="#{msg['ccd']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.centrocostod.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Credito">
-                            <f:facet name="header"><h:outputText value="Credito" /></f:facet>
+                        <p:column headerText="#{msg['credito']}">
+                            <f:facet name="header"><h:outputText value="#{msg['credito']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.cuentac.codigo}" />
                         </p:column>
 
-                        <p:column headerText="CC-C">
-                            <f:facet name="header"><h:outputText value="CC-C" /></f:facet>
+                        <p:column headerText="#{msg['ccc']}">
+                            <f:facet name="header"><h:outputText value="#{msg['ccc']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.centrocostoc.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Saldo">
-                            <f:facet name="header"><h:outputText value="Saldo" /></f:facet>
+                        <p:column headerText="#{msg['saldo']}">
+                            <f:facet name="header"><h:outputText value="#{msg['saldo']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.saldo}" />
                         </p:column>
 
-                        <p:column headerText="Desde">
-                            <f:facet name="header"><h:outputText value="Desde" /></f:facet>
+                        <p:column headerText="#{msg['desde']}">
+                            <f:facet name="header"><h:outputText value="#{msg['desde']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.fechadesde}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column> 
 
-                        <p:column headerText="Fecha_Pago">
-                            <f:facet name="header"><h:outputText value="Fecha Pago" /></f:facet>
+                        <p:column headerText="#{msg['fechapago']}">
+                            <f:facet name="header"><h:outputText value="#{msg['fechapago']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.fechapago}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> 
                         </p:column>
 
-                        <p:column headerText="Fecha_Mod.">
-                            <f:facet name="header"><h:outputText value="Fecha Mod." /></f:facet>
+                        <p:column headerText="#{msg['fecha']}">
+                            <f:facet name="header"><h:outputText value="#{msg['fecha']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoE.ultimamodificacion}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
                             </h:outputText> 
@@ -657,54 +657,54 @@
 
                     <p:dataTable id="datosSolucionesNodosEmpleadorExportar" var="solucionNodoEmpleadoER" style="display: none; visibility: hidden" value="#{controlComprobantes.listaSolucionesNodosEmpleador}">
 
-                        <p:column headerText="Codigo">
-                            <f:facet name="header"><h:outputText value="Código" /></f:facet>
+                        <p:column headerText="#{msg['codigo']}">
+                            <f:facet name="header"><h:outputText value="#{msg['codigo']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.concepto.codigo}"/>
                         </p:column>
 
-                        <p:column headerText="Descripción"> 
-                            <f:facet name="header"><h:outputText value="Descripción" /></f:facet>
+                        <p:column headerText="#{msg['descripcion']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['descripcion']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.concepto.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="U">
-                            <f:facet name="header"><h:outputText value="U" /></f:facet>
+                        <p:column headerText="#{msg['u']}">
+                            <f:facet name="header"><h:outputText value="#{msg['u']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.unidades}" />
                         </p:column>
 
                         <p:column>                                    
-                            <f:facet name="header"><h:outputText value="Pasivo" /></f:facet>
+                            <f:facet name="header"><h:outputText value="#{msg['pasivo']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.pasivo}" style="text-align: right">
                                 <f:convertNumber currencyCode="COP"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Gasto">
-                            <f:facet name="header"><h:outputText value="Gasto" /></f:facet>
+                        <p:column headerText="#{msg['gasto']}">
+                            <f:facet name="header"><h:outputText value="#{msg['gasto']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.gasto}">
                                 <f:convertNumber currencyCode="COP"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Nombre_del_Tercero">
-                            <f:facet name="header"><h:outputText value="Nombre del Tercero" /></f:facet>
+                        <p:column headerText="#{msg['terceroE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['tercero']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.nit.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Hasta">
-                            <f:facet name="header"><h:outputText value="Hasta" /></f:facet>
+                        <p:column headerText="#{msg['hasta']}">
+                            <f:facet name="header"><h:outputText value="#{msg['hasta']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.fechahasta}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> 
                         </p:column>
 
-                        <p:column headerText="Debito">
-                            <f:facet name="header"><h:outputText value="Debito" /></f:facet>
+                        <p:column headerText="#{msg['debito']}">
+                            <f:facet name="header"><h:outputText value="#{msg['debito']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.cuentad.codigo}" />
                         </p:column>
 
-                        <p:column headerText="CC-D">
-                            <f:facet name="header"><h:outputText value="CC-D" /></f:facet>
+                        <p:column headerText="#{msg['ccd']}">
+                            <f:facet name="header"><h:outputText value="#{msg['ccd']}"/></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.centrocostod.nombre}" />
                         </p:column>
 
@@ -713,32 +713,32 @@
                             <h:outputText value="#{solucionNodoEmpleadoER.cuentac.codigo}" />
                         </p:column>
 
-                        <p:column headerText="CC-C">
-                            <f:facet name="header"><h:outputText value="CC-C" /></f:facet>
+                        <p:column headerText="#{msg['ccc']}">
+                            <f:facet name="header"><h:outputText value="#{msg['ccc']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.centrocostoc.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Saldo">
-                            <f:facet name="header"><h:outputText value="Saldo" /></f:facet>
+                        <p:column headerText="#{msg['saldo']}">
+                            <f:facet name="header"><h:outputText value="#{msg['saldo']}"/></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.saldo}" />
                         </p:column>
 
-                        <p:column headerText="Desde">
-                            <f:facet name="header"><h:outputText value="Desde" /></f:facet>
+                        <p:column headerText="#{msg['desde']}">
+                            <f:facet name="header"><h:outputText value="#{msg['desde']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.fechadesde}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column> 
 
-                        <p:column headerText="Fecha_Pago">
-                            <f:facet name="header"><h:outputText value="Fecha Pago" /></f:facet>
+                        <p:column headerText="#{msg['fechapago']}">
+                            <f:facet name="header"><h:outputText value="#{msg['fechapago']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.fechapago}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> 
                         </p:column>
 
-                        <p:column headerText="Fecha_Mod.">
-                            <f:facet name="header"><h:outputText value="Fecha Mod." /></f:facet>
+                        <p:column headerText="#{msg['fecha']}">
+                            <f:facet name="header"><h:outputText value="#{msg['fecha']}" /></f:facet>
                             <h:outputText value="#{solucionNodoEmpleadoER.ultimamodificacion}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
                             </h:outputText> 

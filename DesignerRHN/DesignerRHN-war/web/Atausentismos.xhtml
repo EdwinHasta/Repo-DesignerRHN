@@ -1559,70 +1559,70 @@
                                  value="#{controlAusentismos.listaAusentismos}"> 
 
                         <!--COLUMNAS TABLA NOVEDADES--> 
-                        <p:column headerText="#{msg['tipo']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['tipo']}"/> </f:facet> 
+                        <p:column headerText="#{msg['tipoE']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tipoE']}"/> </f:facet> 
                             <h:outputText value="#{ausentismos.tipo.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['clase']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['clase']}"/> </f:facet> 
+                        <p:column headerText="#{msg['claseE']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['claseE']}"/> </f:facet> 
                             <h:outputText value="#{ausentismos.clase.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['causa']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['causa']}"/> </f:facet> 
+                        <p:column headerText="#{msg['causaE']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['causaE']}"/> </f:facet> 
                             <h:outputText value="#{ausentismos.causa.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['dias']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['dias']}"/> </f:facet> 
+                        <p:column headerText="#{msg['diasE']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['diasE']}"/> </f:facet> 
                             <h:outputText value="#{ausentismos.dias}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['horas']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['horas']}"/> </f:facet> 
+                        <p:column headerText="#{msg['horasE']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['horasE']}"/> </f:facet> 
                             <h:outputText value="#{ausentismos.horas}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['iasuencia']}">  
+                        <p:column headerText="#{msg['iausenciaE']}">  
                             <f:facet name="header">
-                                <h:outputText value="#{msg['iausencia']}" />
+                                <h:outputText value="#{msg['iausenciaE']}" />
                             </f:facet>
                             <h:outputText value="#{ausentismos.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="#{msg['fausencia']}">  
+                        <p:column headerText="#{msg['fausenciaE']}">  
                             <f:facet name="header">
-                                <h:outputText value="#{msg['fausencia']}" />
+                                <h:outputText value="#{msg['fausenciaE']}" />
                             </f:facet>
                             <h:outputText value="#{ausentismos.fechafinaus}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="#{msg['expedicion']}">  
+                        <p:column headerText="#{msg['expedicionE']}">  
                             <f:facet name="header">
-                                <h:outputText value="#{msg['expedicion']}" />
+                                <h:outputText value="#{msg['expedicionE']}" />
                             </f:facet>
                             <h:outputText value="#{ausentismos.fechaexpedicion}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="#{msg['ipago']}">  
+                        <p:column headerText="#{msg['ipagoE']}">  
                             <f:facet name="header">
-                                <h:outputText value="#{msg['ipago']}" />
+                                <h:outputText value="#{msg['ipagoE']}" />
                             </f:facet>
                             <h:outputText value="#{ausentismos.fechainipago}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="#{msg['fpago']}">  
+                        <p:column headerText="#{msg['fpagoE']}">  
                             <f:facet name="header">
-                                <h:outputText value="#{msg['fpago']}" />
+                                <h:outputText value="#{msg['fpagoE']}" />
                             </f:facet>
                             <h:outputText value="#{ausentismos.fechafinpago}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -1634,58 +1634,58 @@
                             <h:outputText value="#{ausentismos.porcentajeindividual}" />
                         </p:column>  
 
-                        <p:column headerText="#{msg['bliquidacion']}">      
-                            <f:facet name="header"><h:outputText value="#{msg['bliquidacion']}"/></f:facet>
+                        <p:column headerText="#{msg['bliquidacionE']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['bliquidacionE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.baseliquidacion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['fliquidacion']}">      
-                            <f:facet name="header"><h:outputText value="#{msg['fliquidacion']}"/></f:facet>
+                        <p:column headerText="#{msg['fliquidacionE']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['fliquidacionE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.formaliquidacion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['at']}">
-                            <f:facet name="header"><h:outputText value="#{msg['at']}"/></f:facet>
+                        <p:column headerText="#{msg['atE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['atE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.accidente.descripcioncaso}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['ep']}">      
-                            <f:facet name="header"><h:outputText value="#{msg['ep']}"/></f:facet>
+                        <p:column headerText="#{msg['epE']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['epE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.enfermedad.categoria.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['numero']}">
-                            <f:facet name="header"><h:outputText value="#{msg['numero']}"/></f:facet>
+                        <p:column headerText="#{msg['numeroE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['numeroE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.numerocertificado}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['cdiagnostico']}">      
-                            <f:facet name="header"><h:outputText value="#{msg['cdiagnostico']}"/></f:facet>
+                        <p:column headerText="#{msg['cdiagnosticoE']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['cdiagnosticoE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.diagnosticocategoria.codigo}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['prorroga']}">      
-                            <f:facet name="header"><h:outputText value="#{msg['prorroga']}"/></f:facet>
+                        <p:column headerText="#{msg['prorrogaE']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['prorrogaE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.prorroga.prorrogaAusentismo}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['periodo']}">
-                            <f:facet name="header"><h:outputText value="#{msg['periodo']}"/></f:facet>
+                        <p:column headerText="#{msg['periodoE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['periodoE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.relacion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['reportada']}">
-                            <f:facet name="header"><h:outputText value="#{msg['reportada']}"/></f:facet>
+                        <p:column headerText="#{msg['reportadaE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['reportadaE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.relacionada}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['tercero']}">
-                            <f:facet name="header"><h:outputText value="#{msg['tercero']}"/></f:facet>
+                        <p:column headerText="#{msg['terceroE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['terceroE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.tercero.nombre}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['observaciones']}">
-                            <f:facet name="header"><h:outputText value="#{msg['observaciones']}"/></f:facet>
+                        <p:column headerText="#{msg['observacionesE']}">
+                            <f:facet name="header"><h:outputText value="#{msg['observacionesE']}"/></f:facet>
                             <h:outputText value="#{ausentismos.observaciones}" />
                         </p:column>
                     </p:dataTable>
