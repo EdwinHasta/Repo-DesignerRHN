@@ -38,8 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @Column(name = "CONJUNTO")
@@ -64,7 +62,6 @@ public class Conceptos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
