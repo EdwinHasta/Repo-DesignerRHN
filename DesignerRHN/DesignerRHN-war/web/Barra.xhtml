@@ -11,84 +11,85 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="Generar Liquidación" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    <f:loadBundle basename="Recursos.barra" var="msg"/>
+                    <p:growl id="growl" showDetail="true" />
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
                         <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 500px; height: 450px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Progreso de Liquidación</legend>
+                            <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">#{msg['progreso']}</legend>
                             <h:outputText id="imagen" style="background-image: url(Imagenes/#{controlBarra.imagenEstado}); width: 150px; height: 140px; background-repeat: no-repeat; background-size: 100% 100%;; z-index: 1; position: absolute; top: 23px; left: 20px"/>
                             <p:panel id="panelInf" style="border: none;">
                                 <fieldset style="position: absolute; left: 180px; top: 15px; font-size: 12px; width: 300px; height: 137px; border-radius: 10px; ">
                                     <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Indicadores</legend>
-                                    <h:outputText value="Total trabajadores a liquidar: " style="font-weight: bold; position: absolute; top: 22px; left: 20px"/>
+                                    <h:outputText value="#{msg['ttal']}" style="font-weight: bold; position: absolute; top: 22px; left: 20px"/>
                                     <p:inputText value="#{controlBarra.totalEmpleadosParaLiquidar}" style="position: absolute; left: 210px; text-align: right; width: 80px;" readonly="true"/>
-                                    <h:outputText value="Total trabajadores liquidados: " style="font-weight: bold; position: absolute; top: 52px; left: 20px"/>
+                                    <h:outputText value="#{msg['ttl']}" style="font-weight: bold; position: absolute; top: 52px; left: 20px"/>
                                     <p:inputText id="empleadosLiquidados" value="#{controlBarra.totalEmpleadosLiquidados}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 50px" readonly="true" /> 
-                                    <h:outputText value="Hora inicial liquidación: " style="font-weight: bold; position: absolute; left: 20px; top: 83px"/>
+                                    <h:outputText value="#{msg['hil']}" style="font-weight: bold; position: absolute; left: 20px; top: 83px"/>
                                     <p:inputText id="horaI" value="#{controlBarra.horaInicialLiquidacion}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 82px" readonly="true"/>
-                                    <h:outputText value="Hora final liquidación: " style="font-weight: bold; position: absolute; top: 115px; left: 20px"/>
+                                    <h:outputText value="#{msg['hfl']}" style="font-weight: bold; position: absolute; top: 115px; left: 20px"/>
                                     <p:inputText id="horaF" value="#{controlBarra.horaFinalLiquidacion}" style="position: absolute; left: 210px; text-align: right; width: 80px; top: 114px" readonly="true" /> 
                                 </fieldset>
                             </p:panel>
 
                             <p:panel style="border: none;">
                                 <fieldset style="position: absolute; left: 10px; top: 172px; font-size: 12px; width: 470px; height: 110px; border: inset; border-width: 2px">
-                                    <h:outputText value="Fecha inicial: " style="font-weight: bold; position: absolute; top: 10px; left: 20px"/>
+                                    <h:outputText value="#{msg['fechai']}" style="font-weight: bold; position: absolute; top: 10px; left: 20px"/>
                                     <p:inputText value="#{controlBarra.parametroEstructura.fechadesdecausado}" style="position: absolute; left: 20px; width: 80px; top: 30px" readonly="true">
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </p:inputText>
-                                    <h:outputText value="Estructura: " style="font-weight: bold; position: absolute; top: 10px; left: 120px"/>
+                                    <h:outputText value="#{msg['estructura']}" style="font-weight: bold; position: absolute; top: 10px; left: 120px"/>
                                     <p:inputText value="#{controlBarra.parametroEstructura.estructura.nombre}" style="position: absolute; left: 120px; width: 340px; top: 30px" readonly="true"/>
-                                    <h:outputText value="Fecha final: " style="font-weight: bold; position: absolute; left: 20px; top: 65px"/>
+                                    <h:outputText value="#{msg['fechaf']}" style="font-weight: bold; position: absolute; left: 20px; top: 65px"/>
                                     <p:inputText value="#{controlBarra.parametroEstructura.fechahastacausado}" style="position: absolute; left: 20px; width: 80px; top: 85px" readonly="true">
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </p:inputText>
-                                    <h:outputText value="Proceso: " style="font-weight: bold; position: absolute; top: 65px; left: 120px"/>
+                                    <h:outputText value="#{msg['proceso']}" style="font-weight: bold; position: absolute; top: 65px; left: 120px"/>
                                     <p:inputText value="#{controlBarra.parametroEstructura.proceso.descripcion}" style="position: absolute; left: 120px; width: 160px; top: 85px" readonly="true" /> 
-                                    <h:outputText value="Tipo trabajador: " style="font-weight: bold; position: absolute; top: 65px; left: 300px"/>
+                                    <h:outputText value="#{msg['tipotrabajador']}" style="font-weight: bold; position: absolute; top: 65px; left: 300px"/>
                                     <p:inputText value="#{controlBarra.parametroEstructura.tipotrabajador.nombre}" style="position: absolute; left: 300px; width: 160px; top: 85px" readonly="true" /> 
                                 </fieldset>
 
                                 <fieldset style="position: absolute; left: 10px; top: 303px; font-size: 12px; width: 470px; height: 60px; border: inset; border-width: 2px">
-                                    <h:outputText value="Progreso de liquidación: " style="font-weight: bold; position: absolute; top: 10px; left: 10px"/>
+                                    <h:outputText value="#{msg['progresoliquidacion']}" style="font-weight: bold; position: absolute; top: 10px; left: 10px"/>
                                     <p:progressBar id="barra" widgetVar="barra"  ajax="true" value="#{controlBarra.barra}"  labelTemplate="#{controlBarra.mensajeBarra}" styleClass="animated" interval="700" style="position: relative; top: 25px">
                                         <p:ajax event="complete" listener="#{controlBarra.liquidacionCompleta()}"/>  
                                     </p:progressBar>
                                     <h:outputText id="estadoLiquidacion" value="#{controlBarra.mensajeEstado}" style="font-weight: bold; position: absolute; top: 50px; left: 10px; color: blue"/>
                                 </fieldset>
                             </p:panel>
-                            <p:commandButton id="liquidar" value="[ Liquidar ]"  actionListener="#{controlBarra.liquidar()}" disabled="#{controlBarra.botonLiquidar}" style="position: absolute; top: 385px; font-size: 16px; width: 340px; height: 35px; border-color: #203A8E; border-width: 2px"/>
-                            <p:commandButton value="[Rep. Control]" style="position: absolute; top: 385px; font-size: 14px; width: 154px; height: 35px; left: 350px; border-color: #203A8E; border-width: 2px"/>
-                            <p:commandButton id="cancelar" value="Cancelar" actionListener="#{controlBarra.cancelarLiquidacion()}" disabled="#{controlBarra.botonCancelar}" style="position: absolute; top: 423px; font-size: 12px; width: 130px; border-color: #B61B26; border-width: 2px"/>
-                            <p:commandButton value="[Detalles de liquidación]" style="position: absolute; top: 423px; font-size: 12px; left: 140px; width: 200px; border-color: #B61B26; border-width: 2px"/>
-                            <p:commandButton value="[Errores]" style="position: absolute; top: 423px; font-size: 12px; width: 163px; left: 341px; border-color: #B61B26; border-width: 2px"/>
+                            <p:commandButton id="liquidar" value="#{msg['liquidar']}"  actionListener="#{controlBarra.liquidar()}" disabled="#{controlBarra.botonLiquidar}" style="position: absolute; top: 385px; font-size: 16px; width: 340px; height: 35px; border-color: #203A8E; border-width: 2px"/>
+                            <p:commandButton value="#{msg['repcontrol']}" style="position: absolute; top: 385px; font-size: 14px; width: 154px; height: 35px; left: 350px; border-color: #203A8E; border-width: 2px"/>
+                            <p:commandButton id="cancelar" value="#{msg['cancelar']}" actionListener="#{controlBarra.cancelarLiquidacion()}" disabled="#{controlBarra.botonCancelar}" style="position: absolute; top: 423px; font-size: 12px; width: 130px; border-color: #B61B26; border-width: 2px"/>
+                            <p:commandButton value="#{msg['detalles']}" style="position: absolute; top: 423px; font-size: 12px; left: 140px; width: 200px; border-color: #B61B26; border-width: 2px"/>
+                            <p:commandButton value="#{msg['errores']}" style="position: absolute; top: 423px; font-size: 12px; width: 163px; left: 341px; border-color: #B61B26; border-width: 2px"/>
                         </fieldset>
                         <p:toolbar style="font-size: 12px; position: absolute; top: 31px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left">
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBarra.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -10px" />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="exportarExcel.show();" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="exportarXML.show();"/>
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="exportarPDF.show();"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton value="Consultar datos" actionListener="#{controlBarra.consultarDatos()}" style="position: absolute; left: 645px"/>
+                        <p:commandButton value="#{msg['consultar']}" actionListener="#{controlBarra.consultarDatos()}" style="position: absolute; left: 645px"/>
                         <fieldset style="position: absolute; left: 540px; top: 66px; font-size: 12px; width: 315px; height: 444px; border-radius: 10px; padding-left: 2px; z-index: 1; ">
-                            <h:outputText value="Liquidaciones cerradas" style="font-weight: bold; color: blue; font-size: 13px; position: absolute; top: 10px; left: 7px"/>
+                            <h:outputText value="#{msg['liquidacionescerradas']}" style="font-weight: bold; color: blue; font-size: 13px; position: absolute; top: 10px; left: 7px"/>
                             <fieldset style="padding: 0px; position: absolute; top: 35px; border: none">
                                 <p:dataTable id="datosLiquidacionesCerradas" var="liquidacionCerrada" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesCerradas}"
                                              scrollable="true" scrollWidth="315"
                                              editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesCerradas}" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="Sin registros">
 
-                                    <p:column id="corte" headerText="Corte" sortBy="#{liquidacionCerrada.corte}" width="55" filterBy="#{liquidacionCerrada.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px" > 
+                                    <p:column id="corte" headerText="#{msg['corte']}" sortBy="#{liquidacionCerrada.corte}" width="55" filterBy="#{liquidacionCerrada.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px" > 
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{liquidacionCerrada.corte}">
@@ -114,7 +115,7 @@
                                         </p:cellEditor>
                                     </p:column>
 
-                                    <p:column id="proceso" headerText="Proceso" sortBy="#{liquidacionCerrada.descripcion}" width="50"  filterBy="#{liquidacionCerrada.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="proceso" headerText="#{msg['proceso']}" sortBy="#{liquidacionCerrada.descripcion}" width="50"  filterBy="#{liquidacionCerrada.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{liquidacionCerrada.descripcion}">
@@ -141,7 +142,7 @@
                                     </p:column>
 
                                     <p:column id="observacion"  sortBy="#{liquidacionCerrada.observaciones}" filterBy="#{liquidacionCerrada.observaciones}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
-                                        <f:facet name="header"><h:outputText value="Observación" /></f:facet>
+                                        <f:facet name="header"><h:outputText value="#{msg['observacion']}" /></f:facet>
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{liquidacionCerrada.observaciones}" style="text-align: right">
@@ -157,13 +158,13 @@
                                     </p:column>
                                 </p:dataTable>
                             </fieldset>
-                            <h:outputText value="Liquidaciones en proceso" style="font-weight: bold; color: blue; font-size: 13px; position: absolute; top: 220px; left: 7px"/>
+                            <h:outputText value="#{msg['liquidacionesenproceso']}" style="font-weight: bold; color: blue; font-size: 13px; position: absolute; top: 220px; left: 7px"/>
                             <fieldset style="padding: 0px; position: absolute; top: 245px; border: none">
                                 <p:dataTable id="datosLiquidacionesAbiertas" var="liquidacionAbierta" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesAbiertas}"
                                              scrollable="true" scrollWidth="315"
                                              editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesAbiertas}" filteredValue="#{controlBarra.filtradoLiquidacionesAbiertas}" emptyMessage="Sin registros">
 
-                                    <p:column id="corteLA" headerText="Corte" sortBy="#{liquidacionAbierta.corte}" width="55" filterBy="#{liquidacionAbierta.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px"> 
+                                    <p:column id="corteLA" headerText="#{msg['corte']}" sortBy="#{liquidacionAbierta.corte}" width="55" filterBy="#{liquidacionAbierta.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px"> 
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{liquidacionAbierta.corte}">
@@ -189,7 +190,7 @@
                                         </p:cellEditor>
                                     </p:column>
 
-                                    <p:column id="procesoLA" headerText="Proceso" sortBy="#{liquidacionAbierta.descripcion}" width="50"  filterBy="#{liquidacionAbierta.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="procesoLA" headerText="#{msg['procesoD']}" sortBy="#{liquidacionAbierta.descripcion}" width="50"  filterBy="#{liquidacionAbierta.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{liquidacionAbierta.descripcion}">
@@ -216,7 +217,7 @@
                                     </p:column>
 
                                     <p:column id="observacionLA"  sortBy="#{liquidacionAbierta.observaciones}" filterBy="#{liquidacionAbierta.observaciones}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >                                    
-                                        <f:facet name="header"><h:outputText value="Observación" /></f:facet>
+                                        <f:facet name="header"><h:outputText value="#{msg['observacion']}" /></f:facet>
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{liquidacionAbierta.observaciones}" style="text-align: right">
@@ -233,34 +234,34 @@
                                 </p:dataTable>
                             </fieldset>
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 780px; top: 485px; font-size: 14px; font-family: Arial, Helvetica, sans-serif; z-index: 1" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlBarra.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 780px; top: 485px; font-size: 14px; font-family: Arial, Helvetica, sans-serif; z-index: 1" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlBarra.salir()}" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form>
-                    <p:dialog id="permisoLiquidacion" header="ATENCIÓN...!" widgetVar="permisoLiquidacion"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="permisoLiquidacion" header="#{msg['atencion']}" widgetVar="permisoLiquidacion"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="El usuario actual, no tiene permisos para liquidar." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="permisoLiquidacion.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['permisoLiquidacion']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="permisoLiquidacion.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="exportarExcel" header="Informacion" widgetVar="exportarExcel"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px;">  
-                        <h:outputText value="Seleccione la tabla que desea exportar:" style="position: absolute; left: 20px; top: 10px; width: 300px; font-weight: bold" />
-                        <p:commandButton value="Liquidaciones Cerradas" actionListener="#{controlBarra.exportXLS(0)}" ajax="false" onclick="exportarExcel.hide();" style="position: absolute; top: 40px; left: 30px" process="@this" />
-                        <p:commandButton value="Liquidaciones Prenomina" actionListener="#{controlBarra.exportXLS(1)}" ajax="false"  onclick="exportarExcel.hide();" style="position: absolute; top: 40px; left: 200px" process="@this" />
+                    <p:dialog id="exportarExcel" header="#{msg['informacion']}" widgetVar="exportarExcel"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px;">  
+                        <h:outputText value="#{msg['export']}" style="position: absolute; left: 20px; top: 10px; width: 300px; font-weight: bold" />
+                        <p:commandButton value="#{msg['liquidacionesCerradas']}" actionListener="#{controlBarra.exportXLS(0)}" ajax="false" onclick="exportarExcel.hide();" style="position: absolute; top: 40px; left: 30px" process="@this" />
+                        <p:commandButton value="#{msg['liquidacionesPrenomina']}" actionListener="#{controlBarra.exportXLS(1)}" ajax="false"  onclick="exportarExcel.hide();" style="position: absolute; top: 40px; left: 200px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="exportarPDF" header="Informacion" widgetVar="exportarPDF"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px;">  
-                        <h:outputText value="Seleccione la tabla que desea exportar:" style="position: absolute; left: 20px; top: 10px; width: 300px; font-weight: bold" />
-                        <p:commandButton value="Liquidaciones Cerradas" actionListener="#{controlBarra.exportPDF(0)}" ajax="false" onclick="exportarPDF.hide();" style="position: absolute; top: 40px; left: 30px" process="@this" />
-                        <p:commandButton value="Liquidaciones Prenomina" actionListener="#{controlBarra.exportPDF(1)}" ajax="false"  onclick="exportarPDF.hide();" style="position: absolute; top: 40px; left: 200px" process="@this" />
+                    <p:dialog id="exportarPDF" header="#{msg['informacion']}" widgetVar="exportarPDF"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px;">  
+                        <h:outputText value="#{msg['export']}" style="position: absolute; left: 20px; top: 10px; width: 300px; font-weight: bold" />
+                        <p:commandButton value="#{msg['liquidacionesCerradas']}" actionListener="#{controlBarra.exportPDF(0)}" ajax="false" onclick="exportarPDF.hide();" style="position: absolute; top: 40px; left: 30px" process="@this" />
+                        <p:commandButton value="#{msg['liquidacionesPrenomina']}" actionListener="#{controlBarra.exportPDF(1)}" ajax="false"  onclick="exportarPDF.hide();" style="position: absolute; top: 40px; left: 200px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="exportarXML" header="Informacion" widgetVar="exportarXML"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px;">  
-                        <h:outputText value="Seleccione la tabla que desea exportar:" style="position: absolute; left: 20px; top: 10px; width: 300px; font-weight: bold" />
-                        <p:commandButton value="Liquidaciones Cerradas" ajax="false" onclick="exportarXML.hide();" style="position: absolute; top: 40px; left: 30px" process="@this">
+                    <p:dialog id="exportarXML" header="#{msg['informacion']}" widgetVar="exportarXML"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px;">  
+                        <h:outputText value="#{msg['export']}" style="position: absolute; left: 20px; top: 10px; width: 300px; font-weight: bold" />
+                        <p:commandButton value="#{msg['liquidacionesCerradas']}" ajax="false" onclick="exportarXML.hide();" style="position: absolute; top: 40px; left: 30px" process="@this">
                             <p:dataExporter type="xml"  target=":formExportar:datosLiquidacionesCerradasExportar" fileName="LiquidacionesCerradasXML" encoding="UTF-8"/>
                         </p:commandButton>
-                        <p:commandButton value="Liquidaciones Prenomina" ajax="false"  onclick="exportarXML.hide();" style="position: absolute; top: 40px; left: 200px" process="@this" >
+                        <p:commandButton value="#{msg['liquidacionesPrenomina']}" ajax="false"  onclick="exportarXML.hide();" style="position: absolute; top: 40px; left: 200px" process="@this" >
                             <p:dataExporter type="xml"  target=":formExportar:datosLiquidacionesAbiertasExportar" fileName="LiquidacionesAbiertasXML" encoding="UTF-8"/>
                         </p:commandButton>
                     </p:dialog>
@@ -268,25 +269,25 @@
                 <h:form id="formExportar">
                     <p:dataTable id="datosLiquidacionesCerradasExportar" var="liquidacionCerradaE" style="display: none; visibility: hidden" value="#{controlBarra.liquidacionesCerradas}">
 
-                        <p:column headerText="Corte">
-                            <f:facet name="header"><h:outputText value="Corte" /></f:facet>
+                        <p:column headerText="#{msg['corte']}">
+                            <f:facet name="header"><h:outputText value="#{msg['corte']}" /></f:facet>
                             <h:outputText value="#{liquidacionCerradaE.corte}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Codigo_Empresa"> 
-                            <f:facet name="header"><h:outputText value="Codigo Empresa" /></f:facet>
+                        <p:column headerText="#{msg['codigoempresaE']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['codigoempresa']}" /></f:facet>
                             <h:outputText value="#{liquidacionCerradaE.empresaCodigo}" />
                         </p:column>
 
-                        <p:column headerText="Proceso">
-                            <f:facet name="header"><h:outputText value="Proceso" /></f:facet>
+                        <p:column headerText="#{msg['procesoD']}">
+                            <f:facet name="header"><h:outputText value="#{msg['procesoD']}" /></f:facet>
                             <h:outputText value="#{liquidacionCerradaE.descripcion}" />
                         </p:column>
 
                         <p:column>                                    
-                            <f:facet name="header"><h:outputText value="Observacion" /></f:facet>
+                            <f:facet name="header"><h:outputText value="#{msg['observacionE']}" /></f:facet>
                             <h:outputText value="#{liquidacionCerradaE.observaciones}" style="text-align: right">
                                 <f:convertNumber currencyCode="COP"/>
                             </h:outputText>
@@ -295,25 +296,25 @@
 
                     <p:dataTable id="datosLiquidacionesAbiertasExportar" var="liquidacionAbiertaE" style="display: none; visibility: hidden" value="#{controlBarra.liquidacionesAbiertas}">
 
-                        <p:column headerText="Corte">
-                            <f:facet name="header"><h:outputText value="Corte" /></f:facet>
+                        <p:column headerText="#{msg['corte']}">
+                            <f:facet name="header"><h:outputText value="#{msg['corte']}" /></f:facet>
                             <h:outputText value="#{liquidacionAbiertaE.corte}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Codigo_Empresa"> 
-                            <f:facet name="header"><h:outputText value="Codigo Empresa" /></f:facet>
+                        <p:column headerText="#{msg['codigoempresaE']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['codigoempresa']}" /></f:facet>
                             <h:outputText value="#{liquidacionAbiertaE.empresaCodigo}" />
                         </p:column>
 
-                        <p:column headerText="Proceso">
-                            <f:facet name="header"><h:outputText value="Proceso" /></f:facet>
+                        <p:column headerText="#{msg['proceso']}">
+                            <f:facet name="header"><h:outputText value="#{msg['proceso']}" /></f:facet>
                             <h:outputText value="#{liquidacionAbiertaE.descripcion}" />
                         </p:column>
 
                         <p:column>                                    
-                            <f:facet name="header"><h:outputText value="Observacion" /></f:facet>
+                            <f:facet name="header"><h:outputText value="#{msg['observacionE']}" /></f:facet>
                             <h:outputText value="#{liquidacionAbiertaE.observaciones}" style="text-align: right">
                                 <f:convertNumber currencyCode="COP"/>
                             </h:outputText>

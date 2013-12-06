@@ -124,7 +124,6 @@ public class ControlEmplComprobantes implements Serializable {
         permitirIndex = true;
         listaProcesos = new ArrayList<Procesos>();
         listaTerceros = new ArrayList<Terceros>();
-        empleado = new Empleados();
         procesoSelecionado = new Procesos();
         seleccionComprobante = new Comprobantes();
         //Otros
