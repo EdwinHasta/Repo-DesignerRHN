@@ -1,16 +1,11 @@
 package Validaciones;
 
 import java.util.Set;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
-import javax.faces.validator.ValidatorException;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.metadata.BeanDescriptor;
-import org.primefaces.component.inputtext.InputText;
 @ManagedBean
 @FacesValidator("validar")
 public class Validar implements Validator {
@@ -43,4 +38,6 @@ public class Validar implements Validator {
     public <T> T unwrap(Class<T> arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
 }

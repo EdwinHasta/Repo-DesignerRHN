@@ -5,6 +5,7 @@
 package InterfaceAdministrar;
 
 import Entidades.Empleados;
+import Entidades.HVHojasDeVida;
 import Entidades.HvExperienciasLaborales;
 import Entidades.MotivosRetiros;
 import Entidades.SectoresEconomicos;
@@ -30,4 +31,6 @@ public interface AdministrarPerExperienciaLaboralInterface {
     public void borrarExperienciaLaboral(List<HvExperienciasLaborales> listHEL);
 
     public List<HvExperienciasLaborales> listExperienciasLaboralesSecuenciaEmpleado(BigInteger secuencia);
+    
+    public HVHojasDeVida obtenerHojaVidaPersona(BigInteger secuencia);
 }

@@ -104,7 +104,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             }
             return false;
         } catch (Exception e) {
-            System.out.println("Exepcion: " + e);
+            System.out.println("Excepcion: " + e);
             return false;
         }
     }

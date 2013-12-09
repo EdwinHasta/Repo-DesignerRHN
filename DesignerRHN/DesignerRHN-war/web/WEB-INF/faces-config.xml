@@ -84,6 +84,25 @@
         </navigation-case>
     </navigation-rule>
     
+    
+    
+    <navigation-rule>
+        <from-view-id>/conceptojuridico.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>conceptojuridico</from-outcome>
+            <to-view-id>/conceptojuridico.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Cuenta.xhtml</from-view-id>
         <navigation-case>
@@ -213,6 +232,24 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/conceptojuridico.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>conceptoJuridicoRastro</from-outcome>
+            <to-view-id>/conceptojuridico.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
     <navigation-rule>
         <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
@@ -378,7 +415,23 @@
         </navigation-case>
     </navigation-rule>
     
-    ReporteBienestar
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>experienciaLabPersona</from-outcome>
+            <to-view-id>/perexperiencialaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/perexperiencialaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>personaIndi</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>

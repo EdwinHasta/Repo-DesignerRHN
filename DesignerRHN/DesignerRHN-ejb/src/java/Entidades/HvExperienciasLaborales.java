@@ -6,6 +6,8 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,8 +46,7 @@ public class HvExperienciasLaborales implements Serializable {
     @Size(max = 50)
     @Column(name = "EMPRESA")
     private String empresa;
-    @Basic(optional = false)
-    @NotNull
+
     @Column(name = "FECHADESDE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechadesde;
@@ -71,6 +73,10 @@ public class HvExperienciasLaborales implements Serializable {
     @JoinColumn(name = "SECTORECONOMICO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private SectoresEconomicos sectoreconomico;
+    @Transient
+    private String strFechaDesde;
+    @Transient
+    private String strFechaHasta;
 
     public HvExperienciasLaborales() {
     }
@@ -101,11 +107,29 @@ public class HvExperienciasLaborales implements Serializable {
     }
 
     public Date getFechadesde() {
+        //System.out.println("Entidad GET fechadesde : "+fechadesde);
         return fechadesde;
     }
 
-    public void setFechadesde(Date fechadesde) {
-        this.fechadesde = fechadesde;
+    public void setFechadesde(Date fechita) {
+        this.fechadesde = fechita;
+        System.out.println("Entidad SET fechadesde : " + fechadesde);
+    }
+
+    public String getStrFechaDesde() {
+        if (fechadesde != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaDesde = formatoFecha.format(fechadesde);
+        } else {
+            strFechaDesde = " ";
+        }
+        return strFechaDesde;
+    }
+
+    public void setStrFechaDesde(String strFechaDesde) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechadesde = formatoFecha.parse(strFechaDesde);
+        this.strFechaDesde = strFechaDesde;
     }
 
     public Date getFechahasta() {
@@ -114,6 +138,22 @@ public class HvExperienciasLaborales implements Serializable {
 
     public void setFechahasta(Date fechahasta) {
         this.fechahasta = fechahasta;
+    }
+
+    public String getStrFechaHasta() {
+        if (fechahasta != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaHasta = formatoFecha.format(fechahasta);
+        } else {
+            strFechaHasta = " ";
+        }
+        return strFechaHasta;
+    }
+
+    public void setStrFechaHasta(String strFechaHasta) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechahasta = formatoFecha.parse(strFechaHasta);
+        this.strFechaHasta = strFechaHasta;
     }
 
     public String getJefeinmediato() {
@@ -196,4 +236,5 @@ public class HvExperienciasLaborales implements Serializable {
     public void setSectoreconomico(SectoresEconomicos sectoreconomico) {
         this.sectoreconomico = sectoreconomico;
     }
+
 }

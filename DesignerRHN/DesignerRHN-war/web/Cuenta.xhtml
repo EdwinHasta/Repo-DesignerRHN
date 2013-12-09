@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -221,6 +221,7 @@
                                         <h:outputText  value="#{msg['cuentaasociada']}"/>
                                     </f:facet>
                                 </p:column>
+                                <p:tooltip style="font-size: 12px" for="cuentaAsociadaSAP" value="Cuenta Asociada SAP" />
 
                                 <p:column headerText="#{msg['manejasubcuenta']}" sortBy="#{infoC.manejasubcuenta}" filterBy="#{infoC.manejasubcuenta}" filterMatchMode="contains" 
                                           id="cuentaSubCuenta" width="30" filterStyle="display: none; visibility: hidden" >                                  
@@ -231,6 +232,7 @@
                                         <h:outputText  value="#{msg['manejasubcuenta']}"/>
                                     </f:facet>
                                 </p:column>
+                                <p:tooltip style="font-size: 12px" for="cuentaSubCuenta" value="Maneja SubCuenta" />
 
                             </p:dataTable>
                         </fieldset>
