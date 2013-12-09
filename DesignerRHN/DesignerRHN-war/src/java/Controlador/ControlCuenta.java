@@ -648,7 +648,7 @@ public class ControlCuenta implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:aceptar");
             }
-            context.execute("DuplicarRegistroTercero.hide()");
+            context.execute("DuplicarRegistroCuenta.hide()");
             cambiosCuentas = true;
             index = -1;
             secRegistroCuentas = null;

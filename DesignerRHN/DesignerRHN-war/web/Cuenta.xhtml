@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -220,6 +220,7 @@
                                         <h:outputText  value="..."/>
                                     </f:facet>
                                 </p:column>
+                                <p:tooltip style="font-size: 12px" for="cuentaAsociadaSAP" value="Cuenta Asociada SAP" />
 
                                 <p:column headerText="..." sortBy="#{infoC.manejasubcuenta}" filterBy="#{infoC.manejasubcuenta}" filterMatchMode="contains" 
                                           id="cuentaSubCuenta" width="30" filterStyle="display: none; visibility: hidden" >                                  
@@ -230,6 +231,7 @@
                                         <h:outputText  value="..."/>
                                     </f:facet>
                                 </p:column>
+                                <p:tooltip style="font-size: 12px" for="cuentaSubCuenta" value="Maneja SubCuenta" />
 
                             </p:dataTable>
                         </fieldset>
@@ -773,7 +775,7 @@
                             <h:outputText value="#{infoC.naturaleza}" />
                         </p:column>
 
-                        <p:column headerText="Cta Tesoreria">                                  
+                        <p:column headerText="Cta_Tesoreria">                                  
                             <f:facet name="header"><h:outputText value="Cta Tesoreria"/> </f:facet> 
                             <h:outputText value="#{infoC.contracuentatesoreria.descripcion}" />
                         </p:column>
@@ -813,7 +815,7 @@
                             <h:outputText value="#{infoC.incluyecentrocostocodigocuenta}" />
                         </p:column>
 
-                        <p:column headerText="Codigo Alternativo">                                  
+                        <p:column headerText="Codigo_Alternativo">                                  
                             <f:facet name="header"><h:outputText value="Codigo Alternativo"/> </f:facet> 
                             <h:outputText value="#{infoC.codigoalternativo}" />
                         </p:column>
@@ -828,13 +830,13 @@
                             <h:outputText value="#{infoC.incluyeshortnamesapbo}" />
                         </p:column>
 
-                        <p:column headerText="...">                                  
-                            <f:facet name="header"><h:outputText value="..."/> </f:facet> 
+                        <p:column headerText="AsociadaCuentaSAP">                                  
+                            <f:facet name="header"><h:outputText value="AsociadaCuentaSAP"/> </f:facet> 
                             <h:outputText value="#{infoC.cuentaasociadasap}" />
                         </p:column>
 
-                        <p:column headerText="...">                                  
-                            <f:facet name="header"><h:outputText value="..."/> </f:facet> 
+                        <p:column headerText="ManejaSubCuenta">                                  
+                            <f:facet name="header"><h:outputText value="ManejaSubCuenta"/> </f:facet> 
                             <h:outputText value="#{infoC.manejasubcuenta}" />
                         </p:column>
                     </p:dataTable>

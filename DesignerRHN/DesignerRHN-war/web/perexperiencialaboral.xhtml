@@ -1,10 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -18,7 +20,7 @@
 
                         <p:commandButton style="position: absolute; left: 710px; top: 495px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosExperiencia" process="@this" />
                         <p:commandButton style="position: absolute; left: 20px; top: 495px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlPerExperienciaLaboral.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 495px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerExperienciaLaboral.salir()}" action="proyects" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 495px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerExperienciaLaboral.salir()}" action="personaIndi" process="@this" />
 
 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 390px;width: 830px; border-radius: 10px; text-align: left">
@@ -46,22 +48,20 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Ingreso" sortBy="#{info.fechadesde}" filterBy="#{info.fechadesde}" filterMatchMode="contains" id="expFechaInicio" width="100"
+                                <p:column headerText="Fecha Ingreso" sortBy="#{info.strFechaDesde}" filterBy="#{info.strFechaDesde}" filterMatchMode="contains" id="expFechaInicio" width="100"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechadesde}" style="width: 100px; font-size: 11px">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechadesde}" id="editarFechaDesdeE" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="dateFechaDesde" value="#{info.fechadesde}"   >
+                                                <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlPerExperienciaLaboral.adicionCambiarIndiceModificar(indice,1)}" process="@this" update="dateFechaDesde"/>
+                                                <p:ajax event="dateSelect" listener="#{controlPerExperienciaLaboral.adicionCambiarIndiceModificar(indice,1)}" process="@this" update="dateFechaDesde"/>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -69,7 +69,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Retiro" sortBy="#{info.fechahasta}" filterBy="#{info.fechahasta}" filterMatchMode="contains" id="expFechaRetiro" width="100"
+                                <p:column headerText="Fecha Retiro" sortBy="#{info.strFechaHasta}" filterBy="#{info.strFechaHasta}" filterMatchMode="contains" id="expFechaRetiro" width="100"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -78,13 +78,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechahasta}" id="editarFechaHastaE" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,2)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="dateFechaHasta" value="#{info.fechahasta}" >
+                                                <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,2)}" process="@this" />
+                                                <p:ajax event="change" listener="#{controlPerExperienciaLaboral.adicionCambiarIndiceModificar(indice,2)}" process="@this" update="dateFechaHasta"/>
+                                                <p:ajax event="dateSelect" listener="#{controlPerExperienciaLaboral.adicionCambiarIndiceModificar(indice,1)}" process="@this" update="dateFechaHasta"/>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -109,7 +107,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Jefe Inmediato" sortBy="#{info.jefeinmediato}" filterBy="#{info.jefeinmediato}" width="133"
+                                <p:column headerText="Jefe Inmediato" sortBy="#{info.strFechaDesde}" filterBy="#{info.strFechaDesde}" width="133"
                                           filterMatchMode="contains" id="expJefe" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.jefeinmediato}" style="width: 100px; font-size: 11px;text-transform: uppercase"/></f:facet>  
@@ -157,7 +155,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooSector" value="Sector Economico"/>
+                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooSector"  process="@this" value="Sector Economico"/>
                                     </f:facet>
                                 </p:column>
 
@@ -174,10 +172,9 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooMotivos" value="Motivo Retiro"/>
+                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooMotivos"  process="@this" value="Motivo Retiro"/>
                                     </f:facet>
                                 </p:column>
-
                             </p:dataTable>
 
 
@@ -351,10 +348,17 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Es necesario que el campo LOGROS ALCANZADOS se encuentre vacio." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
-                    <p:dialog id="errorIngresoReg" header="ATENCIÓN" widgetVar="errorIngresoReg"  resizable="false" draggable="false" modal="true" height="70" width="255px" style="font-size: 12px" closable="true">  
+
+                    <p:dialog id="errorIngresoReg"  header="ATENCIÓN" widgetVar="errorIngresoReg" resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="El campo fecha ingreso no debe ser vacio." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <p:commandButton value="OK" onclick="errorIngresoReg.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechasIngresoReg"  header="ATENCIÓN" widgetVar="errorFechasIngresoReg" resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La fecha final es menor que la fecha inicial. Error de ingreso" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <p:commandButton value="OK" onclick="errorFechasIngresoReg.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlPerExperienciaLaboral.activarCtrlF11()}"/> 
 
@@ -373,19 +377,22 @@
                             </p:inputText>
                             <p:watermark for="nuevaEmpresaEP" value="Empresa" />
 
+
                             <strong><h:outputText value="Fecha Ingreso: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicioEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.fechadesde}" style="font-size: 10px; position: absolute;  top: 110px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicioEP"/>
-                                <p:ajax event="change" update="nuevaFechaInicioEP"/>
-                            </p:calendar>
+                            <form style="font-size: 10px; position: absolute;  top: 110px; left: 200px;">
+                                <lnk:calendar id="nuevaDateFechaDesde" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.fechadesde}"   >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaDesde"/>
+                                    <p:ajax event="change" update="nuevaDateFechaDesde"/>
+                                </lnk:calendar>
+                            </form>
 
                             <strong><h:outputText value="Fecha Retiro: " style="font-size: 14px; position: absolute; top: 150px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinalEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.fechahasta}" style="font-size: 10px; position: absolute;  top: 150px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalEP"/>
-                                <p:ajax event="change" update="nuevaFechaFinalEP"/>
-                            </p:calendar>
+                            <form  style="font-size: 10px; position: absolute;  top: 150px; left: 200px;">
+                                <lnk:calendar id="nuevaDateFechaHasta" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.fechahasta}"   >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaHasta"/>
+                                    <p:ajax event="change" update="nuevaDateFechaHasta"/>
+                                </lnk:calendar>
+                            </form>
 
                             <strong><h:outputText value="Cargo Desempeñado: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
                             <p:inputText id="nuevaCargoEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.cargo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
@@ -485,7 +492,7 @@
                                 <p:ajax event="click" listener="#{controlPerExperienciaLaboral.valoresBackupAutocompletarExperiencia(2, 'SECTORES')}" />
                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.autocompletarNuevoyDuplicadoExperiencia('SECTORES', controlPerExperienciaLaboral.duplicarExperienciaLaboral.sectoreconomico.descripcion,2)}" process="@this" update="duplicarSectorEP"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 310px;  " id="btnDuplicarSector" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,2)}" update="duplicarSectorEP"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 333px; top: 310px;  " id="btnDuplicarSector" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,2)}" update="duplicarSectorEP"/>   
                             <p:watermark for="duplicarSectorEP" value="Sector Economico" />
 
                             <strong><h:outputText value="Motivo Retiro: " style="font-size: 14px; position: absolute; top: 350px; left: 50px" /></strong>
@@ -494,7 +501,7 @@
                                 <p:ajax event="click" listener="#{controlPerExperienciaLaboral.valoresBackupAutocompletarExperiencia(2, 'MOTIVOS')}" />
                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.autocompletarNuevoyDuplicadoExperiencia('MOTIVOS', controlPerExperienciaLaboral.duplicarExperienciaLaboral.motivoretiro.nombre,2)}" process="@this" update="duplicarMotivoEP"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 350px;  " id="btnDuplicarMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,2)}" update="duplicarMotivoEP"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 333px; top: 350px;  " id="btnDuplicarMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,2)}" update="duplicarMotivoEP"/>   
                             <p:watermark for="duplicarMotivoEP" value="Motivo Retiro" />
 
                             <strong><h:outputText value="Logro Alcanzado: " style="font-size: 14px; position: absolute; top: 390px; left: 50px" /></strong>
@@ -517,18 +524,14 @@
                         <p:commandButton id="cancelarEmpresa" value="Atras" onclick="editarEmpresaD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialD" header="Fecha Inicio Experiencia Laboral" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.fechadesde}" id="editFechaInicialPCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                        </p:calendar>
-                        <p:commandButton id="cancelarFechaInicial" value="Atras" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="editarFechaInicialD" header="Fecha Inicio Experiencia Laboral" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.strFechaDesde}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarFechaIni" value="Atras" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalD" header="Fecha Finalizacion Experiencia Laboral" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.fechahasta}" id="editFechaFinalPCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                        </p:calendar>
-                        <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinalD.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="editarFechaFinalD" header="Fecha Final Experiencia Laboral" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.strFechaHasta}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinalD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarCargoD" header="Cargo Experiencia Laboral" widgetVar="editarCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
@@ -572,26 +575,26 @@
                         </p:column>
 
                         <p:column headerText="Fecha Inicio">                                  
-                            <f:facet name="header"><h:outputText value="Fecha Inicio"/> </f:facet> 
+                            <f:facet name="header"><h:outputText value="FechaInicio"/> </f:facet> 
                             <h:outputText value="#{infoExp.fechadesde}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
                         <p:column headerText="Fecha Retiro">                                  
-                            <f:facet name="header"><h:outputText value="Fecha Retiro"/> </f:facet> 
+                            <f:facet name="header"><h:outputText value="FechaRetiro"/> </f:facet> 
                             <h:outputText value="#{infoExp.fechahasta}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
                         <p:column headerText="Cargo Desempeñado">                                  
-                            <f:facet name="header"><h:outputText value="Cargo Desempeñado"/> </f:facet> 
+                            <f:facet name="header"><h:outputText value="CargoDesempeñado"/> </f:facet> 
                             <h:outputText value="#{infoExp.cargo}" />
                         </p:column>
 
                         <p:column headerText="Jefe Inmediato">                                  
-                            <f:facet name="header"><h:outputText value="Jefe Inmediato"/> </f:facet> 
+                            <f:facet name="header"><h:outputText value="JefeInmediato"/> </f:facet> 
                             <h:outputText value="#{infoExp.jefeinmediato}" />
                         </p:column>
 
@@ -601,17 +604,17 @@
                         </p:column>
 
                         <p:column headerText="Sector Economico">                                  
-                            <f:facet name="header"><h:outputText value="Plataforma"/> </f:facet> 
+                            <f:facet name="header"><h:outputText value="SectorEconomico"/> </f:facet> 
                             <h:outputText value="#{infoExp.sectoreconomico.descripcion}" />
                         </p:column>
 
                         <p:column headerText="Motivo Retiro">                                  
-                            <f:facet name="header"><h:outputText value="Motivo Retiro"/> </f:facet> 
+                            <f:facet name="header"><h:outputText value="MotivoRetiro"/> </f:facet> 
                             <h:outputText value="#{infoExp.motivoretiro.nombre}" />
                         </p:column>
 
                         <p:column headerText="Logros Alcanzados">                                  
-                            <f:facet name="header"><h:outputText value="Logros Alcanzados"/> </f:facet> 
+                            <f:facet name="header"><h:outputText value="LogrosAlcanzados"/> </f:facet> 
                             <h:outputText value="#{infoExp.alcance}" />
                         </p:column>
 

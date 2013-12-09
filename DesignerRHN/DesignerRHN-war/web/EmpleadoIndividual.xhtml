@@ -306,7 +306,7 @@
                                 <h:outputText value="Referencia Familiar" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
                                 <p:inputText id="referenciaFamiliar" value="#{controlEmpleadoIndividual.referenciasFamiliaresP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px"/>
 
-                                <p:commandButton id="btnExperienciaLaboral" value="" style="background-image: url(Imagenes/comprobante.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
+                                <p:commandButton id="btnExperienciaLaboral" value="" style="background-image: url(Imagenes/comprobante.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this" action="experienciaLabPersona" actionListener="#{controlPerExperienciaLaboral.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <h:outputText value="Experiencia Laboral" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
                                 <p:inputText id="experienciaLaboral" value="#{controlEmpleadoIndividual.experienciaLaboralP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
 
