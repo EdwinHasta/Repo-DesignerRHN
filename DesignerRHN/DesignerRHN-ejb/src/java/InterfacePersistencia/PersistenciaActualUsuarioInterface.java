@@ -5,6 +5,7 @@
 package InterfacePersistencia;
 
 import Entidades.ActualUsuario;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -13,4 +14,5 @@ import Entidades.ActualUsuario;
 public interface PersistenciaActualUsuarioInterface {
     public ActualUsuario actualUsuarioBD();
     public String actualAliasBD();
+    public String actualAliasBD_EM(EntityManager emg);
 }
