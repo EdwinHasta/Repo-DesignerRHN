@@ -11,25 +11,26 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    <f:loadBundle basename="Recursos.emplcomprobante" var="msg" />
                     <p:growl id="growl" showDetail="true"/> 
-                    <p:panel  id="PanelTotal" header="Comprobantes" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
                         <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 11px; width: 215px; height: 98px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['empleado']}</legend>
                             <p:commandButton id="btnComprobante" value="" style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/comprobante.gif);  top: 20px; width: 50px; height: 50px; background-repeat: no-repeat;" />
-                            <h:outputText value="Estos son los comprobantes con los respectivos pagos y descuentos que ha tenido el empleado."  style="font-weight: bold; width: 160px; text-align: justify; position: absolute; left: 65px;"/>
+                            <h:outputText value="#{msg['boton']}" style="font-weight: bold; width: 160px; text-align: justify; position: absolute; left: 65px;"/>
                             <p:inputText value="#{controlEmplComprobantes.empleado.persona.nombreCompleto}" style="position: absolute; top: 77px; width: 206px; color: #BF1A1A; font-weight: bold; text-align: center" readonly="true" />
                         </fieldset>
                         <fieldset style="position: absolute; left: 250px; top: 63px; font-size: 11px; width: 270px; height: 100px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Comprobantes</legend>
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['titulo']}</legend>
 
                             <p:dataTable id="datosComprobantes" widgetVar="datosComprobantes" var="comprobante" value="#{controlEmplComprobantes.listaComprobantes}"
                                          rowKey="#{comprobante.secuencia}" rowIndexVar="indiceComprobante" style="font-size: 10px; border: 1px; text-align: left"                           
                                          scrollable="true" scrollHeight="#{controlEmplComprobantes.altoScrollComprobante}" filteredValue="#{controlEmplComprobantes.filtradolistaComprobantes}" 
-                                         emptyMessage="No se encontrarón datos" editable="true" editMode="cell" >
+                                         emptyMessage="#{msg['vacio']}" editable="true" editMode="cell" >
 
                                 <p:ajax event="filter" listener="#{controlEmplComprobantes.eventoFiltrarComponentes()}"/>
 
-                                <p:column headerText="#Compr." sortBy="#{comprobante.numero}" filterBy="#{comprobante.numero}" filterMatchMode="contains"  width="40" id="numeroComprobanteC"  filterStyle="display: none; visibility: hidden;">  
+                                <p:column headerText="#{msg['numero']}" sortBy="#{comprobante.numero}" filterBy="#{comprobante.numero}" filterMatchMode="contains"  width="40" id="numeroComprobanteC"  filterStyle="display: none; visibility: hidden;">  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{comprobante.numero}"/>
@@ -43,7 +44,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="Fecha" sortBy="#{comprobante.fecha}" filterBy="#{comprobante.fecha}" filterMatchMode="contains"  width="60" id="fechaC" filterStyle="display: none; visibility: hidden;" >  
+                                <p:column headerText="#{msg['fecha']}" sortBy="#{comprobante.fecha}" filterBy="#{comprobante.fecha}" filterMatchMode="contains"  width="60" id="fechaC" filterStyle="display: none; visibility: hidden;" >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{comprobante.fecha}" >
@@ -62,7 +63,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="Entregado" sortBy="#{comprobante.fechaentregado}" filterBy="#{comprobante.fechaentregado}" filterMatchMode="contains"  width="60" id="fechaEntregaC" filterStyle="display: none; visibility: hidden;" >  
+                                <p:column headerText="#{msg['entregado']}" sortBy="#{comprobante.fechaentregado}" filterBy="#{comprobante.fechaentregado}" filterMatchMode="contains"  width="60" id="fechaEntregaC" filterStyle="display: none; visibility: hidden;" >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{comprobante.fechaentregado}" >
@@ -87,58 +88,58 @@
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlEmplComprobantes.guardarCambios()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEmplComprobantes.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
                                     <p:dataExporter type="xml"  target="#{controlEmplComprobantes.tablaExportar}" fileName="#{controlEmplComprobantes.nombreArchivoExportar}" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.nuevoRegistro()}" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.borrar()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.duplicarC()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
                         <fieldset style="position: absolute; left: 550px; top: 63px; font-size: 11px; width: 300px; height: 100px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Procesos</legend>
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['procesos']}</legend>
 
                             <p:dataTable id="datosCortesProcesos" widgetVar="datosCortesProcesos" var="corteProceso" value="#{controlEmplComprobantes.listaCortesProcesos}"
                                          rowKey="#{corteProceso.secuencia}" rowIndexVar="indiceCorteProceso" style="font-size: 10px;"
                                          scrollable="true" scrollHeight="#{controlEmplComprobantes.altoScrollCortesProcesos}" filteredValue="#{controlEmplComprobantes.filtradolistaCortesProcesos}"
-                                         emptyMessage="No se encontrarón datos" editable="true" editMode="cell">
+                                         emptyMessage="#{msg['vacio']}" editable="true" editMode="cell">
 
                                 <p:ajax event="filter" listener="#{controlEmplComprobantes.eventoFiltrarCortesProcesos()}"/>
 
-                                <p:column headerText="Fecha Corte" sortBy="#{corteProceso.corte}" width="60" filterBy="#{corteProceso.corte}" filterMatchMode="contains" id="fechaCorteCP" filterStyle="display: none; visibility: hidden;" >  
+                                <p:column headerText="#{msg['fechacorte']}" sortBy="#{corteProceso.corte}" width="60" filterBy="#{corteProceso.corte}" filterMatchMode="contains" id="fechaCorteCP" filterStyle="display: none; visibility: hidden;" >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{corteProceso.corte}" >
@@ -157,7 +158,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="Proceso" sortBy="#{corteProceso.proceso.descripcion}" filterBy="#{corteProceso.proceso.descripcion}" filterMatchMode="contains"  width="120" id="procesoCP" filterStyle="display: none; visibility: hidden;">  
+                                <p:column headerText="#{msg['proceso']}" sortBy="#{corteProceso.proceso.descripcion}" filterBy="#{corteProceso.proceso.descripcion}" filterMatchMode="contains"  width="120" id="procesoCP" filterStyle="display: none; visibility: hidden;">  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{corteProceso.proceso.descripcion}"/>
@@ -175,7 +176,7 @@
                         </fieldset>
 
                         <fieldset style="position: absolute; top: 180px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleado</legend>
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['empleado']}</legend>
 
                             <div id="superiorIzquierdo" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: -5px" >
                                 <p:dataTable id="tablaSuperiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
@@ -184,8 +185,8 @@
                                     <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleado()}" />   
                                     <!-- <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
                                     <p:column width="0.5"/>
-                                    <p:column id="codigoSNE" headerText="Codigo" width="40" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="descripcionSNE" headerText="Descripción" sortBy="#{solucionNodoEmpleado.concepto.descripcion}"  filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="codigoSNE" headerText="#{msg['codigo']}" width="40" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="descripcionSNE" headerText="#{msg['descripcion']}" sortBy="#{solucionNodoEmpleado.concepto.descripcion}"  filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
                                 </p:dataTable>
                             </div>
 
@@ -193,17 +194,17 @@
                                 <p:dataTable id="tablaInferiorIzquierda" var="solucionNodoEmpleado" style="font-size: 11px; width: 315px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
                                              rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="315" 
                                              widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names" rowIndexVar="indiceEM"
-                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="No se encontrarón datos.">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="#{msg['vacio']}">
 
                                     <p:column width="20" style="padding: 0px"> 
                                         <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlEmplComprobantes.parcialSolucionNodo(indiceEM, 0)}"/>
                                     </p:column>
 
-                                    <p:column id="codigoSNE2" headerText="Codigo" style="width: 40px" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="codigoSNE2" headerText="#{msg['codigo']}" style="width: 40px" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleado.concepto.codigo}" />  
                                     </p:column>  
 
-                                    <p:column id="descripcionSNE2" headerText="Descripción" style="width: 232px" sortBy="#{solucionNodoEmpleado.concepto.descripcion}"  filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                    <p:column id="descripcionSNE2" headerText="#{msg['descripcion']}" style="width: 232px" sortBy="#{solucionNodoEmpleado.concepto.descripcion}"  filterBy="#{solucionNodoEmpleado.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                                         <h:outputText value="#{solucionNodoEmpleado.concepto.descripcion}" />  
                                     </p:column>  
                                 </p:dataTable>
@@ -215,28 +216,28 @@
                                              widgetVar="tablaInferiorDerecha" styleClass="hide-column-names" editable="true" editMode="cell" 
                                              filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="...">
 
-                                    <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleado.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                    <p:column id="fechaDesdeSNE" headerText="#{msg['desde']}" sortBy="#{solucionNodoEmpleado.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                                         <h:outputText value="#{solucionNodoEmpleado.fechadesde}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText> 
                                     </p:column>  
 
-                                    <p:column id="fechaHastaSNE" headerText="Desde" sortBy="#{solucionNodoEmpleado.fechahasta}" style="width: 35px" filterBy="#{solucionNodoEmpleado.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="fechaHastaSNE" headerText="#{msg['hasta']}" sortBy="#{solucionNodoEmpleado.fechahasta}" style="width: 35px" filterBy="#{solucionNodoEmpleado.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.fechahasta}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>  
                                     </p:column>
 
-                                    <p:column id="unidadSNE" headerText="Unidad" sortBy="#{solucionNodoEmpleado.unidades}" style="width: 25px" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="unidadSNE" headerText="#{msg['unidad']}" sortBy="#{solucionNodoEmpleado.unidades}" style="width: 25px" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.unidades}" />
                                     </p:column>
-                                    <p:column id="pasivoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.pago}" style="width: 55px" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="pasivoSNE" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleado.pago}" style="width: 55px" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleado.pago}"/>
                                     </p:column>
-                                    <p:column id="gastoSNE" headerText="Descuento" sortBy="#{solucionNodoEmpleado.descuento}" style="width: 55px" filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="gastoSNE" headerText="#{msg['descuento']}" sortBy="#{solucionNodoEmpleado.descuento}" style="width: 55px" filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.descuento}" />
                                     </p:column>
-                                    <p:column id="terceroSNE" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleado.nit.nombre}" style="width: 150px" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="terceroSNE" headerText="#{msg['nombretercero']}" sortBy="#{solucionNodoEmpleado.nit.nombre}" style="width: 150px" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{solucionNodoEmpleado.nit.nombre}" >
@@ -252,22 +253,22 @@
                                             </f:facet>
                                         </p:cellEditor>
                                     </p:column>
-                                    <p:column id="debitoSNE" headerText="Debito" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="debitoSNE" headerText="#{msg['debito']}" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleado.cuentad.codigo}" />
                                     </p:column>
-                                    <p:column id="centroCostoDSNE" headerText="CC-D" sortBy="#{solucionNodoEmpleado.centrocostod.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleado.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="centroCostoDSNE" headerText="#{msg['ccd']}" sortBy="#{solucionNodoEmpleado.centrocostod.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleado.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.centrocostod.nombre}" />
                                     </p:column>
-                                    <p:column id="creditoSNE" headerText="Credito" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="creditoSNE" headerText="#{msg['credito']}" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.cuentac.codigo}" />
                                     </p:column>
-                                    <p:column id="centroCostoCSNE" headerText="CC-C" sortBy="#{solucionNodoEmpleado.centrocostoc.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleado.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="centroCostoCSNE" headerText="#{msg['ccc']}" sortBy="#{solucionNodoEmpleado.centrocostoc.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleado.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleado.centrocostoc.nombre}" />
                                     </p:column>
-                                    <p:column id="saldoSNE" headerText="Saldo" sortBy="#{solucionNodoEmpleado.saldo}" style="width: 55px" filterBy="#{solucionNodoEmpleado.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="saldoSNE" headerText="#{msg['saldo']}" sortBy="#{solucionNodoEmpleado.saldo}" style="width: 55px" filterBy="#{solucionNodoEmpleado.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.saldo}" />
                                     </p:column>
-                                    <p:column id="pagoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.fechapago}" style="width: 46px" filterBy="#{solucionNodoEmpleado.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="pagoSNE" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleado.fechapago}" style="width: 46px" filterBy="#{solucionNodoEmpleado.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleado.fechapago}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText> 
@@ -277,7 +278,7 @@
 
                             <div id="inferiorDerechaSubtotalesEmpleado" style="height: 42px; width: 544px; overflow-y: hidden; position: absolute; left: 307px; top: 107px;" >
                                 <fieldset style="width: 1325px; visibility: hidden"></fieldset>
-                                <h:outputText value="Subtotales: " style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
+                                <h:outputText value="#{msg['subtotales']}" style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
                                 <p:inputText id="subTotalPago" value="#{controlEmplComprobantes.subtotalPago}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
                                     <f:convertNumber currencyCode="COP"/>
                                 </p:inputText>
@@ -295,38 +296,38 @@
                                   <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
                                     <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
-                                    <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleado.fechadesde}" style="width: 58px" filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="fechaHastaSNE" headerText="Hasta" sortBy="#{solucionNodoEmpleado.fechahasta}" style="width: 58px" filterBy="#{solucionNodoEmpleado.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="unidadSNE" headerText="Unidad" sortBy="#{solucionNodoEmpleado.unidades}" style="width: 44px" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="pasivoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.pago}" style="width: 85px" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="gastoSNE" headerText="Descuento" sortBy="#{solucionNodoEmpleado.descuento}" style="width: 85px" filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="terceroSNE" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleado.nit.nombre}" style="width: 217px" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="debitoSNE" headerText="Debito" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="centroCostoDSNE" headerText="CC-D" sortBy="#{solucionNodoEmpleado.centrocostod.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleado.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="creditoSNE" headerText="Credito" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="centroCostoCSNE" headerText="CC-C" sortBy="#{solucionNodoEmpleado.centrocostoc.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleado.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="saldoSNE" headerText="Saldo" sortBy="#{solucionNodoEmpleado.saldo}" style="width: 84px" filterBy="#{solucionNodoEmpleado.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="pagoSNE" headerText="Pago" sortBy="#{solucionNodoEmpleado.fechapago}" style="" filterBy="#{solucionNodoEmpleado.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="fechaDesdeSNE" headerText="#{msg['desde']}" sortBy="#{solucionNodoEmpleado.fechadesde}" style="width: 58px" filterBy="#{solucionNodoEmpleado.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="fechaHastaSNE" headerText="#{msg['hasta']}" sortBy="#{solucionNodoEmpleado.fechahasta}" style="width: 58px" filterBy="#{solucionNodoEmpleado.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="unidadSNE" headerText="#{msg['unidad']}" sortBy="#{solucionNodoEmpleado.unidades}" style="width: 44px" filterBy="#{solucionNodoEmpleado.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="pasivoSNE" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleado.pago}" style="width: 85px" filterBy="#{solucionNodoEmpleado.pago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="gastoSNE" headerText="#{msg['descuento']}" sortBy="#{solucionNodoEmpleado.descuento}" style="width: 85px" filterBy="#{solucionNodoEmpleado.descuento}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="terceroSNE" headerText="#{msg['nombretercero']}" sortBy="#{solucionNodoEmpleado.nit.nombre}" style="width: 217px" filterBy="#{solucionNodoEmpleado.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="debitoSNE" headerText="#{msg['debito']}" sortBy="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleado.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="centroCostoDSNE" headerText="#{msg['ccd']}" sortBy="#{solucionNodoEmpleado.centrocostod.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleado.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="creditoSNE" headerText="#{msg['credito']}" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="centroCostoCSNE" headerText="#{msg['ccc']}" sortBy="#{solucionNodoEmpleado.centrocostoc.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleado.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="saldoSNE" headerText="#{msg['saldo']}" sortBy="#{solucionNodoEmpleado.saldo}" style="width: 84px" filterBy="#{solucionNodoEmpleado.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="pagoSNE" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleado.fechapago}" style="" filterBy="#{solucionNodoEmpleado.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
 
                                 </p:dataTable>
                             </div> 
 
-                            <h:outputText value="Neto: " style="color: #14388B; font-weight: bold; position: absolute; left: 20px; top: 111px;"/>
+                            <h:outputText value="#{msg['neto']}" style="color: #14388B; font-weight: bold; position: absolute; left: 20px; top: 111px;"/>
                             <p:inputText id="neto" value="#{controlEmplComprobantes.neto}" style="position: absolute; top: 108px; left: 69px; width: 228px; font-size: 11px; font-weight: bold; color: #14388B; text-align: center" readonly="true">
                                 <f:convertNumber currencyCode="COP"/>
                             </p:inputText>
                         </fieldset>
 
                         <fieldset style="position: absolute; top: 337px; font-size: 11px; width: 835px; height: 138px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Empleador</legend>
+                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['empleador']}</legend>
                             <div id="superiorIzquierdoEM" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: -5px" >
                                 <p:dataTable id="tablaSuperiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 300px; position: relative; top: 18px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              rowKey="#{solucionNodoEmpleador.secuencia}" widgetVar="tablaSuperiorIzquierdaEM" styleClass="hide-row-names" filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}">
                                     <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleador()}" />
 
                                     <p:column width="0.5"/>
-                                    <p:column id="codigoSNEM" headerText="Codigo" width="40" sortBy="#{solucionNodoEmpleador.concepto.codigo}"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="descripcionSNEM" headerText="Descripción" sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="codigoSNEM" headerText="#{msg['codigo']}" width="40" sortBy="#{solucionNodoEmpleador.concepto.codigo}"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="descripcionSNEM" headerText="#{msg['descripcion']}" sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
                                 </p:dataTable>
                             </div>
 
@@ -334,17 +335,17 @@
                                 <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style="font-size: 11px; width: 315px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="315"
                                              widgetVar="tablaInferiorIzquierdaEM" styleClass="hide-column-names" rowIndexVar="indiceER"
-                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="No se encontrarón datos.">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="#{msg['vacio']}">
 
                                     <p:column width="20" style="padding: 0px"> 
                                         <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlEmplComprobantes.parcialSolucionNodo(indiceER, 1)}"/>
                                     </p:column>
 
-                                    <p:column id="codigoSNEM" headerText="Codigo" sortBy="#{solucionNodoEmpleador.concepto.codigo}" style="width: 40px;"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="codigoSNEM" headerText="#{msg['codigo']}" sortBy="#{solucionNodoEmpleador.concepto.codigo}" style="width: 40px;"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />  
                                     </p:column>  
 
-                                    <p:column id="descripcionSNEM" headerText="Descripción" style="width: 232px"  sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                    <p:column id="descripcionSNEM" headerText="#{msg['descripcion']}" style="width: 232px"  sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                                         <h:outputText value="#{solucionNodoEmpleador.concepto.descripcion}" />  
                                     </p:column>  
                                 </p:dataTable>
@@ -356,28 +357,28 @@
                                              widgetVar="tablaInferiorDerechaEM" styleClass="hide-column-names" rowIndexVar="indexSNEmpleador"
                                              filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="...">
 
-                                    <p:column id="fechaDesdeSNE" headerText="Desde" sortBy="#{solucionNodoEmpleador.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                    <p:column id="fechaDesdeSNE" headerText="#{msg['desde']}" sortBy="#{solucionNodoEmpleador.fechadesde}" style="width: 35px;"  filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                                         <h:outputText value="#{solucionNodoEmpleador.fechadesde}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText> 
                                     </p:column>  
 
-                                    <p:column id="fechaHastaSNEM" headerText="Desde" sortBy="#{solucionNodoEmpleador.fechahasta}" style="width: 35px" filterBy="#{solucionNodoEmpleador.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="fechaHastaSNEM" headerText="#{msg['hasta']}" sortBy="#{solucionNodoEmpleador.fechahasta}" style="width: 35px" filterBy="#{solucionNodoEmpleador.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleador.fechahasta}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>  
                                     </p:column>
 
-                                    <p:column id="unidadSNEM" headerText="Unidad" sortBy="#{solucionNodoEmpleador.unidades}" style="width: 25px" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="unidadSNEM" headerText="#{msg['unidad']}" sortBy="#{solucionNodoEmpleador.unidades}" style="width: 25px" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleador.unidades}" />
                                     </p:column>
-                                    <p:column id="pasivoSNEM" headerText="Pasivo" sortBy="#{solucionNodoEmpleador.pasivo}" style="width: 55px" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="pasivoSNEM" headerText="#{msg['pasivo']}" sortBy="#{solucionNodoEmpleador.pasivo}" style="width: 55px" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.pasivo}" />
                                     </p:column>
-                                    <p:column id="gastoSNEM" headerText="Gasto" sortBy="#{solucionNodoEmpleador.gasto}" style="width: 55px" filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="gastoSNEM" headerText="#{msg['gasto']}" sortBy="#{solucionNodoEmpleador.gasto}" style="width: 55px" filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleador.gasto}" />
                                     </p:column>
-                                    <p:column id="terceroSNEM" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleador.nit.nombre}" style="width: 150px" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="terceroSNEM" headerText="#{msg['nombretercero']}" sortBy="#{solucionNodoEmpleador.nit.nombre}" style="width: 150px" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{solucionNodoEmpleador.nit.nombre}" >
@@ -393,22 +394,22 @@
                                             </f:facet>
                                         </p:cellEditor>
                                     </p:column>
-                                    <p:column id="debitoSNEM" headerText="Debito" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="debitoSNEM" headerText="#{msg['debito']}" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.cuentad.codigo}" />
                                     </p:column>
-                                    <p:column id="centroCostoDSNEM" headerText="CC-D" sortBy="#{solucionNodoEmpleador.centrocostod.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleador.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="centroCostoDSNEM" headerText="#{msg['ccd']}" sortBy="#{solucionNodoEmpleador.centrocostod.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleador.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleador.centrocostod.nombre}" />
                                     </p:column>
-                                    <p:column id="creditoSNEM" headerText="Credito" sortBy="#{solucionNodoEmpleador.cuentac.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleador.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="creditoSNEM" headerText="#{msg['credito']}" sortBy="#{solucionNodoEmpleador.cuentac.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleador.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleador.cuentac.codigo}" />
                                     </p:column>
-                                    <p:column id="centroCostoCSNEM" headerText="CC-C" sortBy="#{solucionNodoEmpleador.centrocostoc.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleador.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="centroCostoCSNEM" headerText="#{msg['ccc']}" sortBy="#{solucionNodoEmpleador.centrocostoc.nombre}" style="width: 90px" filterBy="#{solucionNodoEmpleador.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.centrocostoc.nombre}" />
                                     </p:column>
-                                    <p:column id="saldoSNEM" headerText="Saldo" sortBy="#{solucionNodoEmpleador.saldo}" style="width: 55px" filterBy="#{solucionNodoEmpleador.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="saldoSNEM" headerText="#{msg['saldo']}" sortBy="#{solucionNodoEmpleador.saldo}" style="width: 55px" filterBy="#{solucionNodoEmpleador.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleador.saldo}" />
                                     </p:column>
-                                    <p:column id="pagoSNEM" headerText="Pago" sortBy="#{solucionNodoEmpleador.fechapago}" style="width: 46px" filterBy="#{solucionNodoEmpleador.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="pagoSNEM" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleador.fechapago}" style="width: 46px" filterBy="#{solucionNodoEmpleador.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <h:outputText value="#{solucionNodoEmpleador.fechapago}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText> 
@@ -418,7 +419,7 @@
 
                             <div id="inferiorDerechaSubtotalesEmpleador" style="height: 42px; width: 544px; overflow-y: hidden; position: absolute; left: 307px; top: 107px;" >
                                 <fieldset style="width: 1325px; visibility: hidden"></fieldset>
-                                <h:outputText value="Subtotales: " style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
+                                <h:outputText value="#{msg['subtotales']}" style="color: #14388B; font-weight: bold; position: absolute; left: 157px; top: 5px;"/>
                                 <p:inputText id="subTotalPasivo" value="#{controlEmplComprobantes.subtotalPasivo}" style="position: absolute; top: 1px; left: 223.5px; width: 96px; font-size: 11px; font-weight: bold; color: #14388B;" readonly="true">
                                     <f:convertNumber currencyCode="COP"/>
                                 </p:inputText>
@@ -436,361 +437,361 @@
                                  <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
                                    <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
-                                    <p:column id="fechaDesdeSNEM" headerText="Desde" sortBy="#{solucionNodoEmpleador.fechadesde}" style="width: 58px" filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="fechaHastaSNEM" headerText="Hasta" sortBy="#{solucionNodoEmpleador.fechahasta}" style="width: 58px" filterBy="#{solucionNodoEmpleador.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="unidadSNEM" headerText="Unidad" sortBy="#{solucionNodoEmpleador.unidades}" style="width: 44px" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="pasivoSNEM" headerText="Pasivo" sortBy="#{solucionNodoEmpleador.pasivo}" style="width: 85px" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="gastoSNEM" headerText="Gasto" sortBy="#{solucionNodoEmpleador.gasto}" style="width: 85px" filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="terceroSNEM" headerText="Nombre del Tercero" sortBy="#{solucionNodoEmpleador.nit.nombre}" style="width: 217px" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="debitoSNEM" headerText="Debito" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="centroCostoDSNEM" headerText="CC-D" sortBy="#{solucionNodoEmpleador.centrocostod.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleador.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="creditoSNEM" headerText="Credito" sortBy="#{solucionNodoEmpleador.cuentac.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleador.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="centroCostoCSNEM" headerText="CC-C" sortBy="#{solucionNodoEmpleador.centrocostoc.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleador.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
-                                    <p:column id="saldoSNEM" headerText="Saldo" sortBy="#{solucionNodoEmpleador.saldo}" style="width: 84px" filterBy="#{solucionNodoEmpleador.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
-                                    <p:column id="pagoSNEM" headerText="Pago" sortBy="#{solucionNodoEmpleador.fechapago}" style="" filterBy="#{solucionNodoEmpleador.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="fechaDesdeSNEM" headerText="#{msg['desde']}" sortBy="#{solucionNodoEmpleador.fechadesde}" style="width: 58px" filterBy="#{solucionNodoEmpleador.fechadesde}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="fechaHastaSNEM" headerText="#{msg['hasta']}" sortBy="#{solucionNodoEmpleador.fechahasta}" style="width: 58px" filterBy="#{solucionNodoEmpleador.fechahasta}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="unidadSNEM" headerText="#{msg['unidad']}" sortBy="#{solucionNodoEmpleador.unidades}" style="width: 44px" filterBy="#{solucionNodoEmpleador.unidades}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="pasivoSNEM" headerText="#{msg['pasivo']}" sortBy="#{solucionNodoEmpleador.pasivo}" style="width: 85px" filterBy="#{solucionNodoEmpleador.pasivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="gastoSNEM" headerText="#{msg['gasto']}" sortBy="#{solucionNodoEmpleador.gasto}" style="width: 85px" filterBy="#{solucionNodoEmpleador.gasto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="terceroSNEM" headerText="#{msg['nombretercero']}" sortBy="#{solucionNodoEmpleador.nit.nombre}" style="width: 217px" filterBy="#{solucionNodoEmpleador.nit.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="debitoSNEM" headerText="#{msg['debito']}" sortBy="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleador.cuentad.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="centroCostoDSNEM" headerText="#{msg['ccd']}" sortBy="#{solucionNodoEmpleador.centrocostod.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleador.centrocostod.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="creditoSNEM" headerText="#{msg['credito']}" sortBy="#{solucionNodoEmpleador.cuentac.codigo}" style="width: 64px" filterBy="#{solucionNodoEmpleador.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="centroCostoCSNEM" headerText="#{msg['ccc']}" sortBy="#{solucionNodoEmpleador.centrocostoc.nombre}" style="width: 133px" filterBy="#{solucionNodoEmpleador.centrocostoc.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
+                                    <p:column id="saldoSNEM" headerText="#{msg['saldo']}" sortBy="#{solucionNodoEmpleador.saldo}" style="width: 84px" filterBy="#{solucionNodoEmpleador.saldo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
+                                    <p:column id="pagoSNEM" headerText="#{msg['pago']}" sortBy="#{solucionNodoEmpleador.fechapago}" style="" filterBy="#{solucionNodoEmpleador.fechapago}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"/> 
 
                                 </p:dataTable>
                             </div> 
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" icon="ui-icon-check" process="@this" />
-                        <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlEmplComprobantes.salir()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplComprobantes.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" icon="ui-icon-check" process="@this" />
+                        <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlEmplComprobantes.salir()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplComprobantes.salir()}" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos" >
 
-                    <p:dialog id="NuevoRegistroPagina" header="Nuevo Registro" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="145" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="Seleccione la tabla para ingresar nuevo registro" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-                        <h:outputText value="Comprobantes" style="position: absolute; top: 47px;left: 60px"/>
+                    <p:dialog id="NuevoRegistroPagina" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="145" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="#{msg['nuevoRegistroPagina']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <h:outputText value="#{msg['titulo']}" style="position: absolute; top: 47px;left: 60px"/>
                         <p:commandButton id="NuevoComprobante" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroComprobantes.show()" update=":formularioDialogos:nuevoComprobante" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
-                        <h:outputText value="Cortes Procesos" style="position: absolute; top: 92px;left: 60px"/>
+                        <h:outputText value="#{msg['cortesprocesos']}" style="position: absolute; top: 92px;left: 60px"/>
                         <p:commandButton id="NuevoCorteProceso" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroCortesProcesos.show()" update=":formularioDialogos:nuevoCorteProceso" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
-                        <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="Cancelar" style="position: absolute; top: 120px;left: 280px"/>
+                        <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="#{msg['cancelar']}" style="position: absolute; top: 120px;left: 280px"/>
                     </p:dialog>
 
-                    <p:dialog id="NuevoRegistroComprobantes" header="Nuevo Registro Comprobantes" widgetVar="NuevoRegistroComprobantes" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroComprobantes" header="#{msg['nuevoregistroC']}" widgetVar="NuevoRegistroComprobantes" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar nuevo comprobante" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoC']}" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
 
                         <p:panel id="nuevoComprobante" style="border: none;">
-                            <strong><h:outputText value="Número comprobante: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <strong><h:outputText value="#{msg['numeroC']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
                             <p:inputText id="nuevoNumeroComprobante" value="#{controlEmplComprobantes.nuevoComprobante.numero}" style="font-size: 10px; position: absolute; top: 63px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                             </p:inputText>
 
-                            <strong><h:outputText value="Fecha comprobante: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
+                            <strong><h:outputText value="#{msg['fechacomprobanteC']}" style="font-size: 12px; position: absolute; top: 94px" /></strong>
                             <p:calendar  id="nuevaFechaComprobante" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 90px" value="#{controlEmplComprobantes.nuevoComprobante.fecha}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Fecha entrega: " style="font-size: 12px; position: absolute; top: 123px" /></strong>
+                            <strong><h:outputText value="#{msg['fechaentregaC']}" style="font-size: 12px; position: absolute; top: 123px" /></strong>
                             <p:calendar  id="nuevaFechaEntrega" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 119px;" value="#{controlEmplComprobantes.nuevoComprobante.fechaentregado}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <p:commandButton id="limpiarComprobante" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" process="@this"/>
-                            <p:commandButton id="agregarComprobante" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.agregarNuevoComprobante()}"/>
-                            <p:commandButton id="cancelarComprobante" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" onclick="NuevoRegistroComprobantes.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarComprobante" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" process="@this"/>
+                            <p:commandButton id="agregarComprobante" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.agregarNuevoComprobante()}"/>
+                            <p:commandButton id="cancelarComprobante" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" onclick="NuevoRegistroComprobantes.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroComprobantes" header="Duplicar Registro Comprobantes" widgetVar="DuplicarRegistroComprobantes" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroComprobantes" header="#{msg['duplicarregistroC']}" widgetVar="DuplicarRegistroComprobantes" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Duplicado comprobante" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['duplicadoC']}" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
 
                         <p:panel id="duplicadoComprobante" style="border: none;">
-                            <strong><h:outputText value="Número comprobante: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <strong><h:outputText value="#{msg['numeroC']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
                             <p:inputText id="duplicadoNumeroComprobante" value="#{controlEmplComprobantes.duplicarComprobante.numero}" style="font-size: 10px; position: absolute; top: 63px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                             </p:inputText>
 
-                            <strong><h:outputText value="Fecha comprobante: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
+                            <strong><h:outputText value="#{msg['fechacomprobanteC']}" style="font-size: 12px; position: absolute; top: 94px" /></strong>
                             <p:calendar  id="duplicadoFechaComprobante" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 90px" value="#{controlEmplComprobantes.duplicarComprobante.fecha}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Fecha entrega: " style="font-size: 12px; position: absolute; top: 123px" /></strong>
+                            <strong><h:outputText value="#{msg['fechaentregaC']}" style="font-size: 12px; position: absolute; top: 123px" /></strong>
                             <p:calendar  id="duplicadoFechaEntrega" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 119px;" value="#{controlEmplComprobantes.duplicarComprobante.fechaentregado}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <p:commandButton id="limpiarComprobanteD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" process="@this"/>
-                            <p:commandButton id="agregarComprobanteD" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.confirmarDuplicarComprobantes()}"/>
-                            <p:commandButton id="cancelarComprobanteD" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" onclick="DuplicarRegistroComprobantes.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarComprobanteD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" process="@this"/>
+                            <p:commandButton id="agregarComprobanteD" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.confirmarDuplicarComprobantes()}"/>
+                            <p:commandButton id="cancelarComprobanteD" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoComprobante()}" update="duplicadoComprobante" onclick="DuplicarRegistroComprobantes.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
                     <!-- CREAR Y DUPLICAR CORTES PROCESOS --> 
-                    <p:dialog id="NuevoRegistroCortesProcesos" header="Nuevo Registro Cortes Procesos" widgetVar="NuevoRegistroCortesProcesos" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroCortesProcesos" header="#{msg['nuevoregistroP']}" widgetVar="NuevoRegistroCortesProcesos" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar nuevo corte proceso" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoP']}" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
 
                         <p:panel id="nuevoCorteProceso" style="border: none;">
-                            <strong><h:outputText value="Fecha corte: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <strong><h:outputText value="#{msg['fechaP']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
                             <p:calendar  id="nuevaFechaCorte" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 63px" value="#{controlEmplComprobantes.nuevoCorteProceso.corte}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Proceso: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
+                            <strong><h:outputText value="#{msg['procesoP']}" style="font-size: 12px; position: absolute; top: 94px" /></strong>
                             <p:inputText id="nuevoProceso" value="#{controlEmplComprobantes.nuevoCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                                 <p:ajax event="dblclick" listener="#{controlEmplComprobantes.llamarLOVProcesosNuevo_Duplicado(1)}" />
                             </p:inputText>
 
-                            <p:commandButton id="limpiarCorteProceso" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" process="@this"/>
-                            <p:commandButton id="agregarCorteProceso" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.agregarNuevoCorteProceso()}"/>
-                            <p:commandButton id="cancelarCorteProceso" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" onclick="NuevoRegistroCortesProcesos.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarCorteProceso" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" process="@this"/>
+                            <p:commandButton id="agregarCorteProceso" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.agregarNuevoCorteProceso()}"/>
+                            <p:commandButton id="cancelarCorteProceso" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarNuevoCorteProceso()}" update="nuevoCorteProceso" onclick="NuevoRegistroCortesProcesos.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarCortesProcesos" header="Duplicar Registro Cortes Procesos" widgetVar="DuplicarCortesProcesos" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarCortesProcesos" header="#{msg['duplicarregistroP']}" widgetVar="DuplicarCortesProcesos" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="320" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Duplicado corte proceso" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['duplicadoP']}" style="font-size: 14px; color: blue; position: relative; top: 15px" /></strong></center> 
 
                         <p:panel id="duplicadoCorteProceso" style="border: none;"> 
-                            <strong><h:outputText value="Fecha corte: " style="font-size: 12px; position: absolute; top: 65px" /></strong>
+                            <strong><h:outputText value="#{msg['fechaP']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
                             <p:calendar  id="duplicadoFechaCorte" style="font-size: 10px; position: absolute; position: absolute; left: 158px; top: 63px" value="#{controlEmplComprobantes.duplicarCorteProceso.corte}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="@this"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Proceso: " style="font-size: 12px; position: absolute; top: 94px" /></strong>
+                            <strong><h:outputText value="#{msg['procesoP']}" style="font-size: 12px; position: absolute; top: 94px" /></strong>
                             <p:inputText id="duplicadoProceso" value="#{controlEmplComprobantes.duplicarCorteProceso.proceso.descripcion}" style="font-size: 10px; position: absolute; top: 90px; left: 158px; width: 122px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                                 <p:ajax event="dblclick" listener="#{controlEmplComprobantes.llamarLOVProcesosNuevo_Duplicado(2)}" />
                             </p:inputText>
 
-                            <p:commandButton id="limpiarCorteProcesoD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" process="@this"/>
-                            <p:commandButton id="agregarCorteProcesoD" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.confirmarDuplicarCortesProcesos()}"/>
-                            <p:commandButton id="cancelarCorteProcesoD" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" onclick="DuplicarCortesProcesos.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarCorteProcesoD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" process="@this"/>
+                            <p:commandButton id="agregarCorteProcesoD" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 140px; top: 150px;"  process="@this" actionListener="#{controlEmplComprobantes.confirmarDuplicarCortesProcesos()}"/>
+                            <p:commandButton id="cancelarCorteProcesoD" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 210px; top: 150px;" actionListener="#{controlEmplComprobantes.limpiarDuplicadoCortesProcesos()}" update="duplicadoComprobante" onclick="DuplicarCortesProcesos.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!-- DIALOGOS VALIDACION-->
-                    <p:dialog id="validacioNuevoComprobante" header="ATENCIÓN...!" widgetVar="validacioNuevoComprobante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="validacioNuevoComprobante" header="#{msg['atencion']}" widgetVar="validacioNuevoComprobante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar un nuevo comprobante es necesario adicionar: #{controlEmplComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="validacioNuevoComprobante.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['validacioNuevoComprobante']} #{controlEmplComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevoComprobante.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="validacioNuevoCorteProceso" header="ATENCIÓN...!" widgetVar="validacioNuevoCorteProceso"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="validacioNuevoCorteProceso" header="#{msg['atencion']}" widgetVar="validacioNuevoCorteProceso"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar un nuevo corte proceso es necesario adicionar: #{controlEmplComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="validacioNuevoCorteProceso.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['validacioNuevoCorteProceso']} #{controlEmplComprobantes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevoCorteProceso.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorBorrarComprobante" header="ATENCIÓN...!" widgetVar="errorBorrarComprobante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorBorrarComprobante" header="#{msg['atencion']}" widgetVar="errorBorrarComprobante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="No se puede borrar este Comprobante, ya que tiene datos relacionados." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="errorBorrarComprobante.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['errorBorrarComprobante']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorBorrarComprobante.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorBorrarCortesProcesos" header="ATENCIÓN...!" widgetVar="errorBorrarCortesProcesos"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorBorrarCortesProcesos" header="#{msg['atencion']}" widgetVar="errorBorrarCortesProcesos"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="No se puede borrar este Corte Proceso, ya que tiene datos relacionados." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="errorBorrarCortesProcesos.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['errorBorrarCortesProcesos']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorBorrarCortesProcesos.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- EDITOR COMPROBANTES -->
-                    <p:dialog id="editarNumeroComprobante" header="Número del comprobante" widgetVar="editarNumeroComprobante" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarNumeroComprobante" header="#{msg['editarNumeroComrpobante']}" widgetVar="editarNumeroComprobante" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlEmplComprobantes.editarComprobante.numero}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarNumeroComprobante" value="Atras" onclick="editarNumeroComprobante.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarNumeroComprobante" value="#{msg['atras']}" onclick="editarNumeroComprobante.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaComprobante" header="Fecha del comprobante" widgetVar="editarFechaComprobante" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaComprobante" header="#{msg['editarFechaComprobante']}" widgetVar="editarFechaComprobante" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px" value="#{controlEmplComprobantes.editarComprobante.fecha}" styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaComprobante" value="Atras" onclick="editarFechaComprobante.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarFechaComprobante" value="#{msg['atras']}" onclick="editarFechaComprobante.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editarFechaEntrega" header="Fecha de entrega" widgetVar="editarFechaEntrega" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaEntrega" header="#{msg['editarFechaEntrega']}" widgetVar="editarFechaEntrega" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px" value="#{controlEmplComprobantes.editarComprobante.fechaentregado}" styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaEntrega" value="Atras" onclick="editarFechaEntrega.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarFechaEntrega" value="#{msg['atras']}" onclick="editarFechaEntrega.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <!-- EDITOR CORTES PROCESOS -->
-                    <p:dialog id="editarFechaCorte" header="Fecha corte" widgetVar="editarFechaCorte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaCorte" header="#{msg['editarFechaCorte']}" widgetVar="editarFechaCorte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px" value="#{controlEmplComprobantes.editarCorteProceso.corte}" styleClass="ui-datepicker, myClass"  readonlyInput="true"
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaCorte" value="Atras" onclick="editarFechaCorte.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarFechaCorte" value="#{msg['atras']}" onclick="editarFechaCorte.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarProceso" header="Proceso" widgetVar="editarProceso" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarProceso" header="#{msg['editarProceso']}" widgetVar="editarProceso" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlEmplComprobantes.editarCorteProceso.proceso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarProceso" value="Atras" onclick="editarProceso.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarProceso" value="#{msg['atras']}" onclick="editarProceso.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGOS RASTRO-->
 
-                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' tiene rastros para este registro, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplComprobantes.secRegistro, controlEmplComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['latabla']} #{controlEmplComprobantes.nombreTabla} #{msg['tiene']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplComprobantes.secRegistro, controlEmplComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['latabla']} #{controlEmplComprobantes.nombreTabla} #{msg['historicos']} " style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlEmplComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['latabla']} #{controlEmplComprobantes.nombreTabla} #{msg['nohistoricos']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="El registro no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['latabla']} #{controlEmplComprobantes.nombreTabla} #{msg['rastrostablas']} " style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplComprobantes.secRegistro, controlEmplComprobantes.nombreTabla, 'emplComprobante')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['latabla']} #{controlEmplComprobantes.nombreTabla} #{msg['rastrostablasno']}"   style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Por favor seleccione un campo." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['porfavor']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla '#{controlEmplComprobantes.nombreTabla}' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['latabla']} #{controlEmplComprobantes.nombreTabla} #{msg['objetosDB']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <!-- GUARDAR CAMBIOS CORTES PROCESOS -->
-                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplComprobantes.guardarCambios()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplComprobantes.salir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['cambiosrealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplComprobantes.guardarCambios()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplComprobantes.salir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- LOV PROCESOS-->
-                    <p:dialog header="Procesos" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
+                    <p:dialog header="#{msg['procesosP']}" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
                               showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovProcesos" style="font-size: 11px; width: 310px" var="proceso" value="#{controlEmplComprobantes.listaProcesos}" rowKey="#{proceso.secuencia}"
                                      selection="#{controlEmplComprobantes.procesoSelecionado}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="330" scrollHeight="250"
-                                     filteredValue="#{controlEmplComprobantes.filtradoProcesos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                     filteredValue="#{controlEmplComprobantes.filtradoProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarProceso()}" process="@this" onstart="lovProcesos.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Proceso: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:100px; position: relative; left: 40px;" />  
                             </f:facet>
                             <p:column filterBy="#{proceso.descripcion}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Descripción" />
+                                    <h:outputText value="#{msg['descripcion']}" />
                                 </f:facet>
                                 <h:outputText  value="#{proceso.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarP" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarProceso()}" update="aceptarP" process="@this">
+                        <p:commandButton id="aceptarP" style="position: relative; left: 200px" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarProceso()}" update="aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 200px" value="Atras" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarProceso()}" update="lovProcesos" process="@this">
+                        <p:commandButton id="atrasP" style="position: relative; left: 200px" value="#{msg['atras']}" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarProceso()}" update="lovProcesos" process="@this">
                             <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
 
                     <!-- LOV TERCEROS-->
-                    <p:dialog header="Terceros" widgetVar="TercerosDialogo" draggable="false" resizable="false" closable="false" id="TercerosDialogo"  
+                    <p:dialog header="#{msg['tercerosT']}" widgetVar="TercerosDialogo" draggable="false" resizable="false" closable="false" id="TercerosDialogo"  
                               showEffect="fade" hideEffect="fade" width="401" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovTerceros" style="font-size: 11px; width: 370px" var="tercero" value="#{controlEmplComprobantes.listaTerceros}" rowKey="#{tercero.secuencia}"
                                      selection="#{controlEmplComprobantes.terceroSelecionado}" selectionMode="single" widgetVar="lovTerceros" scrollable="true" scrollWidth="390" scrollHeight="250"
-                                     filteredValue="#{controlEmplComprobantes.filtradolistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                     filteredValue="#{controlEmplComprobantes.filtradolistaTerceros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
                             <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarTercero()}" process="@this" onstart="lovTerceros.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Tercero: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTerceros.filter();" style="width:150px; position: relative; left: 2px;" />  
                             </f:facet>
                             <p:column filterBy="#{tercero.nombre}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Nombre" />
+                                    <h:outputText value="#{msg['nombreT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tercero.nombre}" />
                             </p:column>
 
                             <p:column width="120" filterBy="#{tercero.nit}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Nit" />
+                                    <h:outputText value="#{msg['nitT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tercero.nit}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarT" style="position: relative; left: 245px" value="Aceptar" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarTercero()}" update="aceptarT" process="@this">
+                        <p:commandButton id="aceptarT" style="position: relative; left: 245px" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarTercero()}" update="aceptarT" process="@this">
                             <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasT" style="position: relative; left: 245px" value="Atras" onclick="TercerosDialogo.hide(), lovTerceros.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarTercero()}" update="lovTerceros" process="@this">
+                        <p:commandButton id="atrasT" style="position: relative; left: 245px" value="#{msg['atras']}" onclick="TercerosDialogo.hide(), lovTerceros.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarTercero()}" update="lovTerceros" process="@this">
                             <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog id="parcialesConcepto" header="Parciales del Concepto" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
+                    <p:dialog id="parcialesConcepto" header="#{msg['parciales']}" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
                         <p:inputTextarea value="#{controlEmplComprobantes.parcialesSolucionNodos}" style="position: absolute; left: 10px; top: 10px; width: 300px; height: 125px; font-weight:bold; overflow: auto" readonly="true" />
-                        <p:commandButton value="Aceptar" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
+                        <p:commandButton value="#{msg['aceptar']}" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
                             confirmacionFormatoExtendido.show();" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="confirmacionFormatoExtendido" header="Atención" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="100" width="380" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmacionFormatoExtendido" header="#{msg['atencion']}" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="100" width="380" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="¿Desea ver el formato extendido de liquidación?" style="position: absolute; left: 80px; top: 10px; width: 280px; font-weight:bold;" />
-                        <h:outputText value="Aclaración, el formato extendido requiere haber configurado los operandos en el proceso, en caso de no estar configurado, su valor sera 0." style="position: absolute; left: 80px; top: 25px; width: 280px; font-weight:bold; text-align: justify" />
-                        <p:commandButton value="Si" style="position: absolute; top: 75px; left: 280px" actionListener="#{controlEmplComprobantes.verDetallesFormula()}" onclick="confirmacionFormatoExtendido.hide();" process="@this"/>
-                        <p:commandButton value="No" style="position: absolute; top: 75px; left: 320px" onclick="confirmacionFormatoExtendido.hide();" process="@this"/>
+                        <h:outputText value="#{msg['formatoextendido']}" style="position: absolute; left: 80px; top: 10px; width: 280px; font-weight:bold;" />
+                        <h:outputText value="#{msg['aclaracion']}" style="position: absolute; left: 80px; top: 25px; width: 280px; font-weight:bold; text-align: justify" />
+                        <p:commandButton value="#{msg['si']}" style="position: absolute; top: 75px; left: 280px" actionListener="#{controlEmplComprobantes.verDetallesFormula()}" onclick="confirmacionFormatoExtendido.hide();" process="@this"/>
+                        <p:commandButton value="#{msg['no']}" style="position: absolute; top: 75px; left: 320px" onclick="confirmacionFormatoExtendido.hide();" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="detallesFormulas" header="Atención" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505" style="font-size: 12px" closable="false">  
+                    <p:dialog id="detallesFormulas" header="#{msg['atencion']}" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505" style="font-size: 12px" closable="false">  
                         <fieldset style="position: absolute; top: 10px; width: 455px; height: 185px; border-radius: 10px; ">
                             <legend style="font-size: 12px; font-weight: bold; color: #00F;">Estructura de la formula</legend>
                             <p:dataTable  id="detalleF" style="font-size: 11px; width: 440px" var="detalleFormula" value="#{controlEmplComprobantes.listaDetallesFormulas}"
                                           scrollable="true" scrollHeight="127" scrollWidth="455" widgetVar="detalleF" 
-                                          emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                          emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{detalleFormula.id}">
 
-                                <p:column  headerText="Valor" width="80" style="padding: 0px">  
+                                <p:column  headerText="#{msg['valor']}" width="80" style="padding: 0px">  
                                     <p:inputText value="#{detalleFormula.valor}" style="border-radius: 0px; width: 87%" />  
                                 </p:column>  
 
-                                <p:column headerText="Formula" style="padding: 0px">  
+                                <p:column headerText="#{msg['formula']}" style="padding: 0px">  
                                     <p:inputText value="#{detalleFormula.nombreNodo}" style="border-radius: 0px; width: 94.5%"/>  
                                 </p:column>  
 
-                                <p:column headerText="Descripción" style="padding: 0px">  
+                                <p:column headerText="#{msg['descripcion']}" style="padding: 0px">  
                                     <p:inputText value="#{detalleFormula.descripcion}" style="border-radius: 0px; width: 94.5%"/>  
                                 </p:column> 
                             </p:dataTable>
-                            <p:commandButton value="Aceptar" style="position: absolute; top: 163px; left: 378px" onclick="detallesFormulas.hide();" process="@this"/>
+                            <p:commandButton value="#{msg['aceptar']}" style="position: absolute; top: 163px; left: 378px" onclick="detallesFormulas.hide();" process="@this"/>
                         </fieldset>
                     </p:dialog>
                 </h:form>
@@ -798,22 +799,22 @@
                     <p:dataTable id="datosComprobantesExportar" var="comprobanteE" style="visibility: hidden; display: none;"                           
                                  value="#{controlEmplComprobantes.listaComprobantes}"> 
 
-                        <p:column headerText="Numero">  
+                        <p:column headerText="#{msg['numeroX']}">  
                             <f:facet name="header">
-                                <h:outputText value="Número" />
+                                <h:outputText value="#{msg['numeroX']}" />
                             </f:facet>
                             <h:outputText value="#{comprobanteE.numero}" />
                         </p:column>
 
-                        <p:column headerText="Fecha_Comprobante">                                  
-                            <f:facet name="header"><h:outputText value="Fecha Comprobante"/> </f:facet> 
+                        <p:column headerText="#{msg['fechacomprobanteX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['fechacomprobante']}"/> </f:facet> 
                             <h:outputText value="#{comprobanteE.fecha}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Fecha_Entrega">                                  
-                            <f:facet name="header"><h:outputText value="Fecha Entrega"/> </f:facet> 
+                        <p:column headerText="#{msg['fechaentregaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['fechaentrega']}"/> </f:facet> 
                             <h:outputText value="#{comprobanteE.fechaentregado}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
@@ -823,94 +824,94 @@
                     <p:dataTable id="datosCortesProcesosExportar" var="corteProcesoE" style="visibility: hidden; display: none;"                           
                                  value="#{controlEmplComprobantes.listaCortesProcesos}"> 
 
-                        <p:column headerText="Fecha_Corte">  
+                        <p:column headerText="#{msg['fechacorteX']}">  
                             <f:facet name="header">
-                                <h:outputText value="Fecha Corte" />
+                                <h:outputText value="#{msg['fechacorteX']}" />
                             </f:facet>
                             <h:outputText value="#{corteProcesoE.corte}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Proceso">                                  
-                            <f:facet name="header"><h:outputText value="Proceso"/> </f:facet> 
+                        <p:column headerText="#{msg['procesoX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['procesoX']}"/> </f:facet> 
                             <h:outputText value="#{corteProcesoE.proceso.descripcion}" />
                         </p:column>
                     </p:dataTable>
 
                     <p:dataTable id="solucionesNodoEmpleadoExportar" var="solucionNodoEmpleadoE" style="visibility: hidden; display: none;"  value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}">
 
-                        <p:column headerText="Codigo">
-                            <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
+                        <p:column headerText="#{msg['codigo']}">
+                            <f:facet name="header"><h:outputText value="#{msg['codigo']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.concepto.codigo}" />  
                         </p:column>  
 
-                        <p:column headerText="Descripcion">
-                            <f:facet name="header"><h:outputText value="Descripcion"/> </f:facet> 
+                        <p:column headerText="#{msg['descripcion']}">
+                            <f:facet name="header"><h:outputText value="#{msg['descripcion']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.concepto.descripcion}" />  
                         </p:column>  
 
-                        <p:column headerText="Desde">
-                            <f:facet name="header"><h:outputText value="Desde"/> </f:facet> 
+                        <p:column headerText="#{msg['desde']}">
+                            <f:facet name="header"><h:outputText value="#{msg['desde']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.fechadesde}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> 
                         </p:column>  
 
-                        <p:column headerText="Hasta"> 
-                            <f:facet name="header"><h:outputText value="Hasta"/> </f:facet> 
+                        <p:column headerText="#{msg['hasta']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['hasta']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.fechahasta}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>  
                         </p:column>
 
-                        <p:column headerText="Unidad"> 
-                            <f:facet name="header"><h:outputText value="Unidad"/> </f:facet> 
+                        <p:column headerText="#{msg['unidad']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['unidad']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.unidades}" />
                         </p:column>
 
-                        <p:column headerText="Pago">
-                            <f:facet name="header"><h:outputText value="Pago"/> </f:facet> 
+                        <p:column headerText="#{msg['pago']}">
+                            <f:facet name="header"><h:outputText value="#{msg['pago']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.pago}"/>
                         </p:column>
 
-                        <p:column headerText="Descuento">
-                            <f:facet name="header"><h:outputText value="Descuento"/> </f:facet> 
+                        <p:column headerText="#{msg['descuento']}">
+                            <f:facet name="header"><h:outputText value="#{msg['descuento']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.descuento}" />
                         </p:column>
 
-                        <p:column headerText="Nombre_del_Tercero"> 
-                            <f:facet name="header"><h:outputText value="Nombre del Tercero"/> </f:facet> 
+                        <p:column headerText="#{msg['terceroX']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['nombretercero']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.nit.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Debito">
-                            <f:facet name="header"><h:outputText value="Debito"/> </f:facet> 
+                        <p:column headerText="#{msg['debito']}">
+                            <f:facet name="header"><h:outputText value="#{msg['debito']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.cuentad.codigo}"/>
                         </p:column>
 
-                        <p:column headerText="CC-D">
-                            <f:facet name="header"><h:outputText value="CC-D"/> </f:facet> 
+                        <p:column headerText="#{msg['ccd']}">
+                            <f:facet name="header"><h:outputText value="#{msg['ccd']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.centrocostod.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Credito">
-                            <f:facet name="header"><h:outputText value="Credito"/> </f:facet> 
+                        <p:column headerText="#{msg['credito']}">
+                            <f:facet name="header"><h:outputText value="#{msg['credito']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.cuentac.codigo}" />
                         </p:column>
 
-                        <p:column headerText="CC-C">
-                            <f:facet name="header"><h:outputText value="CC-C"/> </f:facet> 
+                        <p:column headerText="#{msg['ccc']}">
+                            <f:facet name="header"><h:outputText value="#{msg['ccc']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.centrocostoc.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Saldo"> 
-                            <f:facet name="header"><h:outputText value="Saldo"/> </f:facet> 
+                        <p:column headerText="#{msg['saldo']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['saldo']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.saldo}" />
                         </p:column>
 
-                        <p:column headerText="Fecha_Pago"> 
-                            <f:facet name="header"><h:outputText value="Fecha Pago"/> </f:facet> 
+                        <p:column headerText="#{msg['fechapagoX']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['fechapago']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadoE.fechapago}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> 
@@ -920,77 +921,77 @@
 
                     <p:dataTable id="solucionesNodoEmpleadorExportar" var="solucionNodoEmpleadorE" style="visibility: hidden; display: none;"  value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}">
 
-                        <p:column headerText="Codigo">
-                            <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
+                        <p:column headerText="#{msg['codigo']}">
+                            <f:facet name="header"><h:outputText value="#{msg['codigo']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.concepto.codigo}" />  
                         </p:column>  
 
-                        <p:column headerText="Descripcion">
-                            <f:facet name="header"><h:outputText value="Descripcion"/> </f:facet> 
+                        <p:column headerText="#{msg['descripcion']}">
+                            <f:facet name="header"><h:outputText value="#{msg['descripcion']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.concepto.descripcion}" />  
                         </p:column>  
 
-                        <p:column headerText="Desde">
-                            <f:facet name="header"><h:outputText value="Desde"/> </f:facet> 
+                        <p:column headerText="#{msg['desde']}">
+                            <f:facet name="header"><h:outputText value="#{msg['desde']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.fechadesde}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Hasta"> 
-                            <f:facet name="header"><h:outputText value="Hasta"/> </f:facet> 
+                        <p:column headerText="#{msg['hasta']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['hasta']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.fechahasta}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Unidad"> 
-                            <f:facet name="header"><h:outputText value="Unidad"/> </f:facet> 
+                        <p:column headerText="#{msg['unidad']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['unidad']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.unidades}" />
                         </p:column>
 
-                        <p:column headerText="Pasivo">
-                            <f:facet name="header"><h:outputText value="Pasivo"/> </f:facet> 
+                        <p:column headerText="#{msg['pasivo']}">
+                            <f:facet name="header"><h:outputText value="#{msg['pasivo']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.pasivo}"/>
                         </p:column>
 
-                        <p:column headerText="Gasto"> 
-                            <f:facet name="header"><h:outputText value="Gasto"/> </f:facet> 
+                        <p:column headerText="#{msg['gasto']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['gasto']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.gasto}" />
                         </p:column>
 
-                        <p:column headerText="Nombre_del_Tercero">
-                            <f:facet name="header"><h:outputText value="Nombre del Tercero"/> </f:facet> 
+                        <p:column headerText="#{msg['terceroX']}">
+                            <f:facet name="header"><h:outputText value="#{msg['nombretercero']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.nit.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Debito">
-                            <f:facet name="header"><h:outputText value="Debito"/> </f:facet> 
+                        <p:column headerText="#{msg['debito']}">
+                            <f:facet name="header"><h:outputText value="#{msg['debito']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.cuentad.codigo}"/>
                         </p:column>
 
-                        <p:column headerText="CC-D"> 
-                            <f:facet name="header"><h:outputText value="CC-D"/> </f:facet> 
+                        <p:column headerText="#{msg['ccd']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['ccd']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.centrocostod.nombre}"/>
                         </p:column>
 
-                        <p:column headerText="Credito">
-                            <f:facet name="header"><h:outputText value="Credito"/> </f:facet> 
+                        <p:column headerText="#{msg['credito']}">
+                            <f:facet name="header"><h:outputText value="#{msg['credito']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.cuentac.codigo}" />
                         </p:column>
 
-                        <p:column headerText="CC-C">
-                            <f:facet name="header"><h:outputText value="CC-C"/> </f:facet> 
+                        <p:column headerText="#{msg['ccc']}">
+                            <f:facet name="header"><h:outputText value="#{msg['ccc']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.centrocostoc.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Saldo"> 
-                            <f:facet name="header"><h:outputText value="Saldo"/> </f:facet> 
+                        <p:column headerText="#{msg['saldo']}"> 
+                            <f:facet name="header"><h:outputText value="#{msg['saldo']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.saldo}" />
                         </p:column>
 
-                        <p:column headerText="Fecha_Pago">
-                            <f:facet name="header"><h:outputText value="Fecha Pago"/> </f:facet> 
+                        <p:column headerText="#{msg['fechapagoX']}">
+                            <f:facet name="header"><h:outputText value="#{msg['fechapago']}"/> </f:facet> 
                             <h:outputText value="#{solucionNodoEmpleadorE.fechapago}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> 
