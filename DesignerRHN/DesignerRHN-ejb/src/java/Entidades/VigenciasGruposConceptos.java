@@ -37,17 +37,15 @@ public class VigenciasGruposConceptos implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.DATE)
     private Date fechainicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.DATE)
     private Date fechafinal;
     @JoinColumn(name = "GRUPOCONCEPTO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private GruposConceptos gruposConceptos;
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)

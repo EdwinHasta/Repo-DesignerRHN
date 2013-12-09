@@ -12,15 +12,16 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true" />
                     <p:panel  id="PanelTotal" header="Conceptos Juridicos" style=" font-size: 13px; position: absolute; width: 874px; height: 525px; text-align: left;" >  
 
-                        <h:outputText value="Empresa : " style="position: absolute; top: 45px;left: 395px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nombreEmpresa" value="#{controlConceptoJuridico.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 460px;"/>
-                        <h:outputText value="NIT : " style="position: absolute; top: 45px;left: 745px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nitEmpresa" value="#{controlConceptoJuridico.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 775px;"/>
+                        <h:outputText value="Empresa : " style="position: relative; top: 38px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nombreEmpresa" value="#{controlConceptoJuridico.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 5px; top: 38px"/>
+                        <h:outputText value="NIT : " style="position: absolute; left: 625px; top: 75px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nitEmpresa" value="#{controlConceptoJuridico.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; left: 655px; top: 75px"/>
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 830px; height: 390px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; left: 10px; top: 95px; font-size: 10px; width: 830px; height: 390px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 12px; color: blue"><strong>Conceptos Juridicos</strong></legend>
 
                             <p:dataTable id="datosConcepto" var="infoC" rowKey="#{infoC.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 830px"   
@@ -31,11 +32,11 @@
 
                                 <p:ajax event="filter" listener="#{controlConceptoJuridico.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha" sortBy="#{infoC.strFecha}" filterBy="#{infoC.strFecha}" filterMatchMode="contains" id="conceptoFecha" width="100"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                <p:column headerText="Fecha" sortBy="#{infoC.strFecha}" filterBy="#{infoC.strFecha}" filterMatchMode="contains" id="conceptoFecha" width="20"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 20px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{infoC.fecha}" style="width: 100px; font-size: 11px;text-transform: uppercase">
+                                            <h:outputText value="#{infoC.fecha}" style="width: 20px; font-size: 11px;text-transform: uppercase">
                                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                                             </h:outputText>
                                         </f:facet>  
@@ -58,14 +59,14 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoC.expedidopor}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoC.expedidopor}"  id="editarNombreConcepto" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{infoC.expedidopor}"  id="editarNombreConcepto" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
                                                 <p:ajax event="select"  listener="#{controlConceptoJuridico.cambiarIndice(indice, 1)}" process="@this"/>
                                                 <p:ajax event="change" update="editarNombreConcepto" listener="#{controlConceptoJuridico.modificarConcepto(indice)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; border: none; color: blue" id="fooNombre" value="Nombre de la Persona que Expide la Norma"/>
+                                        <h:outputText style="width: 100%; height: 16px; border: none;" id="fooNombre" value="Nombre de la Persona que Expide la Norma"/>
                                     </f:facet>
                                 </p:column>
 
@@ -74,26 +75,18 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoC.quien}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoC.quien}"  id="editarCargoConcepto" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{infoC.quien}"  id="editarCargoConcepto" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
                                                 <p:ajax event="select"  listener="#{controlConceptoJuridico.cambiarIndice(indice, 2)}" process="@this"/>
                                                 <p:ajax event="change" update="editarCargoConcepto" listener="#{controlConceptoJuridico.modificarConcepto(indice)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none; color: blue" id="fooCargo" value="Profesion o Cargo"/>
+                                        <h:outputText style="width: 100%; height: 16px;  border: none; " id="fooCargo" value="Profesion o Cargo"/>
                                     </f:facet>
                                 </p:column>
 
                             </p:dataTable>
-
-                            <fieldset style="position: absolute;top: 260px;height: 100px;width: 805px; border-radius: 10px; text-align: left">
-                                <legend style="font-size: 12px; color: blue"><strong>Logros Alcanzados</strong></legend>
-                                <p:inputTextarea id="editarTexto" value="#{controlConceptoJuridico.textoNormativo}" style="text-transform: uppercase;width: 790px;height: 70px;font-size: 12px" readonly="#{controlConceptoJuridico.readOnlyTexto}">
-                                    <p:ajax event="select" listener="#{controlConceptoJuridico.posicionTextoNormativo(3)}" process="@this"/> 
-                                    <p:ajax event="change" listener="#{controlConceptoJuridico.modificarTextoNormativo()}" process="@this" update="editarTexto"/>                                   
-                                </p:inputTextarea>
-                            </fieldset>
 
                         </fieldset>
 
@@ -148,12 +141,12 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorBorradoRegistro" header="ATENCIÓN" widgetVar="errorBorradoRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="El campo LOGROS ALCANZADOS debe ser vacio para eliminar el registro." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorRegNuevo" header="ATENCIÓN" widgetVar="errorRegNuevo"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Todos los campos del nuevo registro no deben estar vacios." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
@@ -175,6 +168,7 @@
                                      filteredValue="#{controlConceptoJuridico.filtrarListEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                      selection="#{controlConceptoJuridico.empresita}" >              
                             <p:ajax event="rowSelect" listener="#{controlConceptoJuridico.activarAceptar()}" update=":form:aceptarE"/>
+                            <p:ajax event="rowDblselect" listener="#{controlConceptoJuridico.actualizarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Empresa: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -205,6 +199,18 @@
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlConceptoJuridico.activarCtrlF11()}"/>
                     <p:hotkey bind="alt+p" actionListener="#{controlConceptoJuridico.lovEmpresas()}"/> 
+
+                </h:form>
+
+                <h:form id="formTexto" style="position: absolute; top: 210px; left: 265px;">
+                    <fieldset style="position: absolute;top: 260px;height: 100px;width: 805px; border-radius: 10px; text-align: left">
+                        <legend style="font-size: 12px; color: blue"><strong>Logros Alcanzados</strong></legend>
+                        <p:inputTextarea id="editarTexto" value="#{controlConceptoJuridico.textoNormativo}" style="text-transform: uppercase;width: 790px;height: 70px;font-size: 12px" readonly="#{controlConceptoJuridico.readOnlyTexto}" onclick="select();">
+                            <p:ajax event="click" listener="#{controlConceptoJuridico.posicionTextoNormativo(3)}" process="@this" /> 
+                            <p:ajax event="select" listener="#{controlConceptoJuridico.posicionTextoNormativo(3)}" process="@this" /> 
+                            <p:ajax event="change" listener="#{controlConceptoJuridico.modificarTextoNormativo()}" process="@this" update="editarTexto" />
+                        </p:inputTextarea>
+                    </fieldset>
 
                 </h:form>
 
@@ -240,13 +246,13 @@
 
                             <p:separator /> 
                             <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConceptoJuridico.validarIngresoNuevoRegistro()}"  process="@this"/> 
-                            <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Sueldo" />
+                            <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Concepto Juridico" />
 
                             <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConceptoJuridico.validarBorradoRegistro()}" process="@this"/>  
-                            <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Sueldo" />
+                            <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Concepto Juridico" />
 
                             <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlConceptoJuridico.validarDuplicadoRegistro()}" process="@this"/>  
-                            <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Sueldo" />
+                            <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Concepto Juridico" />
 
                             <p:separator /> 
                             <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConceptoJuridico.verificarRastroTabla()}" process="@this"/>  
@@ -259,7 +265,7 @@
 
                     <p:dialog id="NuevoRegistroConcepto" header="Nuevo Registro Concepto Juridico" widgetVar="NuevoRegistroConcepto" closable="false" resizable="false"  draggable="false" modal="true" height="320" width="400" style="font-size: 12px; padding: 0px">  
                         <center><strong><h:outputText value="Ingresar Nueva Información Concepto " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-                       
+
                         <p:panel id="nuevaC" style="border: none;">
 
                             <strong><h:outputText value="Fecha: " style="font-size: 14px; position: absolute; top: 70px; left: 40px;" /></strong>
@@ -269,15 +275,15 @@
                                     <p:ajax event="change" update="nuevaDateFecha" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            
+
                             <strong><h:outputText value="Nombre Quien Expide: " style="font-size: 14px; position: absolute; top: 120px; left: 40px" /></strong>
-                            <p:inputText id="nuevaNombreC" value="#{controlConceptoJuridico.nuevoConcepto.expedidopor}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase">
+                            <p:inputText id="nuevaNombreC" value="#{controlConceptoJuridico.nuevoConcepto.expedidopor}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="nuevaNombreC"/>
                             </p:inputText>
                             <p:watermark for="nuevaNombreC" value="Nombre Quien Expide Norma" />
 
                             <strong><h:outputText value="Profesion/Cargo: " style="font-size: 14px; position: absolute; top: 170px; left: 40px" /></strong>
-                            <p:inputText id="nuevaCargoC" value="#{controlConceptoJuridico.nuevoConcepto.quien}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase">
+                            <p:inputText id="nuevaCargoC" value="#{controlConceptoJuridico.nuevoConcepto.quien}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="nuevaCargoC"/>
                             </p:inputText>
                             <p:watermark for="nuevaCargoC" value="Profesion o Cargo" />
@@ -308,13 +314,13 @@
                             </div>
 
                             <strong><h:outputText value="Nombre Quien Expide: " style="font-size: 14px; position: absolute; top: 120px; left: 40px" /></strong>
-                            <p:inputText id="duplicarNombreC" value="#{controlConceptoJuridico.duplicarConcepto.expedidopor}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase">
+                            <p:inputText id="duplicarNombreC" value="#{controlConceptoJuridico.duplicarConcepto.expedidopor}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarNombreC"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombreC" value="Nombre Quien Expide Norma" />
 
                             <strong><h:outputText value="Profesion/Cargo: " style="font-size: 14px; position: absolute; top: 170px; left: 40px" /></strong>
-                            <p:inputText id="duplicarCargoC" value="#{controlConceptoJuridico.duplicarConcepto.quien}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase">
+                            <p:inputText id="duplicarCargoC" value="#{controlConceptoJuridico.duplicarConcepto.quien}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarCargoC"/>
                             </p:inputText>
                             <p:watermark for="duplicarCargoC" value="Profesion o Cargo" />

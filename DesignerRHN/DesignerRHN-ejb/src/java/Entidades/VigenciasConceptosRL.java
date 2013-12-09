@@ -37,17 +37,15 @@ public class VigenciasConceptosRL implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
     @JoinColumn(name = "TIPOSALARIO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private ReformasLaborales tiposalario;
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)

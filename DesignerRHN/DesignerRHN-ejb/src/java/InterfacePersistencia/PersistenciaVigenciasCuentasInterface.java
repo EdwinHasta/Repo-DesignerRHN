@@ -20,6 +20,8 @@ public interface PersistenciaVigenciasCuentasInterface {
 
     public void borrar(VigenciasCuentas vigenciasCuentas);
 
+    public List<VigenciasCuentas> buscarVigenciasCuentasPorConcepto(BigInteger secuencia);
+
     public VigenciasCuentas buscarVigenciaCuenta(Object id);
 
     public List<VigenciasCuentas> buscarVigenciasCuentas();

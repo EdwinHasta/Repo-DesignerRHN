@@ -301,7 +301,7 @@
 
                             <strong><h:outputText value="Legislación Laboral: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="nuevaLegislacionLaboral" value="#{controlVigenciasContratos.nuevaVigencia.contrato.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'0','1')}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,1)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('1', 'LEGISLACIONLABORAL')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.nuevaVigencia.contrato.descripcion, '1')}" />
                             </p:inputText>

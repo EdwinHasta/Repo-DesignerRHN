@@ -41,17 +41,15 @@ public class VigenciasConceptosTT implements Serializable {
     @Column(name = "UNICO")
     private String unico;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
     @JoinColumn(name = "TIPOTRABAJADOR", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private TiposTrabajadores tipotrabajador;
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)

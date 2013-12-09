@@ -137,6 +137,18 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             return null;
         }
     }
+    
+    public Conceptos conceptosPorSecuencia(BigInteger secConcepto) {
+        try {
+            Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.secuencia=:secConcepto");
+            query.setParameter("secConcepto", secConcepto);
+            Conceptos conceptos = (Conceptos) query.getSingleResult();
+            return conceptos;
+        } catch (Exception e) {
+            System.out.println("Error Persistencia conceptosPorSecuencia : "+e.toString());
+            return null;
+        }
+    }
 
     @Override
     public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa) {

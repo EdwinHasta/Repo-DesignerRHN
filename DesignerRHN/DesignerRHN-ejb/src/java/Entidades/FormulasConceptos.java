@@ -44,17 +44,14 @@ public class FormulasConceptos implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ORDEN")
     private BigInteger orden;
     @Basic(optional = false)
@@ -63,7 +60,7 @@ public class FormulasConceptos implements Serializable {
     @Column(name = "TIPO")
     private String tipo;
     @JoinColumn(name = "FORMULA", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Formulas formula;
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)

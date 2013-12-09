@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -42,33 +41,29 @@ public class VigenciasCuentas implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
     @JoinColumn(name = "TIPOCC", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private TiposCentrosCostos tipocc;
     @JoinColumn(name = "CUENTAD", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Cuentas cuentad;
     @JoinColumn(name = "CUENTAC", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Cuentas cuentac;
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Conceptos concepto;
     @JoinColumn(name = "CONSOLIDADORD", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private CentrosCostos consolidadord;
     @JoinColumn(name = "CONSOLIDADORC", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private CentrosCostos consolidadorc;
 
     public VigenciasCuentas() {
