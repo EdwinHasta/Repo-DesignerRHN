@@ -3,7 +3,6 @@ package InterfacePersistencia;
 import Entidades.Empleados;
 import java.math.BigInteger;
 import java.util.List;
-import javax.persistence.EntityManager;
 
 public interface PersistenciaEmpleadoInterface {
     

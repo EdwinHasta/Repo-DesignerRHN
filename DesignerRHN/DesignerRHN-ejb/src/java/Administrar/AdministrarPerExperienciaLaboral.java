@@ -5,11 +5,13 @@
 package Administrar;
 
 import Entidades.Empleados;
+import Entidades.HVHojasDeVida;
 import Entidades.HvExperienciasLaborales;
 import Entidades.MotivosRetiros;
 import Entidades.SectoresEconomicos;
 import InterfaceAdministrar.AdministrarPerExperienciaLaboralInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaHVHojasDeVidaInterface;
 import InterfacePersistencia.PersistenciaHvExperienciasLaboralesInterface;
 import InterfacePersistencia.PersistenciaMotivosRetirosInterface;
 import InterfacePersistencia.PersistenciaSectoresEconomicosInterface;
@@ -33,6 +35,8 @@ public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienc
     PersistenciaSectoresEconomicosInterface persistenciaSectoresEconomicos;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    @EJB
+    PersistenciaHVHojasDeVidaInterface persistenciaHVHojasDeVida;
 
     @Override
     public Empleados empleadoActual(BigInteger secuencia) {
@@ -139,6 +143,17 @@ public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienc
             return retorno;
         } catch (Exception e) {
             System.out.println("Error listExperienciasLaboralesSecuenciaEmpleado Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public HVHojasDeVida obtenerHojaVidaPersona(BigInteger secuencia) {
+        try {
+            HVHojasDeVida hojaVida = persistenciaHVHojasDeVida.hvHojaDeVidaPersona(secuencia);
+            return hojaVida;
+        } catch (Exception e) {
+            System.out.println("Error obtenerHojaVidaPersona Admi : "+e.toString());
             return null;
         }
     }
