@@ -129,7 +129,7 @@
 
                                         <!-- Boton Hoja de Vida -->
 
-                                        <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/birrete1.gif); left: 539px; top: 15px; width: 60px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(item.empleado.secuencia)}" action="hojaVida" />
+                                        <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/Iconos/informacionPersonal.png); left: 539px; top: 15px; width: 60px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(item.empleado.secuencia)}" action="hojaVida" />
                                         <p:tooltip style="font-size: 12px" for="HojaDeVida">
                                             Visualizar, Adicionar y/o Modificar<br/> datos personales del Empleado.
                                         </p:tooltip>
@@ -174,94 +174,94 @@
 
                                         <!-- Botones Panel Central -->
 
-                                        <p:commandButton id="CargoDesempeñado" value="" style="position: absolute; background-image: url(Imagenes/cargo.gif); width: 29px; height: 35px; top: 15px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" action="vigenciasC"  disabled="#{controlRemoto.acumulado}" actionListener="#{controlVigenciasCargos.recibirEmpleado(item.empleado.secuencia)}" />
+                                        <p:commandButton id="CargoDesempeñado" value="" styleClass="colorBotones" style="position: absolute; background-image: url(Imagenes/Iconos/cargoDesempleñado.png); width: 29px; height: 35px; top: 15px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" action="vigenciasC"  disabled="#{controlRemoto.acumulado}" actionListener="#{controlVigenciasCargos.recibirEmpleado(item.empleado.secuencia)}" />
                                         <p:tooltip style="font-size: 12px" for="CargoDesempeñado">
                                             CARGOS DESEMPEÑADOS: Observe y/o ingrese todos los cargos <br/>que el empleado ha desempeñado dentro de la empresa.
                                         </p:tooltip>
 
-                                        <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/tipocontrato.gif); width: 29px; height: 35px; top: 52px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="vigenciasTC" actionListener="#{controlVigenciasTiposContratos.recibirEmpleado(item.empleado.secuencia)}"  />
+                                        <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/Iconos/fechaContratacion.png); width: 29px; height: 35px; top: 52px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="vigenciasTC" actionListener="#{controlVigenciasTiposContratos.recibirEmpleado(item.empleado.secuencia)}"  />
                                         <p:tooltip style="font-size: 12px" for="FechaContratacion">
                                             TIPOS CONTRATOS: Observe y/o ingrese todos los tipos<br/> de contratos que el empleado ha tenido con la empresa
                                         </p:tooltip>
 
-                                        <p:commandButton id="NormaLaboral" value="" style="position: absolute; background-image: url(Imagenes/normalaboral.gif); width: 29px; height: 35px; top: 87px;left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="normalaboral"/>
+                                        <p:commandButton id="NormaLaboral" value="" style="position: absolute; background-image: url(Imagenes/Iconos/normaLaboral.png); width: 29px; height: 35px; top: 87px;left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="normalaboral"/>
                                         <p:tooltip style="font-size: 12px" for="NormaLaboral">
                                             NORMAS LABORALES: Observe y/o ingrese <br/>la(s) norma(s) laboral(es) del empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="Afiliaciones" value="" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 29px; height: 35px; top: 123px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="afiliaciones3" actionListener="#{controlEmplVigenciaAfiliacion3.recibirEmpleado(item.empleado.secuencia)}"/>
+                                        <p:commandButton id="Afiliaciones" value="" style="position: absolute; background-image: url(Imagenes/Iconos/afiliaciones.png); width: 29px; height: 35px; top: 123px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="afiliaciones3" actionListener="#{controlEmplVigenciaAfiliacion3.recibirEmpleado(item.empleado.secuencia)}"/>
                                         <p:tooltip style="font-size: 12px" for="Afiliaciones" >
                                             AFILIACIONES: Observe y/o ingrese todos las afiliaciones<br/> que el empleado tiene con los diferentes terceros.
                                         </p:tooltip>
 
-                                        <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/ibc.gif); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}" action="ibcs" actionListener="#{controlIbcAutoliquid.obtenerTipoEntidad(item.empleado.secuencia)}"/>
+                                        <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/Iconos/IBC.png); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="IBC" value="I.B.C.: Observe y/o ingrese todos los históricos de I.B.C."  />
 
-                                        <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/viajero.gif); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoViajero.png); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="TipoViajero">
                                             TIPOS VIAJEROS: Observe y/o ingrese todos los tipos<br/> de viajero que ha pertenecido el trabajador.
                                         </p:tooltip>
 
 
 
-                                        <p:commandButton id="CentroDeCosto" value="" style="position: absolute; background-image: url(Imagenes/localizacion.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" action="VigenciaLocalizacion" actionListener="#{controlVigenciaLocalizacion.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="CentroDeCosto" value="" style="position: absolute; background-image: url(Imagenes/Iconos/centroCosto.png); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px; border: outset; border-width: 2px;" action="VigenciaLocalizacion" actionListener="#{controlVigenciaLocalizacion.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="CentroDeCosto">
                                             LOCALIZACIONES: Observe y/o ingrese los<br/> históricos de localización del empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="TipoTrabajador" value="" style="position: absolute; background-image: url(Imagenes/tipotrabajador.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" action="VigenciaTipoTrabajador" actionListener="#{controlVigenciaTipoTrabajador.recibirEmpleado(item.empleado)}" />
+                                        <p:commandButton id="TipoTrabajador" value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoTrabajador.png); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px; border: outset; border-width: 2px;" action="VigenciaTipoTrabajador" actionListener="#{controlVigenciaTipoTrabajador.recibirEmpleado(item.empleado)}" />
                                         <p:tooltip style="font-size: 12px" for="TipoTrabajador"  >
                                             TIPOS TRABAJADORES: Observe y/o ingrese<br/> todos los históricos de tipo de trabajo.
                                         </p:tooltip>
 
-                                        <p:commandButton id="LegislacionLaboral" value="" style="position: absolute; background-image: url(Imagenes/contrato.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" action="LegislacionLaboral" actionListener="#{controlVigenciasContratos.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="LegislacionLaboral" value="" style="position: absolute; background-image: url(Imagenes/Iconos/legislacionLaboral.png); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px; border: outset; border-width: 2px;" action="LegislacionLaboral" actionListener="#{controlVigenciasContratos.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="LegislacionLaboral" >
                                             LEGISLACIONES LABORALES: Observe y/o ingrese<br/> la legislación laboral a la cual pertenece.
                                         </p:tooltip>
 
-                                        <p:commandButton id="Jornada" value="" style="position: absolute; background-image: url(Imagenes/jornadalaboral.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" action="VigenciaJornada" actionListener="#{controlVigenciaJornada.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="Jornada" value="" style="position: absolute; background-image: url(Imagenes/Iconos/jornada.png); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px; border: outset; border-width: 2px;" action="VigenciaJornada" actionListener="#{controlVigenciaJornada.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="Jornada" >
                                             JORNADAS: Observe y/o ingrese las diferentes<br/> jornadas de trabajo que ha tenido el empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="MenorValorRetencio" value="" style="position: absolute; background-image: url(Imagenes/retencion.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" disabled="#{controlRemoto.acumulado}" action="mvrsEmpl" actionListener="#{controlEmplMvr.recibirEmpleado(item.empleado.secuencia)}"/>
+                                        <p:commandButton id="MenorValorRetencio" value="" style="position: absolute; background-image: url(Imagenes/Iconos/valorRetencion.png); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="mvrsEmpl" actionListener="#{controlEmplMvr.recibirEmpleado(item.empleado.secuencia)}"/>
                                         <p:tooltip style="font-size: 12px" for="MenorValorRetencio" >
                                             MENORES VALORES DE RETENCION: Observe<br/> y/o ingrese todos los M.V.R.
                                         </p:tooltip>
 
-                                        <p:commandButton id="Vacaciones" value="" style="position: absolute; background-image: url(Imagenes/vacacion.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px;" disabled="#{controlRemoto.acumulado}" action="vacaciones" actionListener="#{controlEmplVacaPendiente.recibirEmpleado(item.empleado.secuencia)}"/>
+                                        <p:commandButton id="Vacaciones" value="" style="position: absolute; background-image: url(Imagenes/Iconos/vacaciones.png); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 280px; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="vacaciones" actionListener="#{controlEmplVacaPendiente.recibirEmpleado(item.empleado.secuencia)}"/>
                                         <p:tooltip style="font-size: 12px" for="Vacaciones">
                                             VACACIONES: Observe todos los históricos de<br/> vacaciones que el empleado ha disfrutado.
                                         </p:tooltip>
 
 
 
-                                        <p:commandButton id="Sueldo" value="" style="position: absolute; background-image: url(Imagenes/sueldo.gif); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" action="VigenciaSueldo" actionListener="#{controlVigenciaSueldo.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="Sueldo" value="" style="position: absolute; background-image: url(Imagenes/Iconos/sueldo.png); width: 29px; height: 35px; top: 15px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" action="VigenciaSueldo" actionListener="#{controlVigenciaSueldo.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="Sueldo" >
                                             SUELDOS: Observe y/o ingrese todos los diferentes<br/> sueldos que ha tenido el empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="TipoSalario" value="" style="position: absolute; background-image: url(Imagenes/reformalaboral.gif); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" action="VigenciaReformaLaboral" actionListener="#{controlVigenciasReformasLaborales.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="TipoSalario" value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoSalario.png); width: 29px; height: 35px; top: 52px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" action="VigenciaReformaLaboral" actionListener="#{controlVigenciasReformasLaborales.recibirEmpleado(item.empleado)}" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="TipoSalario" >
                                             TIPOS SALARIOS: Observe y/o ingrese los<br/> tipos de salario del empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="Ubicacion" value="" style="position: absolute; background-image: url(Imagenes/origen.gif); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" disabled="#{controlRemoto.acumulado}" action="vigenciasUG" actionListener="#{controlVigenciasUbicaciones.recibirEmpleado(item.empleado.secuencia)}" />
+                                        <p:commandButton id="Ubicacion" value="" style="position: absolute; background-image: url(Imagenes/Iconos/ubicacionGeografica.png); width: 29px; height: 35px; top: 87px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="vigenciasUG" actionListener="#{controlVigenciasUbicaciones.recibirEmpleado(item.empleado.secuencia)}" />
                                         <p:tooltip style="font-size: 12px" for="Ubicacion">
                                             ORIGENES: Observe y/o ingrese los históricos<br/> de origen del empleado.
                                         </p:tooltip>
 
-                                        <p:commandButton id="FormaDePago" value="" style="position: absolute; background-image: url(Imagenes/pasivoestimado.gif); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="FormaDePago" value="" style="position: absolute; background-image: url(Imagenes/Iconos/formaPago.png); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip style="font-size: 12px" for="FormaDePago">
                                             FORMAS DE PAGO: Observe y/o ingrese los<br/> históricos de formas de pago.
                                         </p:tooltip>
 
-                                        <p:commandButton id="SET" value="" style="position: absolute; background-image: url(Imagenes/notacontable.gif); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" disabled="#{controlRemoto.acumulado}" action="EmplSets" actionListener="#{controlSets.recibirEmpleado(item.empleado)}"/>
+                                        <p:commandButton id="SET" value="" style="position: absolute; background-image: url(Imagenes/Iconos/set.png); width: 29px; height: 35px; top: 159px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="EmplSets" actionListener="#{controlSets.recibirEmpleado(item.empleado)}"/>
                                         <p:tooltip style="font-size: 12px" for="SET" >
                                             S.E.T.: Salario Equivalente Tributario.<br/> Calculo de retención en la fuente
                                         </p:tooltip>
 
-                                        <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/comprobante.gif); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px;" action="emplComprobante" actionListener="#{controlEmplComprobantes.recibirEmpleado(item.empleado.secuencia)}" />
+                                        <p:commandButton id="Comprobantes" value="" style="position: absolute; background-image: url(Imagenes/Iconos/comprobantePago.png); width: 29px; height: 35px; top: 194px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" action="emplComprobante" actionListener="#{controlEmplComprobantes.recibirEmpleado(item.empleado.secuencia)}" />
                                         <p:tooltip style="font-size: 12px" for="Comprobantes" >
                                             COMPROBANTES DE PAGO: Observe todos los comprobantes<br/> de pago que ha tenido el empleado.
                                         </p:tooltip>
@@ -290,113 +290,113 @@
                                         <p:inputText id="VComprobantes" style="position: absolute; left: 585px; top: 208px; width: 210px; font-family: Tahoma, Geneva, sans-serif; font-size: 11px;"  />
                                     </fieldset>
 
-                                
 
 
-                                <p:panel id="panelInf" style="border: none" >
 
-                                    <!-- Panel Acumulados y Novedades -->
+                                    <p:panel id="panelInf" style="border: none" >
 
-                                    <fieldset style="height: 35px; width: 74px; display: block; position: absolute; top: 420px; border-radius: 5px; left: 17px">
+                                        <!-- Panel Acumulados y Novedades -->
 
-                                        <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/acumulados.gif); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />
-                                        <p:tooltip style="font-size: 12px" for="AcumuladosNomina">
-                                            ACUMULADOS DE NÓMINA: Observe todos los acumulados<br/> de nómina que el empleado ha tenido desde su ingreso.
-                                        </p:tooltip>
+                                        <fieldset style="height: 35px; width: 74px; display: block; position: absolute; top: 420px; border-radius: 5px; left: 17px">
 
-                                        <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="position: absolute; background-image: url(Imagenes/novedad.gif); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; left: 47px; top: 2px;" action="novedadEmpl" actionListener="#{controlEmplNovedad.recibirEmpleado(item.empleado.secuencia)}"/>
-                                        <!--     <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" value="NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas y/o ocacionales que el empleado ha tenido desde su ingreso."  /> -->
-                                        <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" >
-                                            NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas 
-                                            <br/>
-                                            y/o ocacionales que el empleado ha tenido desde su ingreso.
-                                        </p:tooltip>
+                                            <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="AcumuladosNomina">
+                                                ACUMULADOS DE NÓMINA: Observe todos los acumulados<br/> de nómina que el empleado ha tenido desde su ingreso.
+                                            </p:tooltip>
 
-                                    </fieldset>
+                                            <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="position: absolute; background-image: url(Imagenes/Iconos/novedadEmpleado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; left: 47px; top: 2px; border: outset; border-width: 2px; " action="novedadEmpl" actionListener="#{controlEmplNovedad.recibirEmpleado(item.empleado.secuencia)}"/>
+                                            <!--     <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" value="NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas y/o ocacionales que el empleado ha tenido desde su ingreso."  /> -->
+                                            <p:tooltip style="font-size: 12px"  for="NovedadesEmpleado" >
+                                                NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas 
+                                                <br/>
+                                                y/o ocacionales que el empleado ha tenido desde su ingreso.
+                                            </p:tooltip>
 
-
-                                    <!-- Panel Evaluacion y Resultados -->
-
-                                    <fieldset style="height: 35px; width: 73px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 115px;">
-
-                                        <p:commandButton id="EvaluarPersona" value="" disabled="#{controlRemoto.evaluacion}" style="position: absolute; background-image: url(Imagenes/afiliacion.gif); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />
-                                        <p:tooltip style="font-size: 12px" for="EvaluarPersona" value="EVALUAR PERSONAS: Ingrese a evaluar las personas a cargo."  />
-
-                                        <p:commandButton id="ResultadosEvaluaciones" value=""  style="position: absolute; background-image: url(Imagenes/escalafonsalarial.gif); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 46px;" />
-                                        <p:tooltip style="font-size: 12px" for="ResultadosEvaluaciones">
-                                            RESULTADOS DE EVALUACIONES: Observe y/o ingrese<br/> los resultados de las evaluaciones.
-                                        </p:tooltip>
-
-                                    </fieldset>
+                                        </fieldset>
 
 
-                                    <!-- Panel Salud Ocupacional-->
+                                        <!-- Panel Evaluacion y Resultados -->
 
-                                    <fieldset style="height: 35px; width: 70px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 212px;">
-                                        <p:commandButton id="SaludOcupacional" value="" style="position: absolute; background-image: url(Imagenes/g_saludocupacional.gif); width: 75px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 5px;" />
-                                        <p:tooltip style="font-size: 12px" for="SaludOcupacional" >
-                                            SALUD OCUPACIONAL: Observe todo lo referente a servicio<br/> médico, dotaciones, entre otros, de la persona.
-                                        </p:tooltip>
-                                    </fieldset>
+                                        <fieldset style="height: 35px; width: 73px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 115px;">
 
-                                    <!-- Panel Ingresos Act. Pen. y Asp.-->
+                                            <p:commandButton id="EvaluarPersona" value="" disabled="#{controlRemoto.evaluacion}" style="position: absolute; background-image: url(Imagenes/Iconos/evaluacion.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="EvaluarPersona" value="EVALUAR PERSONAS: Ingrese a evaluar las personas a cargo."  />
 
-                                    <fieldset style="height: 35px; width: 130px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 306px;">
+                                            <p:commandButton id="ResultadosEvaluaciones" value=""  style="position: absolute; background-image: url(Imagenes/Iconos/resultados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 46px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="ResultadosEvaluaciones">
+                                                RESULTADOS DE EVALUACIONES: Observe y/o ingrese<br/> los resultados de las evaluaciones.
+                                            </p:tooltip>
 
-                                        <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}"  style="position: absolute; background-image: url(Imagenes/ingreso.gif); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />                            
-                                        <p:tooltip style="font-size: 12px" for="IngresoPersonal">
-                                            INGRESO DE PERSONAL: Permite ingresar los datos<br/> básicos laborales de un nuevo trabajador activo.
-                                        </p:tooltip>
-
-                                        <p:commandButton id="InformacionJubilados" value="" disabled="#{controlRemoto.pensionado}"  style="position: absolute; background-image: url(Imagenes/pensionado.gif); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 50px;" />
-                                        <p:tooltip style="font-size: 12px" for="InformacionJubilados" >
-                                            INFORMACIÓN ADICIONAL PARA JUBILADOS: Administre la<br/> información adicional de la persona jubilada.
-                                        </p:tooltip>
-
-                                        <p:commandButton id="IngresoAspirantes" value="" disabled="#{controlRemoto.aspirante}"  style="position: absolute; background-image: url(Imagenes/perfil.gif); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 98px;" />
-                                        <p:tooltip style="font-size: 12px" for="IngresoAspirantes">
-                                            INGRESO DE ASPIRANTES: ingresar los datos necesarios<br/> de un aspirante para una futura contratación.
-                                        </p:tooltip>
-
-                                    </fieldset>
-
-                                    <!-- Panel Hoja de Vida -->
-
-                                    <fieldset style="height: 35px; width: 82px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 460px;">
-
-                                        <p:commandButton id="InformacionAdicional" value="" disabled="#{controlRemoto.hv1}"  style="position: absolute; background-image: url(Imagenes/inconsistencia.gif); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" />
-                                        <p:tooltip style="font-size: 12px" for="InformacionAdicional">
-                                            INFORMACIÓN ADICIONAL ASPIRANTES: Administre<br/> la información de los aspirantes.
-                                        </p:tooltip>
-
-                                        <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="position: absolute; background-image: url(Imagenes/n_informes.gif); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 50px;" />
-                                        <p:tooltip style="font-size: 12px" for="IngresoHojaDeVida">
-                                            INGRESO DE LA HOJA DE VIDA DEL EMPLEADO:Ingrese<br/> la Hoja de Vida de los Empleados.
-                                        </p:tooltip>
-
-                                    </fieldset>
+                                        </fieldset>
 
 
-                                    <!-- Panel Reportes -->
+                                        <!-- Panel Salud Ocupacional-->
 
-                                    <fieldset style="height: 35px; width: 50px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 566px;">
-                                        <p:commandButton id="ReportesLaborales" value="" style="position: absolute; background-image: url(Imagenes/reportesboton.gif); width: 60px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px;" action="ReporteLaboral" />
-                                        <p:tooltip style="font-size: 12px" for="ReportesLaborales">
-                                            REPORTES LABORALES: Permite Generar Reportes<br/> Preestablecidos de datos laborales.
-                                        </p:tooltip>
-                                    </fieldset>
+                                        <fieldset style="height: 35px; width: 70px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 212px;">
+                                            <p:commandButton id="SaludOcupacional" value="" style="position: absolute; background-image: url(Imagenes/Iconos/saludOcupacional2.png); width: 75px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 5px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="SaludOcupacional" >
+                                                SALUD OCUPACIONAL: Observe todo lo referente a servicio<br/> médico, dotaciones, entre otros, de la persona.
+                                            </p:tooltip>
+                                        </fieldset>
+
+                                        <!-- Panel Ingresos Act. Pen. y Asp.-->
+
+                                        <fieldset style="height: 35px; width: 130px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 306px;">
+
+                                            <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}"  style="position: absolute; background-image: url(Imagenes/Iconos/ingreso.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" />                            
+                                            <p:tooltip style="font-size: 12px" for="IngresoPersonal">
+                                                INGRESO DE PERSONAL: Permite ingresar los datos<br/> básicos laborales de un nuevo trabajador activo.
+                                            </p:tooltip>
+
+                                            <p:commandButton id="InformacionJubilados" value="" disabled="#{controlRemoto.pensionado}"  style="position: absolute; background-image: url(Imagenes/Iconos/pensionado.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 50px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="InformacionJubilados" >
+                                                INFORMACIÓN ADICIONAL PARA JUBILADOS: Administre la<br/> información adicional de la persona jubilada.
+                                            </p:tooltip>
+
+                                            <p:commandButton id="IngresoAspirantes" value="" disabled="#{controlRemoto.aspirante}"  style="position: absolute; background-image: url(Imagenes/Iconos/aspirantes.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 98px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="IngresoAspirantes">
+                                                INGRESO DE ASPIRANTES: ingresar los datos necesarios<br/> de un aspirante para una futura contratación.
+                                            </p:tooltip>
+
+                                        </fieldset>
+
+                                        <!-- Panel Hoja de Vida -->
+
+                                        <fieldset style="height: 35px; width: 82px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 460px;">
+
+                                            <p:commandButton id="InformacionAdicional" value="" disabled="#{controlRemoto.hv1}"  style="position: absolute; background-image: url(Imagenes/Iconos/informacionAdicional.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="InformacionAdicional">
+                                                INFORMACIÓN ADICIONAL ASPIRANTES: Administre<br/> la información de los aspirantes.
+                                            </p:tooltip>
+
+                                            <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="position: absolute; background-image: url(Imagenes/Iconos/hojaDeVida.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 50px; border: outset; border-width: 2px;" />
+                                            <p:tooltip style="font-size: 12px" for="IngresoHojaDeVida">
+                                                INGRESO DE LA HOJA DE VIDA DEL EMPLEADO:Ingrese<br/> la Hoja de Vida de los Empleados.
+                                            </p:tooltip>
+
+                                        </fieldset>
 
 
-                                    <p:commandButton id="CargoDesempeñado11" value="" style="position: absolute; background-image: url(Imagenes/Designer.GIF); width: 200px; height: 42px; top: 423px; background-repeat: no-repeat; background-size: 100% 100%; left: 643px;" />
+                                        <!-- Panel Reportes -->
 
-                                    <em><h:outputText style="position: absolute; top: 472px; font-size: 12px; left: 17px" value="Bienvenido(a):"/></em>
+                                        <fieldset style="height: 35px; width: 50px; display: block; position: absolute; border-radius: 5px; top: 420px; left: 566px;">
+                                            <p:commandButton id="ReportesLaborales" value="" style="position: absolute; background-image: url(Imagenes/Iconos/reportes.png); width: 60px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" action="ReporteLaboral" />
+                                            <p:tooltip style="font-size: 12px" for="ReportesLaborales">
+                                                REPORTES LABORALES: Permite Generar Reportes<br/> Preestablecidos de datos laborales.
+                                            </p:tooltip>
+                                        </fieldset>
 
-                                    <strong><h:outputText id="Usuario" style="position: absolute; top: 473px; left: 105px; font-size: 11px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
 
-                                    <strong><h:outputText id="Empresa"  style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+                                        <p:commandButton id="CargoDesempeñado11" value="" style="position: absolute; background-image: url(Imagenes/Designer.GIF); width: 200px; height: 42px; top: 423px; background-repeat: no-repeat; background-size: 100% 100%; left: 643px;" />
 
-                                </p:panel>
-                                    </p:dataGrid>
+                                        <em><h:outputText style="position: absolute; top: 472px; font-size: 12px; left: 17px" value="Bienvenido(a):"/></em>
+
+                                        <strong><h:outputText id="Usuario" style="position: absolute; top: 473px; left: 105px; font-size: 11px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/></strong>
+
+                                        <strong><h:outputText id="Empresa"  style="position: absolute; top: 473px; left: 477px; font-size: 11px; text-align: right; width: 365px" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel.#{controlRemoto.detallesEmpresas.telefono}"/></strong>
+
+                                    </p:panel>
+                                </p:dataGrid>
                             </p:tab>  
 
                             <p:tab title="Nomina" id="Nomina">  

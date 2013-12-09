@@ -1,10 +1,12 @@
 package Controlador;
 
 import Banner.BannerInicioRed;
+import Entidades.Conexiones;
 import Entidades.Recordatorios;
 import InterfaceAdministrar.AdministrarInicioRedInterface;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -113,6 +116,25 @@ public class ControlInicioRed implements Serializable {
                                     } else {
                                         llenarBannerDefaul();
                                     }
+                                    HttpServletRequest request = (HttpServletRequest) (contexto.getExternalContext().getRequest());
+                                    String Ip, nombreEquipo;
+                                    java.net.InetAddress localMachine;
+                                    if (request.getRemoteAddr().startsWith("127.0.0.1")) {
+                                        localMachine = java.net.InetAddress.getLocalHost();
+                                        Ip = localMachine.getHostAddress();
+                                    } else {
+                                        Ip = request.getRemoteAddr();
+                                    }
+                                    localMachine = java.net.InetAddress.getByName(Ip);
+                                    nombreEquipo = localMachine.getHostName();
+                                    Conexiones conexion = new Conexiones();
+                                    conexion.setDireccionip(Ip);
+                                    conexion.setEstacion(nombreEquipo);
+                                    conexion.setSecuencia(BigInteger.valueOf(1));
+                                    conexion.setUltimaentrada(new Date());
+                                    conexion.setUsuarioso(System.getProperty("os.name") + " / " + System.getProperty("user.name"));
+                                    conexion.setUsuariobd(administrarInicioRed.usuarioBD());
+                                    administrarInicioRed.guardarDatosConexion(conexion);
                                     context.update(actualizaciones);
                                 } else {
                                     inicioSession = true;

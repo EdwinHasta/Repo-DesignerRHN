@@ -1,10 +1,13 @@
 package Administrar;
 
+import Entidades.Conexiones;
 import Entidades.Perfiles;
 import Entidades.Recordatorios;
 import InterfaceAdministrar.AdministrarInicioRedInterface;
 import InterfacePersistencia.EntityManagerGlobalInterface;
+import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaConexionInicialInterface;
+import InterfacePersistencia.PersistenciaConexionesInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaRecordatoriosInterface;
 import Persistencia.EntityManagerGlobal;
@@ -26,6 +29,10 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
     PersistenciaEmpresasInterface persistenciaEmpresas;
     @EJB
     EntityManagerGlobalInterface FactoryGlobal;
+    @EJB
+    PersistenciaConexionesInterface persistenciaConexiones;
+    @EJB
+    PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     private EntityManager em;
     private Perfiles perfilUsuario;
     private BigInteger secPerfil;
@@ -168,5 +175,14 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         } else {
             return -1;
         }
+    }
+
+    public void guardarDatosConexion(Conexiones conexion) {
+        persistenciaConexiones.verificarSID(em, conexion);
+    }
+
+    @Override
+    public String usuarioBD() {
+        return persistenciaActualUsuario.actualAliasBD_EM(em);
     }
 }
