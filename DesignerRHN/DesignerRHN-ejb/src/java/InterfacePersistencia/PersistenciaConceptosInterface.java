@@ -54,7 +54,7 @@ public interface PersistenciaConceptosInterface {
      * @param secEmpresa Secuencia de la empresa a la que  pertenecen los conceptos.
      * @return Retorna una lista de los conceptos de le empresa cuya secuencia es igual a la que entra por parámetro.
      */
-    public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa);
+    public List<Conceptos> conceptosPorEmpresa(BigInteger secEmpresa);
     /**
      * Método encargado de buscar los Conceptos de una empresa especifica y filtra entre
      * conceptos activos e inactivos.
@@ -79,4 +79,10 @@ public interface PersistenciaConceptosInterface {
      * @param descripcionConceptoNuevo Descripción del nuevo concepto.
      */
     public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo);
+    /**
+     * Método encargado de buscar el Contrato con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del Contrato que se quiere encontrar.
+     * @return Retorna el Contrato identificado con la secuencia dada por parámetro.
+     */
+    public Conceptos conceptosPorSecuencia(BigInteger secuencia);
 }
