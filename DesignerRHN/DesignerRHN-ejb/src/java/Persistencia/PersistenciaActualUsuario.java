@@ -48,4 +48,17 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
             return null;
         }
     }
+    
+    public String actualAliasBD_EM(EntityManager emg) {
+        try {
+            String sqlQuery = "SELECT au.ALIAS FROM ActualUsuario au";
+            Query query = emg.createNativeQuery(sqlQuery);
+            String alias;
+            alias = (String) query.getSingleResult();
+            return alias;
+        } catch (Exception e) {
+            System.out.println("No se pudo encontrar el usuario PersistenciaActualUsuario.actualAliasBD:" + e);
+            return null;
+        }
+    }
 }
