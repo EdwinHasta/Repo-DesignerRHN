@@ -86,8 +86,6 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
 
     @Override
     public List<Estructuras> buscarlistaValores(String fechaVigencia) {
-
-
         List<Estructuras> estructuras;
         System.out.println("Fecha: " + fechaVigencia);
         try {
