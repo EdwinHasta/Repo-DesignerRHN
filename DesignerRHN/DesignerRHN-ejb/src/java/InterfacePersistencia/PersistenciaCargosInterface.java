@@ -40,7 +40,7 @@ public interface PersistenciaCargosInterface {
      * Método encargado de buscar todos los Cargos existentes en la base de datos.
      * @return Retorna una lista de Cargos.
      */
-    public List<Cargos> cargos();
+    public List<Cargos> buscarCargos();
     /**
      * Método encargado de traer todos los cargos de la base de datos, calculando 
      * el salario de cada cargo
