@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 /**
  * Clase Stateless 
  * Clase encargada de realizar operaciones sobre la tabla 'FormulasConceptos'
@@ -25,6 +26,45 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
+    public void crear(FormulasConceptos conceptos) {
+        try {
+            em.persist(conceptos);
+        } catch (Exception e) {
+            System.out.println("Error crearFormulasConceptos Persistencia : " + e.toString());
+        }
+    }
+
+    @Override
+    public void editar(FormulasConceptos conceptos) {
+        try {
+            em.merge(conceptos);
+        } catch (Exception e) {
+            System.out.println("Error crearFormulasConceptos Persistencia : " + e.toString());
+        }
+    }
+
+    @Override
+    public void borrar(FormulasConceptos conceptos) {
+        try {
+            em.remove(em.merge(conceptos));
+        } catch (Exception e) {
+            System.out.println("Error crearFormulasConceptos Persistencia : " + e.toString());
+        }
+    }
+
+    @Override
+    public List<FormulasConceptos> buscarFormulasConceptos() {
+        try{
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(FormulasConceptos.class));
+        return em.createQuery(cq).getResultList();
+        } catch(Exception e){
+            System.out.println("Error buscarFormulasConceptos Persistencia : "+e.toString());
+            return null;
+        }
+    }
+    
     @Override
     public boolean verificarExistenciaConceptoFormulasConcepto(BigInteger secConcepto) {
         try {
