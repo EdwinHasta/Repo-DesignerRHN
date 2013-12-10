@@ -75,6 +75,8 @@ public class ControlEstructura implements Serializable {
     //AUTOCOMPLETAR
     private String nombreEmpresa;
     private String mensajeValidacion;
+    //CODIGO EMPRESA PARA ESTRUCTURAS HIJAS 
+    Short codigoEmpresa;
 
     public ControlEstructura() {
         arbolEstructuras = null;
@@ -125,6 +127,7 @@ public class ControlEstructura implements Serializable {
             if (cualCelda == 2) {
                 nombreEmpresa = listaOrganigramas.get(index).getEmpresa().getNombre();
             }
+            codigoEmpresa = listaOrganigramas.get(index).getEmpresa().getCodigo();
             arbolEstructuras = null;
             RequestContext.getCurrentInstance().update("form:arbolEstructuras");
         }
@@ -779,7 +782,7 @@ public class ControlEstructura implements Serializable {
 
     //GETTER AND SETTER
 
-    public TreeNode getArbolEstructuras() {
+   public TreeNode getArbolEstructuras() {
         if (arbolEstructuras == null) {
             arbolEstructuras = new DefaultTreeNode("arbolEstructuras", null);
             if (index == -1) {
@@ -790,43 +793,43 @@ public class ControlEstructura implements Serializable {
             if (estructurasPadre != null) {
                 for (int i = 0; i < estructurasPadre.size(); i++) {
                     TreeNode padre = new DefaultTreeNode(estructurasPadre.get(i), arbolEstructuras);
-                    estructurasHijas1 = administrarEstructuras.estructurasHijas(estructurasPadre.get(i).getSecuencia());
+                    estructurasHijas1 = administrarEstructuras.estructurasHijas(estructurasPadre.get(i).getSecuencia(), codigoEmpresa);
                     if (estructurasHijas1 != null) {
                         for (int j = 0; j < estructurasHijas1.size(); j++) {
                             TreeNode hija1 = new DefaultTreeNode(estructurasHijas1.get(j), padre);
-                            estructurasHijas2 = administrarEstructuras.estructurasHijas(estructurasHijas1.get(j).getSecuencia());
+                            estructurasHijas2 = administrarEstructuras.estructurasHijas(estructurasHijas1.get(j).getSecuencia(), codigoEmpresa);
                             if (estructurasHijas2 != null) {
                                 for (int k = 0; k < estructurasHijas2.size(); k++) {
                                     TreeNode hija2 = new DefaultTreeNode(estructurasHijas2.get(k), hija1);
-                                    estructurasHijas3 = administrarEstructuras.estructurasHijas(estructurasHijas2.get(k).getSecuencia());
+                                    estructurasHijas3 = administrarEstructuras.estructurasHijas(estructurasHijas2.get(k).getSecuencia(), codigoEmpresa);
                                     if (estructurasHijas3 != null) {
                                         for (int l = 0; l < estructurasHijas3.size(); l++) {
                                             TreeNode hija3 = new DefaultTreeNode(estructurasHijas3.get(l), hija2);
-                                            estructurasHijas4 = administrarEstructuras.estructurasHijas(estructurasHijas3.get(l).getSecuencia());
+                                            estructurasHijas4 = administrarEstructuras.estructurasHijas(estructurasHijas3.get(l).getSecuencia(), codigoEmpresa);
                                             if (estructurasHijas4 != null) {
                                                 for (int m = 0; m < estructurasHijas4.size(); m++) {
                                                     TreeNode hija4 = new DefaultTreeNode(estructurasHijas4.get(m), hija3);
-                                                    estructurasHijas5 = administrarEstructuras.estructurasHijas(estructurasHijas4.get(m).getSecuencia());
+                                                    estructurasHijas5 = administrarEstructuras.estructurasHijas(estructurasHijas4.get(m).getSecuencia(), codigoEmpresa);
                                                     if (estructurasHijas5 != null) {
                                                         for (int f = 0; f < estructurasHijas5.size(); f++) {
                                                             TreeNode hija5 = new DefaultTreeNode(estructurasHijas5.get(f), hija4);
-                                                            estructurasHijas6 = administrarEstructuras.estructurasHijas(estructurasHijas5.get(f).getSecuencia());
+                                                            estructurasHijas6 = administrarEstructuras.estructurasHijas(estructurasHijas5.get(f).getSecuencia(), codigoEmpresa);
                                                             if (estructurasHijas6 != null) {
                                                                 for (int e = 0; e < estructurasHijas6.size(); e++) {
                                                                     TreeNode hija6 = new DefaultTreeNode(estructurasHijas6.get(e), hija5);
-                                                                    estructurasHijas7 = administrarEstructuras.estructurasHijas(estructurasHijas6.get(e).getSecuencia());
+                                                                    estructurasHijas7 = administrarEstructuras.estructurasHijas(estructurasHijas6.get(e).getSecuencia(), codigoEmpresa);
                                                                     if (estructurasHijas7 != null) {
                                                                         for (int p = 0; p < estructurasHijas7.size(); p++) {
                                                                             TreeNode hija7 = new DefaultTreeNode(estructurasHijas7.get(p), hija6);
-                                                                            estructurasHijas8 = administrarEstructuras.estructurasHijas(estructurasHijas7.get(p).getSecuencia());
+                                                                            estructurasHijas8 = administrarEstructuras.estructurasHijas(estructurasHijas7.get(p).getSecuencia(), codigoEmpresa);
                                                                             if (estructurasHijas8 != null) {
                                                                                 for (int a = 0; a < estructurasHijas8.size(); a++) {
                                                                                     TreeNode hija8 = new DefaultTreeNode(estructurasHijas8.get(m), hija7);
-                                                                                    estructurasHijas9 = administrarEstructuras.estructurasHijas(estructurasHijas8.get(m).getSecuencia());
+                                                                                    estructurasHijas9 = administrarEstructuras.estructurasHijas(estructurasHijas8.get(m).getSecuencia(), codigoEmpresa);
                                                                                     if (estructurasHijas9 != null) {
                                                                                         for (int t = 0; t < estructurasHijas9.size(); t++) {
                                                                                             TreeNode hija9 = new DefaultTreeNode(estructurasHijas9.get(m), hija8);
-                                                                                            estructurasHijas10 = administrarEstructuras.estructurasHijas(estructurasHijas9.get(m).getSecuencia());
+                                                                                            estructurasHijas10 = administrarEstructuras.estructurasHijas(estructurasHijas9.get(m).getSecuencia(), codigoEmpresa);
                                                                                             if (estructurasHijas10 != null) {
                                                                                                 for (int r = 0; r < estructurasHijas10.size(); r++) {
                                                                                                     TreeNode hija10 = new DefaultTreeNode(estructurasHijas10.get(m), hija9);
