@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'GruposInfAdicionales' 
  * de la base de datos.
- * @author user
+ * @author betelgeuse
  */
 public interface PersistenciaGruposInfAdicionalesInterface {
     /**
