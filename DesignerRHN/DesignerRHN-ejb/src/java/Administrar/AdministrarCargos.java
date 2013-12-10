@@ -17,12 +17,12 @@ public class AdministrarCargos implements  AdministrarCargosInterface{
     @Override
     public List<Cargos> Cargos() {
         List<Cargos> listaCargos;
-        listaCargos = persistenciaCargos.cargos();
+        listaCargos = persistenciaCargos.buscarCargos();
         return listaCargos;
     }
 
     @Override
     public List<Cargos> lovCargos() {
-        return persistenciaCargos.cargos();
+        return persistenciaCargos.buscarCargos();
     }
 }
