@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaHistoriasformulasInterface;
@@ -7,15 +10,22 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Historiasformulas'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformulasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
-    public BigInteger obtenerSecuenciaHistoriaFormula(BigInteger secFormula, String fechaDesde) {
+    public BigInteger obtenerSecuenciaHistoriaFormula(BigInteger secFormula, String fecha) {
         try {
             String sqlQuery = "SELECT hf.secuencia\n"
                     + "FROM historiasformulas hf\n"
@@ -26,7 +36,7 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
                     + "                    and hfi.fechainicial <= to_date( ?, 'dd/mm/yyyy'))";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secFormula);
-            query.setParameter(2, fechaDesde);
+            query.setParameter(2, fecha);
             BigDecimal secuencia = (BigDecimal) query.getSingleResult();
             BigInteger secHistoriaFormula = secuencia.toBigIntegerExact();
             return secHistoriaFormula;

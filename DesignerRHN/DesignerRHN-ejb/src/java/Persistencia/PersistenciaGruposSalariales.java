@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,18 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'GruposSalariales'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaGruposSalariales implements PersistenciaGruposSalarialesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Proyectos
-     */
     @Override
     public void crear(GruposSalariales gruposSalariales) {
         try {
@@ -35,9 +35,6 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
         }
     }
 
-    /*
-     *Editar Proyectos
-     */
     @Override
     public void editar(GruposSalariales gruposSalariales) {
         try {
@@ -47,9 +44,6 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
         }
     }
 
-    /*
-     *Borrar Proyectos
-     */
     @Override
     public void borrar(GruposSalariales gruposSalariales) {
         try {
@@ -59,24 +53,6 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
         }
     }
 
-    /*
-     *Encontrar un Proyecto
-     */
-    @Override
-    public GruposSalariales buscarGrupoSalarial(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(GruposSalariales.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarGrupoSalarial PersistenciaGruposSalariales : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los proyectos
-     */
     @Override
     public List<GruposSalariales> buscarGruposSalariales() {
         try {

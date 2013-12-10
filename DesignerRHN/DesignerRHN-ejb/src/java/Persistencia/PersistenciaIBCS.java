@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -12,31 +11,34 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'IBCS'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaIBCS implements PersistenciaIBCSInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
-    public void crear(Ibcs vigenciasFormasPagos) {
-        em.persist(vigenciasFormasPagos);
+    public void crear(Ibcs ibcs) {
+        em.persist(ibcs);
     }
 
     @Override
-    public void editar(Ibcs vigenciasFormasPagos) {
-        em.merge(vigenciasFormasPagos);
+    public void editar(Ibcs ibcs) {
+        em.merge(ibcs);
     }
 
     @Override
-    public void borrar(Ibcs vigenciasFormasPagos) {
-        em.remove(em.merge(vigenciasFormasPagos));
+    public void borrar(Ibcs ibcs) {
+        em.remove(em.merge(ibcs));
     }
 
     @Override
@@ -49,10 +51,7 @@ public class PersistenciaIBCS implements PersistenciaIBCSInterface {
         }
     }
 
-    /**
-     *
-     */
-
+    @Override
     public List<Ibcs> buscarIbcsPorEmpleado(BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT ib FROM Ibcs ib WHERE ib.empleado.secuencia = :secuenciaEmpl ORDER BY ib.fechainicial DESC");
@@ -64,12 +63,5 @@ public class PersistenciaIBCS implements PersistenciaIBCSInterface {
             System.out.println("Error en PersistenciaIBCS Por Empleados ERROR" + e);
             return null;
         }
-    }
-
-    @Override
-    public List<Ibcs> buscarVigenciasFormasPagosEmpleado() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Ibcs.class));
-        return em.createQuery(cq).getResultList();
     }
 }

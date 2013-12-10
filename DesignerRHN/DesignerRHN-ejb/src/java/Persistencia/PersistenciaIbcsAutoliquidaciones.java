@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
 import Entidades.IbcsAutoliquidaciones;
 import InterfacePersistencia.PersistenciaIbcsAutoliquidacionesInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -15,17 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'IbcsAutoliquidaciones'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoliquidacionesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(IbcsAutoliquidaciones autoliquidaciones) {
         try {
@@ -35,8 +35,6 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
         }
     }
 
-    /*
-     */
     @Override
     public void editar(IbcsAutoliquidaciones autoliquidaciones) {
         try {
@@ -46,8 +44,6 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
         }
     }
 
-    /*
-     */
     @Override
     public void borrar(IbcsAutoliquidaciones autoliquidaciones) {
         try {
@@ -55,24 +51,8 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaIbcsAutoliquidaciones : " + e.toString());
         }
-    }
+    }  
 
-    /*
-     */
-    @Override
-    public IbcsAutoliquidaciones buscarIbcAutoliquidacion(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(IbcsAutoliquidaciones.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarIbcAutoliquidacion PersistenciaIbcsAutoliquidaciones : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidaciones() {
         try {

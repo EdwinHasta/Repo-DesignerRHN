@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Idiomas'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -47,18 +50,6 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
             em.remove(em.merge(idiomas));
         } catch (Exception e) {
             System.out.println("Error borrando Idiomas PersistenciaIdiomas");
-        }
-    }
-
-    @Override
-    public Idiomas buscarIdioma(Object id) {
-        try {
-            BigInteger in;
-            in = (BigInteger) id;
-            return em.find(Idiomas.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarIdioma PersistenciaIdiomas : " + e.toString());
-            return null;
         }
     }
 

@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,13 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Indicadores'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaIndicadores implements PersistenciaIndicadoresInterface{
-
-    
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -49,19 +51,7 @@ public class PersistenciaIndicadores implements PersistenciaIndicadoresInterface
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaIndicadores : "+e.toString());
         }
-    }
-
-    @Override
-    public Indicadores buscarIndicador(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(Indicadores.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarIndicador PersistenciaIndicadores : "+e.toString());
-            return null;
-        }
-
-    }
+    }  
 
     @Override
     public List<Indicadores> buscarIndicadores() {
@@ -88,5 +78,4 @@ public class PersistenciaIndicadores implements PersistenciaIndicadoresInterface
             return indicadores;
         }
     }
-
 }

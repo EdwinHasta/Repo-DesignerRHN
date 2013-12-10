@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,47 +13,37 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MetodosPagos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    /*
-     * Crear empleado.
-     */
-
+ 
     @Override
     public void crear(MetodosPagos metodosPagos) {
         em.persist(metodosPagos);
     }
 
-    /*
-     *Editar empleado. 
-     */
     @Override
     public void editar(MetodosPagos metodosPagos) {
         em.merge(metodosPagos);
     }
 
-    /*
-     *Borrar empleado.
-     */
     @Override
     public void borrar(MetodosPagos metodosPagos) {
         em.remove(em.merge(metodosPagos));
     }
 
-    /*
-     *Encontrar una VigenciaFormasPagos. 
-     */
     @Override
     public MetodosPagos buscarMetodosPagosEmpleado(BigInteger secuencia) {
         try {
-            //BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
             return em.find(MetodosPagos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistencia vigencias formas pagos ERROR : " + e);
@@ -62,9 +51,6 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
         }
     }
 
-    /**
-     *
-     */
     @Override
     public List<MetodosPagos> buscarMetodosPagos() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

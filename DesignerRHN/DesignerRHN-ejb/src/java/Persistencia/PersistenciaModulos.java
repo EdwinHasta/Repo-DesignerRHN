@@ -1,53 +1,51 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Modulos;
 import InterfacePersistencia.PersistenciaModulosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author -Felipphe-
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Modulos'
+ * de la base de datos.
+ * @author -Felipphe- Felipe Triviño
  */
 @Stateless
 public class PersistenciaModulos implements PersistenciaModulosInterface{
-
-     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Modulo.
-     */
+    @Override
     public void crear(Modulos modulos) {
         em.persist(modulos);
     }
 
-    /*
-     *Editar modulo. 
-     */
+    @Override
     public void editar(Modulos modulos) {
         em.merge(modulos);
     }
 
-    /*
-     *Borrar Modulo.
-     */
+    @Override
     public void borrar(Modulos modulos) {
         em.remove(em.merge(modulos));
     }
 
-    /*
-     *Encontrar un Modulo. 
-     */
-    public Modulos buscarModulos(Object id) {
-        return em.find(Modulos.class, id);
+    @Override
+    public Modulos buscarModulos(BigInteger secuencia) {
+        return em.find(Modulos.class, secuencia);
     }
 
-    /*
-     *Encontrar todos los Modulos. 
-     */
+    @Override
     public List<Modulos> buscarModulos() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Modulos.class));
