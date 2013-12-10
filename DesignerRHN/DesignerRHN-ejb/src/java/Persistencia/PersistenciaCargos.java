@@ -20,7 +20,6 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PersistenciaCargos implements PersistenciaCargosInterface {
-
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
