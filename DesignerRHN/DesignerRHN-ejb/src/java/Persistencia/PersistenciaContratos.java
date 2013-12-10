@@ -21,7 +21,7 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaContratos implements PersistenciaContratosInterface {
     /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
