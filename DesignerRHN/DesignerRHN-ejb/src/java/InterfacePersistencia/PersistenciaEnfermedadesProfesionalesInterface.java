@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,18 +8,38 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'EnfermedadesProfesionales' 
+ * de la base de datos.
  * @author Viktor
  */
 public interface PersistenciaEnfermedadesProfesionalesInterface {
-
+    /**
+     * Método encargado de insertar una EnfermedadProfesional en la base de datos.
+     * @param enfermedadesProfesionales EnfermedadProfesional que se quiere crear.
+     */
     public void crear(EnfermeadadesProfesionales enfermedadesProfesionales);
-
+    /**
+     * Método encargado de modificar una EnfermedadProfesional de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param enfermedadesProfesionales EnfermedadProfesional con los cambios que se van a realizar.
+     */
     public void editar(EnfermeadadesProfesionales enfermedadesProfesionales);
-
+    /**
+     * Método encargado de eliminar de la base de datos la EnfermedadProfesional que entra por parámetro.
+     * @param enfermedadesProfesionales EnfermedadProfesional que se quiere eliminar.
+     */
     public void borrar(EnfermeadadesProfesionales enfermedadesProfesionales);
-
+    /**
+     * Método encargado de buscar la EnfermedadProfesional con la secuencia dada por parámetro.
+     * @param secuencia Secuencia de la EnfermedadProfesional que se quiere encontrar.
+     * @return Retorna la EnfermedadProfesional identificada con la secuencia dada por parámetro.
+     */
     public EnfermeadadesProfesionales buscarEnfermedadesProfesionales(BigInteger secuencia);
-
+    /**
+     * Método encargado de buscar las EnfermedadesProfesionales asociadas a un empleado
+     * @param secEmpleado Secuencia del empleado
+     * @return Retorna una lista de EnfermedadesProfesionales
+     */
     public List<EnfermeadadesProfesionales> buscarEPPorEmpleado(BigInteger secEmpleado);
 }
