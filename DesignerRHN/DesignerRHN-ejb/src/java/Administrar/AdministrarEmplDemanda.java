@@ -55,7 +55,7 @@ public class AdministrarEmplDemanda implements AdministrarEmplDemandaInterface {
     @Override
     public List<Demandas> listDemandasEmpleadoSecuencia(BigInteger secuencia) {
         try {
-            List<Demandas> listDemandas = persistenciaDemadas.listDemandasSecuenciaEmpleado(secuencia);
+            List<Demandas> listDemandas = persistenciaDemadas.demandasPersona(secuencia);
             return listDemandas;
         } catch (Exception e) {
             System.out.println("Error listDemandasEmpleadoSecuencia Admi : " + e.toString());
