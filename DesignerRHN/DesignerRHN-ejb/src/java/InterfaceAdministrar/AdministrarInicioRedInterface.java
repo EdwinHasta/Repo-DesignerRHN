@@ -39,5 +39,5 @@ public interface AdministrarInicioRedInterface {
 
     public void guardarDatosConexion(Conexiones conexion);
 
-    public String usuarioBD_EM();
+    public String usuarioBD();
 }
