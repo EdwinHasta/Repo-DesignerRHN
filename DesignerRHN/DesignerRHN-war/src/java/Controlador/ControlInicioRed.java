@@ -89,7 +89,7 @@ public class ControlInicioRed implements Serializable {
                     if (administrarInicioRed.conexionInicial(baseDatos)) {
                         if (administrarInicioRed.validarUsuario(usuario)) {
                             if (administrarInicioRed.conexionUsuario(baseDatos, usuario, contraseña)) {
-                                if (administrarInicioRed.validarConexionUsuario(usuario, contraseña, baseDatos)) {
+                                if (administrarInicioRed.validarConexionUsuario()) {
                                     cambioClave = false;
                                     estadoInicio = true;
                                     modulosDesigner = false;
