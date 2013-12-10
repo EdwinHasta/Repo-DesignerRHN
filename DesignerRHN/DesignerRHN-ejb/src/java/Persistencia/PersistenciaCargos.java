@@ -55,7 +55,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     }
 
     @Override
-    public List<Cargos> cargos() {
+    public List<Cargos> buscarCargos() {
         try {
             Query query = em.createQuery("SELECT c FROM Cargos c ORDER BY c.nombre");
             List<Cargos> cargos = query.getResultList();
@@ -68,7 +68,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     @Override
     public List<Cargos> cargosSalario() {
         try {
-            List<Cargos> listaCargosSalario = cargos();
+            List<Cargos> listaCargosSalario = buscarCargos();
             if (listaCargosSalario != null) {
                 for (int i = 0; i < listaCargosSalario.size(); i++) {
                     System.out.println("Secuencia: " + listaCargosSalario.get(i).getSecuencia());
