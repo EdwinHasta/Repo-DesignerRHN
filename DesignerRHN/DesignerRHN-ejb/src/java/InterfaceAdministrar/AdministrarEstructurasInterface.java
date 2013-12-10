@@ -36,7 +36,7 @@ public interface AdministrarEstructurasInterface {
 
     public List<Estructuras> estructuraPadre(short codigoOrg);
 
-    public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre);
+    public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre, Short codigoEmpresa);
 
     public List<Organigramas> obtenerOrganigramas();
 
