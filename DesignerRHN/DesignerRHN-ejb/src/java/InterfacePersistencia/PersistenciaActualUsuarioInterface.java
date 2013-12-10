@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.ActualUsuario;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'ActualUsuario' 
@@ -21,4 +22,11 @@ public interface PersistenciaActualUsuarioInterface {
      * @return Retorna el alias del usuario que está usando el aplicativo.
      */
     public String actualAliasBD();
+    /**
+     * Método encargado de consultar el alias del usuario que está usando el aplicativo dado el EntityManager,
+     * es decir definiendo sobre cual base de datos se busca la información.
+     * @param emg EntityManager encargado de la comunicación a la base de datos.
+     * @return Retorna el alias del usuario que está usando el aplicativo.
+     */
+    public String actualAliasBD_EM(EntityManager emg);
 }
