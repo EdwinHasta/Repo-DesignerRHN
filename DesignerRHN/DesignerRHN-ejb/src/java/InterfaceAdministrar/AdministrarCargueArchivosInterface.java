@@ -35,8 +35,6 @@ public interface AdministrarCargueArchivosInterface {
 
     public List<TempNovedades> listaTempNovedades(String usuarioBD);
 
-    public void revisarConcepto(int codConcepto);
-
     public boolean existenciaEmpleado(BigInteger codEmpleado, BigInteger secEmpresa);
 
     public boolean existenciaConcepto(BigInteger codConcepto);
