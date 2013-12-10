@@ -15,15 +15,13 @@ import java.util.List;
  */
 public interface AdministrarInicioRedInterface {
 
-    public boolean validacionLogin(String baseDatos, String usuario, String contraseña);
-
     public boolean conexionInicial(String baseDatos);
 
     public boolean conexionUsuario(String baseDatos, String usuario, String contraseña);
 
     public boolean validarUsuario(String usuario);
 
-    public boolean validarConexionUsuario(String usuario, String contraseña, String baseDatos);
+   public boolean validarConexionUsuario();
 
     public void cerrarSession();
 
@@ -41,5 +39,5 @@ public interface AdministrarInicioRedInterface {
 
     public void guardarDatosConexion(Conexiones conexion);
 
-    public String usuarioBD();
+    public String usuarioBD_EM();
 }
