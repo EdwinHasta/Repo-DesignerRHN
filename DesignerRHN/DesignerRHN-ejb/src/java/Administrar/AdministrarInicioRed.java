@@ -166,7 +166,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
     }
 
     @Override
-    public String usuarioBD_EM() {
+    public String usuarioBD() {
         return persistenciaActualUsuario.actualAliasBD_EM(em);
     }
 }
