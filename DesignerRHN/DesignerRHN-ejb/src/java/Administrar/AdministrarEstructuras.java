@@ -109,7 +109,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     @Override
     public Cargos consultarCargoPorSecuencia(BigInteger secuenciaC) {
         try {
-            cargo = persistenciaCargos.buscarCargo(secuenciaC);
+            cargo = persistenciaCargos.buscarCargoSecuencia(secuenciaC);
         } catch (Exception ex) {
             cargo = null;
         }
@@ -129,9 +129,9 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
         return listaEstructurasPadre;
     }
 
-    public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre) {
+    public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre, Short codigoEmpresa) {
         List<Estructuras> listaEstructurasHijas;
-        listaEstructurasHijas = persistenciaEstructuras.estructurasHijas(secEstructuraPadre);
+        listaEstructurasHijas = persistenciaEstructuras.estructurasHijas(secEstructuraPadre, codigoEmpresa);
         return listaEstructurasHijas;
     }
 
