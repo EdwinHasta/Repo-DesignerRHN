@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -12,38 +11,39 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless
+ * Clase encargada de realizar operaciones sobre la tabla 'CausasAusentismos' de la base de datos
+ * @author Betelgeuse
+ */
 @Stateless
 public class PersistenciaCausasAusentismos implements PersistenciaCausasAusentismosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
     public void crear(Causasausentismos causasAusentismos) {
         try {
-//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(causasAusentismos);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaCausasAusentismos.crear");
         }
     }
 
-    // Editar Ausentismos. 
     @Override
     public void editar(Causasausentismos causasAusentismos) {
         em.merge(causasAusentismos);
     }
 
-    /*
-     *Borrar Ausentismos.
-     */
     @Override
     public void borrar(Causasausentismos causasAusentismos) {
         em.remove(em.merge(causasAusentismos));
     }
 
-    //Trae los Ausentismos de un Empleado
+    @Override
     public List<Causasausentismos> buscarCausasAusentismos() {
         try {
             Query query = em.createQuery("SELECT ca FROM Causasausentismos ca ORDER BY ca.codigo");

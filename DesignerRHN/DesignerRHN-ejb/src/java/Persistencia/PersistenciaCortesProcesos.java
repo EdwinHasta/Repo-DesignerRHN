@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.CortesProcesos;
@@ -9,48 +12,40 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'CortesProcesos'
+ * de la base de datos
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Corte Proceso.
-     */
     @Override
     public void crear(CortesProcesos corteProceso) {
         em.persist(corteProceso);
     }
 
-    /*
-     *Editar Corte Proceso. 
-     */
     @Override
     public void editar(CortesProcesos corteProceso) {
         em.merge(corteProceso);
     }
 
-    /*
-     *Borrar Corte Proceso.
-     */
     @Override
     public void borrar(CortesProcesos corteProceso) {
         em.remove(em.merge(corteProceso));
     }
 
-    /*
-     *Encontrar un Corte Proceso. 
-     */
     @Override
-    public CortesProcesos buscarCorteProceso(Object id) {
-        return em.find(CortesProcesos.class, id);
+    public CortesProcesos buscarCorteProcesoSecuencia(BigInteger secuencia) {
+        return em.find(CortesProcesos.class, secuencia);
     }
 
-    /*
-     *Encontrar todas los Cortes Procesos. 
-     */
     @Override
     public List<CortesProcesos> buscarCortesProcesos() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -71,6 +66,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
         }
     }
 
+    @Override
     public Integer contarLiquidacionesCerradas(BigInteger secProceso, String fechaDesde, String fechaHasta) {
         try {
             String sqlQuery = "SELECT nvl(COUNT(CP.SECUENCIA),0)\n"
@@ -92,6 +88,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
         }
     }
     
+    @Override
     public void eliminarComprobante(Short codigoProceso, String fechaDesde, String fechaHasta) {
         try {
             String sqlQuery = "call CORTESPROCESOS_PKG.ELIMINARCOMPROBANTE(?, To_date( ?, 'dd/mm/yyyy'), To_date( ?, 'dd/mm/yyyy'))";

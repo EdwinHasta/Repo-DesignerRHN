@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Demandas;
@@ -8,11 +11,18 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Demandas'
+ * de la base de datos
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaDemandas implements PersistenciaDemandasInterface{
-
-@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
@@ -57,19 +67,6 @@ public class PersistenciaDemandas implements PersistenciaDemandasInterface{
             return null;
         } catch (Exception e) {
             System.out.println("Error PersistenciaDemandas.demandasPersona" + e);
-            return null;
-        }
-    }
-    
-    @Override
-    public List<Demandas> listDemandasSecuenciaEmpleado(BigInteger secuencia){
-        try{
-            Query queryFinal = em.createQuery("SELECT d FROM Demandas d WHERE d.empleado.secuencia = :secuenciaEmpl");
-                queryFinal.setParameter("secuenciaEmpl", secuencia);
-                List<Demandas> listaDemandas = queryFinal.getResultList();
-                return listaDemandas;
-        }catch(Exception e){
-            System.out.println("Error listDemandasSecuenciaEmpleado PersistenciaDemandas : "+e.toString());
             return null;
         }
     }

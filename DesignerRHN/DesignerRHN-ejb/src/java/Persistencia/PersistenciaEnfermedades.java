@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Enfermedades'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -48,6 +51,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
         }
     }
 
+    @Override
     public List<Enfermedades> buscarEnfermedades() {
         try {
             Query query = em.createQuery("SELECT e FROM Enfermedades e ORDER BY e.codigo DESC");

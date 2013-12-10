@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -13,15 +12,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author Administrator
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones de consulta para las liquidaciones.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultasLiquidacionesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public List<ConsultasLiquidaciones> liquidacionesCerradas(String fechaInicial, String fechaFinal) {
         try {
             String sqlQuery = "select rownum ID, T.EMPRESACODIGO, T.CORTE, T.PROCESO, T.CODIGO, T.TOTAL\n"
@@ -48,6 +51,7 @@ public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultas
         }
     }
 
+    @Override
     public List<ConsultasLiquidaciones> preNomina() {
         try {
             String sqlQuery = "SELECT ROWNUM ID, T.EMPRESACODIGO, T.CORTE, T.PROCESO, T.CODIGO, T.TOTAL, 'PRENOMINA' OBSERVACION\n"

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaCandadosInterface;
@@ -6,10 +9,16 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless
+ * Clase encargada de realizar operaciones sobre la tabla 'Candados' de la base de datos
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaCandados implements PersistenciaCandadosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -19,16 +28,14 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             Query query = em.createQuery("SELECT COUNT(c) FROM Candados c WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             Long resultado = (Long) query.getSingleResult();
-            if (resultado > 0) {
-                return true;
-            }
-            return false;
+            return resultado > 0;
         } catch (Exception e) {
             System.out.println("Exepcion: permisoLiquidar " + e);
             return false;
         }
     }
 
+    @Override
     public void liquidar() {
         int i = -100;
         try {
@@ -53,6 +60,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
         }
     }
 
+    @Override
     public Integer progresoLiquidacion(Integer totalEmpleadosALiquidar) {
         try {
             String sqlQuery = "select conteoliquidados(?) from dual";
@@ -67,16 +75,18 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
         }
     }
 
+    @Override
     public void cancelarLiquidacion(String usuarioBD) {
         try {
             Query query = em.createQuery("UPDATE Candados c SET c.estado='CANCELAR' WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
-            int i = query.executeUpdate();
+            query.executeUpdate();
         } catch (Exception e) {
             System.out.println("Exepcion: cancelarLiquidacion " + e);
         }
     }
 
+    @Override
     public void cerrarLiquidacionAutomatico() {
         try {
             String sqlQuery = "call UTL_FORMS.CERRARLIQUIDACION()";
@@ -87,6 +97,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
         }
     }
     
+    @Override
     public void cerrarLiquidacionNoAutomatico() {
         try {
             String sqlQuery = "call UTL_FORMS.CERRARLIQPAGOPORFUERA()";

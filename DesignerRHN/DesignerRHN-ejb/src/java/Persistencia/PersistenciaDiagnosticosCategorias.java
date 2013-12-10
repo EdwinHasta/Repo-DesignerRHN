@@ -11,10 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'DiagnosticosCategorias'
+ * de la base de datos.
+ * @author Viktor
+ */
 @Stateless
 public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosticosCategoriasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -33,6 +40,7 @@ public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosti
         em.remove(em.merge(diagnosticosCategorias));
     }
 
+    @Override
     public List<Diagnosticoscategorias> buscarDiagnosticos() {
         try {
             Query query = em.createQuery("SELECT d FROM Diagnosticoscategorias d ORDER BY d.codigo DESC");

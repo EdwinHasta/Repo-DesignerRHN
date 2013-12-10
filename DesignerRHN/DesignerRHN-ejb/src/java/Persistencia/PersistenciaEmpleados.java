@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Empleados;
@@ -8,44 +11,36 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Empleados'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    /*
-     * Crear empleado.
-     */
+
     @Override
     public void crear(Empleados empleados) {
         em.persist(empleados);
     }
 
-    /*
-     *Editar empleado. 
-     */
     @Override
     public void editar(Empleados empleados) {
         em.merge(empleados);
     }
 
-    /*
-     *Borrar empleado.
-     */
     @Override
     public void borrar(Empleados empleados) {
         em.remove(em.merge(empleados));
     }
 
-    /*
-     *Encontrar un empleado. 
-     */
     @Override
-    public Empleados buscarEmpleado(BigInteger id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
+    public Empleados buscarEmpleado(BigInteger secuencia) {
+        try {            
             return em.find(Empleados.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -53,20 +48,13 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     }
 
-    /*
-     *Encontrar todos los empleados. 
-     */
     @Override
     public List<Empleados> buscarEmpleados() {
-        //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        /*CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-         cq.select(cq.from(Empleados.class));
-         return em.createQuery(cq).getResultList();
-         */
         List<Empleados> empleadosLista = (List<Empleados>) em.createNamedQuery("Empleados.findAll").getResultList();
         return empleadosLista;
     }
 
+    @Override
     public List<Empleados> todosEmpleados() {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e ORDER BY e.codigoempleado");
@@ -99,12 +87,9 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             query.setParameter("codigo", codigoEmpleado);
             query.setParameter("secEmpresa", secEmpresa);
             Long resultado = (Long) query.getSingleResult();
-            if (resultado > 0) {
-                return true;
-            }
-            return false;
+            return resultado > 0;
         } catch (Exception e) {
-            System.out.println("Excepcion: " + e);
+            System.out.println("Exepcion: " + e);
             return false;
         }
     }
@@ -178,6 +163,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public List<Empleados> empleadosVacaciones() {
         try {
             String sqlQuery = "select * from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"

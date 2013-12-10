@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Encargaturas;
@@ -10,9 +13,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Encargaturas'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -38,32 +49,22 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
      @Override
     public void crear(Encargaturas encargaturas) {
         try {
-//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(encargaturas);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaEncargaturas.crear");
         }
     }
        
-     
-    // Editar Vigencias Proyectos. 
-     
     @Override
     public void editar(Encargaturas encargaturas) {
         em.merge(encargaturas);
     }
 
-    /*
-     *Borrar VigenciasProyectos.
-     */
     @Override
     public void borrar(Encargaturas encargaturas) {
         em.remove(em.merge(encargaturas));
     }
     
-     /*
-     *Encontrar todas las Encargaturas.
-     */
     @Override
     public List<Encargaturas> buscarEncargaturas() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -71,8 +72,6 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
         return em.createQuery(cq).getResultList();
     }
     
-     //METODO PARA TRAER LAS ENCARGATURAS DE UNA PERSONA
-
     @Override
     public List<Encargaturas> encargaturasEmpleado(BigInteger secuenciaEmpleado) {
         try {

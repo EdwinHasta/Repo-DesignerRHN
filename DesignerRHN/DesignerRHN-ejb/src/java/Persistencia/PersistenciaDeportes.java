@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,17 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Deportes'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
-
 public class PersistenciaDeportes implements PersistenciaDeportesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-  
     @Override
     public void crear(Deportes deportes) {
         try{
@@ -33,7 +34,6 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
             System.out.println("Error creando Deportes PersistenciaDeportes");
         }
     }
-
   
     @Override
     public void editar(Deportes deportes) {
@@ -43,7 +43,6 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
             System.out.println("Error editando Deportes PersistenciaDeportes");
         }
     }
-
  
     @Override
     public void borrar(Deportes deportes) {
@@ -53,7 +52,6 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
             System.out.println("Error borrando Deportes PersistenciaDeportes");
         }
     }
-
 
     @Override
     public Deportes buscarDeporte(Object id) {

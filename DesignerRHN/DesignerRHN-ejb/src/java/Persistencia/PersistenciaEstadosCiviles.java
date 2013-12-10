@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,16 +13,18 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'EstadosCiviles'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
-
 public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
   
     @Override
     public void crear(EstadosCiviles estadosCiviles) {
@@ -33,7 +34,6 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
             System.out.println("Error creando EstadosCiviles PersistenciaEstadosCiviles");
         }
     }
-
   
     @Override
     public void editar(EstadosCiviles estadosCiviles) {
@@ -43,7 +43,6 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
             System.out.println("Error editando EstadosCiviles PersistenciaEstadosCiviles");
         }
     }
-
  
     @Override
     public void borrar(EstadosCiviles estadosCiviles) {
@@ -54,13 +53,10 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
         }
     }
 
-
     @Override
-    public EstadosCiviles buscarEstadoCivil(Object id) {
-        try {
-            BigInteger in;
-            in = (BigInteger) id;
-            return em.find(EstadosCiviles.class, in);
+    public EstadosCiviles buscarEstadoCivil(BigInteger secuencia) {
+        try {          
+            return em.find(EstadosCiviles.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarEstadoCivil PersistenciaEstadosCiviles : "+e.toString());
             return null;

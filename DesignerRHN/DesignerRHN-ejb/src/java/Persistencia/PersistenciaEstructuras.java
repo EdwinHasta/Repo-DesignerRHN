@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Estructuras;
@@ -10,16 +13,21 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Estructuras'
+ * de la base de datos.
+ * @author Hugo David Sin Gutiérrez
+ * @author Felipe Triviño
+ */
 @Stateless
 public class PersistenciaEstructuras implements PersistenciaEstructurasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear estructura.
-     */
     @Override
     public void crear(Estructuras estructuras) {
         try {
@@ -29,9 +37,6 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
         }
     }
 
-    /*
-     *Editar estructura. 
-     */
     @Override
     public void editar(Estructuras estructuras) {
         try {
@@ -41,25 +46,20 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
         }
     }
 
-    /*
-     *Borrar estructura.
-     */
     @Override
     public void borrar(Estructuras estructuras) {
         em.remove(em.merge(estructuras));
     }
 
-    /*
-     *Encontrar una estructura. 
-     */
     @Override
-    public Estructuras buscarEstructura(Object id) {
+    public Estructuras buscarEstructura(BigInteger secuencia) {
         try {
-            return em.find(Estructuras.class, id);
+            return em.find(Estructuras.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
+    
     @Override
         public List<Estructuras> estructuras() {
         try {
@@ -88,7 +88,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     public List<Estructuras> buscarlistaValores(String fechaVigencia) {
 
 
-        List<Estructuras> estructuras; //= new ArrayList<Estructuras>();
+        List<Estructuras> estructuras;
         System.out.println("Fecha: " + fechaVigencia);
         try {
             String sqlQuery = "SELECT  es.* FROM ESTRUCTURAS es, centroscostos cc, empresas emp, organigramas org WHERE es.centrocosto = cc.secuencia and es.organigrama = org.secuencia and org.empresa=emp.secuencia and emp.secuencia=cc.empresa and nvl(cc.obsoleto,'N')='N' and es.organigrama IN (select o.secuencia from organigramas o, empresas em where fecha = (select max(fecha) from organigramas, empresas e where e.secuencia =  organigramas.empresa and  o.secuencia=organigramas.secuencia and organigramas.secuencia = es.organigrama and fecha <= To_date(?, 'dd/mm/yyyy') and o.empresa=em.secuencia))";
@@ -123,10 +123,12 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
         }
     }
 
-    public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre) {
+    @Override
+    public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre, Short codigoEmpresa) {
         try {
-            Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.empresa.codigo = 1 AND e.estructurapadre.secuencia = :secEstructuraPadre");
+            Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.empresa.codigo = :codigoEmpresa AND e.estructurapadre.secuencia = :secEstructuraPadre");
             query.setParameter("secEstructuraPadre", secEstructuraPadre);
+            query.setParameter("codigoEmpresa", codigoEmpresa);
             List<Estructuras> listEstructuras = query.getResultList();
             return listEstructuras;
         } catch (Exception e) {

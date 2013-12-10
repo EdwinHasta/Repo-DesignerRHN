@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Contratos;
@@ -10,26 +13,24 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Contratos'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaContratos implements PersistenciaContratosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Contrato.
-     */
     @Override
     public void crear(Contratos contratos) {
         em.persist(contratos);
     }
 
-    /*
-     *Editar Contrato. 
-     */
     @Override
     public void editar(Contratos contratos) {
         try {
@@ -39,38 +40,14 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
         }
     }
 
-    /*
-     *Borrar Contrato.
-     */
     @Override
     public void borrar(Contratos contratos) {
         em.remove(em.merge(contratos));
     }
 
-    /*
-     *Encontrar un Contratol. 
-     */
-    @Override
-    public Contratos buscarContrato(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(Contratos.class, secuencia);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todos los Contratos. 
-     */
     @Override
     public List<Contratos> buscarContratos() {
-
-
-        List<Contratos> contratoLista = (List<Contratos>) em.createNamedQuery("Contratos.findAll")
-                .getResultList();
+        List<Contratos> contratoLista = (List<Contratos>) em.createNamedQuery("Contratos.findAll").getResultList();
         return contratoLista;
     }
 

@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -15,47 +14,37 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'FormasPagos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface {
-
-   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-    /*
-     * Crear empleado.
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
      */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
 
     @Override
     public void crear(FormasPagos formasPagos) {
         em.persist(formasPagos);
     }
 
-    /*
-     *Editar empleado. 
-     */
     @Override
     public void editar(FormasPagos formasPagos) {
         em.merge(formasPagos);
     }
 
-    /*
-     *Borrar empleado.
-     */
     @Override
     public void borrar(FormasPagos formasPagos) {
         em.remove(em.merge(formasPagos));
     }
 
-    /*
-     *Encontrar una VigenciaFormasPagos. 
-     */
     @Override
     public FormasPagos buscarFormasPagos(BigInteger secuencia) {
         try {
-            //BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
             return em.find(FormasPagos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistencia vigencias formas pagos ERROR : "+e);
@@ -63,9 +52,6 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
         }
     }
 
-    /**
-     * 
-     */
     @Override
     public List<FormasPagos> buscarFormasPagosPorEmpleado(BigInteger secEmpleado) {
         try {
@@ -79,7 +65,8 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
             return null;
         }
     }
-       @Override
+    
+    @Override
     public List<FormasPagos> buscarFormasPagos() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(FormasPagos.class));

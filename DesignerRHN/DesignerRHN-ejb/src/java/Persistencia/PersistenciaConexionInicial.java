@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Perfiles;
@@ -9,12 +12,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones referentes al ingreso al aplicativo
+ * de la base de datos
+ * @author Andrés Pineda
+ */
 @Stateless
 public class PersistenciaConexionInicial implements PersistenciaConexionInicialInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     private EntityManager em;
 
+    @Override
     public boolean validarUsuario(EntityManager eManager, String usuario) {
         try {
             em = eManager;
@@ -41,7 +52,21 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
             return false;
         }
     }
+    
+    @Override
+    public EntityManager validarConexionUsuario(EntityManagerFactory emf) {
+        try {
+            em = emf.createEntityManager();
+            if (em.isOpen()) {
+                return em;
+            }
+        } catch (Exception e) {
+            emf.close();
+        }
+        return null;
+    }
 
+    @Override
     public void accesoDefault(EntityManager eManager) {
         em = eManager;
         em.getTransaction().begin();
@@ -50,30 +75,19 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
         query.executeUpdate();
         em.getTransaction().commit();
     }
-
-    public EntityManager validarConexionUsuario(EntityManagerFactory emf, String usuario, String contraseña, String baseDatos) {
-        try {
-            em = emf.createEntityManager();
-            if (em.isOpen()) {
-                return em;
-            }
-        } catch (Exception e) {
-            emf.close();
-            //System.out.println("NO SE PUEDE CONECTAR, PROBLEMA ESTA EN LA CONTRASEÑA");
-            //Throwable t = getLastThrowable(e);
-            //SQLException exxx = (SQLException) t;
-            //System.out.println(exxx.getSQLState());
-            //System.out.println(exxx.getErrorCode());
-        }
-        return null;
-    }
-
+        
+    /**
+     * Metodo encargado de retornar el ultimo error que se capturo en los try - catch.
+     * @param e Exception 
+     * @return Retorna el ultimo error capturado.
+     */
     private Throwable getLastThrowable(Exception e) {
-        Throwable t = null;
+        Throwable t;
         for (t = e.getCause(); t.getCause() != null; t = t.getCause());
         return t;
     }
 
+    @Override
     public Perfiles perfilUsuario(EntityManager eManager, BigInteger secPerfil) {
         em = eManager;
         em.getTransaction().begin();
@@ -93,6 +107,7 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
         return secPerfil;
     }
 
+    @Override
     public void setearUsuario(EntityManager eManager, String rol, String pwd) {
         String texto = "SET ROLE " + rol + " IDENTIFIED BY " + pwd;
         em = eManager;
@@ -100,15 +115,15 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
         System.out.println("Rol: " + rol);
         System.out.println("Password: " + pwd);
         System.out.println("Texto: " + texto);
-        //String sqlQuery = "SET ROLE ? IDENTIFIED BY ?";
         String sqlQuery = texto;
         Query query = em.createNativeQuery(sqlQuery);
         query.setParameter(1, rol);
         query.setParameter(2, pwd);
-        int resultado = query.executeUpdate();
+        query.executeUpdate();
         em.getTransaction().commit();
     }
 
+    @Override
     public int cambiarClave(EntityManager eManager, String usuario, String nuevaClave) {
         try {
             em = eManager;

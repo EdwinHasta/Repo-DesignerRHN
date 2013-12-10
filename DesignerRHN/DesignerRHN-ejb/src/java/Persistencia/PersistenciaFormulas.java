@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Formulas;
@@ -8,16 +11,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Formulas'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaFormulas implements PersistenciaFormulasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Formula.
-     */
     @Override
     public void crear(Formulas formulas) {
         try {
@@ -27,9 +34,6 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
         }
     }
 
-    /*
-     *Editar Formula. 
-     */
     @Override
     public void editar(Formulas formulas) {
         try {
@@ -39,28 +43,19 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
         }
     }
 
-    /*
-     *Borrar Formula.
-     */
     @Override
     public void borrar(Formulas formulas) {
         em.remove(em.merge(formulas));
     }
 
-    /*
-     *Encontrar una Formula. 
-     */
     @Override
-    public Formulas buscarFormula(Object id) {
+    public Formulas buscarFormula(BigInteger secuencia) {
         try {
-            return em.find(Formulas.class, id);
+            return em.find(Formulas.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
-    /*
-     *Encontrar todas las Formulas. 
-     */
 
     @Override
     public List<Formulas> buscarFormulas() {
@@ -120,7 +115,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public void oprandoFormulas(BigInteger secFormula) {
+    public void operandoFormulas(BigInteger secFormula) {
         int i = 0;
         try {
             String sqlQuery = "call UTL_FORMS.INSERTAROPERANDOFORMULA(?)";
