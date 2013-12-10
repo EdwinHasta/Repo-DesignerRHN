@@ -28,7 +28,7 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
 
     @Override
     public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa) {
-        return persistenciaConceptos.conceptosEmpresa(secEmpresa);
+        return persistenciaConceptos.conceptosPorEmpresa(secEmpresa);
     }
 
     @Override
