@@ -6,8 +6,34 @@ package InterfacePersistencia;
 import Entidades.FormulasConceptos;
 import java.math.BigInteger;
 import java.util.List;
-
+/**
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'FormulasConceptos' 
+ * de la base de datos.
+ * @author betelgeuse
+ */
 public interface PersistenciaFormulasConceptosInterface {
+    /**
+     * Método encargado de insertar una FormulaConcepto en la base de datos.
+     * @param conceptos FormulaConcepto que se quiere crear.
+     */
+    public void crear(FormulasConceptos conceptos);
+    /**
+     * Método encargado de modificar una FormulaConcepto de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param conceptos FormulaConcepto con los cambios que se van a realizar.
+     */
+    public void editar(FormulasConceptos conceptos);
+    /**
+     * Método encargado de eliminar de la base de datos la FormulaConcepto que entra por parámetro.
+     * @param conceptos FormulaConcepto que se quiere eliminar.
+     */
+    public void borrar(FormulasConceptos conceptos);
+    /**
+     * Método encargado de buscar todas las FormulasConceptos existentes en la base de datos.
+     * @return Retorna una lista de FormulasConceptos.
+     */
+    public List<FormulasConceptos> buscarFormulasConceptos();
     /**
      * Método encargado de verificar si existe al menos una FormulaConcepto asociada a un concepto especifico.
      * @param secConcepto Secuencia del Concepto al que se le realiza la verificación.
