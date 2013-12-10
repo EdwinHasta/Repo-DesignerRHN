@@ -73,7 +73,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa) {
+    public List<Conceptos> conceptosPorEmpresa(BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa ORDER BY c.codigo ASC");
             query.setParameter("secEmpresa", secEmpresa);
@@ -120,6 +120,19 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             query.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error en clonarConcepto: " + e);
+        }
+    }
+    
+    @Override
+    public Conceptos conceptosPorSecuencia(BigInteger secConcepto) {
+        try {
+            Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.secuencia=:secConcepto");
+            query.setParameter("secConcepto", secConcepto);
+            Conceptos conceptos = (Conceptos) query.getSingleResult();
+            return conceptos;
+        } catch (Exception e) {
+            System.out.println("Error Persistencia conceptosPorSecuencia : "+e.toString());
+            return null;
         }
     }
 }
