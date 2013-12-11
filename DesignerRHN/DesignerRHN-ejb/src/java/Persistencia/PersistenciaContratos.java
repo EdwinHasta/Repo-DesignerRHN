@@ -76,14 +76,13 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     }
 
     @Override
-    public void reproducirContrato(Short codigoOrigen, Short codigoDestino) {
-        int i = 0;
+    public void reproducirContrato(Short codigoOrigen, Short codigoDestino) {        
         try {
             String sqlQuery = "call FORMULASCONTRATOS_PKG.CLONARLEGISLACION(?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, codigoOrigen);
             query.setParameter(2, codigoDestino);
-            i = query.executeUpdate();
+            query.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error en reproducirContrato: " + e);
         }
