@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,43 +8,44 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'MotivosCambiosSueldos' 
+ * de la base de datos.
+ * @author betelgeuse
  */
 public interface PersistenciaMotivosCambiosSueldosInterface {
     
     /**
-     * Crea una nueva MotivosCambiosSueldos
-     * @param motivosCambiosSueldos Objeto a crear
+     * Método encargado de insertar un MotivoCambioSueldo en la base de datos.
+     * @param motivosCambiosSueldos MotivoCambioSueldo que se quiere crear.
      */
     public void crear(MotivosCambiosSueldos motivosCambiosSueldos);
     /**
-     * Edita un MotivosCambiosSueldos
-     * @param motivosCambiosSueldos Objeto a editar
+     * Método encargado de modificar un MotivoCambioSueldo de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param motivosCambiosSueldos MotivoCambioSueldo con los cambios que se van a realizar.
      */
     public void editar(MotivosCambiosSueldos motivosCambiosSueldos);
     /**
-     * Borra un MotivosCambiosSueldos
-     * @param motivosCambiosSueldos Objeto a borrar
+     * Método encargado de eliminar de la base de datos el MotivoCambioSueldo que entra por parámetro.
+     * @param motivosCambiosSueldos MotivoCambioSueldo que se quiere eliminar.
      */
     public void borrar(MotivosCambiosSueldos motivosCambiosSueldos);
     /**
-     * Obtiene un MotivosCambiosSueldos por la llave primaria ID
-     * @param id Lave Primaria Id
-     * @return MotivosCambiosSueldos que cumple con la llave primaria
-     */
-    public MotivosCambiosSueldos buscarMotivoCambioSueldo(Object id);
-    /**
-     * Obtiene la lista de la tabla MotivosCambiosSueldos
-     * @return Lista de MotivosCambiosSueldos
+     * Método encargado de buscar todos los MotivosCambiosSueldos existentes en la base de datos.
+     * @return Retorna una lista de MotivosCambiosSueldos.
      */
     public List<MotivosCambiosSueldos> buscarMotivosCambiosSueldos();
     /**
-     * Obtiene un MotivosCambiosSueldos por su secuencia
-     * @param secuencia Secuencia MotivosCambiosSueldos
-     * @return MotivosCambiosSueldos que cumple con la Secuencia
+     * Método encargado de buscar el MotivoCambioSueldo con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del MotivoCambioSueldo que se quiere encontrar.
+     * @return Retorna el MotivoCambioSueldo identificado con la secuencia dada por parámetro.
      */
     public MotivosCambiosSueldos buscarMotivoCambioSueldoSecuencia(BigInteger secuencia);
-
+    /**
+     * Método encargado de verificar si hay al menos una VigenciaSueldo asociada a un MotivoCambioSueldo.
+     * @param secuencia Secuencia del MotivoCambioSueldo
+     * @return Retorna un valor mayor a cero si existe alguna VigenciaSueldo asociada a un MotivoCambioSueldo.
+     */
     public Long verificarBorradoVigenciasSueldos(BigInteger secuencia);
 }

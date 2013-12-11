@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,40 +8,37 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'MotivosLocalizaciones' 
+ * de la base de datos.
  * @author AndresPineda
  */
 public interface PersistenciaMotivosLocalizacionesInterface {
     /**
-     * Crea un nuevo MotivoLocalizaciones
-     * @param motivosLocalizaciones Objeto a crear
+     * Método encargado de insertar un MotivoLocalizacion en la base de datos.
+     * @param motivosLocalizaciones MotivoLocalizacion que se quiere crear.
      */
     public void crear(MotivosLocalizaciones motivosLocalizaciones);
     /**
-     * Edita un MotivoLocalizacion
-     * @param motivosLocalizaciones Objeto a editar 
+     * Método encargado de modificar un MotivoLocalizacion de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param motivosLocalizaciones MotivoLocalizacion con los cambios que se van a realizar.
      */
     public void editar(MotivosLocalizaciones motivosLocalizaciones);
     /**
-     * Borra un MotivoLocalizacion
-     * @param motivosLocalizaciones Objeto a borrar 
+     * Método encargado de eliminar de la base de datos el MotivoLocalizacion que entra por parámetro.
+     * @param motivosLocalizaciones MotivoLocalizacion que se quiere eliminar.
      */
     public void borrar(MotivosLocalizaciones motivosLocalizaciones);
     /**
-     * Metodo que busca un MotivoLocalizacion por la llave primaria ID
-     * @param id Llave Primaria ID
-     * @return Objeto MotivosLocalizaciones que cumple con la llave primaria
-     */
-    public MotivosLocalizaciones buscarMotivoLocalizacion(Object id);
-    /**
-     * Metodo que obtiene la lista total de MotivosLocalizaciones
-     * @return listML Lista de Motivos Localizaciones
+     * Método encargado de buscar todos los MotivosLocalizaciones existentes en la base de datos.
+     * @return Retorna una lista de MotivosLocalizaciones.
      */
     public List<MotivosLocalizaciones> buscarMotivosLocalizaciones();
     /**
-     * Metodo que obtiene un MotivoLocalizacion por medio de la secuencia
-     * @param secuencia Secuencia del MotivoLocalizacion
-     * @return motivoL MotivoLocalizacion que cumple con la secuencia
+     * Método encargado de buscar el MotivoLocalizacion con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del MotivoLocalizacion que se quiere encontrar.
+     * @return Retorna el MotivoLocalizacion identificado con la secuencia dada por parámetro.
      */
     public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(BigInteger secuencia);
     
