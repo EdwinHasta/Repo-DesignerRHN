@@ -93,7 +93,7 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     
     public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado){
         try {
-            return persistenciaNovedades.todasNovedades(secuenciaEmpleado);
+            return persistenciaNovedades.todasNovedadesEmpleado(secuenciaEmpleado);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesEmpleados.todasNovedades" + e);
             return null;
