@@ -37,7 +37,7 @@ public class AdministrarBarra implements AdministrarBarraInterface {
 
     @Override
     public Integer empleadosLiquidados() {
-        return persistenciaParametrosEstados.empleadosLiquidados();
+        return persistenciaParametrosEstados.empleadosLiquidados(usuarioBD());
     }
 
     @Override
@@ -45,6 +45,7 @@ public class AdministrarBarra implements AdministrarBarraInterface {
         return persistenciaCandados.permisoLiquidar(usuarioBD);
     }
 
+    @Override
     public String usuarioBD() {
         return persistenciaActualUsuario.actualAliasBD();
     }
