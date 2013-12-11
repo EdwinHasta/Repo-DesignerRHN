@@ -53,7 +53,7 @@ public class AdministrarMotivosCambiosSueldos implements AdministrarMotivosCambi
 
     @Override
     public MotivosCambiosSueldos mostrarMotivoCambioCargo(BigInteger secMotivosCambiosSueldos) {
-        motivoCambioSueldo = persistenciaMotivosCambiosSueldos.buscarMotivoCambioSueldo(secMotivosCambiosSueldos);
+        motivoCambioSueldo = persistenciaMotivosCambiosSueldos.buscarMotivoCambioSueldoSecuencia(secMotivosCambiosSueldos);
         return motivoCambioSueldo;
     }
 
