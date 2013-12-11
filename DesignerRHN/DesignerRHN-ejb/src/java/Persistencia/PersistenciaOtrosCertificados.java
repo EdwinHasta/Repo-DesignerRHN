@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,52 +13,34 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'OtrosCertificados'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaOtrosCertificados implements PersistenciaOtrosCertificadosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(OtrosCertificados certificados) {
         em.persist(certificados);
     }
 
-    /*
-     */
     @Override
     public void editar(OtrosCertificados certificados) {
         em.merge(certificados);
     }
 
-    /*
-     */
     @Override
     public void borrar(OtrosCertificados certificados) {
         em.remove(em.merge(certificados));
     }
 
-    /*
-     */
-    @Override
-    public OtrosCertificados buscarOtroCertificado(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(OtrosCertificados.class, secuencia);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<OtrosCertificados> buscarOtrosCertificados() {
         List<OtrosCertificados> certificados = (List<OtrosCertificados>) em.createNamedQuery("OtrosCertificados.findAll").getResultList();
@@ -68,7 +49,6 @@ public class PersistenciaOtrosCertificados implements PersistenciaOtrosCertifica
 
     @Override
     public OtrosCertificados buscarOtroCertificadoSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT oc FROM OtrosCertificados oc WHERE oc.secuencia= :secuencia");
             query.setParameter("secuencia", secuencia);

@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -15,41 +14,39 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'NovedadesSistema'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistemaInterface{
-
-   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
     public void crear(NovedadesSistema novedades) {
         try {
-//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(novedades);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaNovedades.crear");
         }
     }
-
-    // Editar Novedades. 
+    
     @Override
     public void editar(NovedadesSistema novedades) {
         em.merge(novedades);
     }
 
-    /*
-     *Borrar Novedades.
-     */
     @Override
     public void borrar(NovedadesSistema novedades) {
         em.remove(em.merge(novedades));
     }
-    
-    //Trae las Novedades del Concepto seleccionado
 
+    @Override
     public List<NovedadesSistema> novedadesEmpleado(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.tipo = 'DEFINITIVA' and n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC");

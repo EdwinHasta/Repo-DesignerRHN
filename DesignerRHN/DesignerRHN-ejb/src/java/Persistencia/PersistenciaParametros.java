@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Parametros;
@@ -8,10 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Parametros'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaParametros implements PersistenciaParametrosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
     
@@ -37,6 +47,7 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface{
         }
     }
     
+    @Override
     public List<Parametros> empleadosParametros() {
         try {
             Query query = em.createQuery("SELECT p FROM Parametros p WHERE p.empleado IS NOT NULL");
@@ -48,6 +59,7 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface{
         }
     }
     
+    @Override
     public void borrarParametros(BigInteger secParametrosEstructuras) {
         try {
             Query query = em.createQuery("DELETE FROM Parametros p WHERE p.parametroestructura.secuencia = :secParametrosEstructuras");

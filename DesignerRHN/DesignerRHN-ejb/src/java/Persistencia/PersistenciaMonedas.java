@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,19 +13,22 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Monedas'
+ * de la base de datos.
  * @author Viktor
  */
 @Stateless
 
 public class PersistenciaMonedas implements PersistenciaMonedasInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
     
      @Override
     public Monedas buscarMonedaSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT m.nombre FROM Monedas m WHERE m.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -37,8 +39,8 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface{
             Monedas monedas = null;
             return monedas;
         }
-
     }
+    
      @Override
      public List<Monedas> listMonedas(){
          try{

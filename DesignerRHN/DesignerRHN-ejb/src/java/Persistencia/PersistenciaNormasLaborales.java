@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -16,13 +15,18 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'NormasLaborales'
+ * (Para verificar que esta asociado a una VigenciaNormaEmpleado, se realiza la operacion sobre la tabla VigenciasNormasEmpleados)
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 @LocalBean
 public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.MotivosCambiosSueldos;
@@ -10,12 +13,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosCambiosSueldos'
+ * de la base de datos.
+ * (Para verificar que esta asociado a una VigenciaSueldo, se realiza la operacion sobre la tabla VigenciasSueldos)
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCambiosSueldosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -44,18 +52,6 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaMotivosCambiosSueldos");
         }
-    }
-
-    @Override
-    public MotivosCambiosSueldos buscarMotivoCambioSueldo(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(MotivosCambiosSueldos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarMotivoCambioSueldo PersistenciaMotivosCambiosSueldos");
-            return null;
-        }
-
     }
 
     @Override
@@ -92,7 +88,6 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
             query.setParameter("secMotivosCambiosSueldos", secuencia);
             retorno = (Long) query.getSingleResult();
             System.err.println("PersistenciaMotivosCambiosSueldos retorno ==" + retorno.intValue());
-
         } catch (Exception e) {
             System.err.println("ERROR EN PersistenciaMotivosCambiosSueldos verificarBorradoVigenciasSueldos ERROR :" + e);
         } finally {

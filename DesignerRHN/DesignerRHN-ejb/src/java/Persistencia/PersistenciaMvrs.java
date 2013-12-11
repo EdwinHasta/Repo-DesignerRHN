@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,52 +13,34 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Mvrs'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMvrs implements PersistenciaMvrsInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(Mvrs mvrs) {
         em.persist(mvrs);
     }
 
-    /*
-     */
     @Override
     public void editar(Mvrs mvrs) {
         em.merge(mvrs);
     }
 
-    /*
-     */
     @Override
     public void borrar(Mvrs mvrs) {
         em.remove(em.merge(mvrs));
     }
 
-    /*
-     */
-    @Override
-    public Mvrs buscarMvr(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(Mvrs.class, secuencia);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<Mvrs> buscarMvrs() {
         List<Mvrs> mvrs = (List<Mvrs>) em.createNamedQuery("Mvrs.findAll").getResultList();

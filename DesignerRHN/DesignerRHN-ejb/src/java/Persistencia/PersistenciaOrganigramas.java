@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Organigramas;
@@ -7,18 +10,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaOrganigramasInterface;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Organigramas'
+ * de la base de datos.
+ * @author Hugo David Sin Gutiérrez.
+ */
 @Stateless
 public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear organigrama.
-     */
     @Override
     public void crear(Organigramas organigramas) {
         try {
@@ -28,9 +36,6 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
         }
     }
 
-    /*
-     *Editar organigrama. 
-     */
     @Override
     public void editar(Organigramas organigramas) {
         try {
@@ -40,60 +45,40 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
         }
     }
 
-    /*
-     *Borrar organigrama.
-     */
     @Override
     public void borrar(Organigramas organigramas) {
         em.remove(em.merge(organigramas));
     }
 
-    /*
-     *Encontrar un organigrama. 
-     */
     @Override
-    public Organigramas buscarOrganigrama(Object id) {
+    public Organigramas buscarOrganigrama(BigInteger secuencia) {
         try {
-            return em.find(Organigramas.class, id);
+            return em.find(Organigramas.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
-    /*
-     *Encontrar todos los organigramas. 
-     */
     @Override
     public List<Organigramas> buscarOrganigramas() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Organigramas.class));
         return em.createQuery(cq).getResultList();
     }
-
+    
     @Override
-    public Organigramas buscarOrganigramaToLOV(BigInteger secEmpresa, Date fechaVigencia) {
+    public List<Organigramas> buscarOrganigramasVigentes(BigInteger secEmpresa, Date fechaVigencia) {
         try {
-            Date fecha = (Date) em.createNamedQuery("Organigramas.findToLOV").setParameter("fecha", fechaVigencia).setParameter("secuenciaEmpresa", secEmpresa).getSingleResult();
-            System.out.println("PersistenciaOrganigramas: Se recupera la maxima fecha de los organigramas");
-            Organigramas organigrama = (Organigramas) em.createNamedQuery("Organigramas.findByFecha").setParameter("fecha", fecha).setParameter("secuenciaEmpresa", secEmpresa).getSingleResult();
-            System.out.println("PersistenciaOrganigramas: Se recupera los organigramas segun la fecha y la empresa");
-            return organigrama;
+            SimpleDateFormat formatoFecha=new SimpleDateFormat("dd/MM/yyyy");
+            String fecha = formatoFecha.format(fechaVigencia);
+            Query query = em.createQuery("SELECT o FROM Organigramas o WHERE o.empresa.secuencia = :secEmpresa AND o.fecha >= TO_DATE(:fechaVigencia,'dd/MM/yyyy')");
+            query.setParameter("secEmpresa", secEmpresa);
+            query.setParameter("fechaVigencia", fecha);
+            List<Organigramas> listOrganigramas = query.getResultList();
+            return listOrganigramas;
         } catch (Exception e) {
             System.out.println("PersistenciaOrganigramas: Fallo en la busqueda de los organigramas por fecha y por empresa ");
-            return null;
-        }
-    }
-
-    @Override
-    public Organigramas buscarOrganigramaToLOVRapido(BigInteger secEmpresaCentroCostoEstructura, Date fechaVigencia) {
-        try {
-            Date fechaPrimeraConsulta = (Date) em.createNamedQuery("Organigramas.findFechaMaxima").setParameter("fechaVigencia", fechaVigencia).setParameter("secEmpresaCentroCostoEstructura", secEmpresaCentroCostoEstructura).getSingleResult();
-            System.out.println("PersistenciaOrganigramas rapida: Se recupera la maxima fecha de los organigramas");
-            Organigramas organigrama = (Organigramas) em.createNamedQuery("Organigramas.findByFechaYEmpresa").setParameter("fechaPrimeraConsulta", fechaPrimeraConsulta).setParameter("secEmpresaCentroCostoEstructura", secEmpresaCentroCostoEstructura).getSingleResult();
-            System.out.println("PersistenciaOrganigramas rapida: Se recupera los organigramas segun la fecha y la empresa");
-            return organigrama;
-        } catch (Exception e) {
-            System.out.println("PersistenciaOrganigramas rapida: Fallo en la busqueda de los organigramas por fecha y por empresa ");
+            System.out.println(e);
             return null;
         }
     }

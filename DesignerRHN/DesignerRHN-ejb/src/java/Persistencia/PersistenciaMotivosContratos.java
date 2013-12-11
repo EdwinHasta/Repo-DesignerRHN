@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.MotivosContratos;
@@ -9,10 +12,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos'
+ * de la base de datos.
+ * (Para verificar que esta asociado a una VigenciaTipoContrato, se realiza la operacion sobre la tabla VigenciasTiposContratos)
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaMotivosContratos implements PersistenciaMotivosContratosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -43,6 +54,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
         }
     }
 
+    @Override
     public MotivosContratos buscarMotivoContrato(BigInteger secuenciaMotivosContratos) {
         try {
             return em.find(MotivosContratos.class, secuenciaMotivosContratos);
@@ -52,6 +64,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
         }
     }
 
+    @Override
     public List<MotivosContratos> motivosContratos() {
         try {
             Query query = em.createQuery("SELECT m FROM MotivosContratos m ORDER BY m.codigo");
