@@ -61,7 +61,7 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
     @Override
     public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto) {
         try {
-            return persistenciaNovedades.conceptosNovedades(secuenciaConcepto);
+            return persistenciaNovedades.todasNovedadesConcepto(secuenciaConcepto);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesConceptos.conceptosNovedades" + e);
             return null;
