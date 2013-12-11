@@ -57,7 +57,7 @@ public class AdministrarMotivoLocalizacion implements AdministrarMotivoLocalizac
 
     @Override
     public MotivosLocalizaciones mostrarMotivoCambioCargo(BigInteger secMotivosCambiosCargos) {
-        moticoLocalizacion = PersistenciaMotivosLocalizaciones.buscarMotivoLocalizacion(secMotivosCambiosCargos);
+        moticoLocalizacion = PersistenciaMotivosLocalizaciones.buscarMotivoLocalizacionSecuencia(secMotivosCambiosCargos);
         return moticoLocalizacion;
     }
 }
