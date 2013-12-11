@@ -32,7 +32,7 @@ public class AdministrarBarra implements AdministrarBarraInterface {
 
     @Override
     public Integer empleadosParaLiquidar() {
-        return persistenciaParametrosEstados.empleadosParaLiquidar();
+        return persistenciaParametrosEstados.empleadosParaLiquidar(usuarioBD());
     }
 
     @Override
