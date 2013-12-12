@@ -10,25 +10,24 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form">
-                    <f:loadBundle basename="Recursos.empllegislacionlaboral" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Históricos Legislaciones Laborales" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
 
-                        <h:outputText style="position: absolute;top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px; "  id="nombreEmpleado" value="#{controlVigenciasContratos.empleado.persona.primerapellido} #{controlVigenciasContratos.empleado.persona.segundoapellido} #{controlVigenciasContratos.empleado.persona.nombre}"/>  
+                       <h:outputText style="position: absolute;top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px; "  id="nombreEmpleado" value="#{controlVigenciasContratos.empleado.persona.primerapellido} #{controlVigenciasContratos.empleado.persona.segundoapellido} #{controlVigenciasContratos.empleado.persona.nombre}"/>  
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 820px; height: 315px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue;text-align: left"><strong>#{msg['legislacion']}</strong></legend>
+                            <legend style="font-size: 12px; color: blue;text-align: left"><strong>Legislación Laboral</strong></legend>
                             <!-- TABLA EMPLVIGENCIACONTRATOS -->
 
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 820px"                           
                                          value="#{controlVigenciasContratos.vigenciasContratosEmpleado}" scrollable="true" scrollHeight="180" scrollWidth="820"
-                                         filteredValue="#{controlVigenciasContratos.filtrarVC}" emptyMessage="#{msg['vacio']}"
+                                         filteredValue="#{controlVigenciasContratos.filtrarVC}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="true" rows="8"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:ajax event="filter" listener="#{controlVigenciasContratos.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="vcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="vcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechainicial}" >
@@ -40,18 +39,18 @@
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciasContratos.modificarVC(indice)}" update="editFechaInicial"/>
                                                 <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,0)}" /> 
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,'0')}" /> 
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['inicial']}" />
+                                        <h:outputText value="Fecha Inicial" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['final']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="vcFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="vcFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechafinal}" >
@@ -63,31 +62,31 @@
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciasContratos.modificarVC(indice)}" update="editFechaFinal"/>
                                                 <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,1)}" /> 
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,'1')}" /> 
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['final']}" />
+                                        <h:outputText value="Fecha Final" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['legislacion']}" sortBy="#{info.contrato.descripcion}" filterBy="#{info.contrato.descripcion}" filterMatchMode="contains" id="vcContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Legislación Laboral" sortBy="#{info.contrato.descripcion}" filterBy="#{info.contrato.descripcion}" filterMatchMode="contains" id="vcContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.contrato.descripcion}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.contrato.descripcion}" id="editarContrato" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"   > 
                                                 <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice, 'LEGISLACIONLABORAL', info.contrato.descripcion)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice, 2)}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,0)}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice, '2')}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'0', '0')}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooContratos" value="#{msg['legislacion']}"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooContratos" value="Legislación Laboral"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column style="font-size: 11px" headerText="Tipo Contrato" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains" id="vcTipoContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
@@ -96,8 +95,8 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipocontrato.nombre}" id="editarTipoContrato" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"  > 
                                                 <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice, 'TIPOCONTRATO', info.tipocontrato.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,3)}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,1,0)}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice, '3')}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'1', '0')}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -113,230 +112,230 @@
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasContratos.guardarCambiosVC()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
 
                                 <p:separator />
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
 
                                 <p:separator />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasContratos.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.limpiarNuevaVC()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosVCEmpleadoExportar" fileName="VigenciasContratosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVC.show()" update=":formularioDialogos:nuevaVC" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Vigencia Contratos" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.borrarVC()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Contratos" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.duplicarVigenciaC()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Contratos" />
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
                         <!-- DIALOGO L.O.V ESTATICO CONTRATOS -->
-                        <p:dialog header="#{msg['legislacionL']}" widgetVar="ContratosDialogo" draggable="false" resizable="false" closable="false" id="ContratosDialogo"  
+                        <p:dialog header="Legislación Laboral" widgetVar="ContratosDialogo" draggable="false" resizable="false" closable="false" id="ContratosDialogo"  
                                   showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovContratos" style="font-size: 11px; width: 430px" var="contratos" value="#{controlVigenciasContratos.listaContratos}" rowKey="#{contratos.secuencia}"
                                          selection="#{controlVigenciasContratos.contratoSelecionado}" selectionMode="single" widgetVar="lovContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                         filteredValue="#{controlVigenciasContratos.filtradoContratos}" emptyMessage="#{msg['lovvacio']}">              
+                                         filteredValue="#{controlVigenciasContratos.filtradoContratos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarC"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="#{msg['buscarL']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="Buscar Legislación Laboral: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovContratos.filter();" style="width:150px; position: relative; left: 30px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{contratos.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="#{msg['codigoL']}" />
+                                        <h:outputText style="text-align: center" value="Codigo" />
                                     </f:facet>
                                     <h:outputText  value="#{contratos.codigo}" />
                                 </p:column>
                                 <p:column filterBy="#{contratos.descripcion}" width="200"  filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['descripcionL']}" />
+                                        <h:outputText value="Descripción" />
                                     </f:facet>
                                     <h:outputText value="#{contratos.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarC" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}" onclick="ContratosDialogo.hide(), lovContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarContrato()}" update="lovContratos, aceptarC, datosVCEmpleado" process="@this">
+                            <p:commandButton id="aceptarC" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciasContratos.aceptar}" onclick="ContratosDialogo.hide(), lovContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarContrato()}" update="lovContratos, aceptarC, datosVCEmpleado" process="@this">
                                 <p:resetInput target=":form:lovContratos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasC" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="ContratosDialogo.hide(), lovContratos.clearFilters();" actionListener="#{controlVigenciasContratos.cancelarCambioContrato()}" update="lovContratos" process="@this">
+                            <p:commandButton id="atrasC" style="position: relative; left: 150px" value="Atras" onclick="ContratosDialogo.hide(), lovContratos.clearFilters();" actionListener="#{controlVigenciasContratos.cancelarCambioContrato()}" update="lovContratos" process="@this">
                                 <p:resetInput target=":form:lovContratos:globalFilter"/>
                             </p:commandButton>
                         </p:dialog> 
 
                         <!-- DIALOGO L.O.V ESTATICO TIPOSCONTRATOS -->
-                        <p:dialog header="#{msg['tipocontratoT']}" widgetVar="TiposContratoDialogo" draggable="false" resizable="false" closable="false" id="TiposContratoDialogo"  
+                        <p:dialog header="Tipo Contrato" widgetVar="TiposContratoDialogo" draggable="false" resizable="false" closable="false" id="TiposContratoDialogo"  
                                   showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovTiposContratos" style="font-size: 11px; width: 430px" var="tiposContratos" value="#{controlVigenciasContratos.listaTiposContratos}" rowKey="#{tiposContratos.secuencia}"
                                          selection="#{controlVigenciasContratos.tipoContratoSelecionado}" selectionMode="single" widgetVar="lovTiposContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                         filteredValue="#{controlVigenciasContratos.filtradoTiposContratos}" emptyMessage="#{msg['lovvacio']}">              
+                                         filteredValue="#{controlVigenciasContratos.filtradoTiposContratos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarTC"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="Buscar Tipo Contrato: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposContratos.filter();" style="width:150px; position: relative; left: 30px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{tiposContratos.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="#{msg['codigo']}"/>
+                                        <h:outputText style="text-align: center" value="Codigo" />
                                     </f:facet>
                                     <h:outputText  value="#{tiposContratos.codigo}" />
                                 </p:column>
                                 <p:column filterBy="#{tiposContratos.nombre}" width="200"  filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['descripcion']}"/>
+                                        <h:outputText value="Descripción" />
                                     </f:facet>
                                     <h:outputText value="#{tiposContratos.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarTC" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarTipoContrato()}" update="lovTiposContratos, aceptarTC, datosVCEmpleado" process="@this">
+                            <p:commandButton id="aceptarTC" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciasContratos.aceptar}" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarTipoContrato()}" update="lovTiposContratos, aceptarTC, datosVCEmpleado" process="@this">
                                 <p:resetInput target=":form:lovTiposContratos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasTC" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.cancelarCambioTipoContrato()}" update="lovTiposContratos" process="@this">
+                            <p:commandButton id="atrasTC" style="position: relative; left: 150px" value="Atras" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.cancelarCambioTipoContrato()}" update="lovTiposContratos" process="@this">
                                 <p:resetInput target=":form:lovTiposContratos:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
 
 
-                        <p:commandButton style="position: absolute; left: 710px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 20px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasContratos.guardarCambiosVC()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasContratos.guardarCambiosVC()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasContratos.backUpSecRegistro, 'VigenciasContratos', 'vigenciasContratos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <h:outputText value="La tabla VIGENCIASCONTRATOS tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasContratos.backUpSecRegistro, 'VigenciasContratos', 'vigenciasContratos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasContratos', 'vigenciasContratos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="La tabla VIGENCIASCONTRATOS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasContratos', 'vigenciasContratos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasContratos.backUpSecRegistro, 'VigenciasContratos', 'vigenciasContratos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasContratos.backUpSecRegistro, 'VigenciasContratos', 'vigenciasContratos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasContratos.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
-                    <p:dialog id="NuevoRegistroVC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroVC" header="Nuevo Registro" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVC" style="border: none;">
-                            <strong><h:outputText value="#{msg['inicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
                             <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" value="#{controlVigenciasContratos.nuevaVigencia.fechainicial}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaInicial"/>
                                 <p:ajax event="change" update="nuevaFechaInicial"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="#{msg['finalN']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
                             <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlVigenciasContratos.nuevaVigencia.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
                                 <p:ajax event="change" update="nuevaFechaFinal"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="#{msg['legislacionN']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <strong><h:outputText value="Legislación Laboral: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="nuevaLegislacionLaboral" value="#{controlVigenciasContratos.nuevaVigencia.contrato.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,1)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(1, 'LEGISLACIONLABORAL')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.nuevaVigencia.contrato.descripcion,1)}" />
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('1', 'LEGISLACIONLABORAL')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.nuevaVigencia.contrato.descripcion, '1')}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnNuevoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,0,1)}"/>   
-                            <p:watermark for="nuevaLegislacionLaboral" value="#{msg['legislacion']}" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnNuevoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'0','1')}"/>   
+                            <p:watermark for="nuevaLegislacionLaboral" value="Legislación Laboral" />
 
-                            <strong><h:outputText value="#{msg['tipocontratoN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <strong><h:outputText value="Tipo Contrato: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="nuevoTipoContrato" value="#{controlVigenciasContratos.nuevaVigencia.tipocontrato.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,1,1)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(1, 'TIPOCONTRATO')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.nuevaVigencia.tipocontrato.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'1','1')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('1', 'TIPOCONTRATO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.nuevaVigencia.tipocontrato.nombre, '1')}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnNuevoTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,1,1)}"/>   
-                            <p:watermark for="nuevoTipoContrato" value="#{msg['tipocontrato']}" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnNuevoTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'1','1')}"/>   
+                            <p:watermark for="nuevoTipoContrato" value="Tipo Contrato" />
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarNuevaVC()}" update="nuevaVC" process="@this"/>
-                            <p:commandButton id="agregarVC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.agregarNuevaVC()}" onclick="NuevoRegistroVC.hide();"  />
-                            <p:commandButton id="cancelarVC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarNuevaVC()}" update="nuevaVC" process="@this"/>
+                            <p:commandButton id="agregarVC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.agregarNuevaVC()}" onclick="NuevoRegistroVC.hide();"  />
+                            <p:commandButton id="cancelarVC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroVC" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroVC" header="Duplicar Registro" widgetVar="DuplicarRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVC" style="border: none;">
-                            <strong><h:outputText value="#{msg['inicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
                             <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlVigenciasContratos.duplicarVC.fechainicial}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaInicial"/>
                                 <p:ajax event="change" update="duplicarFechaInicial"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="#{msg['finalN']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
                             <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlVigenciasContratos.duplicarVC.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
@@ -344,51 +343,51 @@
                             </p:calendar>
 
 
-                            <strong><h:outputText value="#{msg['legislacionN']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <strong><h:outputText value="Legislación Laboral: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="duplicarLegislacionLaboral" value="#{controlVigenciasContratos.duplicarVC.contrato.descripcion}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 170px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,2)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(2, 'LEGISLACIONLABORAL')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.duplicarVC.contrato.descripcion,2)}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'0','2')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('2', 'LEGISLACIONLABORAL')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.duplicarVC.contrato.descripcion, '2')}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnDuplicarContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,0,2)}"/>   
-                            <p:watermark for="duplicarLegislacionLaboral" value="#{msg['legislacion']}" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnDuplicarContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'0','2')}"/>   
+                            <p:watermark for="duplicarLegislacionLaboral" value="Legislación Laboral" />
 
-                            <strong><h:outputText value="#{msg['tipocontratoN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <strong><h:outputText value="Tipo Contrato: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoContrato" value="#{controlVigenciasContratos.duplicarVC.tipocontrato.nombre}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 220px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,1,2)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(2, 'TIPOCONTRATO')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.duplicarVC.tipocontrato.nombre, 2)}" /> 
+                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'1','2')}"/>
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('2', 'TIPOCONTRATO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.duplicarVC.tipocontrato.nombre, '2')}" /> 
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnDuplicarTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,1,2)}"/>   
-                            <p:watermark for="duplicarTipoContrato" value="#{msg['tipocontrato']}" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnDuplicarTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'1','2')}"/>   
+                            <p:watermark for="duplicarTipoContrato" value="Tipo Contrato" />
 
-                            <p:commandButton id="limpiarDuplicadoVC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarduplicarVC()}" update="duplicarVC" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.confirmarDuplicar()}" onclick="DuplicarRegistroVC.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoVC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarduplicarVC()}" update="duplicarVC" onclick="DuplicarRegistroVC.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoVC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarduplicarVC()}" update="duplicarVC" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.confirmarDuplicar()}" onclick="DuplicarRegistroVC.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoVC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarduplicarVC()}" update="duplicarVC" onclick="DuplicarRegistroVC.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    <p:dialog id="editarFechaInicial" header="#{msg['inicialE']}" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicial" header="Fecha Inicial Vigencia Contratos" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciasContratos.editarVC.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaInicial" value="#{msg['atras']}" onclick="editarFechaInicial.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaInicial" value="Atras" onclick="editarFechaInicial.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinal" header="#{msg['finalE']}" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinal" header="Fecha Final Vigencia Contratos" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlVigenciasContratos.editarVC.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaFinal" value="#{msg['atras']}" onclick="editarFechaFinal.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinal.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarContrato" header="#{msg['legislacionE']}" widgetVar="editarContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarContrato" header="Legislación Laboral" widgetVar="editarContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlVigenciasContratos.editarVC.contrato.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarContrato" value="#{msg['atras']}" onclick="editarContrato.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarContrato" value="Atras" onclick="editarContrato.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoContrato" header="#{msg['tipocontratoE']}" widgetVar="editarTipoContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTipoContrato" header="Tipo Contrato" widgetVar="editarTipoContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlVigenciasContratos.editarVC.tipocontrato.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTipoContrato" value="#{msg['atras']}" onclick="editarTipoContrato.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarTipoContrato" value="Atras" onclick="editarTipoContrato.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
 
@@ -400,7 +399,7 @@
                         <!--COLUMNAS TABLA DATOS VIGENCIAS CONTRATOS DE UN EMPLEADO --> 
                         <p:column>  
                             <f:facet name="header">
-                                <h:outputText value="#{msg['inicialXX']}" />
+                                <h:outputText value="Fecha Inicial" />
                             </f:facet>
                             <h:outputText value="#{info.fechainicial}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -409,22 +408,24 @@
 
                         <p:column>  
                             <f:facet name="header">
-                                <h:outputText value="#{msg['finalXX']}" />
+                                <h:outputText value="Fecha Final" />
                             </f:facet>
                             <h:outputText value="#{info.fechafinal}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="#{msg['legislacionXX']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['legislacion']}"/> </f:facet> 
+                        <p:column headerText="Legislación Laboral">                                  
+                            <f:facet name="header"><h:outputText value="Legislacion Laboral"/> </f:facet> 
                             <h:outputText value="#{info.contrato.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['tipocontratoXX']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['tipocontrato']}"/> </f:facet> 
+                        <p:column headerText="Tipo Contrato">                                  
+                            <f:facet name="header"><h:outputText value="Tipo Contrato"/> </f:facet> 
                             <h:outputText value="#{info.tipocontrato.nombre}" />
                         </p:column>
+
+
                     </p:dataTable>
                 </h:form>
             </ui:define>
