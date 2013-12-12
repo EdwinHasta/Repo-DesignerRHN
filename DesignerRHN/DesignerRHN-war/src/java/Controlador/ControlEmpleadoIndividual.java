@@ -742,6 +742,10 @@ public class ControlEmpleadoIndividual implements Serializable {
     public void setEmpleado(Empleados empleado) {
         this.empleado = empleado;
     }
+    
+    public HVHojasDeVida getHojaDeVidaPersona() {
+        return hojaDeVidaPersona;
+    }
 
     public void setHojaDeVidaPersona(HVHojasDeVida hojaDeVidaPersona) {
         this.hojaDeVidaPersona = hojaDeVidaPersona;
@@ -829,10 +833,6 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     public void setPruebasAplicadas(EvalResultadosConv pruebasAplicadas) {
         this.pruebasAplicadas = pruebasAplicadas;
-    }
-
-    public HVHojasDeVida getHojaDeVidaPersona() {
-        return hojaDeVidaPersona;
     }
 
     public String getTelefonoP() {

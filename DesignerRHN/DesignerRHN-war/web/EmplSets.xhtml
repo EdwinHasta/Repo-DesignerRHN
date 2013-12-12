@@ -12,7 +12,8 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Históricos Sets" style=" font-size: 13px; position: absolute; width: 874px; height: 500px;  text-align: left" >  
+                    <f:loadBundle basename="Recursos.emplsets" var="msg" />
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 500px;  text-align: left" >  
 
                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute; color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlSets.empleado.persona.primerapellido} #{controlSets.empleado.persona.segundoapellido} #{controlSets.empleado.persona.nombre}"/>  
 
@@ -20,45 +21,45 @@
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlSets.guardarCambiosSets()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlSets.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.limpiarNuevaSets()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosSetsEmpleadoExportar" fileName="SetsXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroSet.show()" update=":formularioDialogos:nuevoSet" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo SET" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.borrarSets()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar SET" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.duplicarSets()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar SET" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSets.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -68,13 +69,13 @@
 
                             <p:dataTable id="datosSetsEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;"                           
                                          value="#{controlSets.setsEmpleado}" scrollable="true" scrollHeight="180" 
-                                         filteredValue="#{controlSets.filtrarSets}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         filteredValue="#{controlSets.filtrarSets}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" paginator="true" rows="8"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:ajax event="filter" listener="#{controlSets.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="setsFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="setsFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechainicial}" >
@@ -93,11 +94,11 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Inicial" />
+                                        <h:outputText value="#{msg['inicial']}" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="setsFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['final']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="setsFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechafinal}" >
@@ -116,11 +117,11 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Inicial" />
+                                        <h:outputText value="#{msg['final']}" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Porcentaje (%)" sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="setsPorcentaje" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['porcentaje']}" sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="setsPorcentaje" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.porcentaje}" /></f:facet>  
                                         <f:facet name="input">
@@ -132,11 +133,11 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Porcentaje (%)" />
+                                        <h:outputText value="#{msg['porcentaje']}" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Promedio" sortBy="#{info.promedio}" filterBy="#{info.promedio}" filterMatchMode="contains" id="setsPromedio" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['promedio']}" sortBy="#{info.promedio}" filterBy="#{info.promedio}" filterMatchMode="contains" id="setsPromedio" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.promedio}" /></f:facet>  
                                         <f:facet name="input">
@@ -148,11 +149,11 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Promedio" />
+                                        <h:outputText value="#{msg['promedio']}" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Tipo Set" sortBy="#{info.tiposet}" filterBy="#{info.tiposet}" filterMatchMode="contains" id="setsTipo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['tiposet']}" sortBy="#{info.tiposet}" filterBy="#{info.tiposet}" filterMatchMode="contains" id="setsTipo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tiposet}" /></f:facet>  
                                         <f:facet name="input">
@@ -164,11 +165,11 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Tipo Set" />
+                                        <h:outputText value="#{msg['tiposet']}" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Total Ingreso" sortBy="#{info.totalingresos}" filterBy="#{info.totalingresos}" filterMatchMode="contains" id="setsTotalIngresos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['totalingreso']}" sortBy="#{info.totalingresos}" filterBy="#{info.totalingresos}" filterMatchMode="contains" id="setsTotalIngresos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.totalingresos}" /></f:facet>  
                                         <f:facet name="input">
@@ -180,189 +181,189 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Total Ingreso" />
+                                        <h:outputText value="#{msg['totalingreso']}" />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
                         </fieldset>  
 
-                        <p:commandButton style="position: absolute; left: 680px; top: 411px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosSetsEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 100px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlSets.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="DECLARANTE" value="Declarante" process="@this" />
-                        <p:commandButton style="position: absolute; left: 780px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlSets.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 680px; top: 411px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosSetsEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 100px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlSets.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="DECLARANTE" value="#{msg['declarante']}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 780px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlSets.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
-                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlSets.guardarCambiosSets()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlSets.guardarCambiosSets()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla SETS tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSets.backUpSecRegistro, 'Sets', 'sets')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSets.backUpSecRegistro, 'Sets', 'sets')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla SETS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Sets', 'sets')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Sets', 'sets')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSets.backUpSecRegistro, 'Sets', 'sets')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSets.backUpSecRegistro, 'Sets', 'sets')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlSets.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
-                    <p:dialog id="NuevoRegistroSet" header="Nuevo Registro" widgetVar="NuevoRegistroSet" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroSet" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroSet" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevoSet" style="border: none;">
 
-                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['inicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
                             <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlSets.nuevoSet.fechainicial}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaInicial"/>
                                 <p:ajax event="change" update="nuevaFechaInicial"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['finalN']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
                             <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlSets.nuevoSet.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
                                 <p:ajax event="change" update="nuevaFechaFinal"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Porcentaje (%): " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['porcentajeN']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="nuevoPorcentaje" value="#{controlSets.nuevoSet.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
                                 <p:ajax event="change" update="nuevoPorcentaje"/>
                             </p:inputText>
 
-                            <strong><h:outputText value="Promedio: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['promedioN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="nuevoPromedio" value="#{controlSets.nuevoSet.promedio}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
                                 <p:ajax event="change" update="nuevoPromedio"/>
                             </p:inputText>
-                            <strong><h:outputText value="Tipo Set: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['tiposetN']}" style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
                             <p:inputText id="nuevoTipoSet" value="#{controlSets.nuevoSet.tiposet}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;">
                                 <p:ajax event="change" update="nuevoTipoSet"/>
                             </p:inputText>
-                            <strong><h:outputText value="Total Ingresos: " style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['totalingresosN']}" style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
                             <p:inputText id="nuevoTotalIngresos" value="#{controlSets.nuevoSet.totalingresos}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 320px;">
                                 <p:ajax event="change" update="nuevoTotalIngresos"/>
                             </p:inputText>
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlSets.limpiarNuevaSets()}" update="nuevoSet" process="@this"/>
-                            <p:commandButton id="nuevoSetAceptar" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlSets.agregarNuevoSet()}" onclick="NuevoRegistroSet.hide();"  />
-                            <p:commandButton id="nuevoSetCancelar" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlSets.limpiarNuevaSets()}" update="nuevoSet" onclick="NuevoRegistroSet.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlSets.limpiarNuevaSets()}" update="nuevoSet" process="@this"/>
+                            <p:commandButton id="nuevoSetAceptar" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlSets.agregarNuevoSet()}" onclick="NuevoRegistroSet.hide();"  />
+                            <p:commandButton id="nuevoSetCancelar" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlSets.limpiarNuevaSets()}" update="nuevoSet" onclick="NuevoRegistroSet.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroSet" header="Duplicar Registro" widgetVar="DuplicarRegistroSet" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroSet" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistroSet" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarSet" style="border: none;">
 
-                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['inicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
                             <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlSets.duplicarSet.fechainicial}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaInicial"/>
                                 <p:ajax event="change" update="duplicarFechaInicial"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['finalN']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
                             <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlSets.duplicarSet.fechafinal}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
                                 <p:ajax event="change" update="duplicarFechaFinal"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Porcentaje (%): " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['porcentajeN']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="duplicarPorcentaje" value="#{controlSets.duplicarSet.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;"/>
 
-                            <strong><h:outputText value="Promedio: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['promedioN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="duplicarPromedio" value="#{controlSets.duplicarSet.promedio}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;"/>
 
-                            <strong><h:outputText value="Tipo Set: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['tiposetN']}" style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoSet" value="#{controlSets.duplicarSet.tiposet}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;"/>
 
-                            <strong><h:outputText value="Total Ingresos: " style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['totalingresosN']}" style="font-size: 14px; position: absolute; top: 320px; left: 50px" /></strong>
                             <p:inputText id="duplicarTotalIngresos" value="#{controlSets.duplicarSet.totalingresos}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 320px;"/>
 
 
-                            <p:commandButton id="limpiarDuplicadoSet" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlSets.limpiarDuplicarSets()}" update="duplicarSet" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoSet" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlSets.confirmarDuplicar()}" onclick="DuplicarRegistroSet.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoSet" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlSets.limpiarDuplicarSets()}" update="duplicarSet" onclick="DuplicarRegistroSet.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoSet" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlSets.limpiarDuplicarSets()}" update="duplicarSet" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoSet" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlSets.confirmarDuplicar()}" onclick="DuplicarRegistroSet.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoSet" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlSets.limpiarDuplicarSets()}" update="duplicarSet" onclick="DuplicarRegistroSet.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicial" header="Fecha Inicial SET" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicial" header="#{msg['inicialE']}" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlSets.editarSets.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" >
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaInicial" value="Atras" onclick="editarFechaInicial.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaInicial" value="#{msg['atras']}" onclick="editarFechaInicial.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinal" header="Fecha Final SET" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinal" header="#{msg['finalE']}" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlSets.editarSets.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaFinal" value="Atras" onclick="editarFechaFinal.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaFinal" value="#{msg['atras']}" onclick="editarFechaFinal.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarPorcentaje" header="Porcentaje (%)" widgetVar="editarPorcentaje" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarPorcentaje" header="#{msg['porcentajeE']}" widgetVar="editarPorcentaje" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlSets.editarSets.porcentaje}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarPorcentaje" value="Atras" onclick="editarPorcentaje.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarPorcentaje" value="#{msg['atras']}" onclick="editarPorcentaje.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarPromedio" header="Promedio" widgetVar="editarPromedio" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarPromedio" header="#{msg['promedioE']}" widgetVar="editarPromedio" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlSets.editarSets.promedio}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarPromedio" value="Atras" onclick="editarPromedio.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarPromedio" value="#{msg['atras']}" onclick="editarPromedio.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoSet" header="Porcentaje (%)" widgetVar="editarTipoSet" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTipoSet" header="#{msg['tiposetE']}" widgetVar="editarTipoSet" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlSets.editarSets.tiposet}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTipoSet" value="Atras" onclick="editarTipoSet.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarTipoSet" value="#{msg['atras']}" onclick="editarTipoSet.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTotalIngresos" header="Total Ingresos" widgetVar="editarTotalIngresos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTotalIngresos" header="#{msg['totalingresosE']}" widgetVar="editarTotalIngresos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlSets.editarSets.totalingresos}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTotalIngresos" value="Atras" onclick="editarTotalIngresos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarTotalIngresos" value="#{msg['atras']}" onclick="editarTotalIngresos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                 </h:form>
@@ -372,7 +373,7 @@
                         <!--COLUMNAS TABLA DATOS SETS DE UN EMPLEADO --> 
                         <p:column>  
                             <f:facet name="header">
-                                <h:outputText value="Fecha Inicial" />
+                                <h:outputText value="#{msg['inicialXX']}" />
                             </f:facet>
                             <h:outputText value="#{info.fechainicial}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -381,30 +382,30 @@
 
                         <p:column>  
                             <f:facet name="header">
-                                <h:outputText value="Fecha Final" />
+                                <h:outputText value="#{msg['finalXX']}" />
                             </f:facet>
                             <h:outputText value="#{info.fechafinal}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Porcentaje (%)">                                  
-                            <f:facet name="header"><h:outputText value="Porcentaje (%)"/> </f:facet> 
+                        <p:column headerText="#{msg['porcentajeXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['porcentajeXX']}"/> </f:facet> 
                             <h:outputText value="#{info.porcentaje}" />
                         </p:column>  
 
-                        <p:column headerText="Promedio">                                  
-                            <f:facet name="header"><h:outputText value="Promedio"/> </f:facet> 
+                        <p:column headerText="#{msg['promedioX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['promedioX']}"/> </f:facet> 
                             <h:outputText value="#{info.porcentaje}" />
                         </p:column>
 
-                        <p:column headerText="Tipo Set">                                  
-                            <f:facet name="header"><h:outputText value="Tipo Set"/> </f:facet> 
+                        <p:column headerText="#{msg['tiposetXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tiposetX']}"/> </f:facet> 
                             <h:outputText value="#{info.porcentaje}" />
                         </p:column>
 
-                        <p:column headerText="Total Ingresos">                                  
-                            <f:facet name="header"><h:outputText value="Total Ingresos"/> </f:facet> 
+                        <p:column headerText="#{msg['totalingresosXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['totalingresosX']}"/> </f:facet> 
                             <h:outputText value="#{info.porcentaje}" />
                         </p:column>
 

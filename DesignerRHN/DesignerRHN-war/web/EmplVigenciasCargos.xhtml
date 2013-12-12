@@ -10,8 +10,9 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form">            
-                    <p:panel  id="PanelTotal" header="Historicos Cargos Desempeñados" style=" font-size: 12px; position: absolute; width: 685px; height: 490px;" >  
+                <h:form id="form">
+                    <f:loadBundle basename="Recursos.emplvigenciascargos" var="msg" />
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 685px; height: 490px;" >  
 
                         <h:outputText style="position: absolute; left: 390px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
 
@@ -19,51 +20,51 @@
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasCargos.guardarCambiosVC()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasCargos.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosVCEmpleadoExportar" fileName="VigenciasCargosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVC.show()" update=":formularioDialogos:nuevaVC" process="@this"> 
 
                                 </p:commandButton>
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Insertar Nueva Vigencia" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.borrarVC()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Cargo" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.duplicarVigenciaC()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Cargos" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 645px; height: 285px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue"><strong>Cargos del empleado</strong></legend>
+                            <legend style="font-size: 14px; color: blue"><strong>#{msg['cargos']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
                             <h:outputText id="informacionRegistro" value="#{controlVigenciasCargos.infoRegistro}"/>
                             <p:commandButton id="btnPrimerRegistro" disabled="#{controlVigenciasCargos.botonPrimero}" value=" " icon="ui-icon-arrowstop-1-w" actionListener="#{controlVigenciasCargos.primerRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
@@ -74,15 +75,15 @@
 
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; width: 645px"                            
                                          value="#{controlVigenciasCargos.vigenciasCargosEmpleado}" scrollable="true" scrollHeight="150" scrollWidth="645"
-                                         filteredValue="#{controlVigenciasCargos.filterVC}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         filteredValue="#{controlVigenciasCargos.filterVC}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" >
 
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrar()}"/>
 
                                 <!--COLUMNAS TABLA DATOS VIGENCIAS CARGOS DE UN EMPLEADO -->
-                                <p:column headerText="Fecha" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="72" id="vcFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="72" id="vcFecha" filterStyle="display: none; visibility: hidden;"  >  
                                     <f:facet name="header">
-                                        <h:outputText value="Fecha" />
+                                        <h:outputText value="#{msg['fecha']}" />
                                     </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -101,12 +102,12 @@
                                         </f:facet>
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha" />
+                                        <h:outputText value="#{msg['fecha']}" />
                                     </f:facet>
                                 </p:column>
 
                                 <p:column headerText="Estructura" sortBy="#{info.estructura.nombre}" filterBy="#{info.estructura.nombre}" filterMatchMode="contains" id="vcEstructura" width="133" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <f:facet name="header"><h:outputText value="Estructura"/> </f:facet> 
+                                    <f:facet name="header"><h:outputText value="#{msg['estructura']}"/> </f:facet> 
 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.estructura.nombre}" /></f:facet>  
@@ -121,12 +122,12 @@
 
                                     <f:facet name="footer">
                                         <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooEstructuras" onclick="estructurasDialog.show();"
-                                                         value="Estructura"/>
+                                                         value="#{msg['estructura']}"/>
                                     </f:facet>
                                 </p:column>  
 
                                 <p:column headerText="Motivo" sortBy="#{info.motivocambiocargo.nombre}" filterBy="#{info.motivocambiocargo.nombre}" filterMatchMode="contains"  id="vcMotivo" width="133" filterStyle="display: none; visibility: hidden;" >      
-                                    <f:facet name="header"><h:outputText value="Motivo"/></f:facet>
+                                    <f:facet name="header"><h:outputText value="#{msg['motivo']}"/></f:facet>
 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.motivocambiocargo.nombre}" /></f:facet>  
@@ -142,12 +143,12 @@
 
                                     <f:facet name="footer">
                                         <p:commandButton style="width: 135px; height: 16px; font-size: 9px; border: none; color: blue" id="fooMotivos" onclick="motivosDialog.show();"
-                                                         value="Motivo" />
+                                                         value="#{msg['motivo']}" />
                                     </f:facet>
                                 </p:column>
 
                                 <p:column headerText="Nombre_Cargo" sortBy="#{info.cargo.nombre}" filterBy="#{info.cargo.nombre}" filterMatchMode="contains" id="vcNombreCargo" width="133" filterStyle="display: none; visibility: hidden;" >                                                              
-                                    <f:facet name="header"> <h:outputText value="Nombre Cargo" /></f:facet>
+                                    <f:facet name="header"> <h:outputText value="#{msg['nombrecargo']}" /></f:facet>
 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.cargo.nombre}" /></f:facet>  
@@ -162,12 +163,12 @@
 
                                     <f:facet name="footer">
                                         <p:commandButton style="width: 143px; height: 16px; font-size: 9px; border: none; color: blue" id="fooCargos" onclick="cargosDialog.show();"
-                                                         value="Nombre Cargo"/>
+                                                         value="#{msg['nombrecargo']}"/>
                                     </f:facet>
                                 </p:column>  
 
                                 <p:column headerText="Centro_Costo" sortBy="#{info.estructura.centrocosto.nombre}" filterBy="#{info.estructura.centrocosto.nombre}" filterMatchMode="contains" id="vcCentrosC" width="111" filterStyle="display: none; visibility: hidden;" >                                                                                              
-                                    <f:facet name="header"><h:outputText value="Centro Costo"/></f:facet>
+                                    <f:facet name="header"><h:outputText value="#{msg['centrocosto']}"/></f:facet>
 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.estructura.centrocosto.nombre}" /></f:facet>  
@@ -179,11 +180,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer"><h:outputText value="Centro Costo" /></f:facet>
+                                    <f:facet name="footer"><h:outputText value="#{msg['centrocosto']}" /></f:facet>
                                 </p:column>  
 
                                 <p:column headerText="Nombre_Jefe" sortBy="#{info.empleadojefe.persona.nombreCompleto}" filterBy="#{info.empleadojefe.persona.nombreCompleto}" filterMatchMode="contains" id="vcNombreJefe" width="111" filterStyle="display: none; visibility: hidden;" >                                                              
-                                    <f:facet name="header"><h:outputText value="Nombre Jefe"/></f:facet>
+                                    <f:facet name="header"><h:outputText value="#{msg['nombrejefe']}"/></f:facet>
 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.empleadojefe.persona.nombreCompleto}" /></f:facet>  
@@ -196,13 +197,13 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer"><h:outputText value="Nombre Jefe" /></f:facet>
+                                    <f:facet name="footer"><h:outputText value="#{msg['nombrejefe']}" /></f:facet>
                                 </p:column>
 
                                 <p:column headerText="R" width="25" style="height: 16px; padding: 0px;" exportable="false">  
-                                    <f:facet name="header"><h:outputText value="R" /></f:facet>
+                                    <f:facet name="header"><h:outputText value="#{msg['r']}" /></f:facet>
                                     <p:commandButton style="background-image: url(Imagenes/revertir.gif); width:23px; height: 21px; background-repeat: no-repeat; background-size: 100% 100%;"/>                                
-                                    <f:facet name="footer"><h:outputText value="R" /></f:facet>
+                                    <f:facet name="footer"><h:outputText value="#{msg['r']}" /></f:facet>
                                 </p:column>
 
                                 <p:column headerText="..." width="25" style="height: 16px;padding: 0px;" exportable="false">  
@@ -217,232 +218,232 @@
                         </fieldset>
                         <!-- CAMPO DE LOS DIALOGOS -->      
                         <!-- DIALOGO L.O.V DINAMICO PARA ESTRUCTURAS-->
-                        <p:dialog header="Estructuras" widgetVar="estructurasDialog" draggable="false" resizable="false" id="dlgEstructuras"  
+                        <p:dialog header="#{msg['estructurasE']}" widgetVar="estructurasDialog" draggable="false" resizable="false" id="dlgEstructuras"  
                                   showEffect="fade" hideEffect="fade" modal="true" width="718" height="420" style="font-size: 12px" closable="false">
 
                             <p:dataTable  id="lOVEstructuras" style="font-size: 11px; width: 690px" var="estr" value="#{controlVigenciasCargos.estructurasLOV}"
                                           scrollable="true" scrollHeight="300" scrollWidth="705" widgetVar="estructurasLOV" 
-                                          filteredValue="#{controlVigenciasCargos.estructurasfilter}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                          filteredValue="#{controlVigenciasCargos.estructurasfilter}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{estr.secuencia}" selection="#{controlVigenciasCargos.estructuraSeleccionada}" selectionMode="single">
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarE"/> 
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onstart="estructurasLOV.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Estructura: "  style="position: absolute; left: 27px; top: 15px"/>  
+                                    <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                     <p:inputText id="globalFilter" onkeyup="estructurasLOV.filter();" style="width:150px; position: relative; left: -140px;" />  
                                 </f:facet>                       
-                                <p:column headerText="Nombre" width="200"  filterBy="#{estr.nombre}" filterMatchMode="contains" >  
+                                <p:column headerText="#{msg['nombreE']}" width="200"  filterBy="#{estr.nombre}" filterMatchMode="contains" >  
                                     <h:outputText value="#{estr.nombre}" />  
                                 </p:column>  
-                                <p:column headerText="Centro Costo" width="300" filterBy="#{estr.centrocosto.nombre}" filterMatchMode="contains">  
+                                <p:column headerText="#{msg['centroE']}" width="300" filterBy="#{estr.centrocosto.nombre}" filterMatchMode="contains">  
                                     <h:outputText value="#{estr.centrocosto.codigo} - #{estr.centrocosto.nombre}" />  
                                 </p:column>                             
-                                <p:column headerText="Empresa" filterBy="#{estr.organigrama.empresa.nombre}" filterMatchMode="contains" >  
+                                <p:column headerText="#{msg['empresaE']}" filterBy="#{estr.organigrama.empresa.nombre}" filterMatchMode="contains" >  
                                     <h:outputText value="#{estr.organigrama.empresa.nombre}" />  
                                 </p:column>
                             </p:dataTable>                         
-                            <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 572px; font-size: 12px" onclick="estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" update="aceptarE" process="@this">
+                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 572px; font-size: 12px" onclick="estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" update="aceptarE" process="@this">
                                 <p:resetInput target=":form:lOVEstructuras:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 390px; left: 644px; font-size: 12px" onclick="estructurasDialog.hide(), estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" update="lOVEstructuras" process="@this">
+                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; font-size: 12px" onclick="estructurasDialog.hide(), estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" update="lOVEstructuras" process="@this">
                                 <p:resetInput target=":form:lOVEstructuras:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO DE MOTIVOS CAMBIOS CARGOS -->
-                        <p:dialog header="Motivos Cambios Cargos" widgetVar="motivosDialog" draggable="false" resizable="false" closable="false" id="dlgMotivos"  
+                        <p:dialog header="#{msg['motivosM']}" widgetVar="motivosDialog" draggable="false" resizable="false" closable="false" id="dlgMotivos"  
                                   showEffect="fade" hideEffect="fade" width="377" modal="true" style="font-size: 11px;">
                             <p:dataTable id="motivosCambCargo" style="font-size: 11px; width: 350px" var="mot" value="#{controlVigenciasCargos.motivosCambiosCargos}" rowKey="#{mot.secuencia}"
                                          selection="#{controlVigenciasCargos.motivoSeleccionado}" selectionMode="single" widgetVar="datosMotivos" scrollable="true" scrollWidth="365" scrollHeight="250"
-                                         filteredValue="#{controlVigenciasCargos.filterMotivos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                         filteredValue="#{controlVigenciasCargos.filterMotivos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarM"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onstart="datosMotivos.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Motivo: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="datosMotivos.filter();" style="width:150px; position: relative; left: 6px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{mot.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 40px">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="Codigo" />
+                                        <h:outputText style="text-align: center" value="#{msg['codigoM']}" />
                                     </f:facet>
                                     <h:outputText  value="#{mot.codigo}" />
                                 </p:column>
                                 <p:column filterBy="#{mot.nombre}"  filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="Nombre del motivo" />
+                                        <h:outputText value="#{msg['nombreM']}" />
                                     </f:facet>
                                     <h:outputText value="#{mot.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarM" style="position: relative; left: 224px" value="Aceptar" disabled="#{controlVigenciasCargos.aceptar}" onclick="datosMotivos.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" update="aceptarM" process="@this">
+                            <p:commandButton id="aceptarM" style="position: relative; left: 224px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" onclick="datosMotivos.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" update="aceptarM" process="@this">
                                 <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasM" style="position: relative; left: 224px" value="Atras" onclick="motivosDialog.hide(), datosMotivos.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}" update="motivosCambCargo" process="@this">
+                            <p:commandButton id="atrasM" style="position: relative; left: 224px" value="#{msg['atras']}" onclick="motivosDialog.hide(), datosMotivos.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}" update="motivosCambCargo" process="@this">
                                 <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>                 
                         <!-- DIALOGO L.O.V DINAMICO PARA CARGOS-->
-                        <p:dialog header="Nombre Cargos" widgetVar="cargosDialog" draggable="false" resizable="false" id="dlgCargos" closable="false"  
+                        <p:dialog header="#{msg['cargosC']}" widgetVar="cargosDialog" draggable="false" resizable="false" id="dlgCargos" closable="false"  
                                   showEffect="fade" hideEffect="fade" modal="true" width="477" height="420" style="font-size: 12px">
 
                             <p:dataTable  id="lOVCargos" style="font-size: 11px; width: 450px" var="carg" value="#{controlVigenciasCargos.cargos}"
                                           scrollable="true" scrollHeight="300" scrollWidth="465" widgetVar="cargosLOV" 
-                                          filteredValue="#{controlVigenciasCargos.cargosFilter}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                          filteredValue="#{controlVigenciasCargos.cargosFilter}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{carg.secuencia}" selection="#{controlVigenciasCargos.cargoSeleccionado}" selectionMode="single">
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarC"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" onstart="cargosLOV.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Cargo: "  style="position: absolute; left: 27px; top: 15px"/>  
+                                    <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                     <p:inputText id="globalFilter" onkeyup="cargosLOV.filter();" style="width:150px; position: relative; left: -47px;" />  
                                 </f:facet>
 
                                 <p:column filterBy="#{carg.nombre}" filterMatchMode="contains" > 
                                     <f:facet name="header">
-                                        <h:outputText value="Nombre" />
+                                        <h:outputText value="#{msg['nombreC']}" />
                                     </f:facet>
                                     <h:outputText value="#{carg.nombre}" />  
                                 </p:column>  
 
                                 <p:column filterBy="#{carg.empresa.nombre}" width="150" filterMatchMode="contains" > 
                                     <f:facet name="header">
-                                        <h:outputText value="Empresa" />
+                                        <h:outputText value="#{msg['empresaC']}" />
                                     </f:facet>
                                     <h:outputText value="#{carg.empresa.nombre}" />  
                                 </p:column>
                             </p:dataTable>                         
-                            <p:commandButton id="aceptarC" value="Aceptar" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 328px; font-size: 12px" onclick="cargosLOV.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarCargo()}" update="aceptarC" process="@this">
+                            <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 328px; font-size: 12px" onclick="cargosLOV.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarCargo()}" update="aceptarC" process="@this">
                                 <p:resetInput target=":form:lOVCargos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasC" value="Atras" style="position: absolute; top: 390px; left: 400px; font-size: 12px" onclick="cargosDialog.hide(), cargosLOV.clearFilters();" update="lOVCargos, aceptarC" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this">
+                            <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; font-size: 12px" onclick="cargosDialog.hide(), cargosLOV.clearFilters();" update="lOVCargos, aceptarC" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this">
                                 <p:resetInput target=":form:lOVCargos:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
 
                         <!-- DIALOGO DE DETALLES VIGENCIAS CARGOS -->
-                        <p:dialog header="Detalles Vigencias Cargos" widgetVar="datosDialog" resizable="false" id="detallesDlg"  
+                        <p:dialog header="#{msg['detallesD']}" widgetVar="datosDialog" resizable="false" id="detallesDlg"  
                                   showEffect="fade" hideEffect="fade" modal="true">  
                             <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
-                                <h:outputText value="Fecha:" />  
+                                <h:outputText value="#{msg['fechaD']}" />  
                                 <h:outputText value="#{controlVigenciasCargos.vigenciaSeleccionada.fechavigencia}" style="font-weight:bold">     
                                     <f:convertDateTime pattern="dd-MM-yyyy"/>
                                 </h:outputText>  
-                                <h:outputText value="Estructura:" />  
+                                <h:outputText value="#{msg['estructuraD']}" />  
                                 <h:outputText value="#{controlVigenciasCargos.vigenciaSeleccionada.estructura.nombre}" style="font-weight:bold"/>  
-                                <h:outputText value="Motivo:" />  
+                                <h:outputText value="#{msg['motivoD']}" />  
                                 <h:outputText value="#{controlVigenciasCargos.vigenciaSeleccionada.motivocambiocargo.nombre}" style="font-weight:bold"/>  
-                                <h:outputText value="NombreCargo:" />  
+                                <h:outputText value="#{msg['nombrecargoD']}" />  
                                 <h:outputText value="#{controlVigenciasCargos.vigenciaSeleccionada.cargo.nombre}" style="font-weight:bold"/>  
-                                <h:outputText value="CentroCosto:" />  
+                                <h:outputText value="#{msg['centrocostoD']}" />  
                                 <h:outputText value="#{controlVigenciasCargos.vigenciaSeleccionada.estructura.centrocosto.codigo}-#{controlVigenciasCargos.vigenciaSeleccionada.estructura.centrocosto.nombre}" style="font-weight:bold"/> 
-                                <h:outputText value="NombreJefe:" />  
+                                <h:outputText value="#{msg['nombrejefeD']}" />  
                                 <h:outputText value="#{controlVigenciasCargos.vigenciaSeleccionada.empleadojefe.persona.nombre}" style="font-weight:bold"/> 
                             </h:panelGrid>  
                         </p:dialog>  
 
                         <!-- DIALOGO DE EMPLEADO JEFE-->
-                        <p:dialog id="dialogoEmpleadoJefe" header="Empleados" widgetVar="dialogoEmpleadoJefe"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
+                        <p:dialog id="dialogoEmpleadoJefe" header="#{msg['empleadosEJ']}" widgetVar="dialogoEmpleadoJefe"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
                             <p:dataTable  id="lvEmpleadoJefe" style="font-size: 11px; width: 700px" var="item" value="#{controlVigenciasCargos.vwActualesTiposTrabajadoresesLista}"
                                           scrollable="true" scrollHeight="162" scrollWidth="720" widgetVar="lvEmpleadoJefe" 
-                                          filteredValue="#{controlVigenciasCargos.filtradoVWActualesTiposTrabajadoresesLista}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                          filteredValue="#{controlVigenciasCargos.filtradoVWActualesTiposTrabajadoresesLista}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{item.empleado.secuencia}" selection="#{controlVigenciasCargos.seleccionVWActualesTiposTrabajadoreses}" selectionMode="single" >
 
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}"  update=":form:AceptarEmplJ"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" process="@this" onstart="lvEmpleadoJefe.clearFilters()"/>
 
                                 <f:facet name="header" >  
-                                    <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 22px; top: 18px;"/>  
+                                    <h:outputText value="#{msg['buscarEJ']}"  style="position: absolute; left: 22px; top: 18px;"/>  
                                     <p:inputText id="globalFilter" onkeyup="lvEmpleadoJefe.filter();" style="width:150px; position: relative; left: -150px;"/>
-                                    <p:watermark for="globalFilter" value="Ingresar valor a buscar" />
+                                    <p:watermark for="globalFilter" value="#{msg['ingreseEJ']}" />
                                 </f:facet>
 
-                                <p:column  headerText="Codigo Empleado" filterOptions="" filterBy="#{item.empleado.codigoempleado}" filterMatchMode="contains">  
+                                <p:column  headerText="#{msg['codigoEJ']}" filterOptions="" filterBy="#{item.empleado.codigoempleado}" filterMatchMode="contains">  
                                     <h:outputText value="#{item.empleado.codigoempleado}" />  
                                 </p:column>  
 
-                                <p:column headerText="Primer Apellido" filterBy="#{item.empleado.persona.primerapellido}" filterMatchMode="contains">  
+                                <p:column headerText="#{msg['primerapellidoEJ']}" filterBy="#{item.empleado.persona.primerapellido}" filterMatchMode="contains">  
                                     <h:outputText value="#{item.empleado.persona.primerapellido}" />  
                                 </p:column>  
 
-                                <p:column headerText="Segundo Apellido" filterBy="#{item.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
+                                <p:column headerText="#{msg['segundoapellidoEJ']}" filterBy="#{item.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
                                     <h:outputText value="#{item.empleado.persona.segundoapellido}" />  
                                 </p:column>  
 
-                                <p:column headerText="Nombre" width="160" filterBy="#{item.empleado.persona.nombre}" filterMatchMode="contains">  
+                                <p:column headerText="#{msg['nombreEJ']}" width="160" filterBy="#{item.empleado.persona.nombre}" filterMatchMode="contains">  
                                     <h:outputText value="#{item.empleado.persona.nombre}" />  
                                 </p:column>  
                             </p:dataTable> 
 
-                            <p:commandButton id="AceptarEmplJ" value="Aceptar" onclick="lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}"  update="AceptarEmplJ" process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 580px">
+                            <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" onclick="lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}"  update="AceptarEmplJ" process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 580px">
                                 <p:resetInput target=":form:lvEmpleadoJefe:globalFilter" />
                             </p:commandButton>
-                            <p:commandButton value="Atras" onclick="dialogoEmpleadoJefe.hide(), lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" update="lvEmpleadoJefe, AceptarEmplJ"  style="position: absolute; top: 260px; left: 653px">
+                            <p:commandButton value="#{msg['atras']}" onclick="dialogoEmpleadoJefe.hide(), lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" update="lvEmpleadoJefe, AceptarEmplJ"  style="position: absolute; top: 260px; left: 653px">
                                 <p:resetInput target=":form:lvEmpleadoJefe:globalFilter" />
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 522px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 605px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 522px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 605px; top: 385px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
                     </p:panel>
 
-                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasCargos.guardarCambiosVC()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasCargos.guardarCambiosVC()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="validacioNuevaVigencia" header="ATENCIÓN...!" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar una nueva vigencia es necesario adicionar: #{controlVigenciasCargos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasCargos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla VIGENCIASCARGOS tiene rastros para el registro seleccionado, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasCargos.secRegistro, 'VigenciasCargos', 'vigenciasC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasCargos.secRegistro, 'VigenciasCargos', 'vigenciasC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla VIGENCIASCARGOS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasCargos', 'vigenciasC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasCargos', 'vigenciasC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasCargos.secRegistro, 'VigenciasCargos', 'vigenciasC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasCargos.secRegistro, 'VigenciasCargos', 'vigenciasC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 28px; width: 195px; font-weight:bold" />
+                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 28px; width: 195px; font-weight:bold" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <!-- Hotkey Ctrl + F11 -->
@@ -450,161 +451,161 @@
                 </h:form>
                 <h:form id="formularioDialogos">
 
-                    <p:dialog id="NuevoRegistroVC" header="Nuevo Registro" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="300" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText id="informacion" value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                    <p:dialog id="NuevoRegistroVC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="300" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText id="informacion" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVC" style="border: none;">
-                            <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="#{msg['fechaN']}" style="font-size: 12px; position: absolute; top: 85px" /></strong>
                             <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; top: 80px; left: 120px;" value="#{controlVigenciasCargos.nuevaVigencia.fechavigencia}"  styleClass="ui-datepicker, myClass2, endingDate_popupContainer"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="nuevaFecha"/>
                                 <p:ajax event="change" update="nuevaFecha"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Estructura: " style="font-size: 12px; position: absolute; top: 120px" /></strong>
+                            <strong><h:outputText value="#{msg['estructuraN']}" style="font-size: 12px; position: absolute; top: 120px" /></strong>
                             <p:inputText id="nuevaEstructura" value="#{controlVigenciasCargos.nuevaVigencia.estructura.nombre}" style="font-size: 12px; width: 99px; position: absolute; left: 120px; top: 115px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(1, 'ESTRUCTURA')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('ESTRUCTURA', controlVigenciasCargos.nuevaVigencia.estructura.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.cargarEstructurasNuevoRegistro(0)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 229px; top: 115px;  " id="btnNuevaEstructura" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasCargos.cargarEstructurasNuevoRegistro(0)}"/>   
-                            <p:watermark for="nuevaEstructura" value="Estructura" />
+                            <p:watermark for="nuevaEstructura" value="#{msg['estructura']}" />
 
-                            <strong><h:outputText value="Motivo: " style="font-size: 12px; position: absolute; top: 155px" /></strong>
+                            <strong><h:outputText value="#{msg['motivoN']}" style="font-size: 12px; position: absolute; top: 155px" /></strong>
                             <p:inputText id="nuevoMotivo" value="#{controlVigenciasCargos.nuevaVigencia.motivocambiocargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 120px; top: 150px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(1, 'MOTIVOC')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('MOTIVOC', controlVigenciasCargos.nuevaVigencia.motivocambiocargo.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarVariableMotivoCargoNuevo(0)}" />
                             </p:inputText>
-                            <p:watermark for="nuevoMotivo" value="Motivo" />
+                            <p:watermark for="nuevoMotivo" value="#{msg['motivo']}" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 252px; top: 150px; " id="nuevoMot" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciasCargos.asignarVariableMotivoCargoNuevo(0)}"/>
 
-                            <strong><h:outputText value="Cargo: " style="font-size: 12px; position: absolute; top: 190px" /></strong>
+                            <strong><h:outputText value="#{msg['cargoN']}" style="font-size: 12px; position: absolute; top: 190px" /></strong>
                             <p:inputText id="nuevoNombreCargo" value="#{controlVigenciasCargos.nuevaVigencia.cargo.nombre}" style="font-size: 12px; width: 99px; position: absolute; left: 120px; top: 185px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(1, 'CARGO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('NOMBREC', controlVigenciasCargos.nuevaVigencia.cargo.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarVariableCargoNuevo(0)}" />
                             </p:inputText>
-                            <p:watermark for="nuevoNombreCargo" value="Cargo" />
+                            <p:watermark for="nuevoNombreCargo" value="#{msg['cargo']}" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 229px; top: 185px;  " id="NuevoC" actionListener="#{controlVigenciasCargos.asignarVariableCargoNuevo(0)}" icon="ui-icon-search" process="@this" />
 
-                            <strong><h:outputText value="Centro Costo: "  style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                            <strong><h:outputText value="#{msg['centrocostoN']}"  style="font-size: 12px; position: absolute; top: 225px" /></strong>
                             <p:inputText id="nuevoCentroC" value="#{controlVigenciasCargos.nuevaVigencia.estructura.centrocosto.nombre}" style="font-size: 12px; width: 100px; position: absolute; left: 120px; top: 220px;" readonly="true"/>
-                            <p:watermark for="nuevoCentroC" value="Centro Costo" />
+                            <p:watermark for="nuevoCentroC" value="#{msg['centrocosto']}" />
 
-                            <strong><h:outputText value="Nombre Jefe: " style="font-size: 12px; position: absolute; top: 260px" /></strong>
+                            <strong><h:outputText value="#{msg['nombrejefeN']}" style="font-size: 12px; position: absolute; top: 260px" /></strong>
                             <p:inputText id="nuevoJefe" value="#{controlVigenciasCargos.nuevaVigencia.empleadojefe.persona.nombreCompleto}" style="font-size: 12px; width: 100px; position: absolute; left: 120px; top: 255px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(1, 'EMPLEADOJ')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('EMPLEADOJ', controlVigenciasCargos.nuevaVigencia.empleadojefe.persona.nombreCompleto, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarVariableEmpleadoJefeNuevo(0)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 230px; top: 255px;  " id="NuevoEmplJ" actionListener="#{controlVigenciasCargos.asignarVariableEmpleadoJefeNuevo(0)}" icon="ui-icon-search" process="@this" />
-                            <p:watermark for="nuevoJefe" value="Nombre Jefe"/>
+                            <p:watermark for="nuevoJefe" value="#{msg['nombrejefe']}"/>
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" process="@this"/>
-                            <p:commandButton id="agregarVC" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.agregarNuevaVC()}" />
-                            <p:commandButton id="cancelarVC" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" process="@this"/>
+                            <p:commandButton id="agregarVC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 140px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.agregarNuevaVC()}" />
+                            <p:commandButton id="cancelarVC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 210px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="duplicarRegistroVC" header="Duplicar Registro" widgetVar="duplicarRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="300" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="duplicarRegistroVC" header="#{msg['duplicarregistro']}" widgetVar="duplicarRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="300" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVC" style="border: none;">
-                            <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="#{msg['fechaN']}" style="font-size: 12px; position: absolute; top: 85px" /></strong>
                             <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; top: 80px; left: 120px;" value="#{controlVigenciasCargos.duplicarVC.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFecha"/>
                                 <p:ajax event="change" update="duplicarFecha"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Estructura: " style="font-size: 12px; position: absolute; top: 120px" /></strong>
+                            <strong><h:outputText value="#{msg['estructuraN']}" style="font-size: 12px; position: absolute; top: 120px" /></strong>
                             <p:inputText id="duplicarEstructura" value="#{controlVigenciasCargos.duplicarVC.estructura.nombre}" style="font-size: 12px; width: 99px; position: absolute; left: 120px; top: 115px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(2, 'ESTRUCTURA')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('ESTRUCTURA', controlVigenciasCargos.duplicarVC.estructura.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.cargarEstructurasNuevoRegistro(1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 229px; top: 115px;  " id="btnDuplicarEstructura" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasCargos.cargarEstructurasNuevoRegistro(1)}"/>   
-                            <p:watermark for="duplicarEstructura" value="Estructura" />
+                            <p:watermark for="duplicarEstructura" value="#{msg['estructura']}" />
 
-                            <strong><h:outputText value="Motivo: " style="font-size: 12px; position: absolute; top: 155px" /></strong>
+                            <strong><h:outputText value="#{msg['motivoN']}" style="font-size: 12px; position: absolute; top: 155px" /></strong>
                             <p:inputText id="duplicarMotivo" value="#{controlVigenciasCargos.duplicarVC.motivocambiocargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 120px; top: 150px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(2, 'MOTIVOC')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('MOTIVOC', controlVigenciasCargos.duplicarVC.motivocambiocargo.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarVariableMotivoCargoNuevo(1)}" />
                             </p:inputText>
-                            <p:watermark for="duplicarMotivo" value="Motivo" />
+                            <p:watermark for="duplicarMotivo" value="#{msg['motivo']}" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 252px; top: 150px; " id="btnDuplicarMot" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciasCargos.asignarVariableMotivoCargoNuevo(1)}"/>
 
-                            <strong><h:outputText value="Cargo: " style="font-size: 12px; position: absolute; top: 190px" /></strong>
+                            <strong><h:outputText value="#{msg['cargoN']}" style="font-size: 12px; position: absolute; top: 190px" /></strong>
                             <p:inputText id="duplicarNombreCargo" value="#{controlVigenciasCargos.duplicarVC.cargo.nombre}" style="font-size: 12px; width: 99px; position: absolute; left: 120px; top: 185px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(2, 'CARGO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('NOMBREC', controlVigenciasCargos.duplicarVC.cargo.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarVariableCargoNuevo(1)}" />
                             </p:inputText>
-                            <p:watermark for="duplicarNombreCargo" value="Cargo" />
+                            <p:watermark for="duplicarNombreCargo" value="#{msg['cargo']}" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 229px; top: 185px;  " id="btnDuplicarC" actionListener="#{controlVigenciasCargos.asignarVariableCargoNuevo(1)}" icon="ui-icon-search"
                                              process="@this" />
 
-                            <strong><h:outputText value="Centro Costo: "  style="font-size: 12px; position: absolute; top: 225px" /></strong>
+                            <strong><h:outputText value="#{msg['centrocostoN']}"  style="font-size: 12px; position: absolute; top: 225px" /></strong>
                             <p:inputText id="duplicarCentroC" value="#{controlVigenciasCargos.duplicarVC.estructura.centrocosto.nombre}" style="font-size: 12px; width: 100px; position: absolute; left: 120px; top: 220px;"/>
-                            <p:watermark for="duplicarCentroC" value="Centro Costo" />
+                            <p:watermark for="duplicarCentroC" value="#{msg['centrocosto']}" />
 
-                            <strong><h:outputText value="Nombre Jefe: " style="font-size: 12px; position: absolute; top: 260px" /></strong>
+                            <strong><h:outputText value="#{msg['nombrejefeN']}" style="font-size: 12px; position: absolute; top: 260px" /></strong>
                             <p:inputText id="duplicarJefe" value="#{controlVigenciasCargos.duplicarVC.empleadojefe.persona.nombreCompleto}" style="font-size: 12px; width: 100px; position: absolute; left: 120px; top: 255px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(2, 'EMPLEADOJ')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasCargos.autocompletarNuevoyDuplicado('EMPLEADOJ', controlVigenciasCargos.duplicarVC.empleadojefe.persona.nombreCompleto, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarVariableEmpleadoJefeNuevo(1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 230px; top: 255px;  " id="btnduplicarJefe" actionListener="#{controlVigenciasCargos.asignarVariableEmpleadoJefeNuevo(1)}" icon="ui-icon-search" process="@this" />
-                            <p:watermark for="duplicarJefe" value="Nombre Jefe"/>
+                            <p:watermark for="duplicarJefe" value="#{msg['nombrejefe']}"/>
 
-                            <p:commandButton id="limpiarDuplicado" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVC" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.confirmarDuplicar()}" onclick="duplicarRegistroVC.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoVC" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" onclick="duplicarRegistroVC.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicado" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 140px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.confirmarDuplicar()}" onclick="duplicarRegistroVC.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoVC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 210px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" onclick="duplicarRegistroVC.hide();"  process="@this"/>
                         </p:panel> 
                     </p:dialog>  
 
-                    <p:dialog id="editarFecha" header="Editar Fecha" widgetVar="editarFecha" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFecha" header="#{msg['fechaE']}" widgetVar="editarFecha" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px" value="#{controlVigenciasCargos.editarVC.fechavigencia}" id="editFechaCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                             <p:ajax event="dateSelect" listener="#{controlVigenciasCargos.cambioEditable()}" update="editFechaCelda"/>
                             <p:ajax event="change" listener="#{controlVigenciasCargos.cambioEditable()}" />
                         </p:calendar>
-                        <p:commandButton id="aceptarFecha" value="Aceptar" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 80px; font-size: 11px" process="@this" actionListener="#{controlVigenciasCargos.aplicarCambioCelda()}"/>
-                        <p:commandButton id="cancelarFecha" value="Cancelar" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" actionListener="#{ctrlVigenciasCargos.reiniciarEditar()}" />
+                        <p:commandButton id="aceptarFecha" value="#{msg['aceptar']}" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 80px; font-size: 11px" process="@this" actionListener="#{controlVigenciasCargos.aplicarCambioCelda()}"/>
+                        <p:commandButton id="cancelarFecha" value="#{msg['cancelar']}" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" actionListener="#{ctrlVigenciasCargos.reiniciarEditar()}" />
                     </p:dialog>
 
-                    <p:dialog id="editarEstructura" header="Editar Estructura" widgetVar="editarEstructura" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarEstructura" header="#{msg['estructuraE']}" widgetVar="editarEstructura" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlVigenciasCargos.editarVC.estructura.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEstructura" value="Atras" onclick="editarEstructura.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarEstructura" value="#{msg['atras']}" onclick="editarEstructura.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMotivo" header="Editar Motivo" widgetVar="editarMotivo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px" >  
+                    <p:dialog id="editarMotivo" header="#{msg['motivoE']}" widgetVar="editarMotivo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px" >  
                         <p:inputTextarea value="#{controlVigenciasCargos.editarVC.motivocambiocargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarMotivo" value="Atras" onclick="editarMotivo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarMotivo" value="#{msg['atras']}" onclick="editarMotivo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNombreCargo" header="Editar Nombre Cargo" widgetVar="editarNombreCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarNombreCargo" header="#{msg['nombrecargoE']}" widgetVar="editarNombreCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlVigenciasCargos.editarVC.cargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCargo" value="Atras" onclick="editarNombreCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarCargo" value="#{msg['atras']}" onclick="editarNombreCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarCentroCosto" header="Editar Centro Costo" widgetVar="editarCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCentroCosto" header="#{msg['centrocostoE']}" widgetVar="editarCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlVigenciasCargos.editarVC.estructura.centrocosto.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCentroCosto" value="Atras" onclick="editarCentroCosto.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarCentroCosto" value="#{msg['atras']}" onclick="editarCentroCosto.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEmpleadoJefe" header="Editar Empleado Jefe" widgetVar="editarEmpleadoJefe" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarEmpleadoJefe" header="#{msg['empleadojefeE']}" widgetVar="editarEmpleadoJefe" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlVigenciasCargos.editarVC.empleadojefe.persona.primerapellido} #{controlVigenciasCargos.editarVC.empleadojefe.persona.segundoapellido} #{controlVigenciasCargos.editarVC.empleadojefe.persona.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEmpleadoJefe" value="Atras" onclick="editarEmpleadoJefe.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarEmpleadoJefe" value="#{msg['atras']}" onclick="editarEmpleadoJefe.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="necesitaFecha" header="Alerta !" widgetVar="necesitaFecha"  resizable="false" draggable="false" modal="true" height="95" width="310px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="necesitaFecha" header="#{msg['alerta']}" widgetVar="necesitaFecha"  resizable="false" draggable="false" modal="true" height="95" width="310px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Para seleccionar una estructura, primero es necesario asignar una fecha." style="position: absolute; left: 80px; top: 15px; width: 200px; text-align: justify" />
-                        <p:commandButton value="Aceptar" onclick="necesitaFecha.hide();" style="position: absolute; top: 60px; left: 200px" process="@this"/>
+                        <h:outputText value="#{msg['necesitaFecha']}" style="position: absolute; left: 80px; top: 15px; width: 200px; text-align: justify" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="necesitaFecha.hide();" style="position: absolute; top: 60px; left: 200px" process="@this"/>
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">
@@ -612,36 +613,36 @@
                                  value="#{controlVigenciasCargos.vigenciasCargosEmpleado}">
 
                         <p:column>  
-                            <f:facet name="header"><h:outputText value="Fecha" /></f:facet>
+                            <f:facet name="header"><h:outputText value="#{msg['fechaX']}" /></f:facet>
                             <h:outputText value="#{info.fechavigencia}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
                         <p:column>                                  
-                            <f:facet name="header"><h:outputText value="Estructura"/></f:facet> 
+                            <f:facet name="header"><h:outputText value="#{msg['estructuraX']}"/></f:facet> 
                             <h:outputText value="#{info.estructura.nombre}" />
                         </p:column>  
 
                         <p:column>      
-                            <f:facet name="header"><h:outputText value="Motivo"/></f:facet>
+                            <f:facet name="header"><h:outputText value="#{msg['motivoX']}"/></f:facet>
                             <h:outputText value="#{info.motivocambiocargo.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Nombre_Cargo">                                                              
+                        <p:column headerText="#{msg['nombrecargoXX']}">                                                              
                             <f:facet name="header"> 
-                                <h:outputText value="Nombre Cargo"/>
+                                <h:outputText value="#{msg['nombrecargoX']}"/>
                             </f:facet>
                             <h:outputText value="#{info.cargo.nombre}" />
                         </p:column>  
 
-                        <p:column headerText="Centro_Costo">                                                                                              
-                            <f:facet name="header"><h:outputText value="Centro Costo"/></f:facet>
+                        <p:column headerText="#{msg['centrocostoXX']}">                                                                                              
+                            <f:facet name="header"><h:outputText value="#{msg['centrocostoX']}"/></f:facet>
                             <h:outputText value="#{info.estructura.centrocosto.nombre}" />
                         </p:column>  
 
-                        <p:column headerText="Nombre_Jefe">                                                              
-                            <f:facet name="header"><h:outputText value="Nombre Jefe"/></f:facet>
+                        <p:column headerText="#{msg['nombrejefeXX']}">                                                              
+                            <f:facet name="header"><h:outputText value="#{msg['nombrejefeX']}"/></f:facet>
                             <h:outputText value="#{info.empleadojefe.persona.segundoapellido} #{info.empleadojefe.persona.primerapellido} #{info.empleadojefe.persona.nombre}" />
                         </p:column>
                     </p:dataTable>
