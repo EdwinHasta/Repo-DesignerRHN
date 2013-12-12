@@ -416,6 +416,25 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/Concepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detalleConcepto</from-outcome>
+            <to-view-id>/detalleconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/detalleconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retornoConcepto</from-outcome>
+            <to-view-id>/Concepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>experienciaLabPersona</from-outcome>
@@ -632,6 +651,25 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/detalleconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detalleConceptoRastro</from-outcome>
+            <to-view-id>/detalleconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
    
     <navigation-rule>
         <from-view-id>/EmplNovedad.xhtml</from-view-id>

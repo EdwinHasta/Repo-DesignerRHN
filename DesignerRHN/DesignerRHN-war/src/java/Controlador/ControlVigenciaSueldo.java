@@ -255,6 +255,8 @@ public class ControlVigenciaSueldo implements Serializable {
      * VigenciasLocalizaciones de la pagina
      *
      * @param indice Fila en la cual se realizo el cambio
+     * @param confirmarCambio
+     * @param valorConfirmar
      */
     public void modificarVS(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;

@@ -91,8 +91,10 @@ public class ControlConcepto implements Serializable {
     private Conceptos conceptoOriginal;
     private Conceptos conceptoClon;
     private int cambioConcepto;
+    private Conceptos conceptoRegistro;
 
     public ControlConcepto() {
+        conceptoRegistro = new Conceptos();
         listaConceptosEmpresa = null;
         listaConceptosEmpresa_Estado = null;
         conjuntoC = new LinkedHashMap<String, String>();
@@ -668,6 +670,7 @@ public class ControlConcepto implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listaConceptosEmpresa.get(index).getSecuencia();
+            conceptoRegistro= listaConceptosEmpresa.get(index);
             if (cualCelda == 3) {
                 codigoUnidad = listaConceptosEmpresa.get(index).getUnidad().getCodigo();
             } else if (cualCelda == 4) {
@@ -1747,4 +1750,14 @@ public class ControlConcepto implements Serializable {
     public void setConceptoClon(Conceptos conceptoClon) {
         this.conceptoClon = conceptoClon;
     }
+
+    public Conceptos getConceptoRegistro() {
+        return conceptoRegistro;
+    }
+
+    public void setConceptoRegistro(Conceptos conceptoRegistro) {
+        this.conceptoRegistro = conceptoRegistro;
+    }
+    
+    
 }
