@@ -169,6 +169,8 @@ public class Conceptos implements Serializable {
     private String informacionConcepto;
     @Transient
     private String codigoSTR;
+    @Transient
+    private String infoDetalleConcepto;
 
     public Conceptos() {
     }
@@ -664,6 +666,22 @@ public class Conceptos implements Serializable {
     public void setConjunto(Short conjunto) {
         this.conjunto = conjunto;
     }
+
+    public String getInfoDetalleConcepto() {
+        getNaturalezaConcepto();
+        if(codigo != null && descripcion != null && naturalezaConcepto != null ){
+            infoDetalleConcepto = codigo + " - " + descripcion + " - " + naturalezaConcepto + "/ Tiene comportamiento: ";
+        } else {
+            infoDetalleConcepto = "";
+        }
+        return infoDetalleConcepto;
+    }
+
+    public void setInfoDetalleConcepto(String infoDetalleConcepto) {
+        this.infoDetalleConcepto = infoDetalleConcepto;
+    }
+    
+    
 
     @XmlTransient
     public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {

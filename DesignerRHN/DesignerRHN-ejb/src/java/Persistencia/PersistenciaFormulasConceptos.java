@@ -102,4 +102,30 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
             return false;
         }
     }
+    
+      @Override
+    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(BigInteger secConcepto) {
+        try {
+            Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f WHERE f.concepto.secuencia=:secConcepto");
+            query.setParameter("secConcepto", secConcepto);
+            Long resultado = (Long) query.getSingleResult();
+            return resultado;
+        } catch (Exception e) {
+            System.out.println("Error Persistencia comportamientoConceptoAutomaticoSecuenciaConcepto : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(BigInteger secConcepto) {
+        try {
+            Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f, FormulasNovedades fn WHERE  fn.formula=f.formula AND f.concepto.secuencia=:secConcepto");
+            query.setParameter("secConcepto", secConcepto);
+            Long resultado = (Long) query.getSingleResult();
+            return resultado;
+        } catch (Exception e) {
+            System.out.println("Error Persistencia comportamientoConceptoAutomaticoSecuenciaConcepto : " + e.toString());
+            return null;
+        }
+    }
 }

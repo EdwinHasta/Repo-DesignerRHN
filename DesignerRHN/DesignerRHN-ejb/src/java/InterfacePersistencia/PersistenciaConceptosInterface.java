@@ -85,4 +85,7 @@ public interface PersistenciaConceptosInterface {
      * @return Retorna el Contrato identificado con la secuencia dada por parámetro.
      */
     public Conceptos conceptosPorSecuencia(BigInteger secuencia);
+    
+    
+    
 }

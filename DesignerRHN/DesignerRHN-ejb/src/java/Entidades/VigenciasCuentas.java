@@ -6,6 +6,8 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VigenciasCuentas.findByFechafinal", query = "SELECT v FROM VigenciasCuentas v WHERE v.fechafinal = :fechafinal"),
     @NamedQuery(name = "VigenciasCuentas.findByFechainicial", query = "SELECT v FROM VigenciasCuentas v WHERE v.fechainicial = :fechainicial")})
 public class VigenciasCuentas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -65,6 +69,10 @@ public class VigenciasCuentas implements Serializable {
     @JoinColumn(name = "CONSOLIDADORC", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = true)
     private CentrosCostos consolidadorc;
+    @Transient
+    private String strFechaInicial;
+    @Transient
+    private String strFechaFinal;
 
     public VigenciasCuentas() {
     }
@@ -151,6 +159,38 @@ public class VigenciasCuentas implements Serializable {
         this.consolidadorc = consolidadorc;
     }
 
+    public String getStrFechaInicial() {
+        if (fechainicial != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaInicial = formatoFecha.format(fechainicial);
+        } else {
+            strFechaInicial = " ";
+        }
+        return strFechaInicial;
+    }
+
+    public void setStrFechaInicial(String strFechaInicial) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechainicial = formatoFecha.parse(strFechaInicial);
+        this.strFechaInicial = strFechaInicial;
+    }
+
+    public String getStrFechaFinal() {
+        if (fechafinal != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaFinal = formatoFecha.format(fechafinal);
+        } else {
+            strFechaFinal = " ";
+        }
+        return strFechaFinal;
+    }
+
+    public void setStrFechaFinal(String strFechaFinal) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechafinal = formatoFecha.parse(strFechaFinal);
+        this.strFechaFinal = strFechaFinal;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -175,5 +215,5 @@ public class VigenciasCuentas implements Serializable {
     public String toString() {
         return "Entidades.VigenciasCuentas[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

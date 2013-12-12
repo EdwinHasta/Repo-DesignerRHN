@@ -79,6 +79,8 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     //////Listas de valores//////
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
+    @EJB
+    PersistenciaFormulasConceptosInterface PersistenciaFormulasConceptos;
 
     ///////////VigenciasCuentas/////////////////VigenciasCuentas////////////////////////VigenciasCuentas/////////////
     @Override
@@ -463,6 +465,28 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return actual;
         } catch (Exception e) {
             System.out.println("Error conceptoActual Admi : " + e.toString());
+            return null;
+        }
+    }
+    
+
+    public Long comportamientoAutomaticoConcepto(BigInteger secuencia){
+        try{
+            Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoAutomaticoSecuenciaConcepto(secuencia);
+            return retorno;
+        }catch(Exception e){
+            System.out.println("Error comportamientoAutomaticoConcepto Admi : "+e.toString());
+            return null;
+        }
+    }
+    
+
+    public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia){
+        try{
+            Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoSemiAutomaticoSecuenciaConcepto(secuencia);
+            return retorno;
+        }catch(Exception e){
+            System.out.println("Error comportamientoSemiAutomaticoConcepto Admi : "+e.toString());
             return null;
         }
     }

@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")})
 public class Cuentas implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentad")
     private Collection<VigenciasCuentas> vigenciasCuentasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentac")
@@ -176,6 +177,9 @@ public class Cuentas implements Serializable {
     }
 
     public String getCodigo() {
+        if (codigo == null) {
+            codigo = " ";
+        }
         return codigo;
     }
 
@@ -184,7 +188,7 @@ public class Cuentas implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
+        if (descripcion == null) {
             descripcion = " ";
         }
         return descripcion;

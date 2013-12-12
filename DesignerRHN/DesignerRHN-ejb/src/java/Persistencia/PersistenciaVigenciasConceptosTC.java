@@ -70,7 +70,7 @@ public class PersistenciaVigenciasConceptosTC implements PersistenciaVigenciasCo
         try {
             Query query = em.createQuery("SELECT vcTC FROM VigenciasConceptosTC vcTC WHERE vcTC.concepto.secuencia = :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuenciaC);
-            List<VigenciasConceptosTC> resultado = (List<VigenciasConceptosTC>) query.getSingleResult();
+            List<VigenciasConceptosTC> resultado = (List<VigenciasConceptosTC>) query.getResultList();
             return resultado;
         } catch (Exception e) {
             System.out.println("Exepcion listVigenciasConceptosTCPorConcepto PersistenciaVigenciasConceptosTC : " + e.toString());

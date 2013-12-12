@@ -6,6 +6,8 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,6 +33,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "VigenciasConceptosTT.findAll", query = "SELECT v FROM VigenciasConceptosTT v")})
 public class VigenciasConceptosTT implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -54,6 +58,10 @@ public class VigenciasConceptosTT implements Serializable {
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Conceptos concepto;
+    @Transient
+    private String strFechaInicial;
+    @Transient
+    private String strFechaFinal;
 
     public VigenciasConceptosTT() {
     }
@@ -116,6 +124,38 @@ public class VigenciasConceptosTT implements Serializable {
         this.concepto = concepto;
     }
 
+    public String getStrFechaInicial() {
+        if (fechainicial != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaInicial = formatoFecha.format(fechainicial);
+        } else {
+            strFechaInicial = " ";
+        }
+        return strFechaInicial;
+    }
+
+    public void setStrFechaInicial(String strFechaInicial) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechainicial = formatoFecha.parse(strFechaInicial);
+        this.strFechaInicial = strFechaInicial;
+    }
+
+    public String getStrFechaFinal() {
+        if (fechafinal != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaFinal = formatoFecha.format(fechafinal);
+        } else {
+            strFechaFinal = " ";
+        }
+        return strFechaFinal;
+    }
+
+    public void setStrFechaFinal(String strFechaFinal) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechafinal = formatoFecha.parse(strFechaFinal);
+        this.strFechaFinal = strFechaFinal;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -140,5 +180,5 @@ public class VigenciasConceptosTT implements Serializable {
     public String toString() {
         return "Entidades.Vigenciasconceptostt[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

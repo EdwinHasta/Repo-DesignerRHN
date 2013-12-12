@@ -53,4 +53,8 @@ public interface PersistenciaFormulasConceptosInterface {
      * @return Retorna true si existe una relación entre la fórmula y el concepto
      */
     public boolean verificarFormulaCargue_Concepto(BigInteger secConcepto, BigInteger secFormula);
+    
+    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(BigInteger secConcepto);
+    
+    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(BigInteger secConcepto);
 }
