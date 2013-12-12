@@ -391,6 +391,9 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <lnk:calendar id="dateVCTCFechaInicial" value="#{infoVCTC.fechainicial}" > 
+                                                        <p:ajax event="select" listener="#{controlDetalleConcepto.cambiarIndiceVigenciaConceptoTC(indiceVCTC,0)}" process="@this"/>
+                                                        <p:ajax event="change" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoTC(indiceVCTC,0)}" process="@this" update="dateVCTCFechaInicial"/>
+                                                        <p:ajax event="dateSelect" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoTC(indiceVCTC,0)}" process="@this" update="dateVCTCFechaInicial"/>
 
                                                     </lnk:calendar>
                                                 </f:facet>  
@@ -410,7 +413,9 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <lnk:calendar id="dateVCTCFechaFinal" value="#{infoVCTC.fechafinal}" > 
-
+                                                        <p:ajax event="select" listener="#{controlDetalleConcepto.cambiarIndiceVigenciaConceptoTC(indiceVCTC,1)}" process="@this"/>
+                                                        <p:ajax event="change" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoTC(indiceVCTC,1)}" process="@this" update="dateVCTCFechaFinal"/>
+                                                        <p:ajax event="dateSelect" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoTC(indiceVCTC,1)}" process="@this" update="dateVCTCFechaFinal"/>
                                                     </lnk:calendar>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -426,7 +431,9 @@
                                                 <f:facet name="output"><h:outputText value="#{infoVCTC.tipocontrato.nombre}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText value="#{infoVCTC.tipocontrato.nombre}"  id="editarDescripcionVCTC" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
-
+                                                        <p:ajax event="select"  listener="#{controlDetalleConcepto.cambiarIndiceVigenciaConceptoTC(indiceVCTC, 2)}" process="@this"/>
+                                                        <p:ajax event="change" update="editarDescripcionVCTC" listener="#{controlDetalleConcepto.modificarVigenciaConceptoTC(indiceVCTC,'CONTRATO',infoVCTC.tipocontrato.nombre)}" process="@this"/>
+                                                        <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indiceVCTC,0,0,3)}" process="@this"/>
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -460,7 +467,9 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <lnk:calendar id="dateVCRLFechaInicial" value="#{infoVCRL.fechainicial}" > 
-
+                                                        <p:ajax event="select" listener="#{controlDetalleConcepto.cambiarIndiceVigenciaConceptoRL(indiceVCRL,0)}" process="@this"/>
+                                                        <p:ajax event="change" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoRL(indiceVCRL,0)}" process="@this" update="dateVCRLFechaInicial"/>
+                                                        <p:ajax event="dateSelect" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoRL(indiceVCRL,0)}" process="@this" update="dateVCRLFechaInicial"/>
                                                     </lnk:calendar>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -479,7 +488,9 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <lnk:calendar id="dateVCRLFechaFinal" value="#{infoVCRL.fechafinal}" > 
-
+                                                        <p:ajax event="select" listener="#{controlDetalleConcepto.cambiarIndiceVigenciaConceptoRL(indiceVCRL,1)}" process="@this"/>
+                                                        <p:ajax event="change" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoRL(indiceVCRL,1)}" process="@this" update="dateVCRLFechaFinal"/>
+                                                        <p:ajax event="dateSelect" listener="#{controlDetalleConcepto.modificacionesFechaVigenciaConceptoRL(indiceVCRL,1)}" process="@this" update="dateVCRLFechaFinal"/>
                                                     </lnk:calendar>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -495,6 +506,9 @@
                                                 <f:facet name="output"><h:outputText value="#{infoVCRL.tiposalario.nombre}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText value="#{infoVCRL.tiposalario.nombre}"  id="editarDescripcionVCRL" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
+                                                        <p:ajax event="select"  listener="#{controlDetalleConcepto.cambiarIndiceVigenciaConceptoRL(indiceVCRL, 2)}" process="@this"/>
+                                                        <p:ajax event="change" update="editarDescripcionVCRL" listener="#{controlDetalleConcepto.modificarVigenciaConceptoRL(indiceVCRL,'REFORMA',infoVCRL.tiposalario.nombre)}" process="@this"/>
+                                                        <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indiceVCRL,0,0,4)}" process="@this"/>
 
                                                     </p:inputText>
                                                 </f:facet>  
@@ -585,27 +599,27 @@
                         <p:commandButton style="position: absolute; left: 790px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto" process="@this" />
                     </p:panel>
 
-                    
-                     <p:dialog id="seleccionarTablaNewReg" header="Nuevo Registro" widgetVar="seleccionarTablaNewReg"  resizable="false" draggable="false" modal="true" height="350" width="450px" style="font-size: 12px" closable="false">  
+
+                    <p:dialog id="seleccionarTablaNewReg" header="Nuevo Registro" widgetVar="seleccionarTablaNewReg"  resizable="false" draggable="false" modal="true" height="350" width="450px" style="font-size: 12px" closable="false">  
                         <h:outputText value="Seleccione la tabla a la cual se ingresara el nuevo registro" style="position: absolute; left: 45px; top: 15px; font-weight:bold;" />
                         <h:outputText  value="Cuentas y Tipos CC" style="position: absolute; left: 70px; top: 75px; font-weight:bold;color: #14388B;"/>
                         <p:commandButton value="Aceptar" actionListener="#{controlDetalleConcepto.validarIngresoNuevaVigenciaCuenta()}" onclick="seleccionarTablaNewReg.hide();" style="position: absolute; left: 250px; top: 65px; font-weight:bold;"  process="@this"/>
-                        
+
                         <h:outputText  value="Grupos Contables" style="position: absolute; left: 70px; top: 115px; font-weight:bold;color: #14388B;"/>
                         <p:commandButton value="Aceptar" actionListener="#{controlDetalleConcepto.validarIngresoNuevaVigenciaGrupoConcepto()}" style="position: absolute; left: 250px; top: 105px; font-weight:bold;" onclick="seleccionarTablaNewReg.hide();" process="@this"/>
-                        
+
                         <h:outputText  value="Tipos de Trabajadores" style="position: absolute; left: 70px; top: 155px; font-weight:bold;color: #14388B;"/>
                         <p:commandButton value="Aceptar" actionListener="#{controlDetalleConcepto.validarIngresoNuevaVigenciaConceptoTT()}" style="position: absolute; left: 250px; top: 145px; font-weight:bold;" onclick="seleccionarTablaNewReg.hide();" process="@this"/>
-                        
+
                         <h:outputText  value="Tipos de Contratos" style="position: absolute; left: 70px; top: 195px; font-weight:bold;color: #14388B;"/>
-                        <p:commandButton value="Aceptar" style="position: absolute; left: 250px; top: 185px; font-weight:bold;" onclick="seleccionarTablaNewReg.hide();" process="@this"/>
-                        
+                        <p:commandButton value="Aceptar" actionListener="#{controlDetalleConcepto.validarIngresoNuevaVigenciaConceptoTC()}" style="position: absolute; left: 250px; top: 185px; font-weight:bold;" onclick="seleccionarTablaNewReg.hide();" process="@this"/>
+
                         <h:outputText  value="Tipos de Salarios" style="position: absolute; left: 70px; top: 235px; font-weight:bold;color: #14388B;"/>
-                        <p:commandButton value="Aceptar" style="position: absolute; left: 250px; top: 225px; font-weight:bold;" onclick="seleccionarTablaNewReg.hide();" process="@this"/>
-                        
+                        <p:commandButton value="Aceptar" actionListener="#{controlDetalleConcepto.validarIngresoNuevaVigenciaConceptoRL()}" style="position: absolute; left: 250px; top: 225px; font-weight:bold;" onclick="seleccionarTablaNewReg.hide();" process="@this"/>
+
                         <h:outputText  value="Formulas" style="position: absolute; left: 70px; top: 275px; font-weight:bold;color: #14388B;"/>
                         <p:commandButton value="Aceptar" style="position: absolute; left: 250px; top: 265px; font-weight:bold;" onclick="seleccionarTablaNewReg.hide();" process="@this"/>
-                        
+
                         <p:commandButton value="Salir"  style="position: absolute; top: 315px; left: 370px" onclick="seleccionarTablaNewReg.hide();" process="@this" />
                     </p:dialog>
 
@@ -863,8 +877,8 @@
                             <p:resetInput target=":form:lovGrupoConcepto:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
-                    
+
+
                     <p:dialog header="Tipos Trabajadores" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
                               showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovTipoTrabajador" style="font-size: 11px; width: 420px" var="tiposTra" value="#{controlDetalleConcepto.listTiposTrabajadores}" rowKey="#{tiposTra.secuencia}"
@@ -887,6 +901,56 @@
                         </p:commandButton>
                         <p:commandButton id="atrasTTr" style="position: relative; left: 230px" value="Atras" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
                             <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Tipos Contratos" widgetVar="TipoContratosDialogo" draggable="false" resizable="false" closable="false" id="TipoContratosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovTipoContrato" style="font-size: 11px; width: 420px" var="tiposCon" value="#{controlDetalleConcepto.listTiposContratos}" rowKey="#{tiposCon.secuencia}"
+                                     selection="#{controlDetalleConcepto.tipoContratoSeleccionado}" selectionMode="single" widgetVar="lovTipoContrato" scrollable="true" scrollHeight="250" scrollWidth="420"
+                                     filteredValue="#{controlDetalleConcepto.filtrarListTiposContratos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarTCt"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Tipo Contrato: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoContrato.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tiposCon.nombre}" width="100"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{tiposCon.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarTCt" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlDetalleConcepto.aceptar}" onclick="TipoContratosDialogo.hide(), lovTipoContrato.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarTipoContrato()}" update="lovTipoContrato, aceptarTCt, datosVigenciaConceptoTC" process="@this">
+                            <p:resetInput target=":form:lovTipoContrato:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTCt" style="position: relative; left: 230px" value="Atras" onclick="TipoContratosDialogo.hide(), lovTipoContrato.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioTipoContrato()}" update="lovTipoContrato" process="@this">
+                            <p:resetInput target=":form:lovTipoContrato:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Tipos Contratos" widgetVar="ReformaLaboralDialogo" draggable="false" resizable="false" closable="false" id="ReformaLaboralDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovReformaLaboral" style="font-size: 11px; width: 420px" var="reformaL" value="#{controlDetalleConcepto.listReformasLaborales}" rowKey="#{reformaL.secuencia}"
+                                     selection="#{controlDetalleConcepto.reformaLaboralSeleccionado}" selectionMode="single" widgetVar="lovReformaLaboral" scrollable="true" scrollHeight="250" scrollWidth="420"
+                                     filteredValue="#{controlDetalleConcepto.filtrarListReformasLaborales}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarRL"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Reforma Laboral: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovReformaLaboral.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{reformaL.nombre}" width="100"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{reformaL.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarRL" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlDetalleConcepto.aceptar}" onclick="ReformaLaboralDialogo.hide(), lovReformaLaboral.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarReformaLaboral()}" update="lovReformaLaboral, aceptarRL, datosVigenciaConceptoRL" process="@this">
+                            <p:resetInput target=":form:lovReformaLaboral:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasRL" style="position: relative; left: 230px" value="Atras" onclick="ReformaLaboralDialogo.hide(), lovReformaLaboral.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioReformaLaboral()}" update="lovReformaLaboral" process="@this">
+                            <p:resetInput target=":form:lovReformaLaboral:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
@@ -1123,8 +1187,8 @@
                             <p:commandButton id="cancelarDVC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 420px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaCuenta()}" update="duplicarVC" onclick="DuplicarRegistroVigenciaCuenta.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
-                    
+
+
                     <p:dialog id="NuevoRegistroGrupoConcepto" header="Nuevo Registro - Grupos Contables/Nomina/Gerencial" widgetVar="NuevoRegistroGrupoConcepto" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar nueva información del concepto" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
@@ -1170,7 +1234,7 @@
                             <p:commandButton id="cancelarNVGC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 220px;" actionListener="#{controlDetalleConcepto.limpiarNuevoVigenciaGrupoConcepto()}" update="nuevaVGC" onclick="NuevoRegistroGrupoConcepto.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
+
                     <p:dialog id="DuplicarRegistroVigenciaGrupoConcepto" header="Duplicar Registro - Grupos Contables/Nomina/Gerencia" widgetVar="DuplicarRegistroVigenciaGrupoConcepto" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar información del concepto " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
@@ -1216,8 +1280,8 @@
                             <p:commandButton id="cancelarDVGC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 220px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaGrupoConcepto()}" update="duplicarVGC" onclick="DuplicarRegistroVigenciaGrupoConcepto.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
-                    
+
+
                     <p:dialog id="NuevoRegistroVigenciaConceptoTT" header="Nuevo Registro - Tipos Trabajadores" widgetVar="NuevoRegistroVigenciaConceptoTT" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar nueva información del tipo trabajador" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
@@ -1255,7 +1319,7 @@
                             <p:commandButton id="cancelarNVCTT" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarNuevoVigenciaConceptoTT()}" update="nuevaVCTT" onclick="NuevoRegistroVigenciaConceptoTT.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
+
                     <p:dialog id="DuplicarRegistroVigenciaConceptoTT" header="Duplicar Registro - Tipos Trabajadores" widgetVar="DuplicarRegistroVigenciaConceptoTT" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar información del tipo trabajador " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
@@ -1287,10 +1351,162 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarTrabajadorVCTT" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,2,2)}" update="duplicarTrabajadorVCTT"/>   
                             <p:watermark for="duplicarTrabajadorVCTT" value="Tipo Trabajador" />
 
-                            
+
                             <p:commandButton id="limpiarDVCTT" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaConceptoTT()}" update="duplicarVCTT" process="@this"/>
                             <p:commandButton id="agregarDVCTT" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;"  process="@this" actionListener="#{controlDetalleConcepto.confirmarDuplicarVigenciaConceptoTT()}"  />
                             <p:commandButton id="cancelarDVCTT" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaConceptoTT()}" update="duplicarVCTT" onclick="DuplicarRegistroVigenciaConceptoTT.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="NuevoRegistroVigenciaConceptoTC" header="Nuevo Registro - Tipos Contratos" widgetVar="NuevoRegistroVigenciaConceptoTC" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información del tipo contrato" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVCTC" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniVCTCNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaInicialVCTC" value="#{controlDetalleConcepto.nuevaVigenciaConceptoTC.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaInicialVCTC" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaInicialVCTC" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinVCTCNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaFinalVCTC" value="#{controlDetalleConcepto.nuevaVigenciaConceptoTC.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaFinalVCTC" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaFinalVCTC" process="@this"/>
+                                </lnk:calendar>
+                            </div> 
+
+                            <strong><h:outputText value="Tipo Contrato: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaContratoVCTC" value="#{controlDetalleConcepto.nuevaVigenciaConceptoTC.tipocontrato.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indice,0,1,3)}"/>
+                                <p:ajax event="click" listener="#{controlDetalleConcepto.valoresBackupAutocompletarGeneral(1, 'CONTRATO',3)}" />
+                                <p:ajax event="change" listener="#{controlDetalleConcepto.autocompletarNuevoyDuplicadoVigenciaConceptoTC('CONTRATO', controlDetalleConcepto.nuevaVigenciaConceptoTC.tipocontrato.nombre, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoContratoVCTC" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,1,3)}" update="nuevaContratoVCTC"/>   
+                            <p:watermark for="nuevaContratoVCTC" value="Tipo Contrato" />
+
+
+                            <p:commandButton id="limpiarNVCTC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarNuevoVigenciaConceptoTC()}" update="nuevaVCTC" process="@this"/>
+                            <p:commandButton id="agregarNVCTC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;"  process="@this" actionListener="#{controlDetalleConcepto.agregarNuevoVigenciaConceptoTC()}"  />
+                            <p:commandButton id="cancelarNVCTC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarNuevoVigenciaConceptoTC()}" update="nuevaVCTC" onclick="NuevoRegistroVigenciaConceptoTC.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroVigenciaConceptoTC" header="Duplicar Registro - Tipos Trabajadores" widgetVar="DuplicarRegistroVigenciaConceptoTC" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información del tipo trabajador " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVCTC" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniVCTCDuplicarReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaInicialVCTC" value="#{controlDetalleConcepto.duplicarVigenciaConceptoTC.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaInicialVCTC" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaInicialVCTC" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinVCTCNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaFinalVCTC" value="#{controlDetalleConcepto.duplicarVigenciaConceptoTC.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaFinalVCTC" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaFinalVCTC" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Tipo Contrato: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarContratoVCTC" value="#{controlDetalleConcepto.duplicarVigenciaConceptoTC.tipocontrato.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indice,0,2,3)}"/>
+                                <p:ajax event="click" listener="#{controlDetalleConcepto.valoresBackupAutocompletarGeneral(2, 'CONTRATO',3)}" />
+                                <p:ajax event="change" listener="#{controlDetalleConcepto.autocompletarNuevoyDuplicadoVigenciaConceptoTC('CONTRATO', controlDetalleConcepto.duplicarVigenciaConceptoTC.tipocontrato.nombre, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarContratoVCTC" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,2,3)}" update="duplicarContratoVCTC"/>   
+                            <p:watermark for="duplicarContratoVCTC" value="Tipo Contrato" />
+
+
+                            <p:commandButton id="limpiarDVCTC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaConceptoTC()}" update="duplicarVCTC" process="@this"/>
+                            <p:commandButton id="agregarDVCTC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;"  process="@this" actionListener="#{controlDetalleConcepto.confirmarDuplicarVigenciaConceptoTC()}"  />
+                            <p:commandButton id="cancelarDVCTC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaConceptoTC()}" update="duplicarVCTC" onclick="DuplicarRegistroVigenciaConceptoTC.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+                    
+                    <p:dialog id="NuevoRegistroVigenciaConceptoRL" header="Nuevo Registro - Tipos Contratos" widgetVar="NuevoRegistroVigenciaConceptoRL" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información del tipo contrato" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaVCRL" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniVCRLNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaInicialVCRL" value="#{controlDetalleConcepto.nuevaVigenciaConceptoRL.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaInicialVCRL" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaInicialVCRL" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinVCRLNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaFinalVCRL" value="#{controlDetalleConcepto.nuevaVigenciaConceptoRL.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaFinalVCRL" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaFinalVCRL" process="@this"/>
+                                </lnk:calendar>
+                            </div> 
+
+                            <strong><h:outputText value="Tipo Salario: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaReformaVCRL" value="#{controlDetalleConcepto.nuevaVigenciaConceptoRL.tiposalario.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indice,0,1,4)}"/>
+                                <p:ajax event="click" listener="#{controlDetalleConcepto.valoresBackupAutocompletarGeneral(1, 'REFORMA',4)}" />
+                                <p:ajax event="change" listener="#{controlDetalleConcepto.autocompletarNuevoyDuplicadoVigenciaConceptoRL('REFORMA', controlDetalleConcepto.nuevaVigenciaConceptoRL.tiposalario.nombre, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoReformaVCRL" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,1,4)}" update="nuevaReformaVCRL"/>   
+                            <p:watermark for="nuevaReformaVCRL" value="Tipo Salario" />
+
+
+                            <p:commandButton id="limpiarNVCRL" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarNuevoVigenciaConceptoRL()}" update="nuevaVCRL" process="@this"/>
+                            <p:commandButton id="agregarNVCRL" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;"  process="@this" actionListener="#{controlDetalleConcepto.agregarNuevoVigenciaConceptoRL()}"  />
+                            <p:commandButton id="cancelarNVCRL" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarNuevoVigenciaConceptoRL()}" update="nuevaVCRL" onclick="NuevoRegistroVigenciaConceptoRL.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroVigenciaConceptoRL" header="Duplicar Registro - Tipos Contratos" widgetVar="DuplicarRegistroVigenciaConceptoRL" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar información del tipo contrato " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarVCRL" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniVCRLDuplicarReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaInicialVCRL" value="#{controlDetalleConcepto.duplicarVigenciaConceptoRL.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaInicialVCRL" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaInicialVCRL" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinVCRLNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaFinalVCRL" value="#{controlDetalleConcepto.duplicarVigenciaConceptoRL.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaFinalVCRL" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaFinalVCRL" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Tipo Salario: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarReformaVCRL" value="#{controlDetalleConcepto.duplicarVigenciaConceptoRL.tiposalario.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indice,0,2,4)}"/>
+                                <p:ajax event="click" listener="#{controlDetalleConcepto.valoresBackupAutocompletarGeneral(2, 'REFORMA',4)}" />
+                                <p:ajax event="change" listener="#{controlDetalleConcepto.autocompletarNuevoyDuplicadoVigenciaConceptoRL('REFORMA', controlDetalleConcepto.duplicarVigenciaConceptoRL.tiposalario.nombre, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarReformaVCRL" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,2,4)}" update="duplicarReformaVCRL"/>   
+                            <p:watermark for="duplicarReformaVCRL" value="Tipo Salario" />
+
+
+                            <p:commandButton id="limpiarDVCRL" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaConceptoRL()}" update="duplicarVCRL" process="@this"/>
+                            <p:commandButton id="agregarDVCRL" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;"  process="@this" actionListener="#{controlDetalleConcepto.confirmarDuplicarVigenciaConceptoRL()}"  />
+                            <p:commandButton id="cancelarDVCRL" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarVigenciaConceptoRL()}" update="duplicarVCRL" onclick="DuplicarRegistroVigenciaConceptoRL.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -1342,8 +1558,8 @@
                     </p:dialog>
 
                     <!-- editar valores tabla vigencias grupos conceptos -->
-                    
-                     <p:dialog id="editarFechaInicialVGCD" header="Fecha Inicial - Grupos Contables" widgetVar="editarFechaInicialVGCD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+
+                    <p:dialog id="editarFechaInicialVGCD" header="Fecha Inicial - Grupos Contables" widgetVar="editarFechaInicialVGCD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaGrupoConcepto.strFechaInicial}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
                         <p:commandButton id="cancelarFechaInicialVGCD" value="Atras" onclick="editarFechaInicialVGCD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
@@ -1362,10 +1578,10 @@
                         <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaGrupoConcepto.grupoconcepto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarEditarDescripcionVGCD" value="Atras" onclick="editaDescripcionVGCD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    
-                     <!-- editar valores tabla vigencias conceptos TT -->
-                    
-                     <p:dialog id="editarFechaInicialVCTTD" header="Fecha Inicial - Tipos Trabajadores" widgetVar="editarFechaInicialVCTTD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+
+                    <!-- editar valores tabla vigencias conceptos TT -->
+
+                    <p:dialog id="editarFechaInicialVCTTD" header="Fecha Inicial - Tipos Trabajadores" widgetVar="editarFechaInicialVCTTD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoTT.strFechaInicial}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
                         <p:commandButton id="cancelarFechaInicialVCTTD" value="Atras" onclick="editarFechaInicialVCTTD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
@@ -1380,7 +1596,44 @@
                         <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoTT.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarEditarDescripcionVCTTD" value="Atras" onclick="editaDescripcionVCTTD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
+
+
+                    <!-- editar valores tabla vigencias conceptos TC -->
+
+                    <p:dialog id="editarFechaInicialVCTCD" header="Fecha Inicial - Tipos Contratos" widgetVar="editarFechaInicialVCTCD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoTC.strFechaInicial}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarFechaInicialVCTCD" value="Atras" onclick="editarFechaInicialVCTCD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalVCTCD" header="Fecha Final - Tipos Contratos" widgetVar="editarFechaFinalVCTCD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoTC.strFechaFinal}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarFechaFinalVCTCD" value="Atras" onclick="editarFechaFinalVCTCD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+
+                    <p:dialog id="editaDescripcionVCTCD" header="Descripcion Tipo Contratos" widgetVar="editaDescripcionVCTCD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoTC.tipocontrato.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarDescripcionVCTCD" value="Atras" onclick="editaDescripcionVCTCD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
                     
+                    <!-- editar valores tabla vigencias conceptos RL -->
+
+                    <p:dialog id="editarFechaInicialVCRLD" header="Fecha Inicial - Tipos Salario" widgetVar="editarFechaInicialVCRLD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoRL.strFechaInicial}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarFechaInicialVCRLD" value="Atras" onclick="editarFechaInicialVCRLD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalVCRLD" header="Fecha Final - Tipos Salario" widgetVar="editarFechaFinalVCRLD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoRL.strFechaFinal}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarFechaFinalVCRLD" value="Atras" onclick="editarFechaFinalVCRLD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+
+                    <p:dialog id="editaDescripcionVCRLD" header="Descripcion Tipo Salario" widgetVar="editaDescripcionVCRLD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlDetalleConcepto.editarVigenciaConceptoRL.tiposalario.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarDescripcionVCRLD" value="Atras" onclick="editaDescripcionVCRLD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
                 </h:form>
 
                 <h:form id="formExportarVigenciasCuentas">
@@ -1438,7 +1691,7 @@
 
                     </p:dataTable>
                 </h:form>
-                
+
                 <h:form id="formExportarVigenciasGruposConceptos">
                     <p:dataTable id="datosVigenciaGrupoConceptoExportar" var="infoExpVGC" style="visibility: hidden; display: none;"                           
                                  value="#{controlDetalleConcepto.listVigenciasGruposConceptosConcepto}"> 
@@ -1470,7 +1723,7 @@
                     </p:dataTable>
                 </h:form>
 
-                
+
                 <h:form id="formExportarVigenciasConceptosTT">
                     <p:dataTable id="datosVigenciaConceptoTTExportar" var="infoExpVCTT" style="visibility: hidden; display: none;"                           
                                  value="#{controlDetalleConcepto.listVigenciasConceptosTTConcepto}"> 
@@ -1492,6 +1745,58 @@
                         <p:column headerText="Descripcion Tipo trabajador">                                  
                             <f:facet name="header"><h:outputText value="Descripcion_Tipo_Trabajador"/> </f:facet> 
                             <h:outputText value="#{infoExpVCTT.tipotrabajador.nombre}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+
+                <h:form id="formExportarVigenciasConceptosTC">
+                    <p:dataTable id="datosVigenciaConceptoTCExportar" var="infoExpVCTC" style="visibility: hidden; display: none;"                           
+                                 value="#{controlDetalleConcepto.listVigenciasConceptosTCConcepto}"> 
+
+                        <p:column headerText="Fecha Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoExpVCTC.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Final"/> </f:facet> 
+                            <h:outputText value="#{infoExpVCTC.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Descripcion Tipo Trabajador">                                  
+                            <f:facet name="header"><h:outputText value="Descripcion_Tipo_Contrato"/> </f:facet> 
+                            <h:outputText value="#{infoExpVCTC.tipocontrato.nombre}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+                
+                 <h:form id="formExportarVigenciasConceptosRL">
+                    <p:dataTable id="datosVigenciaConceptoRLExportar" var="infoExpVCRL" style="visibility: hidden; display: none;"                           
+                                 value="#{controlDetalleConcepto.listVigenciasConceptosRLConcepto}"> 
+
+                        <p:column headerText="Fecha Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoExpVCRL.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Final"/> </f:facet> 
+                            <h:outputText value="#{infoExpVCRL.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Descripcion Tipo Salario">                                  
+                            <f:facet name="header"><h:outputText value="Descripcion_Tipo_Salario"/> </f:facet> 
+                            <h:outputText value="#{infoExpVCRL.tiposalario.nombre}" />
                         </p:column>
 
                     </p:dataTable>
