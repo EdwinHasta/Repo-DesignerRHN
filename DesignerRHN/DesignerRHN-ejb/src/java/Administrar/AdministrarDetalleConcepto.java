@@ -470,6 +470,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
 
+    @Override
     public Long comportamientoAutomaticoConcepto(BigInteger secuencia){
         try{
             Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoAutomaticoSecuenciaConcepto(secuencia);
@@ -481,6 +482,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
 
+    @Override
     public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia){
         try{
             Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoSemiAutomaticoSecuenciaConcepto(secuencia);
