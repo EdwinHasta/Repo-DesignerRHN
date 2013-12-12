@@ -49,6 +49,6 @@ public class AdministrarFormula implements AdministrarFormulaInterface {
 
     @Override
     public void operandoFormula(BigInteger secFormula) {
-        persistenciaFormulas.oprandoFormulas(secFormula);
+        persistenciaFormulas.operandoFormulas(secFormula);
     }
 }

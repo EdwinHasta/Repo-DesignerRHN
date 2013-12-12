@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Ciudades;
@@ -11,10 +14,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless Clase encargada de realizar operaciones sobre la tabla 'Ciudades'
+ * de la base de datos
+ * @author Betelgeuse
+ */
 @Stateless
 public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -27,32 +36,15 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
             throw new EntityExistsException(ex);
         }
     }
-       
-     
-     /*
-      *Editar ciudades. 
-      */
+
     @Override
     public void editar(Ciudades ciudades) {
         em.merge(ciudades);
     }
 
-    /*
-     *Borrar Ciudades.
-     */
     @Override
     public void borrar(Ciudades ciudades) {
         em.remove(em.merge(ciudades));
-    }
-
-    /*
-     *Encontrar una ciudad. 
-     */
-
-    public List<Ciudades> buscarCiudades() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Ciudades.class));
-        return em.createQuery(cq).getResultList();
     }
 
     @Override

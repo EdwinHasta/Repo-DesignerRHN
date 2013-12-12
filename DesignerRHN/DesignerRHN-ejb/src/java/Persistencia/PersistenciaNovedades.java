@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Novedades;
@@ -9,37 +12,40 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Novedades'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
     public void crear(Novedades novedades) {
         try {
-//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(novedades);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaNovedades.crear");
         }
     }
 
-    // Editar Novedades. 
     @Override
     public void editar(Novedades novedades) {
         em.merge(novedades);
     }
 
-    /*
-     *Borrar Novedades.
-     */
     @Override
     public void borrar(Novedades novedades) {
         em.remove(em.merge(novedades));
     }
 
+    @Override
     public List<Novedades> novedadesParaReversar(BigInteger usuarioBD, String documentoSoporte) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.usuarioreporta.secuencia = :usuarioBD AND n.documentosoporte = :documentoSoporte");
@@ -52,21 +58,9 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
-    //Trae las Novedades del Concepto seleccionado
 
-    public List<Novedades> conceptosNovedades(BigInteger secuenciaNovedad) {
-        try {
-            Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaNovedad");
-            query.setParameter("secuenciaNovedad", secuenciaNovedad);
-            List<Novedades> todasNovedades = query.getResultList();
-            return todasNovedades;
-        } catch (Exception e) {
-            System.out.println("Error: (todasNovedades)" + e);
-            return null;
-        }
-    }
-
-    public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado) {
+    @Override
+    public List<Novedades> todasNovedadesEmpleado(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
@@ -78,6 +72,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         }
     }
 
+    @Override
     public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaConcepto");
@@ -90,6 +85,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         }
     }
 
+    @Override
     public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.tercero.secuencia= :secuenciaTercero");
@@ -102,6 +98,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         }
     }
 
+    @Override
     public int reversarNovedades(BigInteger usuarioBD, String documentoSoporte) {
         try {
             Query query = em.createQuery("DELETE FROM Novedades n WHERE n.usuarioreporta.secuencia = :usuarioBD AND n.documentosoporte = :documentoSoporte");
@@ -115,19 +112,6 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         }
     }
 
-    /*  @Override
-     public List<Novedades> novedadesEmpleado (BigInteger secuenciaEmpleado){
-     try {
-     Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicial");
-            
-     query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
-     List<Novedades> listaNovedades = query.getResultList();
-     return listaNovedades;
-     } catch (Exception e) {
-     System.out.println("Error PersistenciaNovedades.novedadesEmpleado" + e);
-     return null;
-     }
-     }*/
     @Override
     public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado) {
         try {
@@ -139,19 +123,6 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return listaNovedades;
         } catch (Exception e) {
             System.out.println("Error PersistenciaNovedades.novedadesEmpleado" + e);
-            return null;
-        }
-    }
-
-    public List<Novedades> novedadesEmpleadoTotales(BigInteger secuenciaEmpleado) {
-        try {
-            List<Novedades> listNovedades;
-            Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia =:secuencia");
-            query.setParameter("secuencia", secuenciaEmpleado);
-            listNovedades = (List<Novedades>) query.getResultList();
-            return listNovedades;
-        } catch (Exception e) {
-            System.out.println("Error novedadesEmpladoTotales PersistenciaNovedades : " + e.toString());
             return null;
         }
     }

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaParametrosEstadosInterface;
@@ -7,20 +10,27 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'ParametrosEstados'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaParametrosEstados implements PersistenciaParametrosEstadosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
-    public Integer empleadosParaLiquidar() {
+    public Integer empleadosParaLiquidar(String usuarioBD) {
         try {
-            String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = 'PRODUCCION' and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias='PRODUCCION'))";
+            String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = ? and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=?))";
             Query query = em.createNativeQuery(sqlQuery);
-            //Query query = em.createQuery("SELECT COUNT(pe) FROM ParametrosEstados pe WHERE EXISTS (SELECT p FROM Parametros p, ParametrosInstancias pi, UsuariosInstancias ui , Usuarios u WHERE p.secuencia = pe.parametros.secuencia AND u.secuencia = p.usuario.secuencia AND pi.parametro.secuencia = p.secuencia AND ui.instancia.secuencia = pi.instancia.secuencia AND ui.usuario.secuencia = u.secuencia AND u.alias = (SELECT vwu.alias from ActualUsuario vwu) and p.proceso = (SELECT pes.proceso FROM ParametrosEstructuras pes WHERE pes.usuario.secuencia = u.secuencia))");
-            //Integer empeladosALiquidar = (Integer) query.getSingleResult();
+            query.setParameter(1, usuarioBD);
+            query.setParameter(2, usuarioBD);
             BigDecimal a = (BigDecimal) query.getSingleResult();
             Integer empeladosALiquidar = a.intValueExact();
             return empeladosALiquidar;
@@ -30,12 +40,13 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
         }
     }
 
-    public Integer empleadosLiquidados() {
+    @Override
+    public Integer empleadosLiquidados(String usuarioBD) {
         try {
-            String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = 'PRODUCCION' and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias='PRODUCCION')) and pe.estado = 'LIQUIDADO'";
+            String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = ? and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=?)) and pe.estado = 'LIQUIDADO'";
             Query query = em.createNativeQuery(sqlQuery);
-            //Query query = em.createQuery("SELECT COUNT(pe) FROM ParametrosEstados pe WHERE EXISTS (SELECT p FROM Parametros p, ParametrosInstancias pi, UsuariosInstancias ui , Usuarios u WHERE p.secuencia = pe.parametros.secuencia AND u.secuencia = p.usuario.secuencia AND pi.parametro.secuencia = p.secuencia AND ui.instancia.secuencia = pi.instancia.secuencia AND ui.usuario.secuencia = u.secuencia AND u.alias = (SELECT vwu.alias from ActualUsuario vwu) and p.proceso = (SELECT pes.proceso FROM ParametrosEstructuras pes WHERE pes.usuario.secuencia = u.secuencia))");
-            //Integer empeladosALiquidar = (Integer) query.getSingleResult();
+            query.setParameter(1, usuarioBD);
+            query.setParameter(2, usuarioBD);
             BigDecimal a = (BigDecimal) query.getSingleResult();
             Integer empeladosALiquidar = a.intValueExact();
             return empeladosALiquidar;
@@ -45,6 +56,7 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
         }
     }
 
+    @Override
     public void inicializarParametrosEstados() {
         try {
             String sqlQuery = "UPDATE PARAMETROSESTADOS pe SET ESTADO= 'A LIQUIDAR'\n"
@@ -61,6 +73,7 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
         }
     }
     
+    @Override
     public String parametrosComprobantes(BigInteger secuenciaParametro) {
         try {
             Query query = em.createQuery("SELECT pe.estado FROM ParametrosEstados pe WHERE pe.parametros.secuencia = :secuenciaParametro");

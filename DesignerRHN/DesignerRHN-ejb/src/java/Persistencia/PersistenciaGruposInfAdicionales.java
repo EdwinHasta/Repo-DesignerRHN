@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,16 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'GruposInfAdicionales'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAdicionalesInterface{
-
-   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
-  
+    
     @Override
     public void crear(GruposInfAdicionales gruposInfAdicionales) { 
         try{
@@ -33,7 +35,6 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
         }
     }
 
-  
     @Override
     public void editar(GruposInfAdicionales gruposInfAdicionales) {
         try {
@@ -43,7 +44,6 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
         }
     }
 
- 
     @Override
     public void borrar(GruposInfAdicionales gruposInfAdicionales) {
         try{
@@ -52,14 +52,11 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
             System.out.println("Error borrando GruposInfAdicionales PersistenciaGruposInfAdicionales");
         }
     }
-
-
+    
     @Override
-    public GruposInfAdicionales buscarGrupoInfAdicional(Object id) {
+    public GruposInfAdicionales buscarGrupoInfAdicional(BigInteger secuencia) {
         try {
-            BigInteger in;
-            in = (BigInteger) id;
-            return em.find(GruposInfAdicionales.class, in);
+            return em.find(GruposInfAdicionales.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarGrupoInfAdicional PersistenciaGruposInfAdicionales : "+e.toString());
             return null;

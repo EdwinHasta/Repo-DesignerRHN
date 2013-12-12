@@ -1,32 +1,32 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
 import Entidades.Actividades;
 import InterfacePersistencia.PersistenciaActividadesInterface;
-import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
+
+
 /**
- *
- * @author user
+ * Clase Stateless
+ * Clase encargada de realizar operaciones sobre la tabla 'Actividades' de la base de datos
+ * @author betelgeuse
  */
 @Stateless
-
 public class PersistenciaActividades implements PersistenciaActividadesInterface{
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
-    /*
-     * Crear Actividades.
-     */
+    
     @Override
     public void crear(Actividades actividades) {
         try{
@@ -36,9 +36,6 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
         }
     }
 
-    /*
-     *Editar Actividades. 
-     */
     @Override
     public void editar(Actividades actividades) {
         try {
@@ -48,9 +45,6 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
         }
     }
 
-    /*
-     *Borrar Actividades.
-     */
     @Override
     public void borrar(Actividades actividades) {
         try{
@@ -60,24 +54,6 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
         }
     }
 
-    /*
-     *Encontrar un Actividades. 
-     */
-    @Override
-    public Actividades buscarActividad(Object id) {
-        try {
-            BigInteger in;
-            in = (BigInteger) id;
-            return em.find(Actividades.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarActividad PersistenciaActividades : "+e.toString());
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todos los Actividades.
-     */
     @Override
     public List<Actividades> buscarActividades() {
         try{

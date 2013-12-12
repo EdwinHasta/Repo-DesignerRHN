@@ -1,10 +1,13 @@
 package Administrar;
 
+import Entidades.Conexiones;
 import Entidades.Perfiles;
 import Entidades.Recordatorios;
 import InterfaceAdministrar.AdministrarInicioRedInterface;
 import InterfacePersistencia.EntityManagerGlobalInterface;
+import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaConexionInicialInterface;
+import InterfacePersistencia.PersistenciaConexionesInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaRecordatoriosInterface;
 import Persistencia.EntityManagerGlobal;
@@ -26,6 +29,10 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
     PersistenciaEmpresasInterface persistenciaEmpresas;
     @EJB
     EntityManagerGlobalInterface FactoryGlobal;
+    @EJB
+    PersistenciaConexionesInterface persistenciaConexiones;
+    @EJB
+    PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     private EntityManager em;
     private Perfiles perfilUsuario;
     private BigInteger secPerfil;
@@ -34,23 +41,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         FactoryGlobal = new EntityManagerGlobal();
     }
 
-    public boolean validacionLogin(String baseDatos, String usuario, String contraseña) {
-        FactoryGlobal.getEmf().close();
-        if (conexionInicial(baseDatos)) {
-            if (validarUsuario(usuario)) {
-                secPerfil = persistenciaConexionInicial.usuarioLogin(FactoryGlobal.getEmf().createEntityManager(), usuario);
-                perfilUsuario = persistenciaConexionInicial.perfilUsuario(FactoryGlobal.getEmf().createEntityManager(), secPerfil);
-                FactoryGlobal.getEmf().close();
-                if (conexionUsuario(baseDatos, usuario, contraseña)) {
-                    if (validarConexionUsuario(usuario, contraseña, baseDatos)) {
-                        persistenciaConexionInicial.setearUsuario(em, perfilUsuario.getDescripcion(), perfilUsuario.getPwd());
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+    
 
     public boolean conexionDefault() {
         try {
@@ -102,9 +93,9 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         }
     }
 
-    public boolean validarConexionUsuario(String usuario, String contraseña, String baseDatos) {
+    public boolean validarConexionUsuario() {
         try {
-            em = persistenciaConexionInicial.validarConexionUsuario(FactoryGlobal.getEmf(), usuario, contraseña, baseDatos);
+            em = persistenciaConexionInicial.validarConexionUsuario(FactoryGlobal.getEmf());
             if (em != null) {
                 if (em.isOpen()) {
                     persistenciaConexionInicial.setearUsuario(em, perfilUsuario.getDescripcion(), perfilUsuario.getPwd());
@@ -168,5 +159,14 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         } else {
             return -1;
         }
+    }
+
+    public void guardarDatosConexion(Conexiones conexion) {
+        persistenciaConexiones.verificarSID(em, conexion);
+    }
+
+    @Override
+    public String usuarioBD() {
+        return persistenciaActualUsuario.actualAliasBD_EM(em);
     }
 }

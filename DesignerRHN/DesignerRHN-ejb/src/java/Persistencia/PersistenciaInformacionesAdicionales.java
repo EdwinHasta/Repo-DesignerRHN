@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.InformacionesAdicionales;
@@ -8,16 +11,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'InformacionesAdicionales'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaInformacionesAdicionales implements PersistenciaInformacionesAdicionalesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Informacion Adicional.
-     */
     @Override
     public void crear(InformacionesAdicionales informacionesAdicionales) {
         try {
@@ -26,34 +33,22 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
             System.out.println("Error en PersistenciaInformacionesAdicionales.crear: " + e);
         }
     }
-    /*
-     *Editar Informacion Adicional. 
-     */
-
+ 
     @Override
     public void editar(InformacionesAdicionales informacionesAdicionales) {
         em.merge(informacionesAdicionales);
     }
 
-    /*
-     *Borrar Informacion Adicional.
-     */
     @Override
     public void borrar(InformacionesAdicionales informacionesAdicionales) {
         em.remove(em.merge(informacionesAdicionales));
     }
 
-    /*
-     *Encontrar una Informacion Adicional.
-     */
     @Override
-    public InformacionesAdicionales buscarinformacionAdicional(BigInteger id) {
-        return em.find(InformacionesAdicionales.class, id);
+    public InformacionesAdicionales buscarinformacionAdicional(BigInteger secuencia) {
+        return em.find(InformacionesAdicionales.class, secuencia);
     }
 
-    /*
-     *Encontrar todas las Informaciones Adicionales.
-     */
     @Override
     public List<InformacionesAdicionales> buscarinformacionesAdicionales() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -61,9 +56,6 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
         return em.createQuery(cq).getResultList();
     }
 
-    /*
-     * Encontrar Informacion Adicional de una Persona.
-     */
     @Override
     public List<InformacionesAdicionales> informacionAdicionalPersona(BigInteger secuenciaEmpleado) {
         try {
@@ -83,6 +75,7 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
         }
     }
 
+    @Override
     public List<InformacionesAdicionales> informacionAdicionalEmpleadoSecuencia(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT ia FROM InformacionesAdicionales ia WHERE ia.empleado.secuencia = :secuenciaEmpleado");

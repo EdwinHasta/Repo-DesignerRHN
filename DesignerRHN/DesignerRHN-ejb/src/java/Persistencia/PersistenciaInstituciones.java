@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,18 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Instituciones'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaInstituciones implements PersistenciaInstitucionesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear TiposTelefonos.
-     */
     @Override
     public void crear(Instituciones instituciones) {
         try {
@@ -35,17 +35,11 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
         }
     }
 
-    /*
-     *Editar TiposTelefono. 
-     */
     @Override
     public void editar(Instituciones instituciones) {
         em.merge(instituciones);
     }
 
-    /*
-     *Borrar TiposTelefono.
-     */
     @Override
     public void borrar(Instituciones instituciones) {
         try {
@@ -55,19 +49,14 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
         }
     }
 
-    /*
-     *Encontrar un TipoTelefono. 
-     */
     @Override
-    public Instituciones buscarInstitucion(BigInteger id) {
+    public Instituciones buscarInstitucion(BigInteger secuencia) {
         try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(Instituciones.class, secuencia);
+            BigInteger sec = new BigInteger(secuencia.toString());
+            return em.find(Instituciones.class, sec);
         } catch (Exception e) {
             return null;
         }
-
     }
 
    @Override

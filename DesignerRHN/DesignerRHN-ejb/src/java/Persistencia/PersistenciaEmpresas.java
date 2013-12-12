@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Empresas;
@@ -9,15 +12,21 @@ import InterfacePersistencia.PersistenciaEmpresasInterface;
 import java.math.BigInteger;
 import javax.persistence.Query;
 
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Empresas'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear empresa.
-     */
+    @Override
     public void crear(Empresas empresas) {
         try {
             em.persist(empresas);
@@ -26,9 +35,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         }
     }
 
-    /*
-     *Editar empresa. 
-     */
+    @Override
     public void editar(Empresas empresas) {
         try {
             em.merge(empresas);
@@ -37,33 +44,19 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         }
     }
 
-    /*
-     *Borrar empresa.
-     */
+    @Override
     public void borrar(Empresas empresas) {
         em.remove(em.merge(empresas));
     }
 
-    /*
-     *Encontrar una empresa. 
-     */
-    public Empresas buscarEmpresa(Object id) {
-        try {
-            return em.find(Empresas.class, id);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todas las empresas.
-     */
+    @Override
     public List<Empresas> buscarEmpresas() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Empresas.class));
         return em.createQuery(cq).getResultList();
     }
 
+    @Override
     public Empresas buscarEmpresasSecuencia(BigInteger secuencia) {
         Empresas empresas;
         try {
@@ -77,8 +70,10 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return empresas;
         }
     }
-    //PANTALLA BARRA CONSULTAR DATOS DESPUES DE LIQUIDAR
+    
+//PANTALLA BARRA CONSULTAR DATOS DESPUES DE LIQUIDAR
 
+    @Override
     public String estadoConsultaDatos(BigInteger secuenciaEmpresa) {
         try {
             Query query = em.createQuery("SELECT e.barraconsultadatos FROM Empresas e WHERE e.secuencia = :secuenciaEmpresa");
@@ -91,6 +86,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         }
     }
 
+    @Override
     public String nombreEmpresa(EntityManager entity) {
         try {
             Query query = entity.createQuery("SELECT COUNT(e) FROM Empresas e WHERE e.codigo > 0");

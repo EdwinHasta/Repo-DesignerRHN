@@ -119,4 +119,17 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
             return vigenciasCuentas;
         }
     }
+    
+    public List<VigenciasCuentas> buscarVigenciasCuentasPorConcepto(BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.concepto.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
+            List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) query.getResultList();
+            return vigenciasCuentas;
+        } catch (Exception e) {
+            System.out.println("Error buscarVigenciasCuentasPorConcepto Persistencia : " + e.toString());
+            List<VigenciasCuentas> vigenciasCuentas = null;
+            return vigenciasCuentas;
+        }
+    }
 }

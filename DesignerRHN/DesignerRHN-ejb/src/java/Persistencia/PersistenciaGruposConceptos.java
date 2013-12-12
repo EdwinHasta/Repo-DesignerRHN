@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'GruposConceptos'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -49,19 +52,7 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
             System.out.println("Error borrar gruposConceptos PersistenciaGruposConceptos");
         }
     }
-
-    @Override
-    public GruposConceptos buscarGrupoConcepto(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(GruposConceptos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("error buscarGrupoConcepto PersistenciaGruposConceptos");
-            return null;
-        }
-
-    }
-
+   
     @Override
     public List<GruposConceptos> buscarGruposConceptos() {
         try {
@@ -86,6 +77,5 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
             System.out.println("Error buscarGruposConceptosSecuencia PersistenciaGruposConceptos");
             return gruposConceptos;
         }
-
     }
 }

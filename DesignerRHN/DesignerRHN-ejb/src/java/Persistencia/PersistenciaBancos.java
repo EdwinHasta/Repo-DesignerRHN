@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
 import Entidades.Bancos;
 import InterfacePersistencia.PersistenciaBancosInterface;
-import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,18 +12,18 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author AndresPineda
+ * Clase Stateless
+ * Clase encargada de realizar operaciones sobre la tabla 'Bancos' de la base de datos
+ * @author Andrés Pineda
  */
 @Stateless
 public class PersistenciaBancos implements PersistenciaBancosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Bancos.
-     */
     @Override
     public void crear(Bancos bancos) {
         try{
@@ -35,9 +33,6 @@ public class PersistenciaBancos implements PersistenciaBancosInterface{
         }
     }
 
-    /*
-     *Editar Bancos. 
-     */
     @Override
     public void editar(Bancos bancos) {
         try {
@@ -47,9 +42,6 @@ public class PersistenciaBancos implements PersistenciaBancosInterface{
         }
     }
 
-    /*
-     *Borrar Bancos.
-     */
     @Override
     public void borrar(Bancos bancos) {
         try{
@@ -59,24 +51,6 @@ public class PersistenciaBancos implements PersistenciaBancosInterface{
         }
     }
 
-    /*
-     *Encontrar un Bancos. 
-     */
-    @Override
-    public Bancos buscarBanco(Object id) {
-        try {
-            BigInteger in;
-            in = (BigInteger) id;
-            return em.find(Bancos.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarbanco persistencia bancos : "+e.toString());
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todos los Bancos.
-     */
     @Override
     public List<Bancos> buscarBancos() {
         try{

@@ -1,8 +1,10 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Inforeportes;
 import InterfacePersistencia.PersistenciaInforeportesInterface;
-import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -11,12 +13,17 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Inforeportes'
+ * de la base de datos.
+ * (las busquedas se realizan sobre la tabla 'UsuariosInforeportes')
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaInforeportes implements PersistenciaInforeportesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -44,17 +51,6 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
             em.remove(em.merge(inforeportes));
         } catch (Exception e) {
             System.out.println("El Inforeportes no se ha podido eliminar");
-        }
-    }
-
-    @Override
-    public Inforeportes buscarInforeporte(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            return em.find(Inforeportes.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarInforeporte Persistencia");
-            return null;
         }
     }
 
@@ -135,6 +131,7 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
         }
     }
     
+    @Override
      public List<Inforeportes> buscarInforeportesUsuarioBienestar() {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'BIN' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.JornadasLaborales;
@@ -10,18 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'JornadasLaborales'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaJornadasLaborales implements PersistenciaJornadasLaboralesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear JornadasLaborales.
-     */
     @Override
     public void crear(JornadasLaborales jornadasLaborales) {
         try {
@@ -31,9 +35,6 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
         }
     }
 
-    /*
-     *Editar JornadasLaborales. 
-     */
     @Override
     public void editar(JornadasLaborales jornadasLaborales) {
         try {
@@ -43,9 +44,6 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
         }
     }
 
-    /*
-     *Borrar JornadasLaborales.
-     */
     @Override
     public void borrar(JornadasLaborales jornadasLaborales) {
         try {
@@ -55,24 +53,6 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
         }
     }
 
-    /*
-     *Encontrar una JornadasLaborales.
-     */
-    @Override
-    public JornadasLaborales buscarJornadaLaboral(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(JornadasLaborales.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarJornadaLaboral PersistenciaJornadasLaborales");
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas las JornadasLaborales
-     */
     @Override
     public List<JornadasLaborales> buscarJornadasLaborales() {
         try {

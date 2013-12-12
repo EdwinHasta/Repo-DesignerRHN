@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.IdiomasPersonas;
@@ -8,13 +11,47 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'IdiomasPersonas'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
+    public void crear(IdiomasPersonas idiomasPersonas) {
+        try {
+            em.persist(idiomasPersonas);
+        } catch (Exception e) {
+            System.out.println("Error crear PersistenciaIdiomasPersonas : " + e.toString());
+        }
+    }
+
+    @Override
+    public void editar(IdiomasPersonas idiomasPersonas) {
+        try {
+            em.merge(idiomasPersonas);
+        } catch (Exception e) {
+            System.out.println("Error editar PersistenciaIdiomasPersonas : " + e.toString());
+        }
+    }
+
+    @Override
+    public void borrar(IdiomasPersonas idiomasPersonas) {
+        try {
+            em.remove(em.merge(idiomasPersonas));
+        } catch (Exception e) {
+            System.out.println("Error borrar PersistenciaIdiomasPersonas : " + e.toString());
+        }
+    }
+    
     @Override
     public List<IdiomasPersonas> idiomasPersona(BigInteger secuenciaPersona) {
         try {
@@ -43,39 +80,6 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
         } catch (Exception e) {
             System.out.println("Error PersistenciaIdiomasPersonas.totalIdiomasPersonas" + e);
             return null;
-        }
-    }
-
-    @Override
-    public void crear(IdiomasPersonas idiomasPersonas) {
-        try {
-            em.persist(idiomasPersonas);
-        } catch (Exception e) {
-            System.out.println("Error crear PersistenciaIdiomasPersonas : " + e.toString());
-        }
-    }
-
-    /*
-     *Editar Proyectos
-     */
-    @Override
-    public void editar(IdiomasPersonas idiomasPersonas) {
-        try {
-            em.merge(idiomasPersonas);
-        } catch (Exception e) {
-            System.out.println("Error editar PersistenciaIdiomasPersonas : " + e.toString());
-        }
-    }
-
-    /*
-     *Borrar Proyectos
-     */
-    @Override
-    public void borrar(IdiomasPersonas idiomasPersonas) {
-        try {
-            em.remove(em.merge(idiomasPersonas));
-        } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaIdiomasPersonas : " + e.toString());
         }
     }
 }

@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GruposConceptos.findAll", query = "SELECT g FROM GruposConceptos g")})
 public class GruposConceptos implements Serializable {
+
     @OneToMany(mappedBy = "grupoacumulado")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupopago")
@@ -41,7 +43,7 @@ public class GruposConceptos implements Serializable {
     private Collection<GruposProvisiones> gruposProvisionesCollection4;
     @OneToMany(mappedBy = "grupo")
     private Collection<ParametrosInformes> parametrosInformesCollection;
-    
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -62,7 +64,9 @@ public class GruposConceptos implements Serializable {
     @Column(name = "FUNDAMENTAL")
     private String fundamental;
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoConcepto")
-    private Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection;*/
+     private Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection;*/
+    @Transient
+    private String strCodigo;
 
     public GruposConceptos() {
     }
@@ -93,9 +97,29 @@ public class GruposConceptos implements Serializable {
         this.codigo = codigo;
     }
 
+    public String getStrCodigo() {
+        if(codigo>0){
+            strCodigo = String.valueOf(codigo);
+        }
+        else {
+            strCodigo = " ";
+        }
+        return strCodigo;
+    }
+
+    public void setStrCodigo(String strCodigo) {
+        if(!strCodigo.isEmpty()){
+            codigo = Integer.parseInt(strCodigo);
+        }
+        else {
+            codigo = 0;
+        }
+        this.strCodigo = strCodigo;
+    }
+
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion =  " ";
+        if (descripcion == null) {
+            descripcion = " ";
         }
         return descripcion;
     }
@@ -111,15 +135,16 @@ public class GruposConceptos implements Serializable {
     public void setFundamental(String fundamental) {
         this.fundamental = fundamental;
     }
-/*
-    public Collection<VigenciasGruposConceptos> getVigenciasgruposconceptosCollection() {
-        return vigenciasgruposconceptosCollection;
-    }
+    /*
+     public Collection<VigenciasGruposConceptos> getVigenciasgruposconceptosCollection() {
+     return vigenciasgruposconceptosCollection;
+     }
 
-    public void setVigenciasgruposconceptosCollection(Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection) {
-        this.vigenciasgruposconceptosCollection = vigenciasgruposconceptosCollection;
-    }
-*/
+     public void setVigenciasgruposconceptosCollection(Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection) {
+     this.vigenciasgruposconceptosCollection = vigenciasgruposconceptosCollection;
+     }
+     */
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -198,5 +223,5 @@ public class GruposConceptos implements Serializable {
     public void setGruposProvisionesCollection4(Collection<GruposProvisiones> gruposProvisionesCollection4) {
         this.gruposProvisionesCollection4 = gruposProvisionesCollection4;
     }
-    
+
 }

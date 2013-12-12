@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.CentrosCostos;
@@ -10,85 +13,56 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author AndresPineda
+ * Clase Stateless Clase encargada de realizar operaciones sobre la tabla 'CentrosCostos'
+ * de la base de datos
+ * @author Hugo David Sin Gutiérrez
  */
 @Stateless
-public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInterface{
+public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInterface {
 
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear CentrosCostos.
-     */
-
     @Override
     public void crear(CentrosCostos centrosCostos) {
-        try{
-        em.persist(centrosCostos);
-        }catch(Exception e){
+        try {
+            em.persist(centrosCostos);
+        } catch (Exception e) {
             System.out.println("Error crear PersistenciaCentrosCostos");
         }
     }
 
-    /*
-     *Editar CentrosCostos. 
-     */
-
     @Override
     public void editar(CentrosCostos centrosCostos) {
-        try{
-        em.merge(centrosCostos);
-        }catch(Exception e){
+        try {
+            em.merge(centrosCostos);
+        } catch (Exception e) {
             System.out.println("Error editar PersistenciaCentrosCostos");
         }
     }
 
-    /*
-     *Borrar CentrosCostos.
-     */
-
     @Override
     public void borrar(CentrosCostos centrosCostos) {
-        try{
-        em.remove(em.merge(centrosCostos));
-        }catch(Exception e){
+        try {
+            em.remove(em.merge(centrosCostos));
+        } catch (Exception e) {
             System.out.println("Error borrar PersistenciaCentrosCostos");
         }
-    }
-
-    /*
-     *Encontrar una CentroCosto.
-     */
-
-    @Override
-    public CentrosCostos buscarCentroCosto(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(CentrosCostos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarCentroCosto PersistenciaCentrosCostos");
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas las CentrosCostos
-     */
+    }  
 
     @Override
     public List<CentrosCostos> buscarCentrosCostos() {
-        try{
-        List<CentrosCostos> centrosCostos = (List<CentrosCostos>) em.createNamedQuery("CentrosCostos.findAll").getResultList();
-        return centrosCostos;
-        }catch(Exception e){
+        try {
+            List<CentrosCostos> centrosCostos = (List<CentrosCostos>) em.createNamedQuery("CentrosCostos.findAll").getResultList();
+            return centrosCostos;
+        } catch (Exception e) {
             System.out.println("Error buscarCentrosCostos PersistenciaCentrosCostos");
             return null;
         }
     }
-
 
     @Override
     public CentrosCostos buscarCentroCostoSecuencia(BigInteger secuencia) {
@@ -103,7 +77,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
             return centrosCostos;
         }
     }
-    
+
     @Override
     public List<CentrosCostos> buscarCentrosCostosEmpr(BigInteger secEmpresa) {
         try {
@@ -117,11 +91,15 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
     
-        public long contadorSecuenciaEmpresa(BigInteger secEmpresa) {
-        long so = 0;
-        long vc = 0;
-        long vp = 0;
-        long total=0;
+    /**
+     * Método realizado por ?????
+     * @param secEmpresa
+     * @return 
+     */
+    @Override
+    public long contadorSecuenciaEmpresa(BigInteger secEmpresa) {
+        long so, vc, vp;
+        long total;
         try {
             Query query = em.createQuery("SELECT COUNT(so) FROM SolucionesNodos so WHERE so.secuencia = :secuenciaEmpr");
             query.setParameter("secuenciaEmpr", secEmpresa);
@@ -132,11 +110,11 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
             Query que = em.createQuery("SELECT COUNT(vp) FROM VigenciasProrrateos vp WHERE vp.secuencia = :secuenciaEmpr");
             que.setParameter("secuenciaEmpr", secEmpresa);
             vp = que.getMaxResults();
-            total=so+vc+vp;
+            total = so + vc + vp;
+            return total;
         } catch (Exception e) {
             System.out.println("Error en Persistencia PersistenciaCentrosCostos BuscarCentrosCostosEmpr " + e);
             total = -1;
-        } finally {
             return total;
         }
     }

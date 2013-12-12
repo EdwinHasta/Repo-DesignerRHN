@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Cuentas;
@@ -10,17 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Cuentas'
+ * de la base de datos
+ * @author betelgeuse
  */
 @Stateful
 public class PersistenciaCuentas implements PersistenciaCuentasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(Cuentas cuentas) {
         try {
@@ -29,9 +34,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
             System.out.println("Error crear PersistenciaCuentas : " + e.toString());
         }
     }
-
-    /*
-     */
+    
     @Override
     public void editar(Cuentas cuentas) {
         try {
@@ -41,8 +44,6 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
         }
     }
 
-    /*
-     */
     @Override
     public void borrar(Cuentas cuentas) {
         try {
@@ -52,22 +53,6 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
         }
     }
 
-    /*
-     */
-    @Override
-    public Cuentas buscarCuenta(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(Cuentas.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarCuenta PersistenciaCuentas : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<Cuentas> buscarCuentas() {
         try {
@@ -93,6 +78,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
         }
     }
 
+    @Override
     public List<Cuentas> buscarCuentasSecuenciaEmpresa(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Cuentas c WHERE c.empresa.secuencia = :secuencia");

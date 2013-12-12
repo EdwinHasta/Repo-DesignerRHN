@@ -4,7 +4,9 @@
  */
 package InterfacePersistencia;
 
+import Entidades.VigenciasConceptosTC;
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
@@ -13,4 +15,12 @@ import java.math.BigInteger;
 public interface PersistenciaVigenciasConceptosTCInterface {
 
     public boolean verificacionZonaTipoContrato(BigInteger secuenciaConcepto, BigInteger secuenciaTC);
+
+    public List<VigenciasConceptosTC> listVigenciasConceptosTCPorConcepto(BigInteger secuenciaC);
+
+    public void borrar(VigenciasConceptosTC conceptosTC);
+
+    public void editar(VigenciasConceptosTC conceptosTC);
+
+    public void crear(VigenciasConceptosTC conceptosTC);
 }

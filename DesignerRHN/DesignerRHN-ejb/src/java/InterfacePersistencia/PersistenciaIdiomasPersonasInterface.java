@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,18 +8,37 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author Administrator
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'IdiomasPersonas' 
+ * de la base de datos.
+ * @author betelgeuse
  */
 public interface PersistenciaIdiomasPersonasInterface {
-
-    public List<IdiomasPersonas> idiomasPersona(BigInteger secuenciaPersona);
-
-    public List<IdiomasPersonas> totalIdiomasPersonas();
-
+    /**
+     * Método encargado de insertar un IdiomaPersona en la base de datos.
+     * @param idiomasPersonas IdiomaPersona que se quiere crear.
+     */
     public void crear(IdiomasPersonas idiomasPersonas);
-
+    /**
+     * Método encargado de modificar un IdiomaPersona de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param idiomasPersonas IdiomaPersona con los cambios que se van a realizar.
+     */
     public void editar(IdiomasPersonas idiomasPersonas);
-
+    /**
+     * Método encargado de eliminar de la base de datos el IdiomaPersona que entra por parámetro.
+     * @param idiomasPersonas IdiomaPersona que se quiere eliminar.
+     */
     public void borrar(IdiomasPersonas idiomasPersonas);
+    /**
+     * Método encargado de buscar los IdiomasPersonas de una persona.
+     * @param secuenciaPersona Secuencia de la persona a la cual se le van a averiguar los idiomas.
+     * @return Retorna una lista de IdiomasPersonas asociadas a una persona.
+     */
+    public List<IdiomasPersonas> idiomasPersona(BigInteger secuenciaPersona);
+    /**
+     * Método encargado de buscar todos los IdiomasPersonas existentes en la base de datos.
+     * @return Retorna una lista de IdiomasPersonas.
+     */
+    public List<IdiomasPersonas> totalIdiomasPersonas();
 }

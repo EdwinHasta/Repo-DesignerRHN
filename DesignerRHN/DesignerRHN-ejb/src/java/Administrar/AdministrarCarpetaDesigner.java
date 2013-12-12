@@ -90,7 +90,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
 //    public Aficiones buscarAfi(BigDecimal cod) {
     public List<Aficiones> buscarAfi() {
 //        aficion = persistenciaAficiones.buscarAf(cod);
-        listAficiones = persistenciaAficiones.buscarAf();
+        listAficiones = persistenciaAficiones.buscarAficiones();
         return listAficiones;
     }
     

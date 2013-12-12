@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.ClasesPensiones;
@@ -10,19 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author AndresPineda
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'ClasesPensiones'
+ * de la base de datos
+ * @author Andrés Pineda
  */
-
 @Stateless
 public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Clase Pension.
-     */
     @Override
     public void crear(ClasesPensiones clasesPensiones) {
         try{
@@ -32,9 +35,6 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
         }
     }
 
-    /*
-     *Editar Clase Pension. 
-     */
     @Override
     public void editar(ClasesPensiones clasesPensiones) {
         try{
@@ -44,9 +44,6 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
         }
     }
 
-    /*
-     *Borrar Clase Pension.
-     */
     @Override
     public void borrar(ClasesPensiones clasesPensiones) {
         try{
@@ -56,24 +53,6 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
         }
     }
 
-    /*
-     *Encontrar una Clase Pension. 
-     */
-    @Override
-    public ClasesPensiones buscarClasePension(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(ClasesPensiones.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarClasePension PersistenciaClasesPensiones");
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas las ClasesPensiones. 
-     */
     @Override
     public List<ClasesPensiones> buscarClasesPensiones() {
         try{
@@ -84,7 +63,6 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
             return null;
         }
     }
-    
 
     @Override
     public ClasesPensiones buscarClasePensionSecuencia(BigInteger secuencia) {
@@ -98,7 +76,6 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
             System.out.println("Error buscarClasePennsionSecuencia PersistenciaClasesPensiones");
             ClasesPensiones claseP = null;
             return claseP;
-        }
-        
+        }        
     }
 }

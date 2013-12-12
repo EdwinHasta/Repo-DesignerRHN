@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,16 +8,38 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Asociaciones' 
+ * de la base de datos.
+ * @author betelgeuse
  */
-public interface PersistenciaAsociacionesInterface {
-    
+public interface PersistenciaAsociacionesInterface { 
+    /**
+     * Método encargado de insertar una asociación en la base de datos.
+     * @param asociaciones Asociación que se quiere crear.
+     */
     public void crear(Asociaciones asociaciones);
+    /**
+     * Método encargado de modificar una asociación de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param asociaciones Asociación con los cambios que se van a realizar.
+     */
     public void editar(Asociaciones asociaciones);
+    /**
+     * Método encargado de eliminar de la base de datos la asociación que entra por parámetro.
+     * @param asociaciones Asociación que se quiere eliminar
+     */
     public void borrar(Asociaciones asociaciones);
-    public Asociaciones buscarAsociacion(Object id);
+    /**
+     * Método encargado de buscar todas las asociaciones existentes en la base de datos.
+     * @return Retorna una lista de asociaciones.
+     */
     public List<Asociaciones> buscarAsociaciones();
+    /**
+     * Método encargado de buscar la asociación con una secuencia determinada.
+     * @param secuencia Secuencia de la asociación que se quiere buscar.
+     * @return Retorna la asociación cuya secuencia es igual al que entra por parámetro.
+     */
     public Asociaciones buscarAsociacionesSecuencia(BigInteger secuencia);
     
 }

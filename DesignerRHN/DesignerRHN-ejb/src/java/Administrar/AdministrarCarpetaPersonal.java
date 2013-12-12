@@ -265,7 +265,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     public DetallesEmpresas ConsultarEmpresa() {
         try {
-            detallesEmpresas = persistenciaDetallesEmpresas.buscarEmpresa();
+            detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(empleado.getEmpresa().getSecuencia());
             return detallesEmpresas;
         } catch (Exception e) {
             detallesEmpresas = null;

@@ -110,10 +110,6 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
         return persistenciaTempNovedades.obtenerTempNovedades(usuarioBD);
     }
 
-    @Override
-    public void revisarConcepto(int codConcepto) {
-        persistenciaConceptos.revisarConcepto(codConcepto);
-    }
     //PRIMERA ETAPA VALIDACION
     //VALIDACION DE CAMPOS
 

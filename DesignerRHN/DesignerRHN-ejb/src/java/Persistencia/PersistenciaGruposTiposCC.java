@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,12 +13,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'GruposTiposCC'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInterface {
-   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     EntityManager em;
 
     @Override
@@ -50,9 +54,9 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     }
 
     @Override
-    public GruposTiposCC buscarGruposTiposCCPorSecuencia(BigInteger secuenciaTiposCentrosCostos) {
+    public GruposTiposCC buscarGruposTiposCCPorSecuencia(BigInteger secuencia) {
         try {
-            return em.find(GruposTiposCC.class, secuenciaTiposCentrosCostos);
+            return em.find(GruposTiposCC.class, secuencia);
         } catch (Exception e) {
             System.err.println("ERROR PersistenciaGruposTiposCC buscarGruposTiposCC ERROR " + e);
             return null;

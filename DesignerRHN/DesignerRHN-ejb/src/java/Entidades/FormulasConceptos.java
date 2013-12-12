@@ -7,6 +7,8 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
@@ -44,17 +47,14 @@ public class FormulasConceptos implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ORDEN")
     private BigInteger orden;
     @Basic(optional = false)
@@ -63,11 +63,15 @@ public class FormulasConceptos implements Serializable {
     @Column(name = "TIPO")
     private String tipo;
     @JoinColumn(name = "FORMULA", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Formulas formula;
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Conceptos concepto;
+    @Transient
+    private String strFechaInicial;
+    @Transient
+    private String strFechaFinal;
 
     public FormulasConceptos() {
     }
@@ -138,6 +142,38 @@ public class FormulasConceptos implements Serializable {
 
     public void setConcepto(Conceptos concepto) {
         this.concepto = concepto;
+    }
+    
+     public String getStrFechaInicial() {
+        if (fechainicial != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaInicial = formatoFecha.format(fechainicial);
+        } else {
+            strFechaInicial = " ";
+        }
+        return strFechaInicial;
+    }
+
+    public void setStrFechaInicial(String strFechaInicial) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechainicial = formatoFecha.parse(strFechaInicial);
+        this.strFechaInicial = strFechaInicial;
+    }
+
+    public String getStrFechaFinal() {
+        if (fechafinal != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaFinal = formatoFecha.format(fechafinal);
+        } else {
+            strFechaFinal = " ";
+        }
+        return strFechaFinal;
+    }
+
+    public void setStrFechaFinal(String strFechaFinal) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechafinal = formatoFecha.parse(strFechaFinal);
+        this.strFechaFinal = strFechaFinal;
     }
 
     @Override

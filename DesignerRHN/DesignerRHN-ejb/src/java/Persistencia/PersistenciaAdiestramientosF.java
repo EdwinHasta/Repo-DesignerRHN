@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -12,11 +11,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
+/**
+ * Clase Stateless. 
+ * Clase encargada de realizar operaciones sobre la tabla 'AdiestramientosF' de la base de datos.
+ * @author Betelgeuse
+ */
 @Stateless
 public class PersistenciaAdiestramientosF implements PersistenciaAdiestramientosFInterface {
-
- @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override

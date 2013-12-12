@@ -29,7 +29,7 @@ public class AdministrarEmplNovedad implements AdministrarEmplNovedadInterface{
     @Override
     public List<Novedades> listNovedadesEmpleado(BigInteger secuenciaE) {
         try {
-            List<Novedades> listNovedades = persistenciaNovedades.novedadesEmpleadoTotales(secuenciaE);
+            List<Novedades> listNovedades = persistenciaNovedades.todasNovedadesEmpleado(secuenciaE);
             return listNovedades;
         } catch (Exception e) {
             System.out.println("Error listNovedadesEmpleado Admi : " + e.toString());

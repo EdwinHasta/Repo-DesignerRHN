@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,13 +8,36 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author Administrator
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Parametros' 
+ * de la base de datos.
+ * @author betelgeuse
  */
 public interface PersistenciaParametrosInterface {
-
+    /**
+     * Método encargado de recuperar los Parámetros que están asociados y autorizados para el usuario.
+     * El usuario estaría autorizado a tener Parámetros si tiene un registro en la tabla UsuariosInstancias.
+     * El Parámetro estaría habilitado a ser mostrado si tiene un registro en ParametrosInstancias.
+     * Como ParametrosInstancias y UsuariosInstancias utilizarían la misma instancia, se realiza un cruce
+     * entre ambas utilizando la instancia dada al usuario.
+     * @param usuarioBD Secuencia del usuario que esta usando el aplicativo.
+     * @return Retorna una lista de Parámetros.
+     */
     public List<Parametros> parametrosComprobantes(String usuarioBD);
+    /**
+     * Método encargado de buscar los Parámetros de todos los empleados.
+     * @return Retorna una lista de Parámetros.
+     */
     public List<Parametros> empleadosParametros();
+    /**
+     * Método encargado de eliminar de la base de datos el Parámetro que entra por parámetro.
+     * @param parametro Parámetro que se quiere eliminar.
+     */
     public void borrar(Parametros parametro);
+    /**
+     * Método encargado de eliminar los Parámetros de un ParametroEstructura.
+     * (En un PámetroEstructura están guardados los parámetros de liquidación, mientras que en un Parámetro
+     * estan los empleados y unas referencias a otras tablas)
+     * @param secParametrosEstructuras Secuencia de un ParametroEstructura.
+     */
     public void borrarParametros(BigInteger secParametrosEstructuras);
 }

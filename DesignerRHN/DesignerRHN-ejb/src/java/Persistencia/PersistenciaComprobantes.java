@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Comprobantes;
@@ -8,48 +11,40 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Comprobantes'
+ * de la base de datos
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaComprobantes implements PersistenciaComprobantesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Comprobante.
-     */
     @Override
     public void crear(Comprobantes comprobante) {
         em.persist(comprobante);
     }
 
-    /*
-     *Editar Comprobante. 
-     */
     @Override
     public void editar(Comprobantes comprobante) {
         em.merge(comprobante);
     }
 
-    /*
-     *Borrar Comprobante.
-     */
     @Override
     public void borrar(Comprobantes comprobante) {
         em.remove(em.merge(comprobante));
     }
 
-    /*
-     *Encontrar un Comprobante. 
-     */
     @Override
-    public Comprobantes buscarComprobante(Object id) {
-        return em.find(Comprobantes.class, id);
+    public Comprobantes buscarComprobanteSecuencia(BigInteger secuencia) {
+        return em.find(Comprobantes.class, secuencia);
     }
 
-    /*
-     *Encontrar todas los Comprobantes. 
-     */
     @Override
     public List<Comprobantes> buscarComprobantes() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -58,7 +53,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     }
 
     @Override
-   public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado) {
+    public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia = :secuenciaEmpleado ORDER BY c.numero DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
@@ -69,7 +64,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
             return null;
         }
     }
-    
+
     @Override
     public BigInteger numeroMaximoComprobante() {
         try {

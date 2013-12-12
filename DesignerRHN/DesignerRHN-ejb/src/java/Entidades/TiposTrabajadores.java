@@ -146,9 +146,9 @@ public class TiposTrabajadores implements Serializable {
     }
 
     public String getNombre() {
-        /*if (nombre == null) {
+        if (nombre == null) {
             nombre = " ";
-        }*/
+        }
         return nombre;
     }
 

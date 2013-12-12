@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,41 +8,38 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'GruposConceptos' 
+ * de la base de datos.
+ * @author AndresPineda
  */
 public interface PersistenciaGruposConceptosInterface {
     
     /**
-     * Crea un nuevo GruposConceptos
-     * @param gruposConceptos Objeto a crear
+     * Método encargado de insertar un contrato en la base de datos.
+     * @param gruposConceptos GrupoConcepto que se quiere crear.
      */
     public void crear(GruposConceptos gruposConceptos);
     /**
-     * Edita un GruposConceptos
-     * @param gruposConceptos Objeto a editar
+     * Método encargado de modificar un Contrato de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param gruposConceptos GrupoConcepto con los cambios que se van a realizar.
      */
     public void editar(GruposConceptos gruposConceptos);
     /**
-     * Borra un GruposConceptos
-     * @param gruposConceptos Objeto a borrar
+     * Método encargado de eliminar de la base de datos el Contrato que entra por parámetro.
+     * @param gruposConceptos GrupoConcepto que se quiere eliminar.
      */
-    public void borrar(GruposConceptos gruposConceptos);
+    public void borrar(GruposConceptos gruposConceptos);   
     /**
-     * Obtiene un GruposConceptos por su llave primaria ID
-     * @param id Llave Primaria ID
-     * @return GruposConceptos que cumple con la ID
-     */
-    public GruposConceptos buscarGrupoConcepto(Object id);
-    /**
-     * Obtiene la lista total de GruposConceptos
-     * @return Lista de GruposConceptos
+     * Método encargado de buscar todos los GruposConceptos existentes en la base de datos.
+     * @return Retorna una lista de GruposConceptos.
      */
     public List<GruposConceptos> buscarGruposConceptos();
     /**
-     * Obtiene un GruposConceptos por su secuencia
-     * @param secuencia Secuencia GruposConceptos
-     * @return GruposConceptos que cumple con la secuencia
+     * Método encargado de buscar el GrupoConcepto con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del GrupoConcepto que se quiere encontrar.
+     * @return Retorna el GrupoConcepto identificado con la secuencia dada por parámetro.
      */
     public GruposConceptos buscarGruposConceptosSecuencia(BigInteger secuencia);
     

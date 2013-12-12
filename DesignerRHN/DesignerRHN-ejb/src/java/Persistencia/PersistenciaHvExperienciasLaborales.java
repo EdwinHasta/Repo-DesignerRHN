@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.HvExperienciasLaborales;
@@ -8,10 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'HvExperienciasLaborales'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperienciasLaboralesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -60,10 +70,10 @@ public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperi
     }
 
     @Override
-    public List<HvExperienciasLaborales> experienciasLaboralesSecuenciaEmpleado(BigInteger secuencia) {
+    public List<HvExperienciasLaborales> experienciasLaboralesSecuenciaEmpleado(BigInteger secuenciaHv) {
         try {
             Query queryFinal = em.createQuery("SELECT hve FROM HvExperienciasLaborales hve WHERE hve.hojadevida.secuencia = :secuenciaHV");
-            queryFinal.setParameter("secuenciaHV", secuencia);
+            queryFinal.setParameter("secuenciaHV", secuenciaHv);
             List<HvExperienciasLaborales> listaExperienciasLaborales = queryFinal.getResultList();
             return listaExperienciasLaborales;
         } catch (Exception e) {

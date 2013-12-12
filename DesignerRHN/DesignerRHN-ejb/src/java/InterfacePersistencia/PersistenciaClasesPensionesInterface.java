@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,50 +8,37 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Persistencia Clase Pensiones
- * @author AndresPineda
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'ClasesPensiones' 
+ * de la base de datos.
+ * @author Andrés Pineda
  */
 public interface PersistenciaClasesPensionesInterface {
     /**
-     * Crea un objeto de tipo Clases Pensiones
-     * @param clasesPensiones Objeto a crear
+     * Método encargado de insertar una ClasePension en la base de datos.
+     * @param clasesPensiones ClasePension que se quiere crear.
      */
-    public void crear(ClasesPensiones clasesPensiones);
-    
-    
+    public void crear(ClasesPensiones clasesPensiones);        
     /**
-     * Edita un objeto de tipo Clases Pensiones
-     * @param clasesPensiones Objeto a editar
+     * Método encargado de modificar una ClasePension de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param clasesPensiones ClasePension con los cambios que se van a realizar.
      */   
-    public void editar(ClasesPensiones clasesPensiones);
-    
-    
+    public void editar(ClasesPensiones clasesPensiones);        
     /**
-     * Borrar un objeto de tipo Clases Pensiones
-     * @param clasesPensiones Objeto a borrar
+     * Método encargado de eliminar de la base de datos la ClasePension que entra por parámetro.
+     * @param clasesPensiones ClasePension que se quiere eliminar.
      */
-    public void borrar(ClasesPensiones clasesPensiones);
-    
+    public void borrar(ClasesPensiones clasesPensiones);    
     /**
-     * Busca un objeto de tipo Clases Pensiones por medio de su ID
-     * @param id Llave primaria ID 
-     * @return clasesPensiones Objeto de tipo Clases Pensiones
+     * Método encargado de buscar todas las ClasesPensiones existentes en la base de datos.
+     * @return Retorna una lista de ClasesPensiones.
      */
-    public ClasesPensiones buscarClasePension(Object id);
-    
-    
+    public List<ClasesPensiones> buscarClasesPensiones();        
     /**
-     * Metodo que busca todos los elementos de la tabla Clases Pensiones
-     * @return listaClasesPensiones Lista con todos los objetos de la tabla Clases Pensiones
+     * Método encargado de buscar la ClasePension con la secuencia dada por parámetro.
+     * @param secuencia Secuencia de la ClasePension que se quiere encontrar.
+     * @return Retorna la ClasePension identificada con la secuencia dada por parámetro.
      */
-    public List<ClasesPensiones> buscarClasesPensiones();
-    
-    
-    /**
-     * Metodo que obtiene un objeto Clases Pensiones por su secuencia
-     * @param secuencia
-     * @return clasePension Elemento que cumple con la condicion de la secuencia
-     */
-    public ClasesPensiones buscarClasePensionSecuencia(BigInteger secuencia);
-    
+    public ClasesPensiones buscarClasePensionSecuencia(BigInteger secuencia);    
 }

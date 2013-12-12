@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.MotivosLocalizaciones;
@@ -10,18 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosLocalizaciones'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLocalizacionesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear MotivosLocalizaciones.
-     */
     @Override
     public void crear(MotivosLocalizaciones motivosLocalizaciones) {
         try {
@@ -31,9 +35,6 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
         }
     }
 
-    /*
-     *Editar MotivosLocalizaciones. 
-     */
     @Override
     public void editar(MotivosLocalizaciones motivosLocalizaciones) {
         try {
@@ -43,9 +44,6 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
         }
     }
 
-    /*
-     *Borrar MotivosLocalizaciones.
-     */
     @Override
     public void borrar(MotivosLocalizaciones motivosLocalizaciones) {
         try {
@@ -55,24 +53,6 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
         }
     }
 
-    /*
-     *Encontrar un MotivosLocalizaciones 
-     */
-    @Override
-    public MotivosLocalizaciones buscarMotivoLocalizacion(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(MotivosLocalizaciones.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarMotivoLocalizacion");
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los MotivosLocalizaciones 
-     */
     @Override
     public List<MotivosLocalizaciones> buscarMotivosLocalizaciones() {
         try {
@@ -86,7 +66,6 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
 
     @Override
     public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT m FROM MotivosLocalizaciones m WHERE m.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -97,6 +76,5 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
             MotivosLocalizaciones motivoL = null;
             return motivoL;
         }
-
     }
 }

@@ -4,6 +4,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.Conexiones;
 import Entidades.Empleados;
 import Entidades.Recordatorios;
 import java.util.List;
@@ -14,15 +15,13 @@ import java.util.List;
  */
 public interface AdministrarInicioRedInterface {
 
-    public boolean validacionLogin(String baseDatos, String usuario, String contraseña);
-
     public boolean conexionInicial(String baseDatos);
 
     public boolean conexionUsuario(String baseDatos, String usuario, String contraseña);
 
     public boolean validarUsuario(String usuario);
 
-    public boolean validarConexionUsuario(String usuario, String contraseña, String baseDatos);
+   public boolean validarConexionUsuario();
 
     public void cerrarSession();
 
@@ -37,4 +36,8 @@ public interface AdministrarInicioRedInterface {
     public List<Recordatorios> consultasInicio();
 
     public int cambioClave(String usuario, String nuevaClave);
+
+    public void guardarDatosConexion(Conexiones conexion);
+
+    public String usuarioBD();
 }

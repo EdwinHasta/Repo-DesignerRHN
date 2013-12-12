@@ -123,6 +123,9 @@ public class Formulas implements Serializable {
     }
 
     public String getNombrelargo() {
+        if (nombrelargo == null) {
+            nombrelargo = " ";
+        }
         return nombrelargo;
     }
 
@@ -301,7 +304,7 @@ public class Formulas implements Serializable {
     public String getNombresFormula() {
         if (nombresFormula == null) {
             if (nombrecorto != null && nombrelargo != null) {
-                nombresFormula = nombrecorto + " - " +  nombrelargo;
+                nombresFormula = nombrecorto + " - " + nombrelargo;
             }
         }
         return nombresFormula;

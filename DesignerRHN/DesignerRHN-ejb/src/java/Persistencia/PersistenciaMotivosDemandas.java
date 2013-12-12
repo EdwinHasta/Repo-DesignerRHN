@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -13,12 +12,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosDemandas'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -59,6 +62,5 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
             System.out.println("Error PersistenciaMotivosDemandas.buscarMotivosDemandas" + e);
             return null;
         }
-
     }
 }

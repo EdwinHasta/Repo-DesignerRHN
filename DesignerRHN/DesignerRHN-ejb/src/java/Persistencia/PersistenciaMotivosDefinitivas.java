@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -13,36 +12,35 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosDefinitivas'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefinitivasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    /*
-     * Crear MotivoDefinitiva.
-     */
-
+  
+    @Override
     public void crear(Motivosdefinitivas motivosDefinitivas) {
         em.persist(motivosDefinitivas);
     }
 
-    /*
-     *Editar MotivoDefinitiva. 
-     */
+    @Override
     public void editar(Motivosdefinitivas motivosDefinitivas) {
         em.merge(motivosDefinitivas);
     }
 
-    /*
-     *Borrar MotivoDefinitiva.
-     */
+    @Override
     public void borrar(Motivosdefinitivas motivosDefinitivas) {
         em.remove(em.merge(motivosDefinitivas));
     }
 
+    @Override
     public List<Motivosdefinitivas> buscarMotivosDefinitivas() {
         try {
             Query query = em.createQuery("SELECT md FROM Motivosdefinitivas md ORDER BY md.codigo");
@@ -53,6 +51,5 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
             System.out.println("Error PersistenciaMotivosDefinitivfas.buscarMotivosDefinitivas" + e);
             return null;
         }
-
     }
 }

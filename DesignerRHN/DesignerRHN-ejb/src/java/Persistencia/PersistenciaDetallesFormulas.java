@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.DetallesFormulas;
@@ -8,13 +11,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la entidad 'DetallesFormulas',
+ * la cual no es un mapeo de la base de datos sino una Entidad para albergar un resultado.
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaDetallesFormulas implements PersistenciaDetallesFormulasInterface{
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula) {
         try {
             String sqlQuery = "select ROWNUM ID, LEVEL NIVEL, \n"
