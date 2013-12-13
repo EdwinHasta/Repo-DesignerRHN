@@ -49,7 +49,7 @@ public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacio
     }
 
     public ParametrosEstructuras parametrosLiquidacion() {
-        return persistenciaParametrosEstructuras.estructurasComprobantes(usuarioBD());
+        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD());
     }
     
     public List<Parametros> empleadosCerrarLiquidacion(String usuarioBD){

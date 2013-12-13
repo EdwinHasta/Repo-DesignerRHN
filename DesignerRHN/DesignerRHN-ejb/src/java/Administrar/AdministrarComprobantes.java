@@ -43,7 +43,7 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     public ParametrosEstructuras parametroEstructura() {
         String usuarioBD;
         usuarioBD = persistenciaActualUsuario.actualAliasBD();
-        return persistenciaParametrosEstructuras.estructurasComprobantes(usuarioBD);
+        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD);
     }
     
     @Override
