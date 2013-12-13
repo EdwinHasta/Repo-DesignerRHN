@@ -27,7 +27,6 @@ import InterfacePersistencia.PersistenciaIBCSInterface;
 import InterfacePersistencia.PersistenciaRelacionesIncapacidadesInterface;
 import InterfacePersistencia.PersistenciaSoaccidentesInterface;
 import InterfacePersistencia.PersistenciaSoausentismosInterface;
-import InterfacePersistencia.PersistenciaSoausentismosProrrogasInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaTiposAusentismosInterface;
 import java.math.BigInteger;
@@ -61,8 +60,6 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     PersistenciaDiagnosticosCategoriasInterface persistenciaDiagnosticos;
     @EJB
     PersistenciaEnfermedadesInterface persistenciaEnfermedades;
-    @EJB
-    PersistenciaSoausentismosProrrogasInterface persistenciaSoausentismosProrrogas;
     @EJB
     PersistenciaRelacionesIncapacidadesInterface persistenciaRelacionesIncapacidades;
     

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Personas;
@@ -8,48 +11,40 @@ import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaPersonasInterface;
 import java.math.BigInteger;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Personas'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaPersonas implements PersistenciaPersonasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear persona.
-     */
     @Override
     public void crear(Personas personas) {
         em.persist(personas);
     }
 
-    /*
-     *Editar persona. 
-     */
     @Override
     public void editar(Personas personas) {
         em.merge(personas);
     }
 
-    /*
-     *Borrar persona.
-     */
     @Override
     public void borrar(Personas personas) {
         em.remove(em.merge(personas));
     }
 
-    /*
-     *Encontrar una persona. 
-     */
     @Override
-    public Personas buscarPersona(BigInteger id) {
-        return em.find(Personas.class, id);
+    public Personas buscarPersona(BigInteger secuencia) {
+        return em.find(Personas.class, secuencia);
     }
 
-    /*
-     *Encontrar todas las personas. 
-     */
     @Override
     public List<Personas> buscarPersonas() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -63,7 +58,6 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
             Query query = em.createQuery("update Personas p set pathfoto='S' where p.numerodocumento =:identificacion");
             query.setParameter("identificacion", identificacion);
             query.executeUpdate();
-
         } catch (Exception e) {
             System.out.println("No se pudo agregar estado de fotografia");
         }
@@ -76,7 +70,6 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
             query.setParameter("identificacion", identificacion);
             Personas persona = (Personas) query.getSingleResult();
             return persona;
-
         } catch (Exception e) {
             Personas personas = null;
             return personas;

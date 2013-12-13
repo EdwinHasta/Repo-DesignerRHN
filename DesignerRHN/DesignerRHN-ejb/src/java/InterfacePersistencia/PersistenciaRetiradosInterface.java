@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,53 +8,49 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Retirados' 
+ * de la base de datos.
  * @author AndresPineda
  */
-public interface PersistenciaRetiradosInterface {
-    
+public interface PersistenciaRetiradosInterface {    
     /**
-     * Crea un objeto Retirados
-     * @param retirados Objeto a crear
+     * Método encargado de insertar un Retirado en la base de datos.
+     * @param retirados Retirado que se quiere crear.
      */
     public void crear(Retirados retirados);
     /**
-     * Edita un objeto Retirados
-     * @param retirados Objeto a editar
+     * Método encargado de modificar un Retirado de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param retirados Retirado con los cambios que se van a realizar.
      */
     public void editar(Retirados retirados);
     /**
-     * Borra un objeto Retirados
-     * @param retirados Objeto a editar
+     * Método encargado de eliminar de la base de datos el Retirado que entra por parámetro.
+     * @param retirados Retirado que se quiere eliminar.
      */
     public void borrar(Retirados retirados);
     /**
-     * Metodo que obtiene un Retirado por la llave primaria ID
-     * @param id Llave primaria ID
-     * @return Retirado que cumple con la llave primaria ID
+     * Método encargado de buscar el Retirado con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del Retirado que se quiere encontrar.
+     * @return Retorna el Retirado identificado con la secuencia dada por parámetro.
      */
-    public Retirados buscarRetirado(Object id);
+    public Retirados buscarRetiroSecuencia(BigInteger secuencia);
     /**
-     * Metodo que obtiene todos los Retirados de la tabla
-     * @return listR Lista de Retirados
+     * Método encargado de buscar todos los Retirados existentes en la base de datos.
+     * @return Retorna una lista de Retirados.
      */
     public List<Retirados> buscarRetirados();
     /**
-     * Metodo que busca los Retiros por la secuencia del Empleado
-     * @param secEmpleado Secuencia de empleado
-     * @return retiroE Lista de Retiros del Empleado
+     * Método encargado de buscar los Retiros de un Empleado.
+     * @param secEmpleado Secuencia del empleado.
+     * @return Retorna una lista de Retirados que tienen la información de los retiros del empleado.
      */
     public List<Retirados> buscarRetirosEmpleado(BigInteger secEmpleado);
     /**
-     * Metodo que obtiene un Retiro por su secuencia
-     * @param secR Secuencia del Retiro
-     * @return retiro Retiro que cumple con la condicion de la secuencia
-     */
-    public Retirados buscarRetiroSecuencia(BigInteger secR);
-    /**
-     * Metodo que busca un Retiro por la secuencia de una Vigencia
-     * @param secVigencia Secuencia de la Vigencia
-     * @return retV Retiro dado por la secuencia de la Vigencia
+     * Método encargado de buscar el Retirado de una vigenciatipotrabajador.
+     * @param secVigencia Secuencia de la vigenciatipotrabajador.
+     * @return Retorna el Retirado asociado a la vigenciatipotrabajador cuya secuencia coincide con el parámetro.
      */
     public Retirados buscarRetiroVigenciaSecuencia(BigInteger secVigencia);
     

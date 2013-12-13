@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -11,14 +10,23 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'RelacionesIncapacidades'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaRelacionesIncapacidades implements PersistenciaRelacionesIncapacidadesInterface {
-
+    
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     //Trae las relaciones en base al ausentismo seleccionado
+    @Override
     public String relaciones(BigInteger secuenciaAusentismo) {
         try {
             String sqlQuery = ("SELECT COUNT(ri.ano||'.'||ri.mes) FROM RelacionesIncapacidades ri, Soausentismos so WHERE ri.soausentismo = so.secuencia AND so.secuencia = ?");

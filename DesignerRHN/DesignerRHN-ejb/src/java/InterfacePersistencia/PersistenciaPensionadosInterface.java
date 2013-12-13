@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package InterfacePersistencia;
 
 import Entidades.Pensionados;
@@ -5,52 +8,50 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Pensionados' 
+ * de la base de datos.
  * @author AndresPineda
  */
 public interface PersistenciaPensionadosInterface {
     /**
-     * Crea un objeto Pensionados
-     * @param pensionados Objeto a crear
+     * Método encargado de insertar un Pensionado en la base de datos.
+     * @param pensionados Pensionado que se quiere crear.
      */
     public void crear(Pensionados pensionados);
     /**
-     * Edita un objeto Pensionados
-     * @param pensionados Objeto a editar
+     * Método encargado de modificar un Pensionado de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param pensionados Pensionado con los cambios que se van a realizar.
      */
     public void editar(Pensionados pensionados);
     /**
-     * Borra un objeto Pensionados
-     * @param pensionados Objeto a borrar
+     * Método encargado de eliminar de la base de datos el Pensionado que entra por parámetro.
+     * @param pensionados Pensionado que se quiere eliminar.
      */
     public void borrar(Pensionados pensionados);
     /**
-     * Metodo que busca un Pensionado por la llave primaria ID
-     * @param id Llave Primaria ID
-     * @return pensionado Pensionado que cumple con la llave primaria ID
+     * Método encargado de buscar el Pensionado con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del Pensionado que se quiere encontrar.
+     * @return Retorna el Pensionado identificado con la secuencia dada por parámetro.
      */
-    public Pensionados buscarPensionado(Object id);
+    public Pensionados buscarPensionado(BigInteger secuencia);
     /**
-     * Metodo que busca todos los Pensionados en la tabla
-     * @return pensionados Lista Pensionados 
+     * Método encargado de buscar todos los Pensionados existentes en la base de datos.
+     * @return Retorna una lista de Pensionados.
      */
     public List<Pensionados> buscarPensionados();
     /**
-     * Metodo que obtiene un Pensionados por la secuencia del Empleado
-     * @param secEmpleado Secuencia del empleado
-     * @return listaPE Lista de pensiones por un empleado
+     * Método encargado de buscar los Pensionados por empleado y ordenados por fechainiciopension.
+     * @param secEmpleado Secuencia del empleado por el cual se quieren buscar los Pensionados.
+     * @return Retorna una lista de Pensionados cuya vigenciatipotrabajador esta asociada al empleado 
+     * con secuencia igual a la del parametro.
      */
     public List<Pensionados> buscarPensionadosEmpleado(BigInteger secEmpleado);
     /**
-     * Metodo que obtiene una Pension por la secuencia 
-     * @param secP Secuencia de la Pension a buscar
-     * @return pension Pension que cumple con la secuencia dada
-     */
-    public Pensionados buscarPensionSecuencia(BigInteger secP);
-    /**
-     * Metodo que obtiene una Pension por la secuencia de la Vigencia
-     * @param secVigencia Secuencia de la Vigencia
-     * @return pensionV Pension que posee la vigencia referenciada
+     * Método encargado de buscar un Pensionado por su vigenciatipotrabajador.
+     * @param secVigencia Secuencia de la vigenciatipotrabajador por la que se quiere buscar.
+     * @return Retorna el pensionado asociado con la vigenciatipotrabajador.
      */
     public Pensionados buscarPensionVigenciaSecuencia(BigInteger secVigencia);
     

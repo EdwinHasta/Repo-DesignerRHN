@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -12,10 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'PryClientes'
+ * de la base de datos.
+ * @author Viktor
+ */
 @Stateless
 public class PersistenciaPryClientes implements PersistenciaPryClientesInterface{
-    
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -28,23 +34,5 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
         } catch (Exception e) {
             return null;
         }
-    }
-    
-    @Override
-        public PryClientes consultaCliente(BigInteger secuencia) {
- 
-            try {
-            Query query = em.createQuery("SELECT pc.nombre + ' / ' + pc.direccion + ' / ' + pc.telefono + ' - ' + pc.contacto FROM PryClientes pc WHERE pc.secuencia =:secuencia ");
-            query.setParameter("secuencia", secuencia);
-            PryClientes pryClientes = (PryClientes) query.getSingleResult();
-            return pryClientes;
-        } catch (Exception e) {
-            System.out.println("Error buscarProyectoSecuencia PersistenciaProyectos");
-            PryClientes pryclientes = null;
-            return pryclientes;
-        }
-    }
-    
-    
-
+    }        
 }

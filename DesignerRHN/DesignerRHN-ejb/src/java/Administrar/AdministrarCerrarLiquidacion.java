@@ -18,7 +18,7 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacionInterface{
 
-     @EJB
+    @EJB
     PersistenciaParametrosEstadosInterface persistenciaParametrosEstados;
     @EJB
     PersistenciaCandadosInterface persistenciaCandados;
@@ -49,7 +49,7 @@ public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacio
     }
 
     public ParametrosEstructuras parametrosLiquidacion() {
-        return persistenciaParametrosEstructuras.estructurasComprobantes(usuarioBD());
+        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD());
     }
     
     public List<Parametros> empleadosCerrarLiquidacion(String usuarioBD){

@@ -12,25 +12,26 @@ import java.math.BigInteger;
  */
 public interface PersistenciaParametrosEstadosInterface {
     /**
-     * Método encargado de contar los parametrosestados asociados y autorizados al usuario.
-     * @param usuarioBD Alias del usuario que esta usando la base de datos.
-     * @return Retorna la cantidad de parametrosestados del usuario o nulo.
+     * Método encargado de contar los ParametrosEstados asociados y autorizados al usuario.
+     * @param usuarioBD Alias del usuario que está usando la base de datos.
+     * @return Retorna la cantidad de ParametrosEstados del usuario o nulo.
      */
     public Integer empleadosParaLiquidar(String usuarioBD);
     /**
-     * Método encargado de contar los parametrosestados asociados, autorizados al usuario y que su estado es 'LIQUIDADO'.
-     * @param usuarioBD Alias del usuario que esta usando la base de datos.
-     * @return Retorna la cantidad de parametrosestados del usuario o nulo.
+     * Método encargado de contar los ParametrosEstados asociados, autorizados al usuario y que su estado es 'LIQUIDADO'.
+     * @param usuarioBD Alias del usuario que está usando la base de datos.
+     * @return Retorna la cantidad de ParametrosEstados del usuario o nulo.
      */
     public Integer empleadosLiquidados(String usuarioBD);
     /**
-     * 
+     * Método encargado de inicializar los ParametrosEstados asociados y autorizados al usuario.
+     * Inicializar en este caso significa colocar el estado de los ParametrosEstados en 'A LIQUIDAR'.
      */
     public void inicializarParametrosEstados();
     /**
-     * Método encargado de 
-     * @param secuenciaParametro
-     * @return 
+     * Método encargado de buscar el estado de un ParametroEstado cuyo Parámetro es especificado.
+     * @param secuenciaParametro Secuencia del Parámetro asociado al ParametroEstado
+     * @return Retorna un string con el estado del ParametroEstado asociado al Parámetro deseado.
      */
     public String parametrosComprobantes(BigInteger secuenciaParametro);
 }

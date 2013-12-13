@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Pensionados;
@@ -11,18 +14,19 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaPensionados implements PersistenciaPensionadosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Pensionados.
-     */
     @Override
     public void crear(Pensionados pensionados) {
         try {
@@ -31,11 +35,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             System.out.println("El registro Pensionados no exite o esta reservada por lo cual no puede ser modificada (Pensionados)");
         }
     }
-
-    /*
-     *Editar Pensionados. 
-     */
-
+    
     @Override
     public void editar(Pensionados pensionados) {
         try {
@@ -45,9 +45,6 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
         }
     }
 
-    /*
-     *Borrar Pensionados.
-     */
     @Override
     public void borrar(Pensionados pensionados) {
         try {
@@ -57,14 +54,10 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
         }
     }
 
-    /*
-     *Encontrar un Pensionado. 
-     */
     @Override
-    public Pensionados buscarPensionado(Object id) {
+    public Pensionados buscarPensionado(BigInteger secuencia) {
         try {
-            BigInteger in = (BigInteger) id;
-            //return em.find(VigenciasCargos.class, id);
+            BigInteger in = (BigInteger) secuencia;
             return em.find(Pensionados.class, in);
         } catch (Exception e) {
             System.out.println("Error buscarPensionado (PersistenciaPensionados)");
@@ -72,9 +65,6 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
         }
     }
 
-    /*
-     *Encontrar todos los Pensionados.
-     */
     @Override
     public List<Pensionados> buscarPensionados() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -95,19 +85,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             return null;
         }
     }
-
-    @Override
-    public Pensionados buscarPensionSecuencia(BigInteger secP) {
-        try {
-            Query query = em.createNamedQuery("Pensionados.findBySecuencia").setParameter("secuencia", secP);
-            Pensionados retiro = (Pensionados) query.getSingleResult();
-            return retiro;
-        } catch (Exception e) {
-            System.out.println("buscarPensionSecuencia Error (PersistenciaPensionados)");
-            return null;
-        }
-    }
-
+    
     @Override
     public Pensionados buscarPensionVigenciaSecuencia(BigInteger secVigencia) {
         try {
