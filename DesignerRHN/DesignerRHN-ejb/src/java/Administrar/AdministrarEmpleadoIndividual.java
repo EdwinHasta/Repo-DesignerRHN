@@ -118,7 +118,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public Telefonos primerTelefonoPersona(BigInteger secPersona) {
         List<Telefonos> listaTelefonos;
-        listaTelefonos = persistenciaTelefonos.telefonoPersona(secPersona);
+        listaTelefonos = persistenciaTelefonos.telefonosPersona(secPersona);
         if (listaTelefonos != null) {
             return listaTelefonos.get(0);
         } else {
