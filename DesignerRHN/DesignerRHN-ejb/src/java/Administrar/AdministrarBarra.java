@@ -61,7 +61,7 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     }
 
     public ParametrosEstructuras parametrosLiquidacion() {
-        return persistenciaParametrosEstructuras.estructurasComprobantes(usuarioBD());
+        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD());
     }
 
     public void inicializarParametrosEstados() {

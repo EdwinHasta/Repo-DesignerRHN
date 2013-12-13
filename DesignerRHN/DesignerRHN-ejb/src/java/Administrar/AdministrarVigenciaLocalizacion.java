@@ -152,7 +152,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public List<Proyectos> proyectos() {
         try {
-            proyectos = persistenciaProyectos.buscarProyectos();
+            proyectos = persistenciaProyectos.proyectos();
             return proyectos;
         } catch (Exception e) {
             System.out.println("Error proyectos AdministrarVigenciasdLocalizaciones");

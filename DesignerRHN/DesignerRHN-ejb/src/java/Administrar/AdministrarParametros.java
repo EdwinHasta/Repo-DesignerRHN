@@ -48,7 +48,7 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
     @Override
     public ParametrosEstructuras parametrosLiquidacion() {
         String usuarioBD = persistenciaActualUsuario.actualAliasBD();
-        return persistenciaParametrosEstructuras.estructurasComprobantes(usuarioBD);
+        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD);
     }
 
     @Override

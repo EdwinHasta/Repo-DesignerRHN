@@ -285,7 +285,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     public ParametrosEstructuras ConsultarParametros() {
         try {
-            parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametros();
+            parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(actualUsuario());
             return parametrosEstructuras;
         } catch (Exception e) {
             parametrosEstructuras = null;
