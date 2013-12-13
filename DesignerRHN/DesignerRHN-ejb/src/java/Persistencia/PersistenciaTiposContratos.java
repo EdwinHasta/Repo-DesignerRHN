@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.TiposContratos;
@@ -8,68 +11,35 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposContratos'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaTiposContratos implements PersistenciaTiposContratosInterface{
-
-        @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-        
-        /*
-     * Crear TiposContratos.
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+
     @Override
     public void crear(TiposContratos tiposContratos) {
         em.persist(tiposContratos);
     }
-
-    /*
-     *Editar TiposContratos. 
-     */
+    
     @Override
     public void editar(TiposContratos tiposContratos) {
         em.merge(tiposContratos);
     }
 
-    /*
-     *Borrar TiposContratos.
-     */
     @Override
     public void borrar(TiposContratos tiposContratos) {
         em.remove(em.merge(tiposContratos));
     }
-
-    /*
-     *Encontrar un TiposContratos. 
-     */
-
-    @Override
-    public TiposContratos buscarTipoContrato(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(TiposContratos.class, secuencia);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los TiposContratos. 
-     */
-    @Override
-    public List<TiposContratos> buscarTiposContratos() {
-
-        //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        /*CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-         cq.select(cq.from(Empleados.class));
-         return em.createQuery(cq).getResultList();
-         */
-        List<TiposContratos> tipoCLista = (List<TiposContratos>) em.createNamedQuery("TiposContratos.findAll").getResultList();
-        return tipoCLista;
-    }
-
+    
     @Override
     public TiposContratos buscarTipoContratoSecuencia(BigInteger secuencia) {
 
@@ -84,6 +54,7 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
         return tipoC;
     }
     
+    @Override
      public List<TiposContratos> tiposContratos() {
         try {
             Query query = em.createQuery("SELECT tc FROM TiposContratos tc ORDER BY tc.codigo");

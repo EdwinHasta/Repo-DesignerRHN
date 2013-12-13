@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,48 +13,38 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Sucursales'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
-
-       @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-    /*
-     * Crear empleado.
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+    
     @Override
     public void crear(Sucursales sucursales) {
         em.persist(sucursales);
     }
 
-    /*
-     *Editar empleado. 
-     */
     @Override
     public void editar(Sucursales sucursales) {
         em.merge(sucursales);
     }
 
-    /*
-     *Borrar empleado.
-     */
     @Override
     public void borrar(Sucursales sucursales) {
         em.remove(em.merge(sucursales));
     }
 
-    /*
-     *Encontrar un empleado. 
-     */
     @Override
-    public Sucursales buscarSucursal(BigInteger secuenciaS) {
+    public Sucursales buscarSucursal(BigInteger secuencia) {
         try {
-            //BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(Sucursales.class, secuenciaS);
+            return em.find(Sucursales.class, secuencia);
         } catch (Exception e) {
             System.out.println("Persistencia Sucursales "+e);
             return null;
