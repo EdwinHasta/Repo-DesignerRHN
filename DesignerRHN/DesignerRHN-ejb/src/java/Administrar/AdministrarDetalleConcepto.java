@@ -323,7 +323,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     @Override
     public List<TiposContratos> listTiposContratos() {
         try {
-            List<TiposContratos> tipos = persistenciaTiposContratos.buscarTiposContratos();
+            List<TiposContratos> tipos = persistenciaTiposContratos.tiposContratos();
             return tipos;
         } catch (Exception e) {
             System.out.println("Error listTiposContratos Admi : " + e.toString());
