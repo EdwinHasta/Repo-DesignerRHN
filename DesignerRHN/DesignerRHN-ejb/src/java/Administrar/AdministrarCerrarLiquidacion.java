@@ -18,7 +18,7 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacionInterface{
 
-     @EJB
+    @EJB
     PersistenciaParametrosEstadosInterface persistenciaParametrosEstados;
     @EJB
     PersistenciaCandadosInterface persistenciaCandados;
