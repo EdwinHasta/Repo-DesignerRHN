@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,18 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'PryPlataformas'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Proyectos
-     */
     @Override
     public void crear(PryPlataformas plataformas) {
         try {
@@ -35,9 +35,6 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
         }
     }
 
-    /*
-     *Editar Proyectos
-     */
     @Override
     public void editar(PryPlataformas plataformas) {
         try {
@@ -47,9 +44,6 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
         }
     }
 
-    /*
-     *Borrar Proyectos
-     */
     @Override
     public void borrar(PryPlataformas plataformas) {
         try {
@@ -59,24 +53,6 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
         }
     }
 
-    /*
-     *Encontrar un Proyecto
-     */
-    @Override
-    public PryPlataformas buscarPryPlataforma(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(PryPlataformas.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarPryPlataforma PersistenciaPryPlataformas : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los proyectos
-     */
     @Override
     public List<PryPlataformas> buscarPryPlataformas() {
         try {
@@ -90,7 +66,6 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
 
     @Override
     public PryPlataformas buscarPryPlataformaSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT p FROM PryPlataformas p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -101,6 +76,5 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
             PryPlataformas plataformas = null;
             return plataformas;
         }
-
     }
 }

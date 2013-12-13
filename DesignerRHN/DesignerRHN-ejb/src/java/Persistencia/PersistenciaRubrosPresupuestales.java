@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,17 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'RubrosPresupuestales'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresupuestalesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(Rubrospresupuestales rubrospresupuestales) {
         try {
@@ -34,8 +35,6 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
         }
     }
 
-    /*
-     */
     @Override
     public void editar(Rubrospresupuestales rubrospresupuestales) {
         try {
@@ -45,8 +44,6 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
         }
     }
 
-    /*
-     */
     @Override
     public void borrar(Rubrospresupuestales rubrospresupuestales) {
         try {
@@ -56,22 +53,6 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
         }
     }
 
-    /*
-     */
-    @Override
-    public Rubrospresupuestales buscarRubro(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(Rubrospresupuestales.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarCuenta PersistenciaCuentas : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<Rubrospresupuestales> buscarRubros() {
         try {

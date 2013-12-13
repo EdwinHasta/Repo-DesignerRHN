@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,15 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Procesos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaProcesos implements PersistenciaProcesosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
+    
     @Override
     public void crear(Procesos procesos) {
         try {
@@ -49,19 +52,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
             System.out.println("Error borrar PersistenciaProcesos");
         }
     }
-
-    @Override
-    public Procesos buscarProceso(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(Procesos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarProceso PersistenciaProcesos");
-            return null;
-        }
-
-    }
-
+   
     @Override
     public List<Procesos> buscarProcesos() {
         try {
@@ -87,6 +78,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
         }
     }
 
+    @Override
     public List<Procesos> lovProcesos() {
         try {
             Query query = em.createQuery("SELECT p FROM Procesos p ORDER BY p.descripcion");
@@ -98,6 +90,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
         }
     }
 
+    @Override
     public List<Procesos> procesosParametros() {
         try {
             String sqlQuery = "SELECT P.* FROM PROCESOS P\n"

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.ParametrosInformes;
@@ -11,12 +14,16 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'ParametrosInformes'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaParametrosInformes implements PersistenciaParametrosInformesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -48,10 +55,9 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     }
 
     @Override
-    public ParametrosInformes buscarParametroInforme(Object id) {
+    public ParametrosInformes buscarParametroInforme(BigInteger secuencia) {
         try {
-            BigInteger in = (BigInteger) id;
-            return em.find(ParametrosInformes.class, in);
+            return em.find(ParametrosInformes.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarParametroInforme Persistencia");
             return null;
@@ -81,18 +87,5 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
             System.out.println("Error en buscarParametroInformeUsuario " + e);
             return null;
         }
-    }
-    
-    public List<ParametrosInformes> buscarParametrosInformesUsuario(String alias) {
-        try {
-            
-            Query query = em.createQuery("SELECT pi FROM ParametrosInformes pi WHERE pi.usuario =:Alias");
-            query.setParameter("Alias", alias);
-            List<ParametrosInformes> listPI = (List<ParametrosInformes> ) query.getResultList();
-            return listPI;
-        } catch (Exception e) {
-            System.out.println("Error en buscarParametrosInformesUsuario " + e);
-            return null;
-        }
-    }
+    }   
 }

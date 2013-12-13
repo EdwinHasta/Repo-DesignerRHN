@@ -1,6 +1,8 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
-import Entidades.Cargos;
 import Entidades.ParametrosEstructuras;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
 import java.math.BigDecimal;
@@ -11,32 +13,25 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author Administrator
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'ParametrosEstructuras'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaParametrosEstructuras implements PersistenciaParametrosEstructurasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public void editar(ParametrosEstructuras parametroEstructura) {
         em.merge(parametroEstructura);
     }
 
-    public ParametrosEstructuras buscarParametros() {
-
-        try {
-            Query query = em.createQuery("SELECT p FROM ParametrosEstructuras p WHERE p.usuario.alias='PRODUCCION'");
-            ParametrosEstructuras parametrosEstructuras = (ParametrosEstructuras) query.getSingleResult();
-            return parametrosEstructuras;
-
-        } catch (Exception e) {
-            ParametrosEstructuras parametrosEstructuras = null;
-            return parametrosEstructuras;
-        }
-    }
-
+    @Override
     public BigInteger buscarEmpresaParametros(String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT p.estructura.organigrama.empresa.secuencia FROM ParametrosEstructuras p WHERE p.usuario.alias = :usuarioBD");
@@ -49,13 +44,13 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     }
 
     @Override
-    public ParametrosEstructuras estructurasComprobantes(String usuarioBD) {
+    public ParametrosEstructuras buscarParametro(String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT COUNT(pe) FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
-                query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
+                query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");                
                 query.setParameter("usuarioBD", usuarioBD);
                 ParametrosEstructuras parametroEstructura = (ParametrosEstructuras) query.getSingleResult();
                 return parametroEstructura;
@@ -68,6 +63,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
         }
     }
 
+    @Override
     public void adicionarEmpleados(BigInteger secParametroEstructura) {
         try {
             String sqlQuery = "call PARAMETROS_PKG.InsertarParametrosProceso(?)";
@@ -79,6 +75,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
         }
     }
 
+    @Override
     public Integer empleadosParametrizados(BigInteger secProceso) {
         try {
             String sqlQuery = "SELECT COUNT(*)\n"
@@ -98,6 +95,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
         }
     }
 
+    @Override
     public Integer diasDiferenciaFechas(String fechaInicial, String fechaFinal) {
         try {
             String sqlQuery = "SELECT DIAS360(to_date( ?, 'dd/MM/yyyy'), to_date( ?, 'dd/MM/yyyy')) Dias FROM dual";

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Recordatorios;
@@ -6,10 +9,16 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Recordatorios'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInterface {
 
+    @Override
     public Recordatorios recordatorioRandom(EntityManager entity) {
         try {
             String consulta = "SELECT *\n"
@@ -26,6 +35,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
         }
     }
 
+    @Override
     public List<String> recordatoriosInicio(EntityManager entity) {
         try {
             String consulta = "SELECT R.MENSAJE FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO' "
@@ -43,6 +53,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
         }
     }
 
+    @Override
     public List<Recordatorios> consultasInicio(EntityManager entity) {
         try {
             String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='CONSULTA' "

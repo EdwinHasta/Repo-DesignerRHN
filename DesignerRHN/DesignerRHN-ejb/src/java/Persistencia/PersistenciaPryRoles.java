@@ -1,9 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
-
 
 import Entidades.PryRoles;
 import InterfacePersistencia.PersistenciaPryRolesInterface;
@@ -13,17 +11,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'PryRoles'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaPryRoles implements PersistenciaPryRolesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
-        public List<PryRoles> pryroles() {
+    public List<PryRoles> pryroles() {
         try {
             Query query = em.createQuery("SELECT p FROM PryRoles p ORDER BY p.descripcion ");
             List<PryRoles> pryroles = query.getResultList();

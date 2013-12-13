@@ -1,5 +1,8 @@
-
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
+
 import Entidades.ReformasLaborales;
 import InterfacePersistencia.PersistenciaReformasLaboralesInterface;
 import java.math.BigInteger;
@@ -8,64 +11,37 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'ReformasLaborales'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
-
 public class PersistenciaReformasLaborales implements PersistenciaReformasLaboralesInterface{
-    
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Reforma Laboral.
-     */
     @Override
     public void crear(ReformasLaborales reformaLaboral) {
         em.persist(reformaLaboral);
     }
 
-    /*
-     *Editar Reforma laboral. 
-     */
     @Override
     public void editar(ReformasLaborales reformaLaboral) {
         em.merge(reformaLaboral);
     }
 
-    /*
-     *Borrar Reforma Laboral.
-     */
     @Override
     public void borrar(ReformasLaborales reformaLaboral) {
         em.remove(em.merge(reformaLaboral));
     }
 
-    /*
-     *Encontrar una reforma laboral. 
-     */
-    @Override
-    public ReformasLaborales buscarReformaLaboral(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(ReformasLaborales.class, secuencia);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas las reformas. 
-     */
     @Override
     public List<ReformasLaborales> buscarReformasLaborales() {
-
-        //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        /*CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-         cq.select(cq.from(Empleados.class));
-         return em.createQuery(cq).getResultList();
-         */
         List<ReformasLaborales> reformaLista = (List<ReformasLaborales>) em.createNamedQuery("ReformasLaborales.findAll")
                 .getResultList();
         return reformaLista;
@@ -73,7 +49,6 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
 
     @Override
     public ReformasLaborales buscarReformaSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT e FROM ReformasLaborales e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -84,7 +59,4 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
         ReformasLaborales reformaL = null;
         return reformaL;
     }
-
-
-
 }

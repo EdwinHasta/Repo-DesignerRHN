@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Retirados;
@@ -11,18 +14,19 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Retirados'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Retirados.
-     */
     @Override
     public void crear(Retirados retirados) {
         try {
@@ -32,9 +36,6 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
         }
     }
 
-    /*
-     *Editar Retirados. 
-     */
     @Override
     public void editar(Retirados retirados) {
         try {
@@ -44,9 +45,6 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
         }
     }
 
-    /*
-     *Borrar Retirados.
-     */
     @Override
     public void borrar(Retirados retirados) {
         try{
@@ -55,23 +53,6 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
         }
     }
 
-    /*
-     *Encontrar un Retirado. 
-     */
-    @Override
-    public Retirados buscarRetirado(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            //return em.find(VigenciasCargos.class, id);
-            return em.find(Retirados.class, in);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todos los Retirados.
-     */
     @Override
     public List<Retirados> buscarRetirados() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -79,7 +60,6 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
         return em.createQuery(cq).getResultList();
     }
     
-
     @Override
     public List<Retirados> buscarRetirosEmpleado(BigInteger secEmpleado) {
         try {
@@ -95,9 +75,9 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
     }
 
     @Override
-    public Retirados buscarRetiroSecuencia(BigInteger secR) {
+    public Retirados buscarRetiroSecuencia(BigInteger secuencia) {
         try {
-            Query query = em.createNamedQuery("Retirados.findBySecuencia").setParameter("secuencia", secR);
+            Query query = em.createNamedQuery("Retirados.findBySecuencia").setParameter("secuencia", secuencia);
             Retirados retiro = (Retirados) query.getSingleResult();
             return retiro;
         } catch (Exception e) {

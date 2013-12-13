@@ -1,29 +1,34 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
 import Entidades.PruebaEmpleados;
 import InterfacePersistencia.PersistenciaPruebaEmpleadosInterface;
 import java.math.BigInteger;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar las operaciones sobre las tablas 'EMPLEADOS', 'VWACTUALESSUELDOS', 'PERSONAS'
+ * para mostrar determinada información de un empleado que se encuentra en las tablas mencionadas.
+ * de la base de datos.
+ * @author Viktor
+ */
 @Stateless
 public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
     public PruebaEmpleados empleadosAsignacion(BigInteger secEmpleado) {
         try {
-            PruebaEmpleados pruebaEmpleado = null;
-            
+            PruebaEmpleados pruebaEmpleado = null;            
             Query queryValidacion = em.createQuery("SELECT COUNT(vwa) FROM VWActualesSueldos vwa WHERE vwa.empleado.secuencia = :secEmpleado");
             queryValidacion.setParameter("secEmpleado", secEmpleado);
             Long resultado = (Long) queryValidacion.getSingleResult();
@@ -37,13 +42,11 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
                 Query query = em.createNativeQuery(sqlQuery, "PruebaEmpleadosAsignacionBasica");
                 query.setParameter(1, secEmpleado);
                 pruebaEmpleado = (PruebaEmpleados) query.getSingleResult();
-            } else {
-                
+            } else {               
                 Query queryValidacion2 = em.createQuery("SELECT COUNT(vwp) FROM VWActualesPensiones vwp WHERE vwp.empleado.secuencia = :secEmpleado");
                 queryValidacion2.setParameter("secEmpleado", secEmpleado);
                 Long resultado2 = (Long) queryValidacion2.getSingleResult();
                 if(resultado2 > 0){
-
                 String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWP.valor) VALOR\n"
                         + "       FROM EMPLEADOS E, VWACTUALESPENSIONES VWP, PERSONAS P\n"
                         + "       WHERE E.persona = P.secuencia \n"
@@ -60,9 +63,5 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
             System.out.println("Error PersistenciaPruebaEmpleados.empleadosAsignacion. " + e);
             return null;
         }
-    }
-    
-   
-   
-    
+    }  
 }

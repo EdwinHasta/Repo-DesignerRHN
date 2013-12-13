@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Proyectos;
@@ -10,18 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Proyectos'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaProyectos implements PersistenciaProyectosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Proyectos
-     */
     @Override
     public void crear(Proyectos proyectos) {
         try {
@@ -31,9 +35,6 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
         }
     }
 
-    /*
-     *Editar Proyectos
-     */
     @Override
     public void editar(Proyectos proyectos) {
         try {
@@ -43,9 +44,6 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
         }
     }
 
-    /*
-     *Borrar Proyectos
-     */
     @Override
     public void borrar(Proyectos proyectos) {
         try {
@@ -53,40 +51,10 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaProyectos");
         }
-    }
-
-    /*
-     *Encontrar un Proyecto
-     */
-    @Override
-    public Proyectos buscarProyecto(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(Proyectos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarProyecto PersistenciaProyectos");
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los proyectos
-     */
-    @Override
-    public List<Proyectos> buscarProyectos() {
-        try {
-            List<Proyectos> proyectos = (List<Proyectos>) em.createNamedQuery("Proyectos.findAll").getResultList();
-            return proyectos;
-        } catch (Exception e) {
-            System.out.println("Error buscarProyectos PersistenciaProyectos");
-            return null;
-        }
-    }
-
+    }    
+    
     @Override
     public Proyectos buscarProyectoSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT p FROM Proyectos p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -97,11 +65,8 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
             Proyectos proyectos = null;
             return proyectos;
         }
-
     }
-    
-     //METODO PARA TRAER LAS VIGENCIAS DE UNA PERSONA
-
+     
    @Override
     public List<Proyectos> proyectos() {
         try {
@@ -111,7 +76,6 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
         } catch (Exception e) {
             return null;
         }
-
     }
    
     @Override
@@ -126,5 +90,4 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
            return null;
        }
    }
-    
 }
