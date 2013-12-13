@@ -94,7 +94,7 @@ public class AdministrarVigenciasContratos implements AdministrarVigenciasContra
     @Override
     public List<TiposContratos> tiposContratos() {
         try {
-            tiposContratos = persistenciaTiposContratos.buscarTiposContratos();
+            tiposContratos = persistenciaTiposContratos.tiposContratos();
             return tiposContratos;
         } catch (Exception e) {
             return null;
