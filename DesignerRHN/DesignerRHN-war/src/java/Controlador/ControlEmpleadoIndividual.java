@@ -742,7 +742,7 @@ public class ControlEmpleadoIndividual implements Serializable {
     public void setEmpleado(Empleados empleado) {
         this.empleado = empleado;
     }
-    
+
     public HVHojasDeVida getHojaDeVidaPersona() {
         return hojaDeVidaPersona;
     }

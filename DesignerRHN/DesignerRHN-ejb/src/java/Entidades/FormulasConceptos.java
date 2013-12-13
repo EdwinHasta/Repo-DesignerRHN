@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "FormulasConceptos.findAll", query = "SELECT f FROM FormulasConceptos f")})
 public class FormulasConceptos implements Serializable {
+
     @OneToMany(mappedBy = "formulaconcepto")
     private Collection<SolucionesFormulas> solucionesFormulasCollection;
     private static final long serialVersionUID = 1L;
@@ -72,6 +73,8 @@ public class FormulasConceptos implements Serializable {
     private String strFechaInicial;
     @Transient
     private String strFechaFinal;
+    @Transient
+    private String strOrden;
 
     public FormulasConceptos() {
     }
@@ -120,6 +123,25 @@ public class FormulasConceptos implements Serializable {
         this.orden = orden;
     }
 
+    public String getStrOrden() {
+        getOrden();
+        if (orden != null) {
+            strOrden = orden.toString();
+        } else {
+            strOrden = " ";
+        }
+        return strOrden;
+    }
+
+    public void setStrOrden(String strOrden) {
+        if (!strOrden.isEmpty()) {
+            orden = new BigInteger(strOrden);
+        } else {
+            orden = null;
+        }
+        this.strOrden = strOrden;
+    }
+
     public String getTipo() {
         return tipo;
     }
@@ -143,8 +165,8 @@ public class FormulasConceptos implements Serializable {
     public void setConcepto(Conceptos concepto) {
         this.concepto = concepto;
     }
-    
-     public String getStrFechaInicial() {
+
+    public String getStrFechaInicial() {
         if (fechainicial != null) {
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
             strFechaInicial = formatoFecha.format(fechainicial);
@@ -209,5 +231,5 @@ public class FormulasConceptos implements Serializable {
     public void setSolucionesFormulasCollection(Collection<SolucionesFormulas> solucionesFormulasCollection) {
         this.solucionesFormulasCollection = solucionesFormulasCollection;
     }
-    
+
 }
