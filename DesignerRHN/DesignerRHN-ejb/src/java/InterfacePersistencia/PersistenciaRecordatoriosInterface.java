@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,11 +8,32 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
- *
- * @author Administrator
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Recordatorios' 
+ * de la base de datos.
+ * @author betelgeuse
  */
 public interface PersistenciaRecordatoriosInterface {
+    /**
+     * Método encargado de buscar el primer recordatorio de tipo 'PROVERBIO' de una tabla de Recordatorios
+     * organizada aleatoriamente.
+     * @param entity EntityManager encargado de la comunicación con la base de datos.
+     * @return Retorna un Recordatorio de tipo 'PROVERBIO'.
+     */
     public Recordatorios recordatorioRandom(EntityManager entity);
+    /**
+     * Método encargado de buscar los mensajes de los recordatorios de tipo 'RECORDATORIO', con fecha igual al día actual,
+     * pertenecientes al usuario que está usando el aplicativo o no están asociados a ningún usuario.
+     * (día actual hace referencia al díe en la que el usuario ingresa al aplicativo)
+     * @param entity EntityManager encargado de la comunicación con la base de datos.
+     * @return Retorna una lista de Strings con los mensajes de los recordatorios de tipo 'RECORDATORIO' que cumplen las condiciones.
+     */
     public List<String> recordatoriosInicio(EntityManager entity);
+    /**
+     * Método encargado de buscar los mensajes de los recordatorios de tipo 'CONSULTA', con fecha igual al día actual,
+     * pertenecientes al usuario que está usando el aplicativo o no están asociados a ningún usuario.
+     * (día actual hace referencia al díe en la que el usuario ingresa al aplicativo)
+     * @param entity EntityManager encargado de la comunicación con la base de datos.
+     * @return Retorna una lista de recordatorios de tipo 'CONSULTA' que cumplen las condiciones.
+     */
     public List<Recordatorios> consultasInicio(EntityManager entity);
 }
