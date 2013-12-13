@@ -455,21 +455,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    ///////////FormulasConceptos////////////FormulasConceptos/////////////////FormulasConceptos///////
-
-    ///////////Conceptos////////////Conceptos/////////////////Conceptos///////
-    @Override
-    public Conceptos conceptoActual(BigInteger secuencia) {
-        try {
-            Conceptos actual = persistenciaConceptos.conceptosPorSecuencia(secuencia);
-            return actual;
-        } catch (Exception e) {
-            System.out.println("Error conceptoActual Admi : " + e.toString());
-            return null;
-        }
-    }
     
-
     @Override
     public Long comportamientoAutomaticoConcepto(BigInteger secuencia){
         try{
@@ -489,6 +475,19 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return retorno;
         }catch(Exception e){
             System.out.println("Error comportamientoSemiAutomaticoConcepto Admi : "+e.toString());
+            return null;
+        }
+    }
+    ///////////FormulasConceptos////////////FormulasConceptos/////////////////FormulasConceptos///////
+
+    ///////////Conceptos////////////Conceptos/////////////////Conceptos///////
+    @Override
+    public Conceptos conceptoActual(BigInteger secuencia) {
+        try {
+            Conceptos actual = persistenciaConceptos.conceptosPorSecuencia(secuencia);
+            return actual;
+        } catch (Exception e) {
+            System.out.println("Error conceptoActual Admi : " + e.toString());
             return null;
         }
     }
