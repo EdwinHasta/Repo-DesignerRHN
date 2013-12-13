@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,58 +8,57 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author Administrator
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Terceros' 
+ * de la base de datos.
+ * @author betelgeuse
  */
 public interface PersistenciaTercerosInterface {
-
     /**
-     * Crea un nuevo Terceros
-     *
-     * @param terceros Objeto a crear
+     * Método encargado de insertar un Tercero en la base de datos.
+     * @param terceros Tercero que se quiere crear.
      */
     public void crear(Terceros terceros);
-
     /**
-     * Edita un Terceros
-     *
-     * @param terceros Objeto a editar
+     * Método encargado de modificar un Tercero de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param terceros Tercero con los cambios que se van a realizar.
      */
     public void editar(Terceros terceros);
-
     /**
-     * Borra un Terceros
-     *
-     * @param terceros Objeto a borrar
+     * Método encargado de eliminar de la base de datos el Tercero que entra por parámetro.
+     * @param terceros Tercero que se quiere eliminar.
      */
     public void borrar(Terceros terceros);
-
     /**
-     * Busca un Terceros por su llave primaria
-     *
-     * @param id Llave Primaria ID
-     * @return Terceros que cumple con la llave primaria
-     */
-    public Terceros buscarTercero(Object id);
-
-    /**
-     * Busca la lista total de Terceros
-     *
-     * @return Lista de Terceros
+     * Método encargado de buscar todos los Terceros existentes en la base de datos.
+     * @return Retorna una lista de Terceros.
      */
     public List<Terceros> buscarTerceros();
-
     /**
-     * Obtiene un Terceros por la secuencia
-     *
-     * @param secuencia Secuencia Terceros
-     * @return Terceros que cumple con la secuencia dad
+     * Método encargado de buscar el Tercero con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del Tercero que se quiere encontrar.
+     * @return Retorna el Tercero identificado con la secuencia dada por parámetro.
      */
     public Terceros buscarTercerosSecuencia(BigInteger secuencia);
-
+    /**
+     * Método encargado de verificar si existe por lo menos un tercero con el nit que entra por parámetro. 
+     * @param nit Nit del Tercero.
+     * @return Retorna True si existe al menos un Tercero con el nit del parámetro, False de lo contrario.
+     */
     public boolean verificarTerceroPorNit(BigInteger nit);
-
+    /**
+     * Método encargado de verficar si existe por lo menos un Tercero con el nit recibido por parámetro y que esta 
+     * relacionado con la empresa cuya secuencia coincide con la recibida por parámetro.
+     * @param nit Nit del Tercero.
+     * @param secEmpresa Secuencia de la empresa con la que el Tercero estaría relacionado.
+     * @return Retorna True si existe al menos un Tercero que cumpla las condiciones mencionadas, False de lo contrario.
+     */
     public boolean verificarTerceroParaEmpresaEmpleado(BigInteger nit, BigInteger secEmpresa);
-
+    /**
+     * Método encargado de buscar todos los Terceros asociados a una empresa.
+     * @param secEmpresa Secuencia de la empresa.
+     * @return Retorna una lista de Terceros ordenados por nombre.
+     */
     public List<Terceros> lovTerceros(BigInteger secEmpresa);
 }
