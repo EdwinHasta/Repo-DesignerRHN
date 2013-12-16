@@ -100,5 +100,7 @@ public interface AdministrarDetalleConceptoInterface {
     public Long comportamientoAutomaticoConcepto(BigInteger secuencia);
     
     public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia);
+    
+    public boolean eliminarConcepto(BigInteger secuencia);
 
 }
