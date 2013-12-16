@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -13,38 +12,40 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'Soausentismos'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaSoausentismos implements PersistenciaSoausentismosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
     public void crear(Soausentismos soausentismos) {
         try {
-//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(soausentismos);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaSoausentismos.crear");
         }
     }
 
-    // Editar Ausentismos. 
     @Override
     public void editar(Soausentismos soausentismos) {
         em.merge(soausentismos);
     }
 
-    /*
-     *Borrar Ausentismos.
-     */
-    
+    @Override
     public void borrar(Soausentismos soausentismos) {
         em.remove(em.merge(soausentismos));
     }
 
-//Trae los Ausentismos de un Empleado
+    @Override
     public List<Soausentismos> ausentismosEmpleado(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT soa FROM Soausentismos soa WHERE soa.empleado.secuencia= :secuenciaEmpleado");
@@ -56,7 +57,7 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
             return null;
         }
     }
-    //Lista de Valores de Prorrogas
+
     @Override
     public List<Soausentismos> prorrogas(BigInteger secuenciaEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo) {
         try {
@@ -71,8 +72,8 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
             return null;
         }
     }
-    
-    //Prorroga que se mostrará en la tabla.
+
+    @Override
     public String prorrogaMostrar(BigInteger secuenciaProrroga) {
         try {
             String sqlQuery = ("SELECT nvl(A.NUMEROCERTIFICADO,'Falta # Certificado')||':'||A.fecha||'->'||A.fechafinaus\n"
@@ -86,8 +87,5 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
             System.out.println("Error: (prorrogaMostrar)" + e);
             return null;
         }
-    }
-    
-    
-    
+    }     
 }

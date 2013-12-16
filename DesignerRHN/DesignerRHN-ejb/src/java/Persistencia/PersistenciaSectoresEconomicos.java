@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'SectoresEconomicos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEconomicosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -51,18 +54,6 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     }
 
     @Override
-    public SectoresEconomicos buscarSectorEconomico(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(SectoresEconomicos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarSectorEconomico PersistenciaSectoresEconomicos : "+e.toString());
-            return null;
-        }
-
-    }
-
-    @Override
     public List<SectoresEconomicos> buscarSectoresEconomicos() {
         try {
             Query query = em.createQuery("SELECT se FROM SectoresEconomicos se");
@@ -76,7 +67,6 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
 
     @Override
     public SectoresEconomicos buscarSectoresEconomicosSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT se FROM SectoresEconomicos se WHERE se.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -87,6 +77,5 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
             SectoresEconomicos sectoresEconomicos = null;
             return sectoresEconomicos;
         }
-
     }
 }

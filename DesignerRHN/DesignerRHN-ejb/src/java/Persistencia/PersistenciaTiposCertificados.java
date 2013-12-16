@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposCertificados'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTiposCertificados implements PersistenciaTiposCertificadosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -39,9 +42,9 @@ public class PersistenciaTiposCertificados implements PersistenciaTiposCertifica
     }
 
     @Override
-    public TiposCertificados buscarTipoCertificado(BigInteger secuenciaTC) {
+    public TiposCertificados buscarTipoCertificado(BigInteger secuencia) {
         try {
-            return em.find(TiposCertificados.class, secuenciaTC);
+            return em.find(TiposCertificados.class, secuencia);
         } catch (Exception e) {
             return null;
         }

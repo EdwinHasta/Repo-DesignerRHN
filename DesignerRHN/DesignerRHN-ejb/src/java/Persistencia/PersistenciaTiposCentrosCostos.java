@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -16,13 +15,17 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposCentrosCostos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 @LocalBean
 public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosCostosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     EntityManager em;
 
@@ -54,9 +57,9 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public TiposCentrosCostos buscarTipoCentrosCostos(BigInteger secuenciaTiposCentrosCostos) {
+    public TiposCentrosCostos buscarTipoCentrosCostos(BigInteger secuencia) {
         try {
-            return em.find(TiposCentrosCostos.class, secuenciaTiposCentrosCostos);
+            return em.find(TiposCentrosCostos.class, secuencia);
         } catch (Exception e) {
             System.err.println("ERROR PersistenciaTiposCentosCostos buscarTiposCentrosCostos ERROR " + e);
             return null;

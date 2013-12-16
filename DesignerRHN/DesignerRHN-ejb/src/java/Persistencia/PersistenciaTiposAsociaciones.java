@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -13,15 +12,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposAsociaciones'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
-
 public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacionesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -50,18 +51,6 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaTiposAsociaciones");
         }
-    }
-
-    @Override
-    public TiposAsociaciones buscarTipoAsociacion(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(TiposAsociaciones.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarTipoAsociacion PersistenciaTiposAsociaciones");
-            return null;
-        }
-
     }
 
     @Override

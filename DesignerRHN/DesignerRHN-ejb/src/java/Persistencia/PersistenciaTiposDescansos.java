@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.TiposDescansos;
@@ -10,19 +13,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos'
+ * de la base de datos.
  * @author AndresPineda
  */
-
 @Stateless
 public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInterface{
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear JornadasLaborales.
-     */
     @Override
     public void crear(TiposDescansos tiposDescansos) {
         try {
@@ -32,9 +33,6 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
         }
     }
 
-    /*
-     *Editar JornadasLaborales. 
-     */
     @Override
     public void editar(TiposDescansos tiposDescansos) {
         try {
@@ -44,9 +42,6 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
         }
     }
 
-    /*
-     *Borrar JornadasLaborales.
-     */
     @Override
     public void borrar(TiposDescansos tiposDescansos) {
         try {
@@ -56,24 +51,6 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
         }
     }
 
-    /*
-     *Encontrar una JornadasLaborales.
-     */
-    @Override
-    public TiposDescansos buscarTipoDescanso(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(TiposDescansos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarTipoDescanso PersistenciaTiposDescansos");
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas las JornadasLaborales
-     */
     @Override
     public List<TiposDescansos> buscarTiposDescansos() {
         try {
@@ -97,7 +74,5 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
             TiposDescansos tiposDescansos = null;
             return tiposDescansos;
         }
-
     }
-
 }

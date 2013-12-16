@@ -5,11 +5,17 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Tablas' 
+ * de la base de datos.
  * @author -Felipphe-
  */
 public interface PersistenciaTablasInterface {
-    
-        public List<Tablas> buscarTablas(BigInteger secuenciaMod);
+    /**
+     * Método encargado de buscar las tablas de tipo 'SISTEMA' y 'CONFIGURACION' que están asociadas a un Modulo
+     * específico y existen en la tabla Pantallas.
+     * @param secuenciaMod Secuencia del Modulo.
+     * @return Retorna una lista de Tablas.
+     */
+    public List<Tablas> buscarTablas(BigInteger secuenciaMod);
 
 }
