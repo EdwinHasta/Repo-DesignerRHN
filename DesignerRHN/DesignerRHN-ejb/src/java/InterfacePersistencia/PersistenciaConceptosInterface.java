@@ -86,6 +86,8 @@ public interface PersistenciaConceptosInterface {
      */
     public Conceptos conceptosPorSecuencia(BigInteger secuencia);
     
+    public boolean eliminarConcepto(BigInteger secuenciaConcepto);
+    
     
     
 }
