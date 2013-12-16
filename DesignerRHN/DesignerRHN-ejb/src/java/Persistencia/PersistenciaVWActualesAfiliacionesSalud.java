@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VWActualesAfiliacionesSalud;
@@ -7,15 +10,22 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la vista 'VWActualesAfiliacionesSalud'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVWActualesAfiliacionesSalud implements PersistenciaVWActualesAfiliacionesSaludInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public VWActualesAfiliacionesSalud buscarAfiliacionSalud(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesAfiliacionesSalud vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
@@ -24,8 +34,6 @@ public class PersistenciaVWActualesAfiliacionesSalud implements PersistenciaVWAc
         } catch (Exception e) {
             VWActualesAfiliacionesSalud vwActualesAfiliacionesSalud=null;
             return vwActualesAfiliacionesSalud;
-        }
-
-        
+        }        
     }
 }

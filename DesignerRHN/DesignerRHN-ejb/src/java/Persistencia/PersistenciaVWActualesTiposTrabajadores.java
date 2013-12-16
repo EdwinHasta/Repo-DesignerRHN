@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Empleados;
@@ -9,19 +12,23 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la vista 'VWActualesTiposTrabajadores'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
-public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWActualesTiposTrabajadoresInterface {
-
+    public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWActualesTiposTrabajadoresInterface {
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public VWActualesTiposTrabajadores buscarTipoTrabajador(BigInteger secuencia) {
-
         try {
-            //Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia=:secuencia");
-            //query.setParameter("secuencia", secuencia);
-            //VWActualesTiposTrabajadores vwActualesTiposTrabajadores = (VWActualesTiposTrabajadores) query.getSingleResult();
             VWActualesTiposTrabajadores vwActualesTiposTrabajadores = (VWActualesTiposTrabajadores) em.createNamedQuery("VWActualesTiposTrabajadores.findByEmpleado")
                     .setParameter("empleado", secuencia)
                     .getSingleResult();
@@ -30,17 +37,12 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
             VWActualesTiposTrabajadores vwActualesTiposTrabajadores = null;
             return vwActualesTiposTrabajadores;
         }
-
     }
 
+    @Override
     public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(String p_tipo) {
-
         try {
             if (!p_tipo.isEmpty()) {
-                //Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw WHERE vw.tipoTrabajador.tipo=:p_tipo");
-                //query.setParameter("p_tipo", p_tipo);
-                //List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) query.getResultList();
-                //return vwActualesTiposTrabajadoresLista;
                 List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findByTipoTrabajador")
                         .setParameter("tipotrabajador", p_tipo)
                         .getResultList();
@@ -55,14 +57,11 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
             List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadores = null;
             return vwActualesTiposTrabajadores;
         }
-
     }
 
+    @Override
     public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores() {
-
         try {
-            //Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw");
-            //List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) query.getResultList();
             List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findAll")
                     .getResultList();
             return vwActualesTiposTrabajadoresLista;
@@ -70,19 +69,16 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
             List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadores = null;
             return vwActualesTiposTrabajadores;
         }
-
     }
 
     //VALIDACION ARCHIVO PLANO
+    @Override
     public boolean verificarTipoTrabajador(Empleados empleado) {
         try {
             Query query = em.createQuery("SELECT vw.tipoTrabajador.tipo FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia= :secuencia");
             query.setParameter("secuencia", empleado.getSecuencia());
             String tipoEmpleado = (String) query.getSingleResult();
-            if (tipoEmpleado.equalsIgnoreCase("ACTIVO")) {
-                return true;
-            }
-            return false;
+            return tipoEmpleado.equalsIgnoreCase("ACTIVO");
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaVWActualesTiposTrabajadores.verificarTipoTrabajador");
             return false;
@@ -101,8 +97,4 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
             return null;
         }
     }
-    
-    
-    
-
 }

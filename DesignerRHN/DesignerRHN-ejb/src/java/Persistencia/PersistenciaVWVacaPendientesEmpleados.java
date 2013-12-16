@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VWVacaPendientesEmpleados;
@@ -8,14 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 /**
- *
- * @author AndresPineda
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la vista 'VWVacaPendientesEmpleados'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVacaPendientesEmpleadosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -28,7 +34,6 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
         }
     }
 
-
     @Override
     public void editar(VWVacaPendientesEmpleados vacaP) {
         try {
@@ -37,7 +42,6 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
             System.out.println("Error editando VWVacaPendientesEmpleados : "+e.toString());
         }
     }
-
 
     @Override
     public void borrar(VWVacaPendientesEmpleados vacaP) {
@@ -49,11 +53,11 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     }
 
     @Override
-    public List<VWVacaPendientesEmpleados> vacaEmpleadoPendientes(BigInteger sec) {
+    public List<VWVacaPendientesEmpleados> vacaEmpleadoPendientes(BigInteger secuencia) {
         List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
         try {
             String script ="SELECT vwv FROM VWVacaPendientesEmpleados vwv WHERE vwv.empleado = :empleado AND vwv.diaspendientes > 0";
-            Query query = em.createQuery(script).setParameter("empleado", sec);
+            Query query = em.createQuery(script).setParameter("empleado", secuencia);
             listaVacaPendientesEmpleados = query.getResultList();
         } catch (Exception e) {
             System.err.println("PersistenciaVWVacaPendientesEmpleados.buscarVacaPendientesEmpleados.");

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.TiposEntidades;
@@ -10,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposEntidades'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -44,19 +51,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaTiposEntidades");
         }
-    }
-
-    @Override
-    public TiposEntidades buscarTipoEntidad(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(TiposEntidades.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarTipoEntidad PersistenciaTiposEntidades");
-            return null;
-        }
-
-    }
+    }   
 
     @Override
     public List<TiposEntidades> buscarTiposEntidades() {
@@ -84,6 +79,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
         }
     }
 
+    @Override
     public Long verificarBorrado(BigInteger secTipoEntidad) {
         try {
             Long conteo;
@@ -98,6 +94,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
         }
     }
 
+    @Override
     public Long verificarBorradoFCE(BigInteger secTipoEntidad) {
         try {
             Long conteo;

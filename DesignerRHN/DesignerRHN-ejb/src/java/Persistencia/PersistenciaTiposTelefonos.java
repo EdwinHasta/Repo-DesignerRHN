@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -12,16 +11,20 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposTelefonos'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateful
 public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear TiposTelefonos.
-     */
     @Override
     public void crear(TiposTelefonos tiposTelefonos) {
         try {
@@ -31,17 +34,11 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
         }
     }
 
-    /*
-     *Editar TiposTelefono. 
-     */
     @Override
     public void editar(TiposTelefonos tiposTelefonos) {
         em.merge(tiposTelefonos);
     }
 
-    /*
-     *Borrar TiposTelefono.
-     */
     @Override
     public void borrar(TiposTelefonos tiposTelefonos) {
         try {
@@ -51,19 +48,14 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
         }
     }
 
-    /*
-     *Encontrar un TipoTelefono. 
-     */
     @Override
-    public TiposTelefonos buscarTipoTelefonos(BigInteger id) {
+    public TiposTelefonos buscarTipoTelefonos(BigInteger secuencia) {
         try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(TiposTelefonos.class, secuencia);
+            BigInteger sec = new BigInteger(secuencia.toString());            
+            return em.find(TiposTelefonos.class, sec);
         } catch (Exception e) {
             return null;
         }
-
     }
 
     @Override

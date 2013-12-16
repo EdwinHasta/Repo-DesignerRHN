@@ -1,5 +1,7 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
-
 
 import Entidades.TiposTrabajadores;
 import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
@@ -11,21 +13,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposTrabajadores'
+ * de la base de datos.
+ * @author AndresPineda
  */
-
 @Stateless
 public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajadoresInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
-        /*
-     * Crear TiposTrabajadores.
-     */
+
     @Override
     public void crear(TiposTrabajadores tiposTrabajadores) {
         try{
@@ -35,17 +36,11 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         }
     }
 
-    /*
-     *Editar TiposTrabajadores. 
-     */
     @Override
     public void editar(TiposTrabajadores tiposTrabajadores) {
         em.merge(tiposTrabajadores);
     }
 
-    /*
-     *Borrar TiposTrabajadores.
-     */
     @Override
     public void borrar(TiposTrabajadores tiposTrabajadores) {
         try{
@@ -55,34 +50,14 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         }
     }
 
-    /*
-     *Encontrar un TipoTrabajador. 
-     */
-    @Override 
-    public TiposTrabajadores buscarTipoTrabajador(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(TiposTrabajadores.class, secuencia);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los TiposTrabajadores. 
-     */
     @Override
     public List<TiposTrabajadores> buscarTiposTrabajadores() {
-
         List<TiposTrabajadores> tipoTLista = (List<TiposTrabajadores>) em.createNamedQuery("TiposTrabajadores.findAll").getResultList();
         return tipoTLista;
     }
 
     @Override
     public TiposTrabajadores buscarTipoTrabajadorSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT tt FROM TiposTrabajadores e WHERE tt.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -106,8 +81,4 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         TiposTrabajadores tipoTC = null;
         return null;
     }
-
-
-
-
 }
