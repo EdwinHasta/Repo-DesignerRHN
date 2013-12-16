@@ -40,7 +40,7 @@ public class TiposPensionados implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -56,21 +56,21 @@ public class TiposPensionados implements Serializable {
     public TiposPensionados() {
     }
 
-    public TiposPensionados(BigDecimal secuencia) {
+    public TiposPensionados(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposPensionados(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public TiposPensionados(BigInteger secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
