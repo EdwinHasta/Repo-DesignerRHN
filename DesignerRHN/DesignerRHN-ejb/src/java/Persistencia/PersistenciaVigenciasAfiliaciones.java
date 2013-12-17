@@ -1,8 +1,10 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasAfiliaciones;
 import InterfacePersistencia.PersistenciaVigenciasAfiliacionesInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -12,18 +14,19 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasAfiliaciones'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasAfiliacionesInterface { 
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear VigenciasProrrateos.
-     */
     @Override
     public void crear(VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
@@ -33,9 +36,6 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
         }
     }
 
-    /*
-     *Editar VigenciasProrrateos. 
-     */
     @Override
     public void editar(VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
@@ -45,9 +45,6 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
         }
     }
 
-    /*
-     *Borrar VigenciasProrrateos.
-     */
     @Override
     public void borrar(VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
@@ -57,23 +54,6 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
         }
     }
 
-    /*
-     *Encontrar un VigenciaProrrateo. 
-     */
-    @Override
-    public VigenciasAfiliaciones buscarVigenciaAfiliacion(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            return em.find(VigenciasAfiliaciones.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarVigenciaAfiliacion PersistenciaVigenciasAfiliaciones");
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todos los VigenciasProrrateos.
-     */
     @Override
     public List<VigenciasAfiliaciones> buscarVigenciasAfiliaciones() {
         try {
@@ -87,10 +67,10 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT va FROM VigenciasAfiliaciones va WHERE va.empleado.secuencia = :secuenciaEmpl ORDER BY va.fechainicial DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setParameter("secuenciaEmpl", secuencia);
             List<VigenciasAfiliaciones> vigenciasAfiliaciones = query.getResultList();
             return vigenciasAfiliaciones;
         } catch (Exception e) {
@@ -100,9 +80,9 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secVA) {
+    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secuencia) {
         try {
-            Query query = em.createNamedQuery("VigenciasAfiliaciones.findBySecuencia").setParameter("secuencia", secVA);
+            Query query = em.createNamedQuery("VigenciasAfiliaciones.findBySecuencia").setParameter("secuencia", secuencia);
             VigenciasAfiliaciones vigenciasAfiliaciones = (VigenciasAfiliaciones) query.getSingleResult();
             return vigenciasAfiliaciones;
         } catch (Exception e) {
@@ -112,10 +92,10 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigInteger secVigencia) {
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT va FROM VigenciasAfiliaciones va WHERE va.vigenciasueldo.secuencia = :secVigencia");
-            query.setParameter("secVigencia", secVigencia);
+            query.setParameter("secVigencia", secuencia);
             List<VigenciasAfiliaciones> vigenciasAfiliaciones = query.getResultList();
             return vigenciasAfiliaciones;
         } catch (Exception e) {

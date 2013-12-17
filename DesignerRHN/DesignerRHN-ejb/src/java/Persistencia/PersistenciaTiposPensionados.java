@@ -1,8 +1,10 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.TiposPensionados;
 import InterfacePersistencia.PersistenciaTiposPensionadosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -11,18 +13,18 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposPensionados'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaTiposPensionados implements PersistenciaTiposPensionadosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
-    /*
-     * Crear Tipo Pension.
-     */
 
     @Override
     public void crear(TiposPensionados tiposPensionados) {
@@ -33,10 +35,6 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
         }
     }
 
-    /*
-     *Editar Tipo Pension. 
-     */
-
     @Override
     public void editar(TiposPensionados tiposPensionados) {
         try {
@@ -46,10 +44,6 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
         }
     }
 
-    /*
-     *Borrar Tipo Pension.
-     */
-
     @Override
     public void borrar(TiposPensionados tiposPensionados) {
         try {
@@ -58,26 +52,6 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
             System.out.println("Error borrar PersistenciaTiposPensionados");
         }
     }
-
-    /*
-     *Encontrar una Tipo Pension. 
-     */
-
-    @Override
-    public TiposPensionados buscarTipoPension(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(TiposPensionados.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarTipoPension PersistenciaTiposPensionados");
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los Tipos Pensiones. 
-     */
 
     @Override
     public List<TiposPensionados> buscarTiposPensionados() {
@@ -91,7 +65,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     }
     
     @Override
-    public TiposPensionados buscarTipoPensionSecuencia(BigDecimal secuencia) {
+    public TiposPensionados buscarTipoPensionSecuencia(BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT tp FROM TiposPensionados tp WHERE tp.secuencia = :secuencia");
@@ -103,7 +77,5 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
             TiposPensionados tipoP = null;
             return tipoP;
         }
-
     }
-
 }

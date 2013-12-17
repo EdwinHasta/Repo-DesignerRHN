@@ -5,6 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -58,7 +59,7 @@ public class VWActualesPensiones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "VALOR")
-    private BigInteger valor;
+    private BigDecimal valor;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHASISTEMA")
@@ -121,11 +122,11 @@ public class VWActualesPensiones implements Serializable {
         this.unidadPago = unidadPago;
     }
 
-    public BigInteger getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(BigInteger valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

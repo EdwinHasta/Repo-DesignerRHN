@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposIndicadores'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTiposIndicadores implements PersistenciaTiposIndicadoresInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -51,18 +54,6 @@ public class PersistenciaTiposIndicadores implements PersistenciaTiposIndicadore
     }
 
     @Override
-    public TiposIndicadores buscarTipoIndicador(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(TiposIndicadores.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarTipoIndicador PersistenciaTiposIndicadores : "+e.toString());
-            return null;
-        }
-
-    }
-
-    @Override
     public List<TiposIndicadores> buscarTiposIndicadores() {
         try {
             List<TiposIndicadores> tiposIndicadores = (List<TiposIndicadores>) em.createNamedQuery("TiposIndicadores.findAll").getResultList();
@@ -75,7 +66,6 @@ public class PersistenciaTiposIndicadores implements PersistenciaTiposIndicadore
 
     @Override
     public TiposIndicadores buscarTiposIndicadoresSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT te FROM TiposIndicadores te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -87,5 +77,4 @@ public class PersistenciaTiposIndicadores implements PersistenciaTiposIndicadore
             return tiposEntidades;
         }
     }
-  
 }

@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,13 +13,17 @@ import javax.persistence.Query;
 
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposReemaplazos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 
 public class PersistenciaTiposReemaplazos implements PersistenciaTiposReemplazosInterface {
-    
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
      
@@ -34,7 +37,4 @@ public class PersistenciaTiposReemaplazos implements PersistenciaTiposReemplazos
             return null;
         }
     }
-
-    
-
 }
