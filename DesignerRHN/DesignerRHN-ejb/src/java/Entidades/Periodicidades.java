@@ -188,11 +188,11 @@ public class Periodicidades implements Serializable {
         this.codigoStr = codigoStr;
     }
 
-    public Short getCodigo() {
+    public short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(short codigo) {
         this.codigo = codigo;
     }
 }

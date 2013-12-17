@@ -23,6 +23,7 @@ import InterfacePersistencia.PersistenciaFormulasConceptosInterface;
 import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaGruposConceptosInterface;
 import InterfacePersistencia.PersistenciaReformasLaboralesInterface;
+import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTiposCentrosCostosInterface;
 import InterfacePersistencia.PersistenciaTiposContratosInterface;
 import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
@@ -81,6 +82,8 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     PersistenciaFormulasInterface persistenciaFormulas;
     @EJB
     PersistenciaFormulasConceptosInterface PersistenciaFormulasConceptos;
+    @EJB
+    PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
 
     ///////////VigenciasCuentas/////////////////VigenciasCuentas////////////////////////VigenciasCuentas/////////////
     @Override
@@ -500,4 +503,16 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
         }
     }
     ///////////Conceptos////////////Conceptos/////////////////Conceptos///////
+    /////////SolucionesNodos////////////////////SolucionesNodos///////////
+
+    public boolean verificarSolucionesNodosParaConcepto(BigInteger secuencia) {
+        try {
+            boolean retorno = persistenciaSolucionesNodos.solucionesNodosParaConcepto(secuencia);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error verificarSolucionesNodosParaConcepto Admi : " + e.toString());
+            return false;
+        }
+    }
+
 }

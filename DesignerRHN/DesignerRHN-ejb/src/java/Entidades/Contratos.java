@@ -7,7 +7,9 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -34,6 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Contratos.findAll", query = "SELECT c FROM Contratos c")})
 public class Contratos implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipolegislacion")
+    private List<ExtrasRecargos> extrasRecargosList;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -107,6 +112,9 @@ public class Contratos implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -219,5 +227,14 @@ public class Contratos implements Serializable {
 
     public void setInformacionContrato(String informacionContrato) {
         this.informacionContrato = informacionContrato;
+    }
+
+    @XmlTransient
+    public List<ExtrasRecargos> getExtrasRecargosList() {
+        return extrasRecargosList;
+    }
+
+    public void setExtrasRecargosList(List<ExtrasRecargos> extrasRecargosList) {
+        this.extrasRecargosList = extrasRecargosList;
     }
 }
