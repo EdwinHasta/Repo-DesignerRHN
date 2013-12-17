@@ -214,59 +214,11 @@ public class ControlATExtraRecargo implements Serializable {
         return retorno;
     }
 
-    public void modificarExtraRecargo(int indice) {
+    public void procesoModificacionExtraRecargo(int i) {
+        index = i;
         boolean respuesta = validarCamposNulosExtraRecargo(0);
         if (respuesta == true) {
-            int tamDes = 0;
-            if (tipoLista == 0) {
-                tamDes = listExtrasRecargos.get(index).getDescripcion().length();
-            }
-            if (tipoLista == 1) {
-                tamDes = filtrarListExtrasRecargos.get(index).getDescripcion().length();
-            }
-            if (tamDes >= 1 && tamDes <= 40) {
-                if (tipoLista == 0) {
-                    if (!listExtraRecargoCrear.contains(listExtrasRecargos.get(indice))) {
-                        if (listExtraRecargoModificar.isEmpty()) {
-                            listExtraRecargoModificar.add(listExtrasRecargos.get(indice));
-                        } else if (!listExtraRecargoModificar.contains(listExtrasRecargos.get(indice))) {
-                            listExtraRecargoModificar.add(listExtrasRecargos.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                        }
-                    }
-                }
-                if (tipoLista == 1) {
-                    if (!listExtraRecargoCrear.contains(filtrarListExtrasRecargos.get(indice))) {
-                        if (listExtraRecargoModificar.isEmpty()) {
-                            listExtraRecargoModificar.add(filtrarListExtrasRecargos.get(indice));
-                        } else if (!listExtraRecargoModificar.contains(filtrarListExtrasRecargos.get(indice))) {
-                            listExtraRecargoModificar.add(filtrarListExtrasRecargos.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                            //RequestContext.getCurrentInstance().update("form:aceptar");
-                        }
-                    }
-                }
-                index = -1;
-                secRegistro = null;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosExtraRecargo");
-            } else {
-                if (tipoLista == 0) {
-                    listExtrasRecargos.get(index).setDescripcion(auxExtraDescripcion);
-                }
-                if (tipoLista == 1) {
-                    filtrarListExtrasRecargos.get(index).setDescripcion(auxExtraDescripcion);
-                }
-                index = -1;
-                secRegistro = null;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosExtraRecargo");
-                context.execute("errorDescripcionExtra.show()");
-            }
+            modificarExtraRecargo(i);
         } else {
             if (tipoLista == 0) {
                 listExtrasRecargos.get(index).setDescripcion(auxExtraDescripcion);
@@ -280,6 +232,86 @@ public class ControlATExtraRecargo implements Serializable {
             context.update("form:datosExtraRecargo");
             context.execute("errorDatosNullExtra.show()");
         }
+    }
+
+    public void procesoModificacionDetalleExtraRecargo(int i) {
+        index = i;
+        boolean respuesa = validarCamposNulosDetalleExtraRecargo(0);
+        if (respuesa == true) {
+            modificarDetalleExtraRecargo(i);
+        } else {
+            if (tipoListaDER == 0) {
+                listDetallesExtrasRecargos.get(indexDER).setHorasfinal(auxDetalleFin);
+                listDetallesExtrasRecargos.get(indexDER).setHorasinicial(auxDetalleIni);
+            }
+            if (tipoListaDER == 1) {
+                filtrarListDetallesExtrasRecargos.get(indexDER).setHorasfinal(auxDetalleFin);
+                filtrarListDetallesExtrasRecargos.get(indexDER).setHorasinicial(auxDetalleIni);
+            }
+            indexDER = -1;
+            secRegistroDER = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosDetalleExtraRecargo");
+            context.execute("errorDatosNullDetalle.show()");
+        }
+    }
+
+    public void modificarExtraRecargo(int indice) {
+        int tamDes = 0;
+        if (tipoLista == 0) {
+            tamDes = listExtrasRecargos.get(indice).getDescripcion().length();
+        }
+        if (tipoLista == 1) {
+            tamDes = filtrarListExtrasRecargos.get(indice).getDescripcion().length();
+        }
+        if (tamDes >= 1 && tamDes <= 40) {
+            if (tipoLista == 0) {
+                String textM = listExtrasRecargos.get(indice).getDescripcion().toUpperCase();
+                listExtrasRecargos.get(indice).setDescripcion(textM);
+                if (!listExtraRecargoCrear.contains(listExtrasRecargos.get(indice))) {
+                    if (listExtraRecargoModificar.isEmpty()) {
+                        listExtraRecargoModificar.add(listExtrasRecargos.get(indice));
+                    } else if (!listExtraRecargoModificar.contains(listExtrasRecargos.get(indice))) {
+                        listExtraRecargoModificar.add(listExtrasRecargos.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                }
+            }
+            if (tipoLista == 1) {
+                String textM = filtrarListExtrasRecargos.get(indice).getDescripcion().toUpperCase();
+                filtrarListExtrasRecargos.get(indice).setDescripcion(textM);
+                if (!listExtraRecargoCrear.contains(filtrarListExtrasRecargos.get(indice))) {
+                    if (listExtraRecargoModificar.isEmpty()) {
+                        listExtraRecargoModificar.add(filtrarListExtrasRecargos.get(indice));
+                    } else if (!listExtraRecargoModificar.contains(filtrarListExtrasRecargos.get(indice))) {
+                        listExtraRecargoModificar.add(filtrarListExtrasRecargos.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        //RequestContext.getCurrentInstance().update("form:aceptar");
+                    }
+                }
+            }
+            index = -1;
+            secRegistro = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosExtraRecargo");
+        } else {
+            if (tipoLista == 0) {
+                listExtrasRecargos.get(index).setDescripcion(auxExtraDescripcion);
+            }
+            if (tipoLista == 1) {
+                filtrarListExtrasRecargos.get(index).setDescripcion(auxExtraDescripcion);
+            }
+            index = -1;
+            secRegistro = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosExtraRecargo");
+            context.execute("errorDescripcionExtra.show()");
+        }
+
     }
 
     public void modificarExtraRecargo(int indice, String confirmarCambio, String valorConfirmar) {
@@ -401,52 +433,35 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public void modificarDetalleExtraRecargo(int indice) {
-        boolean respuesa = validarCamposNulosDetalleExtraRecargo(0);
-        if (respuesa == true) {
-            if (tipoListaDER == 0) {
-                if (!listDetalleExtraRecargoCrear.contains(listDetallesExtrasRecargos.get(indice))) {
-                    if (listDetalleExtraRecargoModificar.isEmpty()) {
-                        listDetalleExtraRecargoModificar.add(listDetallesExtrasRecargos.get(indice));
-                    } else if (!listDetalleExtraRecargoModificar.contains(listDetallesExtrasRecargos.get(indice))) {
-                        listDetalleExtraRecargoModificar.add(listDetallesExtrasRecargos.get(indice));
-                    }
-                    if (guardadoDER == true) {
-                        guardadoDER = false;
-                    }
+        if (tipoListaDER == 0) {
+            if (!listDetalleExtraRecargoCrear.contains(listDetallesExtrasRecargos.get(indice))) {
+                if (listDetalleExtraRecargoModificar.isEmpty()) {
+                    listDetalleExtraRecargoModificar.add(listDetallesExtrasRecargos.get(indice));
+                } else if (!listDetalleExtraRecargoModificar.contains(listDetallesExtrasRecargos.get(indice))) {
+                    listDetalleExtraRecargoModificar.add(listDetallesExtrasRecargos.get(indice));
+                }
+                if (guardadoDER == true) {
+                    guardadoDER = false;
                 }
             }
-            if (tipoListaDER == 1) {
-                if (!listDetalleExtraRecargoCrear.contains(filtrarListDetallesExtrasRecargos.get(indice))) {
-                    if (listDetalleExtraRecargoModificar.isEmpty()) {
-                        listDetalleExtraRecargoModificar.add(filtrarListDetallesExtrasRecargos.get(indice));
-                    } else if (!listDetalleExtraRecargoModificar.contains(filtrarListDetallesExtrasRecargos.get(indice))) {
-                        listDetalleExtraRecargoModificar.add(filtrarListDetallesExtrasRecargos.get(indice));
-                    }
-                    if (guardadoDER == true) {
-                        guardadoDER = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
-                    }
-                }
-            }
-            indexDER = -1;
-            secRegistroDER = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosDetalleExtraRecargo");
-        } else {
-            if (tipoListaDER == 0) {
-                listDetallesExtrasRecargos.get(indexDER).setHorasfinal(auxDetalleFin);
-                listDetallesExtrasRecargos.get(indexDER).setHorasinicial(auxDetalleIni);
-            }
-            if (tipoListaDER == 1) {
-                filtrarListDetallesExtrasRecargos.get(indexDER).setHorasfinal(auxDetalleFin);
-                filtrarListDetallesExtrasRecargos.get(indexDER).setHorasinicial(auxDetalleIni);
-            }
-            indexDER = -1;
-            secRegistroDER = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosDetalleExtraRecargo");
-            context.execute("errorDatosNullDetalle.show()");
         }
+        if (tipoListaDER == 1) {
+            if (!listDetalleExtraRecargoCrear.contains(filtrarListDetallesExtrasRecargos.get(indice))) {
+                if (listDetalleExtraRecargoModificar.isEmpty()) {
+                    listDetalleExtraRecargoModificar.add(filtrarListDetallesExtrasRecargos.get(indice));
+                } else if (!listDetalleExtraRecargoModificar.contains(filtrarListDetallesExtrasRecargos.get(indice))) {
+                    listDetalleExtraRecargoModificar.add(filtrarListDetallesExtrasRecargos.get(indice));
+                }
+                if (guardadoDER == true) {
+                    guardadoDER = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+            }
+        }
+        indexDER = -1;
+        secRegistroDER = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosDetalleExtraRecargo");
     }
 
     public void modificarDetalleExtraRecargo(int indice, String confirmarCambio, String valorConfirmar) {
@@ -644,6 +659,8 @@ public class ControlATExtraRecargo implements Serializable {
     public void guardarGeneral() {
         guardarCambiosExtraRecargo();
         guardarCambiosDetalleExtraRecargo();
+        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void guardarCambiosExtraRecargo() {
@@ -673,8 +690,7 @@ public class ControlATExtraRecargo implements Serializable {
         }
         index = -1;
         secRegistro = null;
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+
     }
 
     public void guardarCambiosDetalleExtraRecargo() {
@@ -704,8 +720,6 @@ public class ControlATExtraRecargo implements Serializable {
         }
         indexDER = -1;
         secRegistroDER = null;
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     //CANCELAR MODIFICACIONES
 
@@ -915,7 +929,7 @@ public class ControlATExtraRecargo implements Serializable {
                     filtrarListExtrasRecargos = null;
                     tipoLista = 0;
                 }
-                //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+                
                 k++;
                 l = BigInteger.valueOf(k);
                 nuevoExtraRecargo.setSecuencia(l);
