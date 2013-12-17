@@ -6224,6 +6224,19 @@ public class ControlDetalleConcepto implements Serializable {
         nombreTablaRastro = "";
     }
 
+    public void validarEliminacionConcepto(){
+        RequestContext context = RequestContext.getCurrentInstance();
+        boolean retorno = administrarDetalleConcepto.verificarSolucionesNodosParaConcepto(conceptoActual.getSecuencia());
+        if(retorno == true){
+            System.out.println("No elimina");
+            context.execute("errorEliminacionConcepto.show()");
+        }
+        else {
+            System.out.println("Proceso de eliminacion del concepto");
+            context.execute("paso1Eliminacion.show()");
+        }
+    }
+    
     public void eliminarConcepto() {
         boolean rep = administrarDetalleConcepto.eliminarConcepto(conceptoActual.getSecuencia());
         if (rep == true) {
