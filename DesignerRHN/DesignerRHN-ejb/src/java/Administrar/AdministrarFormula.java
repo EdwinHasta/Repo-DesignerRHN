@@ -51,4 +51,15 @@ public class AdministrarFormula implements AdministrarFormulaInterface {
     public void operandoFormula(BigInteger secFormula) {
         persistenciaFormulas.operandoFormulas(secFormula);
     }
+
+    @Override
+    public Formulas buscarFormulaSecuencia(BigInteger secuencia) {
+        try {
+            Formulas etc = persistenciaFormulas.buscarFormula(secuencia);
+            return etc;
+        } catch (Exception e) {
+            System.out.println("Error buscarFormulaSecuencia Admi : " + e.toString());
+            return null;
+        }
+    }
 }

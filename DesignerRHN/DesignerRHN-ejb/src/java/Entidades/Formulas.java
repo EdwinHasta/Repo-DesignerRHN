@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Formulas.findAll", query = "SELECT f FROM Formulas f")})
 public class Formulas implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
+    private List<FormulasProcesos> formulasProcesosList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
     private Collection<FormulasDependientes> formulasDependientesCollection;
@@ -111,6 +115,9 @@ public class Formulas implements Serializable {
     }
 
     public String getNombrecorto() {
+        if (nombrecorto == null) {
+            nombrecorto = " ";
+        }
         return nombrecorto;
     }
 
@@ -312,5 +319,14 @@ public class Formulas implements Serializable {
 
     public void setNombresFormula(String nombresFormula) {
         this.nombresFormula = nombresFormula;
+    }
+
+    @XmlTransient
+    public List<FormulasProcesos> getFormulasProcesosList() {
+        return formulasProcesosList;
+    }
+
+    public void setFormulasProcesosList(List<FormulasProcesos> formulasProcesosList) {
+        this.formulasProcesosList = formulasProcesosList;
     }
 }
