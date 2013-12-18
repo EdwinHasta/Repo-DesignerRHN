@@ -156,8 +156,6 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistro = null;
         secRegistroDER = null;
         backUpSecRegistroDER = null;
-        nombreTabla = ":formExportarG:datosGruposSalarialesExportar";
-        nombreXML = "GruposSalarialesXML";
     }
 
     public boolean validarCamposNulosExtraRecargo(int i) {
@@ -929,9 +927,11 @@ public class ControlATExtraRecargo implements Serializable {
                     filtrarListExtrasRecargos = null;
                     tipoLista = 0;
                 }
-                
+
                 k++;
                 l = BigInteger.valueOf(k);
+                String text = nuevoExtraRecargo.getDescripcion().toUpperCase();
+                nuevoExtraRecargo.setDescripcion(text);
                 nuevoExtraRecargo.setSecuencia(l);
                 listExtraRecargoCrear.add(nuevoExtraRecargo);
                 listExtrasRecargos.add(nuevoExtraRecargo);
@@ -1123,6 +1123,8 @@ public class ControlATExtraRecargo implements Serializable {
             int tamDes = 0;
             tamDes = nuevoExtraRecargo.getDescripcion().length();
             if (tamDes >= 1 && tamDes <= 40) {
+                String text = duplicarExtraRecargo.getDescripcion().toUpperCase();
+                duplicarExtraRecargo.setDescripcion(text);
                 listExtrasRecargos.add(duplicarExtraRecargo);
                 listExtraRecargoCrear.add(duplicarExtraRecargo);
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1445,12 +1447,20 @@ public class ControlATExtraRecargo implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:gsCodigo");
+            extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
             extraCodigo.setFilterStyle("display: none; visibility: hidden;");
-            extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:gsDescripcion");
+            extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
             extraDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:gsSalario");
+            extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
             extraTipoDia.setFilterStyle("display: none; visibility: hidden;");
+            extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+            extraTipoJornada.setFilterStyle("display: none; visibility: hidden;");
+            extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+            extraTipoLegislacion.setFilterStyle("display: none; visibility: hidden;");
+            extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+            extraTurno.setFilterStyle("display: none; visibility: hidden;");
+            extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+            extraAprobacion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
             bandera = 0;
             filtrarListExtrasRecargos = null;

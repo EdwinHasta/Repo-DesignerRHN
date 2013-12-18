@@ -614,7 +614,7 @@
 
                                     </p:dataTable>
                                 </fieldset>
-                                <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 10px; top: 1500px;" id="detalleFormula" value="" disabled="#{controlDetalleConcepto.formulaSeleccionada}" process="@this" />
+                                <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 10px; top: 1500px;" id="detalleFormula" value="" disabled="#{controlDetalleConcepto.formulaSeleccionada}" actionListener="#{controlFormula.obtenerFormulaSecuencia(controlDetalleConcepto.actualFormulaConcepto.formula.secuencia)}" action="formulaSeleccionada" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="detalleFormula" value="Detalles de la formula seleccionada" />
 
                             </p:scrollPanel>  

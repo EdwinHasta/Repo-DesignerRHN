@@ -141,7 +141,7 @@
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevaFormulaDialogo.show()"  process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.dialogoIngresoNuevoRegistro()}"  process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Formula" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.borrarFormula()}" process="@this"/>  
@@ -177,25 +177,25 @@
 
                         <fieldset style="position: absolute; left: 5px; top: 430px; font-size: 11px; width: 840px; height: 54px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>Propiedades</strong></legend>
-                            <p:commandButton id="novedadFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/empresa.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 10px; " process="@this"/>
+                            <p:commandButton id="novedadFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/empresa.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 10px;" action="novedadesFormula" actionListener="#{controlFormulaNovedad.recibirFormula(controlFormula.actualFormula.secuencia)}" process="@this"/>
                             <h:outputText value="Novedades que podran usar esta fórmula." style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 60px; width: 160px;"/>
-                            <p:commandButton id="procesoFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/proceso.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 240px; " process="@this"/>  
+                            <p:commandButton id="procesoFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/proceso.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 240px; " action="procesosFormula" actionListener="#{controlFormulaProceso.recibirFormula(controlFormula.actualFormula.secuencia)}" process="@this"/>  
                             <h:outputText value="Procesos que podran usar esta fórmula." style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 290px; width: 140px;"/>
                             <p:commandButton id="conceptoFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/concepto.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 440px; " process="@this"/>  
                             <h:outputText value="Conceptos que se utilizan para esta fórmula." style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 490px; width: 110px;"/>
                             <p:commandButton id="legislacionFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/contrato.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 640px; " process="@this"/>  
                             <h:outputText value="Legislación laboral a la cual pertenece la formula." style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 690px; width: 160px;"/>
                         </fieldset>
-                        <p:commandButton id="detalleFormula" value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 10px; " process="@this"/>  
+                        <p:commandButton id="detalleFormula" value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 10px; " disabled="#{controlFormula.activoDetalleFormula}" process="@this"/>  
                         <p:tooltip for="detalleFormula" value="Detalle de la fórmula"/>
-                        <p:commandButton id="operandoFormula" value="" style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 40px; " actionListener="#{controlFormula.formulaOperando()}" process="@this"/>                          
+                        <p:commandButton id="operandoFormula" value="" style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 40px; " disabled="#{controlFormula.activoDetalleFormula}" actionListener="#{controlFormula.formulaOperando()}" process="@this"/>                          
                         <p:tooltip for="operandoFormula" value="Insertar fórmula como operando"/>
-                        <p:commandButton style="position: absolute; left: 635px; top: 333px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarFormula" value="Buscar Formula" actionListener="#{controlFormula.lovFomula(0)}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 635px; top: 333px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlFormula.activoBuscarTodos}" id="buscarFormula" value="Buscar Formula" actionListener="#{controlFormula.lovFomula(0)}" process="@this" />
                         <p:commandButton style="position: absolute; left: 755px; top: 333px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlFormula.mostrarTodos}" id="mostrarTodos" actionListener="#{controlFormula.mostrarTodasFormulas()}" value="Mostrar Todos" process="@this" />
 
                         <p:commandButton style="position: absolute; left: 717px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();"  process="@this" />
                         <p:commandButton style="position: absolute; left: 9px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlFormula.refrescar()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 800px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlFormula.refrescar()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 800px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlFormula.salir()}" action="#{controlFormula.paginaRetorno()}" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form>
@@ -406,7 +406,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla FORMULAS no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarOperandoFormula" header="ATENCIÓN" widgetVar="confirmarOperandoFormula"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="¿Esta seguro(a) de insertar como operando?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />

@@ -195,6 +195,7 @@ public class ControlDetalleConcepto implements Serializable {
     private Date auxFC_FechaIni, auxFC_FechaFin;
     private Column formulaCFechaInicial, formulaCFechaFinal, formulaCNombre, formulaCOrden;
     private boolean permitirIndexFormulasConceptos;
+    private FormulasConceptos actualFormulaConcepto;
     /////////////Lista Valores FormulasConceptos///////////////////////
     private List<Formulas> listFormulas;
     private List<Formulas> filtrarListFormulas;
@@ -2110,6 +2111,7 @@ public class ControlDetalleConcepto implements Serializable {
             cualCeldaFormulasConceptos = celda;
             indexFormulasConceptos = indice;
             secRegistroFormulasConceptos = listFormulasConceptosConcepto.get(indexFormulasConceptos).getSecuencia();
+                actualFormulaConcepto  = listFormulasConceptosConcepto.get(indexFormulasConceptos);
             ///////// Captura Objetos Para Campos NotNull ///////////
             auxFC_FechaIni = listFormulasConceptosConcepto.get(indexFormulasConceptos).getFechainicial();
             auxFC_FechaFin = listFormulasConceptosConcepto.get(indexFormulasConceptos).getFechafinal();
@@ -6714,7 +6716,7 @@ public class ControlDetalleConcepto implements Serializable {
         try {
             if (listFormulasConceptosConcepto == null) {
                 listFormulasConceptosConcepto = new ArrayList<FormulasConceptos>();
-                listFormulasConceptosConcepto = administrarDetalleConcepto.listFormulasConceptos();
+                listFormulasConceptosConcepto = administrarDetalleConcepto.listFormulasConceptosConcepto(conceptoActual.getSecuencia());
             }
             return listFormulasConceptosConcepto;
         } catch (Exception e) {
@@ -7171,5 +7173,12 @@ public class ControlDetalleConcepto implements Serializable {
     public void setPaginaRetorno(String paginaRetorno) {
         this.paginaRetorno = paginaRetorno;
     }
+    
+    public FormulasConceptos getActualFormulaConcepto() {
+        return actualFormulaConcepto;
+    }
 
+    public void setActualFormulaConcepto(FormulasConceptos setActualFormulaConcepto) {
+        this.actualFormulaConcepto = setActualFormulaConcepto;
+    }
 }
