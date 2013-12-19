@@ -860,17 +860,7 @@ public class ControlGrupoSalarial implements Serializable {
     }
     //EXPORTAR
 
-    public String exportXML() {
-        if (index >= 0) {
-            nombreTabla = ":formExportarG:datosGruposSalarialesExportar";
-            nombreXML = "GruposSalarialesXML";
-        }
-        if (indexAuxVGS >= 0) {
-            nombreTabla = ":formExportarVG:datosVigenciaGruposSalarialesExportar";
-            nombreXML = "VigenciasGruposSalarialesXML";
-        }
-        return nombreTabla;
-    }
+  
 
     /**
      * Metodo que exporta datos a PDF
@@ -1270,6 +1260,14 @@ public class ControlGrupoSalarial implements Serializable {
     }
 
     public String getNombreTabla() {
+        if (index >= 0) {
+            nombreTabla = ":formExportarG:datosGruposSalarialesExportar";
+            nombreXML = "GruposSalarialesXML";
+        }
+        if (indexAuxVGS >= 0) {
+            nombreTabla = ":formExportarVG:datosVigenciaGruposSalarialesExportar";
+            nombreXML = "VigenciasGruposSalarialesXML";
+        }
         return nombreTabla;
     }
 

@@ -12,27 +12,28 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Reportes De Nomina" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    <f:loadBundle basename="Recursos.nreportescontabilidad" var="msg" />
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 745px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="nomina" actionListener="#{controlNReporteContabilidad.salir()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="Envio por Correo"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteContabilidad.defaultPropiedadesParametrosReporte()}"/>
+                        <p:commandButton style="position: absolute; left: 745px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteContabilidad.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 480px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteContabilidad.defaultPropiedadesParametrosReporte()}"/>
 
 
                         <fieldset style="position: absolute; left: 10px; top: 180px; font-size: 10px; width: 830px; height: 270px; border-radius: 10px; ">
-                            <legend style="font-size: 11px; color: blue;text-align:left"><strong>Reportes Predefinidos - Nómina</strong></legend>
+                            <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['reportes']}</strong></legend>
 
                             <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"                           
                                          value="#{controlNReporteContabilidad.listaIR}" scrollable="true" scrollHeight="148" 
-                                         filteredValue="#{controlNReporteContabilidad.filtrarListInforeportesUsuario}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         filteredValue="#{controlNReporteContabilidad.filtrarListInforeportesUsuario}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" paginator="true" rows="5"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                                <p:column style="padding: 0px; text-align: center" id="codigoIR" headerText="Código" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="padding: 0px; text-align: center" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <h:outputText value="#{info.codigo}" >
                                     </h:outputText>
                                 </p:column>
 
-                                <p:column  id="reporteIR" headerText="Reporte" width="298" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" style="height: 20px" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  id="reporteIR" headerText="#{msg['reporte']}" width="298" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" style="height: 20px" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="width:260px" value="#{info.nombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -45,19 +46,19 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="tipoIR" headerText="Tipo" width="92" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px" >                                  
+                                <p:column id="tipoIR" headerText="#{msg['tipo']}" width="92" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px" >                                  
                                     <p:selectOneMenu value="#{info.tipo}"  style="width: 99%; font-weight: bold; "  panelStyle="width: 115px">  
-                                        <f:selectItem itemLabel="Acrobat" itemValue="Acrobat" />  
-                                        <f:selectItem itemLabel="HTML" itemValue="HTML" />  
-                                        <f:selectItem itemLabel="XML" itemValue="XML" />  
-                                        <f:selectItem itemLabel="EXCEL" itemValue="EXCEL" />  
-                                        <f:selectItem itemLabel="Hoja Electronica" itemValue="Hoja Electronic" />
-                                        <f:selectItem itemLabel="Plano" itemValue="Plano" />
+                                        <f:selectItem itemLabel="#{msg['acrobat']}" itemValue="Acrobat" />  
+                                        <f:selectItem itemLabel="#{msg['html']}" itemValue="HTML" />  
+                                        <f:selectItem itemLabel="#{msg['xml']}" itemValue="XML" />  
+                                        <f:selectItem itemLabel="#{msg['excel']}" itemValue="EXCEL" />  
+                                        <f:selectItem itemLabel="#{msg['hojaelectronica']}" itemValue="Hoja Electronic" />
+                                        <f:selectItem itemLabel="#{msg['plano']}" itemValue="Plano" />
                                     </p:selectOneMenu>
                                 </p:column>
 
                                 <p:column style="padding: 0px; text-align: center" width="100" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:commandButton value="Generar Reporte" style="alignment-adjust: central;width: 100px; border-radius: 0px" actionListener="#{controlNReporteContabilidad.generarReporte(indice)}" process="@this"/>
+                                    <p:commandButton value="#{msg['generar']}" style="alignment-adjust: central;width: 100px; border-radius: 0px" actionListener="#{controlNReporteContabilidad.generarReporte(indice)}" process="@this"/>
                                 </p:column>
                             </p:dataTable>
 
@@ -66,47 +67,47 @@
                         <p:toolbar style="font-size: 12px; position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNReporteContabilidad.guardarCambios()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" actionListener="#{controlNReporteContabilidad.editarCelda()}"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" actionListener="#{controlNReporteContabilidad.mostrarDialogosListas()}" />
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" actionListener="#{controlNReporteContabilidad.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " >
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xmle']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   /> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
                             </p:toolbarGroup>  
                         </p:toolbar>
 
                         <fieldset id="parametros Informe" style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 830px; height: 80px; border-radius: 10px; ">
-                            <legend style="font-size: 11px; color: blue;text-align:left"><strong>Parametros</strong></legend>
-                            <h:outputText value="Fecha Desde" style="position: absolute; top: 20px; left: 30px;font-size: 11px;"/>
+                            <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['parametros']}</strong></legend>
+                            <h:outputText value="#{msg['fechadesde']}" style="position: absolute; top: 20px; left: 30px;font-size: 11px;"/>
                             <p:calendar  value="#{controlNReporteContabilidad.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" style="position: absolute; top: 40px; left: 30px;font-size: 11px;width: 90px" 
                                          styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
                                          autocomplete="true" onclick="select();">    
@@ -117,7 +118,7 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
 
-                            <h:outputText value="Fecha Hasta" style="position: absolute; top: 20px; left: 150px;font-size: 11px;"/>
+                            <h:outputText value="#{msg['fechahasta']}" style="position: absolute; top: 20px; left: 150px;font-size: 11px;"/>
                             <p:calendar value="#{controlNReporteContabilidad.parametroDeInforme.fechahasta}" id="fechaHastaParametroL" style="position: absolute; top: 40px; left: 150px;font-size: 11px;width: 90px" 
                                         styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
                                         autocomplete="true" onclick="select();">                                         
@@ -132,14 +133,14 @@
 
                             <!-- -->
 
-                            <h:outputText value="Empleado Desde" style="position: absolute; top: 20px; left: 260px;font-size: 11px;"/>
+                            <h:outputText value="#{msg['empleadodesde']}" style="position: absolute; top: 20px; left: 260px;font-size: 11px;"/>
                             <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 40px; left: 260px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(2)}" process="@this"/> 
                                 <p:ajax event="change" update="empleadoDesdeParametroL" listener="#{controlNReporteContabilidad.modificarParametroInforme()}"  process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteContabilidad.mostrarDialogosListas()}"/>
                             </p:inputText>
 
-                            <h:outputText value="Empleado Hasta" style="position: absolute; top: 20px; left: 400px;font-size: 11px"/>
+                            <h:outputText value="#{msg['empleadohasta']}" style="position: absolute; top: 20px; left: 400px;font-size: 11px"/>
                             <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 40px; left: 400px;font-size: 11px;height: 10px;width: 90px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(4)}" process="@this"/> 
                                 <p:ajax event="change" update="empleadoHastaParametroL" listener="#{controlNReporteContabilidad.modificarParametroInforme()}" process="@this"/>
@@ -152,22 +153,22 @@
                             <!-- -->
 
 
-                            <h:outputText value="Proceso" style="position: absolute; top: 20px; left: 555px;font-size: 11px;"/>
+                            <h:outputText value="#{msg['proceso']}" style="position: absolute; top: 20px; left: 555px;font-size: 11px;"/>
                             <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.proceso.descripcion}" id="procesoParametroL" style="position: absolute; top: 40px; left: 540px;font-size: 11px;height: 10px;width: 90px" onclick="select()">
                                 <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(5)}" process="@this"/> 
                                 <p:ajax event="change" update="procesoParametroL" listener="#{controlNReporteContabilidad.autocompletarGeneral('PROCESO',controlNReporteContabilidad.parametroDeInforme.proceso.descripcion)}"  process="@this"/>
                                 <p:ajax event="dblclick" listener="#{controlNReporteContabilidad.mostrarDialogosListas()}" process="@this"/>
                             </p:inputText>
 
-                            <h:outputText value="Estado" style="position: absolute; top: 20px; left: 680px;font-size: 11px;"/>
+                            <h:outputText value="#{msg['estado']}" style="position: absolute; top: 20px; left: 680px;font-size: 11px;"/>
                             <p:selectOneMenu value="#{controlNReporteContabilidad.parametroDeInforme.tipopersonal}" id="estadoParametroL" style="position: absolute; top: 40px; left: 665px;font-size: 11px;width: 132px;width: 85px;text-transform: uppercase">  
                                 <f:selectItem itemLabel=" " itemValue="null" />
-                                <f:selectItem itemLabel="LIQUIDADO" itemValue="LIQUIDADO" />  
-                                <f:selectItem itemLabel="CERRADO" itemValue="CERRADO" />  
+                                <f:selectItem itemLabel="#{msg['liquidado']}" itemValue="LIQUIDADO" />  
+                                <f:selectItem itemLabel="#{msg['cerrado']}" itemValue="CERRADO" />  
                                 <p:ajax event="change" listener="#{controlNReporteContabilidad.modificarParametroInforme()}" process="@this" update="estadoParametroL"/>
                             </p:selectOneMenu> 
 
-                            <p:commandButton style="position: absolute; left: 757px; top: 60px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 85px" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlNReporteContabilidad.refrescarParametros()}" process="@this"/>
+                            <p:commandButton style="position: absolute; left: 757px; top: 60px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 85px" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlNReporteContabilidad.refrescarParametros()}" process="@this"/>
 
                         </fieldset> 
                     </p:panel>
@@ -175,166 +176,166 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlNReporteContabilidad.activarCtrlF11()}" process="@this"/> 
 
 
-                    <p:dialog header="Proceso" widgetVar="ProcesoDialogo" draggable="false" resizable="false" closable="false" id="ProcesoDialogo"  
+                    <p:dialog header="#{msg['procesosP']}" widgetVar="ProcesoDialogo" draggable="false" resizable="false" closable="false" id="ProcesoDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovProceso" style="font-size: 11px; width: 430px" var="proceso" value="#{controlNReporteContabilidad.listProcesos}" rowKey="#{proceso.secuencia}"
                                      selection="#{controlNReporteContabilidad.procesoSeleccionado}" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                     filteredValue="#{controlNReporteContabilidad.filtrarListProcesos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                     filteredValue="#{controlNReporteContabilidad.filtrarListProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarPro"/>
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Proceso: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProceso.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{proceso.descripcion}" width="150"  filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Proceso" />
+                                    <h:outputText value="#{msg['procesoP']}" />
                                 </f:facet>
                                 <h:outputText value="#{proceso.descripcion}" />
                             </p:column>
                             <p:column filterBy="#{proceso.codigo}" width="90" filterMatchMode="contains" filterStyle="width: 70px">
                                 <f:facet name="header">
-                                    <h:outputText style="text-align: center" value="Codigo Proceso" />
+                                    <h:outputText style="text-align: center" value="#{msg['codigoP']}" />
                                 </f:facet>
                                 <h:outputText  value="#{proceso.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPro" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReporteContabilidad.aceptar}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarProceso()}" update="lovProceso, aceptarPro, procesoParametroL" process="@this">
+                        <p:commandButton id="aceptarPro" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarProceso()}" update="lovProceso, aceptarPro, procesoParametroL" process="@this">
                             <p:resetInput target=":form:lovProceso:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasPro" style="position: relative; left: 150px" value="Atras" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioProceso()}" update="lovProceso" process="@this">
+                        <p:commandButton id="atrasPro" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioProceso()}" update="lovProceso" process="@this">
                             <p:resetInput target=":form:lovProceso:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
 
 
-                    <p:dialog header="Codigo Empleado Desde" widgetVar="EmpleadoDesdeDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoDesdeDialogo"  
+                    <p:dialog header="#{msg['codigoEMP']}" widgetVar="EmpleadoDesdeDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoDesdeDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovEmpleadoDesde" style="font-size: 11px; width: 430px" var="empleadoDesde" value="#{controlNReporteContabilidad.listEmpleados}" rowKey="#{empleadoDesde.secuencia}"
                                      selection="#{controlNReporteContabilidad.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                     filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                     filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarED"/>
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="#{msg['buscarEMP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoDesde.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{empleadoDesde.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
                                 <f:facet name="header">
-                                    <h:outputText style="text-align: center" value="Codigo Empleado" />
+                                    <h:outputText style="text-align: center" value="#{msg['codigoEMP']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empleadoDesde.codigoempleado}" />
                             </p:column>
                             <p:column filterBy="#{empleadoDesde.persona.nombreCompleto}" width="180" filterStyle="width: 120px" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Nombre Empleado" />
+                                    <h:outputText value="#{msg['nombreEMP']}" />
                                 </f:facet>
                                 <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarED" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED, empleadoDesdeParametroL
+                        <p:commandButton id="aceptarED" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED, empleadoDesdeParametroL
                                          " process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasED" style="position: relative; left: 150px" value="Atras" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
+                        <p:commandButton id="atrasED" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog header="Codigo Empleado Hasta" widgetVar="EmpleadoHastaDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoHastaDialogo"  
+                    <p:dialog header="#{msg['codigoEMPH']}" widgetVar="EmpleadoHastaDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoHastaDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovEmpleadoHasta" style="font-size: 11px; width: 430px" var="empleadoHasta" value="#{controlNReporteContabilidad.listEmpleados}" rowKey="#{empleadoHasta.secuencia}"
                                      selection="#{controlNReporteContabilidad.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                     filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                     filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarEH"/>
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Empleado: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="#{msg['buscarEMPH']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoHasta.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{empleadoHasta.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
                                 <f:facet name="header">
-                                    <h:outputText style="text-align: center" value="Codigo Empleado" />
+                                    <h:outputText style="text-align: center" value="#{msg['codigoEMPH']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empleadoHasta.codigoempleado}" />
                             </p:column>
                             <p:column filterBy="#{empleadoHasta.persona.nombreCompleto}" width="180" filterStyle="width: 120px" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Nombre Empleado" />
+                                    <h:outputText value="#{msg['nombreEMPH']}" />
                                 </f:facet>
                                 <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEH" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH, empleadoHastaParametroL" process="@this">
+                        <p:commandButton id="aceptarEH" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH, empleadoHastaParametroL" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEH" style="position: relative; left: 150px" value="Atras" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
+                        <p:commandButton id="atrasEH" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
 
-                    <p:dialog header="Envío por Correo" widgetVar="EnvioCorreoDialogo" draggable="false" resizable="false" closable="false" id="EnvioCorreoDialogo"  
+                    <p:dialog header="#{msg['envioporcorreo']}" widgetVar="EnvioCorreoDialogo" draggable="false" resizable="false" closable="false" id="EnvioCorreoDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" height="320" modal="true" style="font-size: 11px;">
 
-                        <h:outputText style="position: absolute;top: 20px; left: 10px; text-align: left" value="Esta pantalla permite el envío de reportes de nómina vía email, debe tener en cuenta que la generación de cualquier reporte depende de los parametros de nómina que usted halla configurado. Recuerde que la dirección de envío debe ser del dominio de la Empresa." />
-                        <h:outputText style="position: absolute; top: 70px; left: 10px;font-weight: bold;color: darkblue" value="Reporte"/>
-                        <h:outputText style="position: absolute; top: 90px; left: 10px;font-weight: bold;" value="Contabilidad Cuentas Conceptos"/>
+                        <h:outputText style="position: absolute;top: 20px; left: 10px; text-align: left" value="#{msg['enviarcorreo']}"/>
+                        <h:outputText style="position: absolute; top: 70px; left: 10px;font-weight: bold;color: darkblue" value="#{msg['reporte']}"/>
+                        <h:outputText style="position: absolute; top: 90px; left: 10px;font-weight: bold;" value="#{msg['contabilidad']}"/>
 
                         <fieldset  style="position: absolute; left: 10px; top: 110px; font-size: 10px; width: 400px; height: 150px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 11px; color: blue;text-align: left"><strong>Envío Por Correo</strong></legend>
-                            <h:outputText value="De: " style="position: absolute; left: 10px; top: 25px;font-size: 12px"/>
+                            <h:outputText value="#{msg['de']}" style="position: absolute; left: 10px; top: 25px;font-size: 12px"/>
                             <p:inputText value="nomina@designer.com.co" style="position: absolute; left: 80px; top: 20px;font-size: 12px;width: 300px"/>
-                            <h:outputText value="Para: " style="position: absolute; left: 10px; top: 60px;font-size: 12px"/>
+                            <h:outputText value="#{msg['para']}" style="position: absolute; left: 10px; top: 60px;font-size: 12px"/>
                             <p:inputText style="position: absolute; left: 80px; top: 55px;font-size: 12px;width: 300px"/>
-                            <h:outputText value="Cc: " style="position: absolute; left: 10px; top: 95px;font-size: 12px"/>
+                            <h:outputText value="#{msg['cc']}" style="position: absolute; left: 10px; top: 95px;font-size: 12px"/>
                             <p:inputText style="position: absolute; left: 80px; top: 90px;font-size: 12px;width: 300px"/>
-                            <h:outputText value="Asunto: " style="position: absolute; left: 10px; top: 130px;font-size: 12px"/>
+                            <h:outputText value="#{msg['asunto']}" style="position: absolute; left: 10px; top: 130px;font-size: 12px"/>
                             <p:inputText style="position: absolute; left: 80px; top: 125px;font-size: 12px;width: 300px"/>
 
                         </fieldset>
-                        <p:commandButton id="registroEnvio" style="position: absolute; left: 220px; top: 280px;" value="Registro de Envíos"  onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
-                        <p:commandButton id="atras" style="position: absolute; left: 360px; top: 280px" value="Atras" onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
+                        <p:commandButton id="registroEnvio" style="position: absolute; left: 220px; top: 280px;" value="#{msg['registrodeenvios']}"  onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
+                        <p:commandButton id="atras" style="position: absolute; left: 360px; top: 280px" value="#{msg['atras']}" onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
 
                     </p:dialog>
                 </h:form>
                 <h:form id="formDialogos">
 
-                    <p:dialog id="editarFechaDesde" header="Fecha Desde Parametrización" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaDesde" header="#{msg['editarFechaDesde']}" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReporteContabilidad.parametroDeInforme.fechadesde}" id="editFechaDesdeCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaDesde" value="Atras" onclick="editarFechaDesde.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaDesde" value="#{msg['atras']}" onclick="editarFechaDesde.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="empleadoDesde" header="Empleado Desde Parametrización" widgetVar="empleadoDesde" resizable="false" draggable="false" modal="true" height="93" width="250" style="font-size: 12px">  
+                    <p:dialog id="empleadoDesde" header="#{msg['empleadoDesde']}" widgetVar="empleadoDesde" resizable="false" draggable="false" modal="true" height="93" width="250" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadodesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEmpleadoDesde" value="Atras" onclick="empleadoDesde.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarEmpleadoDesde" value="#{msg['atras']}" onclick="empleadoDesde.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaHasta" header="Fecha Hasta Parametrización" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaHasta" header="#{msg['editarFechaHasta']}" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReporteContabilidad.parametroDeInforme.fechahasta}" id="editFechaHastaCelda"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaHasta" value="Atras" onclick="editarFechaHasta.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaHasta" value="#{msg['atras']}" onclick="editarFechaHasta.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="empleadoHasta" header="Empleado Hasta Parametrización" widgetVar="empleadoHasta" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="empleadoHasta" header="#{msg['empleadoHasta']}" widgetVar="empleadoHasta" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadohasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEmpleadoHasta" value="Atras" onclick="empleadoHasta.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarEmpleadoHasta" value="#{msg['atras']}" onclick="empleadoHasta.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="proceso" header="Proceso Parametrización" widgetVar="proceso" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="proceso" header="#{msg['procesoE']}" widgetVar="proceso" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlNReporteContabilidad.parametroDeInforme.proceso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarProceso" value="Atras" onclick="proceso.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarProceso" value="#{msg['atras']}" onclick="proceso.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="reporteAGenerar" header="Reporte a Generar" widgetVar="reporteAGenerar" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="reporteAGenerar" header="#{msg['reporteAGenerar']}" widgetVar="reporteAGenerar" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <h:outputText value="#{controlNReporteContabilidad.reporteGenerar}" style="overflow: auto; width: 200px; height: 40px"/>
-                        <p:commandButton id="cancelarReporteSeleccionado" value="Atras" onclick="reporteAGenerar.hide();" actionListener="#{controlNReporteContabilidad.cancelarGenerarReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarReporteSeleccionado" value="#{msg['atras']}" onclick="reporteAGenerar.hide();" actionListener="#{controlNReporteContabilidad.cancelarGenerarReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="requisitosReporte" header="Requisitos Reporte" widgetVar="requisitosReporte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="requisitosReporte" header="#{msg['requisitosReporte']}" widgetVar="requisitosReporte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <h:outputText value="#{controlNReporteContabilidad.requisitosReporte}" style="overflow: auto; width: 200px; height: 40px"/>
-                        <p:commandButton id="cancelarRequisitoReporte" value="Atras" onclick="requisitosReporte.hide();" actionListener="#{controlNReporteContabilidad.cancelarRequisitosReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarRequisitoReporte" value="#{msg['atras']}" onclick="requisitosReporte.hide();" actionListener="#{controlNReporteContabilidad.cancelarRequisitosReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                 </h:form>
