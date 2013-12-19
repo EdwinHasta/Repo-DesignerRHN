@@ -23,6 +23,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private Collection<ConceptosJuridicos> conceptosJuridicosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
@@ -59,7 +61,7 @@ public class Empresas implements Serializable {
     private Collection<Pdgestrategias> pdgestrategiasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private Collection<TiposAsociaciones> tiposAsociacionesCollection;
-    
+
     @OneToMany(mappedBy = "empresa")
     private Collection<Proyectos> proyectosCollection;
     @OneToMany(mappedBy = "empresa")
@@ -318,6 +320,8 @@ public class Empresas implements Serializable {
     private Collection<Conceptos> conceptosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private Collection<CentrosCostos> centroscostosCollection;
+    @Transient
+    private String strNit;
 
     public Empresas() {
     }
@@ -357,8 +361,26 @@ public class Empresas implements Serializable {
         this.nit = nit;
     }
 
+    public String getStrNit() {
+        if (nit > 0) {
+            strNit = String.valueOf(nit);
+        } else {
+            strNit = " ";
+        }
+        return strNit;
+    }
+
+    public void setStrNit(String strNit) {
+        if(strNit.isEmpty()){
+            nit=0;
+        }else{
+            nit = Long.parseLong(strNit);
+        }
+        this.strNit = strNit;
+    }
+
     public String getNombre() {
-        if(nombre == null){
+        if (nombre == null) {
             nombre = " ";
         }
         return nombre;
@@ -1084,9 +1106,7 @@ public class Empresas implements Serializable {
         this.proyectosCollection = proyectosCollection;
     }
 
-
-   // @XmlTransient
-
+    // @XmlTransient
     public Collection<TiposAsociaciones> getTiposAsociacionesCollection() {
         return tiposAsociacionesCollection;
     }
@@ -1174,11 +1194,5 @@ public class Empresas implements Serializable {
     public void setConceptosJuridicosCollection(Collection<ConceptosJuridicos> conceptosJuridicosCollection) {
         this.conceptosJuridicosCollection = conceptosJuridicosCollection;
     }
-    
 
-    
-
-    
-
-    
 }

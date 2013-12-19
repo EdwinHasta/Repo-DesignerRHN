@@ -128,4 +128,17 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
             return null;
         }
     }
+    
+    @Override
+    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(BigInteger secuenciaF) {
+        try {
+            Query query = em.createQuery("SELECT f FROM FormulasConceptos f WHERE f.formula.secuencia=:secuenciaF");
+            query.setParameter("secuenciaF", secuenciaF);
+            List<FormulasConceptos> resultado =  query.getResultList();
+            return resultado;
+        } catch (Exception e) {
+            System.out.println("Error Persistencia formulasConceptosParaFormulaSecuencia : " + e.toString());
+            return null;
+        }
+    }
 }
