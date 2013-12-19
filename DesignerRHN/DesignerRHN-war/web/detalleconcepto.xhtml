@@ -13,13 +13,15 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true" />
-                    <p:panel  id="PanelTotal" header="Detalles del Concepto" style=" font-size: 13px; position: absolute; width: 874px; height: 525px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="Detalles del Concepto" style=" font-size: 13px; position: absolute; width: 874px; height: 535px; text-align: left;" >  
 
-                        <h:outputText value="Concepto : " style="position: relative; top: 38px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nombreConcepto" value="#{controlDetalleConcepto.comportamientoConcepto}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 5px; top: 38px"/>
+                        <h:outputText value="Concepto : " style="position: absolute;left: 45px; top: 80px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nombreConcepto" value="#{controlDetalleConcepto.comportamientoConcepto}" style="font-weight: bold; color: #BF1A1A; position: absolute; left: 115px; top: 80px"/>
+                        <p:commandButton value="" id="btnDeteleConcepto" style="position: absolute; top: 75px; left: 10px;background-image: url(Imagenes/deleteConcepto.png);background-size: 100% 100%; background-repeat: no-repeat;width: 25px; height: 30px;" actionListener="#{controlDetalleCuenta.validarEliminacionConcepto()}"/>
+                        <p:tooltip style="font-size: 12px" for="btnDeteleConcepto" value="Hoja de vida del concepto" />
 
 
-                        <fieldset  style="position: absolute; left: 3px; top: 95px; font-size: 10px; width: 850px; height: 390px; border-radius: 10px; text-align: left;">
+                        <fieldset  style="position: absolute; left: 3px; top: 105px; font-size: 10px; width: 850px; height: 390px; border-radius: 10px; text-align: left;">
                             <legend style="font-size: 12px; color: blue"><strong>Asignación de Cuentas</strong></legend>
 
                             <p:scrollPanel id="scrollPrincipal" style="position: absolute; left: 3px; top: 15px; width:856px; height:380px; border: none" mode="native">  
@@ -214,11 +216,11 @@
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
-                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVGC.strFechaInicial}" filterBy="#{infoVGC.strFechaInicial}" filterMatchMode="contains" id="vigenciaGCFechaInicial" width="50"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 50px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVGC.strFechaInicial}" filterBy="#{infoVGC.strFechaInicial}" filterMatchMode="contains" id="vigenciaGCFechaInicial" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVGC.fechainicial}" style="width: 50px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVGC.fechainicial}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -235,11 +237,11 @@
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column headerText="Fecha Final" sortBy="#{infoVGC.strFechaFinal}" filterBy="#{infoVGC.strFechaFinal}" filterMatchMode="contains" id="vigenciaGCFechaFinal" width="50"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 50px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Final" sortBy="#{infoVGC.strFechaFinal}" filterBy="#{infoVGC.strFechaFinal}" filterMatchMode="contains" id="vigenciaGCFechaFinal" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVGC.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVGC.fechafinal}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -258,7 +260,7 @@
 
 
                                         <p:column headerText="Codigo Grupo" sortBy="#{infoVGC.grupoconcepto.strCodigo}" filterBy="#{infoVGC.grupoconcepto.strCodigo}" 
-                                                  filterMatchMode="contains" id="vigenciaGCCodigo" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                                  filterMatchMode="contains" id="vigenciaGCCodigo" width="100" filterStyle="display: none; visibility: hidden" style="width: 100px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoVGC.grupoconcepto.strCodigo}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
@@ -275,7 +277,7 @@
                                         </p:column> 
 
                                         <p:column headerText="Descripción Grupo" sortBy="#{infoVGC.grupoconcepto.descripcion}" filterBy="#{infoVGC.grupoconcepto.descripcion}" filterMatchMode="contains" 
-                                                  id="vigenciaGCDescripcion" width="150" filterStyle="display: none; visibility: hidden" style="width: 150px; font-size: 11px">                                  
+                                                  id="vigenciaGCDescripcion" width="300" filterStyle="display: none; visibility: hidden" style="width: 300px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoVGC.grupoconcepto.descripcion}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
@@ -307,11 +309,11 @@
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
-                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVCTT.strFechaInicial}" filterBy="#{infoVCTT.strFechaInicial}" filterMatchMode="contains" id="vigenciaCTTFechaInicial" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVCTT.strFechaInicial}" filterBy="#{infoVCTT.strFechaInicial}" filterMatchMode="contains" id="vigenciaCTTFechaInicial" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVCTT.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVCTT.fechainicial}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -328,11 +330,11 @@
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column headerText="Fecha Final" sortBy="#{infoVCTT.strFechaFinal}" filterBy="#{infoVCTT.strFechaFinal}" filterMatchMode="contains" id="vigenciaCTTFechaFinal" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Final" sortBy="#{infoVCTT.strFechaFinal}" filterBy="#{infoVCTT.strFechaFinal}" filterMatchMode="contains" id="vigenciaCTTFechaFinal" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVCTT.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVCTT.fechafinal}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -351,7 +353,7 @@
 
 
                                         <p:column headerText="Descripcion del Tipo de Trabajador" sortBy="#{infoVCTT.tipotrabajador.nombre}" filterBy="#{infoVCTT.tipotrabajador.nombre}" 
-                                                  filterMatchMode="contains" id="vigenciaCTTDescripcion" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                                  filterMatchMode="contains" id="vigenciaCTTDescripcion" width="400" filterStyle="display: none; visibility: hidden" style="width: 400px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoVCTT.tipotrabajador.nombre}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
@@ -381,11 +383,11 @@
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
-                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVCTC.strFechaInicial}" filterBy="#{infoVCTC.strFechaInicial}" filterMatchMode="contains" id="vigenciaCTCFechaInicial" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVCTC.strFechaInicial}" filterBy="#{infoVCTC.strFechaInicial}" filterMatchMode="contains" id="vigenciaCTCFechaInicial" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVCTC.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVCTC.fechainicial}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -403,11 +405,11 @@
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column headerText="Fecha Final" sortBy="#{infoVCTC.strFechaFinal}" filterBy="#{infoVCTC.strFechaFinal}" filterMatchMode="contains" id="vigenciaCTCFechaFinal" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Final" sortBy="#{infoVCTC.strFechaFinal}" filterBy="#{infoVCTC.strFechaFinal}" filterMatchMode="contains" id="vigenciaCTCFechaFinal" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVCTC.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVCTC.fechafinal}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -426,7 +428,7 @@
 
 
                                         <p:column headerText="Descripcion del Tipo de Contrato" sortBy="#{infoVCTC.tipocontrato.nombre}" filterBy="#{infoVCTC.tipocontrato.nombre}" 
-                                                  filterMatchMode="contains" id="vigenciaCTCDescripcion" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                                  filterMatchMode="contains" id="vigenciaCTCDescripcion" width="400" filterStyle="display: none; visibility: hidden" style="width: 400px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoVCTC.tipocontrato.nombre}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
@@ -457,11 +459,11 @@
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
-                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVCRL.strFechaInicial}" filterBy="#{infoVCRL.strFechaInicial}" filterMatchMode="contains" id="vigenciaCRLFechaInicial" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Inicial" sortBy="#{infoVCRL.strFechaInicial}" filterBy="#{infoVCRL.strFechaInicial}" filterMatchMode="contains" id="vigenciaCRLFechaInicial" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVCRL.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVCRL.fechainicial}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -478,11 +480,11 @@
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column headerText="Fecha Final" sortBy="#{infoVCRL.strFechaFinal}" filterBy="#{infoVCRL.strFechaFinal}" filterMatchMode="contains" id="vigenciaCRLFechaFinal" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Final" sortBy="#{infoVCRL.strFechaFinal}" filterBy="#{infoVCRL.strFechaFinal}" filterMatchMode="contains" id="vigenciaCRLFechaFinal" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoVCRL.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoVCRL.fechafinal}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -501,7 +503,7 @@
 
 
                                         <p:column headerText="Descripcion del Tipo de Salario" sortBy="#{infoVCRL.tiposalario.nombre}" filterBy="#{infoVCRL.tiposalario.nombre}" 
-                                                  filterMatchMode="contains" id="vigenciaCRLDescripcion" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                                  filterMatchMode="contains" id="vigenciaCRLDescripcion" width="400" filterStyle="display: none; visibility: hidden" style="width: 400px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoVCRL.tiposalario.nombre}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
@@ -533,11 +535,11 @@
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
-                                        <p:column headerText="Fecha Inicial" sortBy="#{infoFC.strFechaInicial}" filterBy="#{infoFC.strFechaInicial}" filterMatchMode="contains" id="formulaCFechaInicial" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Inicial" sortBy="#{infoFC.strFechaInicial}" filterBy="#{infoFC.strFechaInicial}" filterMatchMode="contains" id="formulaCFechaInicial" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoFC.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoFC.fechainicial}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -554,11 +556,11 @@
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column headerText="Fecha Final" sortBy="#{infoFC.strFechaFinal}" filterBy="#{infoFC.strFechaFinal}" filterMatchMode="contains" id="formulaCFechaFinal" width="80"
-                                                  filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:column headerText="Fecha Final" sortBy="#{infoFC.strFechaFinal}" filterBy="#{infoFC.strFechaFinal}" filterMatchMode="contains" id="formulaCFechaFinal" width="40"
+                                                  filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{infoFC.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <h:outputText value="#{infoFC.fechafinal}" style="width: 40px; font-size: 11px;text-transform: uppercase">
                                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                     </h:outputText>
                                                 </f:facet>  
@@ -577,7 +579,7 @@
 
 
                                         <p:column headerText="Nombre de la Formula" sortBy="#{infoFC.formula.nombrelargo}" filterBy="#{infoFC.formula.nombrelargo}" 
-                                                  filterMatchMode="contains" id="formulaCNombre" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                                  filterMatchMode="contains" id="formulaCNombre" width="180" filterStyle="display: none; visibility: hidden" style="width: 180px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoFC.formula.nombrelargo}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
@@ -594,7 +596,7 @@
                                         </p:column> 
 
                                         <p:column headerText="Orden de Liquidacion" sortBy="#{infoFC.strOrden}" filterBy="#{infoFC.strOrden}" 
-                                                  filterMatchMode="contains" id="formulaCOrden" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                                  filterMatchMode="contains" id="formulaCOrden" width="100" filterStyle="display: none; visibility: hidden" style="width: 100px; font-size: 11px">                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoFC.strOrden}" style="text-transform: uppercase"/></f:facet>  
                                                 <f:facet name="input">
@@ -606,21 +608,21 @@
                                                 </f:facet>  
                                             </p:cellEditor>
                                             <f:facet name="footer">
-                                                <h:outputText value="Orden de Liquidacion"/>
+                                                <p:commandButton style="width: 100%; height: 16px; border: none;color: blue" value="Orden de Liquidacion"/>
                                             </f:facet>
                                         </p:column> 
 
                                     </p:dataTable>
                                 </fieldset>
-                                <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 10px; top: 1500px;" id="DETALLES" value="" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="DETALLES" value="Detalles de la formula seleccionada" />
+                                <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 10px; top: 1500px;" id="detalleFormula" value="" disabled="#{controlDetalleConcepto.formulaSeleccionada}" actionListener="#{controlFormula.obtenerFormulaSecuencia(controlDetalleConcepto.actualFormulaConcepto.formula.secuencia)}" action="formulaSeleccionada" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="detalleFormula" value="Detalles de la formula seleccionada" />
 
                             </p:scrollPanel>  
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVigenciaCuenta" process="@this" />
-                        <p:commandButton style="position: absolute; left: 20px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlDetalleConcepto.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 790px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVigenciaCuenta" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlDetalleConcepto.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 790px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto" process="@this" />
                     </p:panel>
 
 
@@ -710,21 +712,47 @@
                         <p:commandButton value="No" onclick="confirmarGuardar.hide();"  style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
+                    
+                     <p:dialog id="errorEliminacionConcepto" header="ELIMINACION - PASO 1 DE 4" widgetVar="errorEliminacionConcepto"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Este concepto tiene acumulados de nómina por tal motivo no lo puede eliminar." style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="OK" onclick="errorEliminacionConcepto.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+                    
+                     <p:dialog id="paso1Eliminacion" header="ELIMINACION - PASO 1 DE 4" widgetVar="paso1Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="En este momento va a eliminar un concepto con toda su configuración asociada." style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="OK" onclick="paso2Eliminacion.show();paso1Eliminacion.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="paso2Eliminacion" header="ELIMINACION - PASO 2 DE 4" widgetVar="paso2Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="¿Está totalmente seguro?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Continuar" onclick="paso3Eliminacion.show();paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 170px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 260px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="paso3Eliminacion" header="ELIMINACION - PASO 3 DE 4" widgetVar="paso3Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{controlDetalleConcepto.conceptoEliminar}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Aceptar" onclick="paso3Eliminacion.hide();" actionListener="#{controlDetalleConcepto.eliminarConcepto()}" style="position: absolute; top: 60px; left: 170px" action="#{controlDetalleConcepto.paginaRetorno}" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="paso3Eliminacion.hide();" style="position: absolute; top: 60px; left: 260px" process="@this" />
+                    </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlDetalleConcepto.activarCtrlF11()}"/>
 
 
                     <p:dialog header="Tipos Centros Costos" widgetVar="TipoCCDialogo" draggable="false" resizable="false" closable="false" id="TipoCCDialogo"  
                               showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovTiposCC" style="font-size: 11px; width: 420px" var="tiposCC" value="#{controlDetalleConcepto.listTiposCentrosCostos}" rowKey="#{tiposCC.secuencia}"
-                                     selection="#{controlDetalleConcepto.tipoCentroCostoSeleccionado}" selectionMode="single" widgetVar="lovTiposCC" scrollable="true" scrollHeight="250" scrollWidth="420"
+                        <p:dataTable id="lovTiposCC" style="font-size: 11px; width: 410px" var="tiposCC" value="#{controlDetalleConcepto.listTiposCentrosCostos}" rowKey="#{tiposCC.secuencia}"
+                                     selection="#{controlDetalleConcepto.tipoCentroCostoSeleccionado}" selectionMode="single" widgetVar="lovTiposCC" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlDetalleConcepto.filtrarListTiposCentrosCostos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarTCC"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Tipo Centro Costo: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTiposCC.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{tiposCC.nombre}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{tiposCC.nombre}" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
@@ -751,13 +779,13 @@
                                 <h:outputText value="Buscar Cuenta Debito: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovDebito.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{debito.codigo}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{debito.codigo}" width="50"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{debito.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{debito.descripcion}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{debito.descripcion}" width="110"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Descripción" />
                                 </f:facet>
@@ -784,13 +812,13 @@
                                 <h:outputText value="Buscar Cuenta Credito: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCredito.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{credito.codigo}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{credito.codigo}" width="50"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{credito.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{credito.descripcion}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{credito.descripcion}" width="110"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Descripción" />
                                 </f:facet>
@@ -816,13 +844,13 @@
                                 <h:outputText value="Buscar Centro Costo: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCostoD.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{centroD.codigo}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{centroD.codigo}" width="50"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{centroD.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{centroD.nombre}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{centroD.nombre}" width="110"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
@@ -849,13 +877,13 @@
                                 <h:outputText value="Buscar Centro Costo: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCostoC.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{centroC.codigo}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{centroC.codigo}" width="50"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{centroC.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{centroC.nombre}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{centroC.nombre}" width="110"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
@@ -881,13 +909,13 @@
                                 <h:outputText value="Buscar Grupo Concepto: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovGrupoConcepto.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{grupoC.codigo}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{grupoC.codigo}" width="50"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{grupoC.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{grupoC.descripcion}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{grupoC.descripcion}" width="110"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Descripcion" />
                                 </f:facet>
@@ -989,13 +1017,13 @@
                                 <h:outputText value="Buscar Formula: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{formula.nombrelargo}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{formula.nombrelargo}" width="110"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
                                 <h:outputText value="#{formula.nombrelargo}" />
                             </p:column>
-                            <p:column filterBy="#{formula.nombrecorto}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{formula.nombrecorto}" width="80"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Nombre Corto" />
                                 </f:facet>
@@ -1020,13 +1048,13 @@
                                 <h:outputText value="Buscar Orden: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormulaC.filter();" style="width:140px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{formulaC.orden}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{formulaC.orden}" width="50"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Orden" />
                                 </f:facet>
                                 <h:outputText value="#{formulaC.orden}" />
                             </p:column>
-                            <p:column filterBy="#{formulaC.concepto.descripcion}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{formulaC.concepto.descripcion}" width="130"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Descripcion" />
                                 </f:facet>
@@ -1628,7 +1656,7 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoReformaFC" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,1,5)}" update="nuevaFormulaFC"/>   
                             <p:watermark for="nuevaFormulaFC" value="Nombre Formula" />
 
-                            <strong><h:outputText value="Nombre Formula: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <strong><h:outputText value="Orden: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
                             <p:inputText id="nuevaOrdenFC" value="#{controlDetalleConcepto.nuevaFormulasConceptos.strOrden}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indice,1,1,5)}"/>
                                 <p:ajax event="click" listener="#{controlDetalleConcepto.valoresBackupAutocompletarGeneral(1, 'ORDEN',5)}" />
@@ -1675,19 +1703,19 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarFormulaFC" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,2,5)}" update="duplicarFormulaFC"/>   
                             <p:watermark for="duplicarFormulaFC" value="Nombre Formula" />
 
-                            <strong><h:outputText value="Orden: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
-                            <p:inputText id="duplicarOrdenFC" value="#{controlDetalleConcepto.duplicarFormulasConceptos.strOrden}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                            <strong><h:outputText value="Orden: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:inputText id="duplicarOrdenFC" value="#{controlDetalleConcepto.duplicarFormulasConceptos.strOrden}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlDetalleConcepto.asignarIndex(indice,1,2,5)}"/>
                                 <p:ajax event="click" listener="#{controlDetalleConcepto.valoresBackupAutocompletarGeneral(2, 'ORDEN',5)}" />
                                 <p:ajax event="change" listener="#{controlDetalleConcepto.autocompletarNuevoyDuplicadoFormulasConceptos('ORDEN', controlDetalleConcepto.duplicarFormulasConceptos.strOrden, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarOrdenFC" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,0,2,5)}" update="duplicarOrdenFC"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnDuplicarOrdenFC" icon="ui-icon-search" process="@this"  actionListener="#{controlDetalleConcepto.asignarIndex(indice,1,2,5)}" update="duplicarOrdenFC"/>   
                             <p:watermark for="duplicarOrdenFC" value="Orden Liquidacion" />
 
 
-                            <p:commandButton id="limpiarDFC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarFormulasConceptos()}" update="duplicarFC" process="@this"/>
-                            <p:commandButton id="agregarDFC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 190px;"  process="@this" actionListener="#{controlDetalleConcepto.confirmarDuplicarFormulasConceptos()}"  />
-                            <p:commandButton id="cancelarDFC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 190px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarFormulasConceptos()}" update="duplicarFC" onclick="DuplicarRegistroFormulaConcepto.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDFC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 220px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarFormulasConceptos()}" update="duplicarFC" process="@this"/>
+                            <p:commandButton id="agregarDFC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 220px;"  process="@this" actionListener="#{controlDetalleConcepto.confirmarDuplicarFormulasConceptos()}"  />
+                            <p:commandButton id="cancelarDFC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 220px;" actionListener="#{controlDetalleConcepto.limpiarDuplicarFormulasConceptos()}" update="duplicarFC" onclick="DuplicarRegistroFormulaConcepto.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 

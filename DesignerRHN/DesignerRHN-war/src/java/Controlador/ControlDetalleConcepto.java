@@ -195,6 +195,7 @@ public class ControlDetalleConcepto implements Serializable {
     private Date auxFC_FechaIni, auxFC_FechaFin;
     private Column formulaCFechaInicial, formulaCFechaFinal, formulaCNombre, formulaCOrden;
     private boolean permitirIndexFormulasConceptos;
+    private FormulasConceptos actualFormulaConcepto;
     /////////////Lista Valores FormulasConceptos///////////////////////
     private List<Formulas> listFormulas;
     private List<Formulas> filtrarListFormulas;
@@ -215,10 +216,14 @@ public class ControlDetalleConcepto implements Serializable {
     private int tipoActualizacion;
     private Date fechaParametro;
     private String comportamientoConcepto;
+    private boolean formulaSeleccionada;
+    private String paginaRetorno;
+    private String conceptoEliminar;
     ////////////////////////////////
 
     public ControlDetalleConcepto() {
-
+        paginaRetorno = "";
+        formulaSeleccionada = true;
         conceptoActual = new Conceptos();
 
         listFormulasConceptosConcepto = null;
@@ -383,7 +388,7 @@ public class ControlDetalleConcepto implements Serializable {
                 comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "MANUAL";
             } else {
                 if (auto > 0 && semi > 0) {
-                    comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "SEMI-AUTOMATICO";
+                    comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "AUTOMATICO";
                 }
                 if (auto > 0 && semi == 0) {
                     comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "AUTOMATICO";
@@ -399,6 +404,7 @@ public class ControlDetalleConcepto implements Serializable {
         listVigenciasConceptosTCConcepto = null;
         listVigenciasConceptosRLConcepto = null;
         listFormulasConceptosConcepto = null;
+        formulaSeleccionada = true;
     }
 
     public void modificarVigenciaCuenta(int indice) {
@@ -2009,6 +2015,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexVigenciaGrupoConcepto = -1;
             indexVigenciaConceptoRL = -1;
             indexFormulasConceptos = -1;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -2028,6 +2037,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexVigenciaCuenta = -1;
             indexVigenciaConceptoRL = -1;
             indexFormulasConceptos = -1;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -2046,6 +2058,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexVigenciaCuenta = -1;
             indexVigenciaConceptoRL = -1;
             indexFormulasConceptos = -1;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -2064,6 +2079,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexVigenciaCuenta = -1;
             indexVigenciaConceptoRL = -1;
             indexFormulasConceptos = -1;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -2082,6 +2100,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexVigenciaCuenta = -1;
             indexVigenciaConceptoTC = -1;
             indexFormulasConceptos = -1;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -2090,6 +2111,7 @@ public class ControlDetalleConcepto implements Serializable {
             cualCeldaFormulasConceptos = celda;
             indexFormulasConceptos = indice;
             secRegistroFormulasConceptos = listFormulasConceptosConcepto.get(indexFormulasConceptos).getSecuencia();
+                actualFormulaConcepto  = listFormulasConceptosConcepto.get(indexFormulasConceptos);
             ///////// Captura Objetos Para Campos NotNull ///////////
             auxFC_FechaIni = listFormulasConceptosConcepto.get(indexFormulasConceptos).getFechainicial();
             auxFC_FechaFin = listFormulasConceptosConcepto.get(indexFormulasConceptos).getFechafinal();
@@ -2101,6 +2123,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexVigenciaGrupoConcepto = -1;
             indexVigenciaCuenta = -1;
             indexVigenciaConceptoTC = -1;
+            formulaSeleccionada = false;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -2825,6 +2850,8 @@ public class ControlDetalleConcepto implements Serializable {
         listFormulasConceptosConcepto = null;
 
         guardado = true;
+        formulaSeleccionada = true;
+
         cambiosVigenciaCuenta = false;
         cambiosVigenciaConceptoTT = false;
         cambiosVigenciaConceptoRL = false;
@@ -2853,6 +2880,7 @@ public class ControlDetalleConcepto implements Serializable {
         context.update("form:datosVigenciaConceptoTC");
         context.update("form:datosVigenciaConceptoRL");
         context.update("form:datosFormulaConcepto");
+        context.update("form:detalleFormula");
     }
 
     public void listaValoresBoton() {
@@ -3030,6 +3058,8 @@ public class ControlDetalleConcepto implements Serializable {
             }
         }
         if (tt == 5) {
+            formulaSeleccionada = true;
+            context.update("form:detalleFormula");
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
@@ -3233,6 +3263,8 @@ public class ControlDetalleConcepto implements Serializable {
                 context.execute("editaOrdenFCD.show()");
                 cualCeldaFormulasConceptos = -1;
             }
+            formulaSeleccionada = true;
+            context.update("form:detalleFormula");
             indexFormulasConceptos = -1;
             secRegistroFormulasConceptos = null;
         }
@@ -3250,18 +3282,18 @@ public class ControlDetalleConcepto implements Serializable {
         int tamFC = listFormulasConceptosConcepto.size();
 
         if (tamVC == 0 || tamVGC == 0 || tamVCTT == 0 || tamVCTC == 0 || tamVCRL == 0 || tamFC == 0) {
+            formulaSeleccionada = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
             context.execute("seleccionarTablaNewReg.show()");
         } else {
             if (indexVigenciaCuenta >= 0) {
                 validarIngresoNuevaVigenciaCuenta();
-            }
-            /////////////////// VigenciasCuentas /////////////////////
+            } /////////////////// VigenciasCuentas /////////////////////
             ////////////VigenciaGruposConceptos /////////////////////
             else if (indexVigenciaGrupoConcepto >= 0) {
                 validarIngresoNuevaVigenciaGrupoConcepto();
-            }
-            ////////////VigenciaGruposConceptos /////////////////////
+            } ////////////VigenciaGruposConceptos /////////////////////
             ////////////VigenciaConceptosTT /////////////////////
             else if (indexVigenciaConceptoTT >= 0) {
                 validarIngresoNuevaVigenciaConceptoTT();
@@ -3331,7 +3363,9 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void validarIngresoNuevaFormulasConceptos() {
+        formulaSeleccionada = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:detalleFormula");
         limpiarNuevoFormulasConceptos();
         context.update("form:nuevaFC");
         context.update("formularioDialogos:NuevoRegistroFormulaConcepto");
@@ -3346,15 +3380,13 @@ public class ControlDetalleConcepto implements Serializable {
         } ///////////////VigenciaGrupoConcepto///////////////
         else if (indexVigenciaGrupoConcepto >= 0) {
             duplicarVigenciaGrupoConceptoM();
-        }
-        ///////////////VigenciaConceptoTT///////////////
+        } ///////////////VigenciaConceptoTT///////////////
         else if (indexVigenciaConceptoTT >= 0) {
             duplicarVigenciaConceptoTTM();
         } ////////////VigenciaConceptoTC /////////////////////
         else if (indexVigenciaConceptoTC >= 0) {
             duplicarVigenciaConceptoTCM();
-        }
-        ////////////VigenciaConceptoRL /////////////////////
+        } ////////////VigenciaConceptoRL /////////////////////
         else if (indexVigenciaConceptoRL >= 0) {
             duplicarVigenciaConceptoRLM();
         } ////////////FormulasConceptos /////////////////////
@@ -3369,20 +3401,15 @@ public class ControlDetalleConcepto implements Serializable {
     public void validarBorradoRegistro() {
         if (indexVigenciaCuenta >= 0) {
             borrarVigenciaCuenta();
-        }
-        else if (indexVigenciaGrupoConcepto >= 0) {
+        } else if (indexVigenciaGrupoConcepto >= 0) {
             borrarVigenciaGrupoConcepto();
-        }
-        else if (indexVigenciaConceptoTT >= 0) {
+        } else if (indexVigenciaConceptoTT >= 0) {
             borrarVigenciaConceptoTT();
-        }
-        else if (indexVigenciaConceptoTC >= 0) {
+        } else if (indexVigenciaConceptoTC >= 0) {
             borrarVigenciaConceptoTC();
-        }
-        else if (indexVigenciaConceptoRL >= 0) {
+        } else if (indexVigenciaConceptoRL >= 0) {
             borrarVigenciaConceptoRL();
-        }
-        else if (indexFormulasConceptos >= 0) {
+        } else if (indexFormulasConceptos >= 0) {
             borrarFormulasConceptos();
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -4061,6 +4088,9 @@ public class ControlDetalleConcepto implements Serializable {
 
     public void duplicarFormulasConceptosM() {
         if (indexFormulasConceptos >= 0) {
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
             duplicarFormulasConceptos = new FormulasConceptos();
             if (tipoListaFormulasConceptos == 0) {
                 duplicarFormulasConceptos.setConcepto(listFormulasConceptosConcepto.get(indexFormulasConceptos).getConcepto());
@@ -4077,7 +4107,6 @@ public class ControlDetalleConcepto implements Serializable {
                 duplicarFormulasConceptos.setFechainicial(filtrarListFormulasConceptosConcepto.get(indexFormulasConceptos).getFechainicial());
             }
 
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroFormulaConcepto");
             context.execute("DuplicarRegistroFormulaConcepto.show()");
 
@@ -4414,6 +4443,9 @@ public class ControlDetalleConcepto implements Serializable {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:aceptar");
                     }
+                    formulaSeleccionada = true;
+
+                    context.update("form:detalleFormula");
                     context.execute("DuplicarRegistroFormulaConcepto.hide()");
                     cambiosFormulasConceptos = true;
                     indexFormulasConceptos = -1;
@@ -4675,8 +4707,10 @@ public class ControlDetalleConcepto implements Serializable {
                 listFormulasConceptosConcepto.remove(VLIndex);
                 filtrarListFormulasConceptosConcepto.remove(indexFormulasConceptos);
             }
+            formulaSeleccionada = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosFormulaConcepto");
+            context.update("form:detalleFormula");
             indexFormulasConceptos = -1;
             secRegistroFormulasConceptos = null;
             cambiosFormulasConceptos = true;
@@ -4709,6 +4743,9 @@ public class ControlDetalleConcepto implements Serializable {
         }
         if (indexFormulasConceptos >= 0) {
             filtradoFormulasConceptos();
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -4722,19 +4759,19 @@ public class ControlDetalleConcepto implements Serializable {
             vigenciaCuentaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
             vigenciaCuentaFechaFinal.setFilterStyle("width: 60px");
             vigenciaCuentaTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
-            vigenciaCuentaTipoCC.setFilterStyle("width: 60px");
+            vigenciaCuentaTipoCC.setFilterStyle("width: 80px");
             vigenciaCuentaDebitoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
-            vigenciaCuentaDebitoCod.setFilterStyle("width: 60px");
+            vigenciaCuentaDebitoCod.setFilterStyle("width: 80px");
             vigenciaCuentaDebitoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
-            vigenciaCuentaDebitoDes.setFilterStyle("width: 60px");
+            vigenciaCuentaDebitoDes.setFilterStyle("width: 80px");
             vigenciaCuentaCCConsolidadorD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
-            vigenciaCuentaCCConsolidadorD.setFilterStyle("width: 60px");
+            vigenciaCuentaCCConsolidadorD.setFilterStyle("width: 80px");
             vigenciaCuentaCreditoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
-            vigenciaCuentaCreditoCod.setFilterStyle("width: 60px");
+            vigenciaCuentaCreditoCod.setFilterStyle("width: 80px");
             vigenciaCuentaCreditoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
-            vigenciaCuentaCreditoDes.setFilterStyle("width: 60px");
+            vigenciaCuentaCreditoDes.setFilterStyle("width: 80px");
             vigenciaCuentaCCConsolidadorC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
-            vigenciaCuentaCCConsolidadorC.setFilterStyle("width: 60px");
+            vigenciaCuentaCCConsolidadorC.setFilterStyle("width: 80px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaCuenta");
             banderaVigenciaCuenta = 1;
         } else if (banderaVigenciaCuenta == 1) {
@@ -4772,7 +4809,7 @@ public class ControlDetalleConcepto implements Serializable {
             vigenciaGCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
             vigenciaGCCodigo.setFilterStyle("width: 60px");
             vigenciaGCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
-            vigenciaGCDescripcion.setFilterStyle("width: 60px");
+            vigenciaGCDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoConcepto");
             banderaVigenciaGrupoConcepto = 1;
         } else if (banderaVigenciaGrupoConcepto == 1) {
@@ -4798,7 +4835,7 @@ public class ControlDetalleConcepto implements Serializable {
             vigenciaCTTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
             vigenciaCTTFechaInicial.setFilterStyle("width: 60px");
             vigenciaCTTDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
-            vigenciaCTTDescripcion.setFilterStyle("width: 60px");
+            vigenciaCTTDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTT");
             banderaVigenciaConceptoTT = 1;
         } else if (banderaVigenciaConceptoTT == 1) {
@@ -4822,7 +4859,7 @@ public class ControlDetalleConcepto implements Serializable {
             vigenciaCTCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
             vigenciaCTCFechaInicial.setFilterStyle("width: 60px");
             vigenciaCTCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
-            vigenciaCTCDescripcion.setFilterStyle("width: 60px");
+            vigenciaCTCDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTC");
             banderaVigenciaConceptoTC = 1;
         } else if (banderaVigenciaConceptoTC == 1) {
@@ -4846,7 +4883,7 @@ public class ControlDetalleConcepto implements Serializable {
             vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
             vigenciaCRLFechaInicial.setFilterStyle("width: 60px");
             vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
-            vigenciaCRLDescripcion.setFilterStyle("width: 60px");
+            vigenciaCRLDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoRL");
             banderaVigenciaConceptoRL = 1;
         } else if (banderaVigenciaConceptoRL == 1) {
@@ -4870,7 +4907,7 @@ public class ControlDetalleConcepto implements Serializable {
             formulaCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
             formulaCFechaFinal.setFilterStyle("width: 60px");
             formulaCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
-            formulaCNombre.setFilterStyle("width: 60px");
+            formulaCNombre.setFilterStyle("width: 200px");
             formulaCOrden = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
             formulaCOrden.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
@@ -5074,6 +5111,9 @@ public class ControlDetalleConcepto implements Serializable {
         listReformasLaborales = null;
         listFormulas = null;
         listFormulasConceptos = null;
+
+        formulaSeleccionada = true;
+        paginaRetorno = "";
     }
 
     public void actualizarTipoCentroCosto() {
@@ -5664,11 +5704,11 @@ public class ControlDetalleConcepto implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update(":form:editarOrdenFC");
         } else if (tipoActualizacion == 1) {
-            nuevaFormulasConceptos.setFormula(formulaSeleccionado);
+            nuevaFormulasConceptos.setStrOrden(formulaConceptoSeleccionado.getStrOrden());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaOrdenFC");
         } else if (tipoActualizacion == 2) {
-            duplicarFormulasConceptos.setFormula(formulaSeleccionado);
+            duplicarFormulasConceptos.setStrOrden(formulaConceptoSeleccionado.getStrOrden());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarOrdenFC");
         }
@@ -5723,7 +5763,11 @@ public class ControlDetalleConcepto implements Serializable {
         if (indexFormulasConceptos >= 0) {
             nombreTabla = ":formExportarFormulasConceptos:datosFormulasConceptosExportar";
             nombreXML = "FormulasConceptos_XML";
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
+
         return nombreTabla;
     }
 
@@ -5780,6 +5824,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexFormulasConceptos = -1;
             indexAuxFormulasConceptos = -1;
             secRegistroFormulasConceptos = null;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -5850,6 +5897,9 @@ public class ControlDetalleConcepto implements Serializable {
             indexFormulasConceptos = -1;
             indexAuxFormulasConceptos = -1;
             secRegistroFormulasConceptos = null;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -5897,6 +5947,9 @@ public class ControlDetalleConcepto implements Serializable {
             }
         }
         if (indexFormulasConceptos >= 0) {
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
             if (tipoListaFormulasConceptos == 0) {
                 tipoListaFormulasConceptos = 1;
             }
@@ -5933,6 +5986,9 @@ public class ControlDetalleConcepto implements Serializable {
             verificarRastroFormulasConceptos();
             indexFormulasConceptos = -1;
             indexAuxFormulasConceptos = -1;
+            formulaSeleccionada = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
         }
     }
 
@@ -6168,6 +6224,31 @@ public class ControlDetalleConcepto implements Serializable {
         msnConfirmarRastro = "";
         msnConfirmarRastroHistorico = "";
         nombreTablaRastro = "";
+    }
+
+    public void validarEliminacionConcepto(){
+        RequestContext context = RequestContext.getCurrentInstance();
+        boolean retorno = administrarDetalleConcepto.verificarSolucionesNodosParaConcepto(conceptoActual.getSecuencia());
+        if(retorno == true){
+            System.out.println("No elimina");
+            context.execute("errorEliminacionConcepto.show()");
+        }
+        else {
+            System.out.println("Proceso de eliminacion del concepto");
+            context.execute("paso1Eliminacion.show()");
+        }
+    }
+    
+    public void eliminarConcepto() {
+        boolean rep = administrarDetalleConcepto.eliminarConcepto(conceptoActual.getSecuencia());
+        if (rep == true) {
+            salir();
+            paginaRetorno = "retornoConcepto";
+        } else {
+            FacesMessage msg = new FacesMessage("Información", "El reporte no pudo ser eliminado.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            paginaRetorno = "";
+        }
     }
 
     //GET - SET 
@@ -6635,7 +6716,7 @@ public class ControlDetalleConcepto implements Serializable {
         try {
             if (listFormulasConceptosConcepto == null) {
                 listFormulasConceptosConcepto = new ArrayList<FormulasConceptos>();
-                listFormulasConceptosConcepto = administrarDetalleConcepto.listFormulasConceptos();
+                listFormulasConceptosConcepto = administrarDetalleConcepto.listFormulasConceptosConcepto(conceptoActual.getSecuencia());
             }
             return listFormulasConceptosConcepto;
         } catch (Exception e) {
@@ -7066,4 +7147,38 @@ public class ControlDetalleConcepto implements Serializable {
         this.formulaConceptoSeleccionado = formulaConceptoSeleccionado;
     }
 
+    public String getConceptoEliminar() {
+        if (indexFormulasConceptos >= 0) {
+            conceptoEliminar = "Va a eliminar el concepto el cual tiene el código : " + listFormulasConceptosConcepto.get(indexFormulasConceptos).getConcepto().getCodigo().toString() + ". ¿Esta seguro?";
+        }
+        return conceptoEliminar;
+    }
+
+    public void setConceptoEliminar(String conceptoEliminar) {
+        this.conceptoEliminar = conceptoEliminar;
+    }
+
+    public boolean isFormulaSeleccionada() {
+        return formulaSeleccionada;
+    }
+
+    public void setFormulaSeleccionada(boolean formulaSeleccionada) {
+        this.formulaSeleccionada = formulaSeleccionada;
+    }
+
+    public String getPaginaRetorno() {
+        return paginaRetorno;
+    }
+
+    public void setPaginaRetorno(String paginaRetorno) {
+        this.paginaRetorno = paginaRetorno;
+    }
+    
+    public FormulasConceptos getActualFormulaConcepto() {
+        return actualFormulaConcepto;
+    }
+
+    public void setActualFormulaConcepto(FormulasConceptos setActualFormulaConcepto) {
+        this.actualFormulaConcepto = setActualFormulaConcepto;
+    }
 }

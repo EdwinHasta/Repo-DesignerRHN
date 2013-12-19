@@ -66,7 +66,59 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadesFormula</from-outcome>
+            <to-view-id>/formulanovedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/formulanovedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retornoFormula</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/detalleconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formulaSeleccionada</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retornoDetalleConcepto</from-outcome>
+            <to-view-id>/detalleconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/formulaproceso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retornoFormula</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>procesosFormula</from-outcome>
+            <to-view-id>/formulaproceso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+        
     <navigation-rule>
         <from-view-id>/Cuenta.xhtml</from-view-id>
         <navigation-case>
@@ -232,6 +284,44 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/formulanovedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroFormNovedad</from-outcome>
+            <to-view-id>/formulanovedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/formulanovedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroFormProceso</from-outcome>
+            <to-view-id>/formulaproceso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
     
     <navigation-rule>
         <from-view-id>/conceptojuridico.xhtml</from-view-id>
@@ -652,7 +742,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/detalleconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -1170,7 +1260,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/GrupoSalarial.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -1217,7 +1307,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -1249,7 +1339,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>pageProyectos</from-outcome>
@@ -1266,7 +1356,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasEvents</from-outcome>
@@ -1297,6 +1387,23 @@
             <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/atextrarecargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroExtraRecargo</from-outcome>
+            <to-view-id>/atextrarecargo.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
     
     <navigation-rule>
         <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
@@ -1332,7 +1439,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/vigenciaaficion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigAfiEmplInd</from-outcome>
@@ -1366,7 +1473,7 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ibcsRastro</from-outcome>
@@ -1400,7 +1507,7 @@
         </navigation-case>
     </navigation-rule>
     
-        <navigation-rule>
+    <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciaIndRastro</from-outcome>
@@ -1489,11 +1596,11 @@
         </navigation-case>
     </navigation-rule>
     
-   <application>
-      <locale-config>
-         <default-locale>es</default-locale>
-         <supported-locale>en</supported-locale>
-      </locale-config>
+    <application>
+        <locale-config>
+            <default-locale>es</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
     </application>
     
 </faces-config>

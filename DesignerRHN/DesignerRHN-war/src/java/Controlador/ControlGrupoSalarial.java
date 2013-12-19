@@ -552,18 +552,19 @@ public class ControlGrupoSalarial implements Serializable {
         if (indexAuxVGS >= 0) {
             duplicarVigenciaGrupoSalarial = new VigenciasGruposSalariales();
             k++;
+            indexVGS = indexAuxVGS;
             l = BigInteger.valueOf(k);
             if (tipoListaVigencia == 0) {
                 duplicarVigenciaGrupoSalarial.setSecuencia(l);
-                duplicarVigenciaGrupoSalarial.setFechavigencia(listVigenciasGruposSalariales.get(index).getFechavigencia());
-                duplicarVigenciaGrupoSalarial.setGruposalarial(listVigenciasGruposSalariales.get(index).getGruposalarial());
-                duplicarVigenciaGrupoSalarial.setValor(listVigenciasGruposSalariales.get(index).getValor());
+                duplicarVigenciaGrupoSalarial.setFechavigencia(listVigenciasGruposSalariales.get(indexVGS).getFechavigencia());
+                duplicarVigenciaGrupoSalarial.setGruposalarial(listVigenciasGruposSalariales.get(indexVGS).getGruposalarial());
+                duplicarVigenciaGrupoSalarial.setValor(listVigenciasGruposSalariales.get(indexVGS).getValor());
             }
             if (tipoListaVigencia == 1) {
                 duplicarVigenciaGrupoSalarial.setSecuencia(l);
-                duplicarVigenciaGrupoSalarial.setFechavigencia(filtrarListVigenciasGruposSalariales.get(index).getFechavigencia());
-                duplicarVigenciaGrupoSalarial.setGruposalarial(filtrarListVigenciasGruposSalariales.get(index).getGruposalarial());
-                duplicarVigenciaGrupoSalarial.setValor(filtrarListVigenciasGruposSalariales.get(index).getValor());
+                duplicarVigenciaGrupoSalarial.setFechavigencia(filtrarListVigenciasGruposSalariales.get(indexVGS).getFechavigencia());
+                duplicarVigenciaGrupoSalarial.setGruposalarial(filtrarListVigenciasGruposSalariales.get(indexVGS).getGruposalarial());
+                duplicarVigenciaGrupoSalarial.setValor(filtrarListVigenciasGruposSalariales.get(indexVGS).getValor());
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroVigenciaGrupoSalarial");
@@ -839,7 +840,9 @@ public class ControlGrupoSalarial implements Serializable {
         listVigenciaGrupoSalarialCrear.clear();
         listVigenciaGrupoSalarialModificar.clear();
         index = -1;
+        indexAux = -1;
         indexVGS = -1;
+        indexAuxVGS = -1;
         secRegistroVigencia = null;
         secRegistro = null;
         k = 0;
