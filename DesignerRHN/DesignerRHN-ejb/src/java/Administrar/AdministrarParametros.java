@@ -1,5 +1,6 @@
 package Administrar;
 
+import Entidades.Empleados;
 import Entidades.Estructuras;
 import Entidades.Parametros;
 import Entidades.ParametrosEstructuras;
@@ -8,6 +9,7 @@ import Entidades.TiposTrabajadores;
 import Entidades.Usuarios;
 import InterfaceAdministrar.AdministrarParametrosInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaEstructurasInterface;
 import InterfacePersistencia.PersistenciaParametrosEstadosInterface;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
@@ -39,6 +41,8 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
     PersistenciaParametrosEstadosInterface persistenciaParametrosEstados;
     @EJB
     PersistenciaUsuariosInterface persistenciaUsuarios;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
 
     public Usuarios usuarioActual() {
         String usuarioBD = persistenciaActualUsuario.actualAliasBD();
@@ -84,6 +88,12 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
             persistenciaParametros.borrar(listaParametros.get(i));
         }
     }
+    
+    public void crearParametros(List<Parametros> listaParametros) {
+        for (int i = 0; i < listaParametros.size(); i++) {
+            persistenciaParametros.crear(listaParametros.get(i));
+        }
+    }
 
     @Override
     public void adicionarEmpleados(BigInteger secParametroEstructura) {
@@ -100,5 +110,10 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
 
     public Integer diferenciaDias(String fechaInicial, String fechaFinal) {
         return persistenciaParametrosEstructuras.diasDiferenciaFechas(fechaInicial, fechaFinal);
+    }
+    
+    @Override
+    public List<Empleados> empleadosLov() {
+        return persistenciaEmpleado.lovEmpleadosParametros();
     }
 }

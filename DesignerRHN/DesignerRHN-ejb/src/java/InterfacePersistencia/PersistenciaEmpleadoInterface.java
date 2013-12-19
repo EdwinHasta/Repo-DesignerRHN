@@ -91,4 +91,10 @@ public interface PersistenciaEmpleadoInterface {
      * @return 
      */
     public List<Empleados> empleadosVacaciones();
+    /**
+     * Método encargado de buscar los empleados en estado 'ACTIVO' y 'PENSIONADO'
+     * para que sean adicionados a los parametors de liquidación.
+     * @return 
+     */
+    public List<Empleados> lovEmpleadosParametros();
 }

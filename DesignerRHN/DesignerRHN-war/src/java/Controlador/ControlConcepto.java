@@ -826,6 +826,7 @@ public class ControlConcepto implements Serializable {
     public void cancelarCambioEmpresa() {
         filtradoListaEmpresas = null;
         verCambioEmpresa = true;
+        empresaActual = backUpEmpresaActual;
         index = -1;
     }
 
