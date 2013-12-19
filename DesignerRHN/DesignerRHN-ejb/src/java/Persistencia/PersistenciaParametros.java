@@ -26,6 +26,15 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface{
     private EntityManager em;
     
     @Override
+    public void crear(Parametros parametro) {
+        try {
+            em.persist(parametro);
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaParametros.crear" + e);
+        }
+    }
+
+    @Override
     public void borrar(Parametros parametro) {
         try{
             em.remove(em.merge(parametro));

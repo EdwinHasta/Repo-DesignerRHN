@@ -1,5 +1,6 @@
 package Controlador;
 
+import Entidades.Empleados;
 import Entidades.Empresas;
 import Entidades.Estructuras;
 import Entidades.Parametros;
@@ -15,10 +16,12 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -42,37 +45,47 @@ public class ControlParametro implements Serializable {
     private Procesos seleccionProcesos;
     private List<Empresas> listaEmpresas;
     //OTROS
-    private boolean aceptar, guardado, borrados, borrarTodos, cambiosParametros;
+    private boolean aceptar, guardado, cambiosEmpleadosParametros, borrarTodos, cambiosParametros;
     private BigInteger secRegistro;
     private int index, tipoLista, cualCelda, bandera, editor, altoTabla;
     private Integer empleadosParametrizados;
     private Date fechaCorte, fechaInicial, fechaFinal;
-    private String strFechaCorte, strFechaInicial, strFechaFinal;
-    private SimpleDateFormat formatoFecha, formatoFechaDias;
+    private String strFechaCorte, strFechaInicial, strFechaFinal, tipoGuardado;
+    private final SimpleDateFormat formatoFecha, formatoFechaDias;
     //AUTOCOMPLETAR
     private String nombreEstructura, nombreTipoTrabajador, nombreProceso;
     //EMPLEADOS PARA LIQUIDAR
     private List<Parametros> empleadosParametros;
     private List<Parametros> filtradoEmpleadosParametros;
-    private List<Parametros> empleadosParametrosEliminados;
     private Parametros editarEmpleadosParametros;
     //COLUMNAS
     private Column FechaDesde, FechaHasta, Codigo, pApellido, sApellido, nombre, estadoParametro;
+    //LOV EMPLEADOS
+    private List<Empleados> lovEmpleados;
+    private List<Empleados> filtradoLovEmpleados;
+    private Empleados seleccionEmpleado;
+    //ADICIONAR Y/O ELIMINAR EMPLEADOS DE PARAMERTROS
+    private final List<Parametros> listaCrearParametros;
+    private final List<Parametros> listaBorrarParametros;
+    private BigInteger l;
+    private int k;
 
     public ControlParametro() {
         aceptar = true;
         guardado = true;
-        borrados = false;
+        cambiosEmpleadosParametros = false;
         bandera = 0;
         editor = 0;
         index = -1;
         cualCelda = -1;
         tipoLista = 0;
-        empleadosParametrosEliminados = new ArrayList<Parametros>();
+        listaBorrarParametros = new ArrayList<Parametros>();
         altoTabla = 226;
         cambiosParametros = false;
         formatoFecha = new SimpleDateFormat("dd/MMM/yyyy");
         formatoFechaDias = new SimpleDateFormat("dd/MM/yyyy");
+        k = 0;
+        listaCrearParametros = new ArrayList<Parametros>();
     }
 
     public void activarAceptar() {
@@ -219,6 +232,68 @@ public class ControlParametro implements Serializable {
         aceptar = true;
     }
 
+    public void seleccionarEmpleado() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (empleadosParametros != null) {
+            if (!empleadosParametros.isEmpty()) {
+                int control = 0;
+                for (int i = 0; i < empleadosParametros.size(); i++) {
+                    if (empleadosParametros.get(i).getEmpleado().getSecuencia() == seleccionEmpleado.getSecuencia()) {
+                        control++;
+                        break;
+                    }
+                }
+                if (control == 0) {
+                    agregarParametro();
+                } else {
+                    context.execute("errorSeleccionEmpleado.show()");
+                    aceptar = true;
+                }
+            } else {
+                agregarParametro();
+            }
+        } else {
+            empleadosParametros = new ArrayList<Parametros>();
+            agregarParametro();
+        }
+        context.update("form:empleadosParametros");
+        filtradoLovEmpleados = null;
+        seleccionEmpleado = null;
+        aceptar = true;
+        guardado = false;
+        context.update("form:aceptar");
+        context.update("form:quitarTodos");
+        context.execute("buscarEmpleadoDialogo.hide()");
+        context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.update("formularioDialogos:lovEmpleados");
+    }
+
+    public void agregarParametro() {
+        k++;
+        l = BigInteger.valueOf(k);
+        Parametros parametro = new Parametros();
+        parametro.setSecuencia(l);
+        parametro.setParametroestructura(parametroLiquidacion);
+        parametro.setEmpleado(seleccionEmpleado);
+        if (tipoLista == 0) {
+            listaCrearParametros.add(parametro);
+            empleadosParametros.add(parametro);
+        } else {
+            listaCrearParametros.add(parametro);
+            filtradoEmpleadosParametros.add(parametro);
+        }
+        if (cambiosEmpleadosParametros == false) {
+            cambiosEmpleadosParametros = true;
+        }
+        borrarTodos = false;
+    }
+
+    public void cancelarSeleccionEmpleado() {
+        filtradoLovEmpleados = null;
+        seleccionEmpleado = null;
+        aceptar = true;
+    }
+
     public void valoresBackupAutocompletar(String Campo) {
         editor = 0;
         if (Campo.equals("ESTRUCTURA")) {
@@ -238,35 +313,45 @@ public class ControlParametro implements Serializable {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         if (confirmarCambio.equalsIgnoreCase("ESTRUCTURA")) {
-            parametroLiquidacion.getEstructura().setNombre(nombreEstructura);
-            if (lovEstructuras == null) {
-                getLovEstructuras();
-            }
-            if (lovEstructuras != null) {
-                for (int i = 0; i < lovEstructuras.size(); i++) {
-                    if (lovEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
-                    }
-                }
-                if (coincidencias == 1) {
-                    parametroLiquidacion.setEstructura(lovEstructuras.get(indiceUnicoElemento));
-                    context.update("form:Estructura");
-                    context.update("form:codigoCC");
-                    context.update("form:nombreCC");
-                    lovEstructuras.clear();
+            if (!valorConfirmar.equals("")) {
+                parametroLiquidacion.getEstructura().setNombre(nombreEstructura);
+                if (lovEstructuras == null) {
                     getLovEstructuras();
-                    guardado = false;
-                    cambiosParametros = true;
-                    context.update("form:aceptar");
+                }
+                if (lovEstructuras != null) {
+                    for (int i = 0; i < lovEstructuras.size(); i++) {
+                        if (lovEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
+                    }
+                    if (coincidencias == 1) {
+                        parametroLiquidacion.setEstructura(lovEstructuras.get(indiceUnicoElemento));
+                        context.update("form:Estructura");
+                        context.update("form:codigoCC");
+                        context.update("form:nombreCC");
+                        lovEstructuras.clear();
+                        getLovEstructuras();
+                        guardado = false;
+                        cambiosParametros = true;
+                        context.update("form:aceptar");
+                    } else {
+                        context.update("formularioDialogos:estructurasDialogo");
+                        context.execute("estructurasDialogo.show()");
+                        context.update("form:Estructura");
+                    }
                 } else {
-                    context.update("formularioDialogos:estructurasDialogo");
-                    context.execute("estructurasDialogo.show()");
-                    context.update("form:Estructura");
+                    context.execute("lovVacia.show()");
+                    //NO HAY ELEMENTOS EN LA LISTA DE VALORES
                 }
             } else {
-                context.execute("lovVacia.show()");
-                //NO HAY ELEMENTOS EN LA LISTA DE VALORES
+                guardado = false;
+                cambiosParametros = true;
+                context.update("form:aceptar");
+                parametroLiquidacion.setEstructura(new Estructuras());
+                context.update("form:Estructura");
+                context.update("form:codigoCC");
+                context.update("form:nombreCC");
             }
         } else if (confirmarCambio.equalsIgnoreCase("TIPO TRABAJADOR")) {
             if (!valorConfirmar.equals("")) {
@@ -338,24 +423,69 @@ public class ControlParametro implements Serializable {
         }
     }
 
-    public void validarGuardadoRapido() {
-        Integer diferencia;
-        Short codigoProceso;
-        Date fechaDesde, fechaHasta;
-        fechaDesde = parametroLiquidacion.getFechadesdecausado();
-        fechaHasta = parametroLiquidacion.getFechahastacausado();
-        diferencia = administrarParametros.diferenciaDias(formatoFechaDias.format(fechaDesde), formatoFechaDias.format(fechaHasta));
-        codigoProceso = parametroLiquidacion.getProceso().getCodigo();
-        if (diferencia <= 30) {
-            guardarCambios();
-        } else if (codigoProceso != 6 && diferencia > 30) {
-            RequestContext.getCurrentInstance().execute("errorDias.show();");
-        } else {
+    public void validarGuardado(String tipoG) {
+        tipoGuardado = tipoG;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (guardado == false) {
+            if (parametroLiquidacion.getFechadesdecausado() != null) {
+                if (parametroLiquidacion.getFechahastacausado() != null) {
+                    if (parametroLiquidacion.getFechasistema() != null) {
+                        if (parametroLiquidacion.getProceso().getSecuencia() != null) {
+                            int comprar = parametroLiquidacion.getFechadesdecausado().compareTo(parametroLiquidacion.getFechahastacausado());
+                            if (comprar < 0) {
+                                Calendar c = Calendar.getInstance();
+                                c.setTime(parametroLiquidacion.getFechadesdecausado());
+                                int dia = c.get(Calendar.DAY_OF_MONTH);
+                                if (dia == 1 || dia == 16) {
+                                    c.setTime(parametroLiquidacion.getFechahastacausado());
+                                    dia = c.get(Calendar.DAY_OF_MONTH);
+                                    int ultimoDia = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                                    if (dia == 15 || dia == ultimoDia) {
+                                        c.setTime(parametroLiquidacion.getFechasistema());
+                                        dia = c.get(Calendar.DAY_OF_MONTH);
+                                        ultimoDia = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                                        if (dia == 1 || dia == 15 || dia == 16 || dia == ultimoDia) {
+                                            if (compararFechas() == true) {
+                                                if (conteoDias_Proceso() == true) {
+                                                    guardarCambios();
+                                                } else {
+                                                    context.execute("errorDias.show();");
+                                                }
+                                            } else {
+                                                context.update("formularioDialogos:alertaFechas");
+                                                context.execute("alertaFechas.show()");
+                                            }
+                                        } else {
+                                            context.execute("errorDiaFechaCorte.show();");
+                                        }
+                                    } else {
+                                        context.execute("errorDiaFechaHasta.show();");
+                                    }
+                                } else {
+                                    context.execute("errorDiaFechaDesde.show();");
+                                }
+                            } else {
+                                context.execute("errorFechaHasta_Desde.show();");
+                            }
+                        } else {
+                            context.execute("errorProceso.show();");
+                        }
+                    } else {
+                        context.execute("errorFechaCorte.show();");
+                    }
+                } else {
+                    context.execute("errorFechaHasta.show();");
+                }
+            } else {
+                context.execute("errorFechaDesde.show();");
+            }
+        }
+        if (guardado == true && tipoGuardado.equals("ADICIONAR EMPLEADOS")) {
             guardarCambios();
         }
     }
 
-    public void validarGuardado() {
+    public boolean conteoDias_Proceso() {
         Integer diferencia;
         Short codigoProceso;
         Date fechaDesde, fechaHasta;
@@ -364,46 +494,70 @@ public class ControlParametro implements Serializable {
         diferencia = administrarParametros.diferenciaDias(formatoFechaDias.format(fechaDesde), formatoFechaDias.format(fechaHasta));
         codigoProceso = parametroLiquidacion.getProceso().getCodigo();
         if (diferencia <= 30) {
-            RequestContext.getCurrentInstance().execute("confirmarGuardar.show();");
+            return true;
         } else if (codigoProceso != 6 && diferencia > 30) {
-            RequestContext.getCurrentInstance().execute("errorDiasSalir.show();");
+            return false;
         } else {
-            RequestContext.getCurrentInstance().execute("confirmarGuardar.show();");
+            return true;
         }
     }
-    
+
     public void guardarCambios() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (guardado == false) {
+        if (cambiosParametros == true) {
             if (parametroLiquidacion.getTipotrabajador().getSecuencia() == null) {
                 parametroLiquidacion.setTipotrabajador(null);
             }
             if (parametroLiquidacion.getEstructura().getSecuencia() == null) {
                 parametroLiquidacion.setEstructura(null);
             }
-            if (parametroLiquidacion.getFechadesdecausado() != null
-                    && parametroLiquidacion.getFechahastacausado() != null
-                    && parametroLiquidacion.getFechasistema() != null
-                    && parametroLiquidacion.getProceso() != null) {
-                administrarParametros.crearParametroEstructura(parametroLiquidacion);
-                parametroLiquidacion = null;
-                getParametroLiquidacion();
-                context.update("form:panelParametro");
-                guardado = true;
-                cambiosParametros = false;
-                context.update("form:aceptar");
+            administrarParametros.crearParametroEstructura(parametroLiquidacion);
+            parametroLiquidacion = null;
+            getParametroLiquidacion();
+            cambiosParametros = false;
+        }
+        if (cambiosEmpleadosParametros == true) {
+            if (!listaBorrarParametros.isEmpty()) {
+                administrarParametros.eliminarParametros(listaBorrarParametros);
+                listaBorrarParametros.clear();
+            }
+            if (!listaCrearParametros.isEmpty()) {
+                Usuarios au = administrarParametros.usuarioActual();
+                Date fechaDesde = parametroLiquidacion.getFechadesdecausado();
+                Date fechaHasta = parametroLiquidacion.getFechahastacausado();
+                Date fechaSistema = parametroLiquidacion.getFechasistema();
+                Procesos proceso = parametroLiquidacion.getProceso();
+                for (int i = 0; i < listaCrearParametros.size(); i++) {
+                    listaCrearParametros.get(i).setFechadesdecausado(fechaDesde);
+                    listaCrearParametros.get(i).setFechahastacausado(fechaHasta);
+                    listaCrearParametros.get(i).setFechasistema(fechaSistema);
+                    listaCrearParametros.get(i).setProceso(proceso);
+                    listaCrearParametros.get(i).setUsuario(au);
+                }
+                administrarParametros.crearParametros(listaCrearParametros);
+                listaCrearParametros.clear();
+            }
+            cambiosEmpleadosParametros = false;
+        }
+        if (tipoGuardado.equals("ADICIONAR EMPLEADOS")) {
+            if (consultarEmpleadosParametrizados() == true) {
+                adicionarEmpleados();
             } else {
-                //DIALOGO NO SE PUEDE GUARDAR
+                context.update("formularioDialogos:confirmarAdicionarEmpleados");
+                context.execute("confirmarAdicionarEmpleados.show()");
             }
-            if (borrados == true) {
-                administrarParametros.eliminarParametros(empleadosParametrosEliminados);
-                empleadosParametrosEliminados.clear();
-                borrados = false;
-                guardado = true;
-                context.update("form:aceptar");
-                empleadosParametros = null;
-                context.update("form:empleadosParametros");
-            }
+        } else if (tipoGuardado.equals("GUARDADO RAPIDO")) {
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            empleadosParametros = null;
+            guardado = true;
+            context.update("form:aceptar");
+            context.update("form:empleadosParametros");
+            context.update("form:growl");
+            context.update("form:panelParametro");
+        } else if (tipoGuardado.equals("GUARDADO SALIR")) {
+            salir();
+            context.execute("salirGuardado();");
         }
     }
 
@@ -567,30 +721,62 @@ public class ControlParametro implements Serializable {
     public void cambiosCampos() {
         guardado = false;
         cambiosParametros = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-    }
-
-    public void eliminarParametros(int indice) {
-        borrados = true;
-        guardado = false;
-        empleadosParametrosEliminados.add(empleadosParametros.get(indice));
-        empleadosParametros.remove(indice);
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:empleadosParametros");
         context.update("form:aceptar");
-        if (empleadosParametros.isEmpty()) {
-            borrarTodos = true;
-            context.update("form:quitarTodos");
+    }
+
+    public void eliminarParametros(int indice) {
+        if (indice >= 0) {
+            if (tipoLista == 0) {
+                if (!listaCrearParametros.isEmpty() && listaCrearParametros.contains(empleadosParametros.get(indice))) {
+                    int crearIndex = listaCrearParametros.indexOf(empleadosParametros.get(indice));
+                    listaCrearParametros.remove(crearIndex);
+                } else {
+                    listaBorrarParametros.add(empleadosParametros.get(indice));
+                }
+                empleadosParametros.remove(indice);
+            } else if (tipoLista == 1) {
+                if (!listaCrearParametros.isEmpty() && listaCrearParametros.contains(filtradoEmpleadosParametros.get(indice))) {
+                    int crearIndex = listaCrearParametros.indexOf(filtradoEmpleadosParametros.get(indice));
+                    listaCrearParametros.remove(crearIndex);
+                } else {
+                    listaBorrarParametros.add(filtradoEmpleadosParametros.get(indice));
+                }
+                int EPIndex = empleadosParametros.indexOf(filtradoEmpleadosParametros.get(indice));
+                empleadosParametros.remove(EPIndex);
+                filtradoEmpleadosParametros.remove(indice);
+
+            }
+            cambiosEmpleadosParametros = true;
+            guardado = false;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:empleadosParametros");
+            context.update("form:aceptar");
+            if (empleadosParametros.isEmpty()) {
+                borrarTodos = true;
+                context.update("form:quitarTodos");
+            }
         }
     }
 
     public void adicionarEmpleados() {
-        guardarCambios();
         if (parametroLiquidacion != null) {
             administrarParametros.adicionarEmpleados(parametroLiquidacion.getSecuencia());
         }
         empleadosParametros = null;
+        getEmpleadosParametros();
+        FacesMessage msg;
         RequestContext context = RequestContext.getCurrentInstance();
+        FacesContext contexto = FacesContext.getCurrentInstance();
+        if (empleadosParametros != null && !empleadosParametros.isEmpty()) {
+            msg = new FacesMessage("Información", "Se adicionaron los empleados exitosamente");
+            contexto.addMessage(null, msg);
+        } else {
+            msg = new FacesMessage("Información", "No hay empleados que cumplan con los criterios parametrizados.");
+            contexto.addMessage(null, msg);
+        }
+        context.update("form:growl");
         context.update("form:empleadosParametros");
         context.update("form:quitarTodos");
     }
@@ -617,54 +803,36 @@ public class ControlParametro implements Serializable {
         }
     }
 
-    public void validacionesAdicionarEmpleados() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (parametroLiquidacion != null && parametroLiquidacion.getSecuencia() != null) {
-            if (compararFechas() == true) {
-                if (consultarEmpleadosParametrizados() == true) {
-                    adicionarEmpleados();
-                } else {
-                    context.update("formularioDialogos:confirmarAdicionarEmpleados");
-                    context.execute("confirmarAdicionarEmpleados.show()");
-                }
-            } else {
-                context.update("formularioDialogos:errorFechas");
-                context.execute("errorFechas.show()");
-            }
-        } else {
-            context.update("formularioDialogos:errorParametros");
-            context.execute("errorParametros.show()");
-        }
-    }
-
     public void seguirErrorFechas() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (consultarEmpleadosParametrizados() == true) {
-            adicionarEmpleados();
+        if (conteoDias_Proceso() == true) {
+            guardarCambios();
         } else {
-            context.update("formularioDialogos:confirmarAdicionarEmpleados");
-            context.execute("confirmarAdicionarEmpleados.show()");
+            context.execute("errorDias.show();");
         }
     }
 
     public void salir() {
         parametroLiquidacion = null;
         empleadosParametros = null;
-        empleadosParametrosEliminados.clear();
-        borrados = false;
+        cambiosEmpleadosParametros = false;
         lovEstructuras = null;
         lovProcesos = null;
         lovTiposTrabajadores = null;
+        lovEmpleados = null;
         guardado = true;
         cambiosParametros = false;
+        listaBorrarParametros.clear();
+        listaCrearParametros.clear();
         RequestContext.getCurrentInstance().update("form:aceptar");
 
     }
 
     public void borrarParametros() {
         empleadosParametros = null;
-        empleadosParametrosEliminados.clear();
-        borrados = false;
+        listaBorrarParametros.clear();
+        listaCrearParametros.clear();
+        cambiosEmpleadosParametros = false;
         administrarParametros.borrarParametros(parametroLiquidacion.getSecuencia());
         if (cambiosParametros == true) {
             guardado = false;
@@ -676,8 +844,8 @@ public class ControlParametro implements Serializable {
         context.update("form:quitarTodos");
         context.update("form:aceptar");
     }
-    //GETTER AND SETTER
 
+    //GETTER AND SETTER
     public ParametrosEstructuras getParametroLiquidacion() {
         if (parametroLiquidacion == null) {
             parametroLiquidacion = administrarParametros.parametrosLiquidacion();
@@ -854,5 +1022,32 @@ public class ControlParametro implements Serializable {
             strFechaFinal = formatoFecha.format(fechaFinal).toUpperCase();
         }
         return strFechaFinal;
+    }
+
+    public List<Empleados> getLovEmpleados() {
+        if (lovEmpleados == null) {
+            lovEmpleados = administrarParametros.empleadosLov();
+        }
+        return lovEmpleados;
+    }
+
+    public void setLovEmpleados(List<Empleados> lovEmpleados) {
+        this.lovEmpleados = lovEmpleados;
+    }
+
+    public List<Empleados> getFiltradoLovEmpleados() {
+        return filtradoLovEmpleados;
+    }
+
+    public void setFiltradoLovEmpleados(List<Empleados> filtradoLovEmpleados) {
+        this.filtradoLovEmpleados = filtradoLovEmpleados;
+    }
+
+    public Empleados getSeleccionEmpleado() {
+        return seleccionEmpleado;
+    }
+
+    public void setSeleccionEmpleado(Empleados seleccionEmpleado) {
+        this.seleccionEmpleado = seleccionEmpleado;
     }
 }

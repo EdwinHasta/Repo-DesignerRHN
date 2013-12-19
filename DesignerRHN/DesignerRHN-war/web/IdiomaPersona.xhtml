@@ -11,27 +11,28 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="História Idiomas" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
+                <h:form id="form">
+                    <f:loadBundle basename="Recursos.idiomapersona" var="msg" />
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 710px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" icon="ui-icon-check" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosIdiomas" process="@this" />
-                        <p:commandButton style="position: absolute; left: 20px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlIdiomaPersona.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlIdiomaPersona.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosIdiomas" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlIdiomaPersona.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlIdiomaPersona.salir()}" action="nomina" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 830px; height: 335px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue;text-align:left"><strong>Idiomas del Empleado</strong></legend>
+                            <legend style="font-size: 12px; color: blue;text-align:left"><strong>#{msg['idiomas']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
 
                             <p:dataTable id="datosIdiomas" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left"                           
                                          value="#{controlIdiomaPersona.listIdiomasPersonas}" scrollable="true" scrollHeight="190" 
-                                         filteredValue="#{controlIdiomaPersona.filtrarListIdiomasPersonas}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         filteredValue="#{controlIdiomaPersona.filtrarListIdiomasPersonas}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" paginator="true" rows="8"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                 <p:ajax event="filter" listener="#{controlIdiomaPersona.eventoFiltrar()}"/>
 
-                                <p:column headerText="Idioma" sortBy="#{info.idioma.nombre}" filterBy="#{info.idioma.nombre}" style="width: 110px; font-size: 11px"
+                                <p:column headerText="#{msg['idioma']}" sortBy="#{info.idioma.nombre}" filterBy="#{info.idioma.nombre}" style="width: 110px; font-size: 11px"
                                           filterMatchMode="contains" id="idIdioma" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.idioma.nombre}" /></f:facet>  
@@ -45,11 +46,11 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooIdioma" value="Idioma"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooIdioma" value="#{msg['idioma']}"/>
                                     </f:facet>
                                 </p:column>  
 
-                                <p:column headerText="Conversacion (%)" sortBy="#{info.habla}" filterBy="#{info.habla}" width="133"
+                                <p:column headerText="#{msg['conversacion']}" sortBy="#{info.habla}" filterBy="#{info.habla}" width="133"
                                           filterMatchMode="contains" id="idConversacion" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.habla}" style="width: 100px; font-size: 11px"/></f:facet>  
@@ -61,11 +62,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText  id="fooConversacion" value="Conversacion"/>
+                                        <h:outputText  id="fooConversacion" value="#{msg['conversacion']}"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Lectura (%)" sortBy="#{info.lectura}" filterBy="#{info.lectura}" width="133"
+                                <p:column headerText="#{msg['lectura']}" sortBy="#{info.lectura}" filterBy="#{info.lectura}" width="133"
                                           filterMatchMode="contains" id="idLectura" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.lectura}" style="width: 100px; font-size: 11px"/></f:facet>  
@@ -77,11 +78,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText id="fooLectura" value="Lectura"/>
+                                        <h:outputText id="fooLectura" value="#{msg['lectura']}"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Escritura (%)" sortBy="#{info.escritura}" filterBy="#{info.escritura}" width="133"
+                                <p:column headerText="#{msg['escritura']}" sortBy="#{info.escritura}" filterBy="#{info.escritura}" width="133"
                                           filterMatchMode="contains" id="idEscritura" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.escritura}" style="width: 100px; font-size: 11px"/></f:facet>  
@@ -93,7 +94,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText  id="fooEscritura" value="Escritura"/>
+                                        <h:outputText  id="fooEscritura" value="#{msg['escritura']}"/>
                                     </f:facet>
                                 </p:column>
 
@@ -104,227 +105,226 @@
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlIdiomaPersona.guardarCambios()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator />
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlIdiomaPersona.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.limpiarNuevaIdiomaPersona()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosIdiomaExportar" fileName="IdiomasPersonasXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroIdiomas.show()" update=":formularioDialogos:nuevaIdiomas" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Idioma" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.borrarIdiomaPersona()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Idioma" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.duplicarIdiomaPersonaM()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Idioma" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlIdiomaPersona.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <p:dialog header="Idiomas" widgetVar="IdiomasDialogo" draggable="false" resizable="false" closable="false" id="IdiomasDialogo"  
+                        <p:dialog header="#{msg['idiomasI']}" widgetVar="IdiomasDialogo" draggable="false" resizable="false" closable="false" id="IdiomasDialogo"  
                                   showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovIdiomas" style="font-size: 11px; width: 430px" var="idiomas" value="#{controlIdiomaPersona.listIdiomas}" rowKey="#{idiomas.secuencia}"
                                          selection="#{controlIdiomaPersona.idiomaSeleccionado}" selectionMode="single" widgetVar="lovIdiomas" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                         filteredValue="#{controlIdiomaPersona.filtrarListIdiomas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                         filteredValue="#{controlIdiomaPersona.filtrarListIdiomas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlIdiomaPersona.activarAceptar()}" update=":form:aceptarI"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Idioma: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#{msg['buscarI']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovIdiomas.filter();" style="width:250px; position: relative; left: 30px;" />  
                                 </f:facet>
 
                                 <p:column filterBy="#{idiomas.nombre}" width="100" filterMatchMode="contains" filterStyle="width: 80px">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="Nombre del Idioma" />
+                                        <h:outputText style="text-align: center" value="#{msg['nombreI']}" />
                                     </f:facet>
                                     <h:outputText  value="#{idiomas.nombre}" />
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarI" style="position: relative; left: 230px" value="Aceptar" disabled="#{controlIdiomaPersona.aceptar}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlIdiomaPersona.actualizarIdioma()}" update="lovIdiomas, aceptarI, datosIdiomas" process="@this">
+                            <p:commandButton id="aceptarI" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlIdiomaPersona.aceptar}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlIdiomaPersona.actualizarIdioma()}" update="lovIdiomas, aceptarI, datosIdiomas" process="@this">
                                 <p:resetInput target=":form:lovIdiomas:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasI" style="position: relative; left: 250px" value="Atras" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlIdiomaPersona.cancelarCambioIdioma()}" update="lovIdiomas" process="@this">
+                            <p:commandButton id="atrasI" style="position: relative; left: 250px" value="#{msg['atras']}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlIdiomaPersona.cancelarCambioIdioma()}" update="lovIdiomas" process="@this">
                                 <p:resetInput target=":form:lovIdiomas:globalFilter"/>
                             </p:commandButton>
                         </p:dialog> 
-
                     </p:panel>
 
-                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlIdiomaPersona.guardarCambios()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['cambiosrealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlIdiomaPersona.guardarCambios()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla IDIOMASPERSONAS tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlIdiomaPersona.backUpSecRegistro, 'IdiomasPersonas', 'idiomaRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlIdiomaPersona.backUpSecRegistro, 'IdiomasPersonas', 'idiomaRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla IDIOMASPERSONAS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('IdiomasPersonas', 'reformaLaboral')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('IdiomasPersonas', 'reformaLaboral')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlIdiomaPersona.backUpSecRegistro, 'IdiomasPersonas', 'idiomaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlIdiomaPersona.backUpSecRegistro, 'IdiomasPersonas', 'idiomaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlIdiomaPersona.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
-                    <p:dialog id="NuevoRegistroIdiomas" header="Nuevo Registro" widgetVar="NuevoRegistroIdiomas" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroIdiomas" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroIdiomas" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar nueva información " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaIdiomas" style="border: none;">
 
-                            <strong><h:outputText value="Idioma: " style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['idiomaN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
                             <p:inputText id="nuevaIdioma" value="#{controlIdiomaPersona.nuevaIdiomaPersona.idioma.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;">
                                 <p:ajax event="dblclick" listener="#{controlIdiomaPersona.asignarIndex(indice,1)}"/>
                                 <p:ajax event="click" listener="#{controlIdiomaPersona.valoresBackupAutocompletar(1, 'IDIOMAS')}" />
                                 <p:ajax event="change" listener="#{controlIdiomaPersona.autocompletarNuevoyDuplicado('IDIOMAS', controlIdiomaPersona.nuevaIdiomaPersona.idioma.nombre, 1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 70px;  " id="btnNuevaIdioma" icon="ui-icon-search" process="@this"  actionListener="#{controlIdiomaPersona.asignarIndex(indice,1)}"/>   
-                            <p:watermark for="nuevaIdioma" value="Idioma" />
+                            <p:watermark for="nuevaIdioma" value="#{msg['idioma']}" />
 
-                            <strong><h:outputText value="Conversacion (%): " style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['conversacionN']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
                             <p:inputText id="nuevaConversacion" value="#{controlIdiomaPersona.nuevaIdiomaPersona.habla}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px;">
                                 <p:ajax event="change" update="nuevaConversacion"/>
                             </p:inputText>
-                            <p:watermark for="nuevaConversacion" value="% Conversacion" />
+                            <p:watermark for="nuevaConversacion" value="#{msg['conversacion']}" />
 
-                            <strong><h:outputText value="Lectura (%): " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['lecturaN']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="nuevaLectura" value="#{controlIdiomaPersona.nuevaIdiomaPersona.lectura}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
                                 <p:ajax event="change" update="nuevaLectura"/>
                             </p:inputText>
-                            <p:watermark for="nuevaLectura" value="% Lectura" />
+                            <p:watermark for="nuevaLectura" value="#{msg['lectura']}" />
 
-                            <strong><h:outputText value="Escritura (%): " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['escrituraN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="nuevaEscritura" value="#{controlIdiomaPersona.nuevaIdiomaPersona.escritura}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
                                 <p:ajax event="change" update="nuevaEscritura"/>
                             </p:inputText>
-                            <p:watermark for="nuevaEscritura" value="% Escritura" />
+                            <p:watermark for="nuevaEscritura" value="#{msg['escritura']}"/>
 
-                            <p:commandButton id="limpiarI" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarNuevaIdiomaPersona()}" update="nuevaIdiomas" process="@this"/>
-                            <p:commandButton id="agregarI" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 260px;"  process="@this" actionListener="#{controlIdiomaPersona.agregarNuevaIdiomaPersona()}" onclick="NuevoRegistroIdiomas.hide();"  />
-                            <p:commandButton id="cancelarI" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarNuevaIdiomaPersona()}" update="nuevaIdiomas" onclick="NuevoRegistroIdiomas.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarI" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarNuevaIdiomaPersona()}" update="nuevaIdiomas" process="@this"/>
+                            <p:commandButton id="agregarI" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 260px;"  process="@this" actionListener="#{controlIdiomaPersona.agregarNuevaIdiomaPersona()}" onclick="NuevoRegistroIdiomas.hide();"  />
+                            <p:commandButton id="cancelarI" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarNuevaIdiomaPersona()}" update="nuevaIdiomas" onclick="NuevoRegistroIdiomas.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroIdiomas" header="Duplicar Registro" widgetVar="DuplicarRegistroIdiomas" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroIdiomas" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistroIdiomas" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar nueva información" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarIdiomas" style="border: none;">
-                            <strong><h:outputText value="Idioma: " style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['idiomaN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
                             <p:inputText id="duplicarIdioma" value="#{controlIdiomaPersona.duplicarIdiomaPersona.idioma.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;">
                                 <p:ajax event="dblclick" listener="#{controlIdiomaPersona.asignarIndex(indice,2)}"/>
                                 <p:ajax event="click" listener="#{controlIdiomaPersona.valoresBackupAutocompletar(2, 'IDIOMAS')}" />
                                 <p:ajax event="change" listener="#{controlIdiomaPersona.autocompletarNuevoyDuplicado('IDIOMAS', controlIdiomaPersona.duplicarIdiomaPersona.idioma.nombre, 2)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 70px;  " id="btnDuplicarIdioma" icon="ui-icon-search" process="@this"  actionListener="#{controlIdiomaPersona.asignarIndex(indice,2)}"/>   
-                            <p:watermark for="duplicarIdioma" value="Idioma" />
+                            <p:watermark for="duplicarIdioma" value="#{msg['idioma']}" />
 
-                            <strong><h:outputText value="Conversacion (%): " style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['conversacionN']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px" /></strong>
                             <p:inputText id="duplicarConversacion" value="#{controlIdiomaPersona.duplicarIdiomaPersona.habla}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px;">
                                 <p:ajax event="change" update="duplicarConversacion"/>
                             </p:inputText>
-                            <p:watermark for="duplicarConversacion" value="% Conversacion" />
+                            <p:watermark for="duplicarConversacion" value="#{msg['conversacion']}" />
 
-                            <strong><h:outputText value="Lectura (%): " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['lecturaN']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="duplicarLectura" value="#{controlIdiomaPersona.duplicarIdiomaPersona.lectura}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
                                 <p:ajax event="change" update="duplicarLectura"/>
                             </p:inputText>
-                            <p:watermark for="duplicarLectura" value="% Lectura" />
+                            <p:watermark for="duplicarLectura" value="#{msg['lectura']}" />
 
-                            <strong><h:outputText value="Escritura (%): " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['escrituraN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="duplicarEscritura" value="#{controlIdiomaPersona.duplicarIdiomaPersona.escritura}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
                                 <p:ajax event="change" update="duplicarEscritura"/>
                             </p:inputText>
-                            <p:watermark for="duplicarEscritura" value="% Escritura" />
+                            <p:watermark for="duplicarEscritura" value="#{msg['escritura']}" />
 
 
-                            <p:commandButton id="limpiarDuplicadoI" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarDuplicar()}" update="duplicarIdiomas" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoI" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 260px;"  process="@this" actionListener="#{controlIdiomaPersona.confirmarDuplicar()}" onclick="DuplicarRegistroIdiomas.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoI" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarDuplicar()}" update="duplicarIdiomas" onclick="DuplicarRegistroIdiomas.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoI" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarDuplicar()}" update="duplicarIdiomas" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoI" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 260px;"  process="@this" actionListener="#{controlIdiomaPersona.confirmarDuplicar()}" onclick="DuplicarRegistroIdiomas.hide();"  />
+                            <p:commandButton id="cancelarDuplicadoI" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 260px;" actionListener="#{controlIdiomaPersona.limpiarDuplicar()}" update="duplicarIdiomas" onclick="DuplicarRegistroIdiomas.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="editarIdiomaD" header="Nombre Idioma" widgetVar="editarIdiomaD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarIdiomaD" header="#{msg['nombreE']}" widgetVar="editarIdiomaD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlIdiomaPersona.editarIdiomaPersona.idioma.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarIdioma" value="Atras" onclick="editarIdiomaD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarIdioma" value="#{msg['atras']}" onclick="editarIdiomaD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarConversacionD" header="(%) Conversacion Idioma" widgetVar="editarConversacionD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarConversacionD" header="#{msg['conversacionE']}" widgetVar="editarConversacionD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlIdiomaPersona.editarIdiomaPersona.habla}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarConversacion" value="Atras" onclick="editarConversacionD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarConversacion" value="#{msg['atras']}" onclick="editarConversacionD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarLecturaD" header="(%) Lectura Idioma" widgetVar="editarLecturaD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarLecturaD" header="#{msg['lecturaE']}" widgetVar="editarLecturaD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlIdiomaPersona.editarIdiomaPersona.lectura}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarLectura" value="Atras" onclick="editarLecturaD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarLectura" value="#{msg['atras']}" onclick="editarLecturaD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEscrituraD" header="(%) Escritura Idioma" widgetVar="editarEscrituraD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarEscrituraD" header="#{msg['escrituraE']}" widgetVar="editarEscrituraD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlIdiomaPersona.editarIdiomaPersona.escritura}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEscritura" value="Atras" onclick="editarEscrituraD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarEscritura" value="#{msg['atras']}" onclick="editarEscrituraD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                 </h:form>
@@ -332,20 +332,20 @@
                     <p:dataTable id="datosIdiomaExportar" var="info" style="visibility: hidden; display: none;"                           
                                  value="#{controlIdiomaPersona.listIdiomasPersonas}"> 
 
-                        <p:column headerText="Idioma">                                  
-                            <f:facet name="header"><h:outputText value="Idioma"/> </f:facet> 
+                        <p:column headerText="#{msg['idiomaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['idiomaX']}"/> </f:facet> 
                             <h:outputText value="#{info.idioma.nombre}" />
                         </p:column>  
-                        <p:column headerText="(%) Conversacion">                                  
-                            <f:facet name="header"><h:outputText value="Idioma"/> </f:facet> 
+                        <p:column headerText="#{msg['conversacionXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['conversacionX']}"/> </f:facet> 
                             <h:outputText value="#{info.habla}" />
                         </p:column>
-                        <p:column headerText="(%) Lectura">                                  
-                            <f:facet name="header"><h:outputText value="Idioma"/> </f:facet> 
+                        <p:column headerText="#{msg['lecturaXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['lecturaX']}"/> </f:facet> 
                             <h:outputText value="#{info.lectura}" />
                         </p:column>
-                        <p:column headerText="(%) Escritura">                                  
-                            <f:facet name="header"><h:outputText value="Idioma"/> </f:facet> 
+                        <p:column headerText="#{msg['escrituraXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['escrituraX']}"/> </f:facet> 
                             <h:outputText value="#{info.escritura}" />
                         </p:column>
                     </p:dataTable>
