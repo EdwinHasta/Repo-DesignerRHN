@@ -2111,7 +2111,7 @@ public class ControlDetalleConcepto implements Serializable {
             cualCeldaFormulasConceptos = celda;
             indexFormulasConceptos = indice;
             secRegistroFormulasConceptos = listFormulasConceptosConcepto.get(indexFormulasConceptos).getSecuencia();
-                actualFormulaConcepto  = listFormulasConceptosConcepto.get(indexFormulasConceptos);
+            actualFormulaConcepto = listFormulasConceptosConcepto.get(indexFormulasConceptos);
             ///////// Captura Objetos Para Campos NotNull ///////////
             auxFC_FechaIni = listFormulasConceptosConcepto.get(indexFormulasConceptos).getFechainicial();
             auxFC_FechaFin = listFormulasConceptosConcepto.get(indexFormulasConceptos).getFechafinal();
@@ -2269,6 +2269,8 @@ public class ControlDetalleConcepto implements Serializable {
                 cambiarIndiceVigenciaCuenta(i, c);
                 modificarVigenciaCuenta(i);
                 indexAuxVigenciaCuenta = i;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciaCuenta");
             } else {
                 System.out.println("Error de fechas de ingreso");
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -6226,19 +6228,18 @@ public class ControlDetalleConcepto implements Serializable {
         nombreTablaRastro = "";
     }
 
-    public void validarEliminacionConcepto(){
+    public void validarEliminacionConcepto() {
         RequestContext context = RequestContext.getCurrentInstance();
         boolean retorno = administrarDetalleConcepto.verificarSolucionesNodosParaConcepto(conceptoActual.getSecuencia());
-        if(retorno == true){
+        if (retorno == true) {
             System.out.println("No elimina");
             context.execute("errorEliminacionConcepto.show()");
-        }
-        else {
+        } else {
             System.out.println("Proceso de eliminacion del concepto");
             context.execute("paso1Eliminacion.show()");
         }
     }
-    
+
     public void eliminarConcepto() {
         boolean rep = administrarDetalleConcepto.eliminarConcepto(conceptoActual.getSecuencia());
         if (rep == true) {
@@ -7173,7 +7174,7 @@ public class ControlDetalleConcepto implements Serializable {
     public void setPaginaRetorno(String paginaRetorno) {
         this.paginaRetorno = paginaRetorno;
     }
-    
+
     public FormulasConceptos getActualFormulaConcepto() {
         return actualFormulaConcepto;
     }
