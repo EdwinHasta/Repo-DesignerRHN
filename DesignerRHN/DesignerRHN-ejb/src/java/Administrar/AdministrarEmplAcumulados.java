@@ -31,7 +31,7 @@ public class AdministrarEmplAcumulados implements AdministrarEmplAcumuladosInter
     @Override
     public List<VWAcumulados> mostrarVWAcumuladosPorEmpleado(BigInteger secEmpleado) {
         try {
-            listVWAcumulados = persistenciaVWAcumulados.buscarVigenciasNormasEmpleadosPorEmpleado(secEmpleado);
+            listVWAcumulados = persistenciaVWAcumulados.buscarAcumuladosPorEmpleado(secEmpleado);
         } catch (Exception e) {
             System.err.println("ERROR EN ADMINISTRAR EMPLACUMULADOS ERROR " + e);
             listVWAcumulados = null;

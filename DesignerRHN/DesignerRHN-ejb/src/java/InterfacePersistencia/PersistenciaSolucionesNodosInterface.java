@@ -100,4 +100,6 @@ public interface PersistenciaSolucionesNodosInterface {
     * @return 
     */
    public Integer ContarProcesosSN(BigInteger secProceso);
+   
+   public boolean solucionesNodosParaConcepto(BigInteger secuencia);
 }

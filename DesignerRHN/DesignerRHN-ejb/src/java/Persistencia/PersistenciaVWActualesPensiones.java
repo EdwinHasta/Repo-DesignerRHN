@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VWActualesPensiones;
@@ -8,20 +11,27 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la vista 'VWActualesPensiones'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVWActualesPensiones implements  PersistenciaVWActualesPensionesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public BigDecimal buscarSueldoPensionado(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesPensiones vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
-            BigDecimal vWActualesPensiones = (BigDecimal) query.getSingleResult();
-            return vWActualesPensiones;
+            VWActualesPensiones vWActualesPensiones = (VWActualesPensiones) query.getSingleResult();          
+            return vWActualesPensiones.getValor();
         } catch (Exception e) {
             return null;
         }

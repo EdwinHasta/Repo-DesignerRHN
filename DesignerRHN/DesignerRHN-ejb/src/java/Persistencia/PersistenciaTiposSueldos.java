@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.TiposSueldos;
@@ -10,13 +13,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposSueldos'
+ * de la base de datos.
  * @author AndresPineda
  */
 
 @Stateless
 public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -28,9 +35,7 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
             System.out.println("Error crear PersistenciaTiposSueldos");
         }
     }
-
-   
-
+    
     @Override
     public void editar(TiposSueldos tiposSueldos) {
         try{
@@ -40,8 +45,6 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
         }
     }
 
-   
-
     @Override
     public void borrar(TiposSueldos tiposSueldos) {
         try{
@@ -49,19 +52,6 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
         }catch(Exception e){
             System.out.println("Error borrar PersistenciaTiposSueldos");
         }
-    }
-
-   
-    @Override
-    public TiposSueldos buscarTipoSueldo(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(TiposSueldos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarTipoSueldo PersistenciaTipoSueldo");
-            return null;
-        }
-
     }
 
     @Override
@@ -75,10 +65,8 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
         }
     }
 
-
     @Override
     public TiposSueldos buscarTipoSueldoSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT t FROM TiposSueldos t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -89,8 +77,5 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
             TiposSueldos tiposSueldos = null;
             return tiposSueldos;
         }
-
-    }
-   
-
+    }  
 }

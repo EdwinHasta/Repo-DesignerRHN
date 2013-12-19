@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.TercerosSucursales;
@@ -8,14 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TercerosSucursales'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucursalesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -47,18 +53,6 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     }
 
     @Override
-    public TercerosSucursales buscarTerceroSucursal(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(TercerosSucursales.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarTerceroSucursal PersistenciaTercerosSucursales");
-            return null;
-        }
-
-    }
-
-    @Override
     public List<TercerosSucursales> buscarTercerosSucursales() {
         try {
             List<TercerosSucursales> tercerosSucursales = (List<TercerosSucursales>) em.createNamedQuery("TercerosSucursales.findAll").getResultList();
@@ -84,6 +78,7 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
         }
     }
     
+    @Override
     public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(BigInteger secuencia){
         try{
             Query query = em.createQuery("SELECT ts FROM TercerosSucursales ts WHERE ts.tercero.secuencia = :secuenciaT");

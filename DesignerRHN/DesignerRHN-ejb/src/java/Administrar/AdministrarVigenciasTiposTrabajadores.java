@@ -213,17 +213,6 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             return null;
         }
     }
-
-    @Override
-    public TiposPensionados tipoPensionCodigo(BigDecimal codTipoPension) {
-        try {
-            tipoPension = persistenciaTiposPensionados.buscarTipoPensionSecuencia(codTipoPension);
-            return tipoPension;
-        } catch (Exception e) {
-            System.out.println("Error AdministrarVigenciaTipoTrabajador tipoPensionCodigo");
-            return null;
-        }
-    }
     
     @Override
     public List<ClasesPensiones> clasesPensiones() {

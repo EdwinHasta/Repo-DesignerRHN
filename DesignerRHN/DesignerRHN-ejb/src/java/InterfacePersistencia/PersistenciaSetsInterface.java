@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,47 +8,43 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Sets' 
+ * de la base de datos.
  * @author AndresPimeda
  */
 public interface PersistenciaSetsInterface {
-    
     /**
-     * Crea un objeto Set
-     * @param sets Objeto a crear
+     * Método encargado de insertar un Set en la base de datos.
+     * @param sets Set que se quiere crear.
      */
     public void crear(Sets sets);
     /**
-     * Editar un objeto Set
-     * @param sets Objeto a editar
+     * Método encargado de modificar un Set de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param sets Set con los cambios que se van a realizar.
      */
     public void editar(Sets sets);
     /**
-     * Borra un objeto Set
-     * @param sets Objeto a borrar
+     * Método encargado de eliminar de la base de datos el Set que entra por parámetro.
+     * @param sets Set que se quiere eliminar.
      */
-    public void borrar(Sets sets);
+    public void borrar(Sets sets);    
     /**
-     * Metodo que obtiene un Set por la llave primaria ID
-     * @param id Llave Primaria Id
-     * @return set Set que cumple con la condicion de la llave primaria
-     */
-    public Sets buscarSets(Object id);
-    /**
-     * Metodo que obtiene todos los elementos de la tabla Set
-     * @return listS Lista de Sets
+     * Método encargado de buscar todos los Sets existentes en la base de datos.
+     * @return Retorna una lista de Sets.
      */
     public List<Sets> buscarSets();
     /**
-     * Metodo que obtiene un Set por la secuencia
-     * @param secuencia Secuencia de Set a buscar
-     * @return set Set que cumple con la condicion de la secuencia
+     * Método encargado de buscar el Set con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del Set que se quiere encontrar.
+     * @return Retorna el Set identificado con la secuencia dada por parámetro.
      */
     public Sets buscarSetSecuencia(BigInteger secuencia);
     /**
-     * Metodo que obtiene los Sets de un Empleado
-     * @param secEmpleado Secuencia del Empleado
-     * @return setE Sets del Empleado que cumple con la condicion de la secuencia
+     * Método encargado de buscar los Sets asociados con un empleado específico.
+     * @param secEmpleado Secuencia del empleado por el cual se quieren buscar los Sets.
+     * @return Retorna una lista de sets ordenados por fechaInicial.
      */
     public List<Sets> buscarSetsEmpleado(BigInteger secEmpleado);
     

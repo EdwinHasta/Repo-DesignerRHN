@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package InterfacePersistencia;
 
 import Entidades.TiposEntidades;
@@ -5,48 +8,61 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'TiposEntidades' 
+ * de la base de datos.
+ * @author betelgeuse
  */
-public interface PersistenciaTiposEntidadesInterface {
-    
+public interface PersistenciaTiposEntidadesInterface {    
     /**
-     * Crea una nueva TiposEntidades
-     * @param tiposEntidades Objeto a crear
+     * Método encargado de insertar un TipoEntidad en la base de datos.
+     * @param tiposEntidades TipoEntidad que se quiere crear.
      */
     public void crear(TiposEntidades tiposEntidades);
     /**
-     * Edita un TiposEntidades
-     * @param tiposEntidades Objeto a editar
+     * Método encargado de modificar un TipoEntidad de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param tiposEntidades TipoEntidad con los cambios que se van a realizar.
      */
     public void editar(TiposEntidades tiposEntidades);
     /**
-     * Borra un TiposEntidades
-     * @param tiposEntidades Objeto a borrar
+     * Método encargado de eliminar de la base de datos el TipoEntidad que entra por parámetro.
+     * @param tiposEntidades TipoEntidad que se quiere eliminar.
      */
     public void borrar(TiposEntidades tiposEntidades);
     /**
-     * Obtiene un TiposEntidades por su llave primaria Id
-     * @param id Llave Primaria ID
-     * @return TiposEntidades que cumple con la llave primaria
-     */
-    public TiposEntidades buscarTipoEntidad(Object id);
-    /**
-     * Obtiene la lista total de TiposEntidades
-     * @return Lista de TiposEntidades
+     * Método encargado de buscar todos los TiposEntidades existentes en la base de datos.
+     * @return Retorna una lista de TiposEntidades.
      */
     public List<TiposEntidades> buscarTiposEntidades();
     /**
-     * Obtiene un TiposEntidades por su secuencia
-     * @param secuencia Secuencia TiposEntidades
-     * @return TiposEntidades que cumple con la secuencia
+     * Método encargado de buscar el TipoEntidad con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del TipoEntidad que se quiere encontrar.
+     * @return Retorna el TipoEntidad identificado con la secuencia dada por parámetro.
      */
     public TiposEntidades buscarTiposEntidadesSecuencia(BigInteger secuencia);
-    
+    /**
+     * Método encargado de verificar si existe un TipoEntidad cuya secuencia coincide con la dada por parámetro
+     * y esta asociada con alguna VigenciaAfiliacion.
+     * @param secTipoEntidad Secuencia del TipoEntidad.
+     * @return Retorna el numero de VigenciasAfiliaciones que tienen asociadas el TipoEntidad.
+     * Si no encuentra ningún dato, retorna null.
+     */
     public Long verificarBorrado(BigInteger secTipoEntidad);
-    
+    /**
+     * Método encargado de verificar si existe un TipoEntidad cuya secuencia coincide con la dada por parámetro
+     * y esta asociada con alguna FormulaContratoEntidad.
+     * @param secTipoEntidad Secuencia del TipoEntidad.
+     * @return Retorna el numero de FormulasContratosEntidades que tienen asociadas el TipoEntidad.
+     * Si no encuentra ningún dato, retorna null.
+     */
     public Long verificarBorradoFCE(BigInteger secTipoEntidad);
-    
+    /**
+     * Método encargado de buscar todos los TiposEntidades, si y solo si existe un GrupoTipoEntidad con código entre 1 y 8
+     * asociado a uno de los TiposEntidades.
+     * @return Retorna una lista de TiposEntidades si se cumplen las condiciones anteriormente mencionadas, de lo contrario
+     * retorna null.
+     */
     public List<TiposEntidades> buscarTiposEntidadesIBCS();
     
 }

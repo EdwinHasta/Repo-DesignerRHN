@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,39 +13,39 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposAusentismos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismosInterface{
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
     public void crear(Tiposausentismos tiposAusentismos) {
         try {
-//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(tiposAusentismos);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaTiposAusentismos.crear");
         }
     }
 
-    // Editar Ausentismos. 
     @Override
     public void editar(Tiposausentismos tiposAusentismos) {
         em.merge(tiposAusentismos);
     }
 
-    /*
-     *Borrar Ausentismos.
-     */
     @Override
     public void borrar(Tiposausentismos tiposAusentismos) {
         em.remove(em.merge(tiposAusentismos));
     }
 
-    //Trae los Ausentismos de un Empleado
+    @Override
     public List<Tiposausentismos> buscarTiposAusentismos() {
         try {
             Query query = em.createQuery("SELECT ta FROM Tiposausentismos ta ORDER BY ta.codigo");

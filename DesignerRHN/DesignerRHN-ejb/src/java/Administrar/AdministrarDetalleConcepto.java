@@ -23,6 +23,7 @@ import InterfacePersistencia.PersistenciaFormulasConceptosInterface;
 import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaGruposConceptosInterface;
 import InterfacePersistencia.PersistenciaReformasLaboralesInterface;
+import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTiposCentrosCostosInterface;
 import InterfacePersistencia.PersistenciaTiposContratosInterface;
 import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
@@ -81,6 +82,8 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     PersistenciaFormulasInterface persistenciaFormulas;
     @EJB
     PersistenciaFormulasConceptosInterface PersistenciaFormulasConceptos;
+    @EJB
+    PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
 
     ///////////VigenciasCuentas/////////////////VigenciasCuentas////////////////////////VigenciasCuentas/////////////
     @Override
@@ -323,7 +326,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     @Override
     public List<TiposContratos> listTiposContratos() {
         try {
-            List<TiposContratos> tipos = persistenciaTiposContratos.buscarTiposContratos();
+            List<TiposContratos> tipos = persistenciaTiposContratos.tiposContratos();
             return tipos;
         } catch (Exception e) {
             System.out.println("Error listTiposContratos Admi : " + e.toString());
@@ -455,26 +458,25 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    
+
     @Override
-    public Long comportamientoAutomaticoConcepto(BigInteger secuencia){
-        try{
+    public Long comportamientoAutomaticoConcepto(BigInteger secuencia) {
+        try {
             Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoAutomaticoSecuenciaConcepto(secuencia);
             return retorno;
-        }catch(Exception e){
-            System.out.println("Error comportamientoAutomaticoConcepto Admi : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error comportamientoAutomaticoConcepto Admi : " + e.toString());
             return null;
         }
     }
-    
 
     @Override
-    public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia){
-        try{
+    public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia) {
+        try {
             Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoSemiAutomaticoSecuenciaConcepto(secuencia);
             return retorno;
-        }catch(Exception e){
-            System.out.println("Error comportamientoSemiAutomaticoConcepto Admi : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error comportamientoSemiAutomaticoConcepto Admi : " + e.toString());
             return null;
         }
     }
@@ -491,5 +493,26 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
+
+    public boolean eliminarConcepto(BigInteger secuencia) {
+        try {
+            return persistenciaConceptos.eliminarConcepto(secuencia);
+        } catch (Exception e) {
+            System.out.println("Error eliminarConcepto Admi : " + e.toString());
+            return false;
+        }
+    }
     ///////////Conceptos////////////Conceptos/////////////////Conceptos///////
+    /////////SolucionesNodos////////////////////SolucionesNodos///////////
+
+    public boolean verificarSolucionesNodosParaConcepto(BigInteger secuencia) {
+        try {
+            boolean retorno = persistenciaSolucionesNodos.solucionesNodosParaConcepto(secuencia);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error verificarSolucionesNodosParaConcepto Admi : " + e.toString());
+            return false;
+        }
+    }
+
 }

@@ -11,18 +11,21 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless Clase encargada de realizar operaciones sobre la tabla
  * 'Conceptos' de la base de datos
+ *
  * @author Betelgeuse
  */
 @Stateless
 public class PersistenciaConceptos implements PersistenciaConceptosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;    
+    private EntityManager em;
 
     @Override
     public void crear(Conceptos concepto) {
@@ -37,7 +40,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public void borrar(Conceptos concepto) {
         em.remove(em.merge(concepto));
-    }   
+    }
 
     @Override
     public List<Conceptos> buscarConceptos() {
@@ -110,7 +113,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {    
+    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
         try {
             String sqlQuery = "call CONCEPTOS_PKG.CLONARCONCEPTO(?, ?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
@@ -122,7 +125,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             System.out.println("Error en clonarConcepto: " + e);
         }
     }
-    
+
     @Override
     public Conceptos conceptosPorSecuencia(BigInteger secConcepto) {
         try {
@@ -131,10 +134,22 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             Conceptos conceptos = (Conceptos) query.getSingleResult();
             return conceptos;
         } catch (Exception e) {
-            System.out.println("Error Persistencia conceptosPorSecuencia : "+e.toString());
+            System.out.println("Error Persistencia conceptosPorSecuencia : " + e.toString());
             return null;
         }
     }
-    
-  
+
+    public boolean eliminarConcepto(BigInteger secuenciaConcepto) {
+        try {
+            String sqlQuery = "call conceptos_pkg.Eliminarconcepto(:secuencia)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter("secuencia", secuenciaConcepto);
+            query.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error eliminarConcepto PersistenciaConceptos : "+e.toString());
+            return false;
+        }
+    }
+
 }

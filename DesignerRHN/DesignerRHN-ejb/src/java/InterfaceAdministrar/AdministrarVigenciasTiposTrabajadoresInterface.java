@@ -105,13 +105,7 @@ public interface AdministrarVigenciasTiposTrabajadoresInterface {
      * Metodo que obtiene el total de Tipos Pensionados
      * @return listTP Lista de Tipos Pensionados
      */
-    public List<TiposPensionados> tiposPensionados();
-    /**
-     * Metodo que obtiene un TipoPension por medio del codigo
-     * @param codTipoPension Codigo Tipo Pension
-     * @return tipoP Tipo Pensionado que contiene el codigo dado
-     */
-    public TiposPensionados tipoPensionCodigo(BigDecimal codTipoPension);
+    public List<TiposPensionados> tiposPensionados();  
     /**
      * Metodo que obtiene el total de Clases Pensiones
      * @return listCP Lista de Clases Pensiones

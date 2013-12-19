@@ -1,49 +1,44 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
 import Entidades.TiposPensionados;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'TiposPensionados' 
+ * de la base de datos.
+ * @author AndresPineda
  */
 public interface PersistenciaTiposPensionadosInterface {
-    
     /**
-     * Crea un objeto TiposPensionados
-     * @param tiposPensionados Objeto a crear
+     * Método encargado de insertar un TipoPensionado en la base de datos.
+     * @param tiposPensionados TipoPensionado que se quiere crear.
      */
     public void crear(TiposPensionados tiposPensionados);
     /**
-     * Editar un objeto TiposPensionados
-     * @param tiposPensionados Objeto a editar
+     * Método encargado de modificar un TipoPensionado de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param tiposPensionados TipoPensionado con los cambios que se van a realizar.
      */
     public void editar(TiposPensionados tiposPensionados);
     /**
-     * Borra un objeto TiposPensionados
-     * @param tiposPensionados Objeto a borrar
+     * Método encargado de eliminar de la base de datos el TipoPensionado que entra por parámetro.
+     * @param tiposPensionados TipoPensionado que se quiere eliminar.
      */
     public void borrar(TiposPensionados tiposPensionados);
     /**
-     * Metodo que obtiene un TiposPensionados por la llave primaria ID
-     * @param id Llave Primaria ID
-     * @return tipoP Tipo Pension que cumple con la llave primaria ID
-     */
-    public TiposPensionados buscarTipoPension(Object id);
-    /**
-     * Metodo que obtiene todos los TiposPensionados de la tabla
-     * @return listTP Lista de Tipos Pensionados
+     * Método encargado de buscar todos los TiposPensionados existentes en la base de datos.
+     * @return Retorna una lista de TiposPensionados.
      */
     public List<TiposPensionados> buscarTiposPensionados();
     /**
-     * Metodo que obtiene un TipoPension por la secuencia
-     * @param secuencia Secuencia del TipoPension
-     * @return tP Tipo Pension que cumple con la secuencia dada
+     * Método encargado de buscar el TipoPensionado con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del TipoPensionado que se quiere encontrar.
+     * @return Retorna el TipoPensionado identificado con la secuencia dada por parámetro.
      */
-    public TiposPensionados buscarTipoPensionSecuencia(BigDecimal secuencia); 
+    public TiposPensionados buscarTipoPensionSecuencia(BigInteger secuencia); 
 }

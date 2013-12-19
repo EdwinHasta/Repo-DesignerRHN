@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,8 +39,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
+    @OneToMany(mappedBy = "concepto")
+    private List<DetallesExtrasRecargos> detallesExtrasRecargosList;
     @Column(name = "CONJUNTO")
     private Short conjunto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
@@ -637,7 +643,7 @@ public class Conceptos implements Serializable {
 
         if (codigo != null) {
             codigoSTR = codigo.toString();
-            
+
         } else {
             codigoSTR = " ";
             codigo = BigInteger.valueOf(0);
@@ -651,14 +657,6 @@ public class Conceptos implements Serializable {
         this.codigoSTR = codigoSTR;
     }
 
-    public BigInteger getCodigo() {
-        return codigo; 
-    }
-
-    public void setCodigo(BigInteger codigo) {
-        this.codigo = codigo; 
-    }
-
     public Short getConjunto() {
         return conjunto;
     }
@@ -669,7 +667,7 @@ public class Conceptos implements Serializable {
 
     public String getInfoDetalleConcepto() {
         getNaturalezaConcepto();
-        if(codigo != null && descripcion != null && naturalezaConcepto != null ){
+        if (codigo != null && descripcion != null && naturalezaConcepto != null) {
             infoDetalleConcepto = codigo + " - " + descripcion + " - " + naturalezaConcepto + "/ Tiene comportamiento: ";
         } else {
             infoDetalleConcepto = "";
@@ -680,8 +678,6 @@ public class Conceptos implements Serializable {
     public void setInfoDetalleConcepto(String infoDetalleConcepto) {
         this.infoDetalleConcepto = infoDetalleConcepto;
     }
-    
-    
 
     @XmlTransient
     public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {
@@ -690,5 +686,22 @@ public class Conceptos implements Serializable {
 
     public void setVigenciasCuentasCollection(Collection<VigenciasCuentas> vigenciasCuentasCollection) {
         this.vigenciasCuentasCollection = vigenciasCuentasCollection;
+    }
+
+    @XmlTransient
+    public List<DetallesExtrasRecargos> getDetallesExtrasRecargosList() {
+        return detallesExtrasRecargosList;
+    }
+
+    public void setDetallesExtrasRecargosList(List<DetallesExtrasRecargos> detallesExtrasRecargosList) {
+        this.detallesExtrasRecargosList = detallesExtrasRecargosList;
+    }
+
+    public BigInteger getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(BigInteger codigo) {
+        this.codigo = codigo;
     }
 }

@@ -96,9 +96,13 @@ public interface AdministrarDetalleConceptoInterface {
     public List<Formulas> listFormulas();
 
     public List<FormulasConceptos> listFormulasConceptos();
-    
+
     public Long comportamientoAutomaticoConcepto(BigInteger secuencia);
-    
+
     public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia);
+
+    public boolean eliminarConcepto(BigInteger secuencia);
+
+    public boolean verificarSolucionesNodosParaConcepto(BigInteger secuencia);
 
 }

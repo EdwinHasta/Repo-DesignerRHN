@@ -1,73 +1,58 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package InterfacePersistencia;
 
 import Entidades.VigenciasAfiliaciones;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'VigenciasAfiliaciones' 
+ * de la base de datos.
  * @author AndresPineda
  */
 public interface PersistenciaVigenciasAfiliacionesInterface {
-
     /**
-     * Crea una nueva VigenciasAfiliaciones
-     *
-     * @param vigenciasAfiliaciones Objeto a crear
+     * Método encargado de insertar una VigenciaAfiliacion en la base de datos.
+     * @param vigenciasAfiliaciones VigenciaAfiliacion que se quiere crear.
      */
     public void crear(VigenciasAfiliaciones vigenciasAfiliaciones);
-
     /**
-     * Edita una VigenciasAfiliaciones
-     *
-     * @param vigenciasAfiliaciones Objeto a editar
+     * Método encargado de modificar una VigenciaAfiliacion de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param vigenciasAfiliaciones VigenciaAfiliacion con los cambios que se van a realizar.
      */
     public void editar(VigenciasAfiliaciones vigenciasAfiliaciones);
-
     /**
-     * Borra una VigenciasAfiliaciones
-     *
-     * @param vigenciasAfiliaciones Objeto a borrar
+     * Método encargado de eliminar de la base de datos la VigenciaAfiliacion que entra por parámetro.
+     * @param vigenciasAfiliaciones VigenciaAfiliacion que se quiere eliminar.
      */
     public void borrar(VigenciasAfiliaciones vigenciasAfiliaciones);
-
     /**
-     * Obtiene una VigenciasAfiliaciones por la llave primaria Id
-     *
-     * @param id Llave Primaria Id
-     * @return VigenciasAfiliaciones que cumple con la llave primaria
-     */
-    public VigenciasAfiliaciones buscarVigenciaAfiliacion(Object id);
-
-    /**
-     * Obtiene la lista total de VigenciasAfiliaciones
-     *
-     * @return Lita de VigenciasAfiliaciones
+     * Método encargado de buscar todas las VigenciasAfiliaciones existentes en la base de datos.
+     * @return Retorna una lista de VigenciasAfiliaciones.
      */
     public List<VigenciasAfiliaciones> buscarVigenciasAfiliaciones();
-
     /**
-     * Obtiene las VigenciasAfiliaciones de un Empleado
-     *
-     * @param secEmpleado Secuencia Empleado
-     * @return Lista VigenciasAfiliaciones de un Empleado
+     * Método encargado de buscar la VigenciaAfiliacion con la secuencia dada por parámetro.
+     * @param secuencia Secuencia de la VigenciaAfiliacion que se quiere encontrar.
+     * @return Retorna la VigenciaAfiliacion identificada con la secuencia dada por parámetro.
      */
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(BigInteger secEmpleado);
-
+    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secuencia);
     /**
-     * Obtiene una VigenciasAfiliaciones por su secuencia
-     *
-     * @param secVA Secuencia VigenciasAfiliaciones
-     * @return VigenciasAfiliaciones que cumple con la secuencia
+     * Método encargado de buscar las VigenciaAfiliacion de un Empleado.
+     * @param secuencia Secuencia del Empleado.
+     * @return Retorna las VigenciaAfiliacion, odenadas descendentemente por la fechaInicial, del Empleado cuya secuencia coincide 
+     * con la secuencia dada por parámetro.
      */
-    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secVA);
-
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(BigInteger secuencia);
     /**
-     * Obtiene la lista de VigenciasAfiliaciones de una VigenciasSueldos
-     *
-     * @param secVigencia Secuencia VigenciasSueldos
-     * @return Lista de VigenciasAfiliaciones de una VigenciasSueldos
+     * Método encargado de buscar las VigenciaAfiliacion asociadas a una VigenciaSueldo específica.
+     * @param secuencia Secuencia de la vigenciaSueldo.
+     * @return Retorna la lista de VigenciasAfiliaciones que estan asociadas con la VigenciaSueldo
+     * cuya secuencia coincide con la secuencia dada por parámetro. 
      */
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigInteger secVigencia);
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigInteger secuencia);
 }

@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,6 +29,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "FormulasNovedades.findAll", query = "SELECT f FROM FormulasNovedades f")})
 public class FormulasNovedades implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -50,6 +52,14 @@ public class FormulasNovedades implements Serializable {
     @JoinColumn(name = "FORMULA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Formulas formula;
+    @Transient
+    private boolean checkSugerida;
+    @Transient
+    private boolean checkCargue;
+    @Transient
+    private boolean checkUsa;
+    @Transient
+    private boolean checkGarantiza;
 
     public FormulasNovedades() {
     }
@@ -67,6 +77,9 @@ public class FormulasNovedades implements Serializable {
     }
 
     public String getSugerida() {
+        if (sugerida == null) {
+            sugerida = "N";
+        }
         return sugerida;
     }
 
@@ -75,6 +88,9 @@ public class FormulasNovedades implements Serializable {
     }
 
     public String getCargue() {
+        if (cargue == null) {
+            cargue = "N";
+        }
         return cargue;
     }
 
@@ -83,6 +99,9 @@ public class FormulasNovedades implements Serializable {
     }
 
     public String getUsaordenformulaconcepto() {
+        if (usaordenformulaconcepto == null) {
+            usaordenformulaconcepto = "N";
+        }
         return usaordenformulaconcepto;
     }
 
@@ -91,6 +110,9 @@ public class FormulasNovedades implements Serializable {
     }
 
     public String getGarantizada() {
+        if (garantizada == null) {
+            garantizada = "N";
+        }
         return garantizada;
     }
 
@@ -104,6 +126,78 @@ public class FormulasNovedades implements Serializable {
 
     public void setFormula(Formulas formula) {
         this.formula = formula;
+    }
+
+    public boolean isCheckSugerida() {
+        if (sugerida == null || sugerida.equalsIgnoreCase("N")) {
+            checkSugerida = false;
+        } else {
+            checkSugerida = true;
+        }
+        return checkSugerida;
+    }
+
+    public void setCheckSugerida(boolean checkSugerida) {
+        if (checkSugerida == false) {
+            sugerida = "N";
+        } else {
+            sugerida = "S";
+        }
+        this.checkSugerida = checkSugerida;
+    }
+
+    public boolean isCheckCargue() {
+        if (cargue == null || cargue.equalsIgnoreCase("N")) {
+            checkCargue = false;
+        } else {
+            checkCargue = true;
+        }
+        return checkCargue;
+    }
+
+    public void setCheckCargue(boolean checkCargue) {
+        if (checkSugerida == false) {
+            cargue = "N";
+        } else {
+            cargue = "S";
+        }
+        this.checkCargue = checkCargue;
+    }
+
+    public boolean isCheckUsa() {
+        if (usaordenformulaconcepto == null || usaordenformulaconcepto.equalsIgnoreCase("N")) {
+            checkUsa = false;
+        } else {
+            checkUsa = true;
+        }
+        return checkUsa;
+    }
+
+    public void setCheckUsa(boolean checkUsa) {
+        if (checkUsa == false) {
+            usaordenformulaconcepto = "N";
+        } else {
+            usaordenformulaconcepto = "S";
+        }
+        this.checkUsa = checkUsa;
+    }
+
+    public boolean isCheckGarantiza() {
+        if (garantizada == null || garantizada.equalsIgnoreCase("N")) {
+            checkGarantiza = false;
+        } else {
+            checkGarantiza = true;
+        }
+        return checkGarantiza;
+    }
+
+    public void setCheckGarantiza(boolean checkGarantiza) {
+        if (checkGarantiza == false) {
+            garantizada = "N";
+        } else {
+            garantizada = "S";
+        }
+        this.checkGarantiza = checkGarantiza;
     }
 
     @Override
@@ -130,5 +224,5 @@ public class FormulasNovedades implements Serializable {
     public String toString() {
         return "Entidades.Formulasnovedades[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
