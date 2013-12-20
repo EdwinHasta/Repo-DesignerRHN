@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -15,47 +14,37 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasFormasPagos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasFormasPagos implements PersistenciaVigenciasFormasPagosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    /*
-     * Crear empleado.
-     */
 
     @Override
     public void crear(VigenciasFormasPagos vigenciasFormasPagos) {
         em.persist(vigenciasFormasPagos);
     }
 
-    /*
-     *Editar empleado. 
-     */
     @Override
     public void editar(VigenciasFormasPagos vigenciasFormasPagos) {
         em.merge(vigenciasFormasPagos);
     }
 
-    /*
-     *Borrar empleado.
-     */
     @Override
     public void borrar(VigenciasFormasPagos vigenciasFormasPagos) {
         em.remove(em.merge(vigenciasFormasPagos));
     }
 
-    /*
-     *Encontrar una VigenciaFormasPagos. 
-     */
     @Override
-    public VigenciasFormasPagos buscarVigenciasNormasEmpleado(BigInteger secuencia) {
+    public VigenciasFormasPagos buscarVigenciaFormaPago(BigInteger secuencia) {
         try {
-            //BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
             return em.find(VigenciasFormasPagos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistencia vigencias formas pagos ERROR :");
@@ -63,9 +52,6 @@ public class PersistenciaVigenciasFormasPagos implements PersistenciaVigenciasFo
         }
     }
 
-    /**
-     * 
-     */
     @Override
     public List<VigenciasFormasPagos> buscarVigenciasFormasPagosPorEmpleado(BigInteger secEmpleado) {
         try {
@@ -79,8 +65,9 @@ public class PersistenciaVigenciasFormasPagos implements PersistenciaVigenciasFo
             return null;
         }
     }
-       @Override
-    public List<VigenciasFormasPagos> buscarVigenciasFormasPagosEmpleado() {
+
+    @Override
+    public List<VigenciasFormasPagos> buscarVigenciasFormasPagos() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasFormasPagos.class));
         return em.createQuery(cq).getResultList();

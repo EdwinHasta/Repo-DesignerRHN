@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasEstadosCiviles;
@@ -8,16 +11,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasEstadosCiviles'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigenciasEstadosCivilesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Estado Civil.
-     */
     @Override
     public void crear(VigenciasEstadosCiviles vigenciasEstadosCiviles) {
         try {
@@ -26,34 +33,22 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
             System.out.println("Error en PersistenciaVigenciasEstadosCiviles.crear: " + e);
         }
     }
-    /*
-     *Editar Vigencia Estado Civil. 
-     */
 
     @Override
     public void editar(VigenciasEstadosCiviles vigenciasEstadosCiviles) {
         em.merge(vigenciasEstadosCiviles);
     }
 
-    /*
-     *Borrar Vigencia Estado Civil.
-     */
     @Override
     public void borrar(VigenciasEstadosCiviles vigenciasEstadosCiviles) {
         em.remove(em.merge(vigenciasEstadosCiviles));
     }
 
-    /*
-     *Encontrar una Vigencia Estado Civil. 
-     */
     @Override
-    public VigenciasEstadosCiviles buscarVigenciaEstadoCivil(BigInteger id) {
-        return em.find(VigenciasEstadosCiviles.class, id);
+    public VigenciasEstadosCiviles buscarVigenciaEstadoCivil(BigInteger secuencia) {
+        return em.find(VigenciasEstadosCiviles.class, secuencia);
     }
 
-    /*
-     *Encontrar todas las Vigencias Estados Civiles.
-     */
     @Override
     public List<VigenciasEstadosCiviles> buscarVigenciasEstadosCiviles() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -61,9 +56,6 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
         return em.createQuery(cq).getResultList();
     }
 
-    /*
-     * Encontrar Estado Civil de una Persona.
-     */
     @Override
     public List<VigenciasEstadosCiviles> vigenciaEstadoCivilPersona(BigInteger secuenciaPersona) {
         try {

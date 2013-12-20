@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,17 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasCuentas'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuentasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(VigenciasCuentas vigenciasCuentas) {
         try {
@@ -34,8 +35,6 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
         }
     }
 
-    /*
-     */
     @Override
     public void editar(VigenciasCuentas vigenciasCuentas) {
         try {
@@ -45,8 +44,6 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
         }
     }
 
-    /*
-     */
     @Override
     public void borrar(VigenciasCuentas vigenciasCuentas) {
         try {
@@ -56,22 +53,6 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
         }
     }
 
-    /*
-     */
-    @Override
-    public VigenciasCuentas buscarVigenciaCuenta(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
-            return em.find(VigenciasCuentas.class, secuencia);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<VigenciasCuentas> buscarVigenciasCuentas() {
         List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) em.createNamedQuery("VigenciasCuentas.findAll").getResultList();
@@ -80,7 +61,6 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
 
     @Override
     public VigenciasCuentas buscarVigenciaCuentaSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -120,6 +100,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
         }
     }
     
+    @Override
     public List<VigenciasCuentas> buscarVigenciasCuentasPorConcepto(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.concepto.secuencia=:secuencia");

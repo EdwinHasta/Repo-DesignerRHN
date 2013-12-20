@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Empleados;
@@ -7,20 +10,22 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasCargos'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear vigenciasCargos.
-     */
     @Override
     public void crear(VigenciasCargos vigenciasCargos) {
         try {
@@ -30,9 +35,6 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
         }
     }
 
-    /*
-     *Editar vigenciasCargos. 
-     */
     @Override
     public void editar(VigenciasCargos vigenciasCargos) {
         try {
@@ -42,9 +44,6 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
         }
     }
 
-    /*
-     *Borrar vigenciasCargos.
-     */
     @Override
     public void borrar(VigenciasCargos vigenciasCargos) {
         try {
@@ -52,26 +51,17 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
         } catch (Exception e) {
             System.out.println("Error Persistencia Borrar VC: " + e);
         }
-
     }
 
-    /*
-     *Encontrar una vigenciasCargos. 
-     */
     @Override
-    public VigenciasCargos buscarVigenciaCargo(Object id) {
+    public VigenciasCargos buscarVigenciaCargo(BigInteger secuencia) {
         try {
-            BigInteger in = (BigInteger) id;
-            //return em.find(VigenciasCargos.class, id);
-            return em.find(VigenciasCargos.class, in);
+            return em.find(VigenciasCargos.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
-    /*
-     *Encontrar todas las vigenciasCargos.
-     */
     @Override
     public List<VigenciasCargos> buscarVigenciasCargos() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -80,17 +70,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     }
 
     @Override
-    public VigenciasCargos buscarCargoEmpleado(BigDecimal secuencia) {
-
-        Query query = em.createQuery("SELECT vc FROM VigenciasCargos vc WHERE vc.empleado.secuencia=:secuencia");
-        query.setParameter("secuencia", secuencia);
-        VigenciasCargos vigenciasCargos = (VigenciasCargos) query.getSingleResult();
-        return vigenciasCargos;
-        //return null;
-    }
-
-    @Override
-    public List<VigenciasCargos> buscarVigenciaCargoEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasCargos> buscarVigenciasCargosEmpleado(BigInteger secEmpleado) {
         try {
             Empleados empleado = (Empleados) em.createNamedQuery("Empleados.findBySecuencia").setParameter("secuencia", secEmpleado).getSingleResult();
             List<VigenciasCargos> vigenciasCargos = (List<VigenciasCargos>) em.createNamedQuery("VigenciasCargos.findByEmpleado").setParameter("empleado", empleado).getResultList();
@@ -99,6 +79,5 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             List<VigenciasCargos> vigenciasCargos = null;
             return vigenciasCargos;
         }
-
     }
 }

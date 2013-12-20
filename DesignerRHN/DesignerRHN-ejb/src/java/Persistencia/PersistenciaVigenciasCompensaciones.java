@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasCompensaciones;
@@ -11,18 +14,19 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasCompensaciones'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaVigenciasCompensaciones implements PersistenciaVigenciasCompensacionesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear VigenciasCompensaciones.
-     */
     @Override
     public void crear(VigenciasCompensaciones vigenciasCompensaciones) {
         try {
@@ -32,9 +36,6 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
         }
     }
 
-    /*
-     *Editar VigenciasCompensaciones. 
-     */
     @Override
     public void editar(VigenciasCompensaciones vigenciasCompensaciones) {
         try {
@@ -44,9 +45,6 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
         }
     }
 
-    /*
-     *Borrar VigenciasCompensaciones.
-     */
     @Override
     public void borrar(VigenciasCompensaciones vigenciasCompensaciones) {
         try {
@@ -56,23 +54,6 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
         }
     }
 
-    /*
-     *Encontrar un VigenciasCompensaciones. 
-     */
-    @Override
-    public VigenciasCompensaciones buscarVigenciaCompensacion(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            return em.find(VigenciasCompensaciones.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarVigenciaCompensacion PersistenciaVigenciasCompensaciones");
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todos los VigenciasCompensaciones.
-     */
     @Override
     public List<VigenciasCompensaciones> buscarVigenciasCompensaciones() {
         try {
@@ -86,10 +67,10 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesEmpleado(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.vigenciajornada.empleado.secuencia = :secuenciaEmpl ORDER BY vc.fechainicial DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setParameter("secuenciaEmpl", secuencia);
             List<VigenciasCompensaciones> vigenciasCompensaciones = query.getResultList();
             return vigenciasCompensaciones;
         } catch (Exception e) {
@@ -99,9 +80,9 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public VigenciasCompensaciones buscarVigenciaCompensacionSecuencia(BigInteger secVC) {
+    public VigenciasCompensaciones buscarVigenciaCompensacionSecuencia(BigInteger secuencia) {
         try {
-            Query query = em.createNamedQuery("VigenciasCompensaciones.findBySecuencia").setParameter("secuencia", secVC);
+            Query query = em.createNamedQuery("VigenciasCompensaciones.findBySecuencia").setParameter("secuencia", secuencia);
             VigenciasCompensaciones vigenciasCompensaciones = (VigenciasCompensaciones) query.getSingleResult();
             return vigenciasCompensaciones;
         } catch (Exception e) {
@@ -111,10 +92,10 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciaSecuencia(BigInteger secVigencia) {
+    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciaSecuencia(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.vigenciajornada.secuencia =:secVigencia ORDER BY vc.fechainicial DESC");
-            query.setParameter("secVigencia", secVigencia);
+            query.setParameter("secVigencia", secuencia);
             List<VigenciasCompensaciones> vigenciasCompensaciones = query.getResultList();
             return vigenciasCompensaciones;
         } catch (Exception e) {
@@ -137,7 +118,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
     
     @Override
-     public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciayCompensacion(String tipoC,BigInteger secVigencia) {
+     public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciayCompensacion(String tipoC,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.tipocompensacion =:tipoCompensacion AND vc.vigenciajornada.secuencia =:secVigencia ORDER BY  vc.fechainicial DESC");
             query.setParameter("tipoCompensacion", tipoC);

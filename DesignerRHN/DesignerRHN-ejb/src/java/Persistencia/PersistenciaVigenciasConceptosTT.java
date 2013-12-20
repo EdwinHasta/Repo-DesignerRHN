@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasConceptosTT;
@@ -8,16 +11,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasConceptosTT'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasConceptosTTInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    
-    /*
-     */
     @Override 
     public void crear(VigenciasConceptosTT conceptosTT) {
         try {
@@ -27,8 +34,6 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
         }
     }
 
-    /*
-     */
     @Override 
     public void editar(VigenciasConceptosTT conceptosTT) {
         try {
@@ -38,8 +43,6 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
         }
     }
 
-    /*
-     */ 
     @Override 
     public void borrar(VigenciasConceptosTT conceptosTT) {
         try {
@@ -56,12 +59,9 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
             query.setParameter("secuenciaConcepto", secuenciaConcepto);
             query.setParameter("secuenciaTT", secuenciaTT);
             Long resultado = (Long) query.getSingleResult();
-            if (resultado == 1) {
-                return true;
-            }
-            return false;
+            return resultado > 0;
         } catch (Exception e) {
-            System.out.println("Exepcion PersistenciaVigenciasConceptosRL: " + e);
+            System.out.println("Exepcion PersistenciaVigenciasConceptosTT: " + e);
             return false;
         }
     }
@@ -74,7 +74,7 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
             List<VigenciasConceptosTT> resultado = (List<VigenciasConceptosTT>) query.getResultList();
             return resultado;
         } catch (Exception e) {
-            System.out.println("Exepcion listVigenciasConceptosTTPorConcepto PersistenciaVigenciasConceptosRL: " + e.toString());
+            System.out.println("Exepcion listVigenciasConceptosTTPorConcepto PersistenciaVigenciasConceptosTT: " + e.toString());
             return null;
         }
     }
