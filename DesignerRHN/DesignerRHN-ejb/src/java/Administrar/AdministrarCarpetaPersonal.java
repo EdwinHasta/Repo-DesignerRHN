@@ -295,7 +295,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     public List<VigenciasCargos> vigenciasEmpleado(BigInteger secEmpleado) {
         try {
-            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciaCargoEmpleado(secEmpleado);
+            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargosEmpleado(secEmpleado);
             return vigenciasCargos;
         } catch (Exception e) {
             vigenciasCargos = null;

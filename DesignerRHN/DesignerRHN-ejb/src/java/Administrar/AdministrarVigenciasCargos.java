@@ -64,7 +64,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
         try {
             //System.out.println("Método AdministrarVigenciasCargos.vigenciasEmpleado.");
             //SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciaCargoEmpleado(secEmpleado);
+            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargosEmpleado(secEmpleado);
         } catch (Exception e) {
             vigenciasCargos = null;
         }

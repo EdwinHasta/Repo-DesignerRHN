@@ -239,7 +239,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasEventos eventosPersona(BigInteger secEmpl) {
         List<VigenciasEventos> listaVigenciasEventos;
-        listaVigenciasEventos = persistenciaVigenciasEventos.eventosPersona(secEmpl);
+        listaVigenciasEventos = persistenciaVigenciasEventos.eventosEmpleado(secEmpl);
         if (listaVigenciasEventos != null) {
             return listaVigenciasEventos.get(0);
         } else {
