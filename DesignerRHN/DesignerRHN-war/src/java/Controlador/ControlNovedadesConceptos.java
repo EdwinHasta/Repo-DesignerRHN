@@ -309,7 +309,7 @@ public class ControlNovedadesConceptos {
             tipoActualizacion = 1;
             index = -1;
             secRegistro = null;
-            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
+
         } else if (LND == 2) {
             index = -1;
             secRegistro = null;
@@ -805,7 +805,7 @@ public class ControlNovedadesConceptos {
                 }
             }
         }
-        System.out.println("Index: " + index + " Celda: " + celda);
+
     }
 
     //GUARDAR
@@ -813,10 +813,9 @@ public class ControlNovedadesConceptos {
 
         int pasas = 0;
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Novedades Concepto");
 
             getResultado();
-            System.out.println("Resultado: " + resultado);
+
             if (resultado > 0) {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("formularioDialogos:solucionesFormulas");
@@ -826,8 +825,7 @@ public class ControlNovedadesConceptos {
 
             if (!listaNovedadesBorrar.isEmpty() && pasas == 0) {
                 for (int i = 0; i < listaNovedadesBorrar.size(); i++) {
-                    System.out.println("Borrando..." + listaNovedadesBorrar.size());
-                    
+
                     if (listaNovedadesBorrar.get(i).getPeriodicidad().getSecuencia() == null) {
                         listaNovedadesBorrar.get(i).setPeriodicidad(null);
                     }
@@ -846,13 +844,12 @@ public class ControlNovedadesConceptos {
                     }
                     administrarNovedadesConceptos.borrarNovedades(listaNovedadesBorrar.get(i));
                 }
-                System.out.println("Entra");
+
                 listaNovedadesBorrar.clear();
             }
 
             if (!listaNovedadesCrear.isEmpty()) {
                 for (int i = 0; i < listaNovedadesCrear.size(); i++) {
-                    System.out.println("Creando...");
 
                     if (listaNovedadesCrear.get(i).getPeriodicidad().getSecuencia() == null) {
                         listaNovedadesCrear.get(i).setPeriodicidad(null);
@@ -872,10 +869,10 @@ public class ControlNovedadesConceptos {
                     if (listaNovedadesCrear.get(i).getUnidadespartefraccion() == null) {
                         listaNovedadesCrear.get(i).setUnidadespartefraccion(null);
                     }
-                    System.out.println(listaNovedadesCrear.get(i).getTipo());
+
                     administrarNovedadesConceptos.crearNovedades(listaNovedadesCrear.get(i));
                 }
-                System.out.println("LimpiaLista");
+
                 listaNovedadesCrear.clear();
             }
             if (!listaNovedadesModificar.isEmpty()) {
@@ -883,7 +880,6 @@ public class ControlNovedadesConceptos {
                 listaNovedadesModificar.clear();
             }
 
-            System.out.println("Se guardaron los datos con exito");
             listaNovedades = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNovedadesConcepto");
@@ -891,8 +887,7 @@ public class ControlNovedadesConceptos {
             permitirIndex = true;
             RequestContext.getCurrentInstance().update("form:aceptar");
         }
-        System.out.println("Tamaño lista: " + listaNovedadesCrear.size());
-        System.out.println("Valor k: " + k);
+
         index = -1;
         secRegistro = null;
     }
@@ -905,30 +900,25 @@ public class ControlNovedadesConceptos {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (nuevaNovedad.getFechainicial() == null) {
-            System.out.println("Entro a Fecha Inicial");
             mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
 
         if (nuevaNovedad.getEmpleado().getCodigoempleadoSTR().equals("0")) {
-            System.out.println("Entro a Empleado");
             mensajeValidacion = mensajeValidacion + " * Empleado\n";
             pasa++;
         }
 
         if (nuevaNovedad.getFormula().getNombrelargo() == null) {
-            System.out.println("Entro a Formula");
             mensajeValidacion = mensajeValidacion + " * Formula\n";
             pasa++;
         }
         if (nuevaNovedad.getValortotal() == null) {
-            System.out.println("Entro a Valor");
             mensajeValidacion = mensajeValidacion + " * Valor\n";
             pasa++;
         }
 
         if (nuevaNovedad.getTipo() == null) {
-            System.out.println("Entro a Tipo");
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
         }
@@ -951,7 +941,6 @@ public class ControlNovedadesConceptos {
             }
         }
 
-        System.out.println("Valor Pasa: " + pasa);
         if (pasa != 0) {
             context.update("formularioDialogos:validacionNuevaNovedadConcepto");
             context.execute("validacionNuevaNovedadConcepto.show()");
@@ -1011,16 +1000,11 @@ public class ControlNovedadesConceptos {
             localMachine = java.net.InetAddress.getByName(equipo);
 
             getAlias();
-            System.out.println("Alias: " + alias);
             getUsuarioBD();
-            System.out.println("UsuarioBD: " + usuarioBD);
             nuevaNovedad.setConcepto(seleccionMostrar);
             nuevaNovedad.setTerminal(localMachine.getHostName());
             nuevaNovedad.setUsuarioreporta(usuarioBD);
             listaNovedadesCrear.add(nuevaNovedad);
-            System.out.println(listaNovedadesCrear.size());
-            System.out.println(listaNovedadesCrear.get(0).getTipo());
-            System.out.println(nuevaNovedad.getTipo());
             listaNovedades.add(nuevaNovedad);
             nuevaNovedad = new Novedades();
             nuevaNovedad.setFormula(new Formulas());
@@ -1028,8 +1012,6 @@ public class ControlNovedadesConceptos {
             nuevaNovedad.setFechareporte(new Date());
             nuevaNovedad.setPeriodicidad(new Periodicidades());
             nuevaNovedad.setTipo("FIJA");
-
-            System.out.println("nuevaNovedad : " + nuevaNovedad.getFechareporte());
 
             context.update("form:datosNovedadesConcepto");
             if (guardado == true) {
@@ -1054,7 +1036,6 @@ public class ControlNovedadesConceptos {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarEmpleadosCodigos");
                 context.execute("editarEmpleadosCodigos.show()");
@@ -1131,10 +1112,7 @@ public class ControlNovedadesConceptos {
     }
 
     public void activarCtrlF11() {
-        System.out.println("TipoLista= " + tipoLista);
         if (bandera == 0) {
-            System.out.println("Activar");
-            System.out.println("TipoLista= " + tipoLista);
             nCEmpleadoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCEmpleadoCodigo");
             nCEmpleadoCodigo.setFilterStyle("width: 60px");
             nCEmpleadoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCEmpleadoNombre");
@@ -1168,8 +1146,6 @@ public class ControlNovedadesConceptos {
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
-            System.out.println("TipoLista= " + tipoLista);
             nCEmpleadoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoCodigo");
             nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
             nCEmpleadoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoDescripcion");
@@ -1262,6 +1238,7 @@ public class ControlNovedadesConceptos {
         duplicarNovedad.setTerminal(" ");
         duplicarNovedad.setFechareporte(new Date());
     }
+
     //BORRAR NOVEDADES
     public void borrarNovedades() {
 
@@ -1294,7 +1271,6 @@ public class ControlNovedadesConceptos {
                 int CIndex = listaNovedades.indexOf(filtradosListaNovedades.get(index));
                 listaNovedades.remove(CIndex);
                 filtradosListaNovedades.remove(index);
-                System.out.println("Realizado");
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNovedadesConcepto");
@@ -1366,28 +1342,23 @@ public class ControlNovedadesConceptos {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (duplicarNovedad.getFechainicial() == null) {
-            System.out.println("Entro a Fecha Inicial");
             mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
         if (duplicarNovedad.getEmpleado().getPersona().getNombreCompleto().equals(" ")) {
-            System.out.println("Entro a Empleado");
             mensajeValidacion = mensajeValidacion + " * Empleado\n";
             pasa++;
         }
         if (duplicarNovedad.getFormula().getNombrelargo() == null) {
-            System.out.println("Entro a Formula");
             mensajeValidacion = mensajeValidacion + " * Formula\n";
             pasa++;
         }
         if (duplicarNovedad.getValortotal() == null) {
-            System.out.println("Entro a Valor");
             mensajeValidacion = mensajeValidacion + " * Valor\n";
             pasa++;
         }
 
         if (duplicarNovedad.getTipo() == null) {
-            System.out.println("Entro a Tipo");
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
         }
@@ -1408,7 +1379,6 @@ public class ControlNovedadesConceptos {
             context.execute("fechas.show()");
             pasa2++;
         }
-        System.out.println("Valor Pasa: " + pasa);
         if (pasa != 0) {
             context.update("formularioDialogos:validacionNuevaNovedadConcepto");
             context.execute("validacionNuevaNovedadConcepto.show()");
@@ -1471,9 +1441,7 @@ public class ControlNovedadesConceptos {
             }
             localMachine = java.net.InetAddress.getByName(equipo);
             getAlias();
-            System.out.println("Alias: " + alias);
             getUsuarioBD();
-            System.out.println("UsuarioBD: " + usuarioBD);
             duplicarNovedad.setTerminal(localMachine.getHostName());
             duplicarNovedad.setConcepto(seleccionMostrar);
             duplicarNovedad = new Novedades();
@@ -1664,12 +1632,9 @@ public class ControlNovedadesConceptos {
     //RASTROS 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lol");
         if (!listaNovedades.isEmpty()) {
             if (secRegistro != null) {
-                System.out.println("lol 2");
                 int result = administrarRastros.obtenerTabla(secRegistro, "NOVEDADES");
-                System.out.println("resultado: " + result);
                 if (result == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (result == 2) {
@@ -1822,7 +1787,6 @@ public class ControlNovedadesConceptos {
         if (listaConceptosNovedad == null) {
             listaConceptosNovedad = administrarNovedadesConceptos.Conceptos();
             seleccionMostrar = listaConceptosNovedad.get(0);
-            System.out.println(seleccionMostrar.getSecuencia());
         }
         return listaConceptosNovedad;
     }
@@ -2072,9 +2036,9 @@ public class ControlNovedadesConceptos {
         this.resultado = resultado;
     }
 //Terminal y Usuario
+
     public String getAlias() {
         alias = administrarNovedadesConceptos.alias();
-        System.out.println("Alias: " + alias);
         return alias;
     }
 
