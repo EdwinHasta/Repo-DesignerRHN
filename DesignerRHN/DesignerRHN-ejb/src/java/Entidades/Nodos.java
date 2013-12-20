@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -42,7 +43,7 @@ public class Nodos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 400)
     @Column(name = "FORMULA")
     private String formula;
@@ -61,11 +62,11 @@ public class Nodos implements Serializable {
     public Nodos() {
     }
 
-    public Nodos(BigDecimal secuencia) {
+    public Nodos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Nodos(BigDecimal secuencia, short posicion) {
+    public Nodos(BigInteger secuencia, short posicion) {
         this.secuencia = secuencia;
         this.posicion = posicion;
     }
@@ -78,11 +79,11 @@ public class Nodos implements Serializable {
         this.posicion = posicion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

@@ -3,9 +3,11 @@
  */
 package Persistencia;
 
+import Entidades.Historiasformulas;
 import InterfacePersistencia.PersistenciaHistoriasformulasInterface;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +25,45 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+    
+    @Override
+    public void crear(Historiasformulas historiasformulas) {
+        em.persist(historiasformulas);
+    }
+
+    @Override
+    public void editar(Historiasformulas historiasformulas) {
+        em.merge(historiasformulas);
+    }
+
+    @Override
+    public void borrar(Historiasformulas historiasformulas) {
+        em.remove(em.merge(historiasformulas));
+    }
+
+    @Override
+    public Historiasformulas buscarHistoriaformula(BigInteger secuencia) {
+        try {
+            return em.find(Historiasformulas.class, secuencia);
+        } catch (Exception e) {
+            System.out.println("Error en la PersistenciaHistoriasformulas  buscarHistoriaformula : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Historiasformulas> historiasFormulasParaFormulaSecuencia(BigInteger secuencia) {
+        try {
+            Query queryFinal = em.createQuery("SELECT hf FROM Historiasformulas hf WHERE hf.formula.secuencia=:secuencia");
+            queryFinal.setParameter("secuencia", secuencia);
+            List<Historiasformulas> historiasformulas = queryFinal.getResultList();
+            return historiasformulas;
+        } catch (Exception e) {
+            System.out.println("Error historiasFormulasParaFormulaSecuencia.formulasContratosParaFormulaSecuencia : " + e.toString());
+            return null;
+        }
+    }
+
 
     @Override
     public BigInteger obtenerSecuenciaHistoriaFormula(BigInteger secFormula, String fecha) {

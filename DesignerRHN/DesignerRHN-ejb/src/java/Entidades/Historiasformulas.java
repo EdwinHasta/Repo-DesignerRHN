@@ -6,6 +6,9 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,14 +40,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Historiasformulas.findAll", query = "SELECT h FROM Historiasformulas h")})
 public class Historiasformulas implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
@@ -52,8 +53,7 @@ public class Historiasformulas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Size(max = 200)
+    private BigInteger secuencia;
     @Column(name = "OBSERVACIONES")
     private String observaciones;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "historiaformula")
@@ -61,15 +61,19 @@ public class Historiasformulas implements Serializable {
     @JoinColumn(name = "FORMULA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Formulas formula;
+    @Transient
+    private String strFechaIni;
+    @Transient
+    private String strFechaFin;
 
     public Historiasformulas() {
     }
 
-    public Historiasformulas(BigDecimal secuencia) {
+    public Historiasformulas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Historiasformulas(BigDecimal secuencia, Date fechainicial, Date fechafinal) {
+    public Historiasformulas(BigInteger secuencia, Date fechainicial, Date fechafinal) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
         this.fechafinal = fechafinal;
@@ -91,15 +95,50 @@ public class Historiasformulas implements Serializable {
         this.fechafinal = fechafinal;
     }
 
-    public BigDecimal getSecuencia() {
+    public String getStrFechaIni() {
+        if (fechainicial != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaIni = formatoFecha.format(fechainicial);
+        } else {
+            strFechaIni = " ";
+        }
+        return strFechaIni;
+    }
+
+    public void setStrFechaIni(String strFechaIni) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechainicial = formatoFecha.parse(strFechaIni);
+        this.strFechaIni = strFechaIni;
+    }
+
+    public String getStrFechaFin() {
+        if (fechafinal != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaFin = formatoFecha.format(fechafinal);
+        } else {
+            strFechaFin = " ";
+        }
+        return strFechaFin;
+    }
+
+    public void setStrFechaFin(String strFechaFin) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechafinal = formatoFecha.parse(strFechaFin);
+        this.strFechaFin = strFechaFin;
+    }
+
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
     public String getObservaciones() {
+        if (observaciones == null) {
+            observaciones = " ";
+        }
         return observaciones;
     }
 
@@ -148,5 +187,5 @@ public class Historiasformulas implements Serializable {
     public String toString() {
         return "Entidades.Historiasformulas[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
