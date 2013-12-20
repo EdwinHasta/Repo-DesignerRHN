@@ -86,6 +86,23 @@
     <navigation-rule>
         <from-view-id>/Formula.xhtml</from-view-id>
         <navigation-case>
+            <from-outcome>historiaFormula</from-outcome>
+            <to-view-id>/historiaformula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/historiaformula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retornoFormula</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
             <from-outcome>legislacionFormula</from-outcome>
             <to-view-id>/formulacontrato.xhtml</to-view-id>
             <redirect />
@@ -322,6 +339,27 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+      <navigation-rule>
+        <from-view-id>/historiaformula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>historiaFormulaRastro</from-outcome>
+            <to-view-id>/historiaformula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
     
     <navigation-rule>
         <from-view-id>/formulacontrato.xhtml</from-view-id>

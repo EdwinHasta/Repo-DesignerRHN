@@ -15,120 +15,123 @@
                     <p:growl id="growl" showDetail="true" />
                     <p:panel  id="PanelTotal" header="Detalles de la Formula: Legislacion Laboral" style=" font-size: 13px; position: absolute; width: 874px; height: 440px; text-align: left;" >  
 
-                       
-                            <fieldset style="position: absolute; top: 80px; font-size: 10px; width: 815px; height: 245px; border-radius: 10px; text-align: left">
-                                <legend style="font-size: 12px; color: blue"><strong>Detalles de la Formula</strong></legend>
 
-                                <p:dataTable id="datosFormulaContrato" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="font-size: 10px; border: 1px;width: 815px"   
-                                             value="#{controlFormulaContrato.listFormulasContratos}" scrollable="true" scrollHeight="108" scrollWidth="815"
-                                             filteredValue="#{controlFormulaContrato.filtrarListFormulasContratos}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                             editable="true" editMode="cell" paginator="true" rows="4"  
-                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <fieldset style="position: absolute; top: 80px; font-size: 10px; width: 815px; height: 245px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 12px; color: blue"><strong>Detalles de la Formula</strong></legend>
 
-                                    <p:ajax event="filter" listener="#{controlFormulaContrato.eventoFiltrar()}"/>
+                            <p:dataTable id="datosFormulaContrato" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="font-size: 10px; border: 1px;width: 815px"   
+                                         value="#{controlFormulaContrato.listFormulasContratos}" scrollable="true" scrollHeight="108" scrollWidth="815"
+                                         filteredValue="#{controlFormulaContrato.filtrarListFormulasContratos}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="4"  
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                                    <p:column headerText="Fecha Inicial" sortBy="#{infoFC.strFechaIni}" filterBy="#{infoFC.strFechaIni}" filterMatchMode="contains" 
-                                              id="formulaFechaInicial" width="80"
-                                              filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
-                                        <p:cellEditor>  
-                                            <f:facet name="output">
-                                                <h:outputText value="#{infoFC.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
-                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                                </h:outputText>
-                                            </f:facet>  
-                                            <f:facet name="input">
-                                                <lnk:calendar id="dateFechaInicial" value="#{infoFC.fechainicial}" > 
-                                                    <p:ajax event="select" listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC,0)}" process="@this"/>
-                                                    <p:ajax event="change" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
-                                                    <p:ajax event="dateSelect" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
-                                                </lnk:calendar>
-                                            </f:facet>  
-                                        </p:cellEditor>
-                                        <f:facet name="footer">
-                                            <h:outputText value="Fecha Inicial"/>
-                                        </f:facet>
-                                    </p:column>
+                                <p:ajax event="filter" listener="#{controlFormulaContrato.eventoFiltrar()}"/>
 
-                                    <p:column headerText="Fecha Final" sortBy="#{infoFC.strFechaFin}" filterBy="#{infoFC.strFechaFin}" filterMatchMode="contains" 
-                                              id="formulaFechaFinal" width="80"
-                                              filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
-                                        <p:cellEditor>  
-                                            <f:facet name="output">
-                                                <h:outputText value="#{infoFC.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
-                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                                </h:outputText>
-                                            </f:facet>  
-                                            <f:facet name="input">
-                                                <lnk:calendar id="dateFecha" value="#{infoFC.fechafinal}" > 
-                                                    <p:ajax event="select" listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC,1)}" process="@this"/>
-                                                    <p:ajax event="change" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
-                                                    <p:ajax event="dateSelect" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
-                                                </lnk:calendar>
-                                            </f:facet>  
-                                        </p:cellEditor>
-                                        <f:facet name="footer">
-                                            <h:outputText value="Fecha Final"/>
-                                        </f:facet>
-                                    </p:column>
+                                <p:column headerText="Fecha Inicial" sortBy="#{infoFC.strFechaIni}" filterBy="#{infoFC.strFechaIni}" filterMatchMode="contains" 
+                                          id="formulaFechaInicial" width="80"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoFC.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <lnk:calendar id="dateFechaInicial" value="#{infoFC.fechainicial}" > 
+                                                <p:ajax event="select" listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC,0)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
+                                                <p:ajax event="dateSelect" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
+                                            </lnk:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" sortBy="#{infoFC.strFechaFin}" filterBy="#{infoFC.strFechaFin}" filterMatchMode="contains" 
+                                          id="formulaFechaFinal" width="80"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoFC.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <lnk:calendar id="dateFecha" value="#{infoFC.fechafinal}" > 
+                                                <p:ajax event="select" listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
+                                                <p:ajax event="dateSelect" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
+                                            </lnk:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Final"/>
+                                    </f:facet>
+                                </p:column>
 
 
-                                    <p:column headerText="Legislacion Laboral" sortBy="#{infoFC.contrato.descripcion}" filterBy="#{infoFC.contrato.descripcion}" 
-                                              filterMatchMode="contains" id="formulaLegislacion" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
-                                        <p:cellEditor>  
-                                            <f:facet name="output"><h:outputText value="#{infoFC.contrato.descripcion}" style="text-transform: uppercase"/></f:facet>  
-                                            <f:facet name="input">
-                                                <p:inputText value="#{infoFC.contrato.descripcion}"  id="editarLegislacionFC" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
-                                                    <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 2)}" process="@this"/>
-                                                    <p:ajax event="change" update="editarLegislacionFC" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'LEGISLACION',infoFC.contrato.descripcion)}" process="@this"/>
-                                                    <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,0,0)}" process="@this"/>
-                                                </p:inputText>
-                                            </f:facet>  
-                                        </p:cellEditor>
-                                        <f:facet name="footer">
-                                            <p:commandButton style="width: 100%; height: 16px; border: none;color: blue" id="fooLegislacionLaboral" value="Legislacion Laboral"/>
-                                        </f:facet>
-                                    </p:column>
+                                <p:column headerText="Legislacion Laboral" sortBy="#{infoFC.contrato.descripcion}" filterBy="#{infoFC.contrato.descripcion}" 
+                                          filterMatchMode="contains" id="formulaLegislacion" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.contrato.descripcion}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.contrato.descripcion}"  id="editarLegislacionFC" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 2)}" process="@this"/>
+                                                <p:ajax event="change" update="editarLegislacionFC" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'LEGISLACION',infoFC.contrato.descripcion)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,0,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; border: none;color: blue" id="fooLegislacionLaboral" value="Legislacion Laboral"/>
+                                    </f:facet>
+                                </p:column>
 
-                                    <p:column headerText="Periodicidad" sortBy="#{infoFC.periodicidad.nombre}" filterBy="#{infoFC.periodicidad.nombre}" filterMatchMode="contains" 
-                                              id="formulaPeriodicidad" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
-                                        <p:cellEditor>  
-                                            <f:facet name="output"><h:outputText value="#{infoFC.periodicidad.nombre}" style="text-transform: uppercase"/></f:facet>  
-                                            <f:facet name="input">
-                                                <p:inputText value="#{infoFC.periodicidad.nombre}"  id="editarPeriodicidad" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
-                                                    <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 3)}" process="@this"/>
-                                                    <p:ajax event="change" update="editarPeriodicidad" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'PERIODICIDAD',infoFC.periodicidad.nombre)}" process="@this"/>
-                                                    <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,1,0)}" process="@this"/>
-                                                </p:inputText>
-                                            </f:facet>  
-                                        </p:cellEditor>
-                                        <f:facet name="footer">
-                                            <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooPeriodicidad" value="Periodicidad"/>
-                                        </f:facet>
-                                    </p:column>
+                                <p:column headerText="Periodicidad" sortBy="#{infoFC.periodicidad.nombre}" filterBy="#{infoFC.periodicidad.nombre}" filterMatchMode="contains" 
+                                          id="formulaPeriodicidad" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.periodicidad.nombre}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.periodicidad.nombre}"  id="editarPeriodicidad" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 3)}" process="@this"/>
+                                                <p:ajax event="change" update="editarPeriodicidad" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'PERIODICIDAD',infoFC.periodicidad.nombre)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,1,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooPeriodicidad" value="Periodicidad"/>
+                                    </f:facet>
+                                </p:column>
 
-                                    <p:column headerText="Tercero" sortBy="#{infoFC.tercero.nombre}" filterBy="#{infoFC.tercero.nombre}" filterMatchMode="contains" 
-                                              id="formulaTercero" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
-                                        <p:cellEditor>  
-                                            <f:facet name="output"><h:outputText value="#{infoFC.tercero.nombre}" style="text-transform: uppercase"/></f:facet>  
-                                            <f:facet name="input">
-                                                <p:inputText value="#{infoFC.tercero.nombre}"  id="editarTercero" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
-                                                    <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 4)}" process="@this"/>
-                                                    <p:ajax event="change" update="editarTercero" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'TERCERO',infoFC.tercero.nombre)}" process="@this"/>
-                                                    <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,2,0)}" process="@this"/>
-                                                </p:inputText>
-                                            </f:facet>  
-                                        </p:cellEditor>
-                                        <f:facet name="footer">
-                                            <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooTercero" value="Tercero"/> 
-                                        </f:facet>
-                                    </p:column>
+                                <p:column headerText="Tercero" sortBy="#{infoFC.tercero.nombre}" filterBy="#{infoFC.tercero.nombre}" filterMatchMode="contains" 
+                                          id="formulaTercero" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.tercero.nombre}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.tercero.nombre}"  id="editarTercero" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 4)}" process="@this"/>
+                                                <p:ajax event="change" update="editarTercero" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'TERCERO',infoFC.tercero.nombre)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,2,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooTercero" value="Tercero"/> 
+                                    </f:facet>
+                                </p:column>
 
-                                </p:dataTable>
-                            </fieldset>
+                            </p:dataTable>
+                        </fieldset>
 
                         <p:commandButton style="position: absolute; left: 700px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosFormulaContrato" process="@this" />
                         <p:commandButton style="position: absolute; left: 20px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlFormulaContrato.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 790px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlFormulaContrato.salir()}" action="retornoFormula" process="@this" />
+
+                        <p:commandButton id="detalleFormula" value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 350px; left: 20px; " process="@this"/>  
+                        <p:tooltip for="detalleFormula" value="Detalles"/>
                     </p:panel>
 
 

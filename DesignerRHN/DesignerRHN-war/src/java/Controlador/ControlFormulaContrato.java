@@ -59,7 +59,7 @@ public class ControlFormulaContrato implements Serializable {
     private Date fechaIni;
     private Column formulaFechaInicial, formulaFechaFinal, formulaLegislacion, formulaPeriodicidad, formulaTercero;
     private boolean permitirIndexFormulaContrato;
-    ////////////Listas Valores VigenciasCuentas/////////////
+    ////////////Listas Valores Formulascontratos/////////////
     private List<Contratos> listContratos;
     private List<Contratos> filtrarListContratos;
     private Contratos contratoSeleccionado;
@@ -839,7 +839,7 @@ public class ControlFormulaContrato implements Serializable {
                 duplicarFormulaContrato.setContrato(new Contratos());
 
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosVigenciaGrupoConcepto");
+                context.update("form:datosFormulaContrato");
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:aceptar");
