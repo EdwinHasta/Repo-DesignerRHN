@@ -84,6 +84,44 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>legislacionFormula</from-outcome>
+            <to-view-id>/formulacontrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/formulacontrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retornoFormula</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>conceptoFormula</from-outcome>
+            <to-view-id>/formulaconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/formulaconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>retornoFormula</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
+    <navigation-rule>
         <from-view-id>/detalleconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formulaSeleccionada</from-outcome>
@@ -284,6 +322,44 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/formulacontrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>contratoFormulaRastro</from-outcome>
+            <to-view-id>/formulacontrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/formulaconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>conceptoFormulaRastro</from-outcome>
+            <to-view-id>/formulaconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
     
     
     <navigation-rule>

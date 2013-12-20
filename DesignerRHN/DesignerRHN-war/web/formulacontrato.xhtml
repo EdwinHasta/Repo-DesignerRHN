@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true" />
+                    <p:panel  id="PanelTotal" header="Detalles de la Formula: Legislacion Laboral" style=" font-size: 13px; position: absolute; width: 874px; height: 440px; text-align: left;" >  
+
+                       
+                            <fieldset style="position: absolute; top: 80px; font-size: 10px; width: 815px; height: 245px; border-radius: 10px; text-align: left">
+                                <legend style="font-size: 12px; color: blue"><strong>Detalles de la Formula</strong></legend>
+
+                                <p:dataTable id="datosFormulaContrato" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="font-size: 10px; border: 1px;width: 815px"   
+                                             value="#{controlFormulaContrato.listFormulasContratos}" scrollable="true" scrollHeight="108" scrollWidth="815"
+                                             filteredValue="#{controlFormulaContrato.filtrarListFormulasContratos}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                             editable="true" editMode="cell" paginator="true" rows="4"  
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                    <p:ajax event="filter" listener="#{controlFormulaContrato.eventoFiltrar()}"/>
+
+                                    <p:column headerText="Fecha Inicial" sortBy="#{infoFC.strFechaIni}" filterBy="#{infoFC.strFechaIni}" filterMatchMode="contains" 
+                                              id="formulaFechaInicial" width="80"
+                                              filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{infoFC.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <lnk:calendar id="dateFechaInicial" value="#{infoFC.fechainicial}" > 
+                                                    <p:ajax event="select" listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC,0)}" process="@this"/>
+                                                    <p:ajax event="change" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
+                                                    <p:ajax event="dateSelect" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
+                                                </lnk:calendar>
+                                            </f:facet>  
+                                        </p:cellEditor>
+                                        <f:facet name="footer">
+                                            <h:outputText value="Fecha Inicial"/>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column headerText="Fecha Final" sortBy="#{infoFC.strFechaFin}" filterBy="#{infoFC.strFechaFin}" filterMatchMode="contains" 
+                                              id="formulaFechaFinal" width="80"
+                                              filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                        <p:cellEditor>  
+                                            <f:facet name="output">
+                                                <h:outputText value="#{infoFC.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                </h:outputText>
+                                            </f:facet>  
+                                            <f:facet name="input">
+                                                <lnk:calendar id="dateFecha" value="#{infoFC.fechafinal}" > 
+                                                    <p:ajax event="select" listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC,1)}" process="@this"/>
+                                                    <p:ajax event="change" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
+                                                    <p:ajax event="dateSelect" listener="#{controlFormulaContrato.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
+                                                </lnk:calendar>
+                                            </f:facet>  
+                                        </p:cellEditor>
+                                        <f:facet name="footer">
+                                            <h:outputText value="Fecha Final"/>
+                                        </f:facet>
+                                    </p:column>
+
+
+                                    <p:column headerText="Legislacion Laboral" sortBy="#{infoFC.contrato.descripcion}" filterBy="#{infoFC.contrato.descripcion}" 
+                                              filterMatchMode="contains" id="formulaLegislacion" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                        <p:cellEditor>  
+                                            <f:facet name="output"><h:outputText value="#{infoFC.contrato.descripcion}" style="text-transform: uppercase"/></f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{infoFC.contrato.descripcion}"  id="editarLegislacionFC" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
+                                                    <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 2)}" process="@this"/>
+                                                    <p:ajax event="change" update="editarLegislacionFC" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'LEGISLACION',infoFC.contrato.descripcion)}" process="@this"/>
+                                                    <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,0,0)}" process="@this"/>
+                                                </p:inputText>
+                                            </f:facet>  
+                                        </p:cellEditor>
+                                        <f:facet name="footer">
+                                            <p:commandButton style="width: 100%; height: 16px; border: none;color: blue" id="fooLegislacionLaboral" value="Legislacion Laboral"/>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column headerText="Periodicidad" sortBy="#{infoFC.periodicidad.nombre}" filterBy="#{infoFC.periodicidad.nombre}" filterMatchMode="contains" 
+                                              id="formulaPeriodicidad" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                        <p:cellEditor>  
+                                            <f:facet name="output"><h:outputText value="#{infoFC.periodicidad.nombre}" style="text-transform: uppercase"/></f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{infoFC.periodicidad.nombre}"  id="editarPeriodicidad" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
+                                                    <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 3)}" process="@this"/>
+                                                    <p:ajax event="change" update="editarPeriodicidad" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'PERIODICIDAD',infoFC.periodicidad.nombre)}" process="@this"/>
+                                                    <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,1,0)}" process="@this"/>
+                                                </p:inputText>
+                                            </f:facet>  
+                                        </p:cellEditor>
+                                        <f:facet name="footer">
+                                            <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooPeriodicidad" value="Periodicidad"/>
+                                        </f:facet>
+                                    </p:column>
+
+                                    <p:column headerText="Tercero" sortBy="#{infoFC.tercero.nombre}" filterBy="#{infoFC.tercero.nombre}" filterMatchMode="contains" 
+                                              id="formulaTercero" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                        <p:cellEditor>  
+                                            <f:facet name="output"><h:outputText value="#{infoFC.tercero.nombre}" style="text-transform: uppercase"/></f:facet>  
+                                            <f:facet name="input">
+                                                <p:inputText value="#{infoFC.tercero.nombre}"  id="editarTercero" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
+                                                    <p:ajax event="select"  listener="#{controlFormulaContrato.cambiarIndiceFormulaContrato(indiceFC, 4)}" process="@this"/>
+                                                    <p:ajax event="change" update="editarTercero" listener="#{controlFormulaContrato.modificarFormulaContrato(indiceFC,'TERCERO',infoFC.tercero.nombre)}" process="@this"/>
+                                                    <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indiceFC,2,0)}" process="@this"/>
+                                                </p:inputText>
+                                            </f:facet>  
+                                        </p:cellEditor>
+                                        <f:facet name="footer">
+                                            <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooTercero" value="Tercero"/> 
+                                        </f:facet>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </fieldset>
+
+                        <p:commandButton style="position: absolute; left: 700px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosFormulaContrato" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlFormulaContrato.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 790px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlFormulaContrato.salir()}" action="retornoFormula" process="@this" />
+                    </p:panel>
+
+
+
+
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{controlFormulaContrato.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlFormulaContrato.backUp, controlFormulaContrato.nombreTablaRastro , 'contratoFormulaRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" actionListener="#{controlFormulaContrato.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{controlFormulaContrato.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlFormulaContrato.nombreTablaRastro , 'contratoFormulaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlFormulaContrato.limpiarMSNRastros()}" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlFormulaContrato.backUp, controlFormulaContrato.nombreTablaRastro , 'contratoFormulaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegNuevo" header="ATENCIÓN" widgetVar="errorRegNuevo"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="60" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Los campos Fecha Inicial/Legislacion Laboral/Periodicidad son obligatorios." style="position: absolute; left: 80px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechasFC" header="ATENCIÓN" widgetVar="errorFechasFC"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La fecha inicial es menor a 01/01/1990 y/o la fecha final es menor a la fecha inicial." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlFormulaContrato.guardadoGeneral()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();"  style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlFormulaContrato.activarCtrlF11()}"/>
+
+                    <p:dialog header="Contratos" widgetVar="ContratoDialogo" draggable="false" resizable="false" closable="false" id="ContratoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovContrato" style="font-size: 11px; width: 410px" scrollWidth="410" var="contrato" value="#{controlFormulaContrato.listContratos}" rowKey="#{contrato.secuencia}"
+                                     selection="#{controlFormulaContrato.contratoSeleccionado}" selectionMode="single" widgetVar="lovContrato" scrollable="true" scrollHeight="250" 
+                                     filteredValue="#{controlFormulaContrato.filtrarListContratos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlFormulaContrato.activarAceptar()}" update=":form:aceptarC"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Contrato: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovContrato.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{contrato.descripcion}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripcion" />
+                                </f:facet>
+                                <h:outputText value="#{contrato.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlFormulaContrato.aceptar}" onclick="ContratoDialogo.hide(), lovContrato.clearFilters();" actionListener="#{controlFormulaContrato.actualizarContrato()}" update="lovContrato, aceptarC, datosFormulaContrato" process="@this">
+                            <p:resetInput target=":form:lovContrato:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasC" style="position: relative; left: 230px" value="Atras" onclick="ContratoDialogo.hide(), lovContrato.clearFilters();" actionListener="#{controlFormulaContrato.cancelarCambioContrato()}" update="lovContrato" process="@this">
+                            <p:resetInput target=":form:lovContrato:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                    <p:dialog header="Periodicidad" widgetVar="PeriodicidadDialogo" draggable="false" resizable="false" closable="false" 
+                              id="PeriodicidadDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovPeriodicidad" style="font-size: 11px; width: 420px" var="periodicidad" value="#{controlFormulaContrato.listPeriodicidades}" rowKey="#{periodicidad.secuencia}"
+                                     selection="#{controlFormulaContrato.periodicidadSeleccionada}" scrollWidth="420" selectionMode="single" widgetVar="lovPeriodicidad" scrollable="true" scrollHeight="250"
+                                     filteredValue="#{controlFormulaContrato.filtrarListPeriodicidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlFormulaContrato.activarAceptar()}" update=":form:aceptarP"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Periodicidad: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovPeriodicidad.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{periodicidad.nombre}"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{periodicidad.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarP" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlFormulaContrato.aceptar}" onclick="PeriodicidadDialogo.hide(), lovPeriodicidad.clearFilters();" actionListener="#{controlFormulaContrato.actualizarPeriodicidad()}" update="lovPeriodicidad, aceptarP, datosFormulaContrato" process="@this">
+                            <p:resetInput target=":form:lovPeriodicidad:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasP" style="position: relative; left: 230px" value="Atras" onclick="PeriodicidadDialogo.hide(), lovPeriodicidad.clearFilters();" actionListener="#{controlFormulaContrato.cancelarCambioPeriodicidad()}" update="lovPeriodicidad" process="@this">
+                            <p:resetInput target=":form:lovPeriodicidad:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                    <p:dialog header="Tercero" widgetVar="TerceroDialogo" draggable="false" resizable="false" closable="false" 
+                              id="TerceroDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovTercero" style="font-size: 11px; width: 420px" var="tercero" value="#{controlFormulaContrato.listTerceros}" rowKey="#{tercero.secuencia}"
+                                     selection="#{controlFormulaContrato.terceroSeleccionada}" scrollWidth="420" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollHeight="250" 
+                                     filteredValue="#{controlFormulaContrato.filtrarListTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlFormulaContrato.activarAceptar()}" update=":form:aceptarT"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Tercero: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tercero.nombre}" width="90"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{tercero.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{tercero.nit}" width="50"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="NIT" />
+                                </f:facet>
+                                <h:outputText value="#{tercero.nit}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarT" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlFormulaContrato.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlFormulaContrato.actualizarTercero()}" update="lovTercero, aceptarT, datosFormulaContrato" process="@this">
+                            <p:resetInput target=":form:lovTercero:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasT" style="position: relative; left: 230px" value="Atras" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlFormulaContrato.cancelarCambioTercero()}" update="lovTercero" process="@this">
+                            <p:resetInput target=":form:lovTercero:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                </h:form>
+
+
+                <h:form style="position: relative">
+                    <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 10px;">
+                        <p:toolbarGroup align="left"> 
+                            <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this" actionListener="#{controlFormulaContrato.guardadoGeneral()}"/>
+                            <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                            <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaContrato.editarCelda()}" process="@this"/>
+                            <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                            <p:separator />
+
+                            <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" actionListener="#{controlFormulaContrato.listaValoresBoton()}"/>
+                            <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                            <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaContrato.activarCtrlF11()}" process="@this"/>
+                            <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                            <p:separator />
+
+                            <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaContrato.verificarExportXLS()}" ajax="false"  />
+                            <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                            <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
+                                <p:dataExporter type="xml"  target="#{controlFormulaContrato.exportXML()}" fileName="#{controlFormulaContrato.nombreXML}" encoding="UTF-8"/> 
+                            </p:commandButton> 
+                            <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                            <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaContrato.validarExportPDF()}" ajax="false"/>
+                            <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                            <p:separator /> 
+                            <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaContrato.ingresoNuevoRegistro()}"  process="@this"/> 
+                            <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Concepto Juridico" />
+
+                            <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaContrato.validarBorradoRegistro()}" process="@this"/>  
+                            <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Concepto Juridico" />
+
+                            <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlFormulaContrato.validarDuplicadoRegistro()}" process="@this"/>  
+                            <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Concepto Juridico" />
+
+                            <p:separator /> 
+                            <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaContrato.verificarRastroTabla()}" process="@this"/>  
+                            <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                        </p:toolbarGroup>  
+                    </p:toolbar> 
+                </h:form>
+
+                <h:form id="formularioDialogos">
+
+                    <p:dialog id="NuevoRegistroFormula" header="Nuevo Registro Legislacion Laboral" widgetVar="NuevoRegistroFormula" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaF" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaInicial" value="#{controlFormulaContrato.nuevaFormulaContrato.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaFinal" value="#{controlFormulaContrato.nuevaFormulaContrato.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Legislacion Laboral: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaLegislacion" value="#{controlFormulaContrato.nuevaFormulaContrato.contrato.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaContrato.valoresBackupAutocompletar(1, 'LEGISLACION')}" />
+                                <p:ajax event="change" listener="#{controlFormulaContrato.autocompletarNuevoyDuplicadoFormulaContrato('LEGISLACION', controlFormulaContrato.nuevaFormulaContrato.contrato.descripcion, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoLegislacion" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaContrato.asignarIndex(indice,0,1)}" update="nuevaLegislacion"/>   
+                            <p:watermark for="nuevaLegislacion" value="Legislacion Laboral" />
+
+                            <strong><h:outputText value="Periodicidad: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:inputText id="nuevaPeriodicidad" value="#{controlFormulaContrato.nuevaFormulaContrato.periodicidad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indice,1,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaContrato.valoresBackupAutocompletar(1, 'PERIODICIDAD')}" />
+                                <p:ajax event="change" listener="#{controlFormulaContrato.autocompletarNuevoyDuplicadoFormulaContrato('PERIODICIDAD', controlFormulaContrato.nuevaFormulaContrato.periodicidad.nombre, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnNuevoPeriodicidad" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaContrato.asignarIndex(indice,1,1)}" update="nuevaPeriodicidad"/>   
+                            <p:watermark for="nuevaPeriodicidad" value="Periodicidad" />
+
+                            <strong><h:outputText value="Tercero: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
+                            <p:inputText id="nuevaTercero" value="#{controlFormulaContrato.nuevaFormulaContrato.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indice,2,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaContrato.valoresBackupAutocompletar(1, 'TERCERO')}" />
+                                <p:ajax event="change" listener="#{controlFormulaContrato.autocompletarNuevoyDuplicadoFormulaContrato('TERCERO', controlFormulaContrato.nuevaFormulaContrato.tercero.nombre, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 230px;  " id="btnNuevoTercero" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaContrato.asignarIndex(indice,2,1)}" update="nuevaTercero"/>   
+                            <p:watermark for="nuevaTercero" value="Tercero" />
+
+                            <p:commandButton id="limpiarNF" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 260px;" actionListener="#{controlFormulaContrato.limpiarNuevoFormula()}" update="nuevaF" process="@this"/>
+                            <p:commandButton id="agregarNF" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 260px;"  process="@this" actionListener="#{controlFormulaContrato.agregarNuevoFormula()}"  />
+                            <p:commandButton id="cancelarNF" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 260px;" actionListener="#{controlFormulaContrato.limpiarNuevoFormula()}" update="nuevaF" onclick="NuevoRegistroFormula.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroFormula" header="Duplicar Registro Legislacion Laboral" widgetVar="DuplicarRegistroFormula" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarF" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniDuplicarReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaInicial" value="#{controlFormulaContrato.duplicarFormulaContrato.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinDuplicarReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaFinal" value="#{controlFormulaContrato.duplicarFormulaContrato.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Legislacion Laboral: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarLegislacion" value="#{controlFormulaContrato.duplicarFormulaContrato.contrato.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaContrato.valoresBackupAutocompletar(2, 'LEGISLACION')}" />
+                                <p:ajax event="change" listener="#{controlFormulaContrato.autocompletarNuevoyDuplicadoFormulaContrato('LEGISLACION', controlFormulaContrato.duplicarFormulaContrato.contrato.descripcion, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarLegislacion" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaContrato.asignarIndex(indice,0,2)}" update="duplicarLegislacion"/>   
+                            <p:watermark for="duplicarLegislacion" value="Legislacion Laboral" />
+
+                            <strong><h:outputText value="Periodicidad: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:inputText id="duplicarPeriodicidad" value="#{controlFormulaContrato.duplicarFormulaContrato.periodicidad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indice,1,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaContrato.valoresBackupAutocompletar(2, 'PERIODICIDAD')}" />
+                                <p:ajax event="change" listener="#{controlFormulaContrato.autocompletarNuevoyDuplicadoFormulaContrato('PERIODICIDAD', controlFormulaContrato.duplicarFormulaContrato.periodicidad.nombre, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnDuplicarPeriodicidad" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaContrato.asignarIndex(indice,1,2)}" update="duplicarPeriodicidad"/>   
+                            <p:watermark for="duplicarPeriodicidad" value="Periodicidad" />
+
+                            <strong><h:outputText value="Tercero: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
+                            <p:inputText id="duplicarTercero" value="#{controlFormulaContrato.duplicarFormulaContrato.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaContrato.asignarIndex(indice,2,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaContrato.valoresBackupAutocompletar(2, 'TERCERO')}" />
+                                <p:ajax event="change" listener="#{controlFormulaContrato.autocompletarNuevoyDuplicadoFormulaContrato('TERCERO', controlFormulaContrato.duplicarFormulaContrato.tercero.nombre, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 230px;  " id="btnDuplicarTercero" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaContrato.asignarIndex(indice,2,2)}" update="duplicarTercero"/>   
+                            <p:watermark for="duplicarTercero" value="Tercero" />
+
+                            <p:commandButton id="limpiarDF" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 260px;" actionListener="#{controlFormulaContrato.limpiarDuplicarFormula()}" update="duplicarF" process="@this"/>
+                            <p:commandButton id="agregarDF" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 260px;"  process="@this" actionListener="#{controlFormulaContrato.confirmarDuplicarFormula()}"  />
+                            <p:commandButton id="cancelarDF" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 260px;" actionListener="#{controlFormulaContrato.limpiarDuplicarFormula()}" update="duplicarF" onclick="DuplicarRegistroFormula.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialFD" header="Fecha Inicial - Formula" widgetVar="editarFechaInicialFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaContrato.editarFormulaContrato.strFechaIni}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarFechaInicialFD" value="Atras" onclick="editarFechaInicialFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalFD" header="Legislacion Laboral" widgetVar="editarFechaFinalFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaContrato.editarFormulaContrato.strFechaFin}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarFechaFinalFD" value="Atras" onclick="editarFechaFinalFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarContratoFD" header="Legislacion Laboral - Formula" widgetVar="editarContratoFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaContrato.editarFormulaContrato.contrato.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarContratoFD" value="Atras" onclick="editarContratoFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarPerdiodicidadFD" header="Periodicidad - Formula" widgetVar="editarPerdiodicidadFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaContrato.editarFormulaContrato.periodicidad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarPerdiodicidadFD" value="Atras" onclick="editarPerdiodicidadFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarTerceroFD" header="Tercero - Formula" widgetVar="editarTerceroFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaContrato.editarFormulaContrato.tercero.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarTerceroFD" value="Atras" onclick="editarTerceroFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                </h:form>
+
+                <h:form id="formExportarFormula">
+                    <p:dataTable id="datosFormulaContratosExportar" var="infoExp" style="visibility: hidden; display: none;"                           
+                                 value="#{controlFormulaContrato.listFormulasContratos}"> 
+
+                        <p:column headerText="Fecha_Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoExp.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha_Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Final"/> </f:facet> 
+                            <h:outputText value="#{infoExp.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Legislacion_Laboral">                                  
+                            <f:facet name="header"><h:outputText value="Legislacion_Laboral"/> </f:facet> 
+                            <h:outputText value="#{infoExp.contrato.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Periodicidad">                                  
+                            <f:facet name="header"><h:outputText value="Periodicidad"/> </f:facet> 
+                            <h:outputText value="#{infoExp.periodicidad.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Tercero">                                  
+                            <f:facet name="header"><h:outputText value="Tercero"/> </f:facet> 
+                            <h:outputText value="#{infoExp.tercero.nombre}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

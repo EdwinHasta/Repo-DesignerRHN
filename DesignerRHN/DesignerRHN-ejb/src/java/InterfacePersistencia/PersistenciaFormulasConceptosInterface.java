@@ -57,4 +57,6 @@ public interface PersistenciaFormulasConceptosInterface {
     public Long comportamientoConceptoAutomaticoSecuenciaConcepto(BigInteger secConcepto);
     
     public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(BigInteger secConcepto);
+    
+    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(BigInteger secuenciaF);
 }

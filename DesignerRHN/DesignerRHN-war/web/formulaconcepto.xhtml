@@ -1,0 +1,599 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true" />
+                    <p:panel  id="PanelTotal" header="Detalles de la Formula: Conceptos" style=" font-size: 13px; position: absolute; width: 874px; height: 440px; text-align: left;" >  
+
+
+                        <fieldset style="position: absolute; top: 80px; font-size: 10px; width: 815px; height: 245px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 12px; color: blue"><strong>Detalles de la Formula</strong></legend>
+
+                            <p:dataTable id="datosFormulaConcepto" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="font-size: 10px; border: 1px;width: 815px"   
+                                         value="#{controlFormulaConcepto.listFormulasConceptosFormula}" scrollable="true" scrollHeight="108" scrollWidth="815"
+                                         filteredValue="#{controlFormulaConcepto.filtrarListFormulasConceptosFormula}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="4"  
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                <p:ajax event="filter" listener="#{controlFormulaConcepto.eventoFiltrar()}"/>
+
+                                <p:column headerText="Fecha Inicial" sortBy="#{infoFC.strFechaInicial}" filterBy="#{infoFC.strFechaInicial}" filterMatchMode="contains" 
+                                          id="formulaFechaInicial" width="80"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoFC.fechainicial}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <lnk:calendar id="dateFechaInicial" value="#{infoFC.fechainicial}" > 
+                                                <p:ajax event="select" listener="#{controlFormulaConcepto.cambiarIndiceFormulaConcepto(indiceFC,0)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlFormulaConcepto.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
+                                                <p:ajax event="dateSelect" listener="#{controlFormulaConcepto.modificacionesFechaFormula(indiceFC,0)}" process="@this" update="dateFechaInicial"/>
+                                            </lnk:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Inicial"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fecha Final" sortBy="#{infoFC.strFechaFinal}" filterBy="#{infoFC.strFechaFinal}" filterMatchMode="contains" 
+                                          id="formulaFechaFinal" width="80"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoFC.fechafinal}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <lnk:calendar id="dateFecha" value="#{infoFC.fechafinal}" > 
+                                                <p:ajax event="select" listener="#{controlFormulaConcepto.cambiarIndiceFormulaConcepto(indiceFC,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlFormulaConcepto.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
+                                                <p:ajax event="dateSelect" listener="#{controlFormulaConcepto.modificacionesFechaFormula(indiceFC,1)}" process="@this" update="dateFecha"/>
+                                            </lnk:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="Fecha Final"/>
+                                    </f:facet>
+                                </p:column>
+
+
+                                <p:column headerText="Codigo" sortBy="#{infoFC.concepto.codigoSTR}" filterBy="#{infoFC.concepto.codigoSTR}" 
+                                          filterMatchMode="contains" id="formulaCodigo" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.concepto.codigoSTR}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.concepto.codigoSTR}"  id="editarCodigoFC" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaConcepto.cambiarIndiceFormulaConcepto(indiceFC, 2)}" process="@this"/>
+                                                <p:ajax event="change" update="editarCodigoFC" listener="#{controlFormulaConcepto.modificarFormulaConcepto(indiceFC,'CODIGO',infoFC.concepto.codigoSTR)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indiceFC,0,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; border: none;color: blue" id="fooCodigo" value="Codigo"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Descripcion" sortBy="#{infoFC.concepto.descripcion}" filterBy="#{infoFC.concepto.descripcion}" filterMatchMode="contains" 
+                                          id="formulaDescripcion" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.concepto.descripcion}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.concepto.descripcion}"  id="editarDescripcionFC" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaConcepto.cambiarIndiceFormulaConcepto(indiceFC, 3)}" process="@this"/>
+                                                <p:ajax event="change" update="editarDescripcionFC" listener="#{controlFormulaConcepto.modificarFormulaConcepto(indiceFC,'CONCEPTO',infoFC.concepto.descripcion)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indiceFC,0,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooDescripcion" value="Descripcion"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Orden" sortBy="#{infoFC.strOrden}" filterBy="#{infoFC.strOrden}" filterMatchMode="contains" 
+                                          id="formulaOrden" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.strOrden}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.strOrden}"  id="editarOrdenFC" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaConcepto.cambiarIndiceFormulaConcepto(indiceFC, 4)}" process="@this"/>
+                                                <p:ajax event="change" update="editarOrdenFC" listener="#{controlFormulaConcepto.modificarFormulaConcepto(indiceFC,'ORDEN',infoFC.strOrden)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indiceFC,1,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooOrden" value="Orden"/> 
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Empresa" sortBy="#{infoFC.concepto.empresa.nombre}" filterBy="#{infoFC.concepto.empresa.nombre}" 
+                                          filterMatchMode="contains" id="formulaEmpresa" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.concepto.empresa.nombre}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.concepto.empresa.nombre}"  id="editarEmpresaFC" style="font-size: 10px; border-radius: 0px;  width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaConcepto.cambiarIndiceFormulaConcepto(indiceFC, 5)}" process="@this"/>
+                                                <p:ajax event="change" update="editarEmpresaFC" listener="#{controlFormulaConcepto.modificarFormulaConcepto(indiceFC,'EMPRESA',infoFC.concepto.empresa.nombre)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indiceFC,0,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; border: none;color: blue" id="fooEmpresa" value="Empresa"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="NIT" sortBy="#{infoFC.concepto.empresa.strNit}" filterBy="#{infoFC.concepto.empresa.strNit}" filterMatchMode="contains" 
+                                          id="formulaNIT" width="133" filterStyle="display: none; visibility: hidden" style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{infoFC.concepto.empresa.strNit}" style="text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoFC.concepto.empresa.strNit}"  id="editarNITFC" style="font-size: 10px; border-radius: 0px; width: 99%;text-transform: uppercase"> 
+                                                <p:ajax event="select"  listener="#{controlFormulaConcepto.cambiarIndiceFormulaConcepto(indiceFC, 6)}" process="@this"/>
+                                                <p:ajax event="change" update="editarNITFC" listener="#{controlFormulaConcepto.modificarFormulaConcepto(indiceFC,'NIT',infoFC.concepto.empresa.strNit)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indiceFC,0,0)}" process="@this"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px;  border: none;color: blue" id="fooNIT" value="NIT"/>
+                                    </f:facet>
+                                </p:column>
+
+                            </p:dataTable>
+                        </fieldset>
+
+                        <p:commandButton style="position: absolute; left: 700px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosFormulaConcepto" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlFormulaConcepto.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 790px; top: 405px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlFormulaConcepto.salir()}" action="retornoFormula" process="@this" />
+                    </p:panel>
+
+
+
+
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{controlFormulaConcepto.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlFormulaConcepto.backUp, controlFormulaConcepto.nombreTablaRastro , 'conceptoFormulaRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" actionListener="#{controlFormulaConcepto.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{controlFormulaConcepto.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlFormulaConcepto.nombreTablaRastro , 'conceptoFormulaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlFormulaConcepto.limpiarMSNRastros()}" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlFormulaConcepto.backUp, controlFormulaConcepto.nombreTablaRastro , 'conceptoFormulaRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegNuevo" header="ATENCIÓN" widgetVar="errorRegNuevo"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="60" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Todos los campos son obligatorios." style="position: absolute; left: 80px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechasFC" header="ATENCIÓN" widgetVar="errorFechasFC"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La fecha inicial es menor a 01/01/1990 y/o la fecha final es menor a la fecha inicial." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlFormulaConcepto.guardadoGeneral()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();"  style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlFormulaConcepto.activarCtrlF11()}"/>
+
+                    <p:dialog header="Orden de Liquidacion" widgetVar="OrdenDialogo" draggable="false" resizable="false" closable="false" id="OrdenDialogo"  
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovOrden" style="font-size: 11px; width: 410px" scrollWidth="410" var="orden" value="#{controlFormulaConcepto.listFormulasConceptos}" rowKey="#{orden.secuencia}"
+                                     selection="#{controlFormulaConcepto.formulaSeleccionado}" selectionMode="single" widgetVar="lovOrden" scrollable="true" scrollHeight="250" 
+                                     filteredValue="#{controlFormulaConcepto.filtrarListFormulasConceptos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlFormulaConcepto.activarAceptar()}" update=":form:aceptarO"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Orden: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovOrden.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{orden.orden}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Orden" />
+                                </f:facet>
+                                <h:outputText value="#{orden.orden}" />
+                            </p:column>
+                            <p:column filterBy="#{orden.concepto.descripcion}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripcion Concepto" />
+                                </f:facet>
+                                <h:outputText value="#{orden.concepto.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarO" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlFormulaConcepto.aceptar}" onclick="OrdenDialogo.hide(), lovOrden.clearFilters();" actionListener="#{controlFormulaConcepto.actualizarOrden()}" update="lovOrden, aceptarO, datosFormulaConcepto" process="@this">
+                            <p:resetInput target=":form:lovOrden:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasO" style="position: relative; left: 230px" value="Atras" onclick="OrdenDialogo.hide(), lovOrden.clearFilters();" actionListener="#{controlFormulaConcepto.cancelarCambioOrden()}" update="lovOrden" process="@this">
+                            <p:resetInput target=":form:lovOrden:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                    <p:dialog header="Conceptos" widgetVar="ConceptoDialogo" draggable="false" resizable="false" closable="false" 
+                              id="ConceptoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="560" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovConcepto" style="font-size: 11px; width: 540px" var="concepto" value="#{controlFormulaConcepto.listConceptos}" rowKey="#{concepto.secuencia}"
+                                     selection="#{controlFormulaConcepto.conceptoSeleccionada}" scrollWidth="540" selectionMode="single" widgetVar="lovConcepto" scrollable="true" scrollHeight="250"
+                                     filteredValue="#{controlFormulaConcepto.filtrarListConceptos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlFormulaConcepto.activarAceptar()}" update=":form:aceptarC"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Concepto: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovConcepto.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{concepto.codigo}"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Codigo" />
+                                </f:facet>
+                                <h:outputText value="#{concepto.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{concepto.descripcion}"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripcion Concepto" />
+                                </f:facet>
+                                <h:outputText value="#{concepto.descripcion}" />
+                            </p:column>
+                            <p:column filterBy="#{concepto.empresa.nit}"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="NIT" />
+                                </f:facet>
+                                <h:outputText value="#{concepto.empresa.nit}" />
+                            </p:column>
+                            <p:column filterBy="#{concepto.empresa.nombre}"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Empresa" />
+                                </f:facet>
+                                <h:outputText value="#{concepto.empresa.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlFormulaConcepto.aceptar}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlFormulaConcepto.actualizarConcepto()}" update="lovConcepto, aceptarC, datosFormulaConcepto" process="@this">
+                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasC" style="position: relative; left: 230px" value="Atras" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlFormulaConcepto.cancelarCambioConcepto()}" update="lovConcepto" process="@this">
+                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+
+                </h:form>
+
+
+                <h:form style="position: relative">
+                    <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 10px;">
+                        <p:toolbarGroup align="left"> 
+                            <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this" actionListener="#{controlFormulaConcepto.guardadoGeneral()}"/>
+                            <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                            <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaConcepto.editarCelda()}" process="@this"/>
+                            <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                            <p:separator />
+
+                            <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" actionListener="#{controlFormulaConcepto.listaValoresBoton()}"/>
+                            <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                            <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaConcepto.activarCtrlF11()}" process="@this"/>
+                            <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                            <p:separator />
+
+                            <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaConcepto.verificarExportXLS()}" ajax="false"  />
+                            <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                            <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
+                                <p:dataExporter type="xml"  target="#{controlFormulaConcepto.exportXML()}" fileName="#{controlFormulaConcepto.nombreXML}" encoding="UTF-8"/> 
+                            </p:commandButton> 
+                            <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                            <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaConcepto.validarExportPDF()}" ajax="false"/>
+                            <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                            <p:separator /> 
+                            <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaConcepto.ingresoNuevoRegistro()}"  process="@this"/> 
+                            <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Concepto Juridico" />
+
+                            <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaConcepto.validarBorradoRegistro()}" process="@this"/>  
+                            <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Concepto Juridico" />
+
+                            <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlFormulaConcepto.validarDuplicadoRegistro()}" process="@this"/>  
+                            <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Concepto Juridico" />
+
+                            <p:separator /> 
+                            <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulaConcepto.verificarRastroTabla()}" process="@this"/>  
+                            <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                        </p:toolbarGroup>  
+                    </p:toolbar> 
+                </h:form>
+
+                <h:form id="formularioDialogos">
+
+                    <p:dialog id="NuevoRegistroFormula" header="Nuevo Registro Conceptos" widgetVar="NuevoRegistroFormula" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaF" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaInicial" value="#{controlFormulaConcepto.nuevaFormulaConcepto.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="nuevaDateFechaFinal" value="#{controlFormulaConcepto.nuevaFormulaConcepto.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaDateFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="nuevaDateFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Codigo Concepto: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="nuevaCodigo" value="#{controlFormulaConcepto.nuevaFormulaConcepto.concepto.codigoSTR}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(1, 'CODIGO')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('CODIGO', controlFormulaConcepto.nuevaFormulaConcepto.concepto.codigoSTR, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoCODIGO" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}" update="nuevaCodigo"/>   
+                            <p:watermark for="nuevaCodigo" value="Codigo Concepto" />
+
+                            <strong><h:outputText value="Descripcion Concepto: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:inputText id="nuevaConcepto" value="#{controlFormulaConcepto.nuevaFormulaConcepto.concepto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(1, 'CONCEPTO')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('CONCEPTO', controlFormulaConcepto.nuevaFormulaConcepto.concepto.descripcion, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnNuevoCONCEPTO" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}" update="nuevaConcepto"/>   
+                            <p:watermark for="nuevaConcepto" value="Descripcion Concepto" />
+
+                            <strong><h:outputText value="Orden Liquidacion: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
+                            <p:inputText id="nuevaOrden" value="#{controlFormulaConcepto.nuevaFormulaConcepto.strOrden}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,1,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(1, 'ORDEN')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('ORDEN', controlFormulaConcepto.nuevaFormulaConcepto.strOrden, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 230px;  " id="btnNuevoORDEN" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,1,1)}" update="nuevaOrden"/>   
+                            <p:watermark for="nuevaOrden" value="Orden Liquidacion" />
+
+                            <strong><h:outputText value="Nombre Empresa: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="nuevaEmpresa" value="#{controlFormulaConcepto.nuevaFormulaConcepto.concepto.empresa.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 270px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(1, 'EMPRESA')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('EMPRESA', controlFormulaConcepto.nuevaFormulaConcepto.concepto.empresa.nombre, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 270px;  " id="btnNuevoEMPRESA" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}" update="nuevaEmpresa"/>   
+                            <p:watermark for="nuevaEmpresa" value="Nombre Empresa" />
+
+                            <strong><h:outputText value="NIT Empresa: " style="font-size: 14px; position: absolute; top: 310px; left: 50px" /></strong>
+                            <p:inputText id="nuevaNIT" value="#{controlFormulaConcepto.nuevaFormulaConcepto.concepto.empresa.strNit}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 310px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(1, 'NIT')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('NIT', controlFormulaConcepto.nuevaFormulaConcepto.concepto.empresa.strNit, 1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 310px;  " id="btnNuevoNIT" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,1)}" update="nuevaNIT"/>   
+                            <p:watermark for="nuevaNIT" value="NIT Empresa" />
+
+                            <p:commandButton id="limpiarNF" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlFormulaConcepto.limpiarNuevoFormula()}" update="nuevaF" process="@this"/>
+                            <p:commandButton id="agregarNF" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlFormulaConcepto.agregarNuevoFormula()}"  />
+                            <p:commandButton id="cancelarNF" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlFormulaConcepto.limpiarNuevoFormula()}" update="nuevaF" onclick="NuevoRegistroFormula.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="DuplicarRegistroFormula" header="Duplicar Registro Conceptos" widgetVar="DuplicarRegistroFormula" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="400" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar nueva información" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarF" style="border: none;">
+
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFechaIniDuplicarReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaInicial" value="#{controlFormulaConcepto.duplicarFormulaConcepto.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFechaFinDuplicarReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="duplicarDateFechaFinal" value="#{controlFormulaConcepto.duplicarFormulaConcepto.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarDateFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="duplicarDateFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="Codigo Concepto: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlFormulaConcepto.duplicarFormulaConcepto.concepto.codigoSTR}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();" >
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(2, 'CODIGO')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('CODIGO', controlFormulaConcepto.duplicarFormulaConcepto.concepto.codigoSTR, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarCODIGO" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}" update="duplicarCodigo"/>   
+                            <p:watermark for="duplicarCodigo" value="Codigo Concepto" />
+
+                            <strong><h:outputText value="Descripcion Concepto: " style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
+                            <p:inputText id="duplicarConcepto" value="#{controlFormulaConcepto.duplicarFormulaConcepto.concepto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 190px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(2, 'CONCEPTO')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('CONCEPTO', controlFormulaConcepto.duplicarFormulaConcepto.concepto.descripcion, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnDuplicarCONCEPTO" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}" update="duplicarConcepto"/>   
+                            <p:watermark for="duplicarConcepto" value="Descripcion Concepto" />
+
+                            <strong><h:outputText value="Orden Liquidacion: " style="font-size: 14px; position: absolute; top: 230px; left: 50px" /></strong>
+                            <p:inputText id="duplicarOrden" value="#{controlFormulaConcepto.duplicarFormulaConcepto.strOrden}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 230px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,1,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(2, 'ORDEN')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('ORDEN', controlFormulaConcepto.duplicarFormulaConcepto.strOrden, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 230px;  " id="btnDuplicarORDEN" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,1,2)}" update="duplicarOrden"/>   
+                            <p:watermark for="duplicarOrden" value="Orden Liquidacion" />
+
+                            <strong><h:outputText value="Nombre Empresa: " style="font-size: 14px; position: absolute; top: 270px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEmpresa" value="#{controlFormulaConcepto.duplicarFormulaConcepto.concepto.empresa.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 270px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(2, 'EMPRESA')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('EMPRESA', controlFormulaConcepto.duplicarFormulaConcepto.concepto.empresa.nombre, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 270px;  " id="btnDuplicarEMPRESA" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}" update="duplicarEmpresa"/>   
+                            <p:watermark for="duplicarEmpresa" value="Nombre Empresa" />
+
+                            <strong><h:outputText value="NIT Empresa: " style="font-size: 14px; position: absolute; top: 310px; left: 50px" /></strong>
+                            <p:inputText id="duplicarNIT" value="#{controlFormulaConcepto.duplicarFormulaConcepto.concepto.empresa.strNit}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 310px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="dblclick" listener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="click" listener="#{controlFormulaConcepto.valoresBackupAutocompletar(2, 'NIT')}" />
+                                <p:ajax event="change" listener="#{controlFormulaConcepto.autocompletarNuevoyDuplicadoFormulaConcepto('NIT', controlFormulaConcepto.duplicarFormulaConcepto.concepto.empresa.strNit, 2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 310px;  " id="btnDuplicarNIT" icon="ui-icon-search" process="@this"  actionListener="#{controlFormulaConcepto.asignarIndex(indice,0,2)}" update="duplicarNIT"/>   
+                            <p:watermark for="duplicarNIT" value="NIT Empresa" />
+
+                            <p:commandButton id="limpiarDF" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 360px;" actionListener="#{controlFormulaConcepto.limpiarDuplicarFormula()}" update="duplicarF" process="@this"/>
+                            <p:commandButton id="agregarDF" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 360px;"  process="@this" actionListener="#{controlFormulaConcepto.confirmarDuplicarFormula()}"  />
+                            <p:commandButton id="cancelarDF" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 360px;" actionListener="#{controlFormulaConcepto.limpiarDuplicarFormula()}" update="duplicarF" onclick="DuplicarRegistroFormula.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialFD" header="Fecha Inicial - Formula" widgetVar="editarFechaInicialFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaConcepto.editarFormulaConcepto.strFechaInicial}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
+                        <p:commandButton id="cancelarFechaInicialFD" value="Atras" onclick="editarFechaInicialFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalFD" header="Fecha Final - Formula" widgetVar="editarFechaFinalFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaConcepto.editarFormulaConcepto.strFechaFinal}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarFechaFinalFD" value="Atras" onclick="editarFechaFinalFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarCodigoFD" header="Codigo Concepto - Formula" widgetVar="editarCodigoFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaConcepto.editarFormulaConcepto.concepto.codigoSTR}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarCodigoFD" value="Atras" onclick="editarCodigoFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarConceptoFD" header="Descripcion Concepto" widgetVar="editarConceptoFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaConcepto.editarFormulaConcepto.concepto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarConceptoFD" value="Atras" onclick="editarConceptoFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarOrdenFD" header="Orden - Formula" widgetVar="editarOrdenFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaConcepto.editarFormulaConcepto.strOrden}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarOrdenFD" value="Atras" onclick="editarOrdenFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarEmpresaFD" header="Empresa - Formula" widgetVar="editarEmpresaFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaConcepto.editarFormulaConcepto.concepto.empresa.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarEmpresaFD" value="Atras" onclick="editarEmpresaFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarNitFD" header="NIT Empresa - Formula" widgetVar="editarNitFD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlFormulaConcepto.editarFormulaConcepto.concepto.empresa.nit}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEditarNitFD" value="Atras" onclick="editarNitFD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                </h:form>
+
+                <h:form id="formExportarFormula">
+                    <p:dataTable id="datosFormulaConceptoExportar" var="infoExp" style="visibility: hidden; display: none;"                           
+                                 value="#{controlFormulaConcepto.listFormulasConceptosFormula}"> 
+
+                        <p:column headerText="Fecha_Inicial">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Inicial"/> </f:facet> 
+                            <h:outputText value="#{infoExp.fechainicial}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Fecha_Final">                                  
+                            <f:facet name="header"><h:outputText value="Fecha_Final"/> </f:facet> 
+                            <h:outputText value="#{infoExp.fechafinal}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Codigo">                                  
+                            <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
+                            <h:outputText value="#{infoExp.concepto.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Descripcion">                                  
+                            <f:facet name="header"><h:outputText value="Descripcion"/> </f:facet> 
+                            <h:outputText value="#{infoExp.concepto.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Orden">                                  
+                            <f:facet name="header"><h:outputText value="Orden"/> </f:facet> 
+                            <h:outputText value="#{infoExp.orden}" />
+                        </p:column>
+
+                        <p:column headerText="Empresa">                                  
+                            <f:facet name="header"><h:outputText value="Empresa"/> </f:facet> 
+                            <h:outputText value="#{infoExp.concepto.empresa.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="NIT">                                  
+                            <f:facet name="header"><h:outputText value="NIT"/> </f:facet> 
+                            <h:outputText value="#{infoExp.concepto.empresa.nit}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

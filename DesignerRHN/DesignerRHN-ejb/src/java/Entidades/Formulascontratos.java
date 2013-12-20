@@ -7,6 +7,8 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -38,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Formulascontratos.findByFechainicial", query = "SELECT f FROM Formulascontratos f WHERE f.fechainicial = :fechainicial"),
     @NamedQuery(name = "Formulascontratos.findByFechafinal", query = "SELECT f FROM Formulascontratos f WHERE f.fechafinal = :fechafinal")})
 public class Formulascontratos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -45,8 +49,6 @@ public class Formulascontratos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
@@ -67,6 +69,10 @@ public class Formulascontratos implements Serializable {
     @JoinColumn(name = "CONTRATO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Contratos contrato;
+    @Transient
+    private String strFechaIni;
+    @Transient
+    private String strFechaFin;
 
     public Formulascontratos() {
     }
@@ -102,6 +108,38 @@ public class Formulascontratos implements Serializable {
 
     public void setFechafinal(Date fechafinal) {
         this.fechafinal = fechafinal;
+    }
+
+    public String getStrFechaIni() {
+        if (fechainicial != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaIni = formatoFecha.format(fechainicial);
+        } else {
+            strFechaIni = " ";
+        }
+        return strFechaIni;
+    }
+
+    public void setStrFechaIni(String strFechaIni) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechainicial = formatoFecha.parse(strFechaIni);
+        this.strFechaIni = strFechaIni;
+    }
+
+    public String getStrFechaFin() {
+        if (fechafinal != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaFin = formatoFecha.format(fechafinal);
+        } else {
+            strFechaFin = " ";
+        }
+        return strFechaFin;
+    }
+
+    public void setStrFechaFin(String strFechaFin) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechafinal = formatoFecha.parse(strFechaFin);
+        this.strFechaFin = strFechaFin;
     }
 
     @XmlTransient
@@ -169,5 +207,5 @@ public class Formulascontratos implements Serializable {
     public String toString() {
         return "Entidades.Formulascontratos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
