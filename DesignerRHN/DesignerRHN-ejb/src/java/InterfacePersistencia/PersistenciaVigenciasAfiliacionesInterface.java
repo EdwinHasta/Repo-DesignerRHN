@@ -42,9 +42,9 @@ public interface PersistenciaVigenciasAfiliacionesInterface {
      */
     public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secuencia);
     /**
-     * Método encargado de buscar las VigenciaAfiliacion de un Empleado.
+     * Método encargado de buscar las VigenciasAfiliaciones de un Empleado específico.
      * @param secuencia Secuencia del Empleado.
-     * @return Retorna las VigenciaAfiliacion, odenadas descendentemente por la fechaInicial, del Empleado cuya secuencia coincide 
+     * @return Retorna las VigenciasAfiliaciones, odenadas descendentemente por la fechaInicial, del Empleado cuya secuencia coincide 
      * con la secuencia dada por parámetro.
      */
     public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(BigInteger secuencia);

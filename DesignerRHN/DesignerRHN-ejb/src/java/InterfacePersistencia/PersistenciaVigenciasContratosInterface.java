@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,48 +8,44 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'VigenciasContratos' 
+ * de la base de datos.
+ * @author Andres Pineda.
  */
-public interface PersistenciaVigenciasContratosInterface {
-    
+public interface PersistenciaVigenciasContratosInterface {    
     /**
-     * Crea un objeto VigenciasContratos
-     * @param vigenciasContratos Objeto a crear
+     * Método encargado de insertar una VigenciaContrato en la base de datos.
+     * @param vigenciasContratos VigenciaContrato que se quiere crear.
      */
     public void crear(VigenciasContratos vigenciasContratos);
     /**
-     * Edita un objeto VigenciasContratos
-     * @param vigenciasContratos Objeto a editar
+     * Método encargado de modificar una VigenciaContrato de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param vigenciasContratos VigenciaContrato con los cambios que se van a realizar.
      */
     public void editar(VigenciasContratos vigenciasContratos);
     /**
-     * Borra un objeto VigenciasContratos
-     * @param vigenciasContratos Objeto a borrar
+     * Método encargado de eliminar de la base de datos la VigenciaContrato que entra por parámetro.
+     * @param vigenciasContratos VigenciaContrato que se quiere eliminar.
      */
     public void borrar(VigenciasContratos vigenciasContratos);
     /**
-     * Metodo que obtiene una VigenciaContratos por la llave primaria ID
-     * @param id Llave Primaria ID
-     * @return vigenciaC Vigencia Contratos que cumple con la llave primaria
-     */
-    public VigenciasContratos buscarVigenciaContrato(Object id);
-    /**
-     * Metodo que obtiene todos los elementos de VigenciasContratos
-     * @return listVC Lista de Vigencias Contratos
+     * Método encargado de buscar todas las VigenciasContratos existentes en la base de datos.
+     * @return Retorna una lista de VigenciasContratos.
      */
     public List<VigenciasContratos> buscarVigenciasContratos();
     /**
-     * Metodo que obtiene las Vigencias Contratos de un Empleado
-     * @param secEmpleado Secuencia del Empleado
-     * @return listVCE Lista de Vigencias Contratos del Empleado dado por secuencia
+     * Método encargado de buscar las VigenciasContratos asociadas a un empleado específico.
+     * @param secuencia Secuencia del Empleado.
+     * @return Retorna una lista de VigenciasContratos asociados al empleado cuya secuencia coincida con la del parámetro.
      */
-    public List<VigenciasContratos> buscarVigenciaContratoEmpleado(BigInteger secEmpleado);
+    public List<VigenciasContratos> buscarVigenciaContratoEmpleado(BigInteger secuencia);
     /**
-     * Metodo que obtiene una VigenciaContratos por medio de la secuencia
-     * @param secVC Secuencia de la VigenciaContratos
-     * @return vigenciaC VigenciaContratos que cumple con la secuencia dada
+     * Método encargado de buscar la VigenciaContrato con la secuencia dada por parámetro.
+     * @param secuencia Secuencia de la VigenciaContrato que se quiere encontrar.
+     * @return Retorna la VigenciaContrato identificada con la secuencia dada por parámetro.
      */
-    public VigenciasContratos buscarVigenciaContratoSecuencia(BigInteger secVC);
+    public VigenciasContratos buscarVigenciaContratoSecuencia(BigInteger secuencia);
     
 }
