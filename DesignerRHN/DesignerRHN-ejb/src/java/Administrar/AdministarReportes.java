@@ -51,4 +51,13 @@ public class AdministarReportes implements AdministarReportesInterface {
         datosConexion();
         reporte.ejecutarReporte(conexion, codigoEmpleado);
     }
+
+    @Override
+    public void generarReporteXLSX() {
+        reporte.ejecutarReporteXLSX();
+    }
+
+    public void generarReporteXML() {
+        reporte.ejecutarReporteXML();
+    }
 }

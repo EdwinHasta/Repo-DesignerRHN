@@ -17,4 +17,6 @@ import java.util.List;
 public interface AdministarReportesInterface {
     public void datosConexion();
     public void generarReporte(BigInteger codigoEmpleado);
+    public void generarReporteXLSX();
+    public void generarReporteXML();
 }
