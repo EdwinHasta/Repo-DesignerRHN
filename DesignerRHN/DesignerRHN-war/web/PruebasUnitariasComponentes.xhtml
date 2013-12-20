@@ -13,63 +13,9 @@
     <h:body>
         <h:form id="form">
             <p:panel id="PanelTotal" header="PRUEBAS" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" >
-                <p:dataTable id="datosExperiencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" value="#{controlPruebasUnitarias.listExperienciaLaboralEmpl}" 
-                             editable="true" editMode="cell" rows="4" 
-                             scrollable="true" scrollWidth="830" scrollHeight="110" emptyMessage="No se encontrarón resultados para la búsqueda" style="font-size: 10px; border: 1px;width: 830px"
-                             paginator="true"
-                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-
-
-                    <p:column headerText="Empresa" sortBy="#{info.empresa}" filterBy="#{info.empresa}" filterMatchMode="contains" width="133"
-                              id="expEmpresa" filterStyle="display: none; visibility: hidden;"  style="width: 70px; font-size: 11px">                                  
-                        <p:cellEditor>  
-                            <f:facet name="output"><h:outputText value="#{info.empresa}" style="width: 100px; font-size: 11px;text-transform: uppercase"/></f:facet>  
-                            <f:facet name="input">
-                                <p:inputText value="#{info.empresa}" id="editarEmpresaE" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                </p:inputText>
-                            </f:facet>  
-                        </p:cellEditor>
-                        <f:facet name="footer">
-                            <h:outputText value="Empresas"/>
-                        </f:facet>
-                    </p:column>
-
-                    <p:column headerText="Fecha Ingreso" sortBy="#{info.fechadesde}" filterBy="#{info.fechadesde}" filterMatchMode="contains" id="expFechaInicio" width="100"
-                              filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
-
-                        <lnk:calendar id="myDate" value="#{info.fechadesde}"   >
-                            <f:ajax event="click" listener="#{controlPruebasUnitarias.accion()}"  />
-                            <f:ajax event="move" listener="#{controlPruebasUnitarias.eventoMouse()}" />
-                        </lnk:calendar>
-
-                        <f:facet name="footer">
-                                <h:outputText value="Fecha Ingreso"/>
-                        </f:facet>
-                    </p:column>
-
-                    <p:column headerText="Fecha Retiro" sortBy="#{info.fechahasta}" filterBy="#{info.fechahasta}" filterMatchMode="contains" id="expFechaRetiro" width="100"
-                              filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
-                        <p:cellEditor>  
-                            <f:facet name="output">
-                                <h:outputText value="#{info.fechahasta}" style="width: 100px; font-size: 11px">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
-                            </f:facet>  
-                            <f:facet name="input" >
-                                <p:calendar value="#{info.fechahasta}" id="editarFechaHastaE" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                            locale="es" pattern="dd/MM/yyyy" mode="popup">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </p:calendar>
-                            </f:facet>  
-                        </p:cellEditor>
-                        <f:facet name="footer">
-                            <h:outputText value="Fecha Retiro" />
-                        </f:facet>
-                    </p:column>
-
-
-                </p:dataTable>
-
+                <h:form id="form">
+                    <p:commandButton value="Generar Reporte" actionListener="#{controlPruebasUnitarias.crearReporte()}"/>
+                </h:form>
             </p:panel>
         </h:form>
     </h:body>
