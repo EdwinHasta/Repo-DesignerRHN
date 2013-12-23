@@ -145,8 +145,8 @@ public class ControlRemoto implements Serializable {
         tituloPago = "PAGOS AUTOMATICOS";
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
     }
-    
-    public void datosIniciales(int pestaña){
+
+    public void datosIniciales(int pestaña) {
         numPestaña = pestaña;
     }
 
@@ -158,7 +158,6 @@ public class ControlRemoto implements Serializable {
     }
 
     public void valorImputText(int indice) throws ParseException {
-
         estadoEmpleado = indice;
         int name = indice;
         trabajador = vwActualesTiposTrabajadoresesLista.get(name);
@@ -774,8 +773,6 @@ public class ControlRemoto implements Serializable {
             return vwActualesTiposTrabajadoresesLista = null;
         }
 
-
-
     }
 
     public String getMensaje() {
@@ -1031,7 +1028,7 @@ public class ControlRemoto implements Serializable {
             mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
             context.update("form:tabMenu:tipoPago");
             context.update("form:tabMenu:mensajePago");
-        } else if(pago.equalsIgnoreCase("NO AUTOMATICO")) {
+        } else if (pago.equalsIgnoreCase("NO AUTOMATICO")) {
             tituloPago = "PAGOS POR FUERA DE NÓMINA";
             mensajePagos = "Genere pagos por fuera de nómina cuando necesite liquidar vacaciones por anticipado, viaticos, entre otros. esta liquidaciones se pueden efectuar por estructura o por empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
             context.update("form:tabMenu:tipoPago");
