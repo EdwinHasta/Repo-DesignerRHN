@@ -44,8 +44,7 @@ public class Retirados implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
+    
     @Column(name = "FECHARETIRO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecharetiro;
