@@ -9,14 +9,14 @@ and open the template in the editor.
 */
 .ui-widget {
     font-family: Tahoma;
-    font-size: 14px;
+    font-size: 12px;
 }
 .ui-widget input,
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
     font-family: Tahoma;
-    font-size: 1em;
+    font-size: 12px;
 }
 .ui-widget-content {
     border: 1px solid #1E63A4;
