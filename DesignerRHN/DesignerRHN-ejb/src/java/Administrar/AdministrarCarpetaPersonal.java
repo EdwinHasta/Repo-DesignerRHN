@@ -61,11 +61,11 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     PersistenciaPersonasInterface persistenciaPersonas;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
-    @EJB 
+    @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     @EJB
     EntityManagerGlobalInterface entityManagerGlobal;
-    
+
     public VWActualesCargos vwActualesCargos;
     public VWActualesTiposContratos vwActualesTiposContratos;
     public VWActualesNormasEmpleados vwActualesNormasEmpleados;
@@ -91,7 +91,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     public Personas persona;
     private EntityManager em;
 
-    
+    @Override
     public VWActualesCargos ConsultarCargo(BigInteger secuenciaEmpleado) {
         try {
             vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(entityManagerGlobal.getEmf().createEntityManager(), secuenciaEmpleado);
@@ -102,6 +102,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public VWActualesTiposContratos ConsultarTipoContrato(BigInteger secuenciaEmpleado) {
         try {
             vwActualesTiposContratos = persistenciaActualesTiposContratos.buscarTiposContratosEmpleado(secuenciaEmpleado);
@@ -113,6 +114,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public VWActualesNormasEmpleados ConsultarNormaLaboral(BigInteger secuenciaEmpleado) {
         try {
             vwActualesNormasEmpleados = persistenciaVWActualesNormasEmpleados.buscarNormaLaboral(secuenciaEmpleado);
@@ -124,6 +126,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public VWActualesAfiliacionesSalud ConsultarAfiliacionSalud(BigInteger secuenciaEmpleado) {
         try {
             vwActualesAfiliacionesSalud = persistenciaVWActualesAfiliacionesSalud.buscarAfiliacionSalud(secuenciaEmpleado);
@@ -135,6 +138,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public VWActualesAfiliacionesPension ConsultarAfiliacionPension(BigInteger secuenciaEmpleado) {
         try {
             vwActualesAfiliacionesPension = persistenciaVWActualesAfiliacionesPension.buscarAfiliacionPension(secuenciaEmpleado);
@@ -146,6 +150,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public VWActualesLocalizaciones ConsultarLocalizacion(BigInteger secuenciaEmpleado) {
         try {
             vwActualesLocalizaciones = persistenciaVWActualesLocalizaciones.buscarLocalizacion(secuenciaEmpleado);
@@ -157,6 +162,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public VWActualesTiposTrabajadores ConsultarTipoTrabajador(BigInteger secuenciaEmpleado) {
 
         try {
@@ -169,6 +175,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public VWActualesContratos ConsultarContrato(BigInteger secuenciaEmpleado) {
 
         try {
@@ -181,6 +188,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public VWActualesJornadas ConsultarJornada(BigInteger secuenciaEmpleado) {
 
         try {
@@ -193,6 +201,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public BigDecimal ConsultarSueldo(BigInteger secuenciaEmpleado) {
 
         BigDecimal valor = null;
@@ -211,6 +220,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         return valor;
     }
 
+    @Override
     public VWActualesReformasLaborales ConsultarReformaLaboral(BigInteger secuenciaEmpleado) {
         try {
             vwActualesReformasLaborales = persistenciaVWActualesReformasLaborales.buscarReformaLaboral(secuenciaEmpleado);
@@ -221,6 +231,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public VWActualesUbicaciones ConsultarUbicacion(BigInteger secuenciaEmpleado) {
         try {
             vWActualesUbicaciones = persistenciaVWActualesUbicaciones.buscarUbicacion(secuenciaEmpleado);
@@ -231,6 +242,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public VWActualesFormasPagos ConsultarFormaPago(BigInteger secuenciaEmpleado) {
         try {
             vwActualesFormasPagos = persistenciaVWActualesFormasPagos.buscarFormaPago(secuenciaEmpleado);
@@ -241,6 +253,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public VWActualesVigenciasViajeros ConsultarTipoViajero(BigInteger secuenciaEmpleado) {
         try {
             vwActualesVigenciasViajeros = persistenciaVWActualesVigenciasViajeros.buscarTipoViajero(secuenciaEmpleado);
@@ -263,6 +276,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     }
 
+    @Override
     public DetallesEmpresas ConsultarEmpresa() {
         try {
             detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(empleado.getEmpresa().getSecuencia());
@@ -273,6 +287,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public Usuarios ConsultarUsuario(String alias) {
         try {
             usuarios = persistenciaUsuarios.buscarUsuario(alias);
@@ -283,6 +298,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public ParametrosEstructuras ConsultarParametros() {
         try {
             parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(actualUsuario());
@@ -293,6 +309,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public List<VigenciasCargos> vigenciasEmpleado(BigInteger secEmpleado) {
         try {
             vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargosEmpleado(secEmpleado);
@@ -302,9 +319,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             return vigenciasCargos;
         }
 
-
     }
 
+    @Override
     public List<VWActualesTiposTrabajadores> busquedaRapidaEmpleados() {
         try {
             busquedaRapidaEmpleado = persistenciaVWActualesTiposTrabajadores.busquedaRapidaTrabajadores();
@@ -315,6 +332,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public Personas buscarFotoPersona(BigInteger identificacion) {
         try {
             persona = persistenciaPersonas.buscarFotoPersona(identificacion);
@@ -325,6 +343,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public void actualizarFotoPersona(BigInteger identificacion) {
         try {
             persistenciaPersonas.actualizarFotoPersona(identificacion);
@@ -333,6 +352,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
         try {
             empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
@@ -343,6 +363,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public void editarVigenciasCargos(VigenciasCargos vC) {
         try {
             persistenciaVigenciasCargos.editar(vC);
@@ -350,9 +371,10 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             System.out.println("Excepcion Administrar - No Se Guardo Nada ¬¬");
         }
     }
-    
-    public String actualUsuario(){
+
+    @Override
+    public String actualUsuario() {
         return persistenciaActualUsuario.actualAliasBD();
     }
-    
+
 }
