@@ -57,5 +57,12 @@ public interface PersistenciaEmpresasInterface {
      * @return Retorna un String especificando si en el aplicativo hay registradas cero, una o más empresas
      */
     public String nombreEmpresa(EntityManager entity);
+    /**
+     * Método encargado de obtener el codigo de la empresa.
+     * Obtiene el código de la empresa dependiendo del usuario conectado, si es producción se tomara 
+     * por defecto la empresa con código 1.
+     * @return Retorna un Short especificando el codigo de la empresa con la que se esta conectado
+     */
+    public Short codigoEmpresa();
     
 }

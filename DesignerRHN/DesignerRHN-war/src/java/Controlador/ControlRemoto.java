@@ -97,13 +97,15 @@ public class ControlRemoto implements Serializable {
     private Modulos selectModulo;
     private Tablas selectTabla;
     private Pantallas pantalla;
-    private String tablaExportar;
+    private String tablaExportar, nombreArchivo;
     private BigInteger secuenciaMod;
     //PESTAÑA ACTUAL
     private int numPestaña;
     //SELECT ONE RADIO
     private String mensajePagos, tituloPago;
     private String pago;
+    //ALTO TABLAS (PESTAÑA DESIGNER)
+    private String altoModulos, altoTablas;
 
     public ControlRemoto() {
         vwActualesCargos = new VWActualesCargos();
@@ -138,12 +140,15 @@ public class ControlRemoto implements Serializable {
         listModulos = null;
         selectModulo = null;
         tablaExportar = "data1";
+        nombreArchivo = "Modulos";
         System.out.println("Se creo un nuevo BakingBean de NominaF");
         //Inicializar pestaña en 0
         numPestaña = 0;
         pago = "AUTOMATICO";
         tituloPago = "PAGOS AUTOMATICOS";
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
+        altoModulos = "93";
+        altoTablas = "200";
     }
 
     public void datosIniciales(int pestaña) {
@@ -535,6 +540,7 @@ public class ControlRemoto implements Serializable {
             tablasNombre.setFilterStyle("");
             tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
             tablasDescripcion.setFilterStyle("");
+            altoTablas = "176";
             context.update("form:tabMenu:Tablas");
         } else if (tablaExportar.equals("data1")) {
             moduloCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloCodigo");
@@ -543,6 +549,7 @@ public class ControlRemoto implements Serializable {
             moduloNombre.setFilterStyle("");
             moduloObs = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloObs");
             moduloObs.setFilterStyle("");
+            altoModulos ="70";
             context.update("form:tabMenu:data1");
         }
     }
@@ -552,6 +559,7 @@ public class ControlRemoto implements Serializable {
         tablasNombre.setFilterStyle("display: none; visibility: hidden;");
         tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
         tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
+        altoTablas = "200";
         RequestContext.getCurrentInstance().update("form:tabMenu:Tablas");
     }
 /////////////////////////  
@@ -594,9 +602,11 @@ public class ControlRemoto implements Serializable {
             tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("tabl.clearFilters()");
+            altoTablas = "200";
             context.update("form:tabMenu:Tablas");
         }
         tablaExportar = "data1";
+        nombreArchivo = "Modulos";
         filterListTablas = null;
     }
 
@@ -611,11 +621,11 @@ public class ControlRemoto implements Serializable {
             filtradolistModulos = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("data1.clearFilters()");
+            altoModulos = "93";
             context.update("form:tabMenu:data1");
         }
         tablaExportar = "Tablas";
-        System.out.println("Va a imprmir -->" + tablaExportar);
-
+        nombreArchivo = "Tablas";
     }
 
     public void infoTablas(Tablas tab) {
@@ -968,6 +978,18 @@ public class ControlRemoto implements Serializable {
         this.numPestaña = numPestaña;
     }
 
+    public String getAltoModulos() {
+        return altoModulos;
+    }
+
+    public String getAltoTablas() {
+        return altoTablas;
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+    
     public String getFotoEmpleado() {
         persona = administrarCarpetaPersonal.buscarFotoPersona(identificacion);
         if (persona.getPathfoto() == null || persona.getPathfoto().equalsIgnoreCase("N")) {

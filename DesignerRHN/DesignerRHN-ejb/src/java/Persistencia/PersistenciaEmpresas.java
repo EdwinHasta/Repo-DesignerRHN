@@ -105,4 +105,22 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return null;
         }
     }
+    
+    @Override
+    public Short codigoEmpresa() {
+        try {
+            Query query = em.createQuery("SELECT COUNT(e) FROM Empresas e");
+            Long resultado = (Long) query.getSingleResult();
+            if (resultado == 1) {
+                query = em.createQuery("SELECT e.codigo FROM Empresas e");
+                Short codigoEmpresa = (Short) query.getSingleResult();
+                return codigoEmpresa;
+            } else {
+                return 1;
+            }
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaEmpleados.codigoEmpresa" + e);
+            return null;
+        }
+    }
 }

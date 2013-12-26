@@ -64,6 +64,8 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @EJB 
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     @EJB
+    PersistenciaEmpresasInterface persistenciaEmpresas; 
+    @EJB
     EntityManagerGlobalInterface entityManagerGlobal;
     
     public VWActualesCargos vwActualesCargos;
@@ -265,7 +267,8 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     public DetallesEmpresas ConsultarEmpresa() {
         try {
-            detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(empleado.getEmpresa().getSecuencia());
+            Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa();
+            detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(codigoEmpresa);
             return detallesEmpresas;
         } catch (Exception e) {
             detallesEmpresas = null;
