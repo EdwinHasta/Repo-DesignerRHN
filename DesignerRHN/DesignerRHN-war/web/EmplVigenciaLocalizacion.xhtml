@@ -55,7 +55,7 @@
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.verificarDuplicarVigencia()}"  process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
-                                
+
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.verificarRastroTabla()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
@@ -74,7 +74,11 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['fecha']}" sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px"  sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerFechaVL" value="#{msg['fecha']}" />
+                                        <p:tooltip style="font-size: 12px" for="vlFechaVigencia" value="Ingrese la fecha de vigencia." />
+                                    </f:facet> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVL.fechavigencia}" >
@@ -97,7 +101,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['centrocostos']}" sortBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterMatchMode="contains" id="vlCentroCosto" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                <p:column style="font-size: 11px"  sortBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterBy="#{infoDVL.localizacion.centrocosto.codigoNombre}" filterMatchMode="contains" id="vlCentroCosto" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerCentroCostoVL" value="#{msg['centrocostos']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerCentroCostoVL" value="Centro Costo del Origen." />
+                                    </f:facet> 
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.centrocosto.codigoNombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -113,7 +122,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['loocalizacion']}" sortBy="#{infoDVL.localizacion.nombre}" filterBy="#{infoDVL.localizacion.nombre}" filterMatchMode="contains" id="vlLocalizacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" sortBy="#{infoDVL.localizacion.nombre}" filterBy="#{infoDVL.localizacion.nombre}" filterMatchMode="contains" id="vlLocalizacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerLocalizacionVL" value="#{msg['loocalizacion']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerLocalizacionVL" value="Descripcion del Origen." />
+                                    </f:facet> 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.nombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -127,7 +140,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['motivo']}" sortBy="#{infoDVL.motivo.descripcion}" filterBy="#{infoDVL.motivo.descripcion}" filterMatchMode="contains" id="vlMotivo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" sortBy="#{infoDVL.motivo.descripcion}" filterBy="#{infoDVL.motivo.descripcion}" filterMatchMode="contains" id="vlMotivo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    
+                                    <f:facet name="header">
+                                        <h:outputText id="headerMotivoVL" value="#{msg['motivo']}" />
+                                        <p:tooltip style="font-size: 12px" for="vlMotivo" value="Ingrese el motivo del cambio de localizacion." />
+                                    </f:facet> 
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVL.motivo.descripcion}" />
@@ -146,7 +164,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['proyecto']}" sortBy="#{infoDVL.proyecto.nombreproyecto}" filterBy="#{infoDVL.proyecto.nombreproyecto}" filterMatchMode="contains" id="vlProyecto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px"  sortBy="#{infoDVL.proyecto.nombreproyecto}" filterBy="#{infoDVL.proyecto.nombreproyecto}" filterMatchMode="contains" id="vlProyecto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerProyectoVL" value="#{msg['proyecto']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerProyectoVL" value="Proyecto." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVL.proyecto.nombreproyecto}" /></f:facet>  
                                         <f:facet name="input">
@@ -163,17 +186,22 @@
                                 </p:column>
                             </p:dataTable>  
                         </fieldset>
-  
+
                         <fieldset style="position: absolute;top: 312px;left: 10px;height: 200px;width: 390px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['pcc']}</strong></legend>
-                            
+
                             <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" 
                                          value="#{controlVigenciaLocalizacion.vigenciasProrrateosVigencia}" style="font-size: 10px; border: 1px;width:390px"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosVigencia}" emptyMessage="#{msg['vacio']}" 
                                          scrollable="true" editable="true" editMode="cell" rows="2" scrollHeight="65" scrollWidth="390"   paginator="true"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                                <p:column headerText="#{msg['centrodecostos']}" sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="vPCentroCosto" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
+                                <p:column sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="vPCentroCosto" filterStyle="display: none; visibility: hidden;"  style="width: 110px; font-size: 11px" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerCentroCostoVP" value="#{msg['centrodecostos']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerCentroCostoVP" value="Ingrese la Localizacion." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.centrocosto.nombre}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
@@ -189,7 +217,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['p']}" sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="vPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
+                                <p:column  sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="vPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerPorcentajeVP" value="#{msg['p']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerPorcentajeVP" value="Ingrese el porcentaje." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.porcentaje}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
@@ -204,8 +237,13 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vPFechaInicial"
+                                <p:column sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vPFechaInicial"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerFechaInicialVP" value="#{msg['inicial']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerFechaInicialVP" value="Ingrese la fecha inicial en formato(DD-MM-YYYY)." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechainicial}" style="width: 100px; font-size: 11px">
@@ -227,7 +265,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['final']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                <p:column sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerFechaFinalVP" value="#{msg['final']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerFechaFinalVP" value="Ingrese la fecha final en formato(DD-MM-YYYY)." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechafinal}" style="width: 100px; font-size: 11px">
@@ -249,7 +292,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['proyecto']}" sortBy="#{info.proyecto.nombreproyecto}" filterBy="#{info.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 70px; font-size: 11px">                                  
+                                <p:column  sortBy="#{info.proyecto.nombreproyecto}" filterBy="#{info.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 70px; font-size: 11px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerProyectoVP" value="#{msg['proyecto']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerProyectoVP" value="Proyecto." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.proyecto.nombreproyecto}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
@@ -265,7 +313,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['subporcentaje']}" sortBy="#{info.subporcentaje}" filterBy="#{info.subporcentaje}" filterMatchMode="contains" id="vPSubPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 90px; font-size: 11px">                                  
+                                <p:column sortBy="#{info.subporcentaje}" filterBy="#{info.subporcentaje}" filterMatchMode="contains" id="vPSubPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 90px; font-size: 11px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerSubPorcentajeVP" value="#{msg['subporcentaje']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerSubPorcentajeVP" value="SubPorcentaje." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.subporcentaje}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
@@ -291,7 +344,11 @@
                                          scrollable="true" scrollHeight="65" scrollWidth="390" emptyMessage="#{msg['vacio']}" style="font-size: 10px; border: 1px;width:390px"  paginator="true"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                                <p:column headerText="#{msg['proyecto']}" sortBy="#{info2.proyecto.nombreproyecto}" filterBy="#{info2.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 100px; font-size: 11px">
+                                <p:column  sortBy="#{info2.proyecto.nombreproyecto}" filterBy="#{info2.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 100px; font-size: 11px">
+                                    <f:facet name="header">
+                                        <h:outputText id="headerProyectoVPP" value="#{msg['proyecto']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerProyectoVPP" value="Ingrese el nombre del proyecto." />
+                                    </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info2.proyecto.nombreproyecto}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
@@ -307,7 +364,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['p']}" sortBy="#{info2.porcentaje}" filterBy="#{info2.porcentaje}" filterMatchMode="contains" id="vPPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
+                                <p:column sortBy="#{info2.porcentaje}" filterBy="#{info2.porcentaje}" filterMatchMode="contains" id="vPPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 40px; font-size: 11px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerPorcentajeVPP" value="#{msg['p']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerPorcentajeVPP" value="Ingrese el porcentaje." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info2.porcentaje}" style="width: 100px; font-size: 11px"/></f:facet>  
                                         <f:facet name="input">
@@ -322,7 +384,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['inicial']}" sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vPPFechaInicial" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                <p:column  sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vPPFechaInicial" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerFechaInicialVPP" value="#{msg['inicial']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerFechaInicialVPP" value="Ingrese la fecha inicial en formato(DD-MM-YYYY)." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info2.fechainicial}" style="width: 100px; font-size: 11px">
@@ -344,7 +411,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['final']}" sortBy="#{info2.fechafinal}" filterBy="#{info2.fechafinal}" filterMatchMode="contains" id="vPPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px" > 
+                                <p:column  sortBy="#{info2.fechafinal}" filterBy="#{info2.fechafinal}" filterMatchMode="contains" id="vPPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px" > 
+                                    <f:facet name="header">
+                                        <h:outputText id="headerFechaFinalVPP" value="#{msg['final']}" />
+                                        <p:tooltip style="font-size: 12px" for="headerFechaFinalVPP" value="Ingrese la fecha final en formato(DD-MM-YYYY)." />
+                                    </f:facet>
+                                    
                                     <p:cellEditor>   
                                         <f:facet name="output">
                                             <h:outputText value="#{info2.fechafinal}" style="width: 100px; font-size: 11px">
@@ -593,9 +665,11 @@
 
 
                         <p:commandButton style="position: absolute; left: 650px; top: 527px;height: 23px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVLEmpleado" process="@this" />
+                        <p:tooltip style="font-size: 12px" for="ACEPTAR" value="Guardar cambios efectuados en la pagina." />
                         <p:commandButton style="position: absolute; left: 200px; top: 527px;height: 23px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 750px; top: 527px;height: 23px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this" />
                         <p:commandButton style="position: absolute; left: 20px; top: 527px;height: 23px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ARCHIVOPLANO" value="#{msg['archivo']}" process="@this" />
+                        <p:tooltip style="font-size: 12px" for="ARCHIVOPLANO" value="Genera el archivo plano de la tabla seleccionada de prorrateos" />
 
                     </p:panel>
 
@@ -612,7 +686,7 @@
                         <p:commandButton value="#{msg['vp']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 200px; top: 50px;" actionListener="#{controlVigenciaLocalizacion.verificarRastroVigenciaProrrateo()}" process="@this"/>
                         <p:commandButton value="#{msg['vpp']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 200px; top: 50px;" actionListener="#{controlVigenciaLocalizacion.verificarRastroVigenciaProrrateoProyecto()}" process="@this"/>
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaLocalizacion.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
@@ -661,8 +735,8 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaLocalizacion.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
-                    
-                    
+
+
                     <p:dialog id="NuevoRegistroPagina" header="#{msg['nuevoregistroparaingreso']}" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="215" width="400" style="font-size: 12px; padding: 0px">  
                         <center><strong><h:outputText value="#{msg['seleccione']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
                         <h:outputText value="#{msg['le']}" style="position: absolute; top: 47px;left: 60px"/>
@@ -831,7 +905,7 @@
                             <p:commandButton id="cancelarVP" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" onclick="NuevoRegistroVP.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
+
                     <p:dialog id="DuplicadoRegistroVP" header="#{msg['duplicadoregistroVP']}" widgetVar="DuplicadoRegistroVP" closable="false" resizable="false"  draggable="false" modal="true" height="410" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevoVP']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
@@ -929,7 +1003,7 @@
                             <p:commandButton id="cancelarVPP" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" onclick="NuevoRegistroVPP.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
+
                     <p:dialog id="DuplicarRegistroVPP" header="#{msg['duplicarregistroVPP']}" widgetVar="DuplicarRegistroVPP" closable="false" resizable="false"  draggable="false" modal="true" height="320" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevoVPP']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
@@ -1068,7 +1142,7 @@
                         <p:commandButton value="#{msg['no']}" onclick="guardarCambiosVigenciaProrrateo.hide();"   style="position: absolute; top: 60px; left: 255px" actionListener="#{controlVigenciaLocalizacion.cancelarModificacionVP()}" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="guardarCambiosVigenciaProrrateo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="guardarCambiosVigenciaProrrateoProyecto" header="#{msg['atencion']}" widgetVar="guardarCambiosVigenciaProrrateoProyecto"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['guardarCambiosVigenciaProrrateoProyecto']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
@@ -1076,19 +1150,19 @@
                         <p:commandButton value="#{msg['no']}" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();"   style="position: absolute; top: 60px; left: 255px" actionListener="#{controlVigenciaLocalizacion.cancelarModificacionVPP()}" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="negacionNuevoRegistroVPP" header="#{msg['atencion']}" widgetVar="negacionNuevoRegistroVPP"  resizable="false" draggable="false" modal="true" height="110" width="450px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevoRegistroVPP']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionNuevoRegistroVPP.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="negacionBorradoVL" header="#{msg['atencion']}" widgetVar="negacionBorradoVL"  resizable="false" draggable="false" modal="true" height="110" width="470px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionBorradoVL']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionBorradoVL.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="negacionNuevaVL" header="#{msg['atencion']}" widgetVar="negacionNuevaVL"  resizable="false" draggable="false" modal="true" height="110" width="450px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVL']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
@@ -1130,7 +1204,7 @@
                         </p:column>                     
                     </p:dataTable>
                 </h:form>
-                
+
                 <h:form id="formExportarVP">
                     <p:dataTable id="datosVPVigenciaExportar" var="infoVP" style="visibility: hidden; display: none;"                           
                                  value="#{controlVigenciaLocalizacion.vigenciasProrrateosVigencia}"> 
@@ -1163,14 +1237,14 @@
                             <f:facet name="header"><h:outputText value="#{msg['proyectoX']}"/> </f:facet> 
                             <h:outputText value="#{infoVP.proyecto.nombreproyecto}" />
                         </p:column>     
-                        
+
                         <p:column headerText="#{msg['subporcentajeX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['subporcentajeX']}"/> </f:facet> 
                             <h:outputText value="#{infoVP.subporcentaje}" />
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                
+
                 <h:form id="formExportarVPP">
                     <p:dataTable id="datosVPPVigenciaExportar" var="infoVPP" style="visibility: hidden; display: none;"                           
                                  value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectosVigencia}"> 
@@ -1200,7 +1274,7 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                
+
             </ui:define>
         </ui:composition>
     </h:body>

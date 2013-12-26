@@ -17,6 +17,6 @@ public interface PersistenciaDetallesEmpresasInterface {
      * @param secEmpresa Secuencia de la Empresa de la cual se quiere el detalle.
      * @return Retorna el DetalleEmpresa de la emprersa identificada con la secuencia dada por parámetro. 
      */
-    public DetallesEmpresas buscarDetalleEmpresa(BigInteger secEmpresa);
+    public DetallesEmpresas buscarDetalleEmpresa(Short codigoEmpresa);
 
 }

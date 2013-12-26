@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Nodos.findAll", query = "SELECT n FROM Nodos n")})
 public class Nodos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
@@ -58,6 +60,8 @@ public class Nodos implements Serializable {
     @JoinColumn(name = "HISTORIAFORMULA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Historiasformulas historiaformula;
+    @Transient
+    private String descripcionNodo;
 
     public Nodos() {
     }
@@ -93,6 +97,14 @@ public class Nodos implements Serializable {
 
     public void setFormula(String formula) {
         this.formula = formula;
+    }
+
+    public String getDescripcionNodo() {
+        return descripcionNodo;
+    }
+
+    public void setDescripcionNodo(String descripcionNodo) {
+        this.descripcionNodo = descripcionNodo;
     }
 
     @XmlTransient
@@ -152,5 +164,5 @@ public class Nodos implements Serializable {
     public String toString() {
         return "Entidades.Nodos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
