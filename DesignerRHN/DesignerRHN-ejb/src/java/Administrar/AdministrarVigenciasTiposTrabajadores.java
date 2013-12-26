@@ -75,7 +75,6 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     List<ClasesPensiones> clasesPensiones;
     ClasesPensiones clasePension;
 
-    @Override
     public List<VigenciasTiposTrabajadores> vigenciasTiposTrabajadoresEmpleado(BigInteger secEmpleado) {
         try {
             vigenciasTiposTrabajadores = persistenciaVigenciasTiposTrabajadores.buscarVigenciasTiposTrabajadoresEmpleado(secEmpleado);
@@ -131,7 +130,6 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
         }
     }
 
-    @Override
     public TiposTrabajadores tipoTrabajadorCodigo(BigDecimal codTipoTrabajador) {
         try {
             tipoTrabajadorCodigo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigo(codTipoTrabajador);

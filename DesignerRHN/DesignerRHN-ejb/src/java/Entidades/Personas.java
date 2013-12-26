@@ -247,7 +247,7 @@ public class Personas implements Serializable {
 
     public String getNombre() {
         if (nombre == null) {
-            return "";
+            return " ";
         } else {
             return nombre;
         }
