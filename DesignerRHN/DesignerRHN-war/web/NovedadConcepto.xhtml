@@ -12,7 +12,7 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.novedadconcepto" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 540px;" > 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 140px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>#{msg['conceptos']}</strong></legend>
@@ -83,21 +83,21 @@
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
 
                             </p:toolbarGroup>  
-                        </p:toolbar> 
+                        </p:toolbar>
                         
-                        <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesConcepto" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 783px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesConceptos.salir()}" action="individual" />
-                        <p:commandButton style="position: absolute; left: 200px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="TODAS" value="#{msg['todas']}" actionListener="#{controlNovedadesConceptos.todasNovedades()}" disabled="#{controlNovedadesConceptos.todas}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 400px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesConceptos.actualesNovedades()}" disabled="#{controlNovedadesConceptos.actuales}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesConcepto" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesConceptos.salir()}" action="individual" />
+                        <p:commandButton style="position: absolute; left: 200px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="TODAS" value="#{msg['todas']}" actionListener="#{controlNovedadesConceptos.todasNovedades()}" disabled="#{controlNovedadesConceptos.todas}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 400px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesConceptos.actualesNovedades()}" disabled="#{controlNovedadesConceptos.actuales}" process="@this" />
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 270px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 250px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>#{msg['cpd']}</strong></legend>
                             <p:dataTable id="datosNovedadesConcepto" var="novedades" value="#{controlNovedadesConceptos.listaNovedades}"
                                          rowKey="#{novedades.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left; width: 850px; "                           
-                                         scrollable="true" scrollHeight="130" scrollWidth="850" paginator="true" rows="5"  
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" filteredValue="#{controlNovedadesConceptos.filtradosListaNovedades}" 
+                                         scrollable="true" scrollHeight="180" scrollWidth="850"   
+                                         filteredValue="#{controlNovedadesConceptos.filtradosListaNovedades}" 
                                          emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell">
 
@@ -345,7 +345,7 @@
                                 </p:column>
                                 
                                 <p:column width="20" style="padding: 0px"> 
-                                    <p:commandButton value="" style="width: 20px; height: 20px;" action="rastro"/>
+                                    <p:commandButton value="" style="width: 20px; height: 20px;"/>
                                 </p:column>
 
 
@@ -531,7 +531,7 @@
                     
                      <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarGuardar']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesConceptos.guardarCambiosNovedades()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
