@@ -26,11 +26,11 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     private EntityManager em;
 
     @Override
-    public DetallesEmpresas buscarDetalleEmpresa(BigInteger secEmpresa) {
+    public DetallesEmpresas buscarDetalleEmpresa(Short codigoEmpresa) {
         DetallesEmpresas detallesEmpresas =null;
         try {
-            Query query = em.createQuery("SELECT de FROM DetallesEmpresas de WHERE de.empresa.secuencia = :secuenciaEmpresa");
-            query.setParameter("secuenciaEmpresa", secEmpresa);
+            Query query = em.createQuery("SELECT de FROM DetallesEmpresas de WHERE de.empresa.codigo = :codigoEmpresa");
+            query.setParameter("codigoEmpresa", codigoEmpresa);
             detallesEmpresas = (DetallesEmpresas) query.getSingleResult();
         } catch (Exception e) {
             System.out.println("PersistenciaDetallesEmpresas.buscarDetallesEmpresas.");

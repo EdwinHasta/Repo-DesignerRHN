@@ -13,26 +13,29 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.nreportenomina" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 545px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 552px; text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 790px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteNomina.salir()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 515px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteNomina.mostrarTodos()}" update=":form:reportesNomina"/>
-                        <p:commandButton style="position: absolute; left: 400px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" />
-                        <p:commandButton style="position: absolute; left: 293px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
-                        <p:commandButton style="position: absolute; left: 135px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 518px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
+                        <p:commandButton style="position: absolute; left: 790px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteNomina.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 515px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteNomina.mostrarTodos()}" update=":form:reportesNomina"/>
+                        <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="Mostrar todos los reportes." />
+                        <p:commandButton style="position: absolute; left: 400px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" />
+                        <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
+                        <p:commandButton style="position: absolute; left: 293px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
+                        <p:commandButton style="position: absolute; left: 135px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
+                        <p:tooltip style="font-size: 12px" for="ENVIOLOTE" value="Envio de lotes para el envio de gestion documental." />
+                        <p:commandButton style="position: absolute; left: 10px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 242px;height: 260px;width: 115px; border-radius: 10px;">
+                        <fieldset style="position: absolute; left: 10px; top: 242px;height: 268px;width: 115px; border-radius: 10px;">
                             <h:outputText id="btn" style="position: absolute; left: 18px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:100px ;height:230px; background-repeat: no-repeat; background-size: 100% 100%; "/>
                         </fieldset>
 
-                        <fieldset style="position: absolute; left: 150px; top: 235px; font-size: 10px; width: 690px; height: 270px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 150px; top: 235px; font-size: 10px; width: 690px; height: 278px; border-radius: 10px; ">
                             <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 690px"                           
-                                         value="#{controlNReporteNomina.listaIR}" scrollable="true" scrollHeight="170" scrollWidth="690"
+                                         value="#{controlNReporteNomina.listaIR}" scrollable="true" scrollHeight="165" scrollWidth="690"
                                          filteredValue="#{controlNReporteNomina.filtrarListInforeportesUsuario}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" paginator="true" rows="5"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
@@ -117,7 +120,7 @@
                             <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['parametros']}</strong></legend>
 
                             <h:outputText value="#{msg['fechadesde']}" style="position: absolute; top: 15px; left: 30px;font-size: 11px;"/>
-                            <p:calendar  value="#{controlNReporteNomina.parametroDeInforme.fechadesde}" id="fechaDesdeParametro" style="position: absolute; top: 7px; left: 130px;font-size: 11px;" styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
+                            <p:calendar  value="#{controlNReporteNomina.parametroDeInforme.fechadesde}" id="fechaDesdeParametro" style="position: absolute; top: 7px; left: 130px;font-size: 11px;" styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" pattern="dd/MM/yyyy"
                                          autocomplete="true" onclick="select();">    
                                 <p:ajax event="dateSelect" listener="#{controlNReporteNomina.modificarParametroInforme()}" update="fechaDesdeParametro"/>
                                 <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(1)}" process="@this"/> 
@@ -163,7 +166,7 @@
 
                             <h:outputText value="#{msg['hasta']}" style="position: absolute; top: 15px; left: 290px;font-size: 11px;"/>
                             <p:calendar value="#{controlNReporteNomina.parametroDeInforme.fechahasta}" id="fechaHastaParametro" style="position: absolute; top: 7px; left: 350px;font-size: 11px;" 
-                                        styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy"
+                                        styleClass="ui-datepicker, calendarioReportes"  navigator="true" showButtonPanel="true" pattern="dd/MM/yyyy"
                                         autocomplete="true" onclick="select();">                                         
                                 <p:ajax event="dateSelect" listener="#{controlNReporteNomina.modificarParametroInforme()}" update="fechaHastaParametro"/>
                                 <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(7)}" process="@this"/> 

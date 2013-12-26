@@ -256,7 +256,12 @@ public class ControlFormula implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listaFormulas.get(index).getSecuencia();
-            actualFormula = listaFormulas.get(index);
+            if (tipoLista == 0) {
+                actualFormula = listaFormulas.get(index);
+            }
+            if (tipoLista == 1) {
+                actualFormula = filtradoListaFormulas.get(index);
+            }
             if (listaFormulas.get(index).getTipo().equals("FINAL") && listaFormulas.get(indice).getEstado().equals("ACTIVO")) {
                 propiedadesFormula = false;
             } else {
