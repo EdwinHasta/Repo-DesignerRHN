@@ -119,4 +119,12 @@ public class Juzgados implements Serializable {
         return "Entidades.Juzgados[ secuencia=" + secuencia + " ]";
     }
 
+    public Ciudades getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(Ciudades ciudad) {
+        this.ciudad = ciudad;
+    }
+
 }
