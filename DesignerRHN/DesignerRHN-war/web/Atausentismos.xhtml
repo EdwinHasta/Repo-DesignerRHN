@@ -13,7 +13,7 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.atausentismos" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 560px;" > 
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 520px;" > 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 580px; height: 140px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>#{msg['empleados']}</strong></legend>
@@ -87,9 +87,9 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 700px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosAusentismosEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlAusentismos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 783px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlAusentismos.salir()}" action="individual" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosAusentismosEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlAusentismos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlAusentismos.salir()}" action="individual" />
 
                         <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 220px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>#{msg['da']}</strong></legend>
@@ -518,7 +518,7 @@
                 <h:form id ="formularioDialogos">
 
                     <!-- DIALOGO NUEVO REGISTRO -->
-                    <p:dialog id="NuevoAusentismoEmpleado" header="#{msg['duplicarregistro']}" widgetVar="NuevoAusentismoEmpleado" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="800" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoAusentismoEmpleado" header="#{msg['nuevoregistro']}" widgetVar="NuevoAusentismoEmpleado" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="800" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -631,9 +631,9 @@
                                 <p:inputText id="nuevaEnfermedad" value="#{controlAusentismos.nuevoAusentismo.enfermedad.categoria.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 170px; top: 105px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'ENFERMEDAD')}" />
                                     <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('ENFERMEDAD', controlAusentismos.nuevoAusentismo.enfermedad.categoria.descripcion, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" />
                                 </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 302px; top: 105px;  " id="btnNuevaEnfermedad" actionListener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" icon="ui-icon-search" process="@this" />
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 302px; top: 105px;  " id="btnNuevaEnfermedad" actionListener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" icon="ui-icon-search" process="@this" />
 
                                 <strong><h:outputText value="#{msg['numero']}" style="font-size: 12px; position: absolute; top: 145px" /></strong>
                                 <p:inputText id="nuevoNumero" value="#{controlAusentismos.nuevoAusentismo.dias}" style="font-size: 12px; width: 122px; position: absolute; left: 170px; top: 145px; text-transform: uppercase" onclick="select();">
@@ -644,12 +644,12 @@
                                 <p:inputText id="nuevoDiagnostico" value="#{controlAusentismos.nuevoAusentismo.diagnosticocategoria.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 170px; top: 185px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'DIAGNOSTICO')}" />
                                     <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('DIAGNOSTICO', controlAusentismos.nuevoAusentismo.diagnosticocategoria.codigo, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" />
                                 </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 302px; top: 185px;  " id="btnNuevoDiagnostico" actionListener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" icon="ui-icon-search" process="@this" />
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 302px; top: 185px;  " id="btnNuevoDiagnostico" actionListener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" icon="ui-icon-search" process="@this" />
 
                                 <strong><h:outputText value="#{msg['prorroga']}" style="font-size: 12px; position: absolute; top: 65px; left: 435px" /></strong>
-                                <p:inputText id="nuevaProrroga" value="#{controlAusentismos.nuevoAusentismo.prorroga.prorrogaAusentismo}" style="font-size: 12px; width: 122px; position: absolute; left: 570px; top: 65px; text-transform: uppercase" onclick="select();">
+                                <p:inputText id="nuevaProrroga" value="#{controlAusentismos.nuevoAusentismo.prorroga.prorrogaAusentismo}" style="font-size: 12px; width: 122px; position: absolute; left: 550px; top: 65px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'PRORROGA')}" />
                                     <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('PRORROGA', controlAusentismos.nuevoAusentismo.prorroga.prorrogaAusentismo, 1)}" />
                                     <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 10, 1)}" />
@@ -657,19 +657,17 @@
                                 <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 681px; top: 65px;  " id="btnNuevaProrroga" actionListener="#{controlAusentismos.asignarIndex(indice, 10, 1)}" icon="ui-icon-search" process="@this" />
 
                                 <strong><h:outputText value="#{msg['tercero']}" style="font-size: 12px; position: absolute; top: 105px;left:435px" /></strong>
-                                <p:inputText id="nuevoTercero" value="#{controlAusentismos.nuevoAusentismo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 570px; top: 105px; text-transform: uppercase" onclick="select();">
+                                <p:inputText id="nuevoTercero" value="#{controlAusentismos.nuevoAusentismo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 550px; top: 105px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'TERCERO')}" />
                                     <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('TERCERO', controlAusentismos.nuevoAusentismo.tercero.nombre, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" />
                                 </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 681px; top: 105px;  " id="btnNuevoTercero" actionListener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" icon="ui-icon-search" process="@this" />
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 681px; top: 105px;  " id="btnNuevoTercero" actionListener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" icon="ui-icon-search" process="@this" />
 
                                 <strong><h:outputText value="#{msg['observaciones']}" style="font-size: 12px; position: absolute; top: 145px;left:435px" /></strong>
-                                <p:inputText id="nuevaObservacion" value="#{controlAusentismos.nuevoAusentismo.observaciones}" style="font-size: 12px; width: 122px; position: absolute; left: 570px; top: 145px; text-transform: uppercase" onclick="select();">
+                                <p:inputText id="nuevaObservacion" value="#{controlAusentismos.nuevoAusentismo.observaciones}" style="font-size: 12px; width: 122px; position: absolute; left: 550px; top: 145px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="change" update="@this"/>
                                 </p:inputText>
-
-
                             </p:panel>  
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 50px; top: 550px;" actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" update="nuevoAusentismo" process="@this"/>
@@ -1105,7 +1103,7 @@
 
 
                     <!-- L.O.V CAUSAS AUSENTISMOS-->
-                    <p:dialog header="#{msg['causas']}" widgetVar="causasAusentismosDialogo" draggable="false" resizable="false" id="causasAusentismosDialogo" closable="false"  
+                    <p:dialog header="#{msg['causasausentismo']}" widgetVar="causasAusentismosDialogo" draggable="false" resizable="false" id="causasAusentismosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="330" height="360" style="font-size: 12px">
 
                         <p:dataTable  id="LOVCausasAusentismos" style="font-size: 11px; width: 300px" var="causa" value="#{controlAusentismos.listaCausasAusentismos}"

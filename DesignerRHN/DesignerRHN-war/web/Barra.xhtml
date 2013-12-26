@@ -19,7 +19,7 @@
                             <h:outputText id="imagen" style="background-image: url(Imagenes/#{controlBarra.imagenEstado}); width: 150px; height: 140px; background-repeat: no-repeat; background-size: 100% 100%;; z-index: 1; position: absolute; top: 23px; left: 20px"/>
                             <p:panel id="panelInf" style="border: none;">
                                 <fieldset style="position: absolute; left: 180px; top: 15px; font-size: 12px; width: 300px; height: 137px; border-radius: 10px; ">
-                                    <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">Indicadores</legend>
+                                    <legend style="font-size: 14px; color: blue;text-align: left; font-weight: bold">#{msg['indicadores']}</legend>
                                     <h:outputText value="#{msg['ttal']}" style="font-weight: bold; position: absolute; top: 22px; left: 20px"/>
                                     <p:inputText value="#{controlBarra.totalEmpleadosParaLiquidar}" style="position: absolute; left: 210px; text-align: right; width: 80px;" readonly="true"/>
                                     <h:outputText value="#{msg['ttl']}" style="font-weight: bold; position: absolute; top: 52px; left: 20px"/>
@@ -87,7 +87,7 @@
                             <fieldset style="padding: 0px; position: absolute; top: 35px; border: none">
                                 <p:dataTable id="datosLiquidacionesCerradas" var="liquidacionCerrada" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesCerradas}"
                                              scrollable="true" scrollWidth="315"
-                                             editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesCerradas}" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="Sin registros">
+                                             editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesCerradas}" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="#{msg['sinregistros']}">
 
                                     <p:column id="corte" headerText="#{msg['corte']}" sortBy="#{liquidacionCerrada.corte}" width="55" filterBy="#{liquidacionCerrada.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px" > 
                                         <p:cellEditor>  
@@ -115,7 +115,7 @@
                                         </p:cellEditor>
                                     </p:column>
 
-                                    <p:column id="proceso" headerText="#{msg['proceso']}" sortBy="#{liquidacionCerrada.descripcion}" width="50"  filterBy="#{liquidacionCerrada.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                    <p:column id="proceso" headerText="#{msg['procesoD']}" sortBy="#{liquidacionCerrada.descripcion}" width="50"  filterBy="#{liquidacionCerrada.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <p:cellEditor>  
                                             <f:facet name="output">
                                                 <h:outputText value="#{liquidacionCerrada.descripcion}">
@@ -162,7 +162,7 @@
                             <fieldset style="padding: 0px; position: absolute; top: 245px; border: none">
                                 <p:dataTable id="datosLiquidacionesAbiertas" var="liquidacionAbierta" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesAbiertas}"
                                              scrollable="true" scrollWidth="315"
-                                             editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesAbiertas}" filteredValue="#{controlBarra.filtradoLiquidacionesAbiertas}" emptyMessage="Sin registros">
+                                             editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesAbiertas}" filteredValue="#{controlBarra.filtradoLiquidacionesAbiertas}" emptyMessage="#{msg['sinregistro']}">
 
                                     <p:column id="corteLA" headerText="#{msg['corte']}" sortBy="#{liquidacionAbierta.corte}" width="55" filterBy="#{liquidacionAbierta.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px"> 
                                         <p:cellEditor>  
@@ -308,7 +308,7 @@
                             <h:outputText value="#{liquidacionAbiertaE.empresaCodigo}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['proceso']}">
+                        <p:column headerText="#{msg['procesoD']}">
                             <f:facet name="header"><h:outputText value="#{msg['proceso']}" /></f:facet>
                             <h:outputText value="#{liquidacionAbiertaE.descripcion}" />
                         </p:column>

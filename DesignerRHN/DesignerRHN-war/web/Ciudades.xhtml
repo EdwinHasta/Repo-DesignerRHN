@@ -18,19 +18,19 @@
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['ciudades']}</strong></legend>
 
                             <p:dataTable id="datosCiudades" var="ciudades" rowKey="#{ciudades.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"                           
-                                         value="#{controlCiudades.listaCiudades}" paginator="true" rows="7"  scrollHeight="150" 
-                                         filteredValue="#{controlCiudades.filtradoListaCiudades}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         value="#{controlCiudades.listaCiudades}" paginator="true" rows="7"  scrollHeight="160" 
+                                         filteredValue="#{controlCiudades.filtradoListaCiudades}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" >
                                 <p:ajax event="filter"/>
 
-                                <p:column headerText="#{msg['codigo']}" sortBy="#{ciudades.codigo}" filterBy="#{ciudades.codigo}" filterMatchMode="contains"  width="72" id="ciudadesCodigos" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['codigo']}" width="5%" sortBy="#{ciudades.codigo}" filterBy="#{ciudades.codigo}" filterMatchMode="contains" id="ciudadesCodigos" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{ciudades.codigo}" >
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{ciudades.codigo}" id="editarCodigosCiudades" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                            <p:inputText value="#{ciudades.codigo}" id="editarCodigosCiudades" style="font-size: 10px; border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 0)}" />
                                                 <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.codigo)}" update="@this"/>
                                             </p:inputText> 
@@ -42,14 +42,14 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['nombre']}" sortBy="#{ciudades.nombre}" filterBy="#{ciudades.nombre}" filterMatchMode="contains"  width="72" id="ciudadesNombres" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['nombre']}" width="25%" sortBy="#{ciudades.nombre}" filterBy="#{ciudades.nombre}"  filterMatchMode="contains" id="ciudadesNombres" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{ciudades.nombre}"  style="text-transform: uppercase">
+                                            <h:outputText value="#{ciudades.nombre}"  style="text-transform: uppercase;">
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{ciudades.nombre}" id="editarNombresCiudades" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                            <p:inputText value="#{ciudades.nombre}" id="editarNombresCiudades" style="font-size: 10px; border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 1)}" />
                                                 <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.nombre)}" update="@this" />
                                             </p:inputText> 
@@ -61,11 +61,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['departamento']}" sortBy="#{ciudades.departamento.nombre}" filterBy="#{ciudades.departamento.nombre}" filterMatchMode="contains" id="nombresDepartamentos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['departamento']}" width="25%" sortBy="#{ciudades.departamento.nombre}" filterBy="#{ciudades.departamento.nombre}" filterMatchMode="contains" id="nombresDepartamentos" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{ciudades.departamento.nombre}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase;" value="#{ciudades.departamento.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{ciudades.departamento.nombre}" id="editarDepartamentos" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{ciudades.departamento.nombre}" id="editarDepartamentos" style="font-size: 10px; border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'DEPARTAMENTOS', ciudades.departamento.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 2)}" />
                                                 <p:ajax event="dblclick" listener="#{controlCiudades.asignarIndex(indice)}"/>
@@ -77,11 +77,11 @@
                                         <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooDepartamentos" value="#{msg['departamento']}"/>
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="#{msg['codigoalternativo']}" sortBy="#{ciudades.codigoalternativo}" filterBy="#{ciudades.codigoalternativo}" filterMatchMode="contains" id="ciudadesCodigosAlternativos" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['codigoalternativo']}" sortBy="#{ciudades.codigoalternativo}" filterBy="#{ciudades.codigoalternativo}" filterMatchMode="contains" id="ciudadesCodigosAlternativos" width="5%" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{ciudades.codigoalternativo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{ciudades.codigoalternativo}" id="editarCodigosAlternativos" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"  > 
+                                            <p:inputText value="#{ciudades.codigoalternativo}" id="editarCodigosAlternativos" style="font-size: 10px; border-radius: 0px; width: 99.5%;text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 3)}" />
                                                 <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.codigoalternativo)}" update="@this"/>
                                             </p:inputText>
@@ -95,7 +95,7 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlCiudades.guardarCambiosCiudad()}" process="@this" />
@@ -103,7 +103,7 @@
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -10px;"/>
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
@@ -111,7 +111,7 @@
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -10px;"/>
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlCiudades.exportXLS()}" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
@@ -124,7 +124,7 @@
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
-                                <p:separator /> 
+                                <p:separator style="position: relative; top: -10px;"/> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroCiudad.show()" update=":formularioDialogos:nuevaCiudad" process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
@@ -134,7 +134,7 @@
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.duplicarC()}"  process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
-                                <p:separator /> 
+                                <p:separator style="position: relative; top: -10px;"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>  
@@ -149,23 +149,23 @@
                 </h:form>
                 <h:form id="formularioDialogos" >
                     
-                    <p:dialog id="NuevoRegistroCiudad" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroCiudad" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroCiudad" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroCiudad" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaCiudad" style="border: none;">
-                            <strong><h:outputText value="#{msg['codigo']}" style="font-size: 12px; position: absolute; top: 90px" /></strong>
+                            <strong><h:outputText value="#{msg['codigoN']}" style="font-size: 12px; position: absolute; top: 90px" /></strong>
                             <p:inputText id="nuevoCodigo" value="#{controlCiudades.nuevaCiudad.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 85px; text-transform: uppercase" onclick="select();">
 
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
-                            <strong><h:outputText value="#{msg['nombre']}" style="font-size: 12px; position: absolute; top: 122px" /></strong>
+                            <strong><h:outputText value="#{msg['nombreN']}" style="font-size: 12px; position: absolute; top: 122px" /></strong>
                             <p:inputText id="nuevoNombreCiudad" value="#{controlCiudades.nuevaCiudad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 118px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText> 
 
-                            <strong><h:outputText value="#{msg['departamento']}" style="font-size: 12px; position: absolute; top: 160px" /></strong>
+                            <strong><h:outputText value="#{msg['departamentooN']}" style="font-size: 12px; position: absolute; top: 160px" /></strong>
                             <p:inputText id="nuevoDepartamento" value="#{controlCiudades.nuevaCiudad.departamento.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 153px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlCiudades.valoresBackupAutocompletar(1)}" />
                                 <p:ajax event="change" listener="#{controlCiudades.autocompletarNuevoyDuplicado(controlCiudades.nuevaCiudad.departamento.nombre,1)}"/>
@@ -174,15 +174,15 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 153px;  " id="btnNuevoDepartamento" icon="ui-icon-search" process="@this"  actionListener="#{controlCiudades.llamarLovDepartamento(1)}"/>
 
 
-                            <strong><h:outputText value="#{msg['codigoalternativo']}" style="font-size: 12px; position: absolute; top: 194px" /></strong>
+                            <strong><h:outputText value="#{msg['codigoalternativoN']}" style="font-size: 12px; position: absolute; top: 194px" /></strong>
                             <p:inputText id="nuevoCodigoAlternativo" value="#{controlCiudades.nuevaCiudad.codigoalternativo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 188px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" process="@this"/>
-                            <p:commandButton id="agregarC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 240px; top: 300px;"  actionListener="#{controlCiudades.agregarNuevaCiudad()}" process="@this"/>
-                            <p:commandButton id="cancelarC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 310px; top: 300px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" onclick="NuevoRegistroCiudad.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" process="@this"/>
+                            <p:commandButton id="agregarC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 240px; top: 250px;"  actionListener="#{controlCiudades.agregarNuevaCiudad()}" process="@this"/>
+                            <p:commandButton id="cancelarC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 310px; top: 250px;" actionListener="#{controlCiudades.limpiarNuevaCiudad()}" update="nuevaCiudad" onclick="NuevoRegistroCiudad.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -203,7 +203,7 @@
                    
                     <!--DIALOGO DUPLICAR-->
 
-                    <p:dialog id="DuplicarRegistroCiudad" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistroCiudad" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroCiudad" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistroCiudad" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -236,18 +236,18 @@
                             </p:inputText>
                             <p:watermark for="duplicarCodigoAlternativo" value="#{msg['codigoalternativo']}" />
 
-                            <p:commandButton id="limpiarDuplicadoCiudad" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 300px;" actionListener="#{controlCiudades.limpiarduplicarCiudad()}" update="duplicarCiudad" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoCiudad" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 240px; top: 300px;"  process="@this" actionListener="#{controlCiudades.confirmarDuplicar()}"  />
-                            <p:commandButton id="cancelarDuplicadoCiudad" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 310px; top: 300px;" actionListener="#{controlCiudades.limpiarduplicarCiudad()}" update="duplicarCiudad" onclick="DuplicarRegistroCiudad.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoCiudad" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlCiudades.limpiarduplicarCiudad()}" update="duplicarCiudad" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoCiudad" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 240px; top: 250px;"  process="@this" actionListener="#{controlCiudades.confirmarDuplicar()}"  />
+                            <p:commandButton id="cancelarDuplicadoCiudad" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 310px; top: 250px;" actionListener="#{controlCiudades.limpiarduplicarCiudad()}" update="duplicarCiudad" onclick="DuplicarRegistroCiudad.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V ESTATICO DE CIUDADES -->
-                    <p:dialog header="Departamentos" widgetVar="departamentosDialogo" draggable="false" resizable="false" closable="false" id="departamentosDialogo"  
-                              showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                    <p:dialog header="#{msg['departamentos']}"  widgetVar="departamentosDialogo" draggable="false" resizable="false" closable="false" id="departamentosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                         <p:dataTable id="LOVDepartamentos" style="font-size: 11px; width: 430px" var="departamentos" value="#{controlCiudades.listaDepartamentos}" rowKey="#{departamentos.secuencia}"
                                      selection="#{controlCiudades.seleccionDepartamento}" selectionMode="single" widgetVar="LOVDepartamentos" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                     filteredValue="#{controlCiudades.filtradoListaDepatartamentos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                     filteredValue="#{controlCiudades.filtradoListaDepatartamentos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCiudades.activarAceptar()}" update=":formularioDialogos:aceptarD"/>
                             <p:ajax event="rowDblselect" listener="#{controlCiudades.actualizarDepartamentos()}" process="@this" onstart="LOVDepartamentos.clearFilters()"/>
                             <f:facet name="header">  
@@ -271,7 +271,7 @@
                     
                     <!-- Ya Existe -->
                     
-                    <p:dialog id="existe" header="ATENCIÓN...!" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="existe" header="#{msg['atencion']}" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['existe']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="existe.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
