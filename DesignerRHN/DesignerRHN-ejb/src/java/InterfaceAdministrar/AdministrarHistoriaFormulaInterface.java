@@ -8,6 +8,8 @@ package InterfaceAdministrar;
 import Entidades.Formulas;
 import Entidades.Historiasformulas;
 import Entidades.Nodos;
+import Entidades.Operadores;
+import Entidades.Operandos;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -26,7 +28,17 @@ public interface AdministrarHistoriaFormulaInterface {
     public void borrarHistoriasFormulas(List<Historiasformulas> lista);
 
     public List<Nodos> listNodosDeHistoriaFormula(BigInteger secuencia);
-    
+
+    public void crearNodos(List<Nodos> lista);
+
+    public void borrarNodos(List<Nodos> lista);
+
+    public void editarNodos(List<Nodos> lista);
+
     public Formulas actualFormula(BigInteger secuencia);
+
+    public List<Operadores> listOperadores();
+
+    public List<Operandos> listOperandos();
 
 }

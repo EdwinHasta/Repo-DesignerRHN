@@ -72,6 +72,8 @@ public class ControlCiudades implements Serializable {
     private Ciudades duplicarCiudad;
     //RASTRO
     private BigInteger secRegistro;
+    //VALIDAR SI EL QUE SE VA A BORRAR ESTÁ EN SOLUCIONES FORMULAS
+    private int resultado;
 
     public ControlCiudades() {
         permitirIndex = true;
@@ -480,6 +482,7 @@ public class ControlCiudades implements Serializable {
         nuevaCiudad.getDepartamento().setNombre(" ");
         index = -1;
         secRegistro = null;
+        resultado=0;
     }
 
     //EXPORTAR
@@ -554,6 +557,15 @@ public class ControlCiudades implements Serializable {
 
         if (guardado == false) {
             System.out.println("Realizando Operaciones Ciudades");
+            
+            getResultado();
+            System.out.println("Resultado: " + resultado);
+            if (resultado > 0) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("formularioDialogos:solucionesFormulas");
+                context.execute("solucionesFormulas.show()");
+                listaCiudadesBorrar.clear();
+            }
             if (!listaCiudadesBorrar.isEmpty()) {
                 for (int i = 0; i < listaCiudadesBorrar.size(); i++) {
                     System.out.println("Borrando...");
@@ -615,7 +627,7 @@ public class ControlCiudades implements Serializable {
             tipoLista = 0;
 
         }
-
+        resultado=0;
         listaCiudadesBorrar.clear();
         listaCiudadesCrear.clear();
         listaCiudadesModificar.clear();
@@ -650,6 +662,7 @@ public class ControlCiudades implements Serializable {
         listaCiudadesCrear.clear();
         listaCiudadesModificar.clear();
         index = -1;
+        resultado=0;
         secRegistro = null;
         k = 0;
         listaCiudades = null;
@@ -909,4 +922,16 @@ public class ControlCiudades implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
+
+    public int getResultado() {
+        if (!listaCiudadesBorrar.isEmpty()) {
+            for (int i = 0; i < listaCiudadesBorrar.size(); i++) {
+      //          resultado = administrarNovedadesEmpleados.solucionesFormulas(listaNovedadesBorrar.get(i).getSecuencia());
+
+            }
+        }
+        return resultado;
+    }
+    
+    
 }

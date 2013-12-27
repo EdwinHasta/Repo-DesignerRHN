@@ -1711,7 +1711,7 @@ public class ControlAusentismos implements Serializable {
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
                     nuevoAusentismo.setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarTipo");
+                    context.update("formularioDialogos:nuevoTipo");
                 } else if (tipoNuevo == 2) {
                     duplicarAusentismo.setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarTipo");
@@ -1723,7 +1723,7 @@ public class ControlAusentismos implements Serializable {
                 context.execute("tiposAusentismosDialogo.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:duplicarTipo");
+                    context.update("formularioDialogos:nuevoTipo");
                 } else if (tipoNuevo == 2) {
                     context.update("formularioDialogos:duplicarTipo");
                 }
