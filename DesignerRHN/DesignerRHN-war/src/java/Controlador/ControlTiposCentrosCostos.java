@@ -36,7 +36,7 @@ public class ControlTiposCentrosCostos implements Serializable {
     AdministrarTiposCentrosCostosInterface administrarTiposCentrosCostos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-   
+
     private List<TiposCentrosCostos> listTiposCentrosCostos;
     private List<TiposCentrosCostos> filtrarTiposCentrosCostos;
     private List<TiposCentrosCostos> crearTiposCentrosCostos;
@@ -267,7 +267,7 @@ public class ControlTiposCentrosCostos implements Serializable {
             System.err.println("ENTRE A MODIFICAR TIPO CENTRO COSTO, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposCentrosCostos.contains(listTiposCentrosCostos.get(indice))) {
-                    if (listTiposCentrosCostos.get(indice).getCodigo()== a) {
+                    if (listTiposCentrosCostos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -307,7 +307,6 @@ public class ControlTiposCentrosCostos implements Serializable {
                 }
             } else {
 
-
                 if (!crearTiposCentrosCostos.contains(filtrarTiposCentrosCostos.get(indice))) {
                     if (filtrarTiposCentrosCostos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -315,7 +314,14 @@ public class ControlTiposCentrosCostos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposCentrosCostos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposCentrosCostos.get(indice).getCodigo() == listTiposCentrosCostos.get(j).getCodigo()) {
+                                if (filtrarTiposCentrosCostos.get(indice).getCodigo() == listTiposCentrosCostos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < filtrarTiposCentrosCostos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposCentrosCostos.get(indice).getCodigo() == filtrarTiposCentrosCostos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -541,7 +547,6 @@ public class ControlTiposCentrosCostos implements Serializable {
             contador++;
             duplicados = 0;
 
-
         }//TENER PRESENTE ------------------------------------------------------
         /*if (nuevaVigenciaFormasPago.getFechavigencia() == null) {
          mensajeValidacion = " * Fecha Vigencia \n";
@@ -591,7 +596,7 @@ public class ControlTiposCentrosCostos implements Serializable {
 
             context.update("form:datosTipoCentroCosto");
             if (guardado == true) {
-                
+
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:aceptar");
             }
@@ -746,7 +751,6 @@ public class ControlTiposCentrosCostos implements Serializable {
             System.out.println("Bandera : ");
         }
 
-
         if (contador == 3) {
 
             System.out.println("Datos Duplicando: " + duplicarTipoCentroCosto.getSecuencia() + "  " + duplicarTipoCentroCosto.getCodigo());
@@ -843,9 +847,15 @@ public class ControlTiposCentrosCostos implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         try {
-            borradoCC = administrarTiposCentrosCostos.verificarBorradoCC(listTiposCentrosCostos.get(index).getSecuencia());
-            borradoVC = administrarTiposCentrosCostos.verificarBorradoVC(listTiposCentrosCostos.get(index).getSecuencia());
-            borradoRP = administrarTiposCentrosCostos.verificarBorradoRP(listTiposCentrosCostos.get(index).getSecuencia());
+            if (tipoLista == 0) {
+                borradoCC = administrarTiposCentrosCostos.verificarBorradoCC(listTiposCentrosCostos.get(index).getSecuencia());
+                borradoVC = administrarTiposCentrosCostos.verificarBorradoVC(listTiposCentrosCostos.get(index).getSecuencia());
+                borradoRP = administrarTiposCentrosCostos.verificarBorradoRP(listTiposCentrosCostos.get(index).getSecuencia());
+            } else {
+                borradoCC = administrarTiposCentrosCostos.verificarBorradoCC(filtrarTiposCentrosCostos.get(index).getSecuencia());
+                borradoVC = administrarTiposCentrosCostos.verificarBorradoVC(filtrarTiposCentrosCostos.get(index).getSecuencia());
+                borradoRP = administrarTiposCentrosCostos.verificarBorradoRP(filtrarTiposCentrosCostos.get(index).getSecuencia());
+            }
             if (borradoCC.intValue() == 0 && borradoVC.intValue() == 0 && borradoRP.intValue() == 0) {
                 System.out.println("Borrado==0");
                 borrarTiposCentrosCostos();
@@ -913,7 +923,8 @@ public class ControlTiposCentrosCostos implements Serializable {
         }
 
     }
-  public void verificarRastro() {
+
+    public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
         if (!listTiposCentrosCostos.isEmpty()) {
@@ -1040,5 +1051,5 @@ public class ControlTiposCentrosCostos implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
+
 }
