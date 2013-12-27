@@ -91,5 +91,4 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
             return null;
         }
     }
-
 }
