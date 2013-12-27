@@ -1715,4 +1715,20 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+        <navigation-rule>
+        <from-view-id>/centrocosto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cambioTipoCentroCosto</from-outcome>
+            <to-view-id>/tiposcentroscostos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tiposcentroscostos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cambioCentroCosto</from-outcome>
+            <to-view-id>/centrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
