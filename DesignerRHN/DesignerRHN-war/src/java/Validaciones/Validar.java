@@ -5,7 +5,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.validator.FacesValidator;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import javax.validation.executable.ExecutableValidator;
 import javax.validation.metadata.BeanDescriptor;
 
 @ManagedBean
