@@ -15,6 +15,7 @@
                     <p:growl id="growl" showDetail="true" />
                     <p:panel  id="PanelTotal" header="Formulacion" style=" font-size: 13px; position: absolute; width: 874px; height: 545px; text-align: left;" >  
 
+                        
                         <h:outputText value="Formula:"  style="position: absolute; top: 45px;left: 395px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="formulaActual" value="#{controlHistoriaFormula.formulaActual.nombrelargo}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 460px;"/>
 
@@ -29,6 +30,7 @@
 
                                 <p:ajax event="filter" listener="#{controlHistoriaFormula.eventoFiltrar()}"/>
 
+                                
                                 <p:column headerText="Fecha Inicial" sortBy="#{infoHF.strFechaIni}" filterBy="#{infoHF.strFechaIni}" filterMatchMode="contains" 
                                           id="historiaFechaInicial" width="70"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
