@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
+import org.primefaces.component.scrollpanel.ScrollPanel;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -77,6 +78,8 @@ public class ControlHistoriaFormula implements Serializable {
     private String formulaCompleta;
     private String nodo1, nodo2, nodo3, nodo4, nodo5, nodo6, nodo7, nodo8, nodo9, nodo10, nodo11, nodo12, nodo13, nodo14, nodo15, nodo16;
     private boolean nodo1RO, nodo2RO, nodo3RO, nodo4RO, nodo5RO, nodo6RO, nodo7RO, nodo8RO, nodo9RO, nodo10RO, nodo11RO, nodo12RO, nodo13RO, nodo14RO, nodo15RO, nodo16RO;
+    private String nodo1_1, nodo2_1, nodo3_1, nodo4_1, nodo5_1, nodo6_1, nodo7_1, nodo8_1, nodo9_1, nodo10_1, nodo11_1, nodo12_1, nodo13_1, nodo14_1, nodo15_1, nodo16_1;
+    private boolean nodo1_1RO, nodo2_1RO, nodo3_1RO, nodo4_1RO, nodo5_1RO, nodo6_1RO, nodo7_1RO, nodo8_1RO, nodo9_1RO, nodo10_1RO, nodo11_1RO, nodo12_1RO, nodo13_1RO, nodo14_1RO, nodo15_1RO, nodo16_1RO;
     //////Operadores//////////
     private Operadores operadorSeleccionado;
     private List<Operadores> listOperadores;
@@ -104,8 +107,12 @@ public class ControlHistoriaFormula implements Serializable {
     private int indexEstructuraFormula, celdaEstructuraFormula;
     private EstructurasFormulas seleccionEstructuraF;
     private EstructurasFormulas editarEstructura;
+    private boolean visibilidadBtnP, visibilidadBtnS;
+    private ScrollPanel panelNodosPrincipal, panelNodosSecundario;
 
     public ControlHistoriaFormula() {
+        visibilidadBtnP = false;
+        visibilidadBtnS = false;
         editarEstructura = new EstructurasFormulas();
         seleccionEstructuraF = new EstructurasFormulas();
         indexEstructuraFormula = -1;
@@ -152,6 +159,38 @@ public class ControlHistoriaFormula implements Serializable {
         nodo14RO = true;
         nodo15RO = true;
         nodo16RO = true;
+        nodo1_1 = "";
+        nodo2_1 = "";
+        nodo3_1 = "";
+        nodo4_1 = "";
+        nodo5_1 = "";
+        nodo6_1 = "";
+        nodo7_1 = "";
+        nodo8_1 = "";
+        nodo9_1 = "";
+        nodo10_1 = "";
+        nodo11_1 = "";
+        nodo12_1 = "";
+        nodo13_1 = "";
+        nodo14_1 = "";
+        nodo15_1 = "";
+        nodo16_1 = "";
+        nodo1_1RO = true;
+        nodo2_1RO = true;
+        nodo3_1RO = true;
+        nodo4_1RO = true;
+        nodo5_1RO = true;
+        nodo6_1RO = true;
+        nodo7_1RO = true;
+        nodo8_1RO = true;
+        nodo9_1RO = true;
+        nodo10_1RO = true;
+        nodo11_1RO = true;
+        nodo12_1RO = true;
+        nodo13_1RO = true;
+        nodo14_1RO = true;
+        nodo15_1RO = true;
+        nodo16_1RO = true;
         formulaCompleta = "";
         listNodosHistoriaFormula = null;
         formulaActual = new Formulas();
@@ -469,6 +508,7 @@ public class ControlHistoriaFormula implements Serializable {
         cambiosNodos = false;
         permitirIndexNodos = true;
         listNodosParaExportar = null;
+        cambiarVisibilidadPaneles(1);
         cargarDatosParaNodos();
     }
 
@@ -1117,6 +1157,40 @@ public class ControlHistoriaFormula implements Serializable {
         nodo15RO = true;
         nodo16 = " ";
         nodo16RO = true;
+
+        nodo1_1 = " ";
+        nodo1_1RO = true;
+        nodo2_1 = " ";
+        nodo2_1RO = true;
+        nodo3_1 = " ";
+        nodo3_1RO = true;
+        nodo4_1 = " ";
+        nodo5_1RO = true;
+        nodo5_1 = " ";
+        nodo5_1RO = true;
+        nodo6_1 = " ";
+        nodo6_1RO = true;
+        nodo7_1 = " ";
+        nodo7_1RO = true;
+        nodo8_1 = " ";
+        nodo8_1RO = true;
+        nodo9_1 = " ";
+        nodo9_1RO = true;
+        nodo10_1 = " ";
+        nodo10_1RO = true;
+        nodo11_1 = " ";
+        nodo11_1RO = true;
+        nodo12_1 = " ";
+        nodo12_1RO = true;
+        nodo13_1 = " ";
+        nodo13_1RO = true;
+        nodo14_1 = " ";
+        nodo14_1RO = true;
+        nodo15_1 = " ";
+        nodo15_1RO = true;
+        nodo16_1 = " ";
+        nodo16_1RO = true;
+
     }
 
     public void posicionNodo(int i) {
@@ -1283,11 +1357,157 @@ public class ControlHistoriaFormula implements Serializable {
                 nodo16RO = false;
                 context.update("form:nodo16");
             }
+            //pagina secundaria//
+            if (aux == 16) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo1_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo1_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo1_1RO = false;
+                context.update("form:nodo1_1");
+            }
+            if (aux == 17) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo2_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo2_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo2_1RO = false;
+                context.update("form:nodo2_1");
+            }
+            if (aux == 18) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo3_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo3_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo3_1RO = false;
+                context.update("form:nodo3_1");
+            }
+            if (aux == 19) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo4_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo4_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo4_1RO = false;
+                context.update("form:nodo4_1");
+            }
+            if (aux == 20) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo5_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo5_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo5_1RO = false;
+                context.update("form:nodo5_1");
+            }
+            if (aux == 21) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo6_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo6_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo6_1RO = false;
+                context.update("form:nodo6_1");
+            }
+            if (aux == 22) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo7_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo7_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo7_1RO = false;
+                context.update("form:nodo7_1");
+            }
+            if (aux == 23) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo8_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo8_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo8_1RO = false;
+                context.update("form:nodo8_1");
+            }
+            if (aux == 24) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo9_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo9_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo9_1RO = false;
+                context.update("form:nodo9_1");
+            }
+            if (aux == 25) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo10_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo10_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo10_1RO = false;
+                context.update("form:nodo10_1");
+            }
+            if (aux == 26) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo11_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo11_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo11_1RO = false;
+                context.update("form:nodo11_1");
+            }
+            if (aux == 27) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo12_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo12_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo12_1RO = false;
+                context.update("form:nodo12_1");
+            }
+            if (aux == 28) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo13_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo13_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo13_1RO = false;
+                context.update("form:nodo13_1");
+            }
+            if (aux == 29) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo14_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo14_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo14_1RO = false;
+                context.update("form:nodo14_1");
+            }
+            if (aux == 30) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo15_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo15_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo15_1RO = false;
+                context.update("form:nodo15_1");
+            }
+            if (aux == 31) {
+                if (listNodosHistoriaFormula.get(aux).getOperador().getSecuencia() != null) {
+                    nodo16_1 = listNodosHistoriaFormula.get(aux).getOperador().getSigno();
+                } else if (listNodosHistoriaFormula.get(aux).getOperando().getSecuencia() != null) {
+                    nodo16_1 = listNodosHistoriaFormula.get(aux).getOperando().getNombre();
+                }
+                nodo16_1RO = false;
+                context.update("form:nodo16_1");
+            }
             aux++;
         }
         getFormulaCompleta();
         context.update("form:formulaComplete");
-        context.update("form:panelNodos");
+        context.update("form:panelNodosPrincipal");
+        context.update("form:panelNodosSecundario");
     }
 
     public void dispararDialogoNodo() {
@@ -1336,12 +1556,43 @@ public class ControlHistoriaFormula implements Serializable {
         }
         listNodosParaExportar = null;
         cargarDatosParaNodos();
+        int tam = listNodosHistoriaFormula.size();
+        if (tam > 16) {
+            RequestContext context = RequestContext.getCurrentInstance();
+
+            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+            visibilidadBtnS = true;
+            visibilidadBtnP = false;
+
+            context.update("form:panelNodosSecundario");
+            context.update("form:panelNodosPrincipal");
+        }
+        if (tam <= 16) {
+            RequestContext context = RequestContext.getCurrentInstance();
+
+            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+            visibilidadBtnS = true;
+            visibilidadBtnP = true;
+
+            context.update("form:panelNodosSecundario");
+            context.update("form:panelNodosPrincipal");
+        }
         filtrarListOperandos = null;
         operandoSeleccionado = new Operandos();
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperandoDialogo");
-        indexNodoSeleecionado=-1;
+        indexNodoSeleecionado = -1;
     }
 
     public void cancelarCambioOperando() {
@@ -1350,7 +1601,7 @@ public class ControlHistoriaFormula implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperandoDialogo");
         aceptar = true;
-        indexNodoSeleecionado=-1;
+        indexNodoSeleecionado = -1;
     }
 
     public void actualizarOperador() {
@@ -1370,12 +1621,43 @@ public class ControlHistoriaFormula implements Serializable {
         }
         listNodosParaExportar = null;
         cargarDatosParaNodos();
+        int tam = listNodosHistoriaFormula.size();
+        if (tam > 16) {
+            RequestContext context = RequestContext.getCurrentInstance();
+
+            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+            visibilidadBtnS = true;
+            visibilidadBtnP = false;
+
+            context.update("form:panelNodosSecundario");
+            context.update("form:panelNodosPrincipal");
+        }
+        if (tam <= 16) {
+            RequestContext context = RequestContext.getCurrentInstance();
+
+            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+            visibilidadBtnS = true;
+            visibilidadBtnP = true;
+
+            context.update("form:panelNodosSecundario");
+            context.update("form:panelNodosPrincipal");
+        }
         filtrarListOperadores = null;
         operadorSeleccionado = new Operadores();
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperadorDialogo");
-        indexNodoSeleecionado=-1;
+        indexNodoSeleecionado = -1;
     }
 
     public void cancelarCambioOperador() {
@@ -1384,7 +1666,7 @@ public class ControlHistoriaFormula implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperadorDialogo");
         aceptar = true;
-        indexNodoSeleecionado=-1;
+        indexNodoSeleecionado = -1;
     }
 
     public void modificacionesCambiosNodos(int indice, int tipoCambio) {
@@ -1498,7 +1780,64 @@ public class ControlHistoriaFormula implements Serializable {
             }
             listNodosParaExportar = null;
             cargarDatosParaNodos();
+            int tam = listNodosHistoriaFormula.size();
+            if (tam > 16) {
+                RequestContext context = RequestContext.getCurrentInstance();
+
+                panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+                panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+                panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+                panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+                visibilidadBtnS = true;
+                visibilidadBtnP = false;
+
+                context.update("form:panelNodosSecundario");
+                context.update("form:panelNodosPrincipal");
+            }
+            if (tam <= 16) {
+                RequestContext context = RequestContext.getCurrentInstance();
+
+                panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+                panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+                panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+                panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+                visibilidadBtnS = true;
+                visibilidadBtnP = true;
+
+                context.update("form:panelNodosSecundario");
+                context.update("form:panelNodosPrincipal");
+            }
         }
+    }
+
+    public void cambiarVisibilidadPaneles(int i) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (i == 1) {
+            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+            visibilidadBtnS = false;
+            visibilidadBtnP = true;
+        }
+        if (i == 2) {
+            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+            visibilidadBtnS = true;
+            visibilidadBtnP = false;
+        }
+        context.update("form:panelNodosSecundario");
+        context.update("form:panelNodosPrincipal");
     }
 
     public void cambiarIndiceEstructuraFormula(int indice, int celda) {
@@ -1545,7 +1884,6 @@ public class ControlHistoriaFormula implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEstructuraFormula");
         }
-
     }
 
     //GET - SET 
@@ -1714,6 +2052,17 @@ public class ControlHistoriaFormula implements Serializable {
                         listNodosHistoriaFormula.get(i).setOperando(new Operandos());
                     }
                 }
+            }
+        }
+        if (!listNodosHistoriaFormula.isEmpty()) {
+            int tam = listNodosHistoriaFormula.size();
+            if (tam <= 16) {
+                visibilidadBtnS = true;
+                visibilidadBtnP = true;
+            }
+            if (tam > 16) {
+                visibilidadBtnS = false;
+                visibilidadBtnP = true;
             }
         }
         return listNodosHistoriaFormula;
@@ -1997,6 +2346,262 @@ public class ControlHistoriaFormula implements Serializable {
         this.nodo16RO = nodo16RO;
     }
 
+    public String getNodo1_1() {
+        return nodo1_1;
+    }
+
+    public void setNodo1_1(String nodo1_1) {
+        this.nodo1_1 = nodo1_1;
+    }
+
+    public String getNodo2_1() {
+        return nodo2_1;
+    }
+
+    public void setNodo2_1(String nodo2_1) {
+        this.nodo2_1 = nodo2_1;
+    }
+
+    public String getNodo3_1() {
+        return nodo3_1;
+    }
+
+    public void setNodo3_1(String nodo3_1) {
+        this.nodo3_1 = nodo3_1;
+    }
+
+    public String getNodo4_1() {
+        return nodo4_1;
+    }
+
+    public void setNodo4_1(String nodo4_1) {
+        this.nodo4_1 = nodo4_1;
+    }
+
+    public String getNodo5_1() {
+        return nodo5_1;
+    }
+
+    public void setNodo5_1(String nodo5_1) {
+        this.nodo5_1 = nodo5_1;
+    }
+
+    public String getNodo6_1() {
+        return nodo6_1;
+    }
+
+    public void setNodo6_1(String nodo6_1) {
+        this.nodo6_1 = nodo6_1;
+    }
+
+    public String getNodo7_1() {
+        return nodo7_1;
+    }
+
+    public void setNodo7_1(String nodo7_1) {
+        this.nodo7_1 = nodo7_1;
+    }
+
+    public String getNodo8_1() {
+        return nodo8_1;
+    }
+
+    public void setNodo8_1(String nodo8_1) {
+        this.nodo8_1 = nodo8_1;
+    }
+
+    public String getNodo9_1() {
+        return nodo9_1;
+    }
+
+    public void setNodo9_1(String nodo9_1) {
+        this.nodo9_1 = nodo9_1;
+    }
+
+    public String getNodo10_1() {
+        return nodo10_1;
+    }
+
+    public void setNodo10_1(String nodo10_1) {
+        this.nodo10_1 = nodo10_1;
+    }
+
+    public String getNodo11_1() {
+        return nodo11_1;
+    }
+
+    public void setNodo11_1(String nodo11_1) {
+        this.nodo11_1 = nodo11_1;
+    }
+
+    public String getNodo12_1() {
+        return nodo12_1;
+    }
+
+    public void setNodo12_1(String nodo12_1) {
+        this.nodo12_1 = nodo12_1;
+    }
+
+    public String getNodo13_1() {
+        return nodo13_1;
+    }
+
+    public void setNodo13_1(String nodo13_1) {
+        this.nodo13_1 = nodo13_1;
+    }
+
+    public String getNodo14_1() {
+        return nodo14_1;
+    }
+
+    public void setNodo14_1(String nodo14_1) {
+        this.nodo14_1 = nodo14_1;
+    }
+
+    public String getNodo15_1() {
+        return nodo15_1;
+    }
+
+    public void setNodo15_1(String nodo15_1) {
+        this.nodo15_1 = nodo15_1;
+    }
+
+    public String getNodo16_1() {
+        return nodo16_1;
+    }
+
+    public void setNodo16_1(String nodo16_1) {
+        this.nodo16_1 = nodo16_1;
+    }
+
+    public boolean isNodo1_1RO() {
+        return nodo1_1RO;
+    }
+
+    public void setNodo1_1RO(boolean nodo1_1RO) {
+        this.nodo1_1RO = nodo1_1RO;
+    }
+
+    public boolean isNodo2_1RO() {
+        return nodo2_1RO;
+    }
+
+    public void setNodo2_1RO(boolean nodo2_1RO) {
+        this.nodo2_1RO = nodo2_1RO;
+    }
+
+    public boolean isNodo3_1RO() {
+        return nodo3_1RO;
+    }
+
+    public void setNodo3_1RO(boolean nodo3_1RO) {
+        this.nodo3_1RO = nodo3_1RO;
+    }
+
+    public boolean isNodo4_1RO() {
+        return nodo4_1RO;
+    }
+
+    public void setNodo4_1RO(boolean nodo4_1RO) {
+        this.nodo4_1RO = nodo4_1RO;
+    }
+
+    public boolean isNodo5_1RO() {
+        return nodo5_1RO;
+    }
+
+    public void setNodo5_1RO(boolean nodo5_1RO) {
+        this.nodo5_1RO = nodo5_1RO;
+    }
+
+    public boolean isNodo6_1RO() {
+        return nodo6_1RO;
+    }
+
+    public void setNodo6_1RO(boolean nodo6_1RO) {
+        this.nodo6_1RO = nodo6_1RO;
+    }
+
+    public boolean isNodo7_1RO() {
+        return nodo7_1RO;
+    }
+
+    public void setNodo7_1RO(boolean nodo7_1RO) {
+        this.nodo7_1RO = nodo7_1RO;
+    }
+
+    public boolean isNodo8_1RO() {
+        return nodo8_1RO;
+    }
+
+    public void setNodo8_1RO(boolean nodo8_1RO) {
+        this.nodo8_1RO = nodo8_1RO;
+    }
+
+    public boolean isNodo9_1RO() {
+        return nodo9_1RO;
+    }
+
+    public void setNodo9_1RO(boolean nodo9_1RO) {
+        this.nodo9_1RO = nodo9_1RO;
+    }
+
+    public boolean isNodo10_1RO() {
+        return nodo10_1RO;
+    }
+
+    public void setNodo10_1RO(boolean nodo10_1RO) {
+        this.nodo10_1RO = nodo10_1RO;
+    }
+
+    public boolean isNodo11_1RO() {
+        return nodo11_1RO;
+    }
+
+    public void setNodo11_1RO(boolean nodo11_1RO) {
+        this.nodo11_1RO = nodo11_1RO;
+    }
+
+    public boolean isNodo12_1RO() {
+        return nodo12_1RO;
+    }
+
+    public void setNodo12_1RO(boolean nodo12_1RO) {
+        this.nodo12_1RO = nodo12_1RO;
+    }
+
+    public boolean isNodo13_1RO() {
+        return nodo13_1RO;
+    }
+
+    public void setNodo13_1RO(boolean nodo13_1RO) {
+        this.nodo13_1RO = nodo13_1RO;
+    }
+
+    public boolean isNodo14_1RO() {
+        return nodo14_1RO;
+    }
+
+    public void setNodo14_1RO(boolean nodo14_1RO) {
+        this.nodo14_1RO = nodo14_1RO;
+    }
+
+    public boolean isNodo15_1RO() {
+        return nodo15_1RO;
+    }
+
+    public void setNodo15_1RO(boolean nodo15_1RO) {
+        this.nodo15_1RO = nodo15_1RO;
+    }
+
+    public boolean isNodo16_1RO() {
+        return nodo16_1RO;
+    }
+
+    public void setNodo16_1RO(boolean nodo16_1RO) {
+        this.nodo16_1RO = nodo16_1RO;
+    }
+
     public Operandos getOperandoSeleccionado() {
         return operandoSeleccionado;
     }
@@ -2166,6 +2771,22 @@ public class ControlHistoriaFormula implements Serializable {
 
     public void setEditarEstructura(EstructurasFormulas editarEstructura) {
         this.editarEstructura = editarEstructura;
+    }
+
+    public boolean isVisibilidadBtnP() {
+        return visibilidadBtnP;
+    }
+
+    public void setVisibilidadBtnP(boolean visibilidadBtnP) {
+        this.visibilidadBtnP = visibilidadBtnP;
+    }
+
+    public boolean isVisibilidadBtnS() {
+        return visibilidadBtnS;
+    }
+
+    public void setVisibilidadBtnS(boolean visibilidadBtnS) {
+        this.visibilidadBtnS = visibilidadBtnS;
     }
 
 }
