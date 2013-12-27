@@ -51,29 +51,19 @@ public class CentrosCostos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
     @Column(name = "CODIGO")
     private String codigo;
-    @Size(max = 1)
     @Column(name = "MANOOBRA")
     private String manoobra;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 1)
     @Column(name = "COMODIN")
     private String comodin;
-    @Size(max = 15)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
-    @Size(max = 1)
     @Column(name = "OBSOLETO")
     private String obsoleto;
-    @Size(max = 20)
     @Column(name = "CODIGOCTT")
     private String codigoctt;
     @Column(name = "DIMENSIONES")
@@ -97,6 +87,10 @@ public class CentrosCostos implements Serializable {
     private Collection<ProcesosProductivos> procesosproductivosCollection;
     @Transient
     private String codigoNombre;
+    @Transient
+    private String variableManoObra;
+    @Transient
+    private String variableObsoleto;
 
     public CentrosCostos() {
     }
@@ -322,4 +316,41 @@ public class CentrosCostos implements Serializable {
         this.novedadesCollection1 = novedadesCollection1;
     }
 
+    public String getVariableManoObra() {
+        if (variableManoObra == null) {
+            if (manoobra == null) {
+                variableManoObra = " ";
+            } else {
+                if (manoobra.equalsIgnoreCase("D")) {
+                    variableManoObra = "DIRECTA";
+                } else if (manoobra.equalsIgnoreCase("I")) {
+                    variableManoObra = "INDIRECTA";
+                }
+            }
+        }
+        return variableManoObra;
+    }
+
+    public void setVariableManoObra(String variableManoObra) {
+        this.variableManoObra = variableManoObra;
+    }
+
+    public String getVariableObsoleto() {
+        if (variableObsoleto == null) {
+            if (obsoleto == null) {
+                variableObsoleto = " ";
+            } else {
+                if (obsoleto.equalsIgnoreCase("S")) {
+                    variableObsoleto = "SI";
+                } else if (obsoleto.equalsIgnoreCase("N")) {
+                    variableObsoleto = "NO";
+                }
+            }
+        }
+        return variableObsoleto;
+    }
+
+    public void setVariableObsoleto(String variableObsoleto) {
+        this.variableObsoleto = variableObsoleto;
+    }
 }
