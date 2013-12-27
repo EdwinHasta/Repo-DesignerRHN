@@ -16,6 +16,7 @@ import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarNovedadesConceptosInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.UnknownHostException;
@@ -38,7 +39,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlNovedadesConceptos {
+public class ControlNovedadesConceptos implements Serializable {
 
     @EJB
     AdministrarNovedadesConceptosInterface administrarNovedadesConceptos;
@@ -904,12 +905,12 @@ public class ControlNovedadesConceptos {
             pasa++;
         }
 
-        if (nuevaNovedad.getEmpleado().getCodigoempleadoSTR().equals("0")) {
+        if (nuevaNovedad.getEmpleado().getCodigoempleado().equals(BigInteger.valueOf(0))) {
             mensajeValidacion = mensajeValidacion + " * Empleado\n";
             pasa++;
         }
 
-        if (nuevaNovedad.getFormula().getNombrelargo() == null) {
+        if (nuevaNovedad.getFormula().getNombrelargo().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " * Formula\n";
             pasa++;
         }
@@ -923,16 +924,19 @@ public class ControlNovedadesConceptos {
             pasa++;
         }
 
-        for (int i = 0; i < listaEmpleados.size(); i++) {
-            if (nuevaNovedad.getEmpleado().getSecuencia().compareTo(listaEmpleados.get(i).getSecuencia()) == 0) {
+        if (nuevaNovedad.getEmpleado() != null && pasa==0) {
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                if (nuevaNovedad.getEmpleado().getSecuencia().compareTo(listaEmpleados.get(i).getSecuencia()) == 0) {
 
-                if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getEmpleado().getFechacreacion()) < 0) {
-                    context.update("formularioDialogos:inconsistencia");
-                    context.execute("inconsistencia.show()");
-                    pasa2++;
+                    if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getEmpleado().getFechacreacion()) < 0) {
+                        context.update("formularioDialogos:inconsistencia");
+                        context.execute("inconsistencia.show()");
+                        pasa2++;
+                    }
                 }
             }
         }
+
         if (nuevaNovedad.getFechafinal() != null) {
             if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getFechafinal()) > 0) {
                 context.update("formularioDialogos:fechas");
@@ -1146,9 +1150,9 @@ public class ControlNovedadesConceptos {
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            nCEmpleadoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoCodigo");
+            nCEmpleadoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCEmpleadoCodigo");
             nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nCEmpleadoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoDescripcion");
+            nCEmpleadoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCEmpleadoNombre");
             nCEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
             nCFechasInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasInicial");
             nCFechasInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -1700,6 +1704,7 @@ public class ControlNovedadesConceptos {
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
+        seleccionMostrar=listaConceptosNovedad.get(0);
         index = -1;
         secRegistro = null;
 //        k = 0;
@@ -1709,6 +1714,7 @@ public class ControlNovedadesConceptos {
         resultado = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosNovedadesConcepto");
+        context.update("form:datosConceptos");
     }
 
     public void salir() {

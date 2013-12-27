@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.validator.FacesValidator;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.executable.ExecutableValidator;
 import javax.validation.metadata.BeanDescriptor;
 
 @ManagedBean
@@ -38,5 +39,4 @@ public class Validar implements Validator {
     public <T> T unwrap(Class<T> arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }
