@@ -38,9 +38,11 @@ public class ControlHistoriaFormula implements Serializable {
     //////////////Formulas//////////////////
     private Formulas formulaActual;
     ///////////Formulascontratos////////////
+    
     private List<Historiasformulas> listHistoriasFormulas;
     private List<Historiasformulas> filtrarListHistoriasFormulas;
     ///////////Formulascontratos/////////////
+     
     private int banderaHistoriasFormulas;
     private int indexHistoriasFormulas, indexAuxHistoriasFormulas;
     private List<Historiasformulas> listHistoriasFormulasModificar;
