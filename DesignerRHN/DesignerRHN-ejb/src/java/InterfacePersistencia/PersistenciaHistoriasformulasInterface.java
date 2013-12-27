@@ -37,4 +37,5 @@ public interface PersistenciaHistoriasformulasInterface {
     public Historiasformulas buscarHistoriaformula(BigInteger secuencia);
 
     public List<Historiasformulas> historiasFormulasParaFormulaSecuencia(BigInteger secuencia);
+    
 }

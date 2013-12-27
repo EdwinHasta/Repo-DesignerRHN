@@ -106,6 +106,11 @@ public class ControlRemoto implements Serializable {
     private String pago;
     //ALTO TABLAS (PESTAÑA DESIGNER)
     private String altoModulos, altoTablas;
+    //Buscar Tablas LOV
+    private List<Tablas> listTablasLOV;
+    private List<Tablas> filtradoListTablasLOV;
+    private Tablas seleccionTablaLOV;
+    private boolean buscarTablasLOV, mostrarTodasTablas;
 
     public ControlRemoto() {
         vwActualesCargos = new VWActualesCargos();
@@ -149,6 +154,8 @@ public class ControlRemoto implements Serializable {
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
         altoModulos = "93";
         altoTablas = "200";
+        buscarTablasLOV = true;
+        mostrarTodasTablas = true;
     }
 
     public void datosIniciales(int pestaña) {
@@ -549,7 +556,7 @@ public class ControlRemoto implements Serializable {
             moduloNombre.setFilterStyle("");
             moduloObs = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloObs");
             moduloObs.setFilterStyle("");
-            altoModulos ="70";
+            altoModulos = "70";
             context.update("form:tabMenu:data1");
         }
     }
@@ -595,16 +602,22 @@ public class ControlRemoto implements Serializable {
     public void cambiarTablas() {
         secuenciaMod = selectModulo.getSecuencia();
         listTablas = administrarCarpetaDesigner.ConsultarTablas(secuenciaMod);
+        if (listTablas != null && !listTablas.isEmpty()) {
+            buscarTablasLOV = false;
+        } else {
+            buscarTablasLOV = true;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tablaExportar.equals("Tablas")) {
             tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
             tablasNombre.setFilterStyle("display: none; visibility: hidden;");
             tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
             tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext context = RequestContext.getCurrentInstance();
             context.execute("tabl.clearFilters()");
             altoTablas = "200";
             context.update("form:tabMenu:Tablas");
         }
+        context.update("form:tabMenu:buscarTablas");
         tablaExportar = "data1";
         nombreArchivo = "Modulos";
         filterListTablas = null;
@@ -646,12 +659,20 @@ public class ControlRemoto implements Serializable {
     }
 
     public Modulos getSelectModulo() {
-
         if (selectModulo == null) {
-            listModulos = administrarCarpetaDesigner.ConsultarModulos();
-            selectModulo = listModulos.get(0);
-            secuenciaMod = selectModulo.getSecuencia();
-            listTablas = administrarCarpetaDesigner.ConsultarTablas(secuenciaMod);
+            if (listModulos == null) {
+                getListModulos();
+            }
+            if (listModulos != null && !listModulos.isEmpty()) {
+                selectModulo = listModulos.get(0);
+                secuenciaMod = selectModulo.getSecuencia();
+                listTablas = administrarCarpetaDesigner.ConsultarTablas(secuenciaMod);
+                if (listTablas != null && !listTablas.isEmpty()) {
+                    buscarTablasLOV = false;
+                }
+            } else {
+                listTablas = null;
+            }
             return selectModulo;
         } else {
             return selectModulo;
@@ -989,7 +1010,31 @@ public class ControlRemoto implements Serializable {
     public String getNombreArchivo() {
         return nombreArchivo;
     }
-    
+
+    public List<Tablas> getListTablasLOV() {
+        return listTablasLOV;
+    }
+
+    public void setListTablasLOV(List<Tablas> listTablasLOV) {
+        this.listTablasLOV = listTablasLOV;
+    }
+
+    public List<Tablas> getFiltradoListTablasLOV() {
+        return filtradoListTablasLOV;
+    }
+
+    public void setFiltradoListTablasLOV(List<Tablas> filtradoListTablasLOV) {
+        this.filtradoListTablasLOV = filtradoListTablasLOV;
+    }
+
+    public Tablas getSeleccionTablaLOV() {
+        return seleccionTablaLOV;
+    }
+
+    public void setSeleccionTablaLOV(Tablas seleccionTablaLOV) {
+        this.seleccionTablaLOV = seleccionTablaLOV;
+    }
+
     public String getFotoEmpleado() {
         persona = administrarCarpetaPersonal.buscarFotoPersona(identificacion);
         if (persona.getPathfoto() == null || persona.getPathfoto().equalsIgnoreCase("N")) {
@@ -1056,5 +1101,63 @@ public class ControlRemoto implements Serializable {
             context.update("form:tabMenu:tipoPago");
             context.update("form:tabMenu:mensajePago");
         }
+    }
+
+    public void buscarTablas() {
+        if (selectModulo != null) {
+            listTablasLOV = administrarCarpetaDesigner.ConsultarTablas(selectModulo.getSecuencia());
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:buscarTablasDialogo");
+            context.execute("buscarTablasDialogo.show()");
+        }
+    }
+
+    public void seleccionTabla() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
+        tablasNombre.setFilterStyle("display: none; visibility: hidden;");
+        tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
+        tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
+        context.execute("tabl.clearFilters()");
+        altoTablas = "200";
+        filtradoListTablasLOV = null;
+        tablaExportar = "data1";
+        nombreArchivo = "Modulos";
+        listTablas.clear();
+        listTablas.add(seleccionTablaLOV);
+        mostrarTodasTablas = false;
+        context.update("form:tabMenu:Tablas");
+        context.update("form:mostrarTodasTablas");
+        filtradoListTablasLOV = null;
+        seleccionTablaLOV = null;
+        buscar = true;
+        context.reset("form:lovTablas:globalFilter");
+        context.update("form:lovTablas");
+        context.update("form:mostrarTodasTablas");
+        context.execute("buscarTablasDialogo.hide()");
+    }
+
+    public void cancelarSeleccionTabla() {
+        filtradoListTablasLOV = null;
+        seleccionTablaLOV = null;
+        buscar = true;
+    }
+
+    public void mostrarTodo_Tablas() {
+        listTablas.clear();
+        listTablas = administrarCarpetaDesigner.ConsultarTablas(selectModulo.getSecuencia());
+        System.out.println("Tamaño: " + listTablas.size());
+        mostrarTodasTablas = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabMenu:Tablas");
+        context.update("form:mostrarTodasTablas");
+    }
+
+    public boolean isBuscarTablasLOV() {
+        return buscarTablasLOV;
+    }
+
+    public boolean isMostrarTodasTablas() {
+        return mostrarTodasTablas;
     }
 }

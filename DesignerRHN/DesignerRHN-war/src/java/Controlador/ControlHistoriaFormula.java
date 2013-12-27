@@ -1,5 +1,6 @@
 package Controlador;
 
+import Entidades.EstructurasFormulas;
 import Entidades.Formulas;
 import Entidades.Historiasformulas;
 import Entidades.Nodos;
@@ -95,8 +96,21 @@ public class ControlHistoriaFormula implements Serializable {
     private boolean cambiosNodos;
     private List<Nodos> listNodosParaExportar;
     private Nodos editarNodo;
+    //////////EstructurasFormulas ///////////////
+    private List<EstructurasFormulas> listEstructurasFormulas;
+    private List<EstructurasFormulas> filtrarListEstructurasFormulas;
+    private String auxEF_Formula, auxEF_Descripcion;
+    private BigInteger auxEF_IdFormula, auxEF_IdHijo;
+    private int indexEstructuraFormula, celdaEstructuraFormula;
+    private EstructurasFormulas seleccionEstructuraF;
+    private EstructurasFormulas editarEstructura;
 
     public ControlHistoriaFormula() {
+        editarEstructura = new EstructurasFormulas();
+        seleccionEstructuraF = new EstructurasFormulas();
+        indexEstructuraFormula = -1;
+        celdaEstructuraFormula = -1;
+        listEstructurasFormulas = null;
         editarNodo = new Nodos();
         listNodosCrear = new ArrayList<Nodos>();
         listNodosBorrar = new ArrayList<Nodos>();
@@ -176,13 +190,17 @@ public class ControlHistoriaFormula implements Serializable {
     public void recibirFormula(BigInteger secuencia) {
         formulaActual = administrarHistoriaFormula.actualFormula(secuencia);
         listHistoriasFormulas = null;
+        listEstructurasFormulas = null;
         indexHistoriasFormulas = 0;
         indexAuxHistoriasFormulas = 0;
-        System.out.println("formulaActual : " + formulaActual.getSecuencia());
         getListHistoriasFormulas();
         getListNodosHistoriaFormula();
         cargarDatosParaNodos();
+        getListEstructurasFormulas();
         listNodosParaExportar = null;
+        if (!listEstructurasFormulas.isEmpty()) {
+            seleccionEstructuraF = listEstructurasFormulas.get(0);
+        }
     }
 
     public void modificarHistoriaFormula(int indice) {
@@ -253,8 +271,14 @@ public class ControlHistoriaFormula implements Serializable {
             fechaFin = listHistoriasFormulas.get(indexHistoriasFormulas).getFechafinal();
             observacion = listHistoriasFormulas.get(indexHistoriasFormulas).getObservaciones();
             listNodosParaExportar = null;
+            listEstructurasFormulas = null;
+            getListEstructurasFormulas();
             cargarDatosParaNodos();
             indexNodoSeleecionado = -1;
+            indexEstructuraFormula = -1;
+            if (!listEstructurasFormulas.isEmpty()) {
+                seleccionEstructuraF = listEstructurasFormulas.get(0);
+            }
         }
     }
 
@@ -296,7 +320,6 @@ public class ControlHistoriaFormula implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosHistoriaFormula");
             } else {
-                System.out.println("Error de fechas de ingreso");
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaHistoriasFormulas == 0) {
                     listHistoriasFormulas.get(indexHistoriasFormulas).setFechainicial(fechaIni);
@@ -355,13 +378,14 @@ public class ControlHistoriaFormula implements Serializable {
             listHistoriasFormulasModificar.clear();
         }
         listHistoriasFormulas = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosHistoriaFormula");
-        context.update("form:growl");
         k = 0;
         indexHistoriasFormulas = -1;
         secRegistroHistoriaFormula = null;
         cambiosHistoriaFormula = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosHistoriaFormula");
+        context.update("form:growl");
+
     }
 
     public void guardarCambiosNodos() {
@@ -491,6 +515,28 @@ public class ControlHistoriaFormula implements Serializable {
             indexNodoSeleecionado = -1;
             secuenciaRegistroNodos = null;
         }
+        if (indexEstructuraFormula >= 0) {
+            editarEstructura = listEstructurasFormulas.get(indexEstructuraFormula);
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (celdaEstructuraFormula == 0) {
+                context.update("formularioDialogos:editarFormulaEFD");
+                context.execute("editarFormulaEFD.show()");
+                celdaEstructuraFormula = -1;
+            } else if (celdaEstructuraFormula == 1) {
+                context.update("formularioDialogos:editarDescripcionEFD");
+                context.execute("editarDescripcionEFD.show()");
+                celdaEstructuraFormula = -1;
+            } else if (celdaEstructuraFormula == 2) {
+                context.update("formularioDialogos:editarIdFormulaEFD");
+                context.execute("editarIdFormulaEFD.show()");
+                celdaEstructuraFormula = -1;
+            } else if (celdaEstructuraFormula == 3) {
+                context.update("formularioDialogos:editarIdHijoEFD");
+                context.execute("editarIdHijoEFD.show()");
+                celdaEstructuraFormula = -1;
+            }
+            indexEstructuraFormula = -1;
+        }
     }
 
     public void ingresoNuevoRegistro() {
@@ -514,6 +560,9 @@ public class ControlHistoriaFormula implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorDuplicarNodo.show()");
             indexNodoSeleecionado = -1;
+        } else if (indexEstructuraFormula >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorDuplicarNodo.show()");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("seleccionarRegistro.show()");
@@ -525,6 +574,9 @@ public class ControlHistoriaFormula implements Serializable {
             borrarHistoriaFormula();
         } else if (indexNodoSeleecionado >= 0) {
             borrarNodo();
+        } else if (indexEstructuraFormula >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorEliminarEF.show()");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("seleccionarRegistro.show()");
@@ -791,7 +843,6 @@ public class ControlHistoriaFormula implements Serializable {
             filtrarListHistoriasFormulas = null;
             tipoListaHistoriasFormulas = 0;
         }
-
         listHistoriasFormulasBorrar.clear();
         listHistoriasFormulasCrear.clear();
         listHistoriasFormulasModificar.clear();
@@ -814,6 +865,7 @@ public class ControlHistoriaFormula implements Serializable {
         secuenciaRegistroNodos = null;
         aceptar = true;
         listNodosParaExportar = null;
+        listEstructurasFormulas = null;
     }
 
     public void activarAceptar() {
@@ -831,7 +883,11 @@ public class ControlHistoriaFormula implements Serializable {
         }
         if (indexNodoSeleecionado >= 0) {
             nombreTabla = ":formExportarNodos:datosNodosExportar";
-            nombreXML = "GenerarFormulaXML";
+            nombreXML = "GenerarFormula_XML";
+        }
+        if (indexEstructuraFormula >= 0) {
+            nombreTabla = ":formExportarEstructura:datosEstructuraExportar";
+            nombreXML = "EstructuraFormula_XML";
         }
         return nombreTabla;
     }
@@ -854,6 +910,12 @@ public class ControlHistoriaFormula implements Serializable {
             exportPDF_Tabla();
             indexNodoSeleecionado = -1;
             secuenciaRegistroNodos = null;
+        }
+        if (indexEstructuraFormula >= 0) {
+            nombreTabla = ":formExportarEstructura:datosEstructuraExportar";
+            nombreExportar = "EstructuraFormula_PDF";
+            exportPDF_Tabla();
+            indexEstructuraFormula = -1;
         }
     }
 
@@ -891,6 +953,12 @@ public class ControlHistoriaFormula implements Serializable {
             indexNodoSeleecionado = -1;
             secuenciaRegistroNodos = null;
         }
+        if (indexEstructuraFormula >= 0) {
+            nombreTabla = ":formExportarEstructura:datosEstructuraExportar";
+            nombreExportar = "EstructuraFormula_PDF";
+            exportXLS_Tabla();
+            indexEstructuraFormula = -1;
+        }
     }
 
     /**
@@ -925,6 +993,11 @@ public class ControlHistoriaFormula implements Serializable {
         if (indexNodoSeleecionado >= 0) {
             verificarRastroNodos();
             indexNodoSeleecionado = -1;
+        }
+        if (indexEstructuraFormula >= 0) {
+            indexEstructuraFormula = -1;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorTablaSinRastro.show()");
         }
 
     }
@@ -1050,6 +1123,7 @@ public class ControlHistoriaFormula implements Serializable {
         indexNodoSeleecionado = i;
         secuenciaRegistroNodos = listNodosHistoriaFormula.get(indexNodoSeleecionado).getSecuencia();
         indexHistoriasFormulas = -1;
+        indexEstructuraFormula = -1;
         if (listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperador().getSecuencia() != null) {
             auxNodoSeleccionado = listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperador().getSigno();
         }
@@ -1063,7 +1137,6 @@ public class ControlHistoriaFormula implements Serializable {
         limpiarIformacionNodo();
         RequestContext context = RequestContext.getCurrentInstance();
         int tam = listNodosHistoriaFormula.size();
-        System.out.println("Valor tam : " + tam);
         int aux = 0;
         while (aux < tam) {
             if (aux == 0) {
@@ -1268,6 +1341,7 @@ public class ControlHistoriaFormula implements Serializable {
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperandoDialogo");
+        indexNodoSeleecionado=-1;
     }
 
     public void cancelarCambioOperando() {
@@ -1276,6 +1350,7 @@ public class ControlHistoriaFormula implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperandoDialogo");
         aceptar = true;
+        indexNodoSeleecionado=-1;
     }
 
     public void actualizarOperador() {
@@ -1300,6 +1375,7 @@ public class ControlHistoriaFormula implements Serializable {
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperadorDialogo");
+        indexNodoSeleecionado=-1;
     }
 
     public void cancelarCambioOperador() {
@@ -1308,6 +1384,7 @@ public class ControlHistoriaFormula implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:OperadorDialogo");
         aceptar = true;
+        indexNodoSeleecionado=-1;
     }
 
     public void modificacionesCambiosNodos(int indice, int tipoCambio) {
@@ -1422,6 +1499,53 @@ public class ControlHistoriaFormula implements Serializable {
             listNodosParaExportar = null;
             cargarDatosParaNodos();
         }
+    }
+
+    public void cambiarIndiceEstructuraFormula(int indice, int celda) {
+        indexEstructuraFormula = indice;
+        celdaEstructuraFormula = celda;
+        auxEF_Descripcion = listEstructurasFormulas.get(indexEstructuraFormula).getDescripcion();
+        auxEF_Formula = listEstructurasFormulas.get(indexEstructuraFormula).getNombreNodo();
+        auxEF_IdFormula = listEstructurasFormulas.get(indexEstructuraFormula).getFormula();
+        auxEF_IdHijo = listEstructurasFormulas.get(indexEstructuraFormula).getFormulaHijo();
+        indexNodoSeleecionado = -1;
+        indexHistoriasFormulas = -1;
+
+    }
+
+    public void modificaEstructuraFormula(int indice) {
+        listEstructurasFormulas.get(indice).setDescripcion(auxEF_Descripcion);
+        listEstructurasFormulas.get(indice).setNombreNodo(auxEF_Formula);
+        listEstructurasFormulas.get(indice).setFormula(auxEF_IdFormula);
+        listEstructurasFormulas.get(indice).setFormulaHijo(auxEF_IdHijo);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosEstructuraFormula");
+        context.execute("errorModificacionEF.show()");
+    }
+
+    public void obtenerNivelAutomatico() {
+        int nivel = listEstructurasFormulas.get(indexEstructuraFormula).getNivel();
+        int aux = indexEstructuraFormula + 1;
+        boolean encontroNivel = false;
+        for (int i = aux; i < listEstructurasFormulas.size(); i++) {
+            if (listEstructurasFormulas.get(i).getNivel() == nivel) {
+                encontroNivel = true;
+                indexEstructuraFormula = i;
+                break;
+            }
+        }
+        if (encontroNivel == false) {
+            setSeleccionEstructuraF(listEstructurasFormulas.get(indexEstructuraFormula));
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosEstructuraFormula");
+
+        }
+        if (encontroNivel == true) {
+            setSeleccionEstructuraF(listEstructurasFormulas.get(indexEstructuraFormula));
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosEstructuraFormula");
+        }
+
     }
 
     //GET - SET 
@@ -1998,6 +2122,50 @@ public class ControlHistoriaFormula implements Serializable {
 
     public void setBackUpSecuenciaRegistroNodo(BigInteger backUpSecuenciaRegistroNodo) {
         this.backUpSecuenciaRegistroNodo = backUpSecuenciaRegistroNodo;
+    }
+
+    public List<EstructurasFormulas> getListEstructurasFormulas() {
+        if (listEstructurasFormulas == null) {
+            listEstructurasFormulas = administrarHistoriaFormula.listEstructurasFormulasParaHistoriaFormula(listHistoriasFormulas.get(indexAuxHistoriasFormulas).getSecuencia());
+        }
+        if (!listEstructurasFormulas.isEmpty()) {
+            for (int i = 0; i < listEstructurasFormulas.size(); i++) {
+                if (listEstructurasFormulas.get(i).getDescripcion() != null) {
+                    String aux = listEstructurasFormulas.get(i).getDescripcion().toUpperCase();
+                    listEstructurasFormulas.get(i).setDescripcion(aux);
+                }
+            }
+        }
+
+        return listEstructurasFormulas;
+    }
+
+    public void setListEstructurasFormulas(List<EstructurasFormulas> listEstructurasFormulas) {
+        this.listEstructurasFormulas = listEstructurasFormulas;
+    }
+
+    public List<EstructurasFormulas> getFiltrarListEstructurasFormulas() {
+        return filtrarListEstructurasFormulas;
+    }
+
+    public void setFiltrarListEstructurasFormulas(List<EstructurasFormulas> filtrarListEstructurasFormulas) {
+        this.filtrarListEstructurasFormulas = filtrarListEstructurasFormulas;
+    }
+
+    public EstructurasFormulas getSeleccionEstructuraF() {
+        return seleccionEstructuraF;
+    }
+
+    public void setSeleccionEstructuraF(EstructurasFormulas seleccionEstructuraF) {
+        this.seleccionEstructuraF = seleccionEstructuraF;
+    }
+
+    public EstructurasFormulas getEditarEstructura() {
+        return editarEstructura;
+    }
+
+    public void setEditarEstructura(EstructurasFormulas editarEstructura) {
+        this.editarEstructura = editarEstructura;
     }
 
 }

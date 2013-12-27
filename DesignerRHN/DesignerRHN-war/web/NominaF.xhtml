@@ -612,7 +612,7 @@
 
                             <p:tab title="#{msg['designer']}" id="Designer">
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 35px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta'] }#{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta'] } #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
                                 <h:commandLink  style="position: absolute; left: 805px; top: 65px">  
                                     <p:graphicImage value="Imagenes/excel.png"  width="30" height="30"/>  
@@ -630,7 +630,7 @@
                                 </h:commandLink>
                                 <p:commandButton id="AcercaDe" value=" " style="position: absolute; width: 130px; height: 130px; background-image: url(Imagenes/b_designer.gif); background-repeat: no-repeat; background-size: 100% 100%;"/>
 
-                                <fieldset id="contModulos"  style="position:absolute; width:610px; border-radius: 10px; left: 160px; top: 43px; height: 130px">
+                                <fieldset id="contModulos"  style="position:absolute; width:610px; border-radius: 10px; left: 160px; top: 46px; height: 130px">
                                     <legend style="color: blue; ;"><strong>#{msg['modulos']}</strong></legend>
 
                                     <p:dataTable id="data1" var="modulo"  value="#{controlRemoto.listModulos}"
@@ -699,11 +699,12 @@
                                     </p:dataTable>
                                 </fieldset>
 
+                                <p:commandButton id="buscarTablas" value="#{msg['buscarTabla']}" icon="ui-icon-search" style="position: absolute; top: 443px; left: 600px; width: 120px" actionListener="#{controlRemoto.buscarTablas()}" disabled="#{controlRemoto.buscarTablasLOV}"/>
+                                <p:commandButton id="mostrarTodasTablas" value="#{msg['mostrarTodos']}" style="position: absolute; top: 443px; left: 720px; width: 120px" disabled="#{controlRemoto.mostrarTodasTablas}" actionListener="#{controlRemoto.mostrarTodo_Tablas()}"/>
+                                
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
-
                                 <h:outputText style="position: absolute; top: 473px; left: 85px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
-
                             </p:tab>
                         </p:tabView>  
                     </p:panel>
@@ -802,6 +803,38 @@
                         </p:commandButton>
                     </p:dialog>
 
+                    <!-- LOV TABLAS-->
+                    <p:dialog header="#{msg['buscarTabla']}" widgetVar="buscarTablasDialogo" draggable="false" resizable="false" closable="false" id="buscarTablasDialogo"  
+                              showEffect="fade" hideEffect="fade" width="541" modal="true">
+                        <p:dataTable id="lovTablas" style="width: 510px" var="tabla" value="#{controlRemoto.listTablasLOV}" rowKey="#{tabla.secuencia}"
+                                     selection="#{controlRemoto.seleccionTablaLOV}" selectionMode="single" widgetVar="lovTablas" scrollable="true" scrollWidth="527" scrollHeight="250"
+                                     filteredValue="#{controlRemoto.filtradoListTablasLOV}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}" update=":form:aceptarT"/>
+                            <p:ajax event="rowDblselect" listener="#{controlRemoto.seleccionTabla()}" process="@this" onstart="lovTablas.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTablas.filter();" style="width:200px; position: relative; left: -50px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tabla.nombre}" sortBy="#{tabla.nombre}" filterMatchMode="contains" filterStyle="width: 150px">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['nombre']}" />
+                                </f:facet>
+                                <h:outputText  value="#{tabla.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{tabla.descripcion}" sortBy="#{tabla.descripcion}" filterMatchMode="contains" filterStyle="width: 150px">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['descripcion']}" />
+                                </f:facet>
+                                <h:outputText  value="#{tabla.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarT" style="position: relative; left: 400px" value="#{msg['aceptar']}" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}" update="aceptarT" process="@this">
+                            <p:resetInput target=":form:lovTablas:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasF" style="position: relative; left: 400px" value="#{msg['atras']}" onclick="buscarTablasDialogo.hide(), lovTablas.clearFilters();" actionListener="#{controlRemoto.cancelarSeleccionTabla()}" update="lovTablas, aceptarT" process="@this">
+                            <p:resetInput target=":form:lovTablas:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlRemoto.lab()}"/> 
                     <p:hotkey bind="ctrl+f12" actionListener="#{controlRemoto.lab2()}"/> 
                 </h:form>
