@@ -5,6 +5,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.EstructurasFormulas;
 import Entidades.Formulas;
 import Entidades.Historiasformulas;
 import Entidades.Nodos;
@@ -40,5 +41,7 @@ public interface AdministrarHistoriaFormulaInterface {
     public List<Operadores> listOperadores();
 
     public List<Operandos> listOperandos();
+
+    public List<EstructurasFormulas> listEstructurasFormulasParaHistoriaFormula(BigInteger secuencia);
 
 }

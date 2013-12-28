@@ -1,11 +1,13 @@
 package Administrar;
 
+import Entidades.EstructurasFormulas;
 import Entidades.Formulas;
 import Entidades.Historiasformulas;
 import Entidades.Nodos;
 import Entidades.Operadores;
 import Entidades.Operandos;
 import InterfaceAdministrar.AdministrarHistoriaFormulaInterface;
+import InterfacePersistencia.PersistenciaEstructurasFormulasInterface;
 import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaHistoriasformulasInterface;
 import InterfacePersistencia.PersistenciaNodosInterface;
@@ -33,6 +35,8 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     PersistenciaOperandosInterface persistenciaOperandos;
     @EJB
     PersistenciaOperadoresInterface persistenciaOperadores;
+    @EJB
+    PersistenciaEstructurasFormulasInterface persistenciaEstructurasFormulas;
 
     @Override
     public List<Historiasformulas> listHistoriasFormulasParaFormula(BigInteger secuencia) {
@@ -166,6 +170,17 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
             return lista;
         } catch (Exception e) {
             System.out.println("Error listOperandos  Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<EstructurasFormulas> listEstructurasFormulasParaHistoriaFormula(BigInteger secuencia) {
+        try {
+            List<EstructurasFormulas> lista = persistenciaEstructurasFormulas.estructurasFormulasParaHistoriaFormula(secuencia);
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error listEstructurasFormulasParaHistoriaFormula Admi : " + e.toString());
             return null;
         }
     }
