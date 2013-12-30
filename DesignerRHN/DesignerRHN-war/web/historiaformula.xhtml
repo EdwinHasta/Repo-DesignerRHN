@@ -200,8 +200,8 @@
                                     <p:ajax event="change" process="@this" listener="#{controlHistoriaFormula.modificacionesAutoCompletarNodos(15,controlHistoriaFormula.nodo16)}"/>
                                 </p:inputText>
 
-                                <p:commandButton value="" icon="ui-icon-arrow-1-w"  style="position: absolute; top: 20px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnP}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(1)}" process="@this"/>
-                                <p:commandButton value="" icon="ui-icon-arrow-1-e"  style="position: absolute; top: 40px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnS}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(2)}" process="@this"/>
+                                <p:commandButton value="" icon="ui-icon-arrow-1-w"  style="position: absolute; top: 40px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnP}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(1)}" process="@this"/>
+                                <p:commandButton value="" icon="ui-icon-arrow-1-e"  style="position: absolute; top: 20px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnS}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(2)}" process="@this"/>
 
                                 <p:inputTextarea style="position: absolute; top: 30px; left: 1px;width: 790px;height: 40px; text-align: left; font-size: 10px; " value="#{controlHistoriaFormula.formulaCompleta}"  autoResize="false" readonly="true" id="formulaComplete" />
                             </p:scrollPanel>
@@ -288,8 +288,8 @@
                                     <p:ajax event="change" process="@this" listener="#{controlHistoriaFormula.modificacionesAutoCompletarNodos(31,controlHistoriaFormula.nodo16_1)}"/>
                                 </p:inputText>
 
-                                <p:commandButton value="" icon="ui-icon-arrow-1-w"  style="position: absolute; top: 20px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnP}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(1)}" process="@this"/>
-                                <p:commandButton value="" icon="ui-icon-arrow-1-e"  style="position: absolute; top: 40px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnS}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(2)}" process="@this"/>
+                                <p:commandButton value="" icon="ui-icon-arrow-1-w"  style="position: absolute; top: 40px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnP}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(1)}" process="@this"/>
+                                <p:commandButton value="" icon="ui-icon-arrow-1-e"  style="position: absolute; top: 20px; left: 801px; height: 18px; width: 24px;text-align: left" disabled="#{controlHistoriaFormula.visibilidadBtnS}" actionListener="#{controlHistoriaFormula.cambiarVisibilidadPaneles(2)}" process="@this"/>
 
                                 <p:inputTextarea style="position: absolute; top: 30px; left: 1px;width: 790px;height: 40px; text-align: left; font-size: 10px; " value="#{controlHistoriaFormula.formulaCompleta}"  autoResize="false" readonly="true" id="formulaCompleteS" />
 
@@ -442,7 +442,7 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlHistoriaFormula.guardadoGeneral()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();"  style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();"  style="position: absolute; top: 60px; left: 255px" actionListener="#{controlHistoriaFormula.cancelarModificacion()}" process="@this" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
@@ -506,7 +506,7 @@
                         <p:commandButton id="NuevoRegHistoriaFormula" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" actionListener="#{controlHistoriaFormula.validarIngresoNuevaHistoriaFormula()}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
                         <h:outputText value="Generar Formula" style="position: absolute; top: 92px;left: 60px"/>
-                        <p:commandButton id="NuevoregGenerarFormula" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" onclick="NuevoRegistroPagina.hide();" oncomplete="SeleccionRegGenerarFormula.show()" process="@this"/>
+                        <p:commandButton id="NuevoregGenerarFormula" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" onclick="NuevoRegistroPagina.hide();" actionListener="#{controlHistoriaFormula.dispararDialogoNodoNuevo()}" process="@this"/>
 
                         <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="Cancelar" style="position: absolute; top: 137px;left: 280px"/>
                     </p:dialog>
