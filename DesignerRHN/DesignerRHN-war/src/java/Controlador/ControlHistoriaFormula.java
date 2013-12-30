@@ -301,23 +301,31 @@ public class ControlHistoriaFormula implements Serializable {
     }
 
     public void cambiarIndiceHistoriaFormula(int indice, int celda) {
-        if (permitirIndexNodos == true) {
-            cualCeldaHistoriasFormulas = celda;
-            indexHistoriasFormulas = indice;
-            indexAuxHistoriasFormulas = indice;
-            secRegistroHistoriaFormula = listHistoriasFormulas.get(indexHistoriasFormulas).getSecuencia();
-            fechaIni = listHistoriasFormulas.get(indexHistoriasFormulas).getFechainicial();
-            fechaFin = listHistoriasFormulas.get(indexHistoriasFormulas).getFechafinal();
-            observacion = listHistoriasFormulas.get(indexHistoriasFormulas).getObservaciones();
-            listNodosParaExportar = null;
-            listEstructurasFormulas = null;
-            getListEstructurasFormulas();
-            cargarDatosParaNodos();
-            indexNodoSeleecionado = -1;
-            indexEstructuraFormula = -1;
-            if (!listEstructurasFormulas.isEmpty()) {
-                seleccionEstructuraF = listEstructurasFormulas.get(0);
+        if (cambiosNodos == false) {
+            if (permitirIndexNodos == true) {
+                cualCeldaHistoriasFormulas = celda;
+                indexHistoriasFormulas = indice;
+                indexAuxHistoriasFormulas = indice;
+                secRegistroHistoriaFormula = listHistoriasFormulas.get(indexHistoriasFormulas).getSecuencia();
+                fechaIni = listHistoriasFormulas.get(indexHistoriasFormulas).getFechainicial();
+                fechaFin = listHistoriasFormulas.get(indexHistoriasFormulas).getFechafinal();
+                observacion = listHistoriasFormulas.get(indexHistoriasFormulas).getObservaciones();
+                listNodosParaExportar = null;
+                listEstructurasFormulas = null;
+                listNodosHistoriaFormula = null;
+                getListEstructurasFormulas();
+                cargarDatosParaNodos();
+                indexNodoSeleecionado = -1;
+                indexEstructuraFormula = -1;
+                if (!listEstructurasFormulas.isEmpty()) {
+                    seleccionEstructuraF = listEstructurasFormulas.get(0);
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosEstructuraFormula");
             }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
         }
     }
 
@@ -435,10 +443,20 @@ public class ControlHistoriaFormula implements Serializable {
             listNodosBorrar.clear();
         }
         if (!listNodosCrear.isEmpty()) {
+            for (int i = 0; i < listNodosCrear.size(); i++) {
+                int auxIndex = listNodosHistoriaFormula.indexOf(listNodosCrear.get(i));
+                Nodos nodoAux = listNodosHistoriaFormula.get(auxIndex);
+                listNodosCrear.set(i, nodoAux);
+            }
             administrarHistoriaFormula.crearNodos(listNodosCrear);
             listNodosCrear.clear();
         }
         if (!listNodosModificar.isEmpty()) {
+            for (int i = 0; i < listNodosModificar.size(); i++) {
+                int auxIndex = listNodosHistoriaFormula.indexOf(listNodosModificar.get(i));
+                Nodos nodoAux = listNodosHistoriaFormula.get(auxIndex);
+                listNodosModificar.set(i, nodoAux);
+            }
             administrarHistoriaFormula.editarNodos(listNodosModificar);
             listNodosModificar.clear();
         }
@@ -580,8 +598,21 @@ public class ControlHistoriaFormula implements Serializable {
     }
 
     public void ingresoNuevoRegistro() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("NuevoRegistroPagina.show()");
+        int tam1 = listHistoriasFormulas.size();
+        int tam2 = listNodosHistoriaFormula.size();
+        if (tam1 == 0 || tam2 == 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("NuevoRegistroPagina.show()");
+        } else {
+            if (indexHistoriasFormulas >= 0) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("NuevoRegistroHistoria.show()");
+            }
+            if (indexNodoSeleecionado >= 0) {
+                dispararDialogoNodoNuevo();
+            }
+        }
+
     }
 
     public void validarIngresoNuevaHistoriaFormula() {
@@ -1194,15 +1225,20 @@ public class ControlHistoriaFormula implements Serializable {
     }
 
     public void posicionNodo(int i) {
-        indexNodoSeleecionado = i;
-        secuenciaRegistroNodos = listNodosHistoriaFormula.get(indexNodoSeleecionado).getSecuencia();
-        indexHistoriasFormulas = -1;
-        indexEstructuraFormula = -1;
-        if (listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperador().getSecuencia() != null) {
-            auxNodoSeleccionado = listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperador().getSigno();
-        }
-        if (listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperando().getSecuencia() != null) {
-            auxNodoSeleccionado = listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperando().getNombre();
+        if (cambiosHistoriaFormula == false) {
+            indexNodoSeleecionado = i;
+            secuenciaRegistroNodos = listNodosHistoriaFormula.get(indexNodoSeleecionado).getSecuencia();
+            indexHistoriasFormulas = -1;
+            indexEstructuraFormula = -1;
+            if (listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperador().getSecuencia() != null) {
+                auxNodoSeleccionado = listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperador().getSigno();
+            }
+            if (listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperando().getSecuencia() != null) {
+                auxNodoSeleccionado = listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperando().getNombre();
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
         }
     }
 
@@ -1510,38 +1546,35 @@ public class ControlHistoriaFormula implements Serializable {
         context.update("form:panelNodosSecundario");
     }
 
+    public void dispararDialogoNodoNuevo() {
+        actualizacionNodo = 1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("SeleccionRegGenerarFormula.show()");
+    }
+
     public void dispararDialogoNodo() {
         if (indexNodoSeleecionado >= 0) {
             actualizacionNodo = 0;
-            if (listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperando().getSecuencia() != null) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("OperandoDialogo.show()");
-            }
-            if (listNodosHistoriaFormula.get(indexNodoSeleecionado).getOperador().getSecuencia() != null) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("OperadorDialogo.show()");
-            }
-        } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("seleccionarRegistroNodo.show()");
+            context.execute("SeleccionRegGenerarFormula.show()");
         }
     }
 
     public void dialogoNuevoOperando() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("OperandoDialogo.show()");
-        actualizacionNodo = 1;
     }
 
     public void dialogoNuevoOperandor() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("OperadorDialogo.show()");
-        actualizacionNodo = 1;
     }
 
     public void actualizarOperando() {
         if (actualizacionNodo == 0) {
             modificacionesCambiosNodos(indexNodoSeleecionado, 0);
+            listNodosParaExportar = null;
+            cargarDatosParaNodos();
         }
         if (actualizacionNodo == 1) {
             k++;
@@ -1550,43 +1583,49 @@ public class ControlHistoriaFormula implements Serializable {
             nuevo.setOperador(new Operadores());
             nuevo.setOperando(new Operandos());
             nuevo.setHistoriaformula(listHistoriasFormulas.get(indexAuxHistoriasFormulas));
+            short posicion = (short) (listNodosHistoriaFormula.size() + 1);
+            nuevo.setPosicion(posicion);
             nuevo.setOperando(operandoSeleccionado);
+            short aux = (short) (listNodosHistoriaFormula.size() + 1);
+            nuevo.setPosicion(aux);
             listNodosHistoriaFormula.add(nuevo);
             listNodosCrear.add(nuevo);
+            listNodosParaExportar = null;
+            cargarDatosParaNodos();
+            cambiosNodos = true;
+            int tam = listNodosHistoriaFormula.size();
+            if (tam > 16) {
+                RequestContext context = RequestContext.getCurrentInstance();
+
+                panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+                panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+                panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+                panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+                visibilidadBtnS = true;
+                visibilidadBtnP = false;
+
+                context.update("form:panelNodosSecundario");
+                context.update("form:panelNodosPrincipal");
+            }
+            if (tam <= 16) {
+                RequestContext context = RequestContext.getCurrentInstance();
+
+                panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+                panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+                panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+                panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+                visibilidadBtnS = true;
+                visibilidadBtnP = true;
+
+                context.update("form:panelNodosSecundario");
+                context.update("form:panelNodosPrincipal");
+            }
         }
-        listNodosParaExportar = null;
-        cargarDatosParaNodos();
-        int tam = listNodosHistoriaFormula.size();
-        if (tam > 16) {
-            RequestContext context = RequestContext.getCurrentInstance();
 
-            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
-            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
-
-            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
-            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
-
-            visibilidadBtnS = true;
-            visibilidadBtnP = false;
-
-            context.update("form:panelNodosSecundario");
-            context.update("form:panelNodosPrincipal");
-        }
-        if (tam <= 16) {
-            RequestContext context = RequestContext.getCurrentInstance();
-
-            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
-            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
-
-            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
-            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
-
-            visibilidadBtnS = true;
-            visibilidadBtnP = true;
-
-            context.update("form:panelNodosSecundario");
-            context.update("form:panelNodosPrincipal");
-        }
         filtrarListOperandos = null;
         operandoSeleccionado = new Operandos();
         aceptar = true;
@@ -1607,6 +1646,8 @@ public class ControlHistoriaFormula implements Serializable {
     public void actualizarOperador() {
         if (actualizacionNodo == 0) {
             modificacionesCambiosNodos(indexNodoSeleecionado, 1);
+            listNodosParaExportar = null;
+            cargarDatosParaNodos();
         }
         if (actualizacionNodo == 1) {
             k++;
@@ -1614,44 +1655,49 @@ public class ControlHistoriaFormula implements Serializable {
             Nodos nuevo = new Nodos(var);
             nuevo.setOperador(new Operadores());
             nuevo.setOperando(new Operandos());
+            short aux = (short) (listNodosHistoriaFormula.size() + 1);
+            nuevo.setPosicion(aux);
             nuevo.setHistoriaformula(listHistoriasFormulas.get(indexAuxHistoriasFormulas));
+
             nuevo.setOperador(operadorSeleccionado);
             listNodosHistoriaFormula.add(nuevo);
             listNodosCrear.add(nuevo);
+            listNodosParaExportar = null;
+            cambiosNodos = true;
+            cargarDatosParaNodos();
+            int tam = listNodosHistoriaFormula.size();
+            if (tam > 16) {
+                RequestContext context = RequestContext.getCurrentInstance();
+
+                panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+                panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+                panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+                panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+                visibilidadBtnS = true;
+                visibilidadBtnP = false;
+
+                context.update("form:panelNodosSecundario");
+                context.update("form:panelNodosPrincipal");
+            }
+            if (tam <= 16) {
+                RequestContext context = RequestContext.getCurrentInstance();
+
+                panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
+                panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
+
+                panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
+                panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
+
+                visibilidadBtnS = true;
+                visibilidadBtnP = true;
+
+                context.update("form:panelNodosSecundario");
+                context.update("form:panelNodosPrincipal");
+            }
         }
-        listNodosParaExportar = null;
-        cargarDatosParaNodos();
-        int tam = listNodosHistoriaFormula.size();
-        if (tam > 16) {
-            RequestContext context = RequestContext.getCurrentInstance();
 
-            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
-            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
-
-            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
-            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
-
-            visibilidadBtnS = true;
-            visibilidadBtnP = false;
-
-            context.update("form:panelNodosSecundario");
-            context.update("form:panelNodosPrincipal");
-        }
-        if (tam <= 16) {
-            RequestContext context = RequestContext.getCurrentInstance();
-
-            panelNodosSecundario = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosSecundario");
-            panelNodosSecundario.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: hidden");
-
-            panelNodosPrincipal = (ScrollPanel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelNodosPrincipal");
-            panelNodosPrincipal.setStyle("position: absolute; left: 3px; top: 15px; width:825px; height:83px;border: none;visibility: visible");
-
-            visibilidadBtnS = true;
-            visibilidadBtnP = true;
-
-            context.update("form:panelNodosSecundario");
-            context.update("form:panelNodosPrincipal");
-        }
         filtrarListOperadores = null;
         operadorSeleccionado = new Operadores();
         aceptar = true;
@@ -1841,15 +1887,19 @@ public class ControlHistoriaFormula implements Serializable {
     }
 
     public void cambiarIndiceEstructuraFormula(int indice, int celda) {
-        indexEstructuraFormula = indice;
-        celdaEstructuraFormula = celda;
-        auxEF_Descripcion = listEstructurasFormulas.get(indexEstructuraFormula).getDescripcion();
-        auxEF_Formula = listEstructurasFormulas.get(indexEstructuraFormula).getNombreNodo();
-        auxEF_IdFormula = listEstructurasFormulas.get(indexEstructuraFormula).getFormula();
-        auxEF_IdHijo = listEstructurasFormulas.get(indexEstructuraFormula).getFormulaHijo();
-        indexNodoSeleecionado = -1;
-        indexHistoriasFormulas = -1;
-
+        if (cambiosHistoriaFormula == false && cambiosNodos == false) {
+            indexEstructuraFormula = indice;
+            celdaEstructuraFormula = celda;
+            auxEF_Descripcion = listEstructurasFormulas.get(indexEstructuraFormula).getDescripcion();
+            auxEF_Formula = listEstructurasFormulas.get(indexEstructuraFormula).getNombreNodo();
+            auxEF_IdFormula = listEstructurasFormulas.get(indexEstructuraFormula).getFormula();
+            auxEF_IdHijo = listEstructurasFormulas.get(indexEstructuraFormula).getFormulaHijo();
+            indexNodoSeleecionado = -1;
+            indexHistoriasFormulas = -1;
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
+        }
     }
 
     public void modificaEstructuraFormula(int indice) {
@@ -2043,16 +2093,6 @@ public class ControlHistoriaFormula implements Serializable {
     public List<Nodos> getListNodosHistoriaFormula() {
         if (listNodosHistoriaFormula == null) {
             listNodosHistoriaFormula = administrarHistoriaFormula.listNodosDeHistoriaFormula(listHistoriasFormulas.get(indexAuxHistoriasFormulas).getSecuencia());
-            if (!listNodosHistoriaFormula.isEmpty()) {
-                for (int i = 0; i < listNodosHistoriaFormula.size(); i++) {
-                    if (listNodosHistoriaFormula.get(i).getOperador() == null) {
-                        listNodosHistoriaFormula.get(i).setOperador(new Operadores());
-                    }
-                    if (listNodosHistoriaFormula.get(i).getOperando() == null) {
-                        listNodosHistoriaFormula.get(i).setOperando(new Operandos());
-                    }
-                }
-            }
         }
         if (!listNodosHistoriaFormula.isEmpty()) {
             int tam = listNodosHistoriaFormula.size();
@@ -2064,7 +2104,17 @@ public class ControlHistoriaFormula implements Serializable {
                 visibilidadBtnS = false;
                 visibilidadBtnP = true;
             }
+            for (int i = 0; i < listNodosHistoriaFormula.size(); i++) {
+
+                if (listNodosHistoriaFormula.get(i).getOperador() == null) {
+                    listNodosHistoriaFormula.get(i).setOperador(new Operadores());
+                }
+                if (listNodosHistoriaFormula.get(i).getOperando() == null) {
+                    listNodosHistoriaFormula.get(i).setOperando(new Operandos());
+                }
+            }
         }
+
         return listNodosHistoriaFormula;
     }
 
