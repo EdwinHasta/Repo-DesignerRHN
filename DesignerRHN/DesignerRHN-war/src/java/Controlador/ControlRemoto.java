@@ -154,7 +154,7 @@ public class ControlRemoto implements Serializable {
         tituloPago = "PAGOS AUTOMATICOS";
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
         altoModulos = "93";
-        altoTablas = "200";
+        altoTablas = "202";
         buscarTablasLOV = true;
         mostrarTodasTablas = true;
         filtrosActivos = false;
@@ -570,7 +570,7 @@ public class ControlRemoto implements Serializable {
         tablasNombre.setFilterStyle("display: none; visibility: hidden;");
         tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
         tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
-        altoTablas = "200";
+        altoTablas = "202";
         filtrosActivos = false;
         RequestContext.getCurrentInstance().update("form:tabMenu:Tablas");
     }
@@ -619,7 +619,7 @@ public class ControlRemoto implements Serializable {
             tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
             tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
             context.execute("tabl.clearFilters()");
-            altoTablas = "200";
+            altoTablas = "202";
             context.update("form:tabMenu:Tablas");
             filtrosActivos = false;
         }
@@ -1114,9 +1114,10 @@ public class ControlRemoto implements Serializable {
 
     public void buscarTablas() {
         if (selectModulo != null) {
+            filtradoListTablasLOV = null;
             listTablasLOV = administrarCarpetaDesigner.ConsultarTablas(selectModulo.getSecuencia());
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:buscarTablasDialogo");
+            context.update("form:lovTablas");
             context.execute("buscarTablasDialogo.show()");
         }
     }

@@ -1058,7 +1058,7 @@ public class ControlNovedadesConceptos implements Serializable {
                 cualCelda = -1;
             } else if (cualCelda == 4) {
                 context.update("formularioDialogos:editarValores");
-                context.execute("editarSaldos.show()");
+                context.execute("editarValores.show()");
                 cualCelda = -1;
             } else if (cualCelda == 5) {
                 context.update("formularioDialogos:editarSaldos");
@@ -1069,6 +1069,14 @@ public class ControlNovedadesConceptos implements Serializable {
             } else if (cualCelda == 7) {
                 context.update("formularioDialogos:editarPeriodicidadesDescripciones");
                 context.execute("editarPeriodicidadesDescripciones.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 8) {
+                context.update("formularioDialogos:editarTercerosNit");
+                context.execute("editarTercerosNit.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 9) {
+                context.update("formularioDialogos:editarTercerosNombres");
+                context.execute("editarTercerosNombres.show()");
                 cualCelda = -1;
             } else if (cualCelda == 10) {
                 context.update("formularioDialogos:editarFormulas");
