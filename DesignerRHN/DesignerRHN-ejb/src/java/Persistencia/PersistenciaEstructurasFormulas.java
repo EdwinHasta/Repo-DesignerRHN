@@ -16,6 +16,10 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaEstructurasFormulas implements PersistenciaEstructurasFormulasInterface {
 
+    
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 

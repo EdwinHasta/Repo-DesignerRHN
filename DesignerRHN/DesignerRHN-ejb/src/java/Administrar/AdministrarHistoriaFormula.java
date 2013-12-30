@@ -74,6 +74,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     @Override
     public void borrarHistoriasFormulas(List<Historiasformulas> lista) {
         try {
+            
             for (int i = 0; i < lista.size(); i++) {
                 persistenciaHistoriasFormulas.borrar(lista.get(i));
             }
@@ -95,6 +96,9 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
 
     public void crearNodos(List<Nodos> lista) {
         try {
+            for(int i = 0;i<lista.size();i++){
+                System.out.println("Nivel : "+lista.get(i).getPosicion());
+            }
             for (int i = 0; i < lista.size(); i++) {
                 if (lista.get(i).getOperador().getSecuencia() == null) {
                     lista.get(i).setOperador(null);
@@ -102,6 +106,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
                 if (lista.get(i).getOperando().getSecuencia() == null) {
                     lista.get(i).setOperando(null);
                 }
+                
                 persistenciaNodos.crear(lista.get(i));
             }
         } catch (Exception e) {
@@ -111,6 +116,9 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
 
     public void borrarNodos(List<Nodos> lista) {
         try {
+            for(int i = 0;i<lista.size();i++){
+                System.out.println("Nivel : "+lista.get(i).getPosicion());
+            }
             for (int i = 0; i < lista.size(); i++) {
                 if (lista.get(i).getOperador().getSecuencia() == null) {
                     lista.get(i).setOperador(null);
