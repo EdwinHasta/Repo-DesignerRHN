@@ -13,9 +13,9 @@
             <ui:define name="body"> 
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.novedadplano" var="msg" />
-                    <p:dialog id="erroresNovedad" header="Errores de la Novedad" widgetVar="erroresNovedad"  resizable="false" draggable="false" modal="true" height="100" width="400" style="font-size: 12px">  
+                    <p:dialog id="erroresNovedad" header="#{msg['erroresdelanovedad']}" widgetVar="erroresNovedad"  resizable="false" draggable="false" modal="true" height="100" width="400" style="font-size: 12px">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="ERRORES: " style="font-weight: bold; font-size: 13px; position: absolute; left: 80px; top: 10px; color: red;"/>
+                        <h:outputText value="#{msg['errores']}" style="font-weight: bold; font-size: 13px; position: absolute; left: 80px; top: 10px; color: red;"/>
                         <p:dataGrid var="error" value="#{cargarArchivoPlano.erroresNovedad.mensajeError}" columns="1" styleClass="ui-dataGrid-CargueNovedad">
                             <strong><h:outputText value="#{error}" style="width: 200px; text-align: center;" /></strong>
                         </p:dataGrid>                     

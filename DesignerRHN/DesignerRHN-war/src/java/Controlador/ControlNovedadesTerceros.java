@@ -430,7 +430,7 @@ public class ControlNovedadesTerceros implements Serializable {
             pasa++;
         }
 
-        if (nuevaNovedad.getConcepto().getCodigoSTR().equals(" ") || nuevaNovedad.getConcepto().getCodigoSTR().equals("")) {
+        if (nuevaNovedad.getConcepto().getCodigoSTR().equals("0") || nuevaNovedad.getConcepto().getCodigoSTR().equals("")) {
             System.out.println("Entro a Concepto");
             mensajeValidacion = mensajeValidacion + " * Concepto\n";
             pasa++;
@@ -442,7 +442,7 @@ public class ControlNovedadesTerceros implements Serializable {
             pasa++;
         }
 
-        if (nuevaNovedad.getFormula().getNombrelargo() == null) {
+        if (nuevaNovedad.getFormula().getNombrelargo().equals("")) {
             System.out.println("Entro a Formula");
             mensajeValidacion = mensajeValidacion + " * Formula\n";
             pasa++;
@@ -458,7 +458,8 @@ public class ControlNovedadesTerceros implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
         }
-
+        
+        if (nuevaNovedad.getEmpleado() != null && pasa==0){
         for (int i = 0; i < listaEmpleados.size(); i++) {
             if (nuevaNovedad.getEmpleado().getSecuencia().compareTo(listaEmpleados.get(i).getSecuencia()) == 0) {
 
@@ -468,6 +469,7 @@ public class ControlNovedadesTerceros implements Serializable {
                     pasa2++;
                 }
             }
+        }
         }
         if (nuevaNovedad.getFechafinal() != null) {
             if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getFechafinal()) > 0) {
