@@ -226,6 +226,57 @@ public class ControlHistoriaFormula implements Serializable {
         cambiosNodos = false;
     }
 
+    public boolean validarSolapamientoFechas(int i) {
+        boolean retorno = false;
+        if (i == 0) {
+            if (!listHistoriasFormulas.isEmpty()) {
+                int conteo = 0;
+                for (int j = 1; j < listHistoriasFormulas.size(); j++) {
+                    if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(listHistoriasFormulas.get(j).getFechainicial()))
+                            && (listHistoriasFormulas.get(j - 1).getFechainicial().after(listHistoriasFormulas.get(j).getFechainicial()))) {
+                        conteo++;
+                    }
+                }
+                if (conteo == 0) {
+                    retorno = true;
+                }
+            }
+        }
+        if (i == 1) {
+            if (!listHistoriasFormulas.isEmpty()) {
+                int conteo = 0;
+                for (int j = 1; j < listHistoriasFormulas.size(); j++) {
+                    if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(nuevaHistoriaFormula.getFechainicial()))
+                            && (listHistoriasFormulas.get(j - 1).getFechainicial().after(nuevaHistoriaFormula.getFechainicial()))) {
+                        conteo++;
+                    }
+                }
+                if (conteo == 0) {
+                    retorno = true;
+                }
+            } else {
+                retorno = true;
+            }
+        }
+        if (i == 2) {
+            if (!listHistoriasFormulas.isEmpty()) {
+                int conteo = 0;
+                for (int j = 1; j < listHistoriasFormulas.size(); j++) {
+                    if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(duplicarHistoriaFormula.getFechainicial()))
+                            && (listHistoriasFormulas.get(j - 1).getFechainicial().after(duplicarHistoriaFormula.getFechainicial()))) {
+                        conteo++;
+                    }
+                }
+                if (conteo == 0) {
+                    retorno = true;
+                }
+            } else {
+                retorno = true;
+            }
+        }
+        return retorno;
+    }
+
     public void recibirFormula(BigInteger secuencia) {
         formulaActual = administrarHistoriaFormula.actualFormula(secuencia);
         listHistoriasFormulas = null;
@@ -243,60 +294,75 @@ public class ControlHistoriaFormula implements Serializable {
     }
 
     public void modificarHistoriaFormula(int indice) {
-        int aux = 0;
-        if (tipoListaHistoriasFormulas == 0) {
-            String nota = listHistoriasFormulas.get(indice).getObservaciones();
-            if (!nota.isEmpty()) {
-                aux = nota.length();
-            }
-        }
-        if (tipoListaHistoriasFormulas == 1) {
-            String nota = filtrarListHistoriasFormulas.get(indice).getObservaciones();
-            if (!nota.isEmpty()) {
-                aux = nota.length();
-            }
-        }
-        if (aux >= 0 && aux <= 200) {
+        boolean retorno = validarSolapamientoFechas(0);
+        if (retorno == true) {
+            int aux = 0;
             if (tipoListaHistoriasFormulas == 0) {
-                if (!listHistoriasFormulasCrear.contains(listHistoriasFormulas.get(indice))) {
-                    if (listHistoriasFormulasModificar.isEmpty()) {
-                        listHistoriasFormulasModificar.add(listHistoriasFormulas.get(indice));
-                    } else if (!listHistoriasFormulasModificar.contains(listHistoriasFormulas.get(indice))) {
-                        listHistoriasFormulasModificar.add(listHistoriasFormulas.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
+                String nota = listHistoriasFormulas.get(indice).getObservaciones();
+                if (!nota.isEmpty()) {
+                    aux = nota.length();
                 }
-                indexHistoriasFormulas = -1;
-                secRegistroHistoriaFormula = null;
-            } else {
-                if (!listHistoriasFormulasCrear.contains(filtrarListHistoriasFormulas.get(indice))) {
-                    if (listHistoriasFormulasModificar.isEmpty()) {
-                        listHistoriasFormulasModificar.add(filtrarListHistoriasFormulas.get(indice));
-                    } else if (!listHistoriasFormulasModificar.contains(filtrarListHistoriasFormulas.get(indice))) {
-                        listHistoriasFormulasModificar.add(filtrarListHistoriasFormulas.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
-                }
-                indexHistoriasFormulas = -1;
-                secRegistroHistoriaFormula = null;
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosHistoriaFormula");
-            cambiosHistoriaFormula = true;
-        } else {
-            if (tipoListaHistoriasFormulas == 0) {
-                listHistoriasFormulas.get(indice).setObservaciones(observacion);
             }
             if (tipoListaHistoriasFormulas == 1) {
-                filtrarListHistoriasFormulas.get(indice).setObservaciones(observacion);
+                String nota = filtrarListHistoriasFormulas.get(indice).getObservaciones();
+                if (!nota.isEmpty()) {
+                    aux = nota.length();
+                }
+            }
+            if (aux >= 0 && aux <= 200) {
+                if (tipoListaHistoriasFormulas == 0) {
+                    if (!listHistoriasFormulasCrear.contains(listHistoriasFormulas.get(indice))) {
+                        if (listHistoriasFormulasModificar.isEmpty()) {
+                            listHistoriasFormulasModificar.add(listHistoriasFormulas.get(indice));
+                        } else if (!listHistoriasFormulasModificar.contains(listHistoriasFormulas.get(indice))) {
+                            listHistoriasFormulasModificar.add(listHistoriasFormulas.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    }
+                    indexHistoriasFormulas = -1;
+                    secRegistroHistoriaFormula = null;
+                } else {
+                    if (!listHistoriasFormulasCrear.contains(filtrarListHistoriasFormulas.get(indice))) {
+                        if (listHistoriasFormulasModificar.isEmpty()) {
+                            listHistoriasFormulasModificar.add(filtrarListHistoriasFormulas.get(indice));
+                        } else if (!listHistoriasFormulasModificar.contains(filtrarListHistoriasFormulas.get(indice))) {
+                            listHistoriasFormulasModificar.add(filtrarListHistoriasFormulas.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    }
+                    indexHistoriasFormulas = -1;
+                    secRegistroHistoriaFormula = null;
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosHistoriaFormula");
+                cambiosHistoriaFormula = true;
+            } else {
+                if (tipoListaHistoriasFormulas == 0) {
+                    listHistoriasFormulas.get(indice).setObservaciones(observacion);
+                }
+                if (tipoListaHistoriasFormulas == 1) {
+                    filtrarListHistoriasFormulas.get(indice).setObservaciones(observacion);
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosHistoriaFormula");
+                context.execute("errorNotaHF.show()");
+            }
+        } else {
+            if (tipoListaHistoriasFormulas == 0) {
+                listHistoriasFormulas.get(indice).setFechafinal(fechaFin);
+                listHistoriasFormulas.get(indice).setFechainicial(fechaIni);
+            }
+            if (tipoListaHistoriasFormulas == 1) {
+                filtrarListHistoriasFormulas.get(indice).setFechafinal(fechaFin);
+                filtrarListHistoriasFormulas.get(indice).setFechainicial(fechaIni);
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosHistoriaFormula");
-            context.execute("errorNotaHF.show()");
+            context.execute("errorFechasHF.show()");
         }
     }
 
@@ -443,20 +509,13 @@ public class ControlHistoriaFormula implements Serializable {
             listNodosBorrar.clear();
         }
         if (!listNodosCrear.isEmpty()) {
-            for (int i = 0; i < listNodosCrear.size(); i++) {
-                int auxIndex = listNodosHistoriaFormula.indexOf(listNodosCrear.get(i));
-                Nodos nodoAux = listNodosHistoriaFormula.get(auxIndex);
-                listNodosCrear.set(i, nodoAux);
-            }
+            System.out.println("Valor : " + listNodosCrear.size());
+
             administrarHistoriaFormula.crearNodos(listNodosCrear);
             listNodosCrear.clear();
         }
         if (!listNodosModificar.isEmpty()) {
-            for (int i = 0; i < listNodosModificar.size(); i++) {
-                int auxIndex = listNodosHistoriaFormula.indexOf(listNodosModificar.get(i));
-                Nodos nodoAux = listNodosHistoriaFormula.get(auxIndex);
-                listNodosModificar.set(i, nodoAux);
-            }
+
             administrarHistoriaFormula.editarNodos(listNodosModificar);
             listNodosModificar.clear();
         }
@@ -476,14 +535,9 @@ public class ControlHistoriaFormula implements Serializable {
      * Cancela las modificaciones realizas en la pagina
      */
     public void cancelarModificacion() {
-        if (indexHistoriasFormulas >= 0) {
-            cancelarModificacionesHistoriaFormula();
-        } else if (indexNodoSeleecionado >= 0) {
-            cancelarModificacionNodos();
-        } else {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("seleccionarRegistro.show()");
-        }
+        cancelarModificacionesHistoriaFormula();
+        cancelarModificacionNodos();
+
     }
 
     public void cancelarModificacionesHistoriaFormula() {
@@ -503,7 +557,6 @@ public class ControlHistoriaFormula implements Serializable {
         listHistoriasFormulasCrear.clear();
         listHistoriasFormulasModificar.clear();
         indexHistoriasFormulas = -1;
-        indexAuxHistoriasFormulas = 0;
         secRegistroHistoriaFormula = null;
         k = 0;
         listHistoriasFormulas = null;
@@ -642,7 +695,12 @@ public class ControlHistoriaFormula implements Serializable {
 
     public void validarBorradoRegistro() {
         if (indexHistoriasFormulas >= 0) {
-            borrarHistoriaFormula();
+            if (listNodosHistoriaFormula.isEmpty()) {
+                borrarHistoriaFormula();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorBorradoHistoriaF.show()");
+            }
         } else if (indexNodoSeleecionado >= 0) {
             borrarNodo();
         } else if (indexEstructuraFormula >= 0) {
@@ -682,38 +740,43 @@ public class ControlHistoriaFormula implements Serializable {
                     tam = aux.length();
                 }
                 if (tam >= 0 && tam <= 200) {
-                    if (banderaHistoriasFormulas == 1) {
-                        historiaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaInicial");
-                        historiaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        historiaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaFinal");
-                        historiaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        historiaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaNota");
-                        historiaNota.setFilterStyle("display: none; visibility: hidden;");
-                        RequestContext.getCurrentInstance().update("form:datosHistoriaFormula");
-                        banderaHistoriasFormulas = 0;
-                        filtrarListHistoriasFormulas = null;
-                        tipoListaHistoriasFormulas = 0;
-                    }
-                    k++;
+                    if (validarSolapamientoFechas(1) == true) {
+                        if (banderaHistoriasFormulas == 1) {
+                            historiaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaInicial");
+                            historiaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                            historiaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaFinal");
+                            historiaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                            historiaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaNota");
+                            historiaNota.setFilterStyle("display: none; visibility: hidden;");
+                            RequestContext.getCurrentInstance().update("form:datosHistoriaFormula");
+                            banderaHistoriasFormulas = 0;
+                            filtrarListHistoriasFormulas = null;
+                            tipoListaHistoriasFormulas = 0;
+                        }
+                        k++;
 
-                    BigInteger var = BigInteger.valueOf(k);
-                    nuevaHistoriaFormula.setSecuencia(var);
-                    nuevaHistoriaFormula.setFormula(formulaActual);
-                    listHistoriasFormulasCrear.add(nuevaHistoriaFormula);
-                    listHistoriasFormulas.add(nuevaHistoriaFormula);
-                    ////------////
-                    nuevaHistoriaFormula = new Historiasformulas();
-                    ////-----////
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("NuevoRegistroHistoria.hide()");
-                    context.update("form:datosHistoriaFormula");
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        BigInteger var = BigInteger.valueOf(k);
+                        nuevaHistoriaFormula.setSecuencia(var);
+                        nuevaHistoriaFormula.setFormula(formulaActual);
+                        listHistoriasFormulasCrear.add(nuevaHistoriaFormula);
+                        listHistoriasFormulas.add(nuevaHistoriaFormula);
+                        ////------////
+                        nuevaHistoriaFormula = new Historiasformulas();
+                        ////-----////
+                        RequestContext context = RequestContext.getCurrentInstance();
+                        context.execute("NuevoRegistroHistoria.hide()");
+                        context.update("form:datosHistoriaFormula");
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:aceptar");
+                        }
+                        cambiosHistoriaFormula = true;
+                        indexHistoriasFormulas = -1;
+                        secRegistroHistoriaFormula = null;
+                    } else {
+                        RequestContext context = RequestContext.getCurrentInstance();
+                        context.execute("errorFechasHF.show()");
                     }
-                    cambiosHistoriaFormula = true;
-                    indexHistoriasFormulas = -1;
-                    secRegistroHistoriaFormula = null;
                 } else {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("errorNotaHF.show()");
@@ -767,36 +830,41 @@ public class ControlHistoriaFormula implements Serializable {
                     tam = aux.length();
                 }
                 if (tam >= 0 && tam <= 200) {
-                    if (banderaHistoriasFormulas == 1) {
-                        historiaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaInicial");
-                        historiaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        historiaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaFinal");
-                        historiaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        historiaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaNota");
-                        historiaNota.setFilterStyle("display: none; visibility: hidden;");
-                        banderaHistoriasFormulas = 0;
-                        filtrarListHistoriasFormulas = null;
-                        tipoListaHistoriasFormulas = 0;
-                    }
-                    k++;
-                    BigInteger var = BigInteger.valueOf(k);
+                    if (validarSolapamientoFechas(2)) {
+                        if (banderaHistoriasFormulas == 1) {
+                            historiaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaInicial");
+                            historiaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                            historiaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaFinal");
+                            historiaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                            historiaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaNota");
+                            historiaNota.setFilterStyle("display: none; visibility: hidden;");
+                            banderaHistoriasFormulas = 0;
+                            filtrarListHistoriasFormulas = null;
+                            tipoListaHistoriasFormulas = 0;
+                        }
+                        k++;
+                        BigInteger var = BigInteger.valueOf(k);
 
-                    duplicarHistoriaFormula.setSecuencia(var);
-                    duplicarHistoriaFormula.setFormula(formulaActual);
-                    listHistoriasFormulasCrear.add(duplicarHistoriaFormula);
-                    listHistoriasFormulas.add(duplicarHistoriaFormula);
-                    duplicarHistoriaFormula = new Historiasformulas();
+                        duplicarHistoriaFormula.setSecuencia(var);
+                        duplicarHistoriaFormula.setFormula(formulaActual);
+                        listHistoriasFormulasCrear.add(duplicarHistoriaFormula);
+                        listHistoriasFormulas.add(duplicarHistoriaFormula);
+                        duplicarHistoriaFormula = new Historiasformulas();
 
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.update("form:datosHistoriaFormula");
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext context = RequestContext.getCurrentInstance();
+                        context.update("form:datosHistoriaFormula");
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:aceptar");
+                        }
+                        context.execute("DuplicarRegistroFormula.hide()");
+                        cambiosHistoriaFormula = true;
+                        indexHistoriasFormulas = -1;
+                        secRegistroHistoriaFormula = null;
+                    } else {
+                        RequestContext context = RequestContext.getCurrentInstance();
+                        context.execute("errorFechasHF.show()");
                     }
-                    context.execute("DuplicarRegistroFormula.hide()");
-                    cambiosHistoriaFormula = true;
-                    indexHistoriasFormulas = -1;
-                    secRegistroHistoriaFormula = null;
                 } else {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("errorNotaHF.show()");
@@ -1547,9 +1615,14 @@ public class ControlHistoriaFormula implements Serializable {
     }
 
     public void dispararDialogoNodoNuevo() {
-        actualizacionNodo = 1;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("SeleccionRegGenerarFormula.show()");
+        if (cambiosHistoriaFormula == false) {
+            actualizacionNodo = 1;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("SeleccionRegGenerarFormula.show()");
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
+        }
     }
 
     public void dispararDialogoNodo() {
@@ -1942,6 +2015,12 @@ public class ControlHistoriaFormula implements Serializable {
             if (listHistoriasFormulas == null) {
                 listHistoriasFormulas = new ArrayList<Historiasformulas>();
                 listHistoriasFormulas = administrarHistoriaFormula.listHistoriasFormulasParaFormula(formulaActual.getSecuencia());
+            }
+            if (!listHistoriasFormulas.isEmpty()) {
+                for (int i = 0; i < listHistoriasFormulas.size(); i++) {
+                    String aux = listHistoriasFormulas.get(i).getObservaciones().toUpperCase();
+                    listHistoriasFormulas.get(i).setObservaciones(aux);
+                }
             }
             return listHistoriasFormulas;
         } catch (Exception e) {
