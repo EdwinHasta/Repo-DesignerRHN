@@ -227,7 +227,7 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
 
     @Override
     public boolean validarNecesidadTercero(BigInteger secConcepto) {
-        return persistenciaVigenciasGruposConceptos.verificacionZonaTipoTrabajador(secConcepto);
+        return persistenciaVigenciasGruposConceptos.verificacionGrupoUnoConcepto(secConcepto);
     }
 
     @Override

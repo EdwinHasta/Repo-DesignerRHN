@@ -27,8 +27,8 @@ public class AdministrarTiposExamenes implements AdministrarTiposExamenesInterfa
     private TiposExamenes tiposTallaSeleccionada;
     private TiposExamenes tiposTallas;
     private List<TiposExamenes> listTiposTallas;
-    private BigDecimal verificadorTiposExamenesCargos;
-    private BigDecimal verificadorVigenciasExamenesMedicos;
+    private BigInteger verificadorTiposExamenesCargos;
+    private BigInteger verificadorVigenciasExamenesMedicos;
 
     public void modificarTiposExamenes(List<TiposExamenes> listTiposEmpresasModificadas) {
         for (int i = 0; i < listTiposEmpresasModificadas.size(); i++) {
@@ -56,7 +56,7 @@ public class AdministrarTiposExamenes implements AdministrarTiposExamenesInterfa
         return tiposTallas;
     }
 
-    public BigDecimal verificarBorradoTiposExamenesCargos(BigInteger secuenciaTiposExamenesCargos) {
+    public BigInteger verificarBorradoTiposExamenesCargos(BigInteger secuenciaTiposExamenesCargos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaTiposExamenesCargos);
             verificadorTiposExamenesCargos = persistenciaTiposExamenes.contadorTiposExamenesCargos(secuenciaTiposExamenesCargos);
@@ -67,7 +67,7 @@ public class AdministrarTiposExamenes implements AdministrarTiposExamenesInterfa
         }
     }
 
-    public BigDecimal verificarBorradoVigenciasExamenesMedicos(BigInteger secuenciaVigenciasExamenesMedicos) {
+    public BigInteger verificarBorradoVigenciasExamenesMedicos(BigInteger secuenciaVigenciasExamenesMedicos) {
         try {
             System.err.println("Secuencia Borrado Vigencias Tallas" + secuenciaVigenciasExamenesMedicos);
             verificadorVigenciasExamenesMedicos = persistenciaTiposExamenes.contadorVigenciasExamenesMedicos(secuenciaVigenciasExamenesMedicos);
