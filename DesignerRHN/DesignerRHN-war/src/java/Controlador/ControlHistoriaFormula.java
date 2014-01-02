@@ -233,7 +233,7 @@ public class ControlHistoriaFormula implements Serializable {
                 int conteo = 0;
                 for (int j = 1; j < listHistoriasFormulas.size(); j++) {
                     if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(listHistoriasFormulas.get(j).getFechainicial()))
-                            && (listHistoriasFormulas.get(j - 1).getFechainicial().after(listHistoriasFormulas.get(j).getFechainicial()))) {
+                            || (listHistoriasFormulas.get(j - 1).getFechainicial().after(listHistoriasFormulas.get(j).getFechainicial()))) {
                         conteo++;
                     }
                 }
@@ -244,13 +244,25 @@ public class ControlHistoriaFormula implements Serializable {
         }
         if (i == 1) {
             if (!listHistoriasFormulas.isEmpty()) {
+                System.out.println("Paso primer if !isEmpty");
                 int conteo = 0;
-                for (int j = 1; j < listHistoriasFormulas.size(); j++) {
-                    if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(nuevaHistoriaFormula.getFechainicial()))
-                            && (listHistoriasFormulas.get(j - 1).getFechainicial().after(nuevaHistoriaFormula.getFechainicial()))) {
+                int tam = listHistoriasFormulas.size();
+                System.out.println("Valor tam : " + tam);
+                if (tam >= 2) {
+                    for (int j = 1; j < listHistoriasFormulas.size(); j++) {
+                        if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(nuevaHistoriaFormula.getFechainicial()))
+                                || (listHistoriasFormulas.get(j - 1).getFechainicial().after(nuevaHistoriaFormula.getFechainicial()))) {
+                            conteo++;
+                        }
+                    }
+                }
+                if (tam == 1) {
+                    if ((listHistoriasFormulas.get(0).getFechafinal().after(nuevaHistoriaFormula.getFechainicial()))
+                            || (listHistoriasFormulas.get(0).getFechainicial().after(nuevaHistoriaFormula.getFechainicial()))) {
                         conteo++;
                     }
                 }
+                System.out.println("Valor Conteo : " + conteo);
                 if (conteo == 0) {
                     retorno = true;
                 }
@@ -261,9 +273,18 @@ public class ControlHistoriaFormula implements Serializable {
         if (i == 2) {
             if (!listHistoriasFormulas.isEmpty()) {
                 int conteo = 0;
-                for (int j = 1; j < listHistoriasFormulas.size(); j++) {
-                    if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(duplicarHistoriaFormula.getFechainicial()))
-                            && (listHistoriasFormulas.get(j - 1).getFechainicial().after(duplicarHistoriaFormula.getFechainicial()))) {
+                int tam = listHistoriasFormulas.size();
+                if (tam >= 2) {
+                    for (int j = 1; j < listHistoriasFormulas.size(); j++) {
+                        if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(duplicarHistoriaFormula.getFechainicial()))
+                                || (listHistoriasFormulas.get(j - 1).getFechainicial().after(duplicarHistoriaFormula.getFechainicial()))) {
+                            conteo++;
+                        }
+                    }
+                }
+                if (tam == 1) {
+                    if ((listHistoriasFormulas.get(0).getFechafinal().after(duplicarHistoriaFormula.getFechainicial()))
+                            || (listHistoriasFormulas.get(0).getFechainicial().after(duplicarHistoriaFormula.getFechainicial()))) {
                         conteo++;
                     }
                 }
@@ -362,7 +383,7 @@ public class ControlHistoriaFormula implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosHistoriaFormula");
-            context.execute("errorFechasHF.show()");
+            context.execute("errorSolapamientoFechas.show()");
         }
     }
 
@@ -775,7 +796,7 @@ public class ControlHistoriaFormula implements Serializable {
                         secRegistroHistoriaFormula = null;
                     } else {
                         RequestContext context = RequestContext.getCurrentInstance();
-                        context.execute("errorFechasHF.show()");
+                        context.execute("errorSolapamientoFechas.show()");
                     }
                 } else {
                     RequestContext context = RequestContext.getCurrentInstance();
@@ -830,7 +851,7 @@ public class ControlHistoriaFormula implements Serializable {
                     tam = aux.length();
                 }
                 if (tam >= 0 && tam <= 200) {
-                    if (validarSolapamientoFechas(2)) {
+                    if (validarSolapamientoFechas(2) == true) {
                         if (banderaHistoriasFormulas == 1) {
                             historiaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaInicial");
                             historiaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -863,7 +884,7 @@ public class ControlHistoriaFormula implements Serializable {
                         secRegistroHistoriaFormula = null;
                     } else {
                         RequestContext context = RequestContext.getCurrentInstance();
-                        context.execute("errorFechasHF.show()");
+                        context.execute("errorSolapamientoFechas.show()");
                     }
                 } else {
                     RequestContext context = RequestContext.getCurrentInstance();
