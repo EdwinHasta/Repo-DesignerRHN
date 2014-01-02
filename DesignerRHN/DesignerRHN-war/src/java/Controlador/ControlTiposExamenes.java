@@ -58,8 +58,8 @@ public class ControlTiposExamenes implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigDecimal tiposExamenesCargos;
-    private BigDecimal vigenciasExamenesMedicos;
+    private BigInteger tiposExamenesCargos;
+    private BigInteger vigenciasExamenesMedicos;
 
     public ControlTiposExamenes() {
         listTiposExamenes = null;
@@ -372,7 +372,7 @@ public class ControlTiposExamenes implements Serializable {
             tiposExamenesCargos = administrarTiposExamenes.verificarBorradoTiposExamenesCargos(listTiposExamenes.get(index).getSecuencia());
             vigenciasExamenesMedicos = administrarTiposExamenes.verificarBorradoVigenciasExamenesMedicos(listTiposExamenes.get(index).getSecuencia());
 
-            if (tiposExamenesCargos.intValueExact() == 0 && vigenciasExamenesMedicos.intValueExact() == 0) {
+            if (tiposExamenesCargos.equals(0) && vigenciasExamenesMedicos.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoTiposExamenes();
             } else {
@@ -383,7 +383,7 @@ public class ControlTiposExamenes implements Serializable {
                 context.execute("validacionBorrar.show()");
                 index = -1;
 
-                tiposExamenesCargos = new BigDecimal(-1);
+                tiposExamenesCargos = new BigInteger("-1");
 
             }
         } catch (Exception e) {
