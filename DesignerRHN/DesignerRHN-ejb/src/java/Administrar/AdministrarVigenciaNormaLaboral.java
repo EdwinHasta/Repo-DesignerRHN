@@ -8,9 +8,9 @@ import Entidades.Empleados;
 import Entidades.NormasLaborales;
 import Entidades.VigenciasNormasEmpleados;
 import InterfaceAdministrar.AdministrarVigenciaNormaLaboralInterface;
-import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaNormasLaboralesInterface;
 import InterfacePersistencia.PersistenciaVigenciasNormasEmpleadosInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -45,17 +45,17 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
     /**
      * Creacion de metodos
      */
-    public List<VigenciasNormasEmpleados> vigenciasNormasEmpleadosEmpl(BigInteger secEmpleado) {
+    public List<VigenciasNormasEmpleados> vigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado) {
         try {
             vigenciasNormasEmpleados = persistenciaVigenciasNormasEmpleados.buscarVigenciasNormasEmpleadosEmpl(secEmpleado);
         } catch (Exception e) {
-            System.out.println("Error en Administrar Vigencias Ubiaciones (vigenciasUbicacionesEmpleado)");
+            System.out.println("Error en ADMINISTRARVIGENCIANORMALABORAL (vigenciasUbicacionesEmpleado)");
             vigenciasNormasEmpleados = null;
         }
         return vigenciasNormasEmpleados;
     }
 
-    public void modificarVNE(List<VigenciasNormasEmpleados> listVNEModificadas) {
+    public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listVNEModificadas) {
         for (int i = 0; i < listVNEModificadas.size(); i++) {
             System.out.println("Modificando...");
             vne = listVNEModificadas.get(i);
@@ -63,11 +63,11 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
         }
     }
 
-    public void borrarVNE(VigenciasNormasEmpleados vigenciasNormasEMpleados) {
+    public void borrarVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEMpleados) {
         persistenciaVigenciasNormasEmpleados.borrar(vigenciasNormasEMpleados);
     }
 
-    public void crearVNE(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
+    public void crearVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
         persistenciaVigenciasNormasEmpleados.crear(vigenciasNormasEmpleados);
     }
 
@@ -81,12 +81,12 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
         }
     }
 
-    public List<NormasLaborales> normasLaborales() {
+    public List<NormasLaborales> mostrarNormasLaborales() {
         try {
             normasLaborales = persistenciaNormasLaborales.buscarNormasLaborales();
             return normasLaborales;
         } catch (Exception e) {
-            System.err.println("ERROR EN AdministrarVigencianormaLaboral en NormasLabolares ");
+            System.err.println("ERROR EN AdministrarVigencianormaLaboral en NormasLabolares ERROR " + e);
             return null;
         }
     }

@@ -37,10 +37,8 @@ public class VigenciasNormasEmpleados implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
+    @Temporal(TemporalType.DATE)
     @Column(name = "FECHAVIGENCIA")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date fechavigencia;
     @JoinColumn(name = "NORMALABORAL", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)

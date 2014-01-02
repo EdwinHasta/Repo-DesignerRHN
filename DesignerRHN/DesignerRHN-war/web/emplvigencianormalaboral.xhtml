@@ -2,218 +2,325 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+
     <h:head>
-        <title>Historico Normas Laborales</title>
     </h:head>
     <h:body>
         <ui:composition template="/Template.xhtml">
-            <ui:define name="body">
-                <h:form id="form">
-                    <p:panel id="PanelTotal" header="Historicos Normas Laborales" style=" position: absolute; left: 250px  ;width: 505PX ; height: 460px" >
-                        <h:graphicImage value="Imagenes\SignoInterrogacion.jpg" height="50" width="50"/> 
-                        <h:inputText readonly="true" id="nombreEmpleado" value="#{controlVigenciasNormasEmpleado.empleado.persona.primerapellido} #{controlVigenciasNormasEmpleado.empleado.persona.segundoapellido} #{controlVigenciasNormasEmpleado.empleado.persona.nombre} " disabled="true" style="background: #ffffff; position: relative ; top: -19px; left: 10px;"  size="30" />               
-                        <!--botones-->
-                        <p:toolbar style="position: absolute; top: 100px; width:304px ; height:24px ">
-                            <p:toolbarGroup>
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Históricos Normas Laborales" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
 
-                                <p:commandButton value="" id="guardarRapido"  style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; position: absolute; height: 25px;width: 25px;" actionListener="#{controlVigenciasNormasEmpleado.guardarCambiosVNE()}" process="@this" ></p:commandButton>
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardado Rapido" />
-                                <p:commandButton value="" id="editar"  style=" position: relative; left: 30px ;background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; position: absolute; height: 25px;width: 25px;  " actionListener="#{controlVigenciasNormasEmpleado.editarCelda()}"  ></p:commandButton>
-                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+                        <h:outputText style="position: absolute; left: 575px; top: 55px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlBetaEmplVigenciaNormaLaboral.empleadoSeleccionado.persona.primerapellido} #{controlBetaEmplVigenciaNormaLaboral.empleadoSeleccionado.persona.segundoapellido} #{controlBetaEmplVigenciaNormaLaboral.empleadoSeleccionado.persona.nombre}"/>
+                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 835px; height: 375px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Norma Laboral</strong></legend>
 
-                                <p:separator style="position: relative; left: 52px;" />                                
-
-                                <p:commandButton value="" id="listaValores"  style=" position: relative; left: 70px ;background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; position: absolute; height: 25px;width: 25px;  "  actionListener="#{controlVigenciasNormasEmpleado.listaValoresBoton()}"  ></p:commandButton>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de VaLores" />
-                                <p:commandButton id="filtrado" value="" style=" position: relative; left: 79px;background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasNormasEmpleado.activarCtrlF11()}" ></p:commandButton>
-                                <p:tooltip style="font-size: 12px" for="filtrado" value="Activar Filtrado" />
-
-                                <p:separator style="position: relative; left: 77px;" />   
-
-
-                                <p:commandButton id="exportarXlS" value="" style=" position: relative; left: 75px;background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasNormasEmpleado.exportXLS()}" ajax="false"/>
-                                    <p:tooltip style="font-size: 12px" for="exportarXlS" value="Exportar a XlS" />
-                                    <p:commandButton id="exportarXMl" value="" style=" position: relative; left: 76px;background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasNormasEmpleado.limpiarNuevaVNE()}" ajax="false" >
-                                        <p:dataExporter type="xml"  target=":formExportar:datosVNEmpleadoExportar" fileName="VigenciasNormasEmpleadosXML" encoding="UTF-8"/>
-                                    </p:commandButton>
-                                    <p:tooltip style="font-size: 12px" for="exportarXMl" value="Exportar  XML" />
-                                    <p:commandButton id="exportarPDF" value="" style=" position: relative; left: 77px;background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasNormasEmpleado.exportPDF()}" ajax="false"/>
-                                    <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
-
-                                    <p:separator style="position: relative; left: 74px;" />                                
-
-                                    <p:commandButton id="insertar" value="" style=" position: relative; left: 71px;background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " oncomplete="NuevoRegistroVNE.show()" update=":formularioDialogos:nuevaVNE" process="@this"></p:commandButton>
-                                    <p:tooltip style="font-size: 12px" for="insertar" value="Insertar Nueva Vigencia" />
-                                    <p:commandButton id="eliminar" value="" style=" position: relative; left: 72px;background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasNormasEmpleado.borrarVNE()}" process="@this"></p:commandButton>
-                                    <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Vigencia Cargo" />
-                                    <p:commandButton id="duplicar" value="" style=" position: relative; left: 73px;background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasNormasEmpleado.duplicarVigenciaVNE()}"></p:commandButton>
-                                    <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Vigencia Cargo" />
-                            </p:toolbarGroup>
-                        </p:toolbar>
-                        <!--INICIO DE LA TABLA-->
-                        <fieldset style=" position: absolute; top: 140px; height: 270px; width: 451px;border-radius: 10px ">
-                            <legend style="font-size: 14px; color: blue"><strong>Normas Laborales del empleado</strong></legend>                        
-                            <!--tabla-->    
-                            <p:dataTable id="datosVNEmpleados" value="#{controlVigenciasNormasEmpleado.vigenciasNormasEmpleados}" var="info" 
-                                         rowKey="#{info.secuencia}" scrollable="true" scrollHeight="150"                                     
-                                         rowIndexVar="indice" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" rows="6" 
-                                         filteredValue="#{controlVigenciasNormasEmpleado.filtrarVNE}"
+                            <p:dataTable id="datosHvEntrevista" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;font-size: 10px; border: 1px;"                           
+                                         value="#{controlBetaEmplVigenciaNormaLaboral.listEmplVigenciaNormaLaboralPorEmpleado}" scrollable="true" scrollHeight="235"  scrollWidth="830"
+                                         filteredValue="#{controlBetaEmplVigenciaNormaLaboral.filtrarEmplVigenciaNormaLaboralPorEmplado}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="true" rows="9"  
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:ajax event="filter" listener="#{controlBetaEmplVigenciaNormaLaboral.eventoFiltrar()}"/>
 
-                                <p:ajax event="filter" listener="#{controlVigenciasNormasEmpleado.eventoFiltrar()}"> </p:ajax>
-                                <p:column id="vneFecha" headerText="Fecha" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="48"  filterStyle="display: none; visibility: hidden;" >
-                                    <p:cellEditor>
+                                <p:column headerText="Fecha" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains" 
+                                          id="fecha" width="80"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
+                                    <p:cellEditor> 
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechavigencia}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            <h:outputText value="#{info.fechavigencia}" style="width: 80px; font-size: 11px;text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;width: 100%; height: 100%" value="#{info.fechavigencia}" id="editFecha"  styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasNormasEmpleado.modificarVNE(indice)}" update="editFecha"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaNormaLaboral.modificarVNE(indice)}"/> 
-                                                <p:ajax event="select" listener="#{controlVigenciasNormasEmpleado.cambiarIndice(indice,0)}"/>  
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar> 
-                                        </f:facet>
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechavigencia}" > 
+                                                <p:ajax event="select" listener="#{controlBetaEmplVigenciaNormaLaboral.cambiarIndice(indice, 0)}" process="@this"/>  
+                                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.mostrarInfo(indice,0)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlBetaEmplVigenciaNormaLaboral.mostrarInfo(indice,0)}" process="@this" update="editFecha"/>
+                                            </lnk:calendar>
+                                        </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha" />
+                                        <h:outputText value="Fecha"/>
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="Nombre Norma Laboral" sortBy="#{info.normalaboral.nombre}" filterBy="#{info.normalaboral.nombre}" filterMatchMode="contains" id="vneNombreNormaLaboral" width="200" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column headerText="Nombre Norma Laboral" sortBy="#{info.normalaboral.nombre}" filterBy="#{info.normalaboral.nombre}" filterMatchMode="contains" id="parentesco" width="700" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.normalaboral.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.normalaboral.nombre}" id="editarNormaLaboral" style="font-size: 10px; border-radius: 0px; width: 100%; height: 100%;"  onblur="this.value = this.value.toUpperCase();" > 
-                                                <p:ajax event="change" listener="#{controlVigenciasNormasEmpleado.modificarVNE(indice)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasNormasEmpleado.cambiarIndice(indice,'1')}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasNormasEmpleado.asignarIndex(indice, '0')}"/>
+                                            <p:inputText value="#{info.normalaboral.nombre}" id="editarparentesco" style=" font-size: 10px; border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlBetaEmplVigenciaNormaLaboral.cambiarIndice(indice, 1)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlBetaEmplVigenciaNormaLaboral.asignarIndex(indice, 0,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.modificandoEmplVigenciaNormaLaboral(indice, 'NORMASLABORALES',info.normalaboral.nombre)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Nombre Normas Laborales" />
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooNormaLaboral" action="normaLaboral" value="Nombre Norma Laboral"/>
                                     </f:facet>
-                                </p:column>   
-                            </p:dataTable>
-                        </fieldset>
-                        
-                        
-                        
-
-
-                        <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
-                        <p:dialog header="Normas Laborales" widgetVar="NormasLaboralesDialogo" draggable="false" resizable="false" closable="false" id="NormasLaboralesDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
-                            <p:dataTable id="lovNormasLaborales" style="font-size: 11px; width: 430px" var="normasLaborales" value="#{controlVigenciasNormasEmpleado.listaNormasLaborales}" rowKey="#{normasLaborales.secuencia}"
-                                         selection="#{controlVigenciasNormasEmpleado.normaLaboralSelecionada}" selectionMode="single" widgetVar="lovNormasLaborales" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                         filteredValue="#{controlVigenciasNormasEmpleado.filtradoNormasLaborales}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
-                                <p:ajax event="rowSelect" listener="#{controlVigenciasNormasEmpleado.activarAceptar()}" update=":form:aceptarNL"/>
-                                <f:facet name="header">  
-                                    <h:outputText value="Buscar Norma Laboral: "  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovNormasLaborales.filter();" style="width:150px; position: relative; left: 10px;" />  
-                                </f:facet>
-                                <p:column filterBy="#{normasLaborales.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
-                                    <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="Codigo" />
-                                    </f:facet>
-                                    <h:outputText  value="#{normasLaborales.codigo}" />
                                 </p:column>
-                                <p:column filterBy="#{normasLaborales.nombre}" width="200"  filterMatchMode="contains">
+
+                            </p:dataTable>
+
+                        </fieldset>
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlBetaEmplVigenciaNormaLaboral.guardarEmplVigenciaNormaLaboral()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.editarCelda()}"  process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.listaValoresBoton()}"   process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.activarCtrlF11()}"  process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.exportXLS()}"  ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarNuevoEmplVigenciaNormaLaboral()}"  ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosHvEntrevistaExportar" fileName="VIGENCASNORMASLABORALES" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  oncomplete="nuevoRegistroEvalEmpresas.show()" update=":formularioDialogos:nuevaaEvalEmpresa" process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Entrevista" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlBetaEmplVigenciaNormaLaboral.borrandoHvEntrevistas()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Entrevista" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.duplicandoEmplVigenciaNormaLaboral()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Entrevista" />
+                                <p:separator /> 
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.verificarRastro()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar>
+
+                        <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 730px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlBetaEmplVigenciaNormaLaboral.guardado}"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.revisarDialogoGuardar()}"     process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 807px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" action="normalaboralNominaF" value="Atras"    />
+
+                        <p:dialog header="Normas Laborales" widgetVar="sucursalesDialogo" draggable="false" resizable="false" closable="false" id="sucursalesDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovTiposFamiliares" style="font-size: 11px; width: 430px" var="tipofamiliar" value="#{controlBetaEmplVigenciaNormaLaboral.listaNormasLaborales}" rowKey="#{tipofamiliar.secuencia}"
+                                         selection="#{controlBetaEmplVigenciaNormaLaboral.normaLaboralSeleccionada}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlBetaEmplVigenciaNormaLaboral.filtradoNormasLaborales}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlBetaEmplVigenciaNormaLaboral.activarAceptar()}" update=":form:aceptarS"/>
+                                <p:ajax event="rowDblselect" listener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" process="@this" onstart="lovTiposFamiliares.clearFilters()"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Parentesco"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovTiposFamiliares.filter();" style="width:150px; position: relative; left: 50px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{tipofamiliar.codigo}" width="60" filterStyle="width:50px;" filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText value="#{tipofamiliar.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{tipofamiliar.nombre}" width="160px" filterStyle="width:140px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Nombre" />
                                     </f:facet>
-                                    <h:outputText value="#{normasLaborales.nombre}" />
+                                    <h:outputText value="#{tipofamiliar.nombre}" />
                                 </p:column>
+
                             </p:dataTable>
-                            <p:commandButton id="aceptarNL" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlVigenciasNormasEmpleado.aceptar}" onclick="NormasLaboralesDialogo.hide(), lovNormasLaborales.clearFilters();" actionListener="#{controlVigenciasNormasEmpleado.actualizarNormaLaboral()}" update="lovNormasLaborales, aceptarNL, datosVNEmpleados" process="@this">
-                                <p:resetInput target=":form:lovNormasLaborales:globalFilter"/>
+                            <p:commandButton id="aceptarS" style="position: relative; left: 303px" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" update="lovTiposFamiliares, aceptarS" process="@this">
+                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasNL" style="position: relative; left: 303px" value="Atras" onclick="NormasLaboralesDialogo.hide(), lovNormasLaborales.clearFilters();" actionListener="#{controlVigenciasNormasEmpleado.cancelarCambioNormaLaboral()}" update="lovNormasLaborales" process="@this">
-                                <p:resetInput target=":form:lovNormasLaborales:globalFilter"/>
+                            <p:commandButton id="atrasS" style="position: relative; left: 303px" value="Atras"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarCambioNormaLaboral()}" onclick="sucursalesDialogo.hide();
+                                    lovTiposFamiliares.clearFilters();" update="lovTiposFamiliares" process="@this">
+                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
-                        </p:dialog> 
+                        </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 290px; top: 435px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosVNEmpleados" process="@this" />
-                        <p:commandButton style="position: absolute; left: 420px; top: 435px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlVigenciasNormasEmpleado.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 360px; top: 435px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" actionListener="#{controlVigenciasNormasEmpleado.salir()}" action="nomina" process="@this" />
+
+                        <p:dialog header="ATENCIÓN...!" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
+                                  showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 11px;">
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                            <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlBetaEmplVigenciaNormaLaboral.guardarEmplVigenciaNormaLaboral()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
+                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                            <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        </p:dialog>
+
                     </p:panel>
-                </h:form> 
 
 
-
-                <h:form id="formularioDialogos" >
-                    <p:dialog id="NuevoRegistroVNE" header="Nuevo Registro" widgetVar="NuevoRegistroVNE" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="400" style="font-size: 12px; padding: 0px">  
-
-                        <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-
-                        <p:panel id="nuevaVNE" style="border: none;">
-                            <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 55px" /></strong>
-                            <p:calendar  id="nuevaFecha" style="font-size: 10px; position: absolute; top: 50px; left: 130px;" value="#{controlVigenciasNormasEmpleado.nuevaVigenciaNormasEmpleados.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFecha"/>
-                                <p:ajax event="change" update="nuevaFecha"/>
-                            </p:calendar>
-
-                            <strong><h:outputText value="Norma Laboral" style="font-size: 12px; position: absolute; top: 95px" /></strong>
-                            <p:inputText id="normaLaboral" value="#{controlVigenciasNormasEmpleado.nuevaVigenciaNormasEmpleados.normalaboral.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 129px; top: 90px;"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 260px; top: 89px;  " id="btnNuevaUbicacion" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasNormasEmpleado.asignarIndex(indice, '1')}"/>   
-                            <p:watermark for="normaLaboral" value="Norma Laboral" />
-
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 325px; top: 160px;" actionListener="#{controlVigenciasNormasEmpleado.limpiarNuevaVNE()}" update="nuevaVNE" process="@this"/>
-                            <p:commandButton id="agregarVNE" value="Agregar" style="font-size: 11px; position: absolute; left: 170px; top: 160px;"  process="@this" actionListener="#{controlVigenciasNormasEmpleado.agregarNuevaVNE()}" onclick="NuevoRegistroVNE.hide();"  />
-                            <p:commandButton id="cancelarVNE" value="Cancelar" style="font-size: 11px; position: absolute; left: 245px; top: 160px;" actionListener="#{controlVigenciasNormasEmpleado.limpiarNuevaVNE()}" update="nuevaVNE" onclick="NuevoRegistroVNE.hide();"  process="@this"/>
-                        </p:panel>
-
+                    <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="Necesita : #{controlBetaEmplVigenciaNormaLaboral.mensajeValidacion}" style="position: absolute; left: 80px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-
-                    <p:dialog id="DuplicarRegistroVNE" header="Duplicar Registro" widgetVar="DuplicarRegistroVNE" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
-
-                        <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-
-                        <p:panel id="duplicarVNE" style="border: none;">
-                            <strong><h:outputText value="Fecha: " style="font-size: 12px; position: absolute; top: 85px" /></strong>
-                            <p:calendar  id="duplicarFecha" style="font-size: 10px; position: absolute; top: 80px; left: 200px;" value="#{controlVigenciasNormasEmpleado.duplicarVNE.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFecha"/>
-                                <p:ajax event="change" update="duplicarFecha"/>
-                            </p:calendar>
-
-                            <strong><h:outputText value="Normas Laborales " style="font-size: 12px; position: absolute; top: 118px" /></strong>
-                            <p:inputText id="duplicarNormasLaborales" value="#{controlVigenciasNormasEmpleado.duplicarVNE.normalaboral.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 115px;"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnDuplicarNormasLaborales" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasNormasEmpleado.asignarIndex(indice, '2')}"/>   
-                            <p:watermark for="duplicarNormasLaborales" value="Normas Laborales" />
-
-                            <p:commandButton id="limpiarDuplicadoVNE" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlVigenciasNormasEmpleado.limpiarduplicarVNE()}" update="duplicarVNE" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVNE" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  process="@this" actionListener="#{controlVigenciasNormasEmpleado.confirmarDuplicar()}" onclick="DuplicarRegistroVNE.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoVNE" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlVigenciasNormasEmpleado.limpiarduplicarVNE()}" update="duplicarVNE" onclick="DuplicarRegistroVNE.hide();"  process="@this"/>
-                        </p:panel>
+                    <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 30px; top: 20px;"  />
+                        <h:outputText value=" #{controlBetaEmplVigenciaNormaLaboral.mensajeValidacion}" style="position: absolute; left: 100px; top: 25px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionModificar.hide();" style="position: absolute; top: 60px; left: 250px" process="@this" />
                     </p:dialog>
-
-                    <p:dialog id="editarFecha" header="Fecha Vigencia Normas Empleado" widgetVar="editarFecha" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px" value="#{controlVigenciasNormasEmpleado.editarVNE.fechavigencia}" id="editFechaCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                        </p:calendar>
-                        <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFecha.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="validacionBorrar" header="ATENCIÓN...!" widgetVar="validacionBorrar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 25px; top: 10px;"  />
+                        <h:outputText value="No se puede borrar este elemento porque esta relacionado con otra tabla" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionBorrar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-
-                    <p:dialog id="editarNormaLaboral" header="Nombre Norma Laboral" widgetVar="editarNormaLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlVigenciasNormasEmpleado.editarVNE.normalaboral.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTipoContrato" value="Atras" onclick="editarNormaLaboral.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    <p:dialog id="mostrarBorrados" header="ATENCIÓN...!" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
+                        <h:outputText value="Se han borrado #{controlBetaEmplVigenciaNormaLaboral.registrosBorrados}  Registros" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
                     </p:dialog>
-
+                    <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="450px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar es necesario adicionar: #{controlBetaEmplVigenciaNormaLaboral.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlBetaEmplVigenciaNormaLaboral.activarCtrlF11()}"/> 
                 </h:form>
+
+                <h:form id="formularioDialogos">
+
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'TIPOSCERTIFICADOS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlBetaEmplVigenciaNormaLaboral.secRegistro,'VigenciasNormasEmpleados', 'betaEmplVigenciaNormaLaboral')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla ENCARGATURAS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasNormasEmpleados', 'betaEmplVigenciaNormaLaboral')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlBetaEmplVigenciaNormaLaboral.secRegistro,'VigenciasNormasEmpleados', 'betaEmplVigenciaNormaLaboral')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'ENCARGATURAS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+
+
+                    <p:dialog id="editarFecha" header="Fecha " widgetVar="editarFecha" resizable="false" draggable="false" modal="true" height="50" width="240" style="position: absolute; top: 10px; font-size: 12px; padding: 0px">  
+                        <p:inputText value="#{controlBetaEmplVigenciaNormaLaboral.editarEmplVigenciaNormaLaboral.fechavigencia}" style="position: absolute; top: 20px;" readonly="true">  
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputText>
+                        <p:commandButton id="cancelarFecha" value="Atras" onclick="editarFecha.hide();" style="position: absolute; top: 17px; left: 170px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editPuntaje" header="Editar Norma Laboral" widgetVar="editPuntaje" resizable="false" draggable="false" modal="true" height="93" width="260" style="font-size: 12px;text-transform: uppercase">  
+                        <p:inputTextarea value="#{controlBetaEmplVigenciaNormaLaboral.editarEmplVigenciaNormaLaboral.normalaboral.nombre}" style="overflow: auto; width: 225px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarPuntaje" value="Atras" onclick="editPuntaje.hide();" style="position: absolute; top: 60px; left: 185px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+
+
+                    <p:dialog id="nuevoRegistroEvalEmpresas" header="Nuevo Registro" widgetVar="nuevoRegistroEvalEmpresas" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="340" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText id="informacion" value="Ingresar Nueva Norma Laboral " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaaEvalEmpresa" style="border: none;">
+
+                            <strong><h:outputText value="FECHA : "  style="font-size: 12px; position: absolute; top: 55px;text-transform: uppercase" /></strong>
+                            <div  id="nuevaFechaa" style="width: 135px;font-size: 12px; position: absolute; top: 50px; left: 175px;">
+                                <lnk:calendar id="nuevaFecha" value="#{controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.fechavigencia}" >
+                                    <p:ajax event="dateSelect" update="duplicarFecha"/>
+                                    <p:ajax event="change" update="duplicarFecha"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <p:watermark for="nuevaFecha" value="FECHA" />
+
+                            <strong><h:outputText value="NORMA LABORAL : " style="font-size: 12px; position: absolute; top: 110px" /></strong>
+                            <p:inputText id="nuevoNombreSucursal" value="#{controlBetaEmplVigenciaNormaLaboral.nuevoEmplVigenciaNormaLaboral.normalaboral.nombre}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 105px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlBetaEmplVigenciaNormaLaboral.valoresBackupAutocompletar(1)}" />
+                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.autocompletarNuevo('NORMASLABORALES',controlBetaEmplVigenciaNormaLaboral.nuevoEmplVigenciaNormaLaboral.normalaboral.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(0)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 310px; top: 105px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(0)}"/>   
+                            <p:watermark for="nuevoNombreSucursal" value="Norma Laboral" />
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 265px;"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarNuevoEmplVigenciaNormaLaboral()}" update="nuevaaEvalEmpresa" process="@this"/>
+                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 265px;" actionListener="#{controlBetaEmplVigenciaNormaLaboral.agregarNuevoEmplVigenciaNormaLaboral()}" process="@this" />
+                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 265px;"  update="nuevaaEvalEmpresa" onclick="nuevoRegistroEvalEmpresas.hide();"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarNuevoEmplVigenciaNormaLaboral()}"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+
+
+                    <p:dialog id="duplicarRegistroEvalCompetencias" header="duplicar Registro" widgetVar="duplicarRegistroEvalCompetencias" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="340" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Norma Laboral" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarEvC" style="border: none;">
+                            <strong><h:outputText value="Fecha "  style="font-size: 12px; position: absolute; top: 60px;text-transform: uppercase" /></strong>
+                            <div id="duplicarFecha" style="width: 100px;font-size: 12px; position: absolute; top: 50px; left: 160px;">
+                                <lnk:calendar id="duplicarFechaa" value="#{controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.fechavigencia}" >
+                                    <p:ajax event="dateSelect" update="duplicarFecha"/>
+                                    <p:ajax event="change" update="duplicarFecha"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="NORMA LABORAL: " style="font-size: 12px; position: absolute; top: 110px" /></strong>
+                            <p:inputText id="duplicarTipoCentroCostos" value="#{controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.normalaboral.nombre}"  style="font-size: 12px; width: 128px; position: absolute; left: 160px; top: 105px;" onclick="select();">
+                                <p:ajax event="click" listener="#{controlBetaEmplVigenciaNormaLaboral.valoresBackupAutocompletar(2)}" />
+                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.autocompletarDuplicado('NORMASLABORALES', controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.normalaboral.nombre , 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 298px; top: 105px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(1)}"/>   
+                            <p:watermark for="duplicarTipoCentroCostos" value="Norma Laboral" />
+
+                            <p:commandButton id="limpiarD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 265px;"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarDuplicarEmplVigenciaNormaLaboral()}" update="duplicarEvC"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 265px;" actionListener="#{controlBetaEmplVigenciaNormaLaboral.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 265px;"  update="duplicarEvC" onclick="duplicarRegistroEvalCompetencias.hide();" actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarDuplicarEmplVigenciaNormaLaboral()}"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+                </h:form>
+
+
                 <h:form id="formExportar">
-                    <p:dataTable id="datosVNEmpleadoExportar" var="info" style="visibility: hidden; display: none;"                           
-                                 value="#{controlVigenciasNormasEmpleado.vigenciasNormasEmpleados}"> 
-                        <!--COLUMNAS TABLA DATOS VIGENCIAS TIPOS CONTRATOS DE UN EMPLEADO --> 
+                    <p:dataTable id="datosHvEntrevistaExportar" var="info" style="visibility: hidden; display: none;"                           
+                                 value="#{controlBetaEmplVigenciaNormaLaboral.listEmplVigenciaNormaLaboralPorEmpleado}">
                         <p:column>  
                             <f:facet name="header">
                                 <h:outputText value="Fecha" />
@@ -221,16 +328,13 @@
                             <h:outputText value="#{info.fechavigencia}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
+                        </p:column> 
+                        <p:column>  
+                            <f:facet name="header"><h:outputText value="Norma_Laboral" /></f:facet>
+                            <h:outputText value="#{info.normalaboral.nombre}"/>
                         </p:column>
-
-                        <p:column headerText="Nombre Norma Laboral">                                  
-                            <f:facet name="header"><h:outputText value="Norma Laboral"/> </f:facet> 
-                            <h:outputText value="#{info.normalaboral.nombre}" />
-                        </p:column>  
-
                     </p:dataTable>
                 </h:form>
-
             </ui:define>
         </ui:composition>
     </h:body>
