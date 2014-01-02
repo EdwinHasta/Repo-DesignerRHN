@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasIndicadores;
@@ -8,15 +11,20 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasIndicadores'
+ * de la base de datos.
+ * @author AndresPineda
+ */
 @Stateless
 public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIndicadoresInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(VigenciasIndicadores vigenciasIndicadores) {
         try {
@@ -26,8 +34,6 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
         }
     }
 
-    /*
-     */
     @Override
     public void editar(VigenciasIndicadores vigenciasIndicadores) {
         try {
@@ -37,8 +43,6 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
         }
     }
 
-    /*
-     */
     @Override
     public void borrar(VigenciasIndicadores vigenciasIndicadores) {
         try {
@@ -48,22 +52,6 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
         }
     }
 
-    /*
-     */
-    @Override
-    public VigenciasIndicadores buscarVigenciaIndicador(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(VigenciasIndicadores.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarVigenciaIndicador PersistenciaVigenciasIndicadores : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<VigenciasIndicadores> buscarVigenciasIndicadores() {
         try {
@@ -78,7 +66,6 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
 
     @Override
     public VigenciasIndicadores buscarVigenciaIndicadorSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -89,18 +76,17 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
             VigenciasIndicadores vigenciasIndicadores = null;
             return vigenciasIndicadores;
         }
-
     }
 
     @Override
-    public List<VigenciasIndicadores> indicadoresPersona(BigInteger secuenciaEmpl) {
+    public List<VigenciasIndicadores> ultimosIndicadoresEmpleado(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT COUNT(vi) FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl");
-            query.setParameter("secuenciaEmpl", secuenciaEmpl);
+            query.setParameter("secuenciaEmpl", secuencia);
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl and vi.fechainicial = (SELECT MAX(vin.fechainicial) FROM VigenciasIndicadores vin WHERE vin.empleado.secuencia = :secuenciaEmpl)");
-                queryFinal.setParameter("secuenciaEmpl", secuenciaEmpl);
+                queryFinal.setParameter("secuenciaEmpl", secuencia);
                 List<VigenciasIndicadores> listaVigenciasIndicadores = queryFinal.getResultList();
                 return listaVigenciasIndicadores;
             }
@@ -112,10 +98,10 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     }
 
     @Override
-    public List<VigenciasIndicadores> indicadoresTotalesEmpleadoSecuencia(BigInteger secuenciaEmpl) {
+    public List<VigenciasIndicadores> indicadoresTotalesEmpleadoSecuencia(BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl");
-                queryFinal.setParameter("secuenciaEmpl", secuenciaEmpl);
+                queryFinal.setParameter("secuenciaEmpl", secuencia);
                 List<VigenciasIndicadores> listaVigenciasIndicadores = queryFinal.getResultList();
                 return listaVigenciasIndicadores;
         } catch (Exception e) {

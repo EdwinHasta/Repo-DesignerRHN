@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,18 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasGruposSalariales'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenciasGruposSalarialesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear Proyectos
-     */
     @Override
     public void crear(VigenciasGruposSalariales vigenciasGruposSalariales) {
         try {
@@ -35,9 +35,6 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
         }
     }
 
-    /*
-     *Editar Proyectos
-     */
     @Override
     public void editar(VigenciasGruposSalariales vigenciasGruposSalariales) {
         try {
@@ -47,9 +44,6 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
         }
     }
 
-    /*
-     *Borrar Proyectos
-     */
     @Override
     public void borrar(VigenciasGruposSalariales vigenciasGruposSalariales) {
         try {
@@ -59,24 +53,6 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
         }
     }
 
-    /*
-     *Encontrar un Proyecto
-     */
-    @Override
-    public VigenciasGruposSalariales buscarVigenciaGrupoSalarial(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(VigenciasGruposSalariales.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarVigenciaGrupoSalarial PersistenciaVigenciasGruposSalariales : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     *Encontrar todas los proyectos
-     */
     @Override
     public List<VigenciasGruposSalariales> buscarVigenciasGruposSalariales() {
         try {
@@ -90,7 +66,6 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
 
     @Override
     public VigenciasGruposSalariales buscarVigenciaGrupoSalarialSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT vgs FROM VigenciasGruposSalariales vgs WHERE vgs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -105,7 +80,6 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     
     @Override
     public List<VigenciasGruposSalariales> buscarVigenciaGrupoSalarialSecuenciaGrupoSal(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT vgs FROM VigenciasGruposSalariales vgs WHERE vgs.gruposalarial.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);

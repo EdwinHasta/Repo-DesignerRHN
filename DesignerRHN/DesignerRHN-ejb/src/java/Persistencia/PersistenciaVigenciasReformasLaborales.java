@@ -1,4 +1,6 @@
-
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import javax.ejb.Stateless;
@@ -12,8 +14,10 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasReformasLaborales'
+ * de la base de datos.
+ * @author Andres Pineda
  */
 @Stateless
 
@@ -22,10 +26,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear vigenciasReformalaboral.
-     */
-
+    @Override
     public void crear(VigenciasReformasLaborales vigenciaRefLab) {
         try {
             em.merge(vigenciaRefLab);
@@ -33,10 +34,6 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
             System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasReformaLaboral)");
         }
     }
-
-    /*
-     *Editar vigenciasReformalaboral. 
-     */
 
     @Override
     public void editar(VigenciasReformasLaborales vigenciaRefLab) {
@@ -47,33 +44,10 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
         }
     }
 
-    /*
-     *Borrar vigenciasReformalaboral.
-     */
-
     @Override
     public void borrar(VigenciasReformasLaborales vigenciaRefLab) {
         em.remove(em.merge(vigenciaRefLab));
     }
-
-    /*
-     *Encontrar una vigenciasReformalaboral. 
-     */
-
-    @Override
-    public VigenciasReformasLaborales buscarVigenciaRefLab(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            //return em.find(VigenciasCargos.class, id);
-            return em.find(VigenciasReformasLaborales.class, in);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todas las vigenciasReformalaboral.
-     */
 
     @Override
     public List<VigenciasReformasLaborales> buscarVigenciasRefLab() {
@@ -82,13 +56,11 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
         return em.createQuery(cq).getResultList();
     }
     
-
     @Override
     public List<VigenciasReformasLaborales> buscarVigenciasReformasLaboralesEmpleado(BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vrl FROM VigenciasReformasLaborales vrl WHERE vrl.empleado.secuencia = :secuenciaEmpl ORDER BY vrl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-            
             List<VigenciasReformasLaborales> vigenciasRefLab = query.getResultList();
             return vigenciasRefLab;
         } catch (Exception e) {
@@ -107,6 +79,4 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
             return null;
         }
     }
-    
-
 }

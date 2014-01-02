@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -15,62 +14,48 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
- * @author user
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasNormasEmpleados'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenciasNormasEmpleadosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    /*
-     * Crear empleado.
-     */
-
+    
     @Override
     public void crear(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
         em.persist(vigenciasNormasEmpleados);
     }
 
-    /*
-     *Editar empleado. 
-     */
     @Override
     public void editar(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
         em.merge(vigenciasNormasEmpleados);
     }
 
-    /*
-     *Borrar empleado.
-     */
     @Override
     public void borrar(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
         em.remove(em.merge(vigenciasNormasEmpleados));
     }
 
-    /*
-     *Encontrar una VigenciaNormasEmpleados. 
-     */
     @Override
     public VigenciasNormasEmpleados buscarVigenciasNormasEmpleado(BigInteger secuencia) {
         try {
-            //BigInteger secuencia = new BigInteger(id.toString());
-            //return em.find(Empleados.class, id);
             return em.find(VigenciasNormasEmpleados.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
-    /**
-     * 
-     */
     @Override
-    public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleadosEmpl(BigInteger secEmpleado) {
+    public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleadosEmpl(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vne FROM VigenciasNormasEmpleados vne WHERE vne.empleado.secuencia = :secuenciaEmpl ORDER BY vne.fechavigencia DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setParameter("secuenciaEmpl", secuencia);
             List<VigenciasNormasEmpleados> vigenciasNormasEmpleados = query.getResultList();
             return vigenciasNormasEmpleados;
         } catch (Exception e) {
@@ -78,7 +63,8 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
             return null;
         }
     }
-       @Override
+       
+    @Override
     public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleados() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasNormasEmpleados.class));

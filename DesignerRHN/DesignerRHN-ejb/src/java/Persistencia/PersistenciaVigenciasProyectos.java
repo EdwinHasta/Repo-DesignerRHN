@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasProyectos;
@@ -9,43 +12,39 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasProyectos'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProyectosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
     
     @Override
     public void crear(VigenciasProyectos vigenciasProyectos) {
         try {
-//            System.out.println("Persona: " + vigenciasFormales.getPersona().getNombreCompleto());
             em.merge(vigenciasProyectos);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaVigenciasFormales.crear");
         }
     }
-       
-     
-    // Editar Vigencias Proyectos. 
-     
+    
     @Override
     public void editar(VigenciasProyectos vigenciasProyectos) {
         em.merge(vigenciasProyectos);
     }
 
-    /*
-     *Borrar VigenciasProyectos.
-     */
     @Override
     public void borrar(VigenciasProyectos vigenciasProyectos) {
         em.remove(em.merge(vigenciasProyectos));
     }
-    
-     /*
-     *Encontrar todas las Vigencias de Proyectos.
-     */
+
     @Override
     public List<VigenciasProyectos> buscarVigenciasProyectos() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -53,9 +52,8 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
         return em.createQuery(cq).getResultList();
     }
     
-
     @Override
-    public List<VigenciasProyectos> proyectosPersona(BigInteger secuenciaEmpleado) {
+    public List<VigenciasProyectos> proyectosEmpleado(BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT COUNT(vp) FROM VigenciasProyectos vp WHERE vp.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
@@ -72,8 +70,6 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
             return null;
         }
     }
-    
-     //METODO PARA TRAER LAS VIGENCIAS DE UN EMPLEADO
 
     @Override
     public List<VigenciasProyectos> vigenciasProyectosEmpleado(BigInteger secuenciaEmpleado) {
@@ -87,7 +83,4 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
             return null;
         }
     }
-    
-    
-    
 }

@@ -86,6 +86,7 @@ public class ControlRemoto implements Serializable {
     private Integer estadoEmpleado;
     //datos tablas ctrl+f11
     private Column tablasNombre, tablasDescripcion, moduloCodigo, moduloNombre, moduloObs;
+    private boolean filtrosActivos;
     //DataGrid
     private DataGrid dg;
     @EJB
@@ -153,9 +154,10 @@ public class ControlRemoto implements Serializable {
         tituloPago = "PAGOS AUTOMATICOS";
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
         altoModulos = "93";
-        altoTablas = "200";
+        altoTablas = "202";
         buscarTablasLOV = true;
         mostrarTodasTablas = true;
+        filtrosActivos = false;
     }
 
     public void datosIniciales(int pestaña) {
@@ -549,6 +551,7 @@ public class ControlRemoto implements Serializable {
             tablasDescripcion.setFilterStyle("");
             altoTablas = "176";
             context.update("form:tabMenu:Tablas");
+            filtrosActivos = true;
         } else if (tablaExportar.equals("data1")) {
             moduloCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloCodigo");
             moduloCodigo.setFilterStyle("width: 40px");
@@ -558,6 +561,7 @@ public class ControlRemoto implements Serializable {
             moduloObs.setFilterStyle("");
             altoModulos = "70";
             context.update("form:tabMenu:data1");
+            filtrosActivos = true;
         }
     }
 
@@ -566,7 +570,8 @@ public class ControlRemoto implements Serializable {
         tablasNombre.setFilterStyle("display: none; visibility: hidden;");
         tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
         tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
-        altoTablas = "200";
+        altoTablas = "202";
+        filtrosActivos = false;
         RequestContext.getCurrentInstance().update("form:tabMenu:Tablas");
     }
 /////////////////////////  
@@ -614,9 +619,12 @@ public class ControlRemoto implements Serializable {
             tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
             tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
             context.execute("tabl.clearFilters()");
-            altoTablas = "200";
+            altoTablas = "202";
             context.update("form:tabMenu:Tablas");
+            filtrosActivos = false;
         }
+        mostrarTodasTablas = true;
+        context.update("form:tabMenu:mostrarTodasTablas");
         context.update("form:tabMenu:buscarTablas");
         tablaExportar = "data1";
         nombreArchivo = "Modulos";
@@ -636,6 +644,7 @@ public class ControlRemoto implements Serializable {
             context.execute("data1.clearFilters()");
             altoModulos = "93";
             context.update("form:tabMenu:data1");
+            filtrosActivos = false;
         }
         tablaExportar = "Tablas";
         nombreArchivo = "Tablas";
@@ -1105,35 +1114,38 @@ public class ControlRemoto implements Serializable {
 
     public void buscarTablas() {
         if (selectModulo != null) {
+            filtradoListTablasLOV = null;
             listTablasLOV = administrarCarpetaDesigner.ConsultarTablas(selectModulo.getSecuencia());
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:buscarTablasDialogo");
+            context.update("form:lovTablas");
             context.execute("buscarTablasDialogo.show()");
         }
     }
 
     public void seleccionTabla() {
         RequestContext context = RequestContext.getCurrentInstance();
-        tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
-        tablasNombre.setFilterStyle("display: none; visibility: hidden;");
-        tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
-        tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
-        context.execute("tabl.clearFilters()");
-        altoTablas = "200";
-        filtradoListTablasLOV = null;
+        if (filtrosActivos == true) {
+            tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
+            tablasNombre.setFilterStyle("display: none; visibility: hidden;");
+            tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
+            tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            altoTablas = "200";
+            filtrosActivos = false;
+            context.execute("tabl.clearFilters()");
+        }
         tablaExportar = "data1";
         nombreArchivo = "Modulos";
         listTablas.clear();
         listTablas.add(seleccionTablaLOV);
         mostrarTodasTablas = false;
-        context.update("form:tabMenu:Tablas");
-        context.update("form:mostrarTodasTablas");
         filtradoListTablasLOV = null;
         seleccionTablaLOV = null;
         buscar = true;
         context.reset("form:lovTablas:globalFilter");
         context.update("form:lovTablas");
         context.update("form:mostrarTodasTablas");
+        context.update("form:tabMenu:Tablas");
+        context.update("form:tabMenu:mostrarTodasTablas");
         context.execute("buscarTablasDialogo.hide()");
     }
 
@@ -1146,11 +1158,12 @@ public class ControlRemoto implements Serializable {
     public void mostrarTodo_Tablas() {
         listTablas.clear();
         listTablas = administrarCarpetaDesigner.ConsultarTablas(selectModulo.getSecuencia());
+        filterListTablas = null;
         System.out.println("Tamaño: " + listTablas.size());
         mostrarTodasTablas = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabMenu:Tablas");
-        context.update("form:mostrarTodasTablas");
+        context.update("form:tabMenu:mostrarTodasTablas");
     }
 
     public boolean isBuscarTablasLOV() {

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasSueldos;
@@ -8,44 +11,32 @@ import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaVigenciasSueldosInterface;
 import java.math.BigInteger;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasSueldos'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear vigenciasSueldos.
-     */
     public void crear(VigenciasSueldos vigenciasSueldos) {
         em.persist(vigenciasSueldos);
     }
 
-    /*
-     *Editar vigenciasSueldos. 
-     */
     public void editar(VigenciasSueldos vigenciasSueldos) {
         em.merge(vigenciasSueldos);
     }
 
-    /*
-     *Borrar vigenciasSueldos.
-     */
     public void borrar(VigenciasSueldos vigenciasSueldos) {
         em.remove(em.merge(vigenciasSueldos));
     }
 
-    /*
-     *Encontrar una vigenciasSueldos. 
-     */
-    public VigenciasSueldos buscarVigenciaSueldo(Object id) {
-        return em.find(VigenciasSueldos.class, id);
-    }
-
-    /*
-     *Encontrar todas las vigenciasSueldos. 
-     */
     public List<VigenciasSueldos> buscarVigenciasSeldos() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasSueldos.class));

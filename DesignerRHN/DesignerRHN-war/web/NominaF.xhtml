@@ -27,19 +27,23 @@
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 26px; height: 22px; position: absolute; left: 697px; top: 57px; z-index: 1;" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" /> 
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 57px; z-index: 1;"  actionListener="#{controlVigenciasUbicaciones.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 57px; z-index: 1;"  actionListener="#{controlVigenciasUbicaciones.listaValoresBoton()}" process="@this" update=":form:lvBuscarEmpleado" oncomplete="lvBE.show()"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 754px; top: 57px; z-index: 1;"   ajax="false" actionListener="#{controlVigenciasUbicaciones.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 754px; top: 57px; z-index: 1;"   ajax="false">
+                                    <p:dataExporter type="xls"  target=":formExportar:empleadosExportar" fileName="PersonalXLS" encoding="UTF-8"/>
+                                </p:commandButton>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 782px; top: 57px; z-index: 1;"   actionListener="#{controlVigenciasUbicaciones.limpiarNuevaVU()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosVUEmpleadoExportar" fileName="VigenciasUbicacionesGeograficasXML" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target=":formExportar:empleadosExportar" fileName="PersonalXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;"   actionListener="#{controlVigenciasUbicaciones.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;"   actionListener="#{controlVigenciasUbicaciones.exportPDF()}" ajax="false">
+                                <p:dataExporter type="pdf"  target=":formExportar:empleadosExportar" fileName="PersonalPDF" encoding="UTF-8"/>
+                                </p:commandButton>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <!-- Panel Izquierdo - Superior -->
@@ -389,7 +393,7 @@
 
                                         <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
 
-                                        <h:outputText id="Usuario" style="position: absolute; top: 473px; left: 85px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                        <h:outputText id="Usuario" style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
 
                                         <h:outputText id="Empresa"  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
@@ -512,7 +516,7 @@
 
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
 
-                                <h:outputText style="position: absolute; top: 473px; left: 85px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
                                 <p:dialog id="confirmarLiquidacion" header="#{msg['atencion']}" widgetVar="confirmarLiquidacion"  resizable="false" draggable="false" modal="true" height="120" width="420px"  closable="false">  
@@ -564,7 +568,7 @@
                                 </fieldset>
 
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
-                                <h:outputText style="position: absolute; top: 473px; left: 85px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab> 
 
@@ -606,7 +610,7 @@
                                 </fieldset>
 
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
-                                <h:outputText style="position: absolute; top: 473px; left: 85px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab>
 
@@ -623,7 +627,7 @@
                                     <p:graphicImage value="Imagenes/XML.jpg"  width="30" height="30"/>  
                                     <p:dataExporter type="xml" target="#{controlRemoto.tablaExportar}" fileName="#{controlRemoto.nombreArchivo}"/> 
                                 </h:commandLink>
-                                
+
                                 <h:commandLink  style="position: absolute; left: 805px; top: 155px">  
                                     <p:graphicImage value="Imagenes/pdf.jpg"  width="30" height="30"/>  
                                     <p:dataExporter type="pdf" target="#{controlRemoto.tablaExportar}" fileName="#{controlRemoto.nombreArchivo}"/> 
@@ -701,15 +705,15 @@
 
                                 <p:commandButton id="buscarTablas" value="#{msg['buscarTabla']}" icon="ui-icon-search" style="position: absolute; top: 443px; left: 600px; width: 120px" actionListener="#{controlRemoto.buscarTablas()}" disabled="#{controlRemoto.buscarTablasLOV}"/>
                                 <p:commandButton id="mostrarTodasTablas" value="#{msg['mostrarTodos']}" style="position: absolute; top: 443px; left: 720px; width: 120px" disabled="#{controlRemoto.mostrarTodasTablas}" actionListener="#{controlRemoto.mostrarTodo_Tablas()}"/>
-                                
+
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
-                                <h:outputText style="position: absolute; top: 473px; left: 85px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab>
                         </p:tabView>  
                     </p:panel>
 
-                    <p:dialog id="alerta" header="#{msg['nohaydatos']}" widgetVar="alerta"  resizable="false" draggable="false" modal="true" height="94" width="285px"  closable="false">  
+                    <p:dialog id="alerta" header="#{msg['nohaydatos']}" widgetVar="alerta"  resizable="false" draggable="false" modal="true" height="94" width="305px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="60" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['noexistepersonal']} #{controlRemoto.mensaje} #{msg['dentrodelabasededatos']}" style="position: absolute; left: 75px; top: 20px; width: 210px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="alerta.hide();" style="position: absolute; top: 60px; left: 200px" />
@@ -828,15 +832,42 @@
                                 <h:outputText  value="#{tabla.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarT" style="position: relative; left: 400px" value="#{msg['aceptar']}" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}" update="aceptarT" process="@this">
+                        <p:commandButton id="aceptarT" style="position: relative; left: 385px" value="#{msg['aceptar']}" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}" update="aceptarT" process="@this">
                             <p:resetInput target=":form:lovTablas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasF" style="position: relative; left: 400px" value="#{msg['atras']}" onclick="buscarTablasDialogo.hide(), lovTablas.clearFilters();" actionListener="#{controlRemoto.cancelarSeleccionTabla()}" update="lovTablas, aceptarT" process="@this">
+                        <p:commandButton id="atrasF" style="position: relative; left: 385px" value="#{msg['atras']}" onclick="buscarTablasDialogo.hide(), lovTablas.clearFilters();" actionListener="#{controlRemoto.cancelarSeleccionTabla()}" update="lovTablas, aceptarT" process="@this">
                             <p:resetInput target=":form:lovTablas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlRemoto.lab()}"/> 
                     <p:hotkey bind="ctrl+f12" actionListener="#{controlRemoto.lab2()}"/> 
+                </h:form>
+                <h:form id="formExportar">
+                    <p:dataTable id="empleadosExportar" var="empleadoVW" style="visibility: hidden; display: none;"                           
+                                 value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}">
+
+                        <p:column>  
+                            <f:facet name="header"><h:outputText value="#{msg['codigoX']}" /></f:facet>
+                            <h:outputText value="#{empleadoVW.empleado.codigoempleado}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['primerApellidoXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['primerApellidoX']}"/></f:facet> 
+                            <h:outputText value="#{empleadoVW.empleado.persona.primerapellido}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['segundoApellidoXX']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['segundoApellidoX']}"/></f:facet>
+                            <h:outputText value="#{empleadoVW.empleado.persona.segundoapellido}" />
+                        </p:column>
+
+                        <p:column>                                                              
+                            <f:facet name="header"> 
+                                <h:outputText value="#{msg['nombreX']}"/>
+                            </f:facet>
+                            <h:outputText value="#{empleadoVW.empleado.persona.nombre}" />
+                        </p:column>  
+                    </p:dataTable>
                 </h:form>
             </ui:define>
         </ui:composition>

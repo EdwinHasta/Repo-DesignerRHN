@@ -1,62 +1,52 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package InterfacePersistencia;
 
 import Entidades.VigenciasTiposTrabajadores;
 import java.math.BigInteger;
 import java.util.List;
-
+/**
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'VigenciasTiposTrabajadores' 
+ * de la base de datos.
+ * @author betelgeuse
+ */
 public interface PersistenciaVigenciasTiposTrabajadoresInterface {
-
     /**
-     * Crea un objeto VigenciaTipoTrabajador
-     *
-     * @param vigenciasTiposTrabajadores Objeto a crear
+     * Método encargado de insertar una VigenciaTipoTrabajador en la base de datos.
+     * @param vigenciasTiposTrabajadores VigenciaTipoTrabajador que se quiere crear.
      */
     public void crear(VigenciasTiposTrabajadores vigenciasTiposTrabajadores);
-
     /**
-     * Edita un objeto VigenciaTipoTrabajador
-     *
-     * @param vigenciasTiposTrabajadores Objeto a editar
+     * Método encargado de modificar una VigenciaTipoTrabajador de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param vigenciasTiposTrabajadores VigenciaTipoTrabajador con los cambios que se van a realizar.
      */
     public void editar(VigenciasTiposTrabajadores vigenciasTiposTrabajadores);
-
     /**
-     * Borra un objeto VigenciaTipoTrabajador
-     *
-     * @param vigenciasTiposTrabajadores Objeto a borrar
+     * Método encargado de eliminar de la base de datos la VigenciaTipoTrabajador que entra por parámetro.
+     * @param vigenciasTiposTrabajadores VigenciaTipoTrabajador que se quiere eliminar.
      */
     public void borrar(VigenciasTiposTrabajadores vigenciasTiposTrabajadores);
-
     /**
-     * Metodo que obtiene una VigenciaTipoTrabajador por la llave primaria ID
-     *
-     * @param id Llave Primaria ID
-     * @return vigTT VigenciaTipoTrabajador que cumple con la llave primaria
-     */
-    public VigenciasTiposTrabajadores buscarVigenciaTipoTrabajador(Object id);
-
-    /**
-     * Metodo que obtiene todos los elementos de la tabla VigenciaTipoTrabajador
-     *
-     * @return listVTT Lista de VigenciaTipoTrabajador
+     * Método encargado de buscar todas las VigenciasTiposTrabajadores existentes en la base de datos.
+     * @return Retorna una lista de VigenciasTiposTrabajadores.
      */
     public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadores();
-
     /**
-     * Metodo que obtiene las VigenciasTiposTrabajador de un Empleado
-     *
-     * @param secEmpleado Secuencia de Empleado
-     * @return listVE Lista de VigenciaTipoTrabajador del Empleado
+     * Método encargado de buscar las VigenciasTiposTrabajadores de un Empleado específico.
+     * @param secuencia Secuencia del Empleado.
+     * @return Retorna las VigenciasTiposTrabajadores, odenadas descendentemente por la fechaVigencia, del Empleado cuya secuencia coincide 
+     * con la secuencia dada por parámetro.
      */
-    public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadoresEmpleado(BigInteger secEmpleado);
-
+    public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadoresEmpleado(BigInteger secuencia);
     /**
-     * Metodo que obtiene una VigenciaTipoTrabajador pòr la secuencia
-     *
-     * @param secVTT Secuencia de la VigenciaTipoTrabajador
-     * @return vigTT VigenciaTipoTrabajador que cumple con la secuencia dada
+     * Método encargado de buscar la VigenciaTipoTrabajador con la secuencia dada por parámetro.
+     * @param secuencia Secuencia de la VigenciaTipoTrabajador que se quiere encontrar.
+     * @return Retorna la VigenciaTipoTrabajador identificada con la secuencia dada por parámetro.
      */
-    public VigenciasTiposTrabajadores buscarVigenciasTiposTrabajadoresSecuencia(BigInteger secVTT);
-
+    public VigenciasTiposTrabajadores buscarVigenciasTiposTrabajadoresSecuencia(BigInteger secuencia);
+    
     public List<VigenciasTiposTrabajadores> buscarEmpleados();
 }

@@ -195,7 +195,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasProyectos proyectosPersona(BigInteger secEmpleado) {
         List<VigenciasProyectos> listaVigenciasProyectos;
-        listaVigenciasProyectos = persistenciaVigenciasProyectos.proyectosPersona(secEmpleado);
+        listaVigenciasProyectos = persistenciaVigenciasProyectos.proyectosEmpleado(secEmpleado);
         if (listaVigenciasProyectos != null) {
             return listaVigenciasProyectos.get(0);
         } else {
@@ -294,7 +294,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasIndicadores indicadoresPersona(BigInteger secEmpl) {
         List<VigenciasIndicadores> listaVigenciasIndicadores;
-        listaVigenciasIndicadores = persistenciaVigenciasIndicadores.indicadoresPersona(secEmpl);
+        listaVigenciasIndicadores = persistenciaVigenciasIndicadores.ultimosIndicadoresEmpleado(secEmpl);
         if (listaVigenciasIndicadores != null) {
             return listaVigenciasIndicadores.get(0);
         } else {

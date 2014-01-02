@@ -11,18 +11,19 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasProrrateos'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasProrrateosInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear VigenciasProrrateos.
-     */
     @Override
     public void crear(VigenciasProrrateos vigenciasProrrateos) {
         try {
@@ -32,9 +33,6 @@ public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasPro
         }
     }
 
-    /*
-     *Editar VigenciasProrrateos. 
-     */
     @Override
     public void editar(VigenciasProrrateos vigenciasProrrateos) {
         try {
@@ -44,9 +42,6 @@ public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasPro
         }
     }
 
-    /*
-     *Borrar VigenciasProrrateos.
-     */
     @Override
     public void borrar(VigenciasProrrateos vigenciasProrrateos) {
         try {
@@ -56,24 +51,6 @@ public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasPro
         }
     }
 
-    /*
-     *Encontrar un VigenciaProrrateo. 
-     */
-    @Override
-    public VigenciasProrrateos buscarVigenciaProrrateo(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            //return em.find(VigenciasCargos.class, id);
-            return em.find(VigenciasProrrateos.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarVigenciaProrrateo PersistenciaVigenciasProrrateos");
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todos los VigenciasProrrateos.
-     */
     @Override
     public List<VigenciasProrrateos> buscarVigenciasProrrateos() {
         try{

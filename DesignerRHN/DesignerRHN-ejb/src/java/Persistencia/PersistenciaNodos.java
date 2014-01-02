@@ -31,7 +31,7 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     @Override
     public void crear(Nodos nodos) {
         try {
-            em.merge(nodos);
+            em.persist(nodos);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaNovedades.crear");
         }
