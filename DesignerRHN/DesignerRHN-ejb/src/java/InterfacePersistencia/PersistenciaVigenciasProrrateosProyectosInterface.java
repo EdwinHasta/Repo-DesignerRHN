@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package InterfacePersistencia;
 
 import Entidades.VigenciasProrrateosProyectos;
@@ -5,54 +8,52 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'VigenciasProrrateosProyectos' 
+ * de la base de datos.
  * @author AndresPineda
  */
 public interface PersistenciaVigenciasProrrateosProyectosInterface {
-    
     /**
-     * Crea una nueva VigenciasProrrateosProyectos
-     * @param vigenciasProrrateosProyectos Objeto a crear
+     * Método encargado de insertar una VigenciaProrrateoProyecto en la base de datos.
+     * @param vigenciasProrrateosProyectos VigenciaProrrateoProyecto que se quiere crear.
      */
     public void crear(VigenciasProrrateosProyectos vigenciasProrrateosProyectos);
     /**
-     * Edita una VigenciasProrrateosProyectos
-     * @param vigenciasProrrateosProyectos Objeto a editar
+     * Método encargado de modificar una VigenciaProrrateoProyecto de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param vigenciasProrrateosProyectos VigenciaProrrateoProyecto con los cambios que se van a realizar.
      */
     public void editar(VigenciasProrrateosProyectos vigenciasProrrateosProyectos);
     /**
-     * Borra una VigenciasProrrateosProyectos
-     * @param vigenciasProrrateosProyectos Objeto a borrar
+     * Método encargado de eliminar de la base de datos la VigenciaProrrateoProyecto que entra por parámetro.
+     * @param vigenciasProrrateosProyectos VigenciaProrrateoProyecto que se quiere eliminar.
      */
     public void borrar(VigenciasProrrateosProyectos vigenciasProrrateosProyectos);
     /**
-     * Busca una VigenciasProrrateosProyectos por su llave primaria ID
-     * @param id Llave Primaria Id
-     * @return vPP VigenciasProrrateosProyectos que cumple con la llave primaria 
-     */
-    public VigenciasProrrateosProyectos buscarVigenciaProrrateoProyecto(Object id);
-    /**
-     * Obtiene la lista total de VigenciasProrrateosProyectos 
-     * @return listVPP Lista de VigenciasProrrateosProyectos existente
+     * Método encargado de buscar todas las VigenciasProrrateosProyectos existentes en la base de datos.
+     * @return Retorna una lista de VigenciasProrrateosProyectos.
      */
     public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectos();
     /**
-     * Busca la lista de VigenciasProrrateosProyectos de un Empleado por medio de la secuencia
-     * @param secEmpleado Secuencia Empleado
-     * @return listVPPE Lista de VigenciasProrrateosProyectos de el Empleado deseado
+     * Método encargado de buscar las VigenciasProrrateosProyectos de un Empleado específico.
+     * @param secuencia Secuencia del Empleado.
+     * @return Retorna las VigenciasProrrateosProyectos, odenadas descendentemente por la fechaInicial, del Empleado cuya secuencia coincide 
+     * con la secuencia dada por parámetro.
      */
-    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosEmpleado(BigInteger secEmpleado);
+    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosEmpleado(BigInteger secuencia);
     /**
-     * Busca una VigenciasProrrateosProyectos por medio de la secuencia de la vigtencia
-     * @param secVPP Secuencia VigenciasProrrateosProyectos
-     * @return vPP VigenciasProrrateosProyectos que cumple con la secuencia dada
+     * Método encargado de buscar la VigenciaProrrateoProyecto con la secuencia dada por parámetro.
+     * @param secuencia Secuencia de la VigenciaProrrateoProyecto que se quiere encontrar.
+     * @return Retorna la VigenciaProrrateoProyecto identificada con la secuencia dada por parámetro.
      */
-    public VigenciasProrrateosProyectos buscarVigenciasProrrateosProyectosSecuencia(BigInteger secVPP);
+    public VigenciasProrrateosProyectos buscarVigenciasProrrateosProyectosSecuencia(BigInteger secuencia);
     /**
-     * Obtiene de VigenciasProrrateosProyectos la lista de VigenciaLocalizaciones por medio de la secuencia de esta
-     * @param secVigencia Secuencia VigenciaLocalizacion
-     * @return listVPPVL Lista de VigenciasProrrateosProyectos de una VigenciaLocalizacion
+     * Método encargado de buscar las VigenciaProrrateoProyecto asociadas a una VigenciaLocalizacion específica.
+     * @param secuencia Secuencia de la VigenciaLocalizacion.
+     * @return Retorna la lista de VigenciasProrrateosProyectos que estan asociadas con la VigenciaLocalizacion
+     * cuya secuencia coincide con la secuencia dada por parámetro. 
      */
-    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosVigenciaSecuencia(BigInteger secVigencia);
+    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosVigenciaSecuencia(BigInteger secuencia);
     
 }

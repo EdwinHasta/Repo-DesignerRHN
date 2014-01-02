@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package InterfacePersistencia;
 
 import Entidades.VigenciasProrrateos;
@@ -5,55 +8,52 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'VigenciasProrrateos' 
+ * de la base de datos.
  * @author AndresPineda
  */
-
 public interface PersistenciaVigenciasProrrateosInterface {
-    
     /**
-     * Crea una nueva VigenciaProrrateo
-     * @param vigenciasProrrateos Objeto a crear
+     * Método encargado de insertar una VigenciaProrrateo en la base de datos.
+     * @param vigenciasProrrateos VigenciaProrrateo que se quiere crear.
      */
     public void crear(VigenciasProrrateos vigenciasProrrateos);
     /**
-     * Edita una VigenciaProrrateo
-     * @param vigenciasProrrateos Objeto a editar
+     * Método encargado de modificar una VigenciaProrrateo de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param vigenciasProrrateos VigenciaProrrateo con los cambios que se van a realizar.
      */
     public void editar(VigenciasProrrateos vigenciasProrrateos);
     /**
-     * Borra una VigenciaProrrateo
-     * @param vigenciasProrrateos Objeto a borrar
+     * Método encargado de eliminar de la base de datos la VigenciaProrrateo que entra por parámetro.
+     * @param vigenciasProrrateos VigenciaProrrateo que se quiere eliminar.
      */
     public void borrar(VigenciasProrrateos vigenciasProrrateos);
     /**
-     * Busca una VigenciaProrrateo por medio de la llave primaria ID
-     * @param id Llave Primaria ID
-     * @return vP Vigencia Prorrateo que cumple con la llave primaria
-     */
-    public VigenciasProrrateos buscarVigenciaProrrateo(Object id);
-    /**
-     * Obtiene todos los elementos de la tabla VigenciasProrrateos
-     * @return listVP Lista de Vigencias Prorrateos
+     * Método encargado de buscar todas las VigenciasProrrateos existentes en la base de datos.
+     * @return Retorna una lista de VigenciasProrrateos.
      */
     public List<VigenciasProrrateos> buscarVigenciasProrrateos();
     /**
-     * Obtiene la lista de VigenciaProrrateo de un Empleado especifico
-     * @param secEmpleado Secuencia Empleado
-     * @return listVPE Lista de Vigencias Prorrateos de un Empleado
+     * Método encargado de buscar las VigenciasProrrateos de un Empleado específico.
+     * @param secuencia Secuencia del Empleado.
+     * @return Retorna las VigenciasProrrateos, odenadas descendentemente por la fechaInicial, del Empleado cuya secuencia coincide 
+     * con la secuencia dada por parámetro.
      */
-    public List<VigenciasProrrateos> buscarVigenciasProrrateosEmpleado(BigInteger secEmpleado);
+    public List<VigenciasProrrateos> buscarVigenciasProrrateosEmpleado(BigInteger secuencia);
     /**
-     * Obtiene una VigenciaProrrateo por medio de la secuencia 
-     * @param secVP Secuencia VigenciaProrrateo
-     * @return vP Vigencia Prorrateo que cumple con la secuencia dad
+     * Método encargado de buscar la VigenciaProrrateo con la secuencia dada por parámetro.
+     * @param secuencia Secuencia de la VigenciaProrrateo que se quiere encontrar.
+     * @return Retorna la VigenciaProrrateo identificada con la secuencia dada por parámetro.
      */
-    public VigenciasProrrateos buscarVigenciaProrrateoSecuencia(BigInteger secVP);
+    public VigenciasProrrateos buscarVigenciaProrrateoSecuencia(BigInteger secuencia);
     /**
-     * Obtiene la lista de VigenciasProrrateos de una VigenciaLocalizacion
-     * @param secVigencia Secuencia VigenciaLocalizacion
-     * @return listVPVL Lista de Vigencias Prorrateos de una Vigencia Localizacion
+     * Método encargado de buscar las VigenciaProrrateo asociadas a una VigenciaLocalizacion específica.
+     * @param secuencia Secuencia de la VigenciaLocalizacion.
+     * @return Retorna la lista de VigenciasProrrateos que estan asociadas con la VigenciaLocalizacion
+     * cuya secuencia coincide con la secuencia dada por parámetro. 
      */
-    public List<VigenciasProrrateos> buscarVigenciasProrrateosVigenciaSecuencia(BigInteger secVigencia);
+    public List<VigenciasProrrateos> buscarVigenciasProrrateosVigenciaSecuencia(BigInteger secuencia);
     
 }
