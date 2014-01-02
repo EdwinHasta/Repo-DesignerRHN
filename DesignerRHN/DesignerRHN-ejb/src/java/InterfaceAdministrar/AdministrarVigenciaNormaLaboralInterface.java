@@ -18,15 +18,15 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarVigenciaNormaLaboralInterface {
 
-    public List<VigenciasNormasEmpleados> vigenciasNormasEmpleadosEmpl(BigInteger secEmpleado);
+    public List<VigenciasNormasEmpleados> vigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado);
 
-    public void modificarVNE(List<VigenciasNormasEmpleados> listVNEModificadas);
+    public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listVNEModificadas);
 
-    public void borrarVNE(VigenciasNormasEmpleados vigenciasNormasEmpleados);
+    public void borrarVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEMpleados);
 
-    public void crearVNE(VigenciasNormasEmpleados vigenciasNormasEmpleados);
+    public void crearVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEmpleados);
 
     public Empleados buscarEmpleado(BigInteger secuencia);
 
-    public List<NormasLaborales> normasLaborales();
+    public List<NormasLaborales> mostrarNormasLaborales();
 }
