@@ -133,7 +133,6 @@ public class ControlVigenciasNormasEmpleado implements Serializable {
             RequestContext context1 = RequestContext.getCurrentInstance();
             context1.update("formExportar:botonPrueba2");
 
-
         } else {//impar si muestra
             banderaPruebas = "visible";
             RequestContext context1 = RequestContext.getCurrentInstance();
@@ -163,19 +162,19 @@ public class ControlVigenciasNormasEmpleado implements Serializable {
             if (!listVNEBorrar.isEmpty()) {
                 for (int i = 0; i < listVNEBorrar.size(); i++) {
                     System.out.println("Borrando...");
-                    administrarVigenciaNormaLaboral.borrarVNE(listVNEBorrar.get(i));
+                    //  administrarVigenciaNormaLaboral.borrarVNE(listVNEBorrar.get(i));
                 }
                 listVNEBorrar.clear();
             }
             if (!listVNECrear.isEmpty()) {
                 for (int i = 0; i < listVNECrear.size(); i++) {
                     System.out.println("Creando...");
-                    administrarVigenciaNormaLaboral.crearVNE(listVNECrear.get(i));
+                    //administrarVigenciaNormaLaboral.crearVNE(listVNECrear.get(i));
                 }
                 listVNECrear.clear();
             }
             if (!listVNEModificar.isEmpty()) {
-                administrarVigenciaNormaLaboral.modificarVNE(listVNEModificar);
+                //    administrarVigenciaNormaLaboral.modificarVNE(listVNEModificar);
                 listVNEModificar.clear();
             }
             System.out.println("Se guardaron los datos con exito");
@@ -558,7 +557,8 @@ public class ControlVigenciasNormasEmpleado implements Serializable {
     public List<VigenciasNormasEmpleados> getVigenciasNormasEmpleados() {
         try {
             if (vigenciasNormasEmpleado == null) {
-                return vigenciasNormasEmpleado = administrarVigenciaNormaLaboral.vigenciasNormasEmpleadosEmpl(secuenciaEmpleado);
+                //    return vigenciasNormasEmpleado = administrarVigenciaNormaLaboral.vigenciasNormasEmpleadosEmpl(secuenciaEmpleado);
+                return null;
             } else {
                 return vigenciasNormasEmpleado;
             }
@@ -585,7 +585,7 @@ public class ControlVigenciasNormasEmpleado implements Serializable {
     }
 
     public List<NormasLaborales> getListaNormasLaborales() {
-        listaNormasLaborales = administrarVigenciaNormaLaboral.normasLaborales();
+//        listaNormasLaborales = administrarVigenciaNormaLaboral.normasLaborales();
         return listaNormasLaborales;
     }
 

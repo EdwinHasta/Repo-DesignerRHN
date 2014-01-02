@@ -276,6 +276,14 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
+        <from-view-id>/emplvigencianormalaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>normalaboralNominaF</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/page1.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciaaficion</from-outcome>
@@ -1715,7 +1723,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        <navigation-rule>
+    <navigation-rule>
         <from-view-id>/centrocosto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cambioTipoCentroCosto</from-outcome>
@@ -1728,6 +1736,22 @@
         <navigation-case>
             <from-outcome>cambioCentroCosto</from-outcome>
             <to-view-id>/centrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emplvigencianormalaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>normaLaboral</from-outcome>
+            <to-view-id>/normalaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/normalaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasNormaLaboral</from-outcome>
+            <to-view-id>/emplvigencianormalaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

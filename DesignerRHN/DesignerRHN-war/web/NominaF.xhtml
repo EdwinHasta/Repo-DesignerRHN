@@ -182,7 +182,7 @@
                                             #{msg['FechaContratacion1']}<br/>#{msg['FechaContratacion2']}
                                         </p:tooltip>
 
-                                        <p:commandButton id="NormaLaboral" value="" style="position: absolute; background-image: url(Imagenes/Iconos/normaLaboral.png); width: 29px; height: 35px; top: 87px;left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="normalaboral"/>
+                                        <p:commandButton id="NormaLaboral" value="" style="position: absolute; background-image: url(Imagenes/Iconos/normaLaboral.png); width: 29px; height: 35px; top: 87px;left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlBetaEmplVigenciaNormaLaboral.recibirEmpleado(item.empleado.secuencia)}" action="normalaboral"/>
                                         <p:tooltip  for="NormaLaboral">
                                             #{msg['NormaLaboral1']}<br/>#{msg['NormaLaboral2']}
                                         </p:tooltip>
