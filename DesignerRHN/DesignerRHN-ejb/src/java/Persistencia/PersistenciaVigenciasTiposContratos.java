@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Empleados;
@@ -11,62 +14,52 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasTiposContratos'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVigenciasTiposContratos implements PersistenciaVigenciasTiposContratosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear vigenciasCargos.
-     */
     @Override
-    public void crear(VigenciasTiposContratos vigenciaTipoContrato) {
+    public void crear(VigenciasTiposContratos vigenciasTiposContratos) {
         try {
-            em.merge(vigenciaTipoContrato);
+            em.merge(vigenciasTiposContratos);
         } catch (Exception e) {
             System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasTiposContratos)" + e);
         }
     }
 
-    /*
-     *Editar vigenciasCargos. 
-     */
     @Override
-    public void editar(VigenciasTiposContratos vigenciaTipoContrato) {
+    public void editar(VigenciasTiposContratos vigenciasTiposContratos) {
         try {
-            em.merge(vigenciaTipoContrato);
+            em.merge(vigenciasTiposContratos);
         } catch (Exception e) {
             System.out.println("No se pudo modificar la Vigencias Tipo Contrato");
         }
     }
 
-    /*
-     *Borrar vigenciasCargos.
-     */
     @Override
-    public void borrar(VigenciasTiposContratos vigenciaTipoContrato) {
-        em.remove(em.merge(vigenciaTipoContrato));
+    public void borrar(VigenciasTiposContratos vigenciasTiposContratos) {
+        em.remove(em.merge(vigenciasTiposContratos));
     }
 
-    /*
-     *Encontrar una vigenciasCargos. 
-     */
     @Override
-    public VigenciasTiposContratos buscarVigenciaTipoContrato(Object id) {
+    public VigenciasTiposContratos buscarVigenciaTipoContrato(BigInteger secuencia) {
         try {
-            BigInteger in = (BigInteger) id;
-            //return em.find(VigenciasCargos.class, id);
-            return em.find(VigenciasTiposContratos.class, in);
+            return em.find(VigenciasTiposContratos.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
-    /*
-     *Encontrar todas las vigenciasCargos.
-     */
     @Override
     public List<VigenciasTiposContratos> buscarVigenciasTiposContratos() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -74,29 +67,25 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
         return em.createQuery(cq).getResultList();
     }
 
-
     @Override
-    public List<VigenciasTiposContratos> buscarVigenciaTipoContratoEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasTiposContratos> buscarVigenciaTipoContratoEmpleado(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vtc FROM VigenciasTiposContratos vtc WHERE vtc.empleado.secuencia = :secuenciaEmpl ORDER BY vtc.fechavigencia DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
-            
+            query.setParameter("secuenciaEmpl", secuencia);
             List<VigenciasTiposContratos> vigenciasTiposContratos = (List<VigenciasTiposContratos>) query.getResultList();
-           // System.out.println("Ciudad:  " + vigenciasTiposContratos.get(6).getCiudad());
             return vigenciasTiposContratos;
         } catch (Exception e) {
             System.out.println("Error llave: " + e);
             return null;
         }
-
     }
 
     @Override
-    public Date fechaMaxContratacion(Empleados empleado) {
+    public Date fechaMaxContratacion(Empleados secuencia) {
         try{
             Date fechaContratacion;
             Query query = em.createQuery("SELECT vwac.fechaVigencia FROM VWActualesTiposContratos vwac WHERE vwac.empleado =:empleado");
-            query.setParameter("empleado", empleado);
+            query.setParameter("empleado", secuencia);
             fechaContratacion = (Date) query.getSingleResult();
             return fechaContratacion;
         }catch(Exception e){

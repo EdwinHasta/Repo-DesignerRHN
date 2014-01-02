@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasProrrateosProyectos;
@@ -11,18 +14,19 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasProrrateosProyectos'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVigenciasProrrateosProyectosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear VigenciasProrrateosProyectos.
-     */
     @Override
     public void crear(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
@@ -32,9 +36,6 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
         }
     }
 
-    /*
-     *Editar VigenciasProrrateosProyectos. 
-     */
     @Override
     public void editar(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
@@ -44,9 +45,6 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
         }
     }
 
-    /*
-     *Borrar VigenciasProrrateosProyectos.
-     */
     @Override
     public void borrar(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
@@ -57,23 +55,6 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
         }
     }
 
-    /*
-     *Encontrar un VigenciasProrrateosProyectos. 
-     */
-    @Override
-    public VigenciasProrrateosProyectos buscarVigenciaProrrateoProyecto(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            return em.find(VigenciasProrrateosProyectos.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarVigenciaProrrateo PersistenciaVigenciasProrrateos");
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todos los VigenciasProrrateosProyectos.
-     */
     @Override
     public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectos() {
         try {

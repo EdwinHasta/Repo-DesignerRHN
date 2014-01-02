@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaTiposExamenesInterface;
 import Entidades.TiposExamenes;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -16,35 +13,44 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposExamenes'
+ * de la base de datos.
  * @author John Pineda
  */
 @Stateless
 public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
     
+    @Override
      public void crear(TiposExamenes tiposExamenes) {
         em.persist(tiposExamenes);
     }
 
+    @Override
     public void editar(TiposExamenes tiposExamenes) {
         em.merge(tiposExamenes);
     }
 
+    @Override
     public void borrar(TiposExamenes tiposExamenes) {
         em.remove(em.merge(tiposExamenes));
     }
 
-    public TiposExamenes buscarTipoExamen(BigInteger secuenciaTe) {
+    @Override
+    public TiposExamenes buscarTipoExamen(BigInteger secuencia) {
         try {
-            return em.find(TiposExamenes.class, secuenciaTe);
+            return em.find(TiposExamenes.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
+    @Override
     public List<TiposExamenes> buscarTiposExamenes() {
         Query query = em.createQuery("SELECT te FROM TiposExamenes te ORDER BY te.codigo ASC ");
         List<TiposExamenes> listMotivosDemandas = query.getResultList();
@@ -52,13 +58,14 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
 
     }
 
-    public BigDecimal contadorTiposExamenesCargos(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorTiposExamenesCargos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM  tiposexamenescargos tec , tiposexamenes te WHERE tec.tipoexamen=te.secuencia AND te.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.err.println("Contador contadorTiposExamenesCargos persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -67,13 +74,14 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
         }
     }
 
-    public BigDecimal contadorVigenciasExamenesMedicos(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorVigenciasExamenesMedicos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM  vigenciasexamenesmedicos vem , tiposexamenes te WHERE vem.tipoexamen=te.secuencia  AND te.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.err.println("Contador PersistenciaTiposExamenes  contadorVigenciasExamenesMedicos  " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -81,5 +89,4 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
             return retorno;
         }
     }
-    
 }

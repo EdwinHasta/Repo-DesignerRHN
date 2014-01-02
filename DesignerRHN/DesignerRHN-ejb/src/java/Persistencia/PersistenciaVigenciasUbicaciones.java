@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasUbicaciones;
@@ -9,16 +12,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasUbicaciones'
+ * de la base de datos.
+ * @author AndresPineda
+ */
 @Stateless
 public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUbicacionesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear vigenciasCargos.
-     */
     @Override
     public void crear(VigenciasUbicaciones vigenciaUbicacion) {
         try {
@@ -28,9 +35,6 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
         }
     }
 
-    /*
-     *Editar vigenciasCargos. 
-     */
     @Override
     public void editar(VigenciasUbicaciones vigenciaUbicacion) {
         try {
@@ -40,31 +44,20 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
         }
     }
 
-    /*
-     *Borrar vigenciasCargos.
-     */
     @Override
     public void borrar(VigenciasUbicaciones vigenciaUbicacion) {
         em.remove(em.merge(vigenciaUbicacion));
     }
 
-    /*
-     *Encontrar una vigenciasCargos. 
-     */
     @Override
-    public VigenciasUbicaciones buscarVigenciaUbicacion(Object id) {
+    public VigenciasUbicaciones buscarVigenciaUbicacion(BigInteger secuencia) {
         try {
-            BigInteger in = (BigInteger) id;
-            //return em.find(VigenciasCargos.class, id);
-            return em.find(VigenciasUbicaciones.class, in);
+            return em.find(VigenciasUbicaciones.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
-    /*
-     *Encontrar todas las vigenciasCargos.
-     */
     @Override
     public List<VigenciasUbicaciones> buscarVigenciasUbicaciones() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -77,7 +70,6 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
         try {
             Query query = em.createQuery("SELECT vu FROM VigenciasUbicaciones vu WHERE vu.empleado.secuencia = :secuenciaEmpl ORDER BY vu.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-            
             List<VigenciasUbicaciones> vigenciasUbicaciones = query.getResultList();
             return vigenciasUbicaciones;
         } catch (Exception e) {
@@ -85,5 +77,4 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
             return null;
         }
     }
-
 }

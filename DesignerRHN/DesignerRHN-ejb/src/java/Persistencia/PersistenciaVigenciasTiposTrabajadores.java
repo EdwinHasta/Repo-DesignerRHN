@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasTiposTrabajadores;
@@ -9,16 +12,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-
+/**
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasTiposTrabajadores'
+ * de la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigenciasTiposTrabajadoresInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear VigenciasTiposTrabajadores.
-     */
     @Override
     public void crear(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
@@ -29,9 +36,6 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         }
     }
 
-    /*
-     *Editar VigenciasTiposTrabajadores. 
-     */
     @Override
     public void editar(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
@@ -41,9 +45,6 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         }
     }
 
-    /*
-     *Borrar vigenciasReformalaboral.
-     */
     @Override
     public void borrar(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
@@ -53,22 +54,6 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         }
     }
 
-    /*
-     *Encontrar una VigenciaTipoTrabajador. 
-     */
-    @Override
-    public VigenciasTiposTrabajadores buscarVigenciaTipoTrabajador(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            return em.find(VigenciasTiposTrabajadores.class, in);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todas las VigenciasTiposTrabajadores.
-     */
     @Override
     public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadores() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -76,9 +61,6 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         return em.createQuery(cq).getResultList();
     }
 
-    /*
-     *Encontrar las VigenciasTiposTrabajadores de un Empleado.
-     */
     @Override
     public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadoresEmpleado(BigInteger secEmpleado) {
         try {
@@ -93,9 +75,6 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         }
     }
 
-    /*
-     *Encontrar la VigenciasTiposTrabajadores por Secuencia.
-     */
     @Override
     public VigenciasTiposTrabajadores buscarVigenciasTiposTrabajadoresSecuencia(BigInteger secVTT) {
         try {
@@ -107,13 +86,12 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         }
     }
     
+    @Override
     public List<VigenciasTiposTrabajadores> buscarEmpleados() {
 
         Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt "
                 + "WHERE vtt.fechavigencia = (SELECT MAX(vttt.fechavigencia) "
                 + "FROM VigenciasTiposTrabajadores vttt)");
-        //query.setParameter("secuencia", secuencia);
         return query.getResultList();
-
     }
 }

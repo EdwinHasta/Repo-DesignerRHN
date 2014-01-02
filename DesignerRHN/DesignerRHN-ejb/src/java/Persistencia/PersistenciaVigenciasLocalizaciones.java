@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasLocalizaciones;
@@ -11,18 +14,19 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasLocalizaciones'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigenciasLocalizacionesInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     * Crear VigenciasLocalizaciones.
-     */
     @Override
     public void crear(VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
@@ -32,9 +36,6 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
         }
     }
 
-    /*
-     *Editar VigenciasLocalizaciones. 
-     */
     @Override
     public void editar(VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
@@ -43,10 +44,7 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
             System.out.println("No se pudo modificar la VigenciasLocalizaciones");
         }
     }
-
-    /*
-     *Borrar VigenciasLocalizaciones.
-     */
+    
     @Override
     public void borrar(VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
@@ -55,24 +53,7 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
             System.out.println("Error borrarVigenciasLocalizaciones (PersistenciaVigenciasLocalizaciones)");
         }
     }
-
-    /*
-     *Encontrar una VigenciasLocalizaciones. 
-     */
-    @Override
-    public VigenciasLocalizaciones buscarVigenciasLocalizacion(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            return em.find(VigenciasLocalizaciones.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscarVigenciasLocalizacion PersistenciaVigenciasLocalizaciones");
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todas las VigenciasLocalizaciones.
-     */
+ 
     @Override
     public List<VigenciasLocalizaciones> buscarVigenciasLocalizaciones() {
         try{
@@ -85,16 +66,13 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
         }
     }
 
-    /*
-     *Encontrar las VigenciasLocalizaciones de un Empleado.
-     */
     @Override
-    public List<VigenciasLocalizaciones> buscarVigenciasLocalizacionesEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasLocalizaciones> buscarVigenciasLocalizacionesEmpleado(BigInteger secuencia) {
         System.out.println("Entro buscarVigenciasLocalizacionesEmpleado PersistenciaVL");
         try {
             System.out.println("Entro if buscarVigenciasLocalizacionesEmpleado PersistenciaVL");
             Query query = em.createQuery("SELECT vl FROM VigenciasLocalizaciones vl WHERE vl.empleado.secuencia = :secuenciaEmpl ORDER BY vl.fechavigencia DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setParameter("secuenciaEmpl", secuencia);
             List<VigenciasLocalizaciones> vigenciasLocalizaciones = query.getResultList();
             return vigenciasLocalizaciones;
         } catch (Exception e) {
@@ -103,13 +81,10 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
         }
     }
 
-    /*
-     *Encontrar la VigenciasLocalizaciones por Secuencia.
-     */
     @Override
-    public VigenciasLocalizaciones buscarVigenciasLocalizacionesSecuencia(BigInteger secVL) {
+    public VigenciasLocalizaciones buscarVigenciasLocalizacionesSecuencia(BigInteger secuencia) {
         try {
-            Query query = em.createNamedQuery("VigenciasLocalizaciones.findBySecuencia").setParameter("secuencia", secVL);
+            Query query = em.createNamedQuery("VigenciasLocalizaciones.findBySecuencia").setParameter("secuencia", secuencia);
             VigenciasLocalizaciones vigenciasLocalizaciones = (VigenciasLocalizaciones) query.getSingleResult();
             return vigenciasLocalizaciones;
         } catch (Exception e) {

@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.VigenciasJornadas;
@@ -11,19 +14,18 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- *
+ * Clase Stateless 
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasJornadas'
+ * de la base de datos.
  * @author AndresPineda
  */
-
 @Stateless
 public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJornadasInterface {
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
-    /*
-     * Crear PersistenciaVigenciasJornadas.
-     */
 
     @Override
     public void crear(VigenciasJornadas vigenciasJornadas) {
@@ -34,10 +36,6 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
         }
     }
 
-    /*
-     *Editar PersistenciaVigenciasJornadas. 
-     */
-
     @Override
     public void editar(VigenciasJornadas vigenciasJornadas) {
         try {
@@ -47,10 +45,6 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
         }
     }
 
-    /*
-     *Borrar PersistenciaVigenciasJornadas.
-     */
-
     @Override
     public void borrar(VigenciasJornadas vigenciasJornadas) {
         try {
@@ -59,25 +53,6 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
             System.out.println("Error borrar (PersistenciaVigenciasJornadas)");
         }
     }
-
-    /*
-     *Encontrar una PersistenciaVigenciasJornadas. 
-     */
-
-    @Override
-    public VigenciasJornadas buscarVigenciaJornada(Object id) {
-        try {
-            BigInteger in = (BigInteger) id;
-            return em.find(VigenciasJornadas.class, in);
-        } catch (Exception e) {
-            System.out.println("Error buscar buscarVigenciaJornada");
-            return null;
-        }
-    }
-
-    /*
-     *Encontrar todas las PersistenciaVigenciasJornadas.
-     */
 
     @Override
     public List<VigenciasJornadas> buscarVigenciasJornadas() {
@@ -91,15 +66,11 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
         }
     }
 
-    /*
-     *Encontrar las PersistenciaVigenciasJornadas de un Empleado.
-     */
-
     @Override
-    public List<VigenciasJornadas> buscarVigenciasJornadasEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasJornadas> buscarVigenciasJornadasEmpleado(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vj FROM VigenciasJornadas vj WHERE vj.empleado.secuencia = :secuenciaEmpl ORDER BY vj.fechavigencia DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setParameter("secuenciaEmpl", secuencia);
             List<VigenciasJornadas> vigenciasJornadas = query.getResultList();
             return vigenciasJornadas;
         } catch (Exception e) {
@@ -108,14 +79,10 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
         }
     }
 
-    /*
-     *Encontrar la PersistenciaVigenciasJornadas por Secuencia.
-     */
-
     @Override
-    public VigenciasJornadas buscarVigenciasJornadasSecuencia(BigInteger secVJ) {
+    public VigenciasJornadas buscarVigenciasJornadasSecuencia(BigInteger secuencia) {
         try {
-            Query query = em.createNamedQuery("VigenciasJornadas.findBySecuencia").setParameter("secuencia", secVJ);
+            Query query = em.createNamedQuery("VigenciasJornadas.findBySecuencia").setParameter("secuencia", secuencia);
             VigenciasJornadas vigenciasJornadas = (VigenciasJornadas) query.getSingleResult();
             return vigenciasJornadas;
         } catch (Exception e) {
@@ -123,5 +90,4 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
             return null;
         }
     }
-
 }
