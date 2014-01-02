@@ -28,7 +28,7 @@ public interface AdministrarTiposExamenesInterface {
 
     public TiposExamenes mostrarTipoExamen(BigInteger secTipoEmpresa);
 
-    public BigDecimal verificarBorradoTiposExamenesCargos(BigInteger secuenciaTiposExamenesCargos);
+    public BigInteger verificarBorradoTiposExamenesCargos(BigInteger secuenciaTiposExamenesCargos);
 
-    public BigDecimal verificarBorradoVigenciasExamenesMedicos(BigInteger secuenciaVigenciasExamenesMedicos);
+    public BigInteger verificarBorradoVigenciasExamenesMedicos(BigInteger secuenciaVigenciasExamenesMedicos);
 }
