@@ -12,10 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la entidad 'DetallesFormulas',
  * la cual no es un mapeo de la base de datos sino una Entidad para albergar un resultado.
- * de la base de datos.
  * @author betelgeuse
  */
 @Stateless

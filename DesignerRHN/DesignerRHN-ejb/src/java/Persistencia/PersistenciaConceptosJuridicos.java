@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 
 package Persistencia;
@@ -16,18 +14,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'ConceptosJuridicos' 
+ * de la base de datos.
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuridicosInterface{
-
-   
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    /*
-     */
     @Override
     public void crear(ConceptosJuridicos conceptosJuridicos) {
         try {
@@ -37,8 +36,6 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
         }
     }
 
-    /*
-     */
     @Override
     public void editar(ConceptosJuridicos conceptosJuridicos) {
         try {
@@ -48,8 +45,6 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
         }
     }
 
-    /*
-     */
     @Override
     public void borrar(ConceptosJuridicos conceptosJuridicos) {
         try {
@@ -59,22 +54,6 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
         }
     }
 
-    /*
-     */
-    @Override
-    public ConceptosJuridicos buscarConceptoJuridico(Object id) {
-        try {
-            BigInteger secuencia = new BigInteger(id.toString());
-            return em.find(ConceptosJuridicos.class, secuencia);
-        } catch (Exception e) {
-            System.out.println("Error buscarConceptoJuridico PersistenciaConceptosJuridicos : " + e.toString());
-            return null;
-        }
-
-    }
-
-    /*
-     */
     @Override
     public List<ConceptosJuridicos> buscarConceptosJuridicos() {
         try {
@@ -100,6 +79,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
         }
     }
 
+    @Override
     public List<ConceptosJuridicos> buscarConceptosJuridicosEmpresa(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT cj FROM ConceptosJuridicos cj WHERE cj.empresa.secuencia = :secuencia");

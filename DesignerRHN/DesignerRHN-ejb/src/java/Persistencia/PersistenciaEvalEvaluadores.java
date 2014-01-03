@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -15,18 +13,20 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'EvalEvaluadores'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresInterface {
-
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public void crear(EvalEvaluadores evalEvaluadores) {
         try {
             em.persist(evalEvaluadores);
@@ -35,6 +35,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
         }
     }
 
+    @Override
     public void editar(EvalEvaluadores evalEvaluadores) {
         try {
             em.merge(evalEvaluadores);
@@ -43,6 +44,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
         }
     }
 
+    @Override
     public void borrar(EvalEvaluadores evalEvaluadores) {
         try {
             em.remove(em.merge(evalEvaluadores));
@@ -51,6 +53,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
         }
     }
 
+    @Override
     public EvalEvaluadores buscarEvalEvaluador(BigInteger secuenciaEvalEvaluadores) {
         try {
             return em.find(EvalEvaluadores.class, secuenciaEvalEvaluadores);
@@ -60,6 +63,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
         }
     }
 
+    @Override
     public List<EvalEvaluadores> buscarEvalEvaluadores() {
         try {
             Query query = em.createQuery("SELECT ev FROM EvalEvaluadores ev ORDER BY ev.codigo ");
@@ -71,6 +75,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
         }
     }
 
+    @Override
     public Long verificarBorradoEvalPruebas(BigInteger secuencia) {
         Long retorno = new Long(-1);
         try {
@@ -78,7 +83,6 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
             query.setParameter("secEvalEvalualores", secuencia);
             retorno = (Long) query.getSingleResult();
             System.err.println("PersistenciaEvalEvaluadores retorno ==" + retorno.intValue());
-
         } catch (Exception e) {
             System.err.println("ERROR EN PersistenciaEvalEvaluadores verificarBorrado ERROR :" + e);
         } finally {

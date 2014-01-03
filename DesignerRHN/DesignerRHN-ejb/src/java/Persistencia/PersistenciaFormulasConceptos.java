@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br> 
  * Clase encargada de realizar operaciones sobre la tabla 'FormulasConceptos'
  * de la base de datos.
  * @author betelgeuse
@@ -66,10 +66,10 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
     
     @Override
-    public boolean verificarExistenciaConceptoFormulasConcepto(BigInteger secConcepto) {
+    public boolean verificarExistenciaConceptoFormulasConcepto(BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secConcepto");
-            query.setParameter("secConcepto", secConcepto);
+            Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia");
+            query.setParameter("secuencia", secuencia);
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -79,10 +79,10 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public List<FormulasConceptos> formulasConcepto(BigInteger secConcepto) {
+    public List<FormulasConceptos> formulasConcepto(BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT fc FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secConcepto");
-            query.setParameter("secConcepto", secConcepto);
+            Query query = em.createQuery("SELECT fc FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia");
+            query.setParameter("secuencia", secuencia);
             return query.getResultList();
         } catch (Exception e) {
             return null;
@@ -90,10 +90,10 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public boolean verificarFormulaCargue_Concepto(BigInteger secConcepto, BigInteger secFormula) {
+    public boolean verificarFormulaCargue_Concepto(BigInteger secuencia, BigInteger secFormula) {
         try {
-            Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secConcepto AND fc.formula.secuencia = :secFormula");
-            query.setParameter("secConcepto", secConcepto);
+            Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia AND fc.formula.secuencia = :secFormula");
+            query.setParameter("secuencia", secuencia);
             query.setParameter("secFormula", secFormula);
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
@@ -104,10 +104,10 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
     
       @Override
-    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(BigInteger secConcepto) {
+    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f WHERE f.concepto.secuencia=:secConcepto");
-            query.setParameter("secConcepto", secConcepto);
+            Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f WHERE f.concepto.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
             Long resultado = (Long) query.getSingleResult();
             return resultado;
         } catch (Exception e) {
@@ -117,10 +117,10 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(BigInteger secConcepto) {
+    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f, FormulasNovedades fn WHERE  fn.formula=f.formula AND f.concepto.secuencia=:secConcepto");
-            query.setParameter("secConcepto", secConcepto);
+            Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f, FormulasNovedades fn WHERE  fn.formula=f.formula AND f.concepto.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
             Long resultado = (Long) query.getSingleResult();
             return resultado;
         } catch (Exception e) {
@@ -130,10 +130,10 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
     
     @Override
-    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(BigInteger secuenciaF) {
+    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT f FROM FormulasConceptos f WHERE f.formula.secuencia=:secuenciaF");
-            query.setParameter("secuenciaF", secuenciaF);
+            query.setParameter("secuenciaF", secuencia);
             List<FormulasConceptos> resultado =  query.getResultList();
             return resultado;
         } catch (Exception e) {

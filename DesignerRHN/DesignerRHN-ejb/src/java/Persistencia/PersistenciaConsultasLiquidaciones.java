@@ -12,8 +12,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones de consulta para las liquidaciones.
+ * <strong>Entidad Virtual</strong>
  * @author betelgeuse
  */
 @Stateless

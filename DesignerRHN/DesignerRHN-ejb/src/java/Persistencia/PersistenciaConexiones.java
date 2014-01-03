@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.Conexiones;
@@ -6,13 +9,15 @@ import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
+/**
+ * Clase Stateless. <br> 
+ * Clase encargada de realizar las operaciones para recuperar información de la conexión que esta
+ * guardada en la base de datos.
+ * @author betelgeuse
+ */
 @Stateless
 public class PersistenciaConexiones implements PersistenciaConexionesInterface {
 
-    /*
-     * Crear conexión.
-     */
     @Override
     public void crear_Modificar(Conexiones conexion, EntityManager em) {
         try {
@@ -20,7 +25,7 @@ public class PersistenciaConexiones implements PersistenciaConexionesInterface {
             em.merge(conexion);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            System.out.println("Error PersistenciaConexiones.crear: " + ex);
+            System.out.println("Error PersistenciaConexiones.crear: " + ex);            
         }
     }
 

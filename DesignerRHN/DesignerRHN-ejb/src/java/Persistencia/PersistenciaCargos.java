@@ -14,7 +14,8 @@ import java.math.BigInteger;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless Clase encargada de realizar operaciones sobre la tabla
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla
  * 'Cargos' de la base de datos
  * @author Betelgeuse
  */

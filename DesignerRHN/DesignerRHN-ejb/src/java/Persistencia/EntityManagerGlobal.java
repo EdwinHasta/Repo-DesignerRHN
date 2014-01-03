@@ -14,7 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Clase de tipo singleton. 
+ * Clase de tipo singleton. <br>
  * Esta clase tiene la responsabilidad de crear y controlar las conexiones a la 
  * base de datos que se están usando. Al ser ‘singleton’ solo permite crear
  * una instancia a la base de datos.

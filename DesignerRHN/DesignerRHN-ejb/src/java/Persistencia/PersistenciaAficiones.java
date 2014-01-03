@@ -16,7 +16,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
 /**
- * Clase Stateless
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'Aficiones' de la base de datos
  * @author betelgeuse
  */

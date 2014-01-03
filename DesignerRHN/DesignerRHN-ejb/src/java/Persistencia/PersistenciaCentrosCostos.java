@@ -14,7 +14,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless Clase encargada de realizar operaciones sobre la tabla
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla
  * 'CentrosCostos' de la base de datos
  *
  * @author Hugo David Sin Gutiérrez

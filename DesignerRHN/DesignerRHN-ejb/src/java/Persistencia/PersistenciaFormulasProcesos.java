@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.FormulasProcesos;
@@ -10,12 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author PROYECTO01
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'FormulasProcesos' de la base de datos.
+ * @author Andres Pineda
  */
 @Stateless
 public class PersistenciaFormulasProcesos implements PersistenciaFormulasProcesosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 

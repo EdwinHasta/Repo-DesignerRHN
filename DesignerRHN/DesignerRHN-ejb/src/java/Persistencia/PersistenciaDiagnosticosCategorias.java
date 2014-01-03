@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -12,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'DiagnosticosCategorias'
  * de la base de datos.
  * @author Viktor

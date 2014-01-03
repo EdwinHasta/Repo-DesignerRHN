@@ -5,14 +5,13 @@ package Persistencia;
 
 import Entidades.DetallesEmpresas;
 import InterfacePersistencia.PersistenciaDetallesEmpresasInterface;
-import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'DetallesEmpresas'
  * de la base de datos.
  * @author betelgeuse

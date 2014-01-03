@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'Empresas'
  * de la base de datos.
  * @author betelgeuse

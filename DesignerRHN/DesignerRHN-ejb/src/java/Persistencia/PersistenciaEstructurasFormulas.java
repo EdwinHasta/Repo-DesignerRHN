@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Persistencia;
 
 import Entidades.EstructurasFormulas;
@@ -10,13 +13,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author PROYECTO01
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre las tablas de la base de datos para obtener la información
+ * historica de las formulas.<br>
+ * <strong>Entidad Virtual</strong>
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaEstructurasFormulas implements PersistenciaEstructurasFormulasInterface {
-
-    
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */

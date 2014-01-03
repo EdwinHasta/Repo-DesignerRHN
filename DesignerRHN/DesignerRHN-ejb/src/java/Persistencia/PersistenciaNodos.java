@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -16,12 +14,13 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
- *
- * @author PROYECTO01
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'Nodos'
+ * de la base de datos.
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaNodos implements PersistenciaNodosInterface {
-
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -47,6 +46,7 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
         em.remove(em.merge(nodos));
     }
 
+    @Override
     public Nodos buscarNodoSecuencia(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT n FROM Nodos n WHERE n.secuencia = :secuencia");
