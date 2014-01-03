@@ -6,7 +6,6 @@
 package InterfaceAdministrar;
 
 import Entidades.Lesiones;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,7 +27,7 @@ public interface AdministrarLesionesInterface {
 
     public Lesiones mostrarLesion(BigInteger secLesion);
 
-    public BigDecimal verificarBorradoDetallesLicensias(BigInteger secuenciaLesiones);
+    public BigInteger verificarBorradoDetallesLicensias(BigInteger secuenciaLesiones);
 
-    public BigDecimal verificarBorradoSoAccidentesDomesticos(BigInteger secuenciaVigenciasExamenesMedicos);
+    public BigInteger verificarBorradoSoAccidentesDomesticos(BigInteger secuenciaVigenciasExamenesMedicos);
 }

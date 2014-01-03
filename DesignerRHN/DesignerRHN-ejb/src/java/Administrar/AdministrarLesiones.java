@@ -27,8 +27,8 @@ public class AdministrarLesiones implements AdministrarLesionesInterface {
     private Lesiones lesionSeleccionada;
     private Lesiones lesiones;
     private List<Lesiones> listLesiones;
-    private BigDecimal verificarBorradoDetallesLicensias;
-    private BigDecimal verificadorVigenciasExamenesMedicos;
+    private BigInteger verificarBorradoDetallesLicensias;
+    private BigInteger verificadorVigenciasExamenesMedicos;
 
     public void modificarLesiones(List<Lesiones> listLesionesModificadas) {
         for (int i = 0; i < listLesionesModificadas.size(); i++) {
@@ -47,16 +47,16 @@ public class AdministrarLesiones implements AdministrarLesionesInterface {
     }
 
     public List<Lesiones> mostrarLesiones() {
-        listLesiones = persistenciaLesiones.buscarlesiones();
+        listLesiones = persistenciaLesiones.buscarLesiones();
         return listLesiones;
     }
 
     public Lesiones mostrarLesion(BigInteger secLesion) {
-        lesiones = persistenciaLesiones.buscarlesion(secLesion);
+        lesiones = persistenciaLesiones.buscarLesion(secLesion);
         return lesiones;
     }
 
-    public BigDecimal verificarBorradoDetallesLicensias(BigInteger secuenciaLesiones) {
+    public BigInteger verificarBorradoDetallesLicensias(BigInteger secuenciaLesiones) {
         try {
             verificarBorradoDetallesLicensias = persistenciaLesiones.contadorDetallesLicensias(secuenciaLesiones);
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public class AdministrarLesiones implements AdministrarLesionesInterface {
         }
     }
 
-    public BigDecimal verificarBorradoSoAccidentesDomesticos(BigInteger secuenciaVigenciasExamenesMedicos) {
+    public BigInteger verificarBorradoSoAccidentesDomesticos(BigInteger secuenciaVigenciasExamenesMedicos) {
         try {
             verificadorVigenciasExamenesMedicos = persistenciaLesiones.contadorSoAccidentesDomesticos(secuenciaVigenciasExamenesMedicos);
         } catch (Exception e) {
