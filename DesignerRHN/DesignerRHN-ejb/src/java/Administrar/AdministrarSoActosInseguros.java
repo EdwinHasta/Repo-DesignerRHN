@@ -9,7 +9,6 @@ package Administrar;
 import InterfaceAdministrar.AdministrarSoActosInsegurosInterface;
 import Entidades.SoActosInseguros;
 import InterfacePersistencia.PersistenciaSoActosInsegurosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -27,7 +26,7 @@ public class AdministrarSoActosInseguros implements AdministrarSoActosInsegurosI
     private SoActosInseguros soActosInsegurosPSeleccionada;
     private SoActosInseguros soActosInseguros;
     private List<SoActosInseguros> listSoActosInseguros;
-    private BigDecimal verificarSoAccidtenesMedicos;
+    private BigInteger verificarSoAccidtenesMedicos;
 
     public void modificarSoActosInseguros(List<SoActosInseguros> listSoActosInsegurosPModificada) {
         for (int i = 0; i < listSoActosInsegurosPModificada.size(); i++) {
@@ -55,7 +54,7 @@ public class AdministrarSoActosInseguros implements AdministrarSoActosInsegurosI
         return soActosInseguros;
     }
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             verificarSoAccidtenesMedicos = persistenciaSoActosInseguros.contadorSoAccidentesMedicos(secuenciaElementos);

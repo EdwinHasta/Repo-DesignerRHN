@@ -12,7 +12,7 @@ import InterfacePersistencia.PersistenciaPersonasInterface;
 import java.math.BigInteger;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br> 
  * Clase encargada de realizar operaciones sobre la tabla 'Personas'
  * de la base de datos.
  * @author betelgeuse

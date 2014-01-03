@@ -6,7 +6,6 @@
 package InterfaceAdministrar;
 
 import Entidades.SoCondicionesTrabajos;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,11 +29,11 @@ public interface AdministrarSoCondicionesTrabajosInterface {
 
     public SoCondicionesTrabajos mostrarSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos);
 
-    public BigDecimal verificarInspecciones(BigInteger secuenciaElementos);
+    public BigInteger verificarInspecciones(BigInteger secuenciaElementos);
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
 
-    public BigDecimal verificarSoDetallesPanoramas(BigInteger secuenciaElementos);
+    public BigInteger verificarSoDetallesPanoramas(BigInteger secuenciaElementos);
 
-    public BigDecimal verificarSoExposicionesFr(BigInteger secuenciaElementos);
+    public BigInteger verificarSoExposicionesFr(BigInteger secuenciaElementos);
 }

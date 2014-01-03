@@ -6,7 +6,6 @@
 package InterfaceAdministrar;
 
 import Entidades.PartesCuerpo;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,9 +27,9 @@ public interface AdministrarPartesCuerpoInterface {
 
     public PartesCuerpo mostrarParteCuerpo(BigInteger secElementosCausasAccidentes);
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementosCausasAccidentes);
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementosCausasAccidentes);
 
-    public BigDecimal verificarBorradoDetallesExamenes(BigInteger secuenciaElementosCausasAccidentes);
+    public BigInteger verificarBorradoDetallesExamenes(BigInteger secuenciaElementosCausasAccidentes);
 
-    public BigDecimal verificarBorradoSoDetallesRevisiones(BigInteger secuenciaElementosCausasAccidentes);
+    public BigInteger verificarBorradoSoDetallesRevisiones(BigInteger secuenciaElementosCausasAccidentes);
 }

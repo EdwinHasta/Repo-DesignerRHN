@@ -9,7 +9,6 @@ package Administrar;
 import InterfaceAdministrar.AdministrarTiposTallasInterface;
 import Entidades.TiposTallas;
 import InterfacePersistencia.PersistenciaTiposTallasInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -27,8 +26,8 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
     private TiposTallas tiposTallaSeleccionada;
     private TiposTallas tiposTallas;
     private List<TiposTallas> listTiposTallas;
-    private BigDecimal verificadorElementos;
-    private BigDecimal verificadorVigenciasTallas;
+    private BigInteger verificadorElementos;
+    private BigInteger verificadorVigenciasTallas;
 
     public void modificarTiposTallas(List<TiposTallas> listTiposEmpresasModificadas) {
         for (int i = 0; i < listTiposEmpresasModificadas.size(); i++) {
@@ -56,7 +55,7 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
         return tiposTallas;
     }
 
-    public BigDecimal verificarBorradoElementos(BigInteger secuenciaElementos) {
+    public BigInteger verificarBorradoElementos(BigInteger secuenciaElementos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             verificadorElementos = persistenciaTiposTallas.contadorElementos(secuenciaElementos);
@@ -66,7 +65,7 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
             return verificadorElementos;
         }
     }
-    public BigDecimal verificarBorradoVigenciasTallas(BigInteger secuenciaVigenciasTallas) {
+    public BigInteger verificarBorradoVigenciasTallas(BigInteger secuenciaVigenciasTallas) {
         try {
             System.err.println("Secuencia Borrado Vigencias Tallas" + secuenciaVigenciasTallas);
             verificadorVigenciasTallas = persistenciaTiposTallas.contadorVigenciasTallas(secuenciaVigenciasTallas);

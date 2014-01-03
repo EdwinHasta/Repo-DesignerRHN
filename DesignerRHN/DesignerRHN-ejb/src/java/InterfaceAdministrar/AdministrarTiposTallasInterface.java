@@ -6,7 +6,6 @@
 package InterfaceAdministrar;
 
 import Entidades.TiposTallas;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,7 +27,7 @@ public interface AdministrarTiposTallasInterface {
 
     public TiposTallas mostrarTipoTalla(BigInteger secTipoEmpresa);
 
-    public BigDecimal verificarBorradoElementos(BigInteger secuenciaElementos);
+    public BigInteger verificarBorradoElementos(BigInteger secuenciaElementos);
 
-    public BigDecimal verificarBorradoVigenciasTallas(BigInteger secuenciaVigenciasTallas);
+    public BigInteger verificarBorradoVigenciasTallas(BigInteger secuenciaVigenciasTallas);
 }

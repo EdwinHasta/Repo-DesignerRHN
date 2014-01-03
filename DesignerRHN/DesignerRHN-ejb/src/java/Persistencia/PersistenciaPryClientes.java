@@ -5,14 +5,13 @@ package Persistencia;
 
 import Entidades.PryClientes;
 import InterfacePersistencia.PersistenciaPryClientesInterface;
-import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br> 
  * Clase encargada de realizar operaciones sobre la tabla 'PryClientes'
  * de la base de datos.
  * @author Viktor

@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package Persistencia;
 
 import Entidades.TiposJornadas;
@@ -16,13 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author PROYECTO01
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposJornadas'
+ * de la base de datos.
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaTiposJornadas implements PersistenciaTiposJornadasInterface{
-
-    
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 

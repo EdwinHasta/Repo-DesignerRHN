@@ -70,8 +70,6 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return empresas;
         }
     }
-    
-//PANTALLA BARRA CONSULTAR DATOS DESPUES DE LIQUIDAR
 
     @Override
     public String estadoConsultaDatos(BigInteger secuenciaEmpresa) {

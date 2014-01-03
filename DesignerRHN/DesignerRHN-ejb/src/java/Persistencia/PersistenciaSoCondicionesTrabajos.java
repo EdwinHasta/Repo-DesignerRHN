@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaSoCondicionesTrabajosInterface;
 import Entidades.SoCondicionesTrabajos;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateful;
@@ -16,8 +13,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'SoCondicionesTrabajos'
+ * de la base de datos.
+ * @author John Pineda.
  */
 @Stateful
 public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicionesTrabajosInterface {
@@ -28,18 +27,22 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public void crear(SoCondicionesTrabajos soCondicionesTrabajos) {
         em.persist(soCondicionesTrabajos);
     }
 
+    @Override
     public void editar(SoCondicionesTrabajos soCondicionesTrabajos) {
         em.merge(soCondicionesTrabajos);
     }
 
+    @Override
     public void borrar(SoCondicionesTrabajos soCondicionesTrabajos) {
         em.remove(em.merge(soCondicionesTrabajos));
     }
 
+    @Override
     public SoCondicionesTrabajos buscarSoCondicionTrabajo(BigInteger secuencia) {
         try {
             return em.find(SoCondicionesTrabajos.class, secuencia);
@@ -49,6 +52,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
         }
     }
 
+    @Override
     public List<SoCondicionesTrabajos> buscarSoCondicionesTrabajos() {
         try {
             Query query = em.createQuery("SELECT soct FROM SoCondicionesTrabajos soct ORDER BY soct.codigo ASC ");
@@ -61,13 +65,14 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
         }
     }
 
-    public BigDecimal contadorInspecciones(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorInspecciones(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , inspecciones ins WHERE st.secuencia = ins.factorriesgo and st.secuencia = ?";
+            String sqlQuery = "SELECT COUNT(*)FROM inspecciones ins WHERE ins.factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.out.println("Contador CONTADORINSPECCIONES persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -76,13 +81,14 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
         }
     }
 
-    public BigDecimal contadorSoAccidentesMedicos(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , soaccidentesmedicos soa WHERE st.secuencia = soa.factorriesgo  and soa.secuencia = ?";
+            String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos soa WHERE soa.factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.out.println("Contador CONTADORSOACCIDENTESMEDICOS persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -91,13 +97,14 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
         }
     }
 
-    public BigDecimal contadorSoDetallesPanoramas(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorSoDetallesPanoramas(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , sodetallespanoramas sop WHERE st.secuencia = sop.condiciontrabajo and sop.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.out.println("Contador CONTADORSODETALLESPANORAMAS persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -106,13 +113,14 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
         }
     }
 
-    public BigDecimal contadorSoExposicionesFr(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorSoExposicionesFr(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , soexposicionesfr  ser WHERE st.secuencia = ser.indicador and ser.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.out.println("Contador CONTADORSOEXPOSICIONESFR persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
