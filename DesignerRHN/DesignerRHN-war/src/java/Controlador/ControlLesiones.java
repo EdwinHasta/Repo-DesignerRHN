@@ -12,7 +12,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarLesionesInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +56,8 @@ public class ControlLesiones implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigDecimal detallesLicensias;
-    private BigDecimal soAccidentesDomesticos;
+    private BigInteger detallesLicensias;
+    private BigInteger soAccidentesDomesticos;
 
     public ControlLesiones() {
         listLesiones = null;
@@ -353,7 +352,7 @@ public class ControlLesiones implements Serializable {
         try {
             detallesLicensias = administrarLesiones.verificarBorradoDetallesLicensias(listLesiones.get(index).getSecuencia());
             soAccidentesDomesticos = administrarLesiones.verificarBorradoSoAccidentesDomesticos(listLesiones.get(index).getSecuencia());
-            if (detallesLicensias.intValueExact() == 0 && soAccidentesDomesticos.intValueExact() == 0) {
+            if (detallesLicensias.equals(0) && soAccidentesDomesticos.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoLesiones();
             } else {
@@ -363,8 +362,8 @@ public class ControlLesiones implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                detallesLicensias = new BigDecimal(-1);
-                soAccidentesDomesticos = new BigDecimal(-1);
+                detallesLicensias = new BigInteger("-1");
+                soAccidentesDomesticos = new BigInteger("-1");
             }
         } catch (Exception e) {
             System.err.println("ERROR ControlTiposCertificados verificarBorrado ERROR " + e);
