@@ -15,7 +15,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'NormasLaborales'
  * (Para verificar que esta asociado a una VigenciaNormaEmpleado, se realiza la operacion sobre la tabla VigenciasNormasEmpleados)
  * de la base de datos.

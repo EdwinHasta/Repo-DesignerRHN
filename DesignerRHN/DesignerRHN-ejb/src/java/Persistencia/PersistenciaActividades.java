@@ -14,7 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 
 /**
- * Clase Stateless
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'Actividades' de la base de datos
  * @author betelgeuse
  */

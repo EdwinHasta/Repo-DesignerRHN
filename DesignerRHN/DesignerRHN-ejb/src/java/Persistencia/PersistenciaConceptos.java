@@ -13,14 +13,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless Clase encargada de realizar operaciones sobre la tabla
- * 'Conceptos' de la base de datos
- *
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Conceptos' 
+ * de la base de datos.
  * @author Betelgeuse
  */
 @Stateless
 public class PersistenciaConceptos implements PersistenciaConceptosInterface {
-
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -139,6 +138,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
 
+    @Override
     public boolean eliminarConcepto(BigInteger secuenciaConcepto) {
         try {
             String sqlQuery = "call conceptos_pkg.Eliminarconcepto(:secuencia)";

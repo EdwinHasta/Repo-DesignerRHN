@@ -28,5 +28,5 @@ public interface AdministrarSoActosInsegurosInterface {
 
     public SoActosInseguros mostrarSoActoInseguro(BigInteger secSoCondicionesAmbientalesP);
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
 }

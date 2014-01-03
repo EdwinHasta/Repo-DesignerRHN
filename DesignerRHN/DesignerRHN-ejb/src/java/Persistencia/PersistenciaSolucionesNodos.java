@@ -15,9 +15,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless Clase encargada de realizar operaciones sobre la tabla
- * 'SolucionesNodos' de la base de datos.
- *
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'SolucionesNodos'
+ * de la base de datos.
  * @author betelgeuse
  */
 @Stateless

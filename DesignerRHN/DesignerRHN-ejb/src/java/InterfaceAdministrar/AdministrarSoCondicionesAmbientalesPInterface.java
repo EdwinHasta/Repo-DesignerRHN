@@ -6,7 +6,6 @@
 package InterfaceAdministrar;
 
 import Entidades.SoCondicionesAmbientalesP;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,5 +27,5 @@ public interface AdministrarSoCondicionesAmbientalesPInterface {
 
     public SoCondicionesAmbientalesP mostrarSoCondicionAmbientalP(BigInteger secSoCondicionesAmbientalesP);
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
 }

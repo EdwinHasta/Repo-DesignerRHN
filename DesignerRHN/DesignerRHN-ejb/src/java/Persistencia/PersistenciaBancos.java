@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'Bancos' de la base de datos
  * @author Andrés Pineda
  */

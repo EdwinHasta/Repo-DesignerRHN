@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 /**
- * Clase Stateless 
+ * Clase Stateless.<br> 
  * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos'
  * de la base de datos.
  * (Para verificar que esta asociado a una VigenciaTipoContrato, se realiza la operacion sobre la tabla VigenciasTiposContratos)

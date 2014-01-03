@@ -13,7 +13,7 @@ import javax.persistence.Query;
 
 
 /**
- * Clase Stateless 
+ * Clase Stateless.<br> 
  * Clase encargada de realizar operaciones sobre la tabla 'TiposReemaplazos'
  * de la base de datos.
  * @author betelgeuse

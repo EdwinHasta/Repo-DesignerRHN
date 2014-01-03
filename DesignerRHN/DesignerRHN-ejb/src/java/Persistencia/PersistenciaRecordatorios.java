@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br> 
  * Clase encargada de realizar operaciones sobre la tabla 'Recordatorios'
  * de la base de datos.
  * @author betelgeuse

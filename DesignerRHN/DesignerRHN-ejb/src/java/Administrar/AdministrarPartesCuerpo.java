@@ -8,7 +8,6 @@ package Administrar;
 import InterfaceAdministrar.AdministrarPartesCuerpoInterface;
 import Entidades.PartesCuerpo;
 import InterfacePersistencia.PersistenciaPartesCuerpoInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,9 +25,9 @@ public class AdministrarPartesCuerpo implements AdministrarPartesCuerpoInterface
     private PartesCuerpo partesCuerpoSeleccionada;
     private PartesCuerpo partesCuerpo;
     private List<PartesCuerpo> listPartesCuerpo;
-    private BigDecimal verificarSoAccidentesMedicos;
-    private BigDecimal verificarBorradoDetallesExamenes;
-    private BigDecimal verificarBorradoSoDetallesRevisiones;
+    private BigInteger verificarSoAccidentesMedicos;
+    private BigInteger verificarBorradoDetallesExamenes;
+    private BigInteger verificarBorradoSoDetallesRevisiones;
 
     public void modificarPartesCuerpo(List<PartesCuerpo> listPartesCuerpoModificada) {
         for (int i = 0; i < listPartesCuerpoModificada.size(); i++) {
@@ -56,7 +55,7 @@ public class AdministrarPartesCuerpo implements AdministrarPartesCuerpoInterface
         return partesCuerpo;
     }
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementosCausasAccidentes) {
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementosCausasAccidentes) {
         try {
             verificarSoAccidentesMedicos = persistenciaPartesCuerpo.contadorSoAccidentesMedicos(secuenciaElementosCausasAccidentes);
         } catch (Exception e) {
@@ -66,7 +65,7 @@ public class AdministrarPartesCuerpo implements AdministrarPartesCuerpoInterface
         }
     }
 
-    public BigDecimal verificarBorradoDetallesExamenes(BigInteger secuenciaElementosCausasAccidentes) {
+    public BigInteger verificarBorradoDetallesExamenes(BigInteger secuenciaElementosCausasAccidentes) {
         try {
             verificarBorradoDetallesExamenes = persistenciaPartesCuerpo.contadorDetallesExamenes(secuenciaElementosCausasAccidentes);
         } catch (Exception e) {
@@ -76,7 +75,7 @@ public class AdministrarPartesCuerpo implements AdministrarPartesCuerpoInterface
         }
     }
 
-    public BigDecimal verificarBorradoSoDetallesRevisiones(BigInteger secuenciaElementosCausasAccidentes) {
+    public BigInteger verificarBorradoSoDetallesRevisiones(BigInteger secuenciaElementosCausasAccidentes) {
         try {
             verificarBorradoSoDetallesRevisiones = persistenciaPartesCuerpo.contadorSoDetallesRevisiones(secuenciaElementosCausasAccidentes);
         } catch (Exception e) {

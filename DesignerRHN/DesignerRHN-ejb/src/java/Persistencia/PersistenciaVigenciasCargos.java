@@ -13,7 +13,7 @@ import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
 import java.math.BigInteger;
 import javax.persistence.criteria.CriteriaQuery;
 /**
- * Clase Stateless 
+ * Clase Stateless.<br> 
  * Clase encargada de realizar operaciones sobre la tabla 'VigenciasCargos'
  * de la base de datos.
  * @author betelgeuse

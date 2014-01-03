@@ -13,7 +13,6 @@ import InterfaceAdministrar.AdministrarPartesCuerpoInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +57,9 @@ public class ControlPartesCuerpo implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigDecimal verificarBorradoDetallesExamenes;
-    private BigDecimal verificarBorradoSoDetallesRevisiones;
-    private BigDecimal verificarSoAccidentesMedicos;
+    private BigInteger verificarBorradoDetallesExamenes;
+    private BigInteger verificarBorradoSoDetallesRevisiones;
+    private BigInteger verificarSoAccidentesMedicos;
 
     public ControlPartesCuerpo() {
         listPartesCuerpo = null;
@@ -351,7 +350,7 @@ public class ControlPartesCuerpo implements Serializable {
             verificarBorradoDetallesExamenes = administrarPartesCuerpo.verificarBorradoDetallesExamenes(listPartesCuerpo.get(index).getSecuencia());
             verificarBorradoSoDetallesRevisiones = administrarPartesCuerpo.verificarBorradoSoDetallesRevisiones(listPartesCuerpo.get(index).getSecuencia());
             verificarSoAccidentesMedicos = administrarPartesCuerpo.verificarSoAccidentesMedicos(listPartesCuerpo.get(index).getSecuencia());
-            if (verificarBorradoDetallesExamenes.intValueExact() == 0 && verificarBorradoSoDetallesRevisiones.intValueExact() == 0 && verificarSoAccidentesMedicos.intValueExact() == 0) {
+            if (verificarBorradoDetallesExamenes.equals(0) && verificarBorradoSoDetallesRevisiones.equals(0) && verificarSoAccidentesMedicos.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoParteCuerpo();
             } else {
@@ -361,9 +360,9 @@ public class ControlPartesCuerpo implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                verificarBorradoDetallesExamenes = new BigDecimal(-1);
-                verificarBorradoSoDetallesRevisiones = new BigDecimal(-1);
-                verificarSoAccidentesMedicos = new BigDecimal(-1);
+                verificarBorradoDetallesExamenes = new BigInteger("-1");
+                verificarBorradoSoDetallesRevisiones = new BigInteger("-1");
+                verificarSoAccidentesMedicos = new BigInteger("-1");
             }
         } catch (Exception e) {
             System.err.println("ERROR ControlTiposCertificados verificarBorrado ERROR " + e);

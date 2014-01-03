@@ -7,7 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 /**
- * Clase Stateless 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'NovedadesEmpleados'
  * de la base de datos.
  * @author betelgeuse

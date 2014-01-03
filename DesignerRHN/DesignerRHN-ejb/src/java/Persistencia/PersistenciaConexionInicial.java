@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br> 
  * Clase encargada de realizar operaciones referentes al ingreso al aplicativo
  * de la base de datos
  * @author Andrés Pineda

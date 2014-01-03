@@ -15,7 +15,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 /**
- * Clase Stateless Clase encargada de realizar operaciones sobre la tabla 'Ciudades'
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Ciudades'
  * de la base de datos
  * @author Betelgeuse
  */

@@ -14,7 +14,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless 
+ * Clase Stateless.<br> 
  * Clase encargada de realizar operaciones sobre la tabla 'MotivosCambiosCargos'
  * de la base de datos.
  * (Para verificar que esta asociado a una VigenciaCargo, se realiza la operacion sobre la tabla VigenciasCargos)

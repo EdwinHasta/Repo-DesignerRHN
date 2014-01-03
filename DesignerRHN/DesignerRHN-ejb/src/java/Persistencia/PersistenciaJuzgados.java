@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -15,26 +13,30 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'Juzgados'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
-
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public void crear(Juzgados juzgados) {
         em.persist(juzgados);
     }
 
+    @Override
     public void editar(Juzgados juzgados) {
         em.merge(juzgados);
     }
 
+    @Override
     public void borrar(Juzgados juzgados) {
         try {
             em.remove(em.merge(juzgados));
@@ -44,20 +46,23 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
         }
     }
 
-    public Juzgados buscarJuzgado(BigInteger secuenciaJ) {
+    @Override
+    public Juzgados buscarJuzgado(BigInteger secuencia) {
         try {
-            return em.find(Juzgados.class, secuenciaJ);
+            return em.find(Juzgados.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
+    @Override
     public List<Juzgados> buscarJuzgados() {
         Query query = em.createQuery("SELECT m FROM Juzgados m ORDER BY m.codigo ASC");
         List<Juzgados> listaMotivosPrestamos = query.getResultList();
         return listaMotivosPrestamos;
     }
 
+    @Override
     public List<Juzgados> buscarJuzgadosPorCiudad(BigInteger secCiudad) {
         try {
             Query query = em.createQuery("SELECT cce FROM Juzgados cce WHERE cce.ciudad.secuencia = :secuenciaJuzgado ORDER BY cce.codigo ASC");
@@ -70,6 +75,7 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
         }
     }
 
+    @Override
     public BigInteger contadorEerPrestamos(BigInteger secuencia) {
         BigInteger retorno;
         try {

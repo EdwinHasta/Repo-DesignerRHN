@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -11,21 +9,44 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'MotivosPrestamos' 
+ * de la base de datos.
+ * @author John Pineda.
  */
 @Local
 public interface PersistenciaMotivosPrestamosInterface {
-
+    /**
+     * Método encargado de insertar un MotivoPrestamo en la base de datos.
+     * @param motivosPrestamos MotivoPrestamo que se quiere crear.
+     */
     public void crear(MotivosPrestamos motivosPrestamos);
-
+    /**
+     * Método encargado de modificar un MotivoPrestamo de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con la 
+     * información de la base de datos.
+     * @param motivosPrestamos MotivoPrestamo con los cambios que se van a realizar.
+     */
     public void editar(MotivosPrestamos motivosPrestamos);
-
+    /**
+     * Método encargado de eliminar de la base de datos el MotivoPrestamo que entra por parámetro.
+     * @param motivosPrestamos MotivoPrestamo que se quiere eliminar.
+     */
     public void borrar(MotivosPrestamos motivosPrestamos);
-
-    public MotivosPrestamos buscarMotivoPrestamo(BigInteger secuenciaMP);
-
+    /**
+     * Método encargado de buscar el MotivoPrestamo con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del MotivoPrestamo que se quiere encontrar.
+     * @return Retorna el MotivoPrestamo identificado con la secuencia dada por parámetro.
+     */
+    public MotivosPrestamos buscarMotivoPrestamo(BigInteger secuencia);
+    /**
+     * Método encargado de buscar todos los MotivosPrestamos existentes en la base de datos.
+     * @return Retorna una lista de MotivosPrestamos.
+     */
     public List<MotivosPrestamos> buscarMotivosPrestamos();
-
+    /**
+     * Método encargado de contar los EersPrestamos que están asociados a un MotivoPrestamo específico.
+     * @param secuencia Secuencia del MotivoPrestamo.
+     * @return Retorna la cantidad de EersPrestamos cuyo MotivoPrestamo tiene como secuencia el valor dado por parámetro.
+     */
     public BigInteger contadorEersPrestamos(BigInteger secuencia);
 }

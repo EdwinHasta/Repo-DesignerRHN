@@ -13,10 +13,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
- * Clase encargada de realizar operaciones sobre la tabla 'Soausentismos'
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'SoAusentismos'
  * de la base de datos.
- * @author betelgeuse
+ * @author John Pineda.
  */
 @Stateless
 public class PersistenciaSoausentismos implements PersistenciaSoausentismosInterface {

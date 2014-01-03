@@ -12,7 +12,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTiposTallasInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +56,8 @@ public class ControlTiposTallas implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigDecimal elementos;
-    private BigDecimal vigenciasTallas;
+    private BigInteger elementos;
+    private BigInteger vigenciasTallas;
 
     public ControlTiposTallas() {
         listTiposTallas = null;
@@ -354,7 +353,7 @@ public class ControlTiposTallas implements Serializable {
                 elementos = administrarTiposTallas.verificarBorradoElementos(filtrarTiposTallas.get(index).getSecuencia());
                 vigenciasTallas = administrarTiposTallas.verificarBorradoVigenciasTallas(filtrarTiposTallas.get(index).getSecuencia());
             }
-            if (elementos.intValueExact() == 0 && vigenciasTallas.intValueExact() == 0) {
+            if (elementos.equals(0) && vigenciasTallas.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoTiposTallas();
             } else {
@@ -365,7 +364,7 @@ public class ControlTiposTallas implements Serializable {
                 context.execute("validacionBorrar.show()");
                 index = -1;
 
-                elementos = new BigDecimal(-1);
+                elementos = new BigInteger("-1");
 
             }
         } catch (Exception e) {

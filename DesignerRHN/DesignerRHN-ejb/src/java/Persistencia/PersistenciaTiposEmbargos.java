@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -15,8 +13,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposEmbargos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInterface {
@@ -27,14 +27,17 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public void crear(TiposEmbargos tiposEmbargos) {
         em.persist(tiposEmbargos);
     }
 
+    @Override
     public void editar(TiposEmbargos tiposEmbargos) {
         em.merge(tiposEmbargos);
     }
 
+    @Override
     public void borrar(TiposEmbargos tiposEmbargos) {
         try {
             em.remove(em.merge(tiposEmbargos));
@@ -44,24 +47,27 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
         }
     }
 
-    public TiposEmbargos buscarTipoEmbargo(BigInteger secuenciaTE) {
+    @Override
+    public TiposEmbargos buscarTipoEmbargo(BigInteger secuencia) {
         try {
-            return em.find(TiposEmbargos.class, secuenciaTE);
+            return em.find(TiposEmbargos.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
+    @Override
     public List<TiposEmbargos> buscarTiposEmbargos() {
         Query query = em.createQuery("SELECT m FROM TiposEmbargos m ORDER BY m.codigo ASC");
         List<TiposEmbargos> listaMotivosPrestamos = query.getResultList();
         return listaMotivosPrestamos;
     }
 
+    @Override
     public BigInteger contadorEerPrestamos(BigInteger secuencia) {
         BigInteger retorno;
         try {
-            String sqlQuery = " SELECT COUNT(*)FROM eersprestamos ee , tiposembargos te WHERE ee.tipoembargo = te.secuencia AND te.secuencia = ? ";
+            String sqlQuery = " SELECT COUNT(*)FROM eersprestamos ee WHERE ee.tipoembargo = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
@@ -74,10 +80,11 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
         }
     }
 
+    @Override
     public BigInteger contadorFormasDtos(BigInteger secuencia) {
         BigInteger retorno;
         try {
-            String sqlQuery = " SELECT COUNT(*)FROM formasdtos fdts , tiposembargos te WHERE fdts.tipoembargo = te.secuencia AND te.secuencia =  ? ";
+            String sqlQuery = " SELECT COUNT(*)FROM formasdtos fdts WHERE fdts.tipoembargo = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());

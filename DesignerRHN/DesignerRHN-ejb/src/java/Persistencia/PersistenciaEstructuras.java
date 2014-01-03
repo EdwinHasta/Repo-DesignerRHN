@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'Estructuras'
  * de la base de datos.
  * @author Hugo David Sin Gutiérrez

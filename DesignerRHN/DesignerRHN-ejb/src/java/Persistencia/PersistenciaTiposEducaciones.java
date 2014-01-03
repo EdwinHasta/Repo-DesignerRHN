@@ -14,7 +14,8 @@ import javax.persistence.PersistenceContext;
 
 import javax.persistence.Query;
 /**
- * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'TiposEducaciones' 
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposEducaciones'
  * de la base de datos.
  * @author betelgeuse
  */

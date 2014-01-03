@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -13,28 +11,31 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 /**
- *
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosEmbargos'
+ * de la base de datos.
  * @author John Pineda
  */
 @Stateless
 public class PersistenciaMotivosEmbargos implements PersistenciaMotivosEmbargosInterface {
-
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
     
+    @Override
      public void crear(MotivosEmbargos motivosEmbargos) {
         em.persist(motivosEmbargos);
     }
 
+    @Override
     public void editar(MotivosEmbargos motivosEmbargos) {
         em.merge(motivosEmbargos);
     }
 
+    @Override
     public void borrar(MotivosEmbargos motivosEmbargos) {
         try {
             em.remove(em.merge(motivosEmbargos));
@@ -44,6 +45,7 @@ public class PersistenciaMotivosEmbargos implements PersistenciaMotivosEmbargosI
         }
     }
 
+    @Override
     public MotivosEmbargos buscarMotivoEmbargo(BigInteger secuenciaME) {
         try {
             return em.find(MotivosEmbargos.class, secuenciaME);
@@ -52,16 +54,18 @@ public class PersistenciaMotivosEmbargos implements PersistenciaMotivosEmbargosI
         }
     }
 
+    @Override
     public List<MotivosEmbargos> buscarMotivosEmbargos() {
         Query query = em.createQuery("SELECT m FROM MotivosEmbargos m ORDER BY m.codigo ASC");
         List<MotivosEmbargos> listaMotivosEmbargos = query.getResultList();
         return listaMotivosEmbargos;
     }
 
+    @Override
     public BigInteger contadorEersPrestamos(BigInteger secuencia) {
         BigInteger retorno;
         try {
-            String sqlQuery = " SELECT COUNT(*)FROM eersprestamos eer ,  motivosembargos mot WHERE eer.motivoembargo = mot.secuencia AND mot.secuencia =   ? ";
+            String sqlQuery = " SELECT COUNT(*)FROM eersprestamos eer WHERE eer.motivoembargo = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
@@ -74,10 +78,11 @@ public class PersistenciaMotivosEmbargos implements PersistenciaMotivosEmbargosI
         }
     }
 
+    @Override
     public BigInteger contadorEmbargos(BigInteger secuencia) {
         BigInteger retorno;
         try {
-            String sqlQuery = " SELECT COUNT(*)FROM  embargos emb , motivosembargos mot WHERE emb.motivo = mot.secuencia  AND mot.secuencia =  ? ";
+            String sqlQuery = " SELECT COUNT(*)FROM  embargos emb WHERE emb.motivo = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
@@ -89,5 +94,4 @@ public class PersistenciaMotivosEmbargos implements PersistenciaMotivosEmbargosI
             return retorno;
         }
     }
-    
 }

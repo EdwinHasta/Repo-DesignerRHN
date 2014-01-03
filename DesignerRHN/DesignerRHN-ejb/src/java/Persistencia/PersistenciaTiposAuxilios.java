@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaTiposAuxiliosInterface;
@@ -16,25 +13,30 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposAuxilios' 
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTiposAuxilios implements PersistenciaTiposAuxiliosInterface {
- /**
+    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
     
+    @Override
     public void crear(TiposAuxilios tiposAuxilios) {
         em.persist(tiposAuxilios);
     }
 
+    @Override
     public void editar(TiposAuxilios tiposAuxilios) {
         em.merge(tiposAuxilios);
     }
 
+    @Override
     public void borrar(TiposAuxilios tiposAuxilios) {
         try {
             em.remove(em.merge(tiposAuxilios));
@@ -44,24 +46,27 @@ public class PersistenciaTiposAuxilios implements PersistenciaTiposAuxiliosInter
         }
     }
 
-    public TiposAuxilios buscarTipoAuxilio(BigInteger secuenciaME) {
+    @Override
+    public TiposAuxilios buscarTipoAuxilio(BigInteger secuencia) {
         try {
-            return em.find(TiposAuxilios.class, secuenciaME);
+            return em.find(TiposAuxilios.class, secuencia);
         } catch (Exception e) {
             return null;
         }
     }
 
+    @Override
     public List<TiposAuxilios> buscarTiposAuxilios() {
         Query query = em.createQuery("SELECT m FROM TiposAuxilios m ORDER BY m.codigo ASC");
         List<TiposAuxilios> listaMotivosEmbargos = query.getResultList();
         return listaMotivosEmbargos;
     }
 
+    @Override
     public BigInteger contadorTablasAuxilios(BigInteger secuencia) {
         BigInteger retorno;
         try {
-            String sqlQuery = "SELECT COUNT(*)FROM tablasauxilios ta , tiposauxilios ti WHERE ta.tipoauxilio = ti.secuencia AND ti.secuencia = ? ";
+            String sqlQuery = "SELECT COUNT(*)FROM tablasauxilios ta WHERE ta.tipoauxilio = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());

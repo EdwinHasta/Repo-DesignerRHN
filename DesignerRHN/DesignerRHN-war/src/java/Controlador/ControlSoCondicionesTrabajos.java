@@ -13,7 +13,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarSoCondicionesTrabajosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +57,10 @@ public class ControlSoCondicionesTrabajos implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigDecimal verificarSoAccidentesMedicos;
-    private BigDecimal verificarSoExposicionesFr;
-    private BigDecimal verificarSoDetallesPanoramas;
-    private BigDecimal verificarInspecciones;
+    private BigInteger verificarSoAccidentesMedicos;
+    private BigInteger verificarSoExposicionesFr;
+    private BigInteger verificarSoDetallesPanoramas;
+    private BigInteger verificarInspecciones;
 
     public ControlSoCondicionesTrabajos() {
         listSoCondicionesTrabajos = null;
@@ -355,8 +354,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             verificarSoDetallesPanoramas = administrarSoCondicionesTrabajos.verificarSoDetallesPanoramas(listSoCondicionesTrabajos.get(index).getSecuencia());
             verificarSoExposicionesFr = administrarSoCondicionesTrabajos.verificarSoExposicionesFr(listSoCondicionesTrabajos.get(index).getSecuencia());
             verificarSoAccidentesMedicos = administrarSoCondicionesTrabajos.verificarSoAccidentesMedicos(listSoCondicionesTrabajos.get(index).getSecuencia());
-            if (verificarSoAccidentesMedicos.intValueExact() == 0 && verificarSoExposicionesFr.intValueExact() == 0
-                    && verificarSoDetallesPanoramas.intValueExact() == 0 && verificarInspecciones.intValueExact() == 0) {
+            if (verificarSoAccidentesMedicos.equals(0) && verificarSoExposicionesFr.equals(0)
+                    && verificarSoDetallesPanoramas.equals(0) && verificarInspecciones.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoSoCondicionesTrabajos();
             } else {
@@ -366,10 +365,10 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                verificarSoAccidentesMedicos = new BigDecimal(-1);
-                verificarSoExposicionesFr = new BigDecimal(-1);
-                verificarSoDetallesPanoramas = new BigDecimal(-1);
-                verificarInspecciones = new BigDecimal(-1);
+                verificarSoAccidentesMedicos = new BigInteger("-1");
+                verificarSoExposicionesFr = new BigInteger("-1");
+                verificarSoDetallesPanoramas = new BigInteger("-1");
+                verificarInspecciones = new BigInteger("-1");
             }
         } catch (Exception e) {
             System.err.println("ERROR CLASES ACCIDENTES verificarBorrado ERROR " + e);

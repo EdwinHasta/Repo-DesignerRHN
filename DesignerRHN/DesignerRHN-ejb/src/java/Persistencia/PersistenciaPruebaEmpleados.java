@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
- * Clase Stateless 
+ * Clase Stateless. <br> 
  * Clase encargada de realizar las operaciones sobre las tablas 'EMPLEADOS', 'VWACTUALESSUELDOS', 'PERSONAS'
  * para mostrar determinada información de un empleado que se encuentra en las tablas mencionadas.
  * de la base de datos.

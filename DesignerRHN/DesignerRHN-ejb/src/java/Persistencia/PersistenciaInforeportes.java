@@ -13,7 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'Inforeportes'
  * de la base de datos.
  * (las busquedas se realizan sobre la tabla 'UsuariosInforeportes')

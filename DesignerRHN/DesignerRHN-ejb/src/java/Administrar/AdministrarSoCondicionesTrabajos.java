@@ -8,7 +8,6 @@ package Administrar;
 import InterfaceAdministrar.AdministrarSoCondicionesTrabajosInterface;
 import Entidades.SoCondicionesTrabajos;
 import InterfacePersistencia.PersistenciaSoCondicionesTrabajosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,10 +25,10 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
     private SoCondicionesTrabajos soCondicionesTrabajosSeleccionada;
     private SoCondicionesTrabajos soCondicionesTrabajos;
     private List<SoCondicionesTrabajos> listSoCondicionesTrabajos;
-    private BigDecimal verificarSoAccidtenesMedicos;
-    private BigDecimal verificarInspecciones;
-    private BigDecimal verificarSoDetallesPanoramas;
-    private BigDecimal verificarSoExposicionesFr;
+    private BigInteger verificarSoAccidtenesMedicos;
+    private BigInteger verificarInspecciones;
+    private BigInteger verificarSoDetallesPanoramas;
+    private BigInteger verificarSoExposicionesFr;
 
     public void modificarSoCondicionesTrabajos(List<SoCondicionesTrabajos> listTiposEntidadesModificadas) {
         for (int i = 0; i < listTiposEntidadesModificadas.size(); i++) {
@@ -61,7 +60,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         return soCondicionesTrabajos;
     }
 
-    public BigDecimal verificarInspecciones(BigInteger secuenciaElementos) {
+    public BigInteger verificarInspecciones(BigInteger secuenciaElementos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             verificarInspecciones = persistenciaSoCondicionesTrabajos.contadorInspecciones(secuenciaElementos);
@@ -72,7 +71,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         }
     }
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             verificarSoAccidtenesMedicos = persistenciaSoCondicionesTrabajos.contadorSoAccidentesMedicos(secuenciaElementos);
@@ -83,7 +82,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         }
     }
 
-    public BigDecimal verificarSoDetallesPanoramas(BigInteger secuenciaElementos) {
+    public BigInteger verificarSoDetallesPanoramas(BigInteger secuenciaElementos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             verificarSoDetallesPanoramas = persistenciaSoCondicionesTrabajos.contadorSoDetallesPanoramas(secuenciaElementos);
@@ -94,7 +93,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         }
     }
 
-    public BigDecimal verificarSoExposicionesFr(BigInteger secuenciaElementos) {
+    public BigInteger verificarSoExposicionesFr(BigInteger secuenciaElementos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             verificarSoExposicionesFr = persistenciaSoCondicionesTrabajos.contadorSoExposicionesFr(secuenciaElementos);

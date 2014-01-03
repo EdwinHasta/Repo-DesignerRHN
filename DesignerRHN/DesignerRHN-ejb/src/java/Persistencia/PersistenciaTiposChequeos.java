@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaTiposChequeosInterface;
@@ -14,33 +11,36 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 /**
- *
- * @author user
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposChequeos'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInterface {
-
-     /**
+    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
     
+    @Override
      public void crear(TiposChequeos tiposChequeos) {
         em.persist(tiposChequeos);
     }
-
+     
+    @Override
     public void editar(TiposChequeos tiposChequeos) {
         em.merge(tiposChequeos);
     }
-
+    
+    @Override
     public void borrar(TiposChequeos tiposChequeos) {
         em.remove(em.merge(tiposChequeos));
     }
-
+    
+    @Override
     public TiposChequeos buscarTipoChequeo(BigInteger secuenciaTC) {
         try {
             return em.find(TiposChequeos.class, secuenciaTC);
@@ -48,7 +48,8 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
             return null;
         }
     }
-
+    
+    @Override
     public List<TiposChequeos> buscarTiposChequeos() {
         try {
             Query query = em.createQuery("SELECT tc FROM TiposChequeos tc ORDER BY tc.codigo ASC ");
@@ -58,14 +59,14 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
             System.err.println("ERROR BUSCAR TIPOS CHEQUEOS  " + e);
             return null;
         }
-
     }
-
-     public BigInteger contadorChequeosMedicos(BigInteger secuencia) {
+   
+    @Override
+    public BigInteger contadorChequeosMedicos(BigInteger secuencia) {
         BigInteger retorno;
         try {
-            System.out.println("Persistencia secuencia borrado " + secuencia );
-            String sqlQuery = " SELECT COUNT(*)FROM tiposchequeos tc , chequeosmedicos cm WHERE cm.tipochequeo = cm.secuencia AND tc.secuencia= ? ";
+            System.out.println("Persistencia secuencia borrado " + secuencia);
+            String sqlQuery = " SELECT COUNT(*)FROM chequeosmedicos cm WHERE cm.tipochequeo = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
@@ -77,11 +78,13 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
             return retorno;
         }
     }
-     public BigInteger contadorTiposExamenesCargos(BigInteger secuencia) {
+
+    @Override
+    public BigInteger contadorTiposExamenesCargos(BigInteger secuencia) {
         BigInteger retorno;
         try {
-            System.out.println("Persistencia secuencia borrado " + secuencia );
-            String sqlQuery = " SELECT COUNT(*)FROM tiposchequeos tc , tiposexamenescargos cm WHERE cm.tipochequeo = cm.secuencia AND tc.secuencia= ? ";
+            System.out.println("Persistencia secuencia borrado " + secuencia);
+            String sqlQuery = " SELECT COUNT(*)FROM tiposexamenescargos cm WHERE cm.tipochequeo = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());

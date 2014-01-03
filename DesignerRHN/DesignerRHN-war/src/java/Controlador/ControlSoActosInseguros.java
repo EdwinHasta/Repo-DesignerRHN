@@ -12,7 +12,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarSoActosInsegurosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class ControlSoActosInseguros implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigDecimal verificarSoAccidentesMedicos;
+    private BigInteger verificarSoAccidentesMedicos;
 
     public ControlSoActosInseguros() {
         listSoActosInseguros = null;
@@ -359,7 +358,7 @@ public class ControlSoActosInseguros implements Serializable {
             } else {
                 verificarSoAccidentesMedicos = administrarSoActosInseguros.verificarSoAccidentesMedicos(filtrarSoActosInseguros.get(index).getSecuencia());
             }
-            if (verificarSoAccidentesMedicos.intValueExact() == 0) {
+            if (verificarSoAccidentesMedicos.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoSoActosInseguros();
             } else {
@@ -369,7 +368,7 @@ public class ControlSoActosInseguros implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                verificarSoAccidentesMedicos = new BigDecimal(-1);
+                verificarSoAccidentesMedicos = new BigInteger("-1");
             }
         } catch (Exception e) {
             System.err.println("ERROR CLASES ACCIDENTES verificarBorrado ERROR " + e);

@@ -12,7 +12,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarSoCondicionesAmbientalesPInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
     private SoCondicionesAmbientalesP nuevaSoCondicionAmbientalP;
     private SoCondicionesAmbientalesP duplicarSoCondicionAmbientalP;
     private SoCondicionesAmbientalesP editarSoCondicionAmbientalP;
-    private BigDecimal verificarBorradoAccidentes;
+    private BigInteger verificarBorradoAccidentes;
 
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
@@ -363,7 +362,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             } else {
                 verificarBorradoAccidentes = administrarSoCondicionesAmbientalesP.verificarSoAccidentesMedicos(filtrarSoCondicionesAmbientalesP.get(index).getSecuencia());
             }
-            if (verificarBorradoAccidentes.intValueExact() == 0) {
+            if (verificarBorradoAccidentes.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoSoCondicionesAmbientalesP();
             } else {
@@ -373,7 +372,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                verificarBorradoAccidentes = new BigDecimal(-1);
+                verificarBorradoAccidentes = new BigInteger("-1");
             }
         } catch (Exception e) {
             System.err.println("ERROR CLASES ACCIDENTES verificarBorrado ERROR " + e);

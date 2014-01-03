@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaLesionesInterface;
 import Entidades.Lesiones;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -16,31 +13,36 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'Lesiones'
+ * de la base de datos.
+ * @author betelgeuse
  */
 @Stateless
 public class PersistenciaLesiones implements PersistenciaLesionesInterface {
-
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public void crear(Lesiones lesiones) {
         em.persist(lesiones);
     }
 
+    @Override
     public void editar(Lesiones lesiones) {
         em.merge(lesiones);
     }
 
+    @Override
     public void borrar(Lesiones lesiones) {
         em.remove(em.merge(lesiones));
     }
 
-    public Lesiones buscarlesion(BigInteger secuenciaL) {
+    @Override
+    public Lesiones buscarLesion(BigInteger secuenciaL) {
         try {
             return em.find(Lesiones.class, secuenciaL);
         } catch (Exception e) {
@@ -48,7 +50,8 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
         }
     }
 
-    public List<Lesiones> buscarlesiones() {
+    @Override
+    public List<Lesiones> buscarLesiones() {
         try {
             Query query = em.createQuery("SELECT l FROM Lesiones l ORDER BY l.codigo ASC ");
             List<Lesiones> listMotivosDemandas = query.getResultList();
@@ -57,17 +60,16 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
             System.err.println("ERROR BUSCAR TIPOS CHEQUEOS  " + e);
             return null;
         }
-
     }
 
-    // NATIVE QUERY
-    public BigDecimal contadorDetallesLicensias(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorDetallesLicensias(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT COUNT(*)FROM  detalleslicencias dl , lesiones l WHERE dl.lesion=l.secuencia AND l.secuencia= ?";
+            String sqlQuery = "SELECT COUNT(*)FROM  detalleslicencias dl WHERE dl.lesion= ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.err.println("PERSISTENCIALESIONES CONTADOR DETALLES LICENSIAS  " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -76,14 +78,14 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
         }
     }
 
-    // NATIVE QUERY
-    public BigDecimal contadorSoAccidentesDomesticos(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    @Override
+    public BigInteger contadorSoAccidentesDomesticos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sm , lesiones l WHERE sm.lesion = l.secuencia AND l.secuencia= ?";
+            String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sm WHERE sm.lesion = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = (BigInteger) query.getSingleResult();
             System.err.println("PERSISTENCIALESIONES CONTADOR SO ACCIDENTES DOMESTICOS " + retorno);
             return retorno;
         } catch (Exception e) {

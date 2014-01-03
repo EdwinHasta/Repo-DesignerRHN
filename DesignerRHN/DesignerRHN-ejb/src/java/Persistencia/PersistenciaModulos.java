@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Clase Stateless 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'Modulos'
  * de la base de datos.
  * @author -Felipphe- Felipe Triviño

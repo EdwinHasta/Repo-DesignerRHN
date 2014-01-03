@@ -27,7 +27,7 @@ public class AdministrarSoCondicionesAmbientalesP implements AdministrarSoCondic
     private SoCondicionesAmbientalesP soCondicionesAmbientalesPSeleccionada;
     private SoCondicionesAmbientalesP soCondicionesAmbientalesP;
     private List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP;
-    private BigDecimal verificarSoAccidtenesMedicos;
+    private BigInteger verificarSoAccidtenesMedicos;
 
     public void modificarSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesPModificada) {
         for (int i = 0; i < listSoCondicionesAmbientalesPModificada.size(); i++) {
@@ -55,7 +55,7 @@ public class AdministrarSoCondicionesAmbientalesP implements AdministrarSoCondic
         return soCondicionesAmbientalesP;
     }
 
-    public BigDecimal verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             verificarSoAccidtenesMedicos = persistenciaSoCondicionesAmbientalesP.contadorSoAccidentesMedicos(secuenciaElementos);

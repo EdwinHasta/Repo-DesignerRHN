@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfacePersistencia;
 
@@ -9,11 +7,14 @@ import Entidades.Operadores;
 import java.util.List;
 
 /**
- *
- * @author PROYECTO01
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Operadores' 
+ * de la base de datos.
+ * @author Andres Pineda.
  */
 public interface PersistenciaOperadoresInterface {
-
+    /**
+     * Método encargado de buscar todos los Operadores existentes en la base de datos.
+     * @return Retorna una lista de Operadores.
+     */
     public List<Operadores> buscarOperadores();
-    
 }

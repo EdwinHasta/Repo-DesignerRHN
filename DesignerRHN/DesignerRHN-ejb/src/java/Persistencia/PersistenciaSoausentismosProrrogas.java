@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Persistencia;
 
@@ -14,15 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones de consulta para las SoausentismosProrrogas.
+ * <strong>Entidad Virtual</strong>
  */
 @Stateless
 public class PersistenciaSoausentismosProrrogas implements PersistenciaSoausentismosProrrogasInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    @Override
     public List<SoausentismosProrrogas> prorrogas(BigInteger secEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo) {
         try {
             String sqlQuery = "SELECT soa.secuencia, soa.fechafinaus+1 finsiguiente, ca.DESCRIPCION,\n"
