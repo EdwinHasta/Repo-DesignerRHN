@@ -151,7 +151,7 @@ public class Soaccidentes implements Serializable {
     private Empleados empleado;
     @JoinColumn(name = "CAUSA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private Elementoscausasaccidentes causa;
+    private ElementosCausasAccidentes causa;
 
     public Soaccidentes() {
     }
@@ -427,11 +427,11 @@ public class Soaccidentes implements Serializable {
         this.empleado = empleado;
     }
 
-    public Elementoscausasaccidentes getCausa() {
+    public ElementosCausasAccidentes getCausa() {
         return causa;
     }
 
-    public void setCausa(Elementoscausasaccidentes causa) {
+    public void setCausa(ElementosCausasAccidentes causa) {
         this.causa = causa;
     }
 
