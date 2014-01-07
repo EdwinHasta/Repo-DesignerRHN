@@ -6,7 +6,7 @@ package InterfaceAdministrar;
 import java.math.BigInteger;
 
 /**
- * Interface encargada de determinar las operaciones que se realizan para realizar reportes. 
+ * Interface encargada de determinar las operaciones lógicas necesarias para realizar reportes. 
  * de la base de datos.
  * @author betelgeuse
  */

@@ -15,7 +15,7 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 /**
  * Clase Stateful. <br>
- * Clase encargada de comunicar la persistencia 'persistenciaEmpleado' con los controladores.
+ * Clase encargada de realizar las operaciones lógicas para los reportes.
  * @author betelgeuse
  */
 @Stateful
