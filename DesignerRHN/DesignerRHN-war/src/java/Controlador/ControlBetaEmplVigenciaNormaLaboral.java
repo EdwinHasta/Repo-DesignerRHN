@@ -102,6 +102,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public void mostrarInfo(int indice, int celda) {
         int contador = 0;
+        int fechas = 0;
         if (permitirIndex == true) {
             RequestContext context = RequestContext.getCurrentInstance();
 
@@ -110,12 +111,21 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             cualCelda = celda;
             secRegistro = listEmplVigenciaNormaLaboralPorEmpleado.get(index).getSecuencia();
             System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia());
-            for (int j = 0; j < listEmplVigenciaNormaLaboralPorEmpleado.size(); j++) {
-                if (j != indice) {
-                    if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia().equals(listEmplVigenciaNormaLaboralPorEmpleado.get(j).getFechavigencia())) {
-                        contador++;
+            if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia() == null) {
+                mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                contador++;
+            } else {
+                for (int j = 0; j < listEmplVigenciaNormaLaboralPorEmpleado.size(); j++) {
+                    if (j != indice) {
+                        if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia().equals(listEmplVigenciaNormaLaboralPorEmpleado.get(j).getFechavigencia())) {
+                            fechas++;
+                        }
                     }
                 }
+            }
+            if (fechas > 0) {
+                mensajeValidacion = "FECHAS REPETIDAS";
+                contador++;
             }
             if (contador == 0) {
                 if (!crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
@@ -132,7 +142,6 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
                 }
             } else {
-                mensajeValidacion = "FECHAS REPETIDAS";
                 context.update("form:validacionModificar");
                 context.execute("validacionModificar.show()");
                 cancelarModificacion();
@@ -169,6 +178,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                     normaLaboral = listEmplVigenciaNormaLaboralPorEmpleado.get(index).getNormalaboral().getNombre();
                 }
             }
+            System.out.println("NORMA LABORAL : " + normaLaboral);
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -344,10 +354,10 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             context.update("form:datosHvEntrevista");
             context.update("form:ACEPTAR");
         } else if (confirmarCambio.equalsIgnoreCase("NORMASLABORALES")) {
+            System.out.println("MODIFICANDO NORMA LABORAL : " + listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getNormalaboral().getNombre());
             if (!listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getNormalaboral().getNombre().equals("")) {
                 if (tipoLista == 0) {
                     listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getNormalaboral().setNombre(normaLaboral);
-
                 } else {
                     listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getNormalaboral().setNombre(normaLaboral);
                 }
@@ -793,6 +803,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         mensajeValidacion = " ";
         nuevoEmplVigenciaNormaLaboral.setEmpleado(empleadoSeleccionado);
         RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Nueva Fecha : " + nuevoEmplVigenciaNormaLaboral.getFechavigencia());
         if (nuevoEmplVigenciaNormaLaboral.getFechavigencia() == null || nuevoEmplVigenciaNormaLaboral.getFechavigencia().equals("")) {
             mensajeValidacion = " *Debe tener una fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
