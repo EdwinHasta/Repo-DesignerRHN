@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Administrar;
 
 import Entidades.Conceptos;
@@ -16,31 +19,58 @@ import InterfacePersistencia.PersistenciaTiposJornadasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 
 /**
- *
- * @author PROYECTO01
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'ATExtraRecargo'.
+ * @author Andres Pineda
  */
-@Stateless
+@Stateful
 public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInterface {
-
-    //////////////// Persistencias Tablas ///////////////
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaExtrasRecargos'.
+     */
     @EJB
     PersistenciaExtrasRecargosInterface persistenciaExtrasRecargos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaDetallesExtrasRecargos'.
+     */
     @EJB
     PersistenciaDetallesExtrasRecargosInterface persistenciaDetallesExtrasRecargos;
-
-    //////////////// Listas Valores Tablas ///////////////
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTiposDias'.
+     */
     @EJB
     PersistenciaTiposDiasInterface persistenciaTiposDias;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTiposJornadas'.
+     */
     @EJB
     PersistenciaTiposJornadasInterface persistenciaTiposJornadas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaContratos'.
+     */
     @EJB
     PersistenciaContratosInterface persistenciaContratos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaConceptos'.
+     */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
-
+    
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
     public List<ExtrasRecargos> listExtrasRecargos() {
         try {

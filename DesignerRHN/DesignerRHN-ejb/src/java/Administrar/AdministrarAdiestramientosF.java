@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -11,21 +10,29 @@ import InterfacePersistencia.PersistenciaAdiestramientosFInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-
+/**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'AdiestramientosF'.
+ * @author betelgeuse
+ */
 @Stateful
 public class AdministrarAdiestramientosF implements AdministrarAdiestramientosFInterface {
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaAdiestramientosF'.
+     */
     @EJB
     PersistenciaAdiestramientosFInterface persistenciaAdiestramientosF;
     
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
+    
     @Override
-    public List<AdiestramientosF> AdiestramientoF(){
-        List<AdiestramientosF> listaAdiestramientosF;
-        listaAdiestramientosF = persistenciaAdiestramientosF.adiestramientosF();
-        return listaAdiestramientosF;
-    }
-
-    @Override
-    public List<AdiestramientosF>  lovAdiestramientosF(){
+    public List<AdiestramientosF> adiestramientosF(){
         return persistenciaAdiestramientosF.adiestramientosF();
     }
 }

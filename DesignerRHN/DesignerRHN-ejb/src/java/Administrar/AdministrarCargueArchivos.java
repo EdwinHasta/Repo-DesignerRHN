@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Administrar;
 
 import ClasesAyuda.ResultadoBorrarTodoNovedades;
@@ -37,49 +40,134 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-
+/**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'CargueArchivos'.
+ * @author betelgeuse
+ */
 @Stateful
 public class AdministrarCargueArchivos implements AdministrarCargueArchivosInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTempNovedades'.
+     */
     @EJB
     PersistenciaTempNovedadesInterface persistenciaTempNovedades;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaActualUsuario'.
+     */
     @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaConceptos'.
+     */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaEmpleado'.
+     */
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaPeriodicidades'.
+     */
     @EJB
     PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTerceros'.
+     */
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesTiposTrabajadores'.
+     */
     @EJB
     PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesReformasLaborales'.
+     */
     @EJB
     PersistenciaVWActualesReformasLaboralesInterface persistenciaVWActualesReformasLaborales;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesTiposContratos'.
+     */
     @EJB
     PersistenciaVWActualesTiposContratosInterface persistenciaVWActualesTiposContratos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulasConceptos'.
+     */
     @EJB
     PersistenciaFormulasConceptosInterface persistenciaFormulasConceptos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulasNovedades'.
+     */
     @EJB
     PersistenciaFormulasNovedadesInterface persistenciaFormulasNovedades;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosRL'.
+     */
     @EJB
     PersistenciaVigenciasConceptosRLInterface persistenciaVigenciasConceptosRL;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosTC'.
+     */
     @EJB
     PersistenciaVigenciasConceptosTCInterface persistenciaVigenciasConceptosTC;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosTT'.
+     */
     @EJB
     PersistenciaVigenciasConceptosTTInterface persistenciaVigenciasConceptosTT;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulas'.
+     */
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasGruposConceptos'.
+     */
     @EJB
     PersistenciaVigenciasGruposConceptosInterface persistenciaVigenciasGruposConceptos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaParametrosEstructuras'.
+     */
     @EJB
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaSolucionesFormulas'.
+     */
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaNovedades'.
+     */
     @EJB
     PersistenciaNovedadesInterface persistenciaNovedades;
 
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
     public void crearTempNovedades(TempNovedades tnovedad) {
         persistenciaTempNovedades.crear(tnovedad);
