@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
@@ -76,5 +77,52 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
             return null;
         }
     }
+public BigInteger contadorParametrosInformes(BigInteger secuencia) {
+        BigInteger retorno;
+        try {
+            String sqlQuery = "SELECT COUNT (*) FROM parametrosinformes WHERE deporte =  ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIADEPORTES contadorParametrosInformes = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIADEPORTES contadorParametrosInformes  ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
+        }
 
+    }
+
+    public BigInteger contadorDeportesPersonas(BigInteger secuencia) {
+        BigInteger retorno;
+        try {
+            String sqlQuery = "SELECT COUNT(*) FROM deportespersonas WHERE deporte = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIADEPORTES contadorDeportesPersonas = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIADEPORTES contadorDeportesPersonas  ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
+        }
+    }
+
+    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secuencia) {
+        BigInteger retorno;
+        try {
+            String sqlQuery = "SELECT count(*) FROM VigenciasDeportes  WHERE  deporte   =?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIADEPORTES verificarBorradoVigenciasDeportes = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIADEPORTES verificarBorradoVigenciasDeportes  ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
+        }
+    }
 }

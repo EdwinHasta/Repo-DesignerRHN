@@ -5,20 +5,16 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Collection;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,38 +26,36 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Enfermedades.findAll", query = "SELECT e FROM Enfermedades e")})
 public class Enfermedades implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    private BigInteger secuencia;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
 
     public Enfermedades() {
     }
 
-    public Enfermedades(BigDecimal secuencia) {
+    public Enfermedades(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Enfermedades(BigDecimal secuencia, String descripcion) {
+    public Enfermedades(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -70,14 +64,14 @@ public class Enfermedades implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -105,5 +99,5 @@ public class Enfermedades implements Serializable {
     public String toString() {
         return "Entidades.Enfermedades[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

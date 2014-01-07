@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,7 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "EstadosCiviles.findAll", query = "SELECT e FROM EstadosCiviles e")})
 public class EstadosCiviles implements Serializable {
+
     @OneToMany(mappedBy = "estadocivil")
     private Collection<ParametrosInformes> parametrosInformesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadocivil")
@@ -41,53 +41,50 @@ public class EstadosCiviles implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    private BigInteger secuencia;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @OneToMany(mappedBy = "estadocivil")
     private Collection<HVHojasDeVida> hVHojasDeVidaCollection;
 
     public EstadosCiviles() {
     }
 
-    public EstadosCiviles(BigDecimal secuencia) {
+    public EstadosCiviles(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public EstadosCiviles(BigDecimal secuencia, String descripcion) {
+    public EstadosCiviles(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
+        if (descripcion == null) {
             descripcion = " ";
         }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -142,5 +139,5 @@ public class EstadosCiviles implements Serializable {
     public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
         this.parametrosInformesCollection = parametrosInformesCollection;
     }
-    
+
 }

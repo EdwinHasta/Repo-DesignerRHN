@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.Deportes;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -40,5 +41,25 @@ public interface PersistenciaDeportesInterface {
      * @return Retorna una lista de Deportes.
      */
     public List<Deportes> buscarDeportes();
-    
+    /**
+     *
+     * @param secuencia
+     * @return
+     */
+    public BigInteger contadorParametrosInformes(BigInteger secuencia);
+
+    /**
+     *
+     * @param secuencia
+     * @return
+     */
+    public BigInteger contadorDeportesPersonas(BigInteger secuencia);
+
+    /**
+     *
+     * @param secuencia
+     * @return
+     */
+    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secuencia);
+
 }

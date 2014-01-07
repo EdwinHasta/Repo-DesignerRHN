@@ -10,10 +10,10 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br> 
+ * Clase Stateless 
  * Clase encargada de realizar operaciones sobre la tabla 'EstadosCiviles'
  * de la base de datos.
  * @author betelgeuse
@@ -65,14 +65,25 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
 
     @Override
     public List<EstadosCiviles> buscarEstadosCiviles() {
-        try{
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(EstadosCiviles.class));
-        return em.createQuery(cq).getResultList();
-        } catch(Exception e){
-            System.out.println("Error buscarEstadosCiviles PersistenciaEstadosCiviles");
-            return null;
+        Query query = em.createQuery("SELECT e FROM EstadosCiviles e ORDER BY e.codigo ");
+        List<EstadosCiviles> listEstadosCiviles = query.getResultList();
+        return listEstadosCiviles;
+
+    }
+    
+      public BigInteger contadorVigenciasEstadosCiviles(BigInteger secuencia) {
+        BigInteger retorno;
+        try {
+            String sqlQuery = "SELECT COUNT(*) FROM vigenciasestadosciviles WHERE estadocivil = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIAESTADOSCIVILES contadorVigenciasEstadosCiviles = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIAESTADOSCIVILES contadorVigenciasEstadosCiviles  ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
         }
     }
-
 }
