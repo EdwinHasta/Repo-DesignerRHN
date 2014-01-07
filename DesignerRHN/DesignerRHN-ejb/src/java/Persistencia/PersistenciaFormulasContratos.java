@@ -1,6 +1,9 @@
-/**
- * Documentación a cargo de Hugo David Sin Gutiérrez
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
+
 package Persistencia;
 
 import Entidades.Formulascontratos;
@@ -13,16 +16,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'FormulasContratos'
- * de la base de datos.
- * @author Andres Pineda.
+ *
+ * @author PROYECTO01
  */
 @Stateless
 public class PersistenciaFormulasContratos implements PersistenciaFormulasContratosInterface{
-    /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos
-     */
+
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -57,6 +56,18 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     public List<Formulascontratos> formulasContratosParaFormulaSecuencia(BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.formula.secuencia=:secuencia");
+            queryFinal.setParameter("secuencia", secuencia);
+            List<Formulascontratos> formulascontratos = queryFinal.getResultList();
+            return formulascontratos;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaFormulasContratos.formulasContratosParaFormulaSecuencia : " + e.toString());
+            return null;
+        }
+    }
+    
+    public List<Formulascontratos> formulasContratosParaContratoSecuencia(BigInteger secuencia) {
+        try {
+            Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.contrato.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             List<Formulascontratos> formulascontratos = queryFinal.getResultList();
             return formulascontratos;
