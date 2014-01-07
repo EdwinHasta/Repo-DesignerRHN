@@ -265,9 +265,9 @@
 
                             <strong><h:outputText value="FECHA : "  style="font-size: 12px; position: absolute; top: 55px;text-transform: uppercase" /></strong>
                             <div  id="nuevaFechaa" style="width: 135px;font-size: 12px; position: absolute; top: 50px; left: 175px;">
-                                <lnk:calendar id="nuevaFecha" value="#{controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.fechavigencia}" >
-                                    <p:ajax event="dateSelect" update="duplicarFecha"/>
-                                    <p:ajax event="change" update="duplicarFecha"/>
+                                <lnk:calendar id="nuevaFecha" value="#{controlBetaEmplVigenciaNormaLaboral.nuevoEmplVigenciaNormaLaboral.fechavigencia}" >
+                                    <p:ajax event="dateSelect" update="nuevaFecha"/>
+                                    <p:ajax event="change" update="nuevaFecha"/>
                                 </lnk:calendar>
                             </div>
 
@@ -296,8 +296,8 @@
                             <strong><h:outputText value="Fecha "  style="font-size: 12px; position: absolute; top: 60px;text-transform: uppercase" /></strong>
                             <div id="duplicarFecha" style="width: 100px;font-size: 12px; position: absolute; top: 50px; left: 160px;">
                                 <lnk:calendar id="duplicarFechaa" value="#{controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.fechavigencia}" >
-                                    <p:ajax event="dateSelect" update="duplicarFecha"/>
-                                    <p:ajax event="change" update="duplicarFecha"/>
+                                    <p:ajax event="dateSelect" update="duplicarFechaa"/>
+                                    <p:ajax event="change" update="duplicarFechaa"/>
                                 </lnk:calendar>
                             </div>
 
