@@ -7,13 +7,12 @@ import java.math.BigInteger;
 
 /**
  * Interface encargada de determinar las operaciones lógicas necesarias para realizar reportes. 
- * de la base de datos.
  * @author betelgeuse
  */
 public interface AdministarReportesInterface {
     /**
-     * Método encargado de recuperar los datos de conexión del usuario ya seteado.<br>
-     * El usuario esta seteado cuando esta asociado a un perfil del aplicativo.
+     * Método encargado de recuperar los datos de conexión del EntityManagerGlobal el cual tiene
+     * el usuario asociado a un perfil del aplicativo.
      */
     public void datosConexion();
     /**
