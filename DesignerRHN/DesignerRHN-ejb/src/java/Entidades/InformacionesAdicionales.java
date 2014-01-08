@@ -44,18 +44,12 @@ public class InformacionesAdicionales implements Serializable {
     @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 1)
     @Column(name = "TIPODATO")
     private String tipodato;
