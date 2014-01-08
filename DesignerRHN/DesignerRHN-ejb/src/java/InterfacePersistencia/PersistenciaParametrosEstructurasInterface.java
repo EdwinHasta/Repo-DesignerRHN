@@ -5,7 +5,11 @@ package InterfacePersistencia;
 
 import Entidades.ParametrosEstructuras;
 import java.math.BigInteger;
-
+/**
+ * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'ParametrosEstructuras' 
+ * de la base de datos.
+ * @author betelgeuse
+ */
 public interface PersistenciaParametrosEstructurasInterface {
     /**
      * Método encargado de modificar un ParametroEstructura de la base de datos.

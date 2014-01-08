@@ -59,13 +59,13 @@ public interface PersistenciaConceptosInterface {
     public boolean verificarCodigoConcepto(BigInteger codigoConcepto);
 
     /**
-     * Método encargado de buscar los conceptos cuyo código existe y pertence a
+     * Método encargado de buscar los conceptos cuyo código existe y pertencen a
      * una empresa especifica.
      *
      * @param codigoConcepto Código del concepto que se quiere buscar.
      * @param secEmpresa Secuencia de la empresa a la que pertenece el concepto
-     * @return Retorna la lista de Conceptos cuyo cogigo concuerda con el dado y
-     * que pertenecen a la empresa con secuencia igual a la dada por parámetro
+     * @return Retorna la lista de Conceptos cuyo código concuerda con el dado y
+     * que pertenecen a la empresa con secuencia igual a la dada por parámetro.
      */
     public Conceptos validarCodigoConcepto(BigInteger codigoConcepto, BigInteger secEmpresa);
 

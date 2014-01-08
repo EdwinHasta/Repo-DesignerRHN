@@ -198,9 +198,6 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
         return persistenciaTempNovedades.obtenerTempNovedades(usuarioBD);
     }
 
-    //PRIMERA ETAPA VALIDACION
-    //VALIDACION DE CAMPOS
-
     @Override
     public boolean existenciaEmpleado(BigInteger codEmpleado, BigInteger secEmpresa) {
         return persistenciaEmpleado.verificarCodigoEmpleado_Empresa(codEmpleado, secEmpresa);
@@ -220,11 +217,10 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     public boolean existenciaTercero(BigInteger nitTercero) {
         return persistenciaTerceros.verificarTerceroPorNit(nitTercero);
     }
-    //SEGUNDA ETAPA VALIDACION    
-
+    
     @Override
     public boolean validarTipoEmpleadoActivo(BigInteger codEmpleado, BigInteger secEmpresa) {
-        Empleados empleado = persistenciaEmpleado.buscarEmpleadoCodigo_Empresa(codEmpleado, secEmpresa);
+        Empleados empleado = buscarEmpleadoCodigo(codEmpleado, secEmpresa);
         return persistenciaVWActualesTiposTrabajadores.verificarTipoTrabajador(empleado);
     }
 
@@ -234,7 +230,6 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
         return empleado;
     }
 
-    //BUSCAR EMPLEADO, ACTUAL TIPO TRABAJADOR, ACTUAL SUELDO, ACTUAL CONTRATO. 
     @Override
     public VWActualesTiposTrabajadores buscarTipoTrabajador(BigInteger secuenciaEmpleado) {
         return persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(secuenciaEmpleado);
@@ -249,14 +244,12 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     public VWActualesTiposContratos buscarActualTipoContrato(BigInteger secuenciaEmpleado) {
         return persistenciaVWActualesTiposContratos.buscarTiposContratosEmpleado(secuenciaEmpleado);
     }
-    //VALIDAD QUE EL CONCEPTO EXISTA EN LA EMPRESA
-
+    
     @Override
     public Conceptos validarConceptoEmpresa(BigInteger codigoConcepto, BigInteger codigoEmpresa) {
         return persistenciaConceptos.validarCodigoConcepto(codigoConcepto, codigoEmpresa);
     }
-    //DETERMINAR TIPO CONCEPTO
-
+    
     @Override
     public String determinarTipoConcepto(BigInteger secConcepto) {
         String tipo = "MANUAL";
@@ -296,7 +289,6 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
             return false;
         }
     }
-    //FORMULAS VALIDAS PARA EL CARGUE
 
     @Override
     public List<Formulas> formulasCargue() {

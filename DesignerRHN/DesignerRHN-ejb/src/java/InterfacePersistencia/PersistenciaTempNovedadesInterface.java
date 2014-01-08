@@ -48,10 +48,10 @@ public interface PersistenciaTempNovedadesInterface {
     /**
      * Método encargado de cargar las TempNovedades a Novedades. 
      * Cuando una TempNovedad es cargada en Novedades, esta cambia de Estado 'N' a estado 'C'.
-     * @param fechaReporte Fecha en la que se cargo el Archivo Plano a TempNovedades.
+     * @param fechaReporte String con la Fecha en la que se cargó el Archivo Plano a TempNovedades.
      * @param nombreCortoFormula Nombre corto de la formula.
-     * @param usarFormula Indica si se va a usar la formula del concepto o la formula pasada por parametro
-     * sus posibles valores son 'S' o 'N'.
+     * @param usarFormula Indica si se va a usar la formula del concepto o la formula pasada por parametro.
+     * Sus posibles valores son 'S' o 'N'.
      */
     public void cargarTempNovedades(String fechaReporte, String nombreCortoFormula, String usarFormula);
     /**

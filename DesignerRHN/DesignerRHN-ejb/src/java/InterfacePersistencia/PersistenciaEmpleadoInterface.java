@@ -50,7 +50,7 @@ public interface PersistenciaEmpleadoInterface {
      */
     public boolean verificarCodigoEmpleado_Empresa(BigInteger codigoEmpleado, BigInteger secEmpresa);
     /**
-     * Método encargado de buscar un empleado de una empresa especifica.
+     * Método encargado de buscar un empleado de una empresa específica.
      * @param codigoEmpleado Códígo del empleado.
      * @param secEmpresa Secuencia de la empresa a la que el usuario pertenecería.
      * @return Retorna el empleado que cumple las características dadas por los parámetros.
