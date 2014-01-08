@@ -5,6 +5,7 @@ package Persistencia;
 
 import Entidades.Idiomas;
 import InterfacePersistencia.PersistenciaIdiomasInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -12,13 +13,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Idiomas'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Idiomas' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -52,6 +55,14 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
         }
     }
 
+    public Idiomas buscarIdioma(BigInteger secuenciaI) {
+        try {
+            return em.find(Idiomas.class, secuenciaI);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     @Override
     public List<Idiomas> buscarIdiomas() {
         try {
@@ -61,6 +72,21 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
         } catch (Exception e) {
             System.out.println("Error buscarIdiomas PersistenciaIdiomas : " + e.toString());
             return null;
+        }
+    }
+
+    public BigInteger contadorIdiomasPersonas(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM idiomaspersonas WHERE idioma = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador PersistenciaIdiomas contadorIdiomasPersonas  " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaIdiomas contadorIdiomasPersonas. " + e);
+            return retorno;
         }
     }
 }

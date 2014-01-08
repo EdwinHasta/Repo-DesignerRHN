@@ -6,7 +6,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,7 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,17 +42,11 @@ public class TiposDias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Size(max = 3)
     @Column(name = "TIPO")
     private String tipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodia")
@@ -62,29 +55,29 @@ public class TiposDias implements Serializable {
     public TiposDias() {
     }
 
-    public TiposDias(BigDecimal secuencia) {
+    public TiposDias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposDias(BigDecimal secuencia, short codigo, String descripcion) {
+    public TiposDias(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -96,7 +89,7 @@ public class TiposDias implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public String getTipo() {
@@ -104,7 +97,7 @@ public class TiposDias implements Serializable {
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = tipo.toUpperCase();
     }
 
     @XmlTransient

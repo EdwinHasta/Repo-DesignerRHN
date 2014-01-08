@@ -44,7 +44,7 @@ public class Competenciascargos implements Serializable {
     private Integer peso;
     @JoinColumn(name = "EVALCOMPETENCIA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private Evalcompetencias evalcompetencia;
+    private EvalCompetencias evalcompetencia;
     @JoinColumn(name = "CARGO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Cargos cargo;
@@ -74,11 +74,11 @@ public class Competenciascargos implements Serializable {
         this.peso = peso;
     }
 
-    public Evalcompetencias getEvalcompetencia() {
+    public EvalCompetencias getEvalcompetencia() {
         return evalcompetencia;
     }
 
-    public void setEvalcompetencia(Evalcompetencias evalcompetencia) {
+    public void setEvalcompetencia(EvalCompetencias evalcompetencia) {
         this.evalcompetencia = evalcompetencia;
     }
 

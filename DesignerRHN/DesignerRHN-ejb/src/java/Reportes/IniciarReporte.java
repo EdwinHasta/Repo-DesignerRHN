@@ -8,7 +8,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.export.JExcelApiMetadataExporter;
+import net.sf.jasperreports.engine.export.JRCsvMetadataExporter;
+import net.sf.jasperreports.engine.export.JRCsvMetadataExporterParameter;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsAbstractMetadataExporter;
 import net.sf.jasperreports.engine.export.JRXml4SwfExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
@@ -71,19 +76,74 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
         }
     }
 
-    public void ejecutarReporteXLSX() {
+    /* public void ejecutarReporteXLSX() {
+     try {
+     inicarC();
+     File archivo = new File("C:\\Reportes\\Reportes_Fuentes\\ReportePruebaXML.jasper");
+     JasperReport masterReport = null;
+     masterReport = (JasperReport) JRLoader.loadObject(archivo);
+     HashMap jasperParameter = new HashMap();
+     jasperParameter.put("empleadoDesde", null);
+     jasperParameter.put("empleadoHasta", null);
+     JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
+     String outFileName = "C:\\Reportes\\Reportes_XLSX\\DesprendibleConTercero.xlsx";
+
+     JRXlsxExporter exporter = new JRXlsxExporter();
+     exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+     exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+     exporter.exportReport();
+     //byte[] bytes = JasperExportManager.exportReportToPdf(imprimir);
+     /*try {
+     conection.close();
+     } catch (SQLException ex) {
+     System.out.println("Error cerrando conexion " + ex);
+     }
+     } catch (JRException e) {
+     System.out.println("Error ejecutarReporte " + e);
+     }
+     }*/
+    public void ejecutarReporteXML() {
         try {
             inicarC();
-            File archivo = new File("C:\\Reportes\\Reportes_Fuentes\\ReportePruebaXML.jasper");
+            /*File archivo = new File("C:\\Reportes\\Reportes_Fuentes\\ReportePruebaXML.jasper");
+             JasperReport masterReport = null;
+             masterReport = (JasperReport) JRLoader.loadObject(archivo);
+             HashMap jasperParameter = new HashMap();
+             jasperParameter.put("empleadoDesde", 39071431);
+             jasperParameter.put("empleadoHasta", 39071431);
+             JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
+             String outFileName = "C:\\Reportes\\Reportes_XML\\DesprendibleConTercero.xml";
+
+             JRXmlExporter exporter = new JRXml4SwfExporter();
+             exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+             exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+             exporter.exportReport();*/
+            /*File archivo = new File("C:\\Proyecto Betelgeuse\\Reportes\\Reportes_Fuentes\\report1.jasper");
+             JasperReport masterReport = null;
+             masterReport = (JasperReport) JRLoader.loadObject(archivo);
+             HashMap jasperParameter = new HashMap();
+             jasperParameter.put("empleadoDesde", 39071431);
+             jasperParameter.put("empleadoHasta", 39071431);
+             JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
+             String outFileName = "C:\\Proyecto Betelgeuse\\Reportes\\Reportes_XLS_MetaData\\DesprendibleConTercero.xls";
+
+             JExcelApiMetadataExporter exporter = new JExcelApiMetadataExporter();
+             exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+             exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+             exporter.exportReport();*/
+            File archivo = new File("C:\\Proyecto Betelgeuse\\Reportes\\Reportes_Fuentes\\report1.jasper");
             JasperReport masterReport = null;
             masterReport = (JasperReport) JRLoader.loadObject(archivo);
             HashMap jasperParameter = new HashMap();
+            //jasperParameter.put("empleadoDesde", 39071431);
+            //jasperParameter.put("empleadoHasta", 39071431);
             jasperParameter.put("empleadoDesde", null);
             jasperParameter.put("empleadoHasta", null);
             JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
-            String outFileName = "C:\\Reportes\\Reportes_XLSX\\DesprendibleConTercero.xlsx";
+            String outFileName = "C:\\Proyecto Betelgeuse\\Reportes\\Reportes_CSV\\DesprendibleConTercero.csv";
 
-            JRXlsxExporter exporter = new JRXlsxExporter();
+            JRCsvMetadataExporter exporter = new JRCsvMetadataExporter();
+            //exporter.setParameter(JRCsvMetadataExporterParameter.COLUMN_NAMES, new String[]{"Nombre,CodigoEmpleado,Codigo,Descripcion,Unidades,Pago,Descuento,Saldo"});
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
             exporter.exportReport();
@@ -97,29 +157,108 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
             System.out.println("Error ejecutarReporte " + e);
         }
     }
-    
-    public void ejecutarReporteXML() {
+
+    public void ejecutarReportePDF() {
         try {
             inicarC();
-            File archivo = new File("C:\\Reportes\\Reportes_Fuentes\\ReportePruebaXML.jasper");
+            File archivo = new File("C:\\Proyecto Betelgeuse\\Reportes\\Reportes_Fuentes_Betelgeuse\\desprendibleConTercero.jasper");
             JasperReport masterReport = null;
             masterReport = (JasperReport) JRLoader.loadObject(archivo);
             HashMap jasperParameter = new HashMap();
-            jasperParameter.put("empleadoDesde", 39071431);
-            jasperParameter.put("empleadoHasta", 39071431);
+            jasperParameter.put("empleadoDesde", null);
+            jasperParameter.put("empleadoHasta", null);
             JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
-            String outFileName = "C:\\Reportes\\Reportes_XML\\DesprendibleConTercero.xml";
+            String outFileName = "C:\\Proyecto Betelgeuse\\Reportes\\Reportes_PDF\\DesprendibleConTercero.pdf";
 
-            JRXmlExporter exporter = new JRXml4SwfExporter();
+            JRExporter exporter = new JRPdfExporter();
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+            //exporter.exportReport();
+           // byte[] bytes = JasperExportManager.exportReportToPdf(imprimir);
+        } catch (JRException e) {
+            System.out.println("Error ejecutarReporte " + e);
+        }
+    }
+
+    public void ejecutarReporteXLSX() {
+        try {
+            inicarC();
+            File archivo = new File("C:\\Proyecto Betelgeuse\\Reportes\\Reportes_Fuentes_Betelgeuse\\desprendibleConTercero.jasper");
+            JasperReport masterReport = null;
+            masterReport = (JasperReport) JRLoader.loadObject(archivo);
+            HashMap jasperParameter = new HashMap();
+            jasperParameter.put("empleadoDesde", null);
+            jasperParameter.put("empleadoHasta", null);
+            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
+            String outFileName = "C:\\Proyecto Betelgeuse\\Reportes\\Reportes_XLSX\\DesprendibleConTercero.xlsx";
+
+            JRXlsxExporter exporter = new JRXlsxExporter();
             exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
             exporter.exportReport();
-            //byte[] bytes = JasperExportManager.exportReportToPdf(imprimir);
-            /*try {
-             conection.close();
-             } catch (SQLException ex) {
-             System.out.println("Error cerrando conexion " + ex);
-             }*/
+        } catch (JRException e) {
+            System.out.println("Error ejecutarReporte " + e);
+        }
+    }
+
+    public void ejecutarReporteXLS() {
+        try {
+            inicarC();
+            File archivo = new File("C:\\Proyecto Betelgeuse\\Reportes\\Reportes_Fuentes_Betelgeuse\\desprendibleConTercero.jasper");
+            JasperReport masterReport = null;
+            masterReport = (JasperReport) JRLoader.loadObject(archivo);
+            HashMap jasperParameter = new HashMap();
+            jasperParameter.put("empleadoDesde", null);
+            jasperParameter.put("empleadoHasta", null);
+            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
+            String outFileName = "C:\\Proyecto Betelgeuse\\Reportes\\Reportes_XLS_MetaData\\DesprendibleConTercero.xls";
+
+            JExcelApiMetadataExporter exporter = new JExcelApiMetadataExporter();
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+            exporter.exportReport();
+        } catch (JRException e) {
+            System.out.println("Error ejecutarReporte " + e);
+        }
+    }
+
+    public void ejecutarReporteCSV() {
+        try {
+            inicarC();
+            File archivo = new File("C:\\Proyecto Betelgeuse\\Reportes\\Reportes_Fuentes_Betelgeuse\\desprendibleConTercero.jasper");
+            JasperReport masterReport = null;
+            masterReport = (JasperReport) JRLoader.loadObject(archivo);
+            HashMap jasperParameter = new HashMap();
+            jasperParameter.put("empleadoDesde", null);
+            jasperParameter.put("empleadoHasta", null);
+            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
+            String outFileName = "C:\\Proyecto Betelgeuse\\Reportes\\Reportes_CSV\\DesprendibleConTercero.csv";
+
+            JRCsvMetadataExporter exporter = new JRCsvMetadataExporter();
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+            exporter.exportReport();
+        } catch (JRException e) {
+            System.out.println("Error ejecutarReporte " + e);
+        }
+    }
+
+    public void ejecutarReporteHTML() {
+        try {
+            inicarC();
+            File archivo = new File("C:\\Proyecto Betelgeuse\\Reportes\\Reportes_Fuentes_Betelgeuse\\desprendibleConTercero.jasper");
+            JasperReport masterReport = null;
+            masterReport = (JasperReport) JRLoader.loadObject(archivo);
+            HashMap jasperParameter = new HashMap();
+            jasperParameter.put("empleadoDesde", null);
+            jasperParameter.put("empleadoHasta", null);
+            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, jasperParameter, conexion);
+            String outFileName = "C:\\Proyecto Betelgeuse\\Reportes\\Reportes_HTML\\DesprendibleConTercero.html";
+
+            JRHtmlExporter exporter = new JRHtmlExporter();
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+            exporter.exportReport();
         } catch (JRException e) {
             System.out.println("Error ejecutarReporte " + e);
         }

@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,7 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,18 +36,11 @@ public class GruposViaticos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "PORCENTAJELASTDAY")
     private BigDecimal porcentajelastday;
     @OneToMany(mappedBy = "grupoviatico")
@@ -56,30 +49,30 @@ public class GruposViaticos implements Serializable {
     public GruposViaticos() {
     }
 
-    public GruposViaticos(BigDecimal secuencia) {
+    public GruposViaticos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public GruposViaticos(BigDecimal secuencia, short codigo, String descripcion, BigDecimal porcentajelastday) {
+    public GruposViaticos(BigInteger secuencia, Integer codigo, String descripcion, BigDecimal porcentajelastday) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.porcentajelastday = porcentajelastday;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -88,7 +81,7 @@ public class GruposViaticos implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public BigDecimal getPorcentajelastday() {

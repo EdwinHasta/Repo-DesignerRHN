@@ -66,12 +66,25 @@ public class AdministarReportes implements AdministarReportesInterface {
     }
     
     @Override
-    public void generarReporteXLSX() {
-        reporte.ejecutarReporteXLSX();
+    public void generarReportePDF() {
+        reporte.ejecutarReportePDF();
     }
     
     @Override
-    public void generarReporteXML() {
-        reporte.ejecutarReporteXML();
+    public void generarReporteXLSX() {
+        reporte.ejecutarReporteXLSX();
+    }
+    @Override
+    public void generarReporteXLS() {
+        reporte.ejecutarReporteXLS();
+    }
+    
+    @Override
+    public void generarReporteCSV() {
+        reporte.ejecutarReporteCSV();
+    }
+    @Override
+    public void generarReporteHTML() {
+        reporte.ejecutarReporteHTML();
     }
 }

@@ -16,8 +16,24 @@ public class ControlPruebasUnitarias implements Serializable {
     public ControlPruebasUnitarias() {
     }
 
-    public void crearReporte() {
+    public void crearReportePDF() {
         //administarReportes.generarReporteXLSX();
-        administarReportes.generarReporteXML();
+        administarReportes.generarReportePDF();
+    }
+    public void crearReporteXLSX() {
+        //administarReportes.generarReporteXLSX();
+        administarReportes.generarReporteXLSX();
+    }
+    public void crearReporteXLS() {
+        //administarReportes.generarReporteXLSX();
+        administarReportes.generarReporteXLS();
+    }
+    public void crearReporteCSV() {
+        //administarReportes.generarReporteXLSX();
+        administarReportes.generarReporteCSV();
+    }
+    public void crearReporteHTML() {
+        //administarReportes.generarReporteXLSX();
+        administarReportes.generarReporteHTML();
     }
 }

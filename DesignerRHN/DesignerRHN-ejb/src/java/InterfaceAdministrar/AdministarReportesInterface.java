@@ -27,5 +27,9 @@ public interface AdministarReportesInterface {
     /**
      * Método encargado de generar un reporte XML para un Empleado específico.
      */
-    public void generarReporteXML();
+    //public void generarReporteXML();
+    public void generarReportePDF();
+    public void generarReporteXLS();
+    public void generarReporteCSV();
+    public void generarReporteHTML();
 }

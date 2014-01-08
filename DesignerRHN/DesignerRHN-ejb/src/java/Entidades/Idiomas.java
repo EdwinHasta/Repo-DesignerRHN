@@ -42,9 +42,6 @@ public class Idiomas implements Serializable {
     private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idioma")
@@ -86,7 +83,7 @@ public class Idiomas implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     @XmlTransient

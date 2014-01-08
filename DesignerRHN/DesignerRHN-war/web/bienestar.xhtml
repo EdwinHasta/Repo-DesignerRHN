@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Plan Gerencial de #{controlBienestar.bienestar}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
+                        <fieldset style="position: absolute; left: 10px; top: 35px; font-size: 10px; width: 835px; height: 440px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Plan Gerencial de Actividades</strong></legend>
+                            <p:commandButton style="background: url(Imagenes/interrogante.gif)  ;border-color:#045491; width:70px ; height: 80px ; border-width: 2px; position: absolute;top: 20px;left: 10px" value=" "></p:commandButton>
+                            <h:outputText value="Necesidades" style="position: absolute;left: 95px ; top: 20px; color: #045491; font-size: 16px"/>
+                            <h:outputText value="Permite Registrar las necesidades de actividades por cada una de as areas con el fin de soportar
+                                          la programació de las mismas." style="position: absolute;left: 100px ; top: 45px ; color: #000000; font-size: 14px"/>
+                            <p:commandButton style=" background: url(Imagenes/evaluacion1.gif); border-color:#045491; width:70px ; height: 80px ; border-width: 2px; position: absolute;top: 105px;left: 10px" value=" "></p:commandButton>
+                            <h:outputText value="Programación de Actividades" style="position: absolute;left: 95px ; top: 110px; color: #045491; font-size: 16px"/>
+                            <h:outputText value="Permiste programar las actividades de aprobadas por la empresa, nombrando coordinadores
+                                          responsables del evento, fecha y sitio de realización entre otros." style="position: absolute;left: 100px ; top: 135px; color: #000000; font-size: 14px"/>
+
+                            <p:commandButton style="background: url(Imagenes/formulario.gif);border-color:#045491; width:70px ; height: 80px ; border-width: 2px; position: absolute;top: 190px;left: 10px" value=" "></p:commandButton>
+                            <h:outputText value="Inscripciones" style="position: absolute;left: 95px ; top: 195px; color: #045491; font-size: 16px"/>
+                            <h:outputText value="Permiste inscribir las personas a los eventos de las actividades aprobadas por la empresa,
+                                          para seleccionar los familiares inscritos ingrese el tipo de familiar y rango de edades si lo requiere." style="position: absolute;left: 100px ; top: 218px; color: #000000; font-size: 14px"/>
+
+
+                            <p:commandButton style="background: url(Imagenes/birrete1.gif);border-color:#045491; width:70px ; height: 80px ; border-width: 2px; position: absolute;top: 275px;left: 10px" value=" "></p:commandButton>
+                            <h:outputText value="Asistencia y Evaluación" style="position: absolute;left: 95px ; top: 280px; color: #045491; font-size: 16px"/>
+                            <h:outputText value="Permite Evaluar las actividades aprobadas por la empresa, teniendo en cuenta la asistencia
+                                          y una calificación cualitativa." style="position: absolute;left: 100px ; top: 305px; color: #000000; font-size: 14px"/>
+
+
+                            <p:commandButton style="background: url(Imagenes/reportesboton.gif);border-color:#045491; width:70px ; height: 80px ; border-width: 2px; position: absolute;top: 360px;left: 10px" value=" "></p:commandButton>
+                            <h:outputText value="Reportes" style="position: absolute;left: 95px ; top: 365px; color: #045491; font-size: 16px"/>
+                            <h:outputText value="Permite generar reportes de las actividades, teniendo encuenta los parametros de los reportes
+                                          y el tipo de archivo de la generacion del mismo." style="position: absolute;left: 100px ; top: 390px; color: #000000; font-size: 14px"/>
+
+                        </fieldset>
+                        <p:commandButton style=" position: absolute; left: 698px; top: 500px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 500px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras"    />
+
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
