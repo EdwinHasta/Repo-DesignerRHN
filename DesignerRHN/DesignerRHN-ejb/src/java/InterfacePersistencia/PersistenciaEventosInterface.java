@@ -41,4 +41,5 @@ public interface PersistenciaEventosInterface {
      * @return Retorna una lista de Eventos.
      */
     public List<Eventos> buscarEventos();
+    public BigInteger contadorVigenciasEventos(BigInteger secuencia);
 }

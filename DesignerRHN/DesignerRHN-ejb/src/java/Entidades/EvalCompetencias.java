@@ -1,13 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,18 +22,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author PROYECTO01
+ * @author user
  */
 @Entity
-@Table(name = "TIPOSDIAS")
+@Table(name = "EVALCOMPETENCIAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TiposDias.findAll", query = "SELECT t FROM TiposDias t"),
-    @NamedQuery(name = "TiposDias.findBySecuencia", query = "SELECT t FROM TiposDias t WHERE t.secuencia = :secuencia"),
-    @NamedQuery(name = "TiposDias.findByCodigo", query = "SELECT t FROM TiposDias t WHERE t.codigo = :codigo"),
-    @NamedQuery(name = "TiposDias.findByDescripcion", query = "SELECT t FROM TiposDias t WHERE t.descripcion = :descripcion"),
-    @NamedQuery(name = "TiposDias.findByTipo", query = "SELECT t FROM TiposDias t WHERE t.tipo = :tipo")})
-public class TiposDias implements Serializable {
+    @NamedQuery(name = "EvalCompetencias.findAll", query = "SELECT e FROM EvalCompetencias e")})
+public class EvalCompetencias implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -47,19 +42,19 @@ public class TiposDias implements Serializable {
     private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Column(name = "TIPO")
-    private String tipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodia")
-    private List<ExtrasRecargos> extrasRecargosList;
+    @Column(name = "DESCOMPETENCIA")
+    private String desCompetencia;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evalcompetencia")
+    private Collection<Competenciascargos> competenciascargosCollection;
 
-    public TiposDias() {
+    public EvalCompetencias() {
     }
 
-    public TiposDias(BigInteger secuencia) {
+    public EvalCompetencias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposDias(BigInteger secuencia, Integer codigo, String descripcion) {
+    public EvalCompetencias(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -82,9 +77,6 @@ public class TiposDias implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
@@ -92,21 +84,21 @@ public class TiposDias implements Serializable {
         this.descripcion = descripcion.toUpperCase();
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getDesCompetencia() {
+        return desCompetencia;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo.toUpperCase();
+    public void setDesCompetencia(String desCompetencia) {
+        this.desCompetencia = desCompetencia.toUpperCase();
     }
 
     @XmlTransient
-    public List<ExtrasRecargos> getExtrasRecargosList() {
-        return extrasRecargosList;
+    public Collection<Competenciascargos> getCompetenciascargosCollection() {
+        return competenciascargosCollection;
     }
 
-    public void setExtrasRecargosList(List<ExtrasRecargos> extrasRecargosList) {
-        this.extrasRecargosList = extrasRecargosList;
+    public void setCompetenciascargosCollection(Collection<Competenciascargos> competenciascargosCollection) {
+        this.competenciascargosCollection = competenciascargosCollection;
     }
 
     @Override
@@ -119,10 +111,10 @@ public class TiposDias implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TiposDias)) {
+        if (!(object instanceof EvalCompetencias)) {
             return false;
         }
-        TiposDias other = (TiposDias) object;
+        EvalCompetencias other = (EvalCompetencias) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -131,7 +123,6 @@ public class TiposDias implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Tiposdias[ secuencia=" + secuencia + " ]";
+        return "Entidades.Evalcompetencias[ secuencia=" + secuencia + " ]";
     }
-
 }

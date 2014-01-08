@@ -13,13 +13,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposDias'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposDias' de la base
+ * de datos.
+ *
  * @author AndresPineda.
  */
 @Stateless
-public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface{
+public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -62,5 +64,36 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface{
             return null;
         }
     }
-    
+
+    public BigInteger contadorDiasLaborales(BigInteger secuencia) {
+        BigInteger retorno;
+        try {
+            String sqlQuery = " SELECT COUNT(*)FROM diaslaborables WHERE tipodia = ? ";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIATIPOSDIAS CONTADORDIASLABORALES = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIATIPOSDIAS CONTADORDIASLABORALES ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
+        }
+    }
+
+    public BigInteger contadorExtrasRecargos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = " SELECT COUNT(*)FROM extrasrecargos WHERE tipodia = ? ";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIATIPOSDIAS CONTADOREXTRASRECARGOS = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIATIPOSDIAS CONTADOREXTRASRECARGOS ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
+        }
+    }
 }
