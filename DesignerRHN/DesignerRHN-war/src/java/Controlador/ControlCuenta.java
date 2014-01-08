@@ -135,7 +135,6 @@ public class ControlCuenta implements Serializable {
         nombreTabla = ":formExportarCuentas:datosCuentasExportar";
         nombreXML = "CuentasXML";
 
-
         retroactivo = true;
         duplicarCuentas = new Cuentas();
         cambiosCuentas = false;
@@ -147,7 +146,6 @@ public class ControlCuenta implements Serializable {
         empresaActual = getEmpresaActual();
     }
 
-   
     /**
      * Modifica los elementos de la tabla VigenciaLocalizacion que no usan
      * autocomplete
@@ -296,14 +294,25 @@ public class ControlCuenta implements Serializable {
         cualCelda = celda;
         index = indice;
         indexAux = indice;
-        secRegistroCuentas = listCuentas.get(index).getSecuencia();
-        cuentaActual = listCuentas.get(index);
-
-        if (cualCelda == 5) {
-            cuenta = listCuentas.get(index).getContracuentatesoreria().getDescripcion();
+        if (tipoLista == 0) {
+            secRegistroCuentas = listCuentas.get(index).getSecuencia();
+            cuentaActual = listCuentas.get(index);
+            if (cualCelda == 5) {
+                cuenta = listCuentas.get(index).getContracuentatesoreria().getDescripcion();
+            }
+            if (cualCelda == 3) {
+                rubroP = listCuentas.get(index).getRubropresupuestal().getDescripcion();
+            }
         }
-        if (cualCelda == 3) {
-            rubroP = listCuentas.get(index).getRubropresupuestal().getDescripcion();
+        if (tipoLista == 1) {
+            secRegistroCuentas = filtrarListCuentas.get(index).getSecuencia();
+            cuentaActual = filtrarListCuentas.get(index);
+            if (cualCelda == 5) {
+                cuenta = filtrarListCuentas.get(index).getContracuentatesoreria().getDescripcion();
+            }
+            if (cualCelda == 3) {
+                rubroP = filtrarListCuentas.get(index).getRubropresupuestal().getDescripcion();
+            }
         }
     }
 

@@ -6,6 +6,7 @@ package Persistencia;
 import Entidades.Conceptos;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,13 +14,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Conceptos' 
- * de la base de datos.
+ * Clase Stateless Clase encargada de realizar operaciones sobre la tabla
+ * 'Conceptos' de la base de datos
+ *
  * @author Betelgeuse
  */
 @Stateless
 public class PersistenciaConceptos implements PersistenciaConceptosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -147,8 +149,41 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             query.executeUpdate();
             return true;
         } catch (Exception e) {
-            System.out.println("Error eliminarConcepto PersistenciaConceptos : "+e.toString());
+            System.out.println("Error eliminarConcepto PersistenciaConceptos : " + e.toString());
             return false;
+        }
+    }
+
+    @Override
+    public String conceptoParaFormulaContrato(BigInteger secuencia, Date fechaFin) {
+        try {
+            String sqlQuery = "select substr(c.codigo||'-'||c.descripcion,1,200)\n"
+                    + "from formulasconceptos fc, conceptos c\n"
+                    + "where fc.formula = ? \n"
+                    + "and fc.concepto = c.secuencia\n"
+                    + "and exists (select 'x' from empresas e where e.secuencia = c.empresa)\n"
+                    + "and fechainicial = (select max(fechainicial) from formulasconceptos fci\n"
+                    + "where fci.formula = fc.formula\n"
+                    + "and fci.concepto = fc.concepto\n"
+                    + "and fci.fechainicial <= nvl(?,sysdate))";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            query.setParameter(2, fechaFin);
+            List<String> listaConceptos = query.getResultList();
+            String conceptoString = " ";
+            if (!listaConceptos.isEmpty()) {
+                int tam = listaConceptos.size();
+                if (tam == 1) {
+                    conceptoString = listaConceptos.get(0);
+                }
+                if (tam >= 2) {
+                    conceptoString = "... " + listaConceptos.get(0);
+                }
+            }
+            return conceptoString;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaConceptos.conceptoParaFormulaContrato. " + e.toString());
+            return null;
         }
     }
 

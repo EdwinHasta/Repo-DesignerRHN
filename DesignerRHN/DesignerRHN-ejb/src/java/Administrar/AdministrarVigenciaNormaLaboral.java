@@ -45,6 +45,7 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
     /**
      * Creacion de metodos
      */
+    @Override
     public List<VigenciasNormasEmpleados> vigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado) {
         try {
             vigenciasNormasEmpleados = persistenciaVigenciasNormasEmpleados.buscarVigenciasNormasEmpleadosEmpl(secEmpleado);

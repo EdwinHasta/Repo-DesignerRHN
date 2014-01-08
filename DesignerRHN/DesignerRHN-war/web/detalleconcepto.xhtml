@@ -205,7 +205,7 @@
                                 </fieldset>
 
 
-                                <fieldset style="position: absolute; top: 250px; font-size: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 245px; font-size: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue">Grupos Contables / Nomina / Gerencial</legend>
 
                                     <p:dataTable id="datosVigenciaGrupoConcepto" var="infoVGC" rowKey="#{infoVGC.secuencia}" rowIndexVar="indiceVGC" style="font-size: 10px; border: 1px;width: 815px"   
@@ -298,13 +298,13 @@
 
 
 
-                                <fieldset style="position: absolute; top: 500px; font-size: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 480px; font-size: 10px; width: 815px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue">Tipos de Trabajadores</legend>
 
                                     <p:dataTable id="datosVigenciaConceptoTT" var="infoVCTT" rowKey="#{infoVCTT.secuencia}" rowIndexVar="indiceVCTT" style="font-size: 10px; border: 1px;width: 815px"   
                                                  value="#{controlDetalleConcepto.listVigenciasConceptosTTConcepto}" scrollable="true" scrollHeight="84" scrollWidth="815"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasConceptosTT}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                                 editable="true" editMode="cell" paginator="true" rows="3"  
+                                                 editable="true" editMode="cell"   
                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
@@ -372,13 +372,13 @@
                                     </p:dataTable>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; top: 750px; font-size: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 675px; font-size: 10px; width: 815px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue">Tipos de Contratos</legend>
 
                                     <p:dataTable id="datosVigenciaConceptoTC" var="infoVCTC" rowKey="#{infoVCTC.secuencia}" rowIndexVar="indiceVCTC" style="font-size: 10px; border: 1px;width: 815px"   
                                                  value="#{controlDetalleConcepto.listVigenciasConceptosTCConcepto}" scrollable="true" scrollHeight="84" scrollWidth="815"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasConceptosTC}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                                 editable="true" editMode="cell" paginator="true" rows="3"  
+                                                 editable="true" editMode="cell"
                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
@@ -448,13 +448,13 @@
                                 </fieldset>
 
 
-                                <fieldset style="position: absolute; top: 1000px; font-size: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 870px; font-size: 10px; width: 815px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue">Tipos de Salarios</legend>
 
                                     <p:dataTable id="datosVigenciaConceptoRL" var="infoVCRL" rowKey="#{infoVCRL.secuencia}" rowIndexVar="indiceVCRL" style="font-size: 10px; border: 1px;width: 815px"   
                                                  value="#{controlDetalleConcepto.listVigenciasConceptosRLConcepto}" scrollable="true" scrollHeight="84" scrollWidth="815"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasConceptosRL}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                                 editable="true" editMode="cell" paginator="true" rows="3"  
+                                                 editable="true" editMode="cell" 
                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
@@ -524,13 +524,13 @@
                                 </fieldset>
 
 
-                                <fieldset style="position: absolute; top: 1250px; font-size: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 1065px; font-size: 10px; width: 815px; height: 195px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue">Fórmulas</legend>
 
                                     <p:dataTable id="datosFormulaConcepto" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="font-size: 10px; border: 1px;width: 815px"   
                                                  value="#{controlDetalleConcepto.listFormulasConceptosConcepto}" scrollable="true" scrollHeight="84" scrollWidth="815"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListFormulasConceptos}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                                 editable="true" editMode="cell" paginator="true" rows="3"  
+                                                 editable="true" editMode="cell" 
                                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
@@ -614,7 +614,7 @@
 
                                     </p:dataTable>
                                 </fieldset>
-                                <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 10px; top: 1500px;" id="detalleFormula" value="" disabled="#{controlDetalleConcepto.formulaSeleccionada}" actionListener="#{controlFormula.obtenerFormulaSecuencia(controlDetalleConcepto.actualFormulaConcepto.formula.secuencia)}" action="formulaSeleccionada" process="@this" />
+                                <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 10px; top: 1285px;" id="detalleFormula" value="" disabled="#{controlDetalleConcepto.formulaSeleccionada}" actionListener="#{controlFormula.obtenerFormulaSecuencia(controlDetalleConcepto.actualFormulaConcepto.formula.secuencia)}" action="formulaSeleccionada" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="detalleFormula" value="Detalles de la formula seleccionada" />
 
                             </p:scrollPanel>  
@@ -734,7 +734,7 @@
                     
                     <p:dialog id="paso3Eliminacion" header="ELIMINACION - PASO 3 DE 4" widgetVar="paso3Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{controlDetalleConcepto.conceptoEliminar}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{controlDetalleConcepto.conceptoAEliminar()}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="Aceptar" onclick="paso3Eliminacion.hide();" actionListener="#{controlDetalleConcepto.eliminarConcepto()}" style="position: absolute; top: 60px; left: 170px" action="#{controlDetalleConcepto.paginaRetorno}" process="@this" />
                         <p:commandButton value="Cancelar" onclick="paso3Eliminacion.hide();" style="position: absolute; top: 60px; left: 260px" process="@this" />
                     </p:dialog>

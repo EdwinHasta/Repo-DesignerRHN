@@ -212,3 +212,8 @@ a:link:hover, a:visited:hover  {
     background-image: url("bar.gif"); 
     padding: 0px;
 }
+
+/*INPUT TEXT AREA*/
+textarea {
+    resize: none;
+    }

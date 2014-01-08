@@ -62,5 +62,20 @@ public class PersistenciaEventos implements PersistenciaEventosInterface{
             return null;
         }
     }
+    
+        public BigInteger contadorVigenciasEventos(BigInteger secuencia){
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*) FROM vigenciaseventos WHERE evento = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersitenciaEventos contadorVigenciasEventos persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersitenciaEventos contadorVigenciasEventos. " + e);
+            return retorno;
+        }
+    }
 
 }

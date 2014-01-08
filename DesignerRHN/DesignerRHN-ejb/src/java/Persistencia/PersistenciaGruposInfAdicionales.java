@@ -10,27 +10,30 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'GruposInfAdicionales'
  * de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAdicionalesInterface{
+public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAdicionalesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
+
     @Override
-    public void crear(GruposInfAdicionales gruposInfAdicionales) { 
-        try{
-        em.persist(gruposInfAdicionales);
-        } catch(Exception e){
+    public void crear(GruposInfAdicionales gruposInfAdicionales) {
+        try {
+            em.persist(gruposInfAdicionales);
+        } catch (Exception e) {
             System.out.println("Error creando GruposInfAdicionales PersistenciaGruposInfAdicionales");
         }
     }
@@ -38,40 +41,55 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     @Override
     public void editar(GruposInfAdicionales gruposInfAdicionales) {
         try {
-        em.merge(gruposInfAdicionales);
-        } catch(Exception e){
+            em.merge(gruposInfAdicionales);
+        } catch (Exception e) {
             System.out.println("Error editando GruposInfAdicionales PersistenciaGruposInfAdicionales");
         }
     }
 
     @Override
     public void borrar(GruposInfAdicionales gruposInfAdicionales) {
-        try{
-        em.remove(em.merge(gruposInfAdicionales));
-        } catch(Exception e){
+        try {
+            em.remove(em.merge(gruposInfAdicionales));
+        } catch (Exception e) {
             System.out.println("Error borrando GruposInfAdicionales PersistenciaGruposInfAdicionales");
         }
     }
-    
+
     @Override
     public GruposInfAdicionales buscarGrupoInfAdicional(BigInteger secuencia) {
         try {
             return em.find(GruposInfAdicionales.class, secuencia);
         } catch (Exception e) {
-            System.out.println("Error buscarGrupoInfAdicional PersistenciaGruposInfAdicionales : "+e.toString());
+            System.out.println("Error buscarGrupoInfAdicional PersistenciaGruposInfAdicionales : " + e.toString());
             return null;
         }
     }
 
     @Override
     public List<GruposInfAdicionales> buscarGruposInfAdicionales() {
-        try{
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(GruposInfAdicionales.class));
-        return em.createQuery(cq).getResultList();
-        } catch(Exception e){
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(GruposInfAdicionales.class));
+            return em.createQuery(cq).getResultList();
+        } catch (Exception e) {
             System.out.println("Error buscarGruposInfAdicionales PersistenciaGruposInfAdicionales");
             return null;
+        }
+    }
+
+    public BigInteger contadorInformacionesAdicionales(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM informacionesadicionales aa where grupo=?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("PersistenciaGruposInfAdicionales contadorInformacionesAdicionales : " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaGruposInfAdicionales contadorInformacionesAdicionales ERROR " + e);
+            return retorno;
         }
     }
 

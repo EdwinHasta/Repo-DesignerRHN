@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
     @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "terceros")
     private Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection;
     @OneToMany(mappedBy = "tercero")
@@ -120,6 +122,8 @@ public class Terceros implements Serializable {
     private CentrosCostos centrocosto;
     @OneToMany(mappedBy = "tercero")
     private Collection<Conceptos> conceptosCollection;
+    @Transient
+    private String strNit;
 
     public Terceros() {
     }
@@ -150,6 +154,21 @@ public class Terceros implements Serializable {
         this.nit = nit;
     }
 
+    public String getStrNit() {
+        getNit();
+        if (nit > 0) {
+            strNit = String.valueOf(nit);
+        } else {
+            strNit = " ";
+        }
+        return strNit;
+    }
+
+    public void setStrNit(String strNit) {
+        
+        this.strNit = strNit;
+    }
+
     public Long getCodigoalternativo() {
         return codigoalternativo;
     }
@@ -159,7 +178,7 @@ public class Terceros implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
+        if (nombre == null) {
             nombre = " ";
         }
         return nombre;
@@ -210,10 +229,10 @@ public class Terceros implements Serializable {
     }
 
     public String getNitalternativo() {
-        if(nitalternativo == null){
-           nitalternativo = (" ");
+        if (nitalternativo == null) {
+            nitalternativo = (" ");
         }
-       
+
         return nitalternativo;
     }
 

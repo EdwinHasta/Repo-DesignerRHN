@@ -37,16 +37,10 @@ public class MetodosPagos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Size(max = 20)
     @Column(name = "PAGO")
     private String pago;
     @OneToMany(mappedBy = "metodopago")
@@ -59,7 +53,7 @@ public class MetodosPagos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public MetodosPagos(BigInteger secuencia, short codigo, String descripcion) {
+    public MetodosPagos(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -73,11 +67,11 @@ public class MetodosPagos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form"> 
+                    <p:panel  id="PanelTotal" header="Salud Ocupacional" style=" font-size: 12px; position: absolute; width: 740px; height: 300px; left: 300px; top: 100px;text-align: left" >  
+                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 705px; height: 165px; border-radius: 10px; ">       </fieldset>
+                        <h:outputText style="position: absolute; left: 30px; font-size: 14px" value="Bienvenido al Menú principal de Salud Ocupacional, a través de éstos módulos podrá llevar el registro de la Ficha clinica, Reportar accidentes de trabajo y Enfermadades Profesionales, ademas de llevar
+                                      un control de dotaciones, servicios médicos y campañas de prevención" />
+                        <fieldset id="antecedentes" style="width: 275px; height: 55px; position: absolute; top: 100px;left: 20px;border-radius: 10px;">
+                            <legend style="font-size: 14px; color: blue"><strong>Antecedentes</strong></legend>
+                            <p:commandButton style="border-color:#045491; border-width: 2px; position: absolute;top: 20px;left: 10px" value="[Antecedentes...]"></p:commandButton>
+                            <p:commandButton style="border-color:#045491; border-width: 2px; position: absolute;top: 20px;left: 140px" value="[Consulta Médica...]"></p:commandButton>
+
+                        </fieldset>
+                        <fieldset id="accidentesEnfermedades" style="width: 380px; height: 55px; position: absolute;top: 100px ; left:325px;border-radius: 10px;">
+                            <legend style="font-size: 14px; color: blue"><strong>Accidentes y Enfermedades</strong></legend>
+                            <p:commandButton style="border-color:#045491; border-width: 2px;  position: absolute;top: 20px;left: 20px" value="[Reporte del Accidente...]" > </p:commandButton>
+                            <p:commandButton style="border-color:#045491; border-width: 2px; position: absolute;top: 20px;left: 200px" value="[Enfermedad Profesional...]"></p:commandButton>
+
+                        </fieldset>
+                        <fieldset id="chequeos" style="width: 275px; height: 55px; position: absolute; top: 180px;left: 20px;border-radius: 10px;">
+                            <legend style="font-size: 14px; color: blue"><strong>Antecedentes</strong></legend>
+                            <p:commandButton style="border-color:#045491; border-width: 2px; position: absolute;top: 20px;left: 60px" value="[Chequeos Médicos...]" ></p:commandButton>
+
+                        </fieldset>
+                        <fieldset id="dotacionesServiciones" style="width: 380px; height: 55px; position: absolute;top: 180px ; left: 325px;border-radius: 10px;">
+                            <legend style="font-size: 14px; color: blue"><strong>Dotaciones y otros Serviciones</strong></legend>
+                            <p:commandButton style="border-color:#045491; border-width: 2px; position: absolute;top: 20px;left: 90px" value="[Dotaciones]" ></p:commandButton>
+                            <p:commandButton style="border-color:#045491; border-width: 2px; position: absolute;top: 20px;left: 220px" value="[Servicios]" ></p:commandButton>
+
+                        </fieldset>
+                        <p:commandButton icon="ui-icon-closethick" style="position: absolute;top: 270px;left: 660px" value="Atras" ></p:commandButton>
+
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
