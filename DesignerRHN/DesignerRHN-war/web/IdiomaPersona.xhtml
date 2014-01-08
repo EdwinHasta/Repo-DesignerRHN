@@ -15,9 +15,13 @@
                     <f:loadBundle basename="Recursos.idiomapersona" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
 
+                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlIdiomaPersona.empleadoActual.persona.primerapellido} #{controlIdiomaPersona.empleadoActual.persona.segundoapellido} #{controlIdiomaPersona.empleadoActual.persona.nombre}">
+                        </h:outputText>
+                        
+                        
                         <p:commandButton style="position: absolute; left: 710px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosIdiomas" process="@this" />
                         <p:commandButton style="position: absolute; left: 20px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlIdiomaPersona.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlIdiomaPersona.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 450px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlIdiomaPersona.salir()}" action="emplIndividual" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 830px; height: 335px; border-radius: 10px; ">

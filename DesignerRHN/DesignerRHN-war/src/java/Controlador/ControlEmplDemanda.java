@@ -120,23 +120,42 @@ public class ControlEmplDemanda implements Serializable {
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
         if (i == 0) {
-            if (listDemandasEmpleado.get(index).getFecha().after(fechaParametro)) {
-                retorno = true;
+            Demandas auxiliar = new Demandas();
+            if (tipoLista == 0) {
+                auxiliar = listDemandasEmpleado.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtrarListDemandasEmpleado.get(index);
+            }
+            if (auxiliar.getFecha() != null) {
+                if (auxiliar.getFecha().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
             } else {
                 retorno = false;
             }
 
         }
         if (i == 1) {
-            if (nuevaDemandaEmpleado.getFecha().after(fechaParametro)) {
-                retorno = true;
+            if (nuevaDemandaEmpleado.getFecha() != null) {
+                if (nuevaDemandaEmpleado.getFecha().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
             } else {
                 retorno = false;
             }
         }
         if (i == 2) {
-            if (duplicarDemandaEmpleado.getFecha().after(fechaParametro)) {
-                retorno = true;
+            if (duplicarDemandaEmpleado.getFecha() != null) {
+                if (duplicarDemandaEmpleado.getFecha().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
             } else {
                 retorno = false;
             }
@@ -145,50 +164,57 @@ public class ControlEmplDemanda implements Serializable {
         return retorno;
     }
 
-    public void modificarDemanda(int indice) {
-        if (validarFechasRegistro(0)) {
-            if (tipoLista == 0) {
-                index = indice;
-                if (!listDemandaEmpleadoCrear.contains(listDemandasEmpleado.get(indice))) {
-                    if (listDemandaEmpleadoModificar.isEmpty()) {
-                        listDemandaEmpleadoModificar.add(listDemandasEmpleado.get(indice));
-                    } else if (!listDemandaEmpleadoModificar.contains(listDemandasEmpleado.get(indice))) {
-                        listDemandaEmpleadoModificar.add(listDemandasEmpleado.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
-                }
-                cambioDemanda = true;
-                index = -1;
-                secRegistro = null;
-            } else {
-                int ind = listDemandasEmpleado.indexOf(filtrarListDemandasEmpleado.get(indice));
-                index = ind;
-
-                if (!listDemandaEmpleadoCrear.contains(filtrarListDemandasEmpleado.get(indice))) {
-                    if (listDemandaEmpleadoModificar.isEmpty()) {
-                        listDemandaEmpleadoModificar.add(filtrarListDemandasEmpleado.get(indice));
-                    } else if (!listDemandaEmpleadoModificar.contains(filtrarListDemandasEmpleado.get(indice))) {
-                        listDemandaEmpleadoModificar.add(filtrarListDemandasEmpleado.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
-                }
-                cambioDemanda = true;
-                index = -1;
-                secRegistro = null;
-
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosDemanda");
+    public void modificacionesFechas(int i, int c) {
+        if (validarFechasRegistro(0) == true) {
+            cambiarIndiceD(i, c);
+            modificarDemanda(i);
         } else {
             listDemandasEmpleado.get(index).setFecha(fechaInic);
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosDemanda");
-            context.execute("form:errorFechas.show()");
+            context.execute("errorFechas.show()");
         }
+    }
+
+    public void modificarDemanda(int indice) {
+
+        if (tipoLista == 0) {
+            index = indice;
+            if (!listDemandaEmpleadoCrear.contains(listDemandasEmpleado.get(indice))) {
+                if (listDemandaEmpleadoModificar.isEmpty()) {
+                    listDemandaEmpleadoModificar.add(listDemandasEmpleado.get(indice));
+                } else if (!listDemandaEmpleadoModificar.contains(listDemandasEmpleado.get(indice))) {
+                    listDemandaEmpleadoModificar.add(listDemandasEmpleado.get(indice));
+                }
+                if (guardado == true) {
+                    guardado = false;
+                }
+            }
+            cambioDemanda = true;
+            index = -1;
+            secRegistro = null;
+        } else {
+            int ind = listDemandasEmpleado.indexOf(filtrarListDemandasEmpleado.get(indice));
+            index = ind;
+
+            if (!listDemandaEmpleadoCrear.contains(filtrarListDemandasEmpleado.get(indice))) {
+                if (listDemandaEmpleadoModificar.isEmpty()) {
+                    listDemandaEmpleadoModificar.add(filtrarListDemandasEmpleado.get(indice));
+                } else if (!listDemandaEmpleadoModificar.contains(filtrarListDemandasEmpleado.get(indice))) {
+                    listDemandaEmpleadoModificar.add(filtrarListDemandasEmpleado.get(indice));
+                }
+                if (guardado == true) {
+                    guardado = false;
+                }
+            }
+            cambioDemanda = true;
+            index = -1;
+            secRegistro = null;
+
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosDemanda");
+
     }
 
     public void modificarDemanda(int indice, String confirmarCambio, String valorConfirmar) {
@@ -315,12 +341,22 @@ public class ControlEmplDemanda implements Serializable {
         if (permitirIndexD == true) {
             index = indice;
             cualCelda = celda;
-            fechaInic = listDemandasEmpleado.get(index).getFecha();
-            secRegistro = listDemandasEmpleado.get(index).getSecuencia();
-            if (cualCelda == 2) {
-                motivo = listDemandasEmpleado.get(index).getMotivo().getDescripcion();
+            if (tipoLista == 0) {
+                fechaInic = listDemandasEmpleado.get(index).getFecha();
+                secRegistro = listDemandasEmpleado.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    motivo = listDemandasEmpleado.get(index).getMotivo().getDescripcion();
+                }
+            }
+            if (tipoLista == 1) {
+                fechaInic = filtrarListDemandasEmpleado.get(index).getFecha();
+                secRegistro = filtrarListDemandasEmpleado.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    motivo = filtrarListDemandasEmpleado.get(index).getMotivo().getDescripcion();
+                }
             }
         }
+
     }
 
     public void guardadoGeneral() {
@@ -447,6 +483,9 @@ public class ControlEmplDemanda implements Serializable {
             String aux = nuevaDemandaEmpleado.getSeguimiento().toUpperCase();
             nuevaDemandaEmpleado.setSeguimiento(aux);
             nuevaDemandaEmpleado.setEmpleado(empleado);
+            if (listDemandasEmpleado == null) {
+                listDemandasEmpleado = new ArrayList<Demandas>();
+            }
             listDemandasEmpleado.add(nuevaDemandaEmpleado);
             listDemandaEmpleadoCrear.add(nuevaDemandaEmpleado);
             //
@@ -546,6 +585,9 @@ public class ControlEmplDemanda implements Serializable {
             duplicarDemandaEmpleado.setSeguimiento(aux);
             duplicarDemandaEmpleado.setEmpleado(empleado);
             duplicarDemandaEmpleado.setSecuencia(l);
+            if (listDemandasEmpleado == null) {
+                listDemandasEmpleado = new ArrayList<Demandas>();
+            }
             listDemandasEmpleado.add(duplicarDemandaEmpleado);
             listDemandaEmpleadoCrear.add(duplicarDemandaEmpleado);
             index = -1;
@@ -663,7 +705,7 @@ public class ControlEmplDemanda implements Serializable {
     public void filtradoDemanda() {
         if (banderaD == 0) {
             dMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dMotivo");
-            dMotivo.setFilterStyle("width: 90px");
+            dMotivo.setFilterStyle("width: 40px");
             dSeguimiento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dSeguimiento");
             dSeguimiento.setFilterStyle("width: 90px");
             dFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dFecha");

@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -42,13 +43,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{info.fechainicial}" id="editFechaInicialVigencia"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaDeporte.modificarVigenciaDeporte(indice)}" update="editFechaInicialVigencia" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaDeporte.modificarVigenciaDeporte(indice)}" update="editFechaInicialVigencia" process="@this"/>
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaDeporte.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaDeporte.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaDeporte.cambiarIndice(indice,0)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -65,13 +64,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{info.fechafinal}" id="editFechaFinalVigencia"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaDeporte.modificarVigenciaDeporte(indice)}" update="editFechaFinalVigencia" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaDeporte.modificarVigenciaDeporte(indice)}" update="editFechaFinalVigencia" process="@this"/>
+                                            <lnk:calendar id="dateFechaFinal" value="#{info.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaDeporte.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaDeporte.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaDeporte.cambiarIndice(indice,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -290,6 +287,16 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+
+                    <p:dialog id="errorRegNew" header="ATENCIÓN" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Los campos Fecha Inicial y Deporte son obligatorios." style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechas" header="ATENCIÓN" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La fecha inicial es menor a 01/01/1900 y/o la fecha final es mayor a la fecha inicial." style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaDeporte.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
@@ -300,19 +307,24 @@
 
                         <p:panel id="nuevaVigencias" style="border: none;">
 
+
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlVigenciaDeporte.nuevaVigenciaDeporte.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicial"/>
-                                <p:ajax event="change" update="nuevaFechaInicial"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaFechaInicialV" value="#{controlVigenciaDeporte.nuevaVigenciaDeporte.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicialV" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicialV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 220px;" value="#{controlVigenciaDeporte.nuevaVigenciaDeporte.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
-                                <p:ajax event="change" update="nuevaFechaFinal"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="nuevaFechaFinalV" value="#{controlVigenciaDeporte.nuevaVigenciaDeporte.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinalV" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinalV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="Descripcion: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="nuevaDescripcion" value="#{controlVigenciaDeporte.nuevaVigenciaDeporte.deporte.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px;">
@@ -348,7 +360,7 @@
                             <p:watermark for="nuevaCGrupal" value="Puntaje Cualitativo Grup." />
 
                             <p:commandButton id="limpiarV" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 370px;" actionListener="#{controlVigenciaDeporte.limpiarNuevaVigenciaDeporte()}" update="nuevaVigencias" process="@this"/>
-                            <p:commandButton id="agregarV" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlVigenciaDeporte.agregarNuevaVigenciaDeporte()}" onclick="NuevoRegistroVigencias.hide();"  />
+                            <p:commandButton id="agregarV" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlVigenciaDeporte.agregarNuevaVigenciaDeporte()}"   />
                             <p:commandButton id="cancelarV" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlVigenciaDeporte.limpiarNuevaVigenciaDeporte()}" update="nuevaVigencias" onclick="NuevoRegistroVigencias.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -359,19 +371,25 @@
 
                         <p:panel id="duplicarVigencias" style="border: none;">
 
+
+
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlVigenciaDeporte.duplicarVigenciaDeporte.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicial"/>
-                                <p:ajax event="change" update="duplicarFechaInicial"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarFechaInicialV" value="#{controlVigenciaDeporte.duplicarVigenciaDeporte.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicialV" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicialV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 220px;" value="#{controlVigenciaDeporte.duplicarVigenciaDeporte.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
-                                <p:ajax event="change" update="duplicarFechaFinal"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="duplicarFechaFinalV" value="#{controlVigenciaDeporte.duplicarVigenciaDeporte.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinalV" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinalV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="Descripcion: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="duplicarDescripcion" value="#{controlVigenciaDeporte.duplicarVigenciaDeporte.deporte.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px;">
@@ -407,7 +425,7 @@
                             <p:watermark for="duplicarCGrupal" value="Puntaje Cualitativo Grup." />
 
                             <p:commandButton id="limpiarDuplicadoD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top:370px;" actionListener="#{controlVigenciaDeporte.limpiarDuplicar()}" update="duplicarVigencias" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoD" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlVigenciaDeporte.confirmarDuplicar()}" onclick="DuplicarRegistroVigencias.hide();"  />
+                            <p:commandButton id="agregarDuplicadoD" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 370px;"  process="@this" actionListener="#{controlVigenciaDeporte.confirmarDuplicar()}"   />
                             <p:commandButton id="cancelarDuplicadoD" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 370px;" actionListener="#{controlVigenciaDeporte.limpiarDuplicar()}" update="duplicarVigencias" onclick="DuplicarRegistroVigencias.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
