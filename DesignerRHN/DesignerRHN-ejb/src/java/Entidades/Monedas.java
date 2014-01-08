@@ -1,24 +1,23 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,13 +27,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "MONEDAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Monedas.findAll", query = "SELECT m FROM Monedas m"),
-    @NamedQuery(name = "Monedas.findBySecuencia", query = "SELECT m FROM Monedas m WHERE m.secuencia = :secuencia"),
-    @NamedQuery(name = "Monedas.findByCodigo", query = "SELECT m FROM Monedas m WHERE m.codigo = :codigo"),
-    @NamedQuery(name = "Monedas.findByNombre", query = "SELECT m FROM Monedas m WHERE m.nombre = :nombre"),
-    @NamedQuery(name = "Monedas.findByCodigoalternativo", query = "SELECT m FROM Monedas m WHERE m.codigoalternativo = :codigoalternativo")})
+    @NamedQuery(name = "Monedas.findAll", query = "SELECT m FROM Monedas m")})
 public class Monedas implements Serializable {
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -55,8 +49,6 @@ public class Monedas implements Serializable {
     @Size(max = 3)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
-    @OneToMany(mappedBy = "tipomoneda")
-    private Collection<Proyectos> proyectosCollection;
 
     public Monedas() {
     }
@@ -88,9 +80,6 @@ public class Monedas implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 
@@ -104,15 +93,6 @@ public class Monedas implements Serializable {
 
     public void setCodigoalternativo(String codigoalternativo) {
         this.codigoalternativo = codigoalternativo;
-    }
-
-    @XmlTransient
-    public Collection<Proyectos> getProyectosCollection() {
-        return proyectosCollection;
-    }
-
-    public void setProyectosCollection(Collection<Proyectos> proyectosCollection) {
-        this.proyectosCollection = proyectosCollection;
     }
 
     @Override
@@ -139,4 +119,5 @@ public class Monedas implements Serializable {
     public String toString() {
         return "Entidades.Monedas[ secuencia=" + secuencia + " ]";
     }
+    
 }
