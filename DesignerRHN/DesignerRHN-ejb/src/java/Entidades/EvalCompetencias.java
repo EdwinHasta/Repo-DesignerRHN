@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -30,17 +29,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "EvalCompetencias.findAll", query = "SELECT e FROM EvalCompetencias e")})
 public class EvalCompetencias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private BigInteger codigo;
+    private Integer codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -48,34 +48,34 @@ public class EvalCompetencias implements Serializable {
     private String descripcion;
     @Size(max = 1000)
     @Column(name = "DESCOMPETENCIA")
-    private String descompetencia;
+    private String desCompetencia;
 
     public EvalCompetencias() {
     }
 
-    public EvalCompetencias(BigDecimal secuencia) {
+    public EvalCompetencias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public EvalCompetencias(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public EvalCompetencias(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -87,12 +87,12 @@ public class EvalCompetencias implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getDescompetencia() {
-        return descompetencia;
+    public String getDesCompetencia() {
+        return desCompetencia;
     }
 
-    public void setDescompetencia(String descompetencia) {
-        this.descompetencia = descompetencia;
+    public void setDesCompetencia(String desCompetencia) {
+        this.desCompetencia = desCompetencia;
     }
 
     @Override
@@ -119,5 +119,5 @@ public class EvalCompetencias implements Serializable {
     public String toString() {
         return "Entidades.EvalCompetencias[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
