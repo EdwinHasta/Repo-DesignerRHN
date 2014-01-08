@@ -122,7 +122,7 @@
                         </p:toolbar>
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlGruposViaticos.cancelarModificacion()}"  value="Refrescar" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 698px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlGruposViaticos.revisarDialogoGuardar()}"     process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 698px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlGruposViaticos.revisarDialogoGuardar()}"  disabled="#{controlGruposViaticos.guardado}"   process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras"    />
 
                         <p:dialog header="ATENCIÓN...!" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
