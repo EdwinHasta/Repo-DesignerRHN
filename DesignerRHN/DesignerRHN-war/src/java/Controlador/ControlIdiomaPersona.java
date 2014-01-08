@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Entidades.Empleados;
 import Entidades.Idiomas;
 import Entidades.IdiomasPersonas;
 import Exportar.ExportarPDF;
@@ -69,6 +70,7 @@ public class ControlIdiomaPersona implements Serializable {
     private boolean permitirIndex;
     private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
+    private Empleados empleadoActual;
 
     public ControlIdiomaPersona() {
         listIdiomasPersonas = null;
@@ -95,6 +97,12 @@ public class ControlIdiomaPersona implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         backUpSecRegistro = null;
+    }
+
+    public void recibirEmpleado(BigInteger secuencia) {
+        empleadoActual = new Empleados();
+        empleadoActual = administrarIdiomaPersona.empleadoActual(secuencia);
+        listIdiomasPersonas = null;
     }
 
     public void modificarIdiomaPersona(int indice) {
@@ -393,8 +401,11 @@ public class ControlIdiomaPersona implements Serializable {
         k++;
         l = BigInteger.valueOf(k);
         nuevaIdiomaPersona.setSecuencia(l);
+        nuevaIdiomaPersona.setPersona(empleadoActual.getPersona());
         listIdiomaPersonaCrear.add(nuevaIdiomaPersona);
-
+        if (listIdiomasPersonas == null) {
+            listIdiomasPersonas = new ArrayList<IdiomasPersonas>();
+        }
         listIdiomasPersonas.add(nuevaIdiomaPersona);
         nuevaIdiomaPersona = new IdiomasPersonas();
         nuevaIdiomaPersona.setIdioma(new Idiomas());
@@ -461,7 +472,10 @@ public class ControlIdiomaPersona implements Serializable {
      * VigenciasReformasLaborales
      */
     public void confirmarDuplicar() {
-
+        if (listIdiomasPersonas == null) {
+            listIdiomasPersonas = new ArrayList<IdiomasPersonas>();
+        }
+        duplicarIdiomaPersona.setPersona(empleadoActual.getPersona());
         listIdiomasPersonas.add(duplicarIdiomaPersona);
         listIdiomaPersonaCrear.add(duplicarIdiomaPersona);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -802,13 +816,14 @@ public class ControlIdiomaPersona implements Serializable {
         try {
             if (listIdiomasPersonas == null) {
                 listIdiomasPersonas = new ArrayList<IdiomasPersonas>();
-                listIdiomasPersonas = administrarIdiomaPersona.listIdiomasPersonas();
+                listIdiomasPersonas = administrarIdiomaPersona.listIdiomasPersonas(empleadoActual.getSecuencia());
                 return listIdiomasPersonas;
             } else {
                 return listIdiomasPersonas;
             }
         } catch (Exception e) {
             System.out.println("Error...!! getListIdiomasPersonas : " + e.toString());
+
             return null;
         }
     }
@@ -896,4 +911,13 @@ public class ControlIdiomaPersona implements Serializable {
     public void setBackUpSecRegistro(BigInteger backUpSecRegistro) {
         this.backUpSecRegistro = backUpSecRegistro;
     }
+
+    public Empleados getEmpleadoActual() {
+        return empleadoActual;
+    }
+
+    public void setEmpleadoActual(Empleados empleadoActual) {
+        this.empleadoActual = empleadoActual;
+    }
+
 }

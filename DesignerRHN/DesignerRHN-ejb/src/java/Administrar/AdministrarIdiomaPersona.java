@@ -4,11 +4,14 @@
  */
 package Administrar;
 
+import Entidades.Empleados;
 import Entidades.Idiomas;
 import Entidades.IdiomasPersonas;
 import InterfaceAdministrar.AdministrarIdiomaPersonaInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaIdiomasInterface;
 import InterfacePersistencia.PersistenciaIdiomasPersonasInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -24,6 +27,8 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
     PersistenciaIdiomasPersonasInterface persistenciaIdiomasPersonas;
     @EJB
     PersistenciaIdiomasInterface persistenciaIdiomas;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
 
     @Override
     public void crearIdiomasPersonas(List<IdiomasPersonas> listaID) {
@@ -68,9 +73,9 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
     }
 
     @Override
-    public List<IdiomasPersonas> listIdiomasPersonas() {
+    public List<IdiomasPersonas> listIdiomasPersonas(BigInteger secuencia) { 
         try {
-            List<IdiomasPersonas> lista = persistenciaIdiomasPersonas.totalIdiomasPersonas();
+            List<IdiomasPersonas> lista = persistenciaIdiomasPersonas.idiomasPersona(secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listIdiomasPersonas Admi : " + e.toString());
@@ -85,6 +90,16 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
             return lista;
         } catch (Exception e) {
             System.out.println("Error lisIdiomas Admi : " + e.toString());
+            return null;
+        }
+    }
+    
+    public Empleados empleadoActual(BigInteger secuencia){
+        try{
+            Empleados empl = persistenciaEmpleado.buscarEmpleado(secuencia);
+            return empl;
+        }catch(Exception e){
+            System.out.println("Error empleadoActual Admi : "+e.toString());
             return null;
         }
     }

@@ -36,11 +36,11 @@ public class EvalCompetencias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private BigInteger codigo;
+    private Integer codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -48,34 +48,34 @@ public class EvalCompetencias implements Serializable {
     private String descripcion;
     @Size(max = 1000)
     @Column(name = "DESCOMPETENCIA")
-    private String descompetencia;
+    private String desCompetencia;
 
     public EvalCompetencias() {
     }
 
-    public EvalCompetencias(BigDecimal secuencia) {
+    public EvalCompetencias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public EvalCompetencias(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public EvalCompetencias(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -87,13 +87,15 @@ public class EvalCompetencias implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getDescompetencia() {
-        return descompetencia;
+    public String getDesCompetencia() {
+        return desCompetencia;
     }
 
-    public void setDescompetencia(String descompetencia) {
-        this.descompetencia = descompetencia;
+    public void setDesCompetencia(String desCompetencia) {
+        this.desCompetencia = desCompetencia;
     }
+
+    
 
     @Override
     public int hashCode() {

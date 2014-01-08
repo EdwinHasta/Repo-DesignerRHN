@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -36,13 +37,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{info.fechainicial}" id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlEmplInformacionAdicional.modificarInfoAd(indice)}" update="editFechaInicial"/>
-                                                <p:ajax event="change" listener="#{controlEmplInformacionAdicional.modificarInfoAd(indice)}" />
-                                                <p:ajax event="select" listener="#{controlEmplInformacionAdicional.cambiarIndice(indice,0)}" /> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplInformacionAdicional.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplInformacionAdicional.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplInformacionAdicional.cambiarIndice(indice,0)}" process="@this"/> 
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -59,13 +58,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{info.fechafinal}" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlEmplInformacionAdicional.modificarInfoAd(indice)}" update="editFechaFinal"/>
-                                                <p:ajax event="change" listener="#{controlEmplInformacionAdicional.modificarInfoAd(indice)}" />
-                                                <p:ajax event="select" listener="#{controlEmplInformacionAdicional.cambiarIndice(indice,1)}" /> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="dateFechaFinal" value="#{info.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplInformacionAdicional.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplInformacionAdicional.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplInformacionAdicional.cambiarIndice(indice,1)}" process="@this"/> 
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -312,28 +309,45 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+
+                    <p:dialog id="errorRegNew" header="#{msg['atencion']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegNew']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+
+
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplInformacionAdicional.activarCtrlF11()}"/> 
                 </h:form>
-                
+
                 <h:form id="formularioDialogos" >
                     <p:dialog id="NuevoRegistroInfoAd" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroInfoAd" closable="false" resizable="false"  draggable="false" modal="true" height="440" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaInfoAd" style="border: none;">
+
                             <strong><h:outputText value="#{msg['inicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicial"/>
-                                <p:ajax event="change" update="nuevaFechaInicial"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="nuevaFechaInicial" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['finalN']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 200px;" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
-                                <p:ajax event="change" update="nuevaFechaFinal"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 200px">
+                                <lnk:calendar id="nuevaFechaFinal" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['grupoN']}" style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="nuevaGrupo" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.grupo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;">
@@ -346,6 +360,7 @@
 
                             <strong><h:outputText value="#{msg['tipodatoN']}" style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
                             <p:selectOneMenu id="nuevaTipoDato" value="#{controlEmplInformacionAdicional.nuevaInfoAdicional.tipodato}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 190px;text-transform: uppercase" >
+                                <f:selectItem itemLabel="" itemValue="null" />  
                                 <f:selectItem itemLabel="#{msg['c']}" itemValue="C" />  
                                 <f:selectItem itemLabel="#{msg['f']}" itemValue="F" /> 
                                 <f:selectItem itemLabel="#{msg['n']}" itemValue="N" /> 
@@ -379,7 +394,7 @@
                             <p:watermark for="nuevoObservacion" value="#{msg['observacion']}" />
 
                             <p:commandButton id="limpiarNIA" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarNuevaInfoAd()}" update="nuevaInfoAd" process="@this"/>
-                            <p:commandButton id="agregarNIA" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 415px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.agregarNuevaInfoAd()}" onclick="NuevoRegistroInfoAd.hide();"  />
+                            <p:commandButton id="agregarNIA" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 415px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.agregarNuevaInfoAd()}"   />
                             <p:commandButton id="cancelarNIA" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarNuevaInfoAd()}" update="nuevaInfoAd" onclick="NuevoRegistroInfoAd.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -389,19 +404,24 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarInfoAd" style="border: none;">
+
+
                             <strong><h:outputText value="#{msg['inicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicial"/>
-                                <p:ajax event="change" update="duplicarFechaInicial"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniDupliReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="duplicarFechaInicial" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['finalN']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 110px; left: 200px;" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
-                                <p:ajax event="change" update="duplicarFechaFinal"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinDupliReg" style="font-size: 10px; position: absolute; top: 110px; left: 200px">
+                                <lnk:calendar id="duplicarFechaFinal" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['grupoN']}" style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="duplicarGrupo" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.grupo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;">
@@ -414,7 +434,8 @@
 
                             <strong><h:outputText value="#{msg['tipodatoN']}" style="font-size: 14px; position: absolute; top: 190px; left: 50px" /></strong>
                             <p:selectOneMenu id="duplicarTipoDato" value="#{controlEmplInformacionAdicional.duplicarInfoAdicional.tipodato}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 190px;text-transform: uppercase" >
-                                <f:selectItem itemLabel="#{msg['c']}" itemValue="C" />  
+                                <f:selectItem itemLabel="" itemValue="null" />  
+                                <f:selectItem itemLabel="#{msg['c']}" itemValue="C" />
                                 <f:selectItem itemLabel="#{msg['f']}" itemValue="F" /> 
                                 <f:selectItem itemLabel="#{msg['n']}" itemValue="N" /> 
                                 <p:ajax event="change" update="duplicarTipoDato"/>
@@ -447,7 +468,7 @@
                             <p:watermark for="duplicarObservacion" value="#{msg['observacion']}" />
 
                             <p:commandButton id="limpiarDIA" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarduplicarInfoAd()}" update="duplicarInfoAd" process="@this"/>
-                            <p:commandButton id="agregarDIA" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 415px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.confirmarDuplicar()}" onclick="DuplicarRegistroInfoAd.hide();"  />
+                            <p:commandButton id="agregarDIA" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 415px;"  process="@this" actionListener="#{controlEmplInformacionAdicional.confirmarDuplicar()}" />
                             <p:commandButton id="cancelarDIA" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 415px;" actionListener="#{controlEmplInformacionAdicional.limpiarduplicarInfoAd()}" update="duplicarInfoAd" onclick="DuplicarRegistroInfoAd.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>

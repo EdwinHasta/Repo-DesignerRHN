@@ -21,4 +21,8 @@ public interface IniciarReporteInterface {
     public void ejecutarReporteXLSX();
     public void inicarC();
     public void ejecutarReporteXML();
+    public void ejecutarReportePDF();
+    public void ejecutarReporteXLS();
+    public void ejecutarReporteCSV();
+    public void ejecutarReporteHTML();
 }

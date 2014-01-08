@@ -4,8 +4,10 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.Empleados;
 import Entidades.Idiomas;
 import Entidades.IdiomasPersonas;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -20,7 +22,9 @@ public interface AdministrarIdiomaPersonaInterface {
 
     public void editarIdiomasPersonas(List<IdiomasPersonas> listaID);
 
-    public List<IdiomasPersonas> listIdiomasPersonas();
+    public List<IdiomasPersonas> listIdiomasPersonas(BigInteger secuencia);
 
     public List<Idiomas> listIdiomas();
+
+    public Empleados empleadoActual(BigInteger secuencia);
 }

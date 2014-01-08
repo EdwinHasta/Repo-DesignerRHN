@@ -7,6 +7,8 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,8 +43,6 @@ public class Demandas implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -54,6 +55,9 @@ public class Demandas implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
+    @Transient
+    private String strFecha;
+    
 
     public Demandas() {
     }
@@ -82,6 +86,24 @@ public class Demandas implements Serializable {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
+    public String getStrFecha() {
+        if (fecha != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFecha = formatoFecha.format(fecha);
+        } else {
+            strFecha = " ";
+        }
+        return strFecha;
+    }
+
+    public void setStrFecha(String strFecha) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fecha = formatoFecha.parse(strFecha);
+        this.strFecha = strFecha;
+    }
+    
+    
 
     public String getSeguimiento() {
         return seguimiento;

@@ -3,7 +3,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -40,13 +41,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{infoIBC.fechainicial}" id="editarFechaInicialIBC"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" update="editarFechaInicialIBC" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" update="editarFechaInicialIBC" process="@this"/>
+                                            <lnk:calendar id="dateFechaInicial" value="#{infoIBC.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice,0)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -63,13 +62,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{infoIBC.fechafinal}" id="editarFechaFinalIBC"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" update="editarFechaFinalIBC" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" update="editarFechaFinalIBC" process="@this"/>
+                                            <lnk:calendar id="dateFechaFinal" value="#{infoIBC.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -247,6 +244,16 @@
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
+                    <p:dialog id="errorRegNew" header="#{msg['atencion']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegNew']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
@@ -313,20 +320,22 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevaIBC" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['fechainicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
-                            <p:calendar  id="nuevaFechaInicialIBCS" style="font-size: 10px; position: absolute; left: 200px; top: 70px;" value="#{controlIbcAutoliquid.nuevoIBC.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicialIBCS"/>
-                                <p:ajax event="change" update="nuevaFechaInicialIBCS"/>
-                            </p:calendar>
-                            
-                             <strong><h:outputText value="#{msg['fechafinalN']}" style="font-size: 14px; position: absolute; top: 100px; left: 50px" /></strong>
-                             <p:calendar  id="nuevaFechaFinalIBCS" style="font-size: 10px; position: absolute; left: 200px; top: 100px;" value="#{controlIbcAutoliquid.nuevoIBC.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalIBCS"/>
-                                <p:ajax event="change" update="nuevaFechaFinalIBCS"/>
-                            </p:calendar>
-                             
+                            <strong><h:outputText value="#{msg['fechainicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="nuevaFechaInicial" value="#{controlIbcAutoliquid.nuevoIBC.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <strong><h:outputText value="#{msg['fechafinalN']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 200px">
+                                <lnk:calendar id="nuevaFechaFinal" value="#{controlIbcAutoliquid.nuevoIBC.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
                             <strong><h:outputText value="#{msg['estadoN']}" style="font-size: 14px; position: absolute; top: 130px; left: 50px" /></strong>
                             <p:inputText id="nuevaEstadoIBCS" value="#{controlIbcAutoliquid.nuevoIBC.estado}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px; text-transform: uppercase">
                                 <p:ajax event="change" update="nuevaEstadoIBCS"/>
@@ -346,7 +355,7 @@
                                 <p:ajax event="change" update="nuevaValorIBCS"/>
                             </p:inputText>
                             <p:watermark for="nuevaValorIBCS" value="#{msg['valor']}" />
-                            
+
                             <strong><h:outputText value="#{msg['fechapagoN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:calendar  id="nuevaFechaPagoIBCS" style="font-size: 10px; position: absolute; left: 200px; top: 220px;" value="#{controlIbcAutoliquid.nuevoIBC.fechapago}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
@@ -359,25 +368,27 @@
                             <p:commandButton id="cancelarNIBC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 290px; top: 300px;" actionListener="#{controlIbcAutoliquid.limpiarNuevoIBCS()}" update="nuevaIBC" onclick="NuevoRegistroIBCS.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
+
                     <p:dialog id="DuplicarRegistroIBCS" header="#{msg['duplicarregistroN']}" widgetVar="DuplicarRegistroIBCS" closable="false" resizable="false"  draggable="false" modal="true" height="375" width="400" style="font-size: 12px; padding: 0px">  
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="duplicaIBC" style="border: none;">
-
-                            <strong><h:outputText value="#{msg['fechainicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px" /></strong>
-                            <p:calendar  id="duplicaFechaInicialIBCS" style="font-size: 10px; position: absolute; left: 200px; top: 70px;" value="#{controlIbcAutoliquid.duplicarIBC.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicaFechaInicialIBCS"/>
-                                <p:ajax event="change" update="duplicaFechaInicialIBCS"/>
-                            </p:calendar>
                             
-                             <strong><h:outputText value="#{msg['fechafinalN']}" style="font-size: 14px; position: absolute; top: 100px; left: 50px" /></strong>
-                             <p:calendar  id="duplicaFechaFinalIBCS" style="font-size: 10px; position: absolute; left: 200px; top: 100px;" value="#{controlIbcAutoliquid.duplicarIBC.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicaFechaFinalIBCS"/>
-                                <p:ajax event="change" update="duplicaFechaFinalIBCS"/>
-                            </p:calendar>
-                             
+                            
+                            <strong><h:outputText value="#{msg['fechainicialN']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniDupliReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="duplicarFechaInicial" value="#{controlIbcAutoliquid.duplicarIBC.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+                            <strong><h:outputText value="#{msg['fechafinalN']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinDupliReg" style="font-size: 10px; position: absolute; top: 110px; left: 200px">
+                                <lnk:calendar id="duplicarFechaFinal" value="#{controlIbcAutoliquid.duplicarIBC.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
                             <strong><h:outputText value="#{msg['estadoN']}" style="font-size: 14px; position: absolute; top: 130px; left: 50px" /></strong>
                             <p:inputText id="duplicaEstadoIBCS" value="#{controlIbcAutoliquid.duplicarIBC.estado}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px; text-transform: uppercase">
                                 <p:ajax event="change" update="duplicaEstadoIBCS"/>
@@ -397,7 +408,7 @@
                                 <p:ajax event="change" update="duplicaValorIBCS"/>
                             </p:inputText>
                             <p:watermark for="duplicaValorIBCS" value="#{msg['valor']}" />
-                            
+
                             <strong><h:outputText value="#{msg['fechapagoN']}" style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:calendar  id="duplicaFechaPagoIBCS" style="font-size: 10px; position: absolute; left: 200px; top: 220px;" value="#{controlIbcAutoliquid.duplicarIBC.fechapago}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">

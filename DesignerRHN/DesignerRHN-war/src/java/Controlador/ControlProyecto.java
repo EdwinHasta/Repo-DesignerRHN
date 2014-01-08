@@ -126,31 +126,123 @@ public class ControlProyecto implements Serializable {
     }
 
     public boolean validarFechasRegistro(int i) {
-        boolean retorno = true;
+        boolean retorno = false;
         if (i == 0) {
-            if (listProyectos.get(indexP).getFechainicial().before(listProyectos.get(indexP).getFechafinal())) {
-                retorno = true;
-            } else {
-                retorno = false;
+            if (tipoListaP == 0) {
+                if (listProyectos.get(indexP).getFechainicial() != null && listProyectos.get(indexP).getFechafinal() != null) {
+                    if (listProyectos.get(indexP).getFechainicial().before(listProyectos.get(indexP).getFechafinal())) {
+                        retorno = true;
+                    } else {
+                        retorno = false;
+                    }
+                }
+                if (listProyectos.get(indexP).getFechainicial() != null && listProyectos.get(indexP).getFechafinal() == null) {
+                    retorno = true;
+                }
+                if (listProyectos.get(indexP).getFechainicial() == null && listProyectos.get(indexP).getFechafinal() != null) {
+                    retorno = false;
+                }
+            }
+            if (tipoListaP == 1) {
+                if (filtrarListProyectos.get(indexP).getFechainicial() != null && filtrarListProyectos.get(indexP).getFechafinal() != null) {
+                    if (filtrarListProyectos.get(indexP).getFechainicial().before(filtrarListProyectos.get(indexP).getFechafinal())) {
+                        retorno = true;
+                    } else {
+                        retorno = false;
+                    }
+                }
+                if (filtrarListProyectos.get(indexP).getFechainicial() != null && filtrarListProyectos.get(indexP).getFechafinal() == null) {
+                    retorno = true;
+                }
+                if (filtrarListProyectos.get(indexP).getFechainicial() == null && filtrarListProyectos.get(indexP).getFechafinal() != null) {
+                    retorno = false;
+                }
             }
 
         }
         if (i == 1) {
-            if (nuevaProyectos.getFechainicial().before(nuevaProyectos.getFechafinal())) {
+            if (nuevaProyectos.getFechafinal() != null && nuevaProyectos.getFechainicial() != null) {
+                if (nuevaProyectos.getFechainicial().before(nuevaProyectos.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (nuevaProyectos.getFechafinal() != null && nuevaProyectos.getFechainicial() == null) {
                 retorno = true;
-            } else {
+            }
+            if (nuevaProyectos.getFechafinal() == null && nuevaProyectos.getFechainicial() != null) {
                 retorno = false;
             }
         }
         if (i == 2) {
-            if (duplicarProyecto.getFechainicial().before(duplicarProyecto.getFechafinal())) {
+            if (duplicarProyecto.getFechafinal() != null && duplicarProyecto.getFechainicial() != null) {
+                if (duplicarProyecto.getFechainicial().before(duplicarProyecto.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (duplicarProyecto.getFechafinal() != null && duplicarProyecto.getFechainicial() == null) {
                 retorno = true;
-            } else {
+            }
+            if (duplicarProyecto.getFechafinal() == null && duplicarProyecto.getFechainicial() != null) {
                 retorno = false;
             }
         }
         System.out.println("valor de retorno : " + retorno);
         return retorno;
+    }
+
+    public void modificacionesFechas(int i, int c) {
+        System.out.println("Indice : " + i);
+        Proyectos auxiliar = new Proyectos();
+        if (tipoListaP == 0) {
+            auxiliar = listProyectos.get(i);
+        }
+        if (tipoListaP == 1) {
+            auxiliar = filtrarListProyectos.get(i);
+        }
+        boolean retorno = false;
+        System.out.println("auxiliar : "+auxiliar.getFechainicial());
+        if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() == null)) {
+            System.out.println("If 1");
+            retorno = true;
+        }
+        if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() != null)) {
+            indexP = i;
+            System.out.println("If 2");
+            retorno = validarFechasRegistro(0);
+        }
+        if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() == null)) {
+            System.out.println("If 3");
+            retorno = true;
+        }
+        if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() != null)) {
+            System.out.println("If 4");
+            retorno = false;
+            fechaFin = null;
+            fechaInic = null;
+        }
+        System.out.println("Retorno = " + retorno);
+        if (retorno == true) {
+            cambiarIndiceP(i, c);
+            modificarProyecto(i);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosProyectos");
+        } else {
+            if (tipoListaP == 0) {
+                listProyectos.get(indexP).setFechafinal(fechaFin);
+                listProyectos.get(indexP).setFechainicial(fechaInic);
+            }
+            if (tipoListaP == 1) {
+                filtrarListProyectos.get(indexP).setFechafinal(fechaFin);
+                filtrarListProyectos.get(indexP).setFechainicial(fechaInic);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosProyectos");
+            context.execute("errorFechas.show()");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -161,50 +253,40 @@ public class ControlProyecto implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarProyecto(int indice) {
-        if (validarFechasRegistro(0)) {
-            if (tipoListaP == 0) {
-                indexP = indice;
-                if (!listProyectoCrear.contains(listProyectos.get(indice))) {
-                    if (listProyectoModificar.isEmpty()) {
-                        listProyectoModificar.add(listProyectos.get(indice));
-                    } else if (!listProyectoModificar.contains(listProyectos.get(indice))) {
-                        listProyectoModificar.add(listProyectos.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
+        if (tipoListaP == 0) {
+            indexP = indice;
+            if (!listProyectoCrear.contains(listProyectos.get(indice))) {
+                if (listProyectoModificar.isEmpty()) {
+                    listProyectoModificar.add(listProyectos.get(indice));
+                } else if (!listProyectoModificar.contains(listProyectos.get(indice))) {
+                    listProyectoModificar.add(listProyectos.get(indice));
                 }
-                cambioProyecto = true;
-                indexP = -1;
-                secRegistro = null;
-            } else {
-                int ind = listProyectos.indexOf(filtrarListProyectos.get(indice));
-                indexP = ind;
-
-                if (!listProyectoCrear.contains(filtrarListProyectos.get(indice))) {
-                    if (listProyectoModificar.isEmpty()) {
-                        listProyectoModificar.add(filtrarListProyectos.get(indice));
-                    } else if (!listProyectoModificar.contains(filtrarListProyectos.get(indice))) {
-                        listProyectoModificar.add(filtrarListProyectos.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
+                if (guardado == true) {
+                    guardado = false;
                 }
-                cambioProyecto = true;
-                indexP = -1;
-                secRegistro = null;
-
             }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProyectos");
+            cambioProyecto = true;
+            indexP = -1;
+            secRegistro = null;
         } else {
-            listProyectos.get(indexP).setFechafinal(fechaFin);
-            listProyectos.get(indexP).setFechainicial(fechaInic);
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProyectos");
-            context.execute("form:errorFechas.show()");
+            int ind = listProyectos.indexOf(filtrarListProyectos.get(indice));
+            indexP = ind;
+            if (!listProyectoCrear.contains(filtrarListProyectos.get(indice))) {
+                if (listProyectoModificar.isEmpty()) {
+                    listProyectoModificar.add(filtrarListProyectos.get(indice));
+                } else if (!listProyectoModificar.contains(filtrarListProyectos.get(indice))) {
+                    listProyectoModificar.add(filtrarListProyectos.get(indice));
+                }
+                if (guardado == true) {
+                    guardado = false;
+                }
+            }
+            cambioProyecto = true;
+            indexP = -1;
+            secRegistro = null;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosProyectos");
     }
 
     /**
@@ -529,10 +611,11 @@ public class ControlProyecto implements Serializable {
     }
 
     public void cambiarIndiceP(int indice, int celda) {
+        System.out.println("Permitir Index : " + permitirIndexP);
         if (permitirIndexP == true) {
-            if (cambioProyecto == false) {
-                indexP = indice;
-                cualCeldaP = celda;
+            indexP = indice;
+            cualCeldaP = celda;
+            if (tipoListaP == 0) {
                 fechaFin = listProyectos.get(indexP).getFechafinal();
                 fechaInic = listProyectos.get(indexP).getFechainicial();
                 secRegistro = listProyectos.get(indexP).getSecuencia();
@@ -548,11 +631,25 @@ public class ControlProyecto implements Serializable {
                 if (cualCeldaP == 6) {
                     monedas = listProyectos.get(indexP).getTipomoneda().getNombre();
                 }
-            } else {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:confirmarGuardar");
-                context.execute("confirmarGuardar.show()");
             }
+            if (tipoListaP == 1) {
+                fechaInic = filtrarListProyectos.get(indexP).getFechainicial();
+                secRegistro = filtrarListProyectos.get(indexP).getSecuencia();
+                if (cualCeldaP == 0) {
+                    empresas = filtrarListProyectos.get(indexP).getEmpresa().getNombre();
+                }
+                if (cualCeldaP == 3) {
+                    clientes = filtrarListProyectos.get(indexP).getPryCliente().getNombre();
+                }
+                if (cualCeldaP == 4) {
+                    plataformas = filtrarListProyectos.get(indexP).getPryPlataforma().getDescripcion();
+                }
+                if (cualCeldaP == 6) {
+                    monedas = filtrarListProyectos.get(indexP).getTipomoneda().getNombre();
+                }
+            }
+            System.out.println("Indice : " + indexP + " // Celda : " + cualCeldaP);
+
         }
     }
 
@@ -719,7 +816,7 @@ public class ControlProyecto implements Serializable {
      * Agrega una nueva Vigencia Prorrateo
      */
     public void agregarNuevaP() {
-        if (validarFechasRegistro(1)) {
+        if (validarFechasRegistro(1) == true) {
             cambioProyecto = true;
             //CERRAR FILTRADO
             if (banderaP == 1) {
@@ -754,6 +851,9 @@ public class ControlProyecto implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevaProyectos.setSecuencia(l);
+            if (listProyectos == null) {
+                listProyectos = new ArrayList<Proyectos>();
+            }
             listProyectos.add(nuevaProyectos);
             listProyectoCrear.add(nuevaProyectos);
             //
@@ -777,7 +877,7 @@ public class ControlProyecto implements Serializable {
         } else {
             System.out.println("Error fechas");
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("form:errorFechas.show()");
+            context.execute("errorFechas.show()");
         }
     }
 
@@ -864,11 +964,14 @@ public class ControlProyecto implements Serializable {
     }
 
     public void confirmarDuplicarP() {
-        if (validarFechasRegistro(2)) {
+        if (validarFechasRegistro(2) == true) {
             cambioProyecto = true;
             k++;
             l = BigInteger.valueOf(k);
             duplicarProyecto.setSecuencia(l);
+            if (listProyectos == null) {
+                listProyectos = new ArrayList<Proyectos>();
+            }
             listProyectos.add(duplicarProyecto);
             listProyectoCrear.add(duplicarProyecto);
             indexP = -1;
@@ -913,7 +1016,7 @@ public class ControlProyecto implements Serializable {
             context.execute("DuplicarRegistroP.hide()");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("form:errorFechas.show()");
+            context.execute("errorFechas.show()");
             System.out.println("Error fechas");
         }
     }

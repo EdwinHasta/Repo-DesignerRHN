@@ -45,13 +45,9 @@ public class OtrosCertificados implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "ESTADO")
     private String estado;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;

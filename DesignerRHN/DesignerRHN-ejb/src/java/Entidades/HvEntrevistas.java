@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,7 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,24 +31,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HvEntrevistas.findAll", query = "SELECT h FROM HvEntrevistas h")})
 public class HvEntrevistas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "FECHA")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Size(max = 200)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "TIPO")
     private String tipo;
     @Column(name = "PUNTAJE")
@@ -62,21 +55,21 @@ public class HvEntrevistas implements Serializable {
     public HvEntrevistas() {
     }
 
-    public HvEntrevistas(BigDecimal secuencia) {
+    public HvEntrevistas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public HvEntrevistas(BigDecimal secuencia, Date fecha, String tipo) {
+    public HvEntrevistas(BigInteger secuencia, Date fecha, String tipo) {
         this.secuencia = secuencia;
         this.fecha = fecha;
         this.tipo = tipo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -93,7 +86,7 @@ public class HvEntrevistas implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getTipo() {
@@ -101,7 +94,7 @@ public class HvEntrevistas implements Serializable {
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = tipo.toUpperCase();
     }
 
     public BigInteger getPuntaje() {
@@ -144,5 +137,5 @@ public class HvEntrevistas implements Serializable {
     public String toString() {
         return "Entidades.HvEntrevistas[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

@@ -42,13 +42,9 @@ public class VigenciasGruposSalariales implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAVIGENCIA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechavigencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "VALOR")
     private BigInteger valor;
     @JoinColumn(name = "GRUPOSALARIAL", referencedColumnName = "SECUENCIA")

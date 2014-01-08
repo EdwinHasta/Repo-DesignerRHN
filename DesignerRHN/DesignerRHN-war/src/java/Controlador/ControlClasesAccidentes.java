@@ -359,8 +359,11 @@ public class ControlClasesAccidentes implements Serializable {
     public void verificarBorrado() {
         System.out.println("verificarBorrado");
         try {
+            if(tipoLista==0){
             verificarBorradoAccidentes = administrarClasesAccidentes.verificarSoAccidentesMedicos(listClasesAccidentes.get(index).getSecuencia());
-            if (verificarBorradoAccidentes.equals(new BigInteger("0"))) {
+            }else{
+            verificarBorradoAccidentes = administrarClasesAccidentes.verificarSoAccidentesMedicos(filtrarClasesAccidentes.get(index).getSecuencia());
+            }if (verificarBorradoAccidentes.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoClaseAccidente();
             } else {

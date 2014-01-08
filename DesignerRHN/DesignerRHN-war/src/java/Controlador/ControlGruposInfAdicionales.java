@@ -256,6 +256,13 @@ public class ControlGruposInfAdicionales implements Serializable {
                                 }
                             }
                         }
+                        for (int j = 0; j < filtrarGruposInfAdicionales.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposInfAdicionales.get(indice).getCodigo() == filtrarGruposInfAdicionales.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
@@ -357,8 +364,11 @@ public class ControlGruposInfAdicionales implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             System.err.println("Control Secuencia de verificarBorrado  a borrar");
-            vigenciasEstadosAficilaciones = administrarGruposInfAdicionales.verificadorInformacionesAdicionales(listGruposInfAdicionales.get(index).getSecuencia());
-
+            if (tipoLista == 0) {
+                vigenciasEstadosAficilaciones = administrarGruposInfAdicionales.verificadorInformacionesAdicionales(listGruposInfAdicionales.get(index).getSecuencia());
+            } else {
+                vigenciasEstadosAficilaciones = administrarGruposInfAdicionales.verificadorInformacionesAdicionales(filtrarGruposInfAdicionales.get(index).getSecuencia());
+            }
             if (vigenciasEstadosAficilaciones.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarGrupoInfAdicional();

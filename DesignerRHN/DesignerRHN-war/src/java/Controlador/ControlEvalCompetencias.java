@@ -249,6 +249,13 @@ public class ControlEvalCompetencias implements Serializable {
                                 }
                             }
                         }
+                        for (int j = 0; j < filtrarEvalCompetencias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalCompetencias.get(indice).getCodigo() == filtrarEvalCompetencias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
@@ -342,8 +349,11 @@ public class ControlEvalCompetencias implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             System.err.println("Control Secuencia de ControlEvalCompetencias ");
-            competenciasCargos = administrarEvalCompetencias.verificarBorradoCompetenciasCargos(listEvalCompetencias.get(index).getSecuencia());
-
+            if (tipoLista == 0) {
+                competenciasCargos = administrarEvalCompetencias.verificarBorradoCompetenciasCargos(listEvalCompetencias.get(index).getSecuencia());
+            } else {
+                competenciasCargos = administrarEvalCompetencias.verificarBorradoCompetenciasCargos(filtrarEvalCompetencias.get(index).getSecuencia());
+            }
             if (competenciasCargos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoEvalCompetencias();

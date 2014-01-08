@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -83,13 +84,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{infoMvr.fechainicial}" id="editarFechaInicialMvr"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarMvrs(indice)}" update="editarFechaInicialMvr" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarMvrs(indice)}" update="editarFechaInicialMvr" process="@this"/>
+                                            <lnk:calendar id="dateFechaInicialMvrs" value="#{infoMvr.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarFechasMvrs(indice,0)}" update="dateFechaInicialMvrs" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarFechasMvrs(indice,0)}" update="dateFechaInicialMvrs" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceMvr(indice,0)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -107,13 +106,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{infoMvr.fechafinal}" id="editarFechaFinalMvr"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarMvrs(indice)}" update="editarFechaFinalMvr" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarMvrs(indice)}" update="editarFechaFinalMvr" process="@this"/>
+                                             <lnk:calendar id="dateFechaFinalMvrs" value="#{infoMvr.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarFechasMvrs(indice,1)}" update="dateFechaFinalMvrs" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarFechasMvrs(indice,1)}" update="dateFechaFinalMvrs" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceMvr(indice,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -199,13 +196,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechainicial}" id="editarFechaInicialOC" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC)}" update="editarFechaInicialOC" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC)}" process="@this" update="editarFechaInicialOC"/>
+                                             <lnk:calendar id="dateFechaInicialOC" value="#{info.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarFechasOtros(indiceOC,0)}" update="dateFechaInicialOC" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarFechasOtros(indiceOC,0)}" update="dateFechaInicialOC" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceOtrosCertificados(indiceOC,0)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -223,13 +218,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechafinal}" id="editarFechaFinalOC" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC)}" update="editarFechaFinalOC" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC)}" process="@this" update="editarFechaFinalOC"/>
+                                             <lnk:calendar id="dateFechaFinalOC" value="#{info.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplMvr.modificarFechasOtros(indiceOC,1)}" update="dateFechaFinalOC" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplMvr.modificarFechasOtros(indiceOC,1)}" update="dateFechaFinalOC" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceOtrosCertificados(indiceOC,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -448,6 +441,28 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                    
+                      <p:dialog id="errorRegNewMvr" header="#{msg['atencion']}" widgetVar="errorRegNewMvr"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegNewMvr']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                     <p:dialog id="errorRegNewOtro" header="#{msg['atencion']}" widgetVar="errorRegNewOtro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegNewOtro']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorFechasOC" header="#{msg['atencion']}" widgetVar="errorFechasOC"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechasOC']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplMvr.activarCtrlF11()}"/> 
                 </h:form>
                 
@@ -469,20 +484,24 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevoMVRS']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaMVRS" style="border: none;">
-                            <strong><h:outputText value="#{msg['inicialMVRS']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicialMVRS" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlEmplMvr.nuevaMvrs.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicialMVRS"/>
-                                <p:ajax event="change" update="nuevaFechaInicialMVRS"/>
-                            </p:calendar>
+                            
+                              <strong><h:outputText value="#{msg['inicialMVRS']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoMvrReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaFechaInicialMVRS" value="#{controlEmplMvr.nuevaMvrs.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicialMVRS" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicialMVRS" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['finalMVRS']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinalMVRS" style="font-size: 10px; position: absolute;  top: 110px; left: 220px;" value="#{controlEmplMvr.nuevaMvrs.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalMVRS"/>
-                                <p:ajax event="change" update="nuevaFechaFinalMVRS"/>
-                            </p:calendar>
-
+                            <div id="posicionFormulaFechaFinNuevoRegMvr" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="nuevaFechaFinalMVRS" value="#{controlEmplMvr.nuevaMvrs.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinalMVRS" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinalMVRS" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+                            
                             <strong><h:outputText value="#{msg['valormensualMVRS']}" style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="nuevaValorMMVRS" value="#{controlEmplMvr.nuevaMvrs.valor}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase">
                                 <p:ajax event="change" update="nuevaValorMMVRS"/>
@@ -506,7 +525,7 @@
 
 
                             <p:commandButton id="limpiarNM" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 310px;" actionListener="#{controlEmplMvr.limpiarNuevaMvr()}" update="nuevaMVRS" process="@this"/>
-                            <p:commandButton id="agregarNM" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.agregarNuevaMvr()}" onclick="NuevoRegistroMVRS.hide();" />
+                            <p:commandButton id="agregarNM" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.agregarNuevaMvr()}"  />
                             <p:commandButton id="cancelarNM" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 310px;" actionListener="#{controlEmplMvr.limpiarNuevaMvr()}" update="nuevaMVRS" onclick="NuevoRegistroMVRS.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -516,19 +535,24 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevoMVRS']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarMVRS" style="border: none;">
+                            
+                            
                             <strong><h:outputText value="#{msg['inicialMVRS']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicialMVRS" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlEmplMvr.duplicarMvrs.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicialMVRS"/>
-                                <p:ajax event="change" update="duplicarFechaInicialMVRS"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniDupliMvrReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarFechaInicialMVRS" value="#{controlEmplMvr.duplicarMvrs.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicialMVRS" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicialMVRS" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['finalMVRS']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinalMVRS" style="font-size: 10px; position: absolute;  top: 110px; left: 220px;" value="#{controlEmplMvr.duplicarMvrs.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinalMVRS"/>
-                                <p:ajax event="change" update="duplicarFechaFinalMVRS"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinDupliMvrReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="duplicarFechaFinalMVRS" value="#{controlEmplMvr.duplicarMvrs.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinalMVRS" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinalMVRS" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['valormensualMVRS']}" style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="duplicarValorMMVRS" value="#{controlEmplMvr.duplicarMvrs.valor}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase">
@@ -553,7 +577,7 @@
 
 
                             <p:commandButton id="limpiarDM" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 310px;" actionListener="#{controlEmplMvr.limpiarduplicarMvr()}" update="duplicarMVRS" process="@this"/>
-                            <p:commandButton id="agregarDM" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.confirmarDuplicar()}" onclick="DuplicarRegistroMVRS.hide();" />
+                            <p:commandButton id="agregarDM" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.confirmarDuplicar()}" />
                             <p:commandButton id="cancelarDM" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 310px;" actionListener="#{controlEmplMvr.limpiarduplicarMvr()}" update="duplicarMVRS" onclick="DuplicarRegistroMVRS.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -563,19 +587,23 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevoOC']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaOC" style="border: none;">
-                            <strong><h:outputText value="#{msg['inicialOC']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicialOC" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlEmplMvr.nuevaOtroCertificado.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicialOC"/>
-                                <p:ajax event="change" update="nuevaFechaInicialOC"/>
-                            </p:calendar>
+                            
+                             <strong><h:outputText value="#{msg['inicialOC']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoRegOC" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaFechaInicialOC" value="#{controlEmplMvr.nuevaOtroCertificado.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicialOC" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicialOC" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['finalOC']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinalOC" style="font-size: 10px; position: absolute;  top: 110px; left: 220px;" value="#{controlEmplMvr.nuevaOtroCertificado.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalOC"/>
-                                <p:ajax event="change" update="nuevaFechaFinalOC"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinNuevoRegOC" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="nuevaFechaFinalOC" value="#{controlEmplMvr.nuevaOtroCertificado.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinalOC" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinalOC" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['valorOC']}" style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="nuevaValorMOC" value="#{controlEmplMvr.nuevaOtroCertificado.valor}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase">
@@ -606,7 +634,7 @@
 
 
                             <p:commandButton id="limpiarNOC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 310px;" actionListener="#{controlEmplMvr.limpiarNuevaOtroC()}" update="nuevaOC" process="@this"/>
-                            <p:commandButton id="agregarNOC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.agregarNuevaOtroC()}" onclick="NuevoRegistroOC.hide();" />
+                            <p:commandButton id="agregarNOC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.agregarNuevaOtroC()}"  />
                             <p:commandButton id="cancelarNOC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 310px;" actionListener="#{controlEmplMvr.limpiarNuevaOtroC()}" update="nuevaOC" onclick="NuevoRegistroOC.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -616,20 +644,25 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevoOC']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarOC" style="border: none;">
-                            <strong><h:outputText value="#{msg['inicialOC']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicialOC" style="font-size: 10px; position: absolute;  top: 70px; left: 220px;" value="#{controlEmplMvr.duplicarOtrosCertificados.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicialOC"/>
-                                <p:ajax event="change" update="duplicarFechaInicialOC"/>
-                            </p:calendar>
+                            
+                            
+                             <strong><h:outputText value="#{msg['inicialOC']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniDupliOCReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarFechaInicialOC" value="#{controlEmplMvr.duplicarOtrosCertificados.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicialOC" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicialOC" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['finalOC']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinalOC" style="font-size: 10px; position: absolute;  top: 110px; left: 220px;" value="#{controlEmplMvr.duplicarOtrosCertificados.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinalOC"/>
-                                <p:ajax event="change" update="duplicarFechaFinalOC"/>
-                            </p:calendar>
-
+                            <div id="posicionFormulaFechaFinDupliOCReg" style="font-size: 10px; position: absolute; top: 110px; left: 220px">
+                                <lnk:calendar id="duplicarFechaFinalOC" value="#{controlEmplMvr.duplicarOtrosCertificados.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinalOC" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinalOC" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+                            
                             <strong><h:outputText value="#{msg['valorOC']}" style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="duplicarValorMOC" value="#{controlEmplMvr.duplicarOtrosCertificados.valor}" style="font-size: 12px; width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarValorMOC"/>
@@ -659,7 +692,7 @@
 
 
                             <p:commandButton id="limpiarDOC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 310px;" actionListener="#{controlEmplMvr.limpiarduplicarOtroC()}" update="duplicarOC" process="@this"/>
-                            <p:commandButton id="agregarDOC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.confirmarDuplicarOtroC()}" onclick="DuplicarRegistroOC.hide();" />
+                            <p:commandButton id="agregarDOC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 310px;"  process="@this" actionListener="#{controlEmplMvr.confirmarDuplicarOtroC()}" />
                             <p:commandButton id="cancelarDOC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 310px;" actionListener="#{controlEmplMvr.limpiarduplicarOtroC()}" update="duplicarOC" onclick="DuplicarRegistroOC.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
