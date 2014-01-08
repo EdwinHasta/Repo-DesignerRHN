@@ -117,7 +117,7 @@
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}"  />
 
                                 <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoContratoDialogo.show()"  process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.dialogoIngresoNuevoRegistro()}"  process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}"  />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.borrarContrato()}" process="@this"/>  
@@ -143,6 +143,9 @@
                             <p:commandButton value="#{msg['reproducir']}"  actionListener="#{controlLegislacion.reproducirContrato()}" style="position: absolute; top: 25px; left: 747px; height: 40px" process="@this"/>
                         </fieldset>
 
+                        <p:commandButton id="detalleFormula" value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 380px; left: 10px; " disabled="#{controlLegislacion.activoDetalleFormula}" action="detalleLegislacion" actionListener="#{controlDetalleLegislacion.obtenerContrato(controlLegislacion.actualContrato.secuencia)}" process="@this"/>  
+                        <p:tooltip for="detalleFormula" value="#{msg['detalle']}"/>
+                        
                         <p:commandButton style="position: absolute; left: 635px; top: 378px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarContrato" value="#{msg['buscar']}"  actionListener="#{controlLegislacion.lovContratos(0)}" process="@this" />
                         <p:commandButton style="position: absolute; left: 755px; top: 378px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlLegislacion.mostrarTodos}" id="mostrarTodos" actionListener="#{controlLegislacion.mostrarTodosContratos()}" value="#{msg['mostrar']}"  process="@this" />
 

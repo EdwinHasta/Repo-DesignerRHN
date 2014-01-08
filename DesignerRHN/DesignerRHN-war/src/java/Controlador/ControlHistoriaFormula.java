@@ -244,10 +244,8 @@ public class ControlHistoriaFormula implements Serializable {
         }
         if (i == 1) {
             if (!listHistoriasFormulas.isEmpty()) {
-                System.out.println("Paso primer if !isEmpty");
                 int conteo = 0;
                 int tam = listHistoriasFormulas.size();
-                System.out.println("Valor tam : " + tam);
                 if (tam >= 2) {
                     for (int j = 1; j < listHistoriasFormulas.size(); j++) {
                         if ((listHistoriasFormulas.get(j - 1).getFechafinal().after(nuevaHistoriaFormula.getFechainicial()))
@@ -262,7 +260,6 @@ public class ControlHistoriaFormula implements Serializable {
                         conteo++;
                     }
                 }
-                System.out.println("Valor Conteo : " + conteo);
                 if (conteo == 0) {
                     retorno = true;
                 }
@@ -307,8 +304,8 @@ public class ControlHistoriaFormula implements Serializable {
         getListHistoriasFormulas();
         getListNodosHistoriaFormula();
         cargarDatosParaNodos();
-        getListEstructurasFormulas();
         listNodosParaExportar = null;
+        getListEstructurasFormulas();
         if (!listEstructurasFormulas.isEmpty()) {
             seleccionEstructuraF = listEstructurasFormulas.get(0);
         }
@@ -372,18 +369,6 @@ public class ControlHistoriaFormula implements Serializable {
                 context.update("form:datosHistoriaFormula");
                 context.execute("errorNotaHF.show()");
             }
-        } else {
-            if (tipoListaHistoriasFormulas == 0) {
-                listHistoriasFormulas.get(indice).setFechafinal(fechaFin);
-                listHistoriasFormulas.get(indice).setFechainicial(fechaIni);
-            }
-            if (tipoListaHistoriasFormulas == 1) {
-                filtrarListHistoriasFormulas.get(indice).setFechafinal(fechaFin);
-                filtrarListHistoriasFormulas.get(indice).setFechainicial(fechaIni);
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosHistoriaFormula");
-            context.execute("errorSolapamientoFechas.show()");
         }
     }
 
@@ -448,11 +433,25 @@ public class ControlHistoriaFormula implements Serializable {
         if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() != null)) {
             boolean validacion = validarFechasRegistroHistoriaFormula(0);
             if (validacion == true) {
-                cambiarIndiceHistoriaFormula(i, c);
-                modificarHistoriaFormula(i);
-                indexAuxHistoriasFormulas = i;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosHistoriaFormula");
+                if (validarSolapamientoFechas(0) == true) {
+                    cambiarIndiceHistoriaFormula(i, c);
+                    modificarHistoriaFormula(i);
+                    indexAuxHistoriasFormulas = i;
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.update("form:datosHistoriaFormula");
+                } else {
+                    if (tipoListaHistoriasFormulas == 0) {
+                        listHistoriasFormulas.get(i).setFechafinal(fechaFin);
+                        listHistoriasFormulas.get(i).setFechainicial(fechaIni);
+                    }
+                    if (tipoListaHistoriasFormulas == 1) {
+                        filtrarListHistoriasFormulas.get(i).setFechafinal(fechaFin);
+                        filtrarListHistoriasFormulas.get(i).setFechainicial(fechaIni);
+                    }
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.update("form:datosHistoriaFormula");
+                    context.execute("errorSolapamientoFechas.show()");
+                }
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaHistoriasFormulas == 0) {
@@ -485,6 +484,11 @@ public class ControlHistoriaFormula implements Serializable {
     //GUARDAR
     /**
      */
+    
+    public void guardarYSalir(){
+        guardadoGeneral();
+        salir();
+    }
     public void guardadoGeneral() {
         if (cambiosHistoriaFormula == true) {
             guardarCambiosHistoriaFormula();
@@ -530,8 +534,6 @@ public class ControlHistoriaFormula implements Serializable {
             listNodosBorrar.clear();
         }
         if (!listNodosCrear.isEmpty()) {
-            System.out.println("Valor : " + listNodosCrear.size());
-
             administrarHistoriaFormula.crearNodos(listNodosCrear);
             listNodosCrear.clear();
         }
@@ -968,7 +970,7 @@ public class ControlHistoriaFormula implements Serializable {
             historiaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaFechaFinal");
             historiaFechaFinal.setFilterStyle("width: 60px");
             historiaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHistoriaFormula:historiaNota");
-            historiaNota.setFilterStyle("width: 80px");
+            historiaNota.setFilterStyle("width: 200px");
 
             RequestContext.getCurrentInstance().update("form:datosHistoriaFormula");
             banderaHistoriasFormulas = 1;
@@ -1032,6 +1034,12 @@ public class ControlHistoriaFormula implements Serializable {
         aceptar = false;
     }
 
+    public void dispararDialogoGuardarCambios(){
+        if(cambiosHistoriaFormula == true || cambiosNodos == true){
+        RequestContext.getCurrentInstance().execute("confirmarGuardar.show();");
+        }
+    }
+    
     /**
      *
      * @return Nombre del dialogo a exportar en XML
@@ -1252,7 +1260,7 @@ public class ControlHistoriaFormula implements Serializable {
         nodo3 = " ";
         nodo3RO = true;
         nodo4 = " ";
-        nodo5RO = true;
+        nodo4RO = true;
         nodo5 = " ";
         nodo5RO = true;
         nodo6 = " ";
@@ -1285,7 +1293,7 @@ public class ControlHistoriaFormula implements Serializable {
         nodo3_1 = " ";
         nodo3_1RO = true;
         nodo4_1 = " ";
-        nodo5_1RO = true;
+        nodo4_1RO = true;
         nodo5_1 = " ";
         nodo5_1RO = true;
         nodo6_1 = " ";
@@ -1305,7 +1313,7 @@ public class ControlHistoriaFormula implements Serializable {
         nodo13_1 = " ";
         nodo13_1RO = true;
         nodo14_1 = " ";
-        nodo14_1RO = true;
+        nodo14_1RO =  true;
         nodo15_1 = " ";
         nodo15_1RO = true;
         nodo16_1 = " ";

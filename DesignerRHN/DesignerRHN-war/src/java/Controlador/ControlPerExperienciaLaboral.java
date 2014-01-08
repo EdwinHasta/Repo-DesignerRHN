@@ -855,18 +855,18 @@ public class ControlPerExperienciaLaboral implements Serializable {
     }
 
     public void verificarDuplicarExperiencia() {
-        System.out.println("Valor Index : "+index);
+        System.out.println("Valor Index : " + index);
         if (index >= 0) {
             if (!listExperienciaLaboralEmpl.isEmpty()) {
-                duplicarVigenciaE();                
+                duplicarVigenciaE();
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("seleccionarRegistro.show()");
-            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("seleccionarRegistro.show()");
+        }
     }
 
     public void duplicarVigenciaE() {
@@ -1413,13 +1413,13 @@ public class ControlPerExperienciaLaboral implements Serializable {
             if (listExperienciaLaboralEmpl == null) {
                 listExperienciaLaboralEmpl = new ArrayList<HvExperienciasLaborales>();
                 listExperienciaLaboralEmpl = administrarPerExperienciaLaboral.listExperienciasLaboralesSecuenciaEmpleado(hojaVida.getSecuencia());
-                for (int i = 0; i < listExperienciaLaboralEmpl.size(); i++) {
-                    if (listExperienciaLaboralEmpl.get(i).getSectoreconomico() == null) {
-                        listExperienciaLaboralEmpl.get(i).setSectoreconomico(new SectoresEconomicos());
-                    }
-                    if (listExperienciaLaboralEmpl.get(i).getMotivoretiro() == null) {
-                        listExperienciaLaboralEmpl.get(i).setMotivoretiro(new MotivosRetiros());
-                    }
+            }
+            for (int i = 0; i < listExperienciaLaboralEmpl.size(); i++) {
+                if (listExperienciaLaboralEmpl.get(i).getSectoreconomico() == null) {
+                    listExperienciaLaboralEmpl.get(i).setSectoreconomico(new SectoresEconomicos());
+                }
+                if (listExperienciaLaboralEmpl.get(i).getMotivoretiro() == null) {
+                    listExperienciaLaboralEmpl.get(i).setMotivoretiro(new MotivosRetiros());
                 }
             }
             return listExperienciaLaboralEmpl;

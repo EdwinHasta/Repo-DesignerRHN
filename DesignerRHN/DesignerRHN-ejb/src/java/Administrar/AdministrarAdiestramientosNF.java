@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -12,26 +11,26 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
- *
- * @author user
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'AdiestramientosNF'.
+ * @author betelgeuse
  */
 @Stateful
-
 public class AdministrarAdiestramientosNF implements AdministrarAdiestramientosNFInterface{
-    
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaAdiestramientosNF'.
+     */
     @EJB
     PersistenciaAdiestramientosNFInterface persistenciaAdiestramientosNF;
-    
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
-    public List<AdiestramientosNF> AdiestramientosNF(){
-        List<AdiestramientosNF> listaAdiestramientosNF;
-        listaAdiestramientosNF = persistenciaAdiestramientosNF.adiestramientosNF();
-        return listaAdiestramientosNF;
-    }
-
-    @Override
-    public List<AdiestramientosNF>  lovAdiestramientosNF(){
+    public List<AdiestramientosNF> adiestramientosNF(){
         return persistenciaAdiestramientosNF.adiestramientosNF();
-    }
-    
+    }    
 }

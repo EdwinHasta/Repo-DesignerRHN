@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfaceAdministrar;
 
@@ -8,10 +7,13 @@ import Entidades.AdiestramientosF;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'AdiestramientosF'. 
+ * @author betelgeuse
  */
-public interface AdministrarAdiestramientosFInterface {
-    public List<AdiestramientosF> AdiestramientoF();
-    public List<AdiestramientosF>  lovAdiestramientosF();
+public interface AdministrarAdiestramientosFInterface {    
+    /**
+     * Método encargado de recuperar todos los AdiestramientosF.
+     * @return Retorna una lista de AdiestramientosF.
+     */
+    public List<AdiestramientosF> adiestramientosF();
 }

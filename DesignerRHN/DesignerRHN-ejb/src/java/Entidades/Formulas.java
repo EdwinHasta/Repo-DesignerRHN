@@ -167,6 +167,9 @@ public class Formulas implements Serializable {
     }
 
     public String getObservaciones() {
+        if (observaciones == null) {
+            observaciones = " ";
+        }
         return observaciones;
     }
 

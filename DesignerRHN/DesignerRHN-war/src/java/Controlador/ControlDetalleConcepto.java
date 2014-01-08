@@ -6252,6 +6252,13 @@ public class ControlDetalleConcepto implements Serializable {
         }
     }
 
+    public String conceptoAEliminar() {
+        if(indexFormulasConceptos>=0){
+            conceptoEliminar = "Va a eliminar el concepto el cual tiene el código : " + listFormulasConceptosConcepto.get(indexFormulasConceptos).getConcepto().getCodigo().toString() + ". ¿Esta seguro?";
+        }
+        return conceptoEliminar;
+    }
+
     //GET - SET 
     public List<VigenciasCuentas> getListVigenciasCuentasConcepto() {
         try {
@@ -7146,17 +7153,6 @@ public class ControlDetalleConcepto implements Serializable {
 
     public void setFormulaConceptoSeleccionado(FormulasConceptos formulaConceptoSeleccionado) {
         this.formulaConceptoSeleccionado = formulaConceptoSeleccionado;
-    }
-
-    public String getConceptoEliminar() {
-        if (indexFormulasConceptos >= 0) {
-            conceptoEliminar = "Va a eliminar el concepto el cual tiene el código : " + listFormulasConceptosConcepto.get(indexFormulasConceptos).getConcepto().getCodigo().toString() + ". ¿Esta seguro?";
-        }
-        return conceptoEliminar;
-    }
-
-    public void setConceptoEliminar(String conceptoEliminar) {
-        this.conceptoEliminar = conceptoEliminar;
     }
 
     public boolean isFormulaSeleccionada() {

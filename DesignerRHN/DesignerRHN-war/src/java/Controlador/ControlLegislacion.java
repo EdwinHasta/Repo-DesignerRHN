@@ -23,7 +23,7 @@ import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @SessionScoped
-public class ControlLegislacion implements Serializable{
+public class ControlLegislacion implements Serializable {
 
     @EJB
     AdministrarContratosInterface administrarContratos;
@@ -75,8 +75,13 @@ public class ControlLegislacion implements Serializable{
     private Contratos contratoOriginal;
     private Contratos contratoClon;
     private int cambioContrato;
+    private boolean activoDetalleFormula;
+    ///
+    private Contratos actualContrato;
 
     public ControlLegislacion() {
+        actualContrato = new Contratos();
+        activoDetalleFormula = true;
         listaContratos = null;
         listaContratoLOV = null;
         listaTiposCotizantes = new ArrayList<TiposCotizantes>();
@@ -209,6 +214,9 @@ public class ControlLegislacion implements Serializable{
                 cualCelda = -1;
             }
         }
+        activoDetalleFormula = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:detalleFormula");
         index = -1;
         secRegistro = null;
     }
@@ -311,11 +319,16 @@ public class ControlLegislacion implements Serializable{
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            actualContrato = listaContratos.get(index);
             secRegistro = listaContratos.get(index).getSecuencia();
             if (cualCelda == 2) {
                 tipoCotizante = listaContratos.get(index).getTipocotizante().getDescripcion();
             }
+
         }
+        activoDetalleFormula = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:detalleFormula");
     }
 
     public void actualizarTipoCotizante() {
@@ -375,7 +388,9 @@ public class ControlLegislacion implements Serializable{
     }
 
     public void lovContratos(int quien) {
+        activoDetalleFormula = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:detalleFormula");
         if (quien == 0) {
             if (guardado == true) {
                 listaContratos = null;
@@ -428,6 +443,8 @@ public class ControlLegislacion implements Serializable{
             mostrarTodos = true;
             verMostrarTodos = false;
             getListaContratos();
+            activoDetalleFormula = false;
+            context.update("form:detalleFormula");
             context.update("form:datosContratos");
             context.update("form:mostrarTodos");
         } else {
@@ -460,6 +477,8 @@ public class ControlLegislacion implements Serializable{
             listaContratos.clear();
             listaContratos.add(contratoSeleccionado);
             mostrarTodos = false;
+            activoDetalleFormula = true;
+            context.update("form:detalleFormula");
             context.update("form:datosContratos");
             context.update("form:mostrarTodos");
         } else if (cambioContrato == 1) {
@@ -512,8 +531,9 @@ public class ControlLegislacion implements Serializable{
                 filtradolistaContratos.remove(index);
             }
 
+            activoDetalleFormula = true;
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosContratos");
+            context.update("form:detalleFormula");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -556,6 +576,8 @@ public class ControlLegislacion implements Serializable{
             }
             System.out.println("Se guardaron los datos con exito");
             listaContratos = null;
+            activoDetalleFormula = true;
+            context.update("form:detalleFormula");
             context.update("form:datosContratos");
             guardado = true;
             permitirIndex = true;
@@ -605,6 +627,16 @@ public class ControlLegislacion implements Serializable{
             filtradolistaContratos = null;
             tipoLista = 0;
         }
+        activoDetalleFormula = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:detalleFormula");
+    }
+
+    public void dialogoIngresoNuevoRegistro() {
+        activoDetalleFormula = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("NuevoContratoDialogo.show()");
+        context.update("form:detalleFormula");
     }
 
     public void agregarNuevoContrato() {
@@ -689,7 +721,9 @@ public class ControlLegislacion implements Serializable{
                 duplicarContrato.setTipocotizante(filtradolistaContratos.get(index).getTipocotizante());
                 duplicarContrato.setEstado(filtradolistaContratos.get(index).getEstado());
             }
+            activoDetalleFormula = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:detalleFormula");
             context.update("formularioDialogos:duplicarContrato");
             context.execute("DuplicarContratoDialogo.show()");
             index = -1;
@@ -765,7 +799,9 @@ public class ControlLegislacion implements Serializable{
         if (verMostrarTodos == true) {
             mostrarTodosContratos();
         }
+        activoDetalleFormula = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:detalleFormula");
         context.update("form:mostrarTodos");
         context.update("form:datosContratos");
         context.update("form:descripcionContrato1");
@@ -774,7 +810,9 @@ public class ControlLegislacion implements Serializable{
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void verificarRastro() {
+        activoDetalleFormula = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:detalleFormula");
         if (!listaContratos.isEmpty()) {
             if (secRegistro != null) {
                 int resultado = administrarRastros.obtenerTabla(secRegistro, "CONTRATOS");
@@ -811,6 +849,9 @@ public class ControlLegislacion implements Serializable{
         context.responseComplete();
         index = -1;
         secRegistro = null;
+        activoDetalleFormula = true;
+        RequestContext context2 = RequestContext.getCurrentInstance();
+        context2.update("form:detalleFormula");
     }
 
     public void exportXLS() throws IOException {
@@ -821,6 +862,9 @@ public class ControlLegislacion implements Serializable{
         context.responseComplete();
         index = -1;
         secRegistro = null;
+        activoDetalleFormula = true;
+        RequestContext context2 = RequestContext.getCurrentInstance();
+        context2.update("form:detalleFormula");
     }
 
     //EVENTO FILTRAR
@@ -1005,4 +1049,21 @@ public class ControlLegislacion implements Serializable{
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
     }
+
+    public boolean isActivoDetalleFormula() {
+        return activoDetalleFormula;
+    }
+
+    public void setActivoDetalleFormula(boolean activoDetalleFormula) {
+        this.activoDetalleFormula = activoDetalleFormula;
+    }
+
+    public Contratos getActualContrato() {
+        return actualContrato;
+    }
+
+    public void setActualContrato(Contratos actualContrato) {
+        this.actualContrato = actualContrato;
+    }
+
 }

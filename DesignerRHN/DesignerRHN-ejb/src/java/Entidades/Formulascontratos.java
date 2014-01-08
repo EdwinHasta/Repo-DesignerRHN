@@ -73,6 +73,8 @@ public class Formulascontratos implements Serializable {
     private String strFechaIni;
     @Transient
     private String strFechaFin;
+    @Transient
+    private String strConcepto;
 
     public Formulascontratos() {
     }
@@ -181,6 +183,14 @@ public class Formulascontratos implements Serializable {
 
     public void setContrato(Contratos contrato) {
         this.contrato = contrato;
+    }
+
+    public String getStrConcepto() {
+        return strConcepto;
+    }
+
+    public void setStrConcepto(String strConcepto) {
+        this.strConcepto = strConcepto;
     }
 
     @Override

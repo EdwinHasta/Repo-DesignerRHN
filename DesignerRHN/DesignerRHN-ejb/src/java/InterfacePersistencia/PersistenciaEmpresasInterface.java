@@ -45,8 +45,8 @@ public interface PersistenciaEmpresasInterface {
     /**
      * Método encargado de recuperar la información del campo barraconsultadatos de la tabla 'Empresas' de la base de datos.
      * Recibe como resultado 'S' o 'N' y define si se muestra el proceso despues de liquidar o no
-     * @param secuenciaEmpresa
-     * @return 
+     * @param secuenciaEmpresa Secuencia de la Empresa.
+     * @return Retorna un String 'S' si se muestra el proceso despues de liquidar o 'N' de lo contrario.
      */
     public String estadoConsultaDatos(BigInteger secuenciaEmpresa);
     /**

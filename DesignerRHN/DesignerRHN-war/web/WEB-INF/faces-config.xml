@@ -1120,6 +1120,38 @@
         </navigation-case>
     </navigation-rule>
     
+        <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detalleLegislacionRastro</from-outcome>
+            <to-view-id>/detallelegislacion.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/detallelegislacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/detallelegislacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>legislacion</from-outcome>
+            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detalleLegislacion</from-outcome>
+            <to-view-id>/detallelegislacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>

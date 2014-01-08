@@ -47,7 +47,7 @@ public class AdministarReportes implements AdministarReportesInterface {
     
     //--------------------------------------------------------------------------
     //MÉTODOS
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     @Override
     public void datosConexion() {
         if (entityManagerGlobal != null) {
