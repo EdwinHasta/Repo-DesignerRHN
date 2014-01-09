@@ -28,7 +28,7 @@ public interface PersistenciaMonedasInterface {
      * Método encargado de buscar todas las Monedas existentes en la base de
      * datos.
      *
-     * @return Retorna una lista de Contratos.
+     * @return Retorna una lista de Monedas.
      */
     public List<Monedas> buscarMonedas();
 
