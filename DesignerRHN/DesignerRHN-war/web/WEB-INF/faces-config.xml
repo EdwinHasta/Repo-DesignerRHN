@@ -1120,7 +1120,7 @@
         </navigation-case>
     </navigation-rule>
     
-        <navigation-rule>
+    <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleLegislacionRastro</from-outcome>
@@ -1784,6 +1784,22 @@
         <navigation-case>
             <from-outcome>atrasNormaLaboral</from-outcome>
             <to-view-id>/emplvigencianormalaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplIbcs</from-outcome>
+            <to-view-id>/emplibcs.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emplibcs.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasEmplIbcs</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

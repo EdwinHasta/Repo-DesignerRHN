@@ -59,7 +59,7 @@ public class ControlEmplIbcs implements Serializable {
 //*****************************************************************
     public ControlEmplIbcs() {
         listIbcsPorEmpleado = null;
-        secuenciaEmpleado = BigInteger.valueOf(10664356);
+        //secuenciaEmpleado = BigInteger.valueOf(10664356);
         editarIbcsPorEmpleado = new Ibcs();
         empleadoSeleccionado = null;
         selecionIbcs = new Ibcs();
@@ -67,6 +67,7 @@ public class ControlEmplIbcs implements Serializable {
     }
 
     public void recibirEmpleado(BigInteger sec) {
+        System.out.println("CONTROLEMPLIBCS RECIBIR EMPLEADO");
         if (sec == null) {
             System.out.println("ControlVigenciasFormasPagos.recibirEmpleado");
             System.out.println("La secuencia pasada como parametro es null: " + sec.toString());
@@ -90,8 +91,6 @@ public class ControlEmplIbcs implements Serializable {
             filtrarIbcsPorEmpleado = null;
             tipoLista = 0;
         }
-
-
 
         index = -1;
         secRegistro = null;
@@ -137,7 +136,6 @@ public class ControlEmplIbcs implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
 
             fechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:fechaInicial");
             fechaInicial.setFilterStyle("width: 50px");
@@ -199,24 +197,23 @@ public class ControlEmplIbcs implements Serializable {
 
     public void dialogo() {
 
-         if (index >= 0) {
-          if (tipoLista == 0) {
-            dialogoIbcsPorEmpleado = listIbcsPorEmpleado.get(index);
-          }
-         if (tipoLista == 1) {
-            dialogoIbcsPorEmpleado = filtrarIbcsPorEmpleado.get(index);
-          }
+        if (index >= 0) {
+            if (tipoLista == 0) {
+                dialogoIbcsPorEmpleado = listIbcsPorEmpleado.get(index);
+            }
+            if (tipoLista == 1) {
+                dialogoIbcsPorEmpleado = filtrarIbcsPorEmpleado.get(index);
+            }
 
-        RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Entro a dialogo");
-        //  System.err.println("EditarCelda cualcelda = " + cualCelda);
-        context.update("formularioDialogos:dialogoIbcs");
-        context.execute("dialogoIbcs.show()");
+            RequestContext context = RequestContext.getCurrentInstance();
+            System.out.println("Entro a dialogo");
+            //  System.err.println("EditarCelda cualcelda = " + cualCelda);
+            context.update("formularioDialogos:dialogoIbcs");
+            context.execute("dialogoIbcs.show()");
 
-
-         }
-         index = -1;
-         secRegistro = null;
+        }
+        index = -1;
+        secRegistro = null;
     }
 
     public void exportPDF() throws IOException {
