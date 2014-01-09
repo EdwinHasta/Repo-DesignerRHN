@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.MotivosDefinitivas;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -46,4 +47,28 @@ public interface PersistenciaMotivosDefinitivasInterface {
      * @return Retorna una lista de Motivosdefinitivas ordenados por código.
      */
     public List<MotivosDefinitivas> buscarMotivosDefinitivas();
+
+    /**
+     * Método encargado de revisar si existe una relacion entre un Motivo
+     * Definitiva específica y algúna Novedas Sistema. Adémas de la revisión,
+     * cuenta cuantas relaciones existen.
+     *
+     * @param secuencia Secuencia del Motivo Definitiva.
+     * @return Retorna el número de Novedades Sistemas relacionados con la
+     * moneda cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contadorNovedadesSistema(BigInteger secuencia);
+
+    /**
+     * Método encargado de revisar si existe una relacion entre un Motivo
+     * Definitiva específica y algúna Parameto Cambio Masivo. Adémas de la
+     * revisión, cuenta cuantas relaciones existen.
+     *
+     * @param secuencia Secuencia del Motivo Definitiva.
+     * @return Retorna el número de Parameto Cambio Masivo relacionados con la
+     * moneda cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contadorParametrosCambiosMasivos(BigInteger secuencia);
+
+    public MotivosDefinitivas buscarMotivoDefinitiva(BigInteger secuenciaME);
 }
