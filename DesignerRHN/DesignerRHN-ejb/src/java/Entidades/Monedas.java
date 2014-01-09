@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,45 +27,39 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Monedas.findAll", query = "SELECT m FROM Monedas m")})
 public class Monedas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4)
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private String codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 3)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
 
     public Monedas() {
     }
 
-    public Monedas(BigDecimal secuencia) {
+    public Monedas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Monedas(BigDecimal secuencia, String codigo, String nombre) {
+    public Monedas(BigInteger secuencia, String codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -84,7 +76,7 @@ public class Monedas implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getCodigoalternativo() {
@@ -119,5 +111,5 @@ public class Monedas implements Serializable {
     public String toString() {
         return "Entidades.Monedas[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

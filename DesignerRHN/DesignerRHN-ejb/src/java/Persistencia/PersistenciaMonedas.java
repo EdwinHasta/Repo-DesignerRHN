@@ -13,21 +13,38 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Monedas'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Monedas' de la base
+ * de datos.
+ *
  * @author Viktor
  */
 @Stateless
 
-public class PersistenciaMonedas implements PersistenciaMonedasInterface{
+public class PersistenciaMonedas implements PersistenciaMonedasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
-     @Override
+
+    @Override
+    public void crear(Monedas monedas) {
+        em.persist(monedas);
+    }
+
+    @Override
+    public void editar(Monedas monedas) {
+        em.merge(monedas);
+    }
+
+    @Override
+    public void borrar(Monedas monedas) {
+        em.remove(em.merge(monedas));
+    }
+
+    @Override
     public Monedas buscarMonedaSecuencia(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT m.nombre FROM Monedas m WHERE m.secuencia = :secuencia");
@@ -40,17 +57,37 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface{
             return monedas;
         }
     }
-    
-     @Override
-     public List<Monedas> listMonedas(){
-         try{
-             Query query = em.createQuery("SELECT m FROM Monedas m");
-             List<Monedas> moendas = (List<Monedas>) query.getResultList();
-            return moendas;
-         }catch(Exception e){
-             System.out.println("Error listMonedas PersistenciaMonedas : "+e.toString());
-             return null;
-         }
-     }
 
+    @Override
+    public BigInteger contadorProyectos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = " SELECT COUNT(*) FROM proyectos WHERE tipomoneda = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println(" PersistenciaMonedas ContadorProyectos Contador " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println(" PersistenciaMonedas contadorIdiomasPersonas Error : " + e);
+            return retorno;
+        }
+    }
+
+    @Override
+    public Monedas buscarMoneda(BigInteger secuenciaTI) {
+        try {
+            return em.find(Monedas.class, secuenciaTI);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Monedas> buscarMonedas() {
+        Query query = em.createQuery("SELECT m FROM Monedas m ORDER BY m.codigo ASC ");
+        List<Monedas> listMotivosDemandas = query.getResultList();
+        return listMotivosDemandas;
+
+    }
 }
