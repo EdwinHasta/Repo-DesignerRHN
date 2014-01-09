@@ -3,7 +3,7 @@
  */
 package Persistencia;
 
-import Entidades.Motivosdefinitivas;
+import Entidades.MotivosDefinitivas;
 import InterfacePersistencia.PersistenciaMotivosDefinitivasInterface;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -26,26 +26,26 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     private EntityManager em;
   
     @Override
-    public void crear(Motivosdefinitivas motivosDefinitivas) {
+    public void crear(MotivosDefinitivas motivosDefinitivas) {
         em.persist(motivosDefinitivas);
     }
 
     @Override
-    public void editar(Motivosdefinitivas motivosDefinitivas) {
+    public void editar(MotivosDefinitivas motivosDefinitivas) {
         em.merge(motivosDefinitivas);
     }
 
     @Override
-    public void borrar(Motivosdefinitivas motivosDefinitivas) {
+    public void borrar(MotivosDefinitivas motivosDefinitivas) {
         em.remove(em.merge(motivosDefinitivas));
     }
 
     @Override
-    public List<Motivosdefinitivas> buscarMotivosDefinitivas() {
+    public List<MotivosDefinitivas> buscarMotivosDefinitivas() {
         try {
             Query query = em.createQuery("SELECT md FROM Motivosdefinitivas md ORDER BY md.codigo");
 
-            List<Motivosdefinitivas> motivoD = query.getResultList();
+            List<MotivosDefinitivas> motivoD = query.getResultList();
             return motivoD;
         } catch (Exception e) {
             System.out.println("Error PersistenciaMotivosDefinitivfas.buscarMotivosDefinitivas" + e);

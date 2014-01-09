@@ -6,7 +6,7 @@ package InterfaceAdministrar;
 
 import Entidades.Empleados;
 import Entidades.MotivosRetiros;
-import Entidades.Motivosdefinitivas;
+import Entidades.MotivosDefinitivas;
 import Entidades.NovedadesSistema;
 import java.math.BigInteger;
 import java.util.List;
@@ -29,7 +29,7 @@ public interface AdministrarNovedadesSistemaInterface {
     
     public List<Empleados> lovEmpleados();
     
-    public List<Motivosdefinitivas> lovMotivos();
+    public List<MotivosDefinitivas> lovMotivos();
      
     public List<MotivosRetiros> lovRetiros();
     
