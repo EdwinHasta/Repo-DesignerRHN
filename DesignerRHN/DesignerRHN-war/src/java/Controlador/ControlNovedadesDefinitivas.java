@@ -6,7 +6,7 @@ package Controlador;
 
 import Entidades.Empleados;
 import Entidades.MotivosRetiros;
-import Entidades.Motivosdefinitivas;
+import Entidades.MotivosDefinitivas;
 import Entidades.NovedadesSistema;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
@@ -82,9 +82,9 @@ public class ControlNovedadesDefinitivas implements Serializable {
     private List<Empleados> filtradoslistaEmpleados;
     private Empleados seleccionEmpleados;
     //L.O.V MOTIVOS
-    private List<Motivosdefinitivas> listaMotivos;
-    private List<Motivosdefinitivas> filtradosListaMotivos;
-    private Motivosdefinitivas seleccionMotivos;
+    private List<MotivosDefinitivas> listaMotivos;
+    private List<MotivosDefinitivas> filtradosListaMotivos;
+    private MotivosDefinitivas seleccionMotivos;
     //L.O.V RETIROS
     private List<MotivosRetiros> listaRetiros;
     private List<MotivosRetiros> filtradosListaRetiros;
@@ -107,7 +107,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
         listaNovedades = null;
 
         nuevaNovedad = new NovedadesSistema();
-        nuevaNovedad.setMotivodefinitiva(new Motivosdefinitivas());
+        nuevaNovedad.setMotivodefinitiva(new MotivosDefinitivas());
         nuevaNovedad.setMotivoretiro(new MotivosRetiros());
         nuevaNovedad.setDias(BigInteger.valueOf(0));
         nuevaNovedad.setTipo(" ");
@@ -326,7 +326,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
     public void limpiarNuevaNovedad() {
         nuevaNovedad = new NovedadesSistema();
-        nuevaNovedad.setMotivodefinitiva(new Motivosdefinitivas());
+        nuevaNovedad.setMotivodefinitiva(new MotivosDefinitivas());
         nuevaNovedad.setMotivoretiro(new MotivosRetiros());
         index = -1;
         secRegistro = null;
@@ -458,7 +458,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
 
 
             nuevaNovedad = new NovedadesSistema();
-            nuevaNovedad.setMotivodefinitiva(new Motivosdefinitivas());
+            nuevaNovedad.setMotivodefinitiva(new MotivosDefinitivas());
             nuevaNovedad.setMotivoretiro(new MotivosRetiros());
             nuevaNovedad.setDias(BigInteger.valueOf(0));
             nuevaNovedad.setTipo("DEFINITIVA");
@@ -625,7 +625,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
             mostrar.setIndemnizaBool(duplicarNovedad.getIndemnizaBool());
 
             duplicarNovedad = new NovedadesSistema();
-            duplicarNovedad.setMotivodefinitiva(new Motivosdefinitivas());
+            duplicarNovedad.setMotivodefinitiva(new MotivosDefinitivas());
             duplicarNovedad.setMotivoretiro(new MotivosRetiros());
             duplicarNovedad.setDias(BigInteger.valueOf(0));
             duplicarNovedad.setTipo("DEFINITIVA");
@@ -649,7 +649,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
         duplicarNovedad = new NovedadesSistema();
         duplicarNovedad.setTipo("DEFINITIVA");
         duplicarNovedad.setSubtipo("DINERO");
-        duplicarNovedad.setMotivodefinitiva(new Motivosdefinitivas());
+        duplicarNovedad.setMotivodefinitiva(new MotivosDefinitivas());
         duplicarNovedad.setMotivoretiro(new MotivosRetiros());
         secRegistro = null;
     }
@@ -889,30 +889,30 @@ public class ControlNovedadesDefinitivas implements Serializable {
     }
 //LOV MOTIVOS LIQUIDACIONES
 
-    public List<Motivosdefinitivas> getListaMotivos() {
+    public List<MotivosDefinitivas> getListaMotivos() {
         if (listaMotivos == null) {
             listaMotivos = administrarNovedadesSistema.lovMotivos();
         }
         return listaMotivos;
     }
 
-    public void setListaMotivos(List<Motivosdefinitivas> listaMotivos) {
+    public void setListaMotivos(List<MotivosDefinitivas> listaMotivos) {
         this.listaMotivos = listaMotivos;
     }
 
-    public List<Motivosdefinitivas> getFiltradosListaMotivos() {
+    public List<MotivosDefinitivas> getFiltradosListaMotivos() {
         return filtradosListaMotivos;
     }
 
-    public void setFiltradosListaMotivos(List<Motivosdefinitivas> filtradosListaMotivos) {
+    public void setFiltradosListaMotivos(List<MotivosDefinitivas> filtradosListaMotivos) {
         this.filtradosListaMotivos = filtradosListaMotivos;
     }
 
-    public Motivosdefinitivas getSeleccionMotivos() {
+    public MotivosDefinitivas getSeleccionMotivos() {
         return seleccionMotivos;
     }
 
-    public void setSeleccionMotivos(Motivosdefinitivas seleccionMotivos) {
+    public void setSeleccionMotivos(MotivosDefinitivas seleccionMotivos) {
         this.seleccionMotivos = seleccionMotivos;
     }
 //LOV RETIROS
