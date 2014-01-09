@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -152,13 +153,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{infoV.fechavigencia}" id="editFechaVigencia"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlGrupoSalarial.modificarVigenciaGrupoSalarial(indiceV)}" update="editFechaVigencia"/>
-                                                <p:ajax event="change" listener="#{controlGrupoSalarial.modificarVigenciaGrupoSalarial(indiceV)}" />
-                                                <p:ajax event="select" listener="#{controlGrupoSalarial.cambiarIndiceVigencia(indiceV,0)}" /> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="editFechaVigencia" value="#{infoV.fechavigencia}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlGrupoSalarial.modificarFechas(indiceV,0)}" update="editFechaVigencia" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlGrupoSalarial.modificarFechas(indiceV,0)}" update="editFechaVigencia" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlGrupoSalarial.cambiarIndiceVigencia(indiceV,0)}" process="@this"/> 
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
                                 </p:column>
@@ -249,6 +248,12 @@
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
+                    <p:dialog id="errorRegNew" header="#{msg['atencion']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegNew']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlGrupoSalarial.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
@@ -334,11 +339,13 @@
 
 
                             <strong><h:outputText value="#{msg['fechavigenciaN']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaVigencia" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlGrupoSalarial.nuevoVigenciaGrupoSalarial.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaVigencia"/>
-                                <p:ajax event="change" update="nuevaFechaVigencia"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaVigNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="nuevaFechaVigencia" value="#{controlGrupoSalarial.nuevoVigenciaGrupoSalarial.fechavigencia}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaVigencia" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaVigencia" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['valorN']}" style="font-size: 14px; position: absolute; top: 125px; left: 50px" /></strong>
                             <p:inputText id="nuevoValor" value="#{controlGrupoSalarial.nuevoVigenciaGrupoSalarial.valor}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px;">
@@ -347,7 +354,7 @@
                             <p:watermark value="#{msg['valor']}" for="nuevoValor"/>
 
                             <p:commandButton id="limpiarNVG" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 160px;" actionListener="#{controlGrupoSalarial.limpiarNuevaVigenciaGrupoSalarial()}" update="nuevoVigenciaGrupo" process="@this"/>
-                            <p:commandButton id="aceptarNVG" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 160px;"  process="@this" actionListener="#{controlGrupoSalarial.agregarNuevoVigenciaGrupoSalarial()}" onclick="NuevoRegistroVigenciaGrupoSalarial.hide();"  />
+                            <p:commandButton id="aceptarNVG" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 160px;"  process="@this" actionListener="#{controlGrupoSalarial.agregarNuevoVigenciaGrupoSalarial()}"  />
                             <p:commandButton id="cancelarNVG" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 160px;" actionListener="#{controlGrupoSalarial.limpiarNuevaVigenciaGrupoSalarial()}" update="nuevoVigenciaGrupo" onclick="NuevoRegistroVigenciaGrupoSalarial.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -360,11 +367,13 @@
 
 
                             <strong><h:outputText value="#{msg['fechavigenciaN']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaVigencia" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlGrupoSalarial.duplicarVigenciaGrupoSalarial.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaVigencia"/>
-                                <p:ajax event="change" update="duplicarFechaVigencia"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaVigDupliReg" style="font-size: 10px; position: absolute; top: 70px; left: 220px">
+                                <lnk:calendar id="duplicarFechaVigencia" value="#{controlGrupoSalarial.duplicarVigenciaGrupoSalarial.fechavigencia}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaVigencia" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaVigencia" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['valorN']}" style="font-size: 14px; position: absolute; top: 125px; left: 50px" /></strong>
                             <p:inputText id="duplicarValor" value="#{controlGrupoSalarial.duplicarVigenciaGrupoSalarial.valor}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 120px;">
@@ -373,7 +382,7 @@
                             <p:watermark value="#{msg['valor']}" for="duplicarValor"/>
 
                             <p:commandButton id="limpiarDVG" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 160px;" actionListener="#{controlGrupoSalarial.limpiarDuplicarVigenciaGrupoSalarial()}" update="duplicarVigenciaGrupo" process="@this"/>
-                            <p:commandButton id="aceptarDVG" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 160px;"  process="@this" actionListener="#{controlGrupoSalarial.confirmarDuplicarVigenciaGrupoSalarial()}" onclick="DuplicarRegistroVigenciaGrupoSalarial.hide();"  />
+                            <p:commandButton id="aceptarDVG" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 160px;"  process="@this" actionListener="#{controlGrupoSalarial.confirmarDuplicarVigenciaGrupoSalarial()}"   />
                             <p:commandButton id="cancelarDVG" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 160px;" actionListener="#{controlGrupoSalarial.limpiarDuplicarVigenciaGrupoSalarial()}" update="duplicarVigenciaGrupo" onclick="DuplicarRegistroVigenciaGrupoSalarial.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>

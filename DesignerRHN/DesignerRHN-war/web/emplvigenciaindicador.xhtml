@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -71,7 +72,7 @@
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="viFechaInicial" width="100"
+                                <p:column headerText="Fecha Inicial" sortBy="#{info.strFechaIni}" filterBy="#{info.strFechaIni}" filterMatchMode="contains" id="viFechaInicial" width="100"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -80,13 +81,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechainicial}" id="editarFechaInicialVI" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarVigencia(indiceV)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarVigencia(indiceV)}" process="@this"/>
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,0)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,0)}" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(indiceV,0)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -94,7 +93,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="viFechaFinal" width="100"
+                                <p:column headerText="Fecha Final" sortBy="#{info.strFechaFin}" filterBy="#{info.strFechaFin}" filterMatchMode="contains" id="viFechaFinal" width="100"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -103,13 +102,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechafinal}" id="editarFechaFinalVI" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarVigencia(indiceV)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarVigencia(indiceV)}" process="@this"/>
+                                            <lnk:calendar id="dateFechaFinal" value="#{info.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,1)}" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(indiceV,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -272,9 +269,15 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplVigenciaIndicador.activarCtrlF11()}"/> 
                     <p:dialog id="errorFechas" header="ATENCIÓN...!" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Error de fechas. La fecha final es menor que la fecha final." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="Error de fechas. La fecha final es menor que la fecha final y/o la fecha inicial es nula." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="Cancelar" onclick="errorFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
+                    
+                    <p:dialog id="errorRegInfo" header="ATENCIÓN" widgetVar="errorRegInfo"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Los campos Indicador y Fecha Inicial son obligatorios." style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+
                 </h:form>
                 <h:form id="formularioDialogos" >
 
@@ -284,19 +287,24 @@
 
                         <p:panel id="nuevaV" style="border: none;">
 
+                            
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicialV" value="#{controlEmplVigenciaIndicador.nuevaVigencia.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicialV"/>
-                                <p:ajax event="change" update="nuevaFechaInicialV"/>
-                            </p:calendar>
-
-                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinalV" value="#{controlEmplVigenciaIndicador.nuevaVigencia.fechafinal}" style="font-size: 10px; position: absolute;  top: 110px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalV"/>
-                                <p:ajax event="change" update="nuevaFechaFinalV"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="nuevaFechaInicialV" value="#{controlEmplVigenciaIndicador.nuevaVigencia.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicialV" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicialV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+                            
+                            
+                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 200px">
+                                <lnk:calendar id="nuevaFechaFinalV" value="#{controlEmplVigenciaIndicador.nuevaVigencia.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinalV" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinalV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+                            
 
                             <strong><h:outputText value="Tipo Indicador: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="nuevaTipoIndicadorV" value="#{controlEmplVigenciaIndicador.nuevaVigencia.tipoindicador.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">
@@ -329,19 +337,23 @@
 
                         <p:panel id="duplicarV" style="border: none;">
 
-                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicialV" value="#{controlEmplVigenciaIndicador.duplicarVigenciaIndicador.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicialV"/>
-                                <p:ajax event="change" update="duplicarFechaInicialV"/>
-                            </p:calendar>
-
-                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinalV" value="#{controlEmplVigenciaIndicador.duplicarVigenciaIndicador.fechafinal}" style="font-size: 10px; position: absolute;  top: 110px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinalV"/>
-                                <p:ajax event="change" update="duplicarFechaFinalV"/>
-                            </p:calendar>
+                            
+                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="duplicarFechaInicialV" value="#{controlEmplVigenciaIndicador.duplicarVigenciaIndicador.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicialV" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicialV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+                            
+                            
+                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 110px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 110px; left: 200px">
+                                <lnk:calendar id="duplicarFechaFinalV" value="#{controlEmplVigenciaIndicador.duplicarVigenciaIndicador.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinalV" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinalV" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="Tipo Indicador: " style="font-size: 14px; position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoV" value="#{controlEmplVigenciaIndicador.duplicarVigenciaIndicador.tipoindicador.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">

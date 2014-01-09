@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -31,7 +32,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlVigenciaAficion implements Serializable{
+public class ControlVigenciaAficion implements Serializable {
 
     @EJB
     AdministrarVigenciaAficionInterface administrarVigenciaAficion;
@@ -71,6 +72,8 @@ public class ControlVigenciaAficion implements Serializable{
     private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
     private Empleados empleado;
+    private Date fechaParametro;
+    private Date fechaIni, fechaFin;
 
     public ControlVigenciaAficion() {
         listVigenciasAficiones = null;
@@ -108,7 +111,6 @@ public class ControlVigenciaAficion implements Serializable{
     public void modificarVigenciaAficion(int indice) {
         if (tipoLista == 0) {
             if (!listVigenciaAficionCrear.contains(listVigenciasAficiones.get(indice))) {
-
                 if (listVigenciaAficionModificar.isEmpty()) {
                     listVigenciaAficionModificar.add(listVigenciasAficiones.get(indice));
                 } else if (!listVigenciaAficionModificar.contains(listVigenciasAficiones.get(indice))) {
@@ -134,6 +136,116 @@ public class ControlVigenciaAficion implements Serializable{
             }
             index = -1;
             secRegistro = null;
+        }
+    }
+
+    public boolean validarFechasRegistro(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(90);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (i == 0) {
+            VigenciasAficiones auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = listVigenciasAficiones.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtrarListVigenciasAficiones.get(index);
+            }
+            if (auxiliar.getFechafinal() != null) {
+                if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (auxiliar.getFechafinal() == null) {
+                if (auxiliar.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 1) {
+            if (nuevaVigenciaAficion.getFechafinal() != null) {
+                if (nuevaVigenciaAficion.getFechainicial().after(fechaParametro) && nuevaVigenciaAficion.getFechainicial().before(nuevaVigenciaAficion.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            } else {
+                if (nuevaVigenciaAficion.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 2) {
+            if (duplicarVigenciaAficion.getFechafinal() != null) {
+                if (duplicarVigenciaAficion.getFechainicial().after(fechaParametro) && duplicarVigenciaAficion.getFechainicial().before(duplicarVigenciaAficion.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            } else {
+                if (duplicarVigenciaAficion.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+    }
+
+    public void modificarFechas(int i, int c) {
+        VigenciasAficiones auxiliar = null;
+        if (tipoLista == 0) {
+            auxiliar = listVigenciasAficiones.get(i);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtrarListVigenciasAficiones.get(i);
+        }
+        if (auxiliar.getFechainicial() != null) {
+            boolean retorno = false;
+            if (auxiliar.getFechafinal() == null) {
+                retorno = true;
+            }
+            if (auxiliar.getFechafinal() != null) {
+                index = i;
+                retorno = validarFechasRegistro(0);
+            }
+            if (retorno == true) {
+                cambiarIndice(i, c);
+                modificarVigenciaAficion(i);
+            } else {
+                if (tipoLista == 0) {
+                    listVigenciasAficiones.get(i).setFechafinal(fechaFin);
+                    listVigenciasAficiones.get(i).setFechainicial(fechaIni);
+                }
+                if (tipoLista == 1) {
+                    filtrarListVigenciasAficiones.get(i).setFechafinal(fechaFin);
+                    filtrarListVigenciasAficiones.get(i).setFechainicial(fechaIni);
+
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciasAficiones");
+                context.execute("form:errorFechas.show()");
+            }
+        } else {
+            if (tipoLista == 0) {
+                listVigenciasAficiones.get(i).setFechainicial(fechaIni);
+            }
+            if (tipoLista == 1) {
+                filtrarListVigenciasAficiones.get(i).setFechainicial(fechaIni);
+
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVigenciasAficiones");
+            context.execute("errorRegNew.show()");
         }
     }
 
@@ -256,9 +368,21 @@ public class ControlVigenciaAficion implements Serializable{
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listVigenciasAficiones.get(index).getSecuencia();
-            if (cualCelda == 2) {
-                aficion = listVigenciasAficiones.get(index).getAficion().getDescripcion();
+            if (tipoLista == 0) {
+                fechaFin = listVigenciasAficiones.get(index).getFechafinal();
+                fechaIni = listVigenciasAficiones.get(index).getFechainicial();
+                secRegistro = listVigenciasAficiones.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    aficion = listVigenciasAficiones.get(index).getAficion().getDescripcion();
+                }
+            }
+            if (tipoLista == 1) {
+                fechaFin = filtrarListVigenciasAficiones.get(index).getFechafinal();
+                fechaIni = filtrarListVigenciasAficiones.get(index).getFechainicial();
+                secRegistro = filtrarListVigenciasAficiones.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    aficion = filtrarListVigenciasAficiones.get(index).getAficion().getDescripcion();
+                }
             }
         }
     }
@@ -381,45 +505,58 @@ public class ControlVigenciaAficion implements Serializable{
      * Metodo que se encarga de agregar un nueva VigenciaReformaLaboral
      */
     public void agregarNuevaVigenciaAficion() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
-            veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
-            veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veDescripcion");
-            veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veIndividual");
-            veIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCIndividual");
-            veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veGrupal");
-            veGrupal.setFilterStyle("display: none; visibility: hidden;");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCGrupal");
-            veCGrupal.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVigenciasAficiones");
-            bandera = 0;
-            filtrarListVigenciasAficiones = null;
-            tipoLista = 0;
+        if (nuevaVigenciaAficion.getFechainicial() != null && nuevaVigenciaAficion.getAficion() != null ) {
+            if (validarFechasRegistro(1) == true) {
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
+                    veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
+                    veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veDescripcion");
+                    veDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                    veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veIndividual");
+                    veIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCIndividual");
+                    veCIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veGrupal");
+                    veGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCGrupal");
+                    veCGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVigenciasAficiones");
+                    bandera = 0;
+                    filtrarListVigenciasAficiones = null;
+                    tipoLista = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigenciaAficion.setSecuencia(l);
+                nuevaVigenciaAficion.setPersona(empleado.getPersona());
+                listVigenciaAficionCrear.add(nuevaVigenciaAficion);
+                if (listVigenciasAficiones == null) {
+                    listVigenciasAficiones = new ArrayList<VigenciasAficiones>();
+                }
+                listVigenciasAficiones.add(nuevaVigenciaAficion);
+                nuevaVigenciaAficion = new VigenciasAficiones();
+                nuevaVigenciaAficion.setAficion(new Aficiones());
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciasAficiones");
+                context.execute("NuevoRegistroVigencias.hide()");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                index = -1;
+                secRegistro = null;
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaVigenciaAficion.setSecuencia(l);
-        nuevaVigenciaAficion.setPersona(empleado.getPersona());
-        listVigenciaAficionCrear.add(nuevaVigenciaAficion);
-
-        listVigenciasAficiones.add(nuevaVigenciaAficion);
-        nuevaVigenciaAficion = new VigenciasAficiones();
-        nuevaVigenciaAficion.setAficion(new Aficiones());
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciasAficiones");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-        }
-        index = -1;
-        secRegistro = null;
     }
     //LIMPIAR NUEVO REGISTRO
 
@@ -456,7 +593,6 @@ public class ControlVigenciaAficion implements Serializable{
                 duplicarVigenciaAficion.setValorcuantitativo(listVigenciasAficiones.get(index).getValorcuantitativo());
                 duplicarVigenciaAficion.setValorcuantitativogrupo(listVigenciasAficiones.get(index).getValorcuantitativogrupo());
 
-
             }
             if (tipoLista == 1) {
 
@@ -485,39 +621,53 @@ public class ControlVigenciaAficion implements Serializable{
      * VigenciasReformasLaborales
      */
     public void confirmarDuplicar() {
-        duplicarVigenciaAficion.setPersona(empleado.getPersona());
-        listVigenciasAficiones.add(duplicarVigenciaAficion);
-        listVigenciaAficionCrear.add(duplicarVigenciaAficion);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciasAficiones");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        if (duplicarVigenciaAficion.getFechainicial() != null && duplicarVigenciaAficion.getAficion() != null) {
+            if (validarFechasRegistro(1) == true) {
+                duplicarVigenciaAficion.setPersona(empleado.getPersona());
+                if (listVigenciasAficiones == null) {
+                    listVigenciasAficiones = new ArrayList<VigenciasAficiones>();
+                }
+                listVigenciasAficiones.add(duplicarVigenciaAficion);
+                listVigenciaAficionCrear.add(duplicarVigenciaAficion);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciasAficiones");
+                context.execute("DuplicarRegistroVigencias.hide()");
+                index = -1;
+                secRegistro = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
+                    veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
+                    veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veDescripcion");
+                    veDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                    veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veIndividual");
+                    veIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCIndividual");
+                    veCIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veGrupal");
+                    veGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCGrupal");
+                    veCGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVigenciasAficiones");
+                    bandera = 0;
+                    filtrarListVigenciasAficiones = null;
+                    tipoLista = 0;
+                }
+                duplicarVigenciaAficion = new VigenciasAficiones();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
-            veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
-            veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veDescripcion");
-            veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veIndividual");
-            veIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCIndividual");
-            veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veGrupal");
-            veGrupal.setFilterStyle("display: none; visibility: hidden;");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veCGrupal");
-            veCGrupal.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVigenciasAficiones");
-            bandera = 0;
-            filtrarListVigenciasAficiones = null;
-            tipoLista = 0;
-        }
-        duplicarVigenciaAficion = new VigenciasAficiones();
     }
     //LIMPIAR DUPLICAR
 

@@ -50,16 +50,12 @@ public class IbcsAutoliquidaciones implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "VALOR")
     private BigDecimal valor;
     @Column(name = "UNIDADES")

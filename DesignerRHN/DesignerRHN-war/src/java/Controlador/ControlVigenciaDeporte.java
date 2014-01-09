@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -37,7 +38,7 @@ public class ControlVigenciaDeporte implements Serializable {
     AdministrarVigenciaDeporteInterface administrarVigenciaDeporte;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     ////
     private List<VigenciasDeportes> listVigenciasDeportes;
     private List<VigenciasDeportes> filtrarListVigenciasDeportes;
@@ -72,6 +73,8 @@ public class ControlVigenciaDeporte implements Serializable {
     private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
     private Empleados empleado;
+    private Date fechaParametro;
+    private Date fechaIni, fechaFin;
 
     public ControlVigenciaDeporte() {
         listVigenciasDeportes = null;
@@ -109,7 +112,6 @@ public class ControlVigenciaDeporte implements Serializable {
     public void modificarVigenciaDeporte(int indice) {
         if (tipoLista == 0) {
             if (!listVigenciaDeporteCrear.contains(listVigenciasDeportes.get(indice))) {
-
                 if (listVigenciaDeporteModificar.isEmpty()) {
                     listVigenciaDeporteModificar.add(listVigenciasDeportes.get(indice));
                 } else if (!listVigenciaDeporteModificar.contains(listVigenciasDeportes.get(indice))) {
@@ -138,7 +140,6 @@ public class ControlVigenciaDeporte implements Serializable {
         }
     }
 
-  
     public void modificarVigenciaDeporte(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
         int coincidencias = 0;
@@ -258,13 +259,25 @@ public class ControlVigenciaDeporte implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listVigenciasDeportes.get(index).getSecuencia();
-            if (cualCelda == 2) {
-                deporte = listVigenciasDeportes.get(index).getDeporte().getNombre();
+            if (tipoLista == 0) {
+                fechaFin = listVigenciasDeportes.get(index).getFechafinal();
+                fechaIni = listVigenciasDeportes.get(index).getFechainicial();
+                secRegistro = listVigenciasDeportes.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    deporte = listVigenciasDeportes.get(index).getDeporte().getNombre();
+                }
+            }
+            if (tipoLista == 1) {
+                fechaFin = filtrarListVigenciasDeportes.get(index).getFechafinal();
+                fechaIni = filtrarListVigenciasDeportes.get(index).getFechainicial();
+                secRegistro = filtrarListVigenciasDeportes.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    deporte = filtrarListVigenciasDeportes.get(index).getDeporte().getNombre();
+                }
             }
         }
     }
-   
+
     public void guardarCambios() {
         if (guardado == false) {
             if (!listVigenciaDDeporteBorrar.isEmpty()) {
@@ -378,50 +391,171 @@ public class ControlVigenciaDeporte implements Serializable {
         secRegistro = null;
     }
 
+    public boolean validarFechasRegistro(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(90);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (i == 0) {
+            VigenciasDeportes auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = listVigenciasDeportes.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtrarListVigenciasDeportes.get(index);
+            }
+            if (auxiliar.getFechafinal() != null) {
+                if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (auxiliar.getFechafinal() == null) {
+                if (auxiliar.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 1) {
+            if (nuevaVigenciaDeporte.getFechafinal() != null) {
+                if (nuevaVigenciaDeporte.getFechainicial().after(fechaParametro) && nuevaVigenciaDeporte.getFechainicial().before(nuevaVigenciaDeporte.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            } else {
+                if (nuevaVigenciaDeporte.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 2) {
+            if (duplicarVigenciaDeporte.getFechafinal() != null) {
+                if (duplicarVigenciaDeporte.getFechainicial().after(fechaParametro) && duplicarVigenciaDeporte.getFechainicial().before(duplicarVigenciaDeporte.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            } else {
+                if (duplicarVigenciaDeporte.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+    }
+
+    public void modificarFechas(int i, int c) {
+        VigenciasDeportes auxiliar = null;
+        if (tipoLista == 0) {
+            auxiliar = listVigenciasDeportes.get(i);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtrarListVigenciasDeportes.get(i);
+        }
+        if (auxiliar.getFechainicial() != null) {
+            boolean retorno = false;
+            if (auxiliar.getFechafinal() == null) {
+                retorno = true;
+            }
+            if (auxiliar.getFechafinal() != null) {
+                index = i;
+                retorno = validarFechasRegistro(0);
+            }
+            if (retorno == true) {
+                cambiarIndice(i, c);
+                modificarVigenciaDeporte(i);
+            } else {
+                if (tipoLista == 0) {
+                    listVigenciasDeportes.get(i).setFechafinal(fechaFin);
+                    listVigenciasDeportes.get(i).setFechainicial(fechaIni);
+                }
+                if (tipoLista == 1) {
+                    filtrarListVigenciasDeportes.get(i).setFechafinal(fechaFin);
+                    filtrarListVigenciasDeportes.get(i).setFechainicial(fechaIni);
+
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciasDeportes");
+                context.execute("form:errorFechas.show()");
+            }
+        } else {
+            if (tipoLista == 0) {
+                listVigenciasDeportes.get(i).setFechainicial(fechaIni);
+            }
+            if (tipoLista == 1) {
+                filtrarListVigenciasDeportes.get(i).setFechainicial(fechaIni);
+
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVigenciasDeportes");
+            context.execute("errorRegNew.show()");
+        }
+    }
+
     //CREAR VU
     /**
      * Metodo que se encarga de agregar un nueva VigenciaReformaLaboral
      */
     public void agregarNuevaVigenciaDeporte() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaInicial");
-            veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaFinal");
-            veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veDescripcion");
-            veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veIndividual");
-            veIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCIndividual");
-            veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veGrupal");
-            veGrupal.setFilterStyle("display: none; visibility: hidden;");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCGrupal");
-            veCGrupal.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVigenciasDeportes");
-            bandera = 0;
-            filtrarListVigenciasDeportes = null;
-            tipoLista = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaVigenciaDeporte.setSecuencia(l);
-        nuevaVigenciaDeporte.setPersona(empleado.getPersona());
-        listVigenciaDeporteCrear.add(nuevaVigenciaDeporte);
+        if (nuevaVigenciaDeporte.getFechainicial() != null && nuevaVigenciaDeporte.getDeporte() != null) {
+            if (validarFechasRegistro(1) == true) {
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaInicial");
+                    veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaFinal");
+                    veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veDescripcion");
+                    veDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                    veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veIndividual");
+                    veIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCIndividual");
+                    veCIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veGrupal");
+                    veGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCGrupal");
+                    veCGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVigenciasDeportes");
+                    bandera = 0;
+                    filtrarListVigenciasDeportes = null;
+                    tipoLista = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigenciaDeporte.setSecuencia(l);
+                nuevaVigenciaDeporte.setPersona(empleado.getPersona());
+                listVigenciaDeporteCrear.add(nuevaVigenciaDeporte);
 
-        listVigenciasDeportes.add(nuevaVigenciaDeporte);
-        nuevaVigenciaDeporte = new VigenciasDeportes();
-        nuevaVigenciaDeporte.setDeporte(new Deportes());
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciasDeportes");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+                listVigenciasDeportes.add(nuevaVigenciaDeporte);
+                nuevaVigenciaDeporte = new VigenciasDeportes();
+                nuevaVigenciaDeporte.setDeporte(new Deportes());
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciasDeportes");
+                context.execute("NuevoRegistroVigencias.hide()");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                index = -1;
+                secRegistro = null;
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
     //LIMPIAR NUEVO REGISTRO
 
@@ -446,32 +580,31 @@ public class ControlVigenciaDeporte implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
 
-           if (tipoLista == 0) {
-                
-                 duplicarVigenciaDeporte.setSecuencia(l);
-                 duplicarVigenciaDeporte.setDeporte(listVigenciasDeportes.get(index).getDeporte());
-                 duplicarVigenciaDeporte.setFechafinal(listVigenciasDeportes.get(index).getFechafinal());
-                 duplicarVigenciaDeporte.setFechainicial(listVigenciasDeportes.get(index).getFechainicial());
-                 duplicarVigenciaDeporte.setPersona(listVigenciasDeportes.get(index).getPersona());
-                 duplicarVigenciaDeporte.setValorcualitativo(listVigenciasDeportes.get(index).getValorcualitativo());
-                 duplicarVigenciaDeporte.setValorcualitativogrupo(listVigenciasDeportes.get(index).getValorcualitativogrupo());
-                 duplicarVigenciaDeporte.setValorcuantitativo(listVigenciasDeportes.get(index).getValorcuantitativo());
-                 duplicarVigenciaDeporte.setValorcuantitativogrupo(listVigenciasDeportes.get(index).getValorcuantitativogrupo());
-                 
-                 
+            if (tipoLista == 0) {
+
+                duplicarVigenciaDeporte.setSecuencia(l);
+                duplicarVigenciaDeporte.setDeporte(listVigenciasDeportes.get(index).getDeporte());
+                duplicarVigenciaDeporte.setFechafinal(listVigenciasDeportes.get(index).getFechafinal());
+                duplicarVigenciaDeporte.setFechainicial(listVigenciasDeportes.get(index).getFechainicial());
+                duplicarVigenciaDeporte.setPersona(listVigenciasDeportes.get(index).getPersona());
+                duplicarVigenciaDeporte.setValorcualitativo(listVigenciasDeportes.get(index).getValorcualitativo());
+                duplicarVigenciaDeporte.setValorcualitativogrupo(listVigenciasDeportes.get(index).getValorcualitativogrupo());
+                duplicarVigenciaDeporte.setValorcuantitativo(listVigenciasDeportes.get(index).getValorcuantitativo());
+                duplicarVigenciaDeporte.setValorcuantitativogrupo(listVigenciasDeportes.get(index).getValorcuantitativogrupo());
+
             }
             if (tipoLista == 1) {
-                
+
                 duplicarVigenciaDeporte.setSecuencia(l);
                 duplicarVigenciaDeporte.setDeporte(filtrarListVigenciasDeportes.get(index).getDeporte());
-                 duplicarVigenciaDeporte.setFechafinal(filtrarListVigenciasDeportes.get(index).getFechafinal());
-                 duplicarVigenciaDeporte.setFechainicial(filtrarListVigenciasDeportes.get(index).getFechainicial());
-                 duplicarVigenciaDeporte.setPersona(filtrarListVigenciasDeportes.get(index).getPersona());
-                 duplicarVigenciaDeporte.setValorcualitativo(filtrarListVigenciasDeportes.get(index).getValorcualitativo());
-                 duplicarVigenciaDeporte.setValorcualitativogrupo(filtrarListVigenciasDeportes.get(index).getValorcualitativogrupo());
-                 duplicarVigenciaDeporte.setValorcuantitativo(filtrarListVigenciasDeportes.get(index).getValorcuantitativo());
-                 duplicarVigenciaDeporte.setValorcuantitativogrupo(filtrarListVigenciasDeportes.get(index).getValorcuantitativogrupo());
-                 
+                duplicarVigenciaDeporte.setFechafinal(filtrarListVigenciasDeportes.get(index).getFechafinal());
+                duplicarVigenciaDeporte.setFechainicial(filtrarListVigenciasDeportes.get(index).getFechainicial());
+                duplicarVigenciaDeporte.setPersona(filtrarListVigenciasDeportes.get(index).getPersona());
+                duplicarVigenciaDeporte.setValorcualitativo(filtrarListVigenciasDeportes.get(index).getValorcualitativo());
+                duplicarVigenciaDeporte.setValorcualitativogrupo(filtrarListVigenciasDeportes.get(index).getValorcualitativogrupo());
+                duplicarVigenciaDeporte.setValorcuantitativo(filtrarListVigenciasDeportes.get(index).getValorcuantitativo());
+                duplicarVigenciaDeporte.setValorcuantitativogrupo(filtrarListVigenciasDeportes.get(index).getValorcuantitativogrupo());
+
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -487,39 +620,50 @@ public class ControlVigenciaDeporte implements Serializable {
      * VigenciasReformasLaborales
      */
     public void confirmarDuplicar() {
-        duplicarVigenciaDeporte.setPersona(empleado.getPersona());
-        listVigenciasDeportes.add(duplicarVigenciaDeporte);
-        listVigenciaDeporteCrear.add(duplicarVigenciaDeporte);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciasDeportes");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        if (duplicarVigenciaDeporte.getFechainicial() != null && duplicarVigenciaDeporte.getDeporte() != null) {
+            if (validarFechasRegistro(2) == true) {
+                duplicarVigenciaDeporte.setPersona(empleado.getPersona());
+                listVigenciasDeportes.add(duplicarVigenciaDeporte);
+                listVigenciaDeporteCrear.add(duplicarVigenciaDeporte);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciasDeportes");
+                context.execute("DuplicarRegistroVigencias.hide()");
+                index = -1;
+                secRegistro = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaInicial");
+                    veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaFinal");
+                    veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veDescripcion");
+                    veDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                    veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veIndividual");
+                    veIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCIndividual");
+                    veCIndividual.setFilterStyle("display: none; visibility: hidden;");
+                    veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veGrupal");
+                    veGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCGrupal");
+                    veCGrupal.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVigenciasDeportes");
+                    bandera = 0;
+                    filtrarListVigenciasDeportes = null;
+                    tipoLista = 0;
+                }
+                duplicarVigenciaDeporte = new VigenciasDeportes();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaInicial");
-            veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaFinal");
-            veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veDescripcion");
-            veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veIndividual");
-            veIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCIndividual");
-            veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veGrupal");
-            veGrupal.setFilterStyle("display: none; visibility: hidden;");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veCGrupal");
-            veCGrupal.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVigenciasDeportes");
-            bandera = 0;
-            filtrarListVigenciasDeportes = null;
-            tipoLista = 0;
-        }
-        duplicarVigenciaDeporte = new VigenciasDeportes();
     }
     //LIMPIAR DUPLICAR
 

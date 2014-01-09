@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -81,7 +82,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooEmpresaP" value="Empresas"/>
+                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooEmpresaP" value="Empresas"/>
                                     </f:facet>
                                 </p:column>
 
@@ -97,7 +98,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none;" value="Codigo"/>
+                                        <h:outputText style="width: 100%; height: 16px;  border: none;" value="Codigo"/>
                                     </f:facet>
                                 </p:column>
 
@@ -113,7 +114,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none;" value="Nombre Proyecto"/>
+                                        <h:outputText style="width: 100%; height: 16px; border: none;" value="Nombre Proyecto"/>
                                     </f:facet>
                                 </p:column>
 
@@ -130,7 +131,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooClientesP" value="Clientes"/>
+                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooClientesP" value="Clientes"/>
                                     </f:facet>
                                 </p:column>
 
@@ -147,7 +148,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooPlataformaP" value="Plataforma"/>
+                                        <p:commandButton style="width: 100%; height: 16px;  border: none; color: blue" id="fooPlataformaP" value="Plataforma"/>
                                     </f:facet>
                                 </p:column>
 
@@ -166,7 +167,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none;" value="Monto"/>
+                                        <h:outputText style="width: 100%; height: 16px;  border: none;" value="Monto"/>
                                     </f:facet>
                                 </p:column>
 
@@ -183,7 +184,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooMonedaP" value="Tipo Moneda"/>
+                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooMonedaP" value="Tipo Moneda"/>
                                     </f:facet>
                                 </p:column>
 
@@ -199,7 +200,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none;" value="Cant. Personas"/>
+                                        <h:outputText style="width: 100%; height: 16px; border: none;" value="Cant. Personas"/>
                                     </f:facet>
                                 </p:column>
 
@@ -212,17 +213,15 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechainicial}" id="editarFechaInicialP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificarProyecto(indiceP)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlProyecto.modificarProyecto(indiceP)}" process="@this"/>
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechainicial}" >  
+                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificacionesFechas(indiceP,8)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlProyecto.modificacionesFechas(indiceP,8)}" update="dateFechaInicial"  process="@this"/>
                                                 <p:ajax event="select" listener="#{controlProyecto.cambiarIndiceP(indiceP,8)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar> 
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Inicio" style="font-size: 9px" id="fooFechaInicialP"/>
+                                        <h:outputText value="Fecha Inicio"  id="fooFechaInicialP"/>
                                     </f:facet>
                                 </p:column>
 
@@ -235,17 +234,15 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechafinal}" id="editarFechaFinalP" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificarProyecto(indiceP)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlProyecto.modificarProyecto(indiceP)}" process="@this"/>
+                                            <lnk:calendar id="editarFechaFinalP" value="#{info.fechafinal}" >  
+                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificacionesFechas(indiceP,9)}" update="editarFechaFinalP"  process="@this"/>
+                                                <p:ajax event="change" listener="#{controlProyecto.modificacionesFechas(indiceP,9)}" update="editarFechaFinalP"  process="@this"/>
                                                 <p:ajax event="select" listener="#{controlProyecto.cambiarIndiceP(indiceP,9)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar> 
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Finalizacion" style="font-size: 9px" id="fooFechaFinalP"/>
+                                        <h:outputText value="Fecha Finalizacion"  id="fooFechaFinalP"/>
                                     </f:facet>
                                 </p:column>
 
@@ -261,7 +258,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none;" value="Descripcion del Proyecto"/>
+                                        <h:outputText style="width: 100%; height: 16px; border: none;" value="Descripcion del Proyecto"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -410,7 +407,7 @@
                                 <p:resetInput target=":form:lovMoneda:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
-                        
+
                         <p:dialog header="Proyectos" widgetVar="BuscarProyectoDialogo" draggable="false" resizable="false" closable="false" id="BuscarProyectoDialogo"  
                                   showEffect="fade" hideEffect="fade" width="400" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovProyecto" style="font-size: 11px; width: 380px" var="proyecto" value="#{controlProyecto.listProyectos}" rowKey="#{proyecto.secuencia}"
@@ -442,7 +439,7 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        
+
                         <p:commandButton style="position: absolute;left: 20px;top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARPROYECTO" process="@this" value="Buscar Proyecto" actionListener="#{controlProyecto.dialogoProyecto()}"/> 
                         <p:commandButton style="position: absolute;left: 150px;top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" process="@this" value="Mostrar Todos" actionListener="#{controlProyecto.mostrarTodos()}" update=":form:datosProyectos"/>
                         <p:commandButton style="position: absolute; left: 710px; top: 475px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosProyectos" process="@this" />
@@ -504,11 +501,11 @@
                         <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlProyecto.activarCtrlF11()}"/> 
-                    <p:dialog id="errorFechas" header="ATENCIÓN...!" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Error fechas" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Cancelar" onclick="errorFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    <p:dialog id="errorFechas" header="ATENCIÓN" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La fecha inicial es menor a la fecha final y/o la fecha inicial es vacia." style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                   
                 </h:form>
                 <h:form id="formularioDialogos" >
 
@@ -572,19 +569,23 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 310px;  " id="btnNuevaMoneda" icon="ui-icon-search" process="@this" actionListener="#{controlProyecto.asignarIndex(indice,3,1)}" update="nuevaMonedaP"/>   
                             <p:watermark for="nuevaMonedaP" value="Tipo Moneda" />
 
-                            <strong><h:outputText value="Fecha Inicio: " style="font-size: 14px; position: absolute; top: 350px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicialP" value="#{controlProyecto.nuevaProyectos.fechainicial}" style="font-size: 10px; position: absolute;  top: 350px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicialP"/>
-                                <p:ajax event="change" update="nuevaFechaInicialP"/>
-                            </p:calendar>
 
-                            <strong><h:outputText value="Fecha Finalizacion: " style="font-size: 14px; position: absolute; top: 390px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinalP" value="#{controlProyecto.nuevaProyectos.fechafinal}" style="font-size: 10px; position: absolute;  top: 390px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalP"/>
-                                <p:ajax event="change" update="nuevaFechaFinalP"/>
-                            </p:calendar>
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 350px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 350px; left: 220px">
+                                <lnk:calendar id="nuevaFechaInicial" value="#{controlProyecto.nuevaProyectos.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 390px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 390px; left: 220px">
+                                <lnk:calendar id="nuevaFechaFinal" value="#{controlProyecto.nuevaProyectos.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="Descripcion: " style="font-size: 14px; position: absolute; top: 430px ; left: 50px" /></strong>
                             <p:inputTextarea id="nuevaDescripcionP" value="#{controlProyecto.nuevaProyectos.descripcionproyecto}"  style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 430px; text-transform: uppercase" onclick="select();" >
@@ -658,19 +659,23 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 310px;  " id="btnDuplicaMoneda" icon="ui-icon-search" process="@this" actionListener="#{controlProyecto.asignarIndex(indice,3,2)}" update="duplicarMonedaP"/>   
                             <p:watermark for="duplicarMonedaP" value="Tipo Moneda" />
 
-                            <strong><h:outputText value="Fecha Inicio: " style="font-size: 14px; position: absolute; top: 350px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicialP" value="#{controlProyecto.duplicarProyecto.fechainicial}" style="font-size: 10px; position: absolute;  top: 350px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicialP"/>
-                                <p:ajax event="change" update="duplicarFechaInicialP"/>
-                            </p:calendar>
 
-                            <strong><h:outputText value="Fecha Finalizacion: " style="font-size: 14px; position: absolute; top: 390px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinalP" value="#{controlProyecto.duplicarProyecto.fechafinal}" style="font-size: 10px; position: absolute;  top: 390px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinalP"/>
-                                <p:ajax event="change" update="duplicarFechaFinalP"/>
-                            </p:calendar>
+                            <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 350px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 350px; left: 220px">
+                                <lnk:calendar id="duplicarFechaInicial" value="#{controlProyecto.duplicarProyecto.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+
+                            <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 390px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 390px; left: 220px">
+                                <lnk:calendar id="duplicarFechaFinal" value="#{controlProyecto.duplicarProyecto.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="Descripcion: " style="font-size: 14px; position: absolute; top: 430px ; left: 50px" /></strong>
                             <p:inputTextarea id="duplicarDescripcionP" value="#{controlProyecto.duplicarProyecto.descripcionproyecto}"  style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 430px; text-transform: uppercase" onclick="select();" >
@@ -751,42 +756,42 @@
                 <h:form id="formExportarP">
                     <p:dataTable id="datosProyectoExportar" var="infoP" style="visibility: hidden; display: none;"                           
                                  value="#{controlProyecto.listProyectos}"> 
-                        
+
                         <p:column headerText="Empresa">                                  
                             <f:facet name="header"><h:outputText value="Empresa"/> </f:facet> 
                             <h:outputText value="#{infoP.empresa.nombre}" />
                         </p:column>
-                        
+
                         <p:column headerText="Codigo">                                  
                             <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
                             <h:outputText value="#{infoP.codigo}" />
                         </p:column>
-                        
+
                         <p:column headerText="Nombre">                                  
                             <f:facet name="header"><h:outputText value="Nombre"/> </f:facet> 
                             <h:outputText value="#{infoP.nombreproyecto}" />
                         </p:column>
-                        
+
                         <p:column headerText="Cliente">                                  
                             <f:facet name="header"><h:outputText value="Cliente"/> </f:facet> 
                             <h:outputText value="#{infoP.pryCliente.nombre}" />
                         </p:column>
-                        
+
                         <p:column headerText="Plataforma">                                  
                             <f:facet name="header"><h:outputText value="Plataforma"/> </f:facet> 
                             <h:outputText value="#{infoP.pryPlataforma.descripcion}" />
                         </p:column>
-                        
+
                         <p:column headerText="Monto">                                  
                             <f:facet name="header"><h:outputText value="Monto"/> </f:facet> 
                             <h:outputText value="#{infoP.monto}" />
                         </p:column>
-                        
+
                         <p:column headerText="Tipo Moneda">                                  
                             <f:facet name="header"><h:outputText value="Tipo Moneda"/> </f:facet> 
                             <h:outputText value="#{infoP.tipomoneda.nombre}" />
                         </p:column>
-                        
+
                         <p:column headerText="Cant. Personas">                                  
                             <f:facet name="header"><h:outputText value="Cant. Personas"/> </f:facet> 
                             <h:outputText value="#{infoP.cantidadpersonas}" />
@@ -806,7 +811,7 @@
                             </h:outputText>
                         </p:column>
 
-                         <p:column headerText="Descripcion Proyecto">                                  
+                        <p:column headerText="Descripcion Proyecto">                                  
                             <f:facet name="header"><h:outputText value="escripcion Proyecto"/> </f:facet> 
                             <h:outputText value="#{infoP.descripcionproyecto}" />
                         </p:column>

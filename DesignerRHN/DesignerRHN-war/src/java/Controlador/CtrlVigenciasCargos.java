@@ -192,7 +192,7 @@ public class CtrlVigenciasCargos implements Serializable {
     public List<Aficiones> getListAficiones() {
         if (listAficiones == null) {
 //            listAficiones = administrarCarpetaDesigner.buscarAficiones();
-            listAficiones = administrarCarpetaDesigner.buscarAfi();
+            listAficiones = administrarCarpetaDesigner.buscarAficiones();
             return listAficiones;
         } else {
             return listAficiones;

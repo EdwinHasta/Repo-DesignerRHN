@@ -44,7 +44,7 @@ public interface PersistenciaPeriodicidadesInterface {
     /**
      * Método encargado de verificar si hay al menos una Periodicidad con el código dado como parámetro.
      * @param codigoPeriodicidad Código de la Periodicidad
-     * @return Retorna true si existe alguna VigenciaTipoContrato con el código dado por parámetro.
+     * @return Retorna true si existe alguna Periodicidad con el código dado por parámetro.
      */
     public boolean verificarCodigoPeriodicidad(BigInteger codigoPeriodicidad);
 }

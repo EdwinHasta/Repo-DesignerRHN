@@ -59,8 +59,8 @@
                                         <f:facet name="input">
                                             <lnk:calendar id="dateFechaDesde" value="#{info.fechadesde}"   >
                                                 <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlPerExperienciaLaboral.adicionCambiarIndiceModificar(indice,1)}" process="@this" update="dateFechaDesde"/>
-                                                <p:ajax event="dateSelect" listener="#{controlPerExperienciaLaboral.adicionCambiarIndiceModificar(indice,1)}" process="@this" update="dateFechaDesde"/>
+                                                <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificacionesFechas(indice,1)}" process="@this" update="dateFechaDesde"/>
+                                                <p:ajax event="dateSelect" listener="#{controlPerExperienciaLaboral.modificacionesFechas(indice,1)}" process="@this" update="dateFechaDesde"/>
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>

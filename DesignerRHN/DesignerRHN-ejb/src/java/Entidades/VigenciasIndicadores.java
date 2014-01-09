@@ -7,6 +7,8 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -42,8 +45,6 @@ public class VigenciasIndicadores implements Serializable {
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
@@ -56,6 +57,10 @@ public class VigenciasIndicadores implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
+    @Transient
+    private String strFechaIni;
+    @Transient
+    private String strFechaFin;
 
     public VigenciasIndicadores() {
     }
@@ -92,6 +97,40 @@ public class VigenciasIndicadores implements Serializable {
     public void setFechainicial(Date fechainicial) {
         this.fechainicial = fechainicial;
     }
+
+    public String getStrFechaIni() {
+         if (fechafinal != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaIni = formatoFecha.format(fechafinal);
+        } else {
+            strFechaIni = " ";
+        }
+        return strFechaIni;
+    }
+
+    public void setStrFechaIni(String strFechaIni) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechafinal = formatoFecha.parse(strFechaIni);
+        this.strFechaIni = strFechaIni;
+    }
+
+    public String getStrFechaFin() {
+         if (fechainicial != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            strFechaFin = formatoFecha.format(fechainicial);
+        } else {
+            strFechaFin = " ";
+        }
+        return strFechaFin;
+    }
+
+    public void setStrFechaFin(String strFechaFin) throws ParseException {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        fechainicial = formatoFecha.parse(strFechaFin);
+        this.strFechaFin = strFechaFin;
+    }
+    
+    
 
     public TiposIndicadores getTipoindicador() {
         return tipoindicador;

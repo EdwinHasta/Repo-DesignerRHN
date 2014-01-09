@@ -13,7 +13,7 @@ import java.math.BigInteger;
  */
 public interface PersistenciaVWActualesTiposContratosInterface {
     /**
-     * Método encargado de buscar Tipo Contrato actual de un empleado, para esto se realiza la consulta
+     * Método encargado de buscar el Tipo Contrato actual de un empleado, para esto se realiza la consulta
      * sobre la vista VWActualesTiposContratos.
      * El término actual está dado por la fechaHasta de las liquidaciones.
      * @param secuencia Secuencia del empleado.

@@ -634,6 +634,25 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>idiomaPerson</from-outcome>
+            <to-view-id>/IdiomaPersona.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/IdiomaPersona.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplIndividual</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    <navigation-rule>
         <from-view-id>/Concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleConcepto</from-outcome>

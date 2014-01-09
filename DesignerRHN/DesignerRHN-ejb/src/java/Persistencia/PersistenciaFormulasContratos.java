@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 
 package Persistencia;
@@ -16,12 +14,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author PROYECTO01
+ * Clase Stateless. <br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'FormulasContratos'
+ * de la base de datos.
+ * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaFormulasContratos implements PersistenciaFormulasContratosInterface{
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -65,6 +67,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
         }
     }
     
+    @Override
     public List<Formulascontratos> formulasContratosParaContratoSecuencia(BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.contrato.secuencia=:secuencia");

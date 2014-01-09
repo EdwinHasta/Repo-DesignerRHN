@@ -1,28 +1,28 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author user
+ * @author betelgeuse
  */
 @Entity
 @Table(name = "EVALCOMPETENCIAS")
@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "EvalCompetencias.findAll", query = "SELECT e FROM EvalCompetencias e")})
 public class EvalCompetencias implements Serializable {
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -38,14 +37,18 @@ public class EvalCompetencias implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Size(max = 1000)
     @Column(name = "DESCOMPETENCIA")
     private String desCompetencia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evalcompetencia")
-    private Collection<Competenciascargos> competenciascargosCollection;
 
     public EvalCompetencias() {
     }
@@ -81,7 +84,7 @@ public class EvalCompetencias implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        this.descripcion = descripcion;
     }
 
     public String getDesCompetencia() {
@@ -89,17 +92,10 @@ public class EvalCompetencias implements Serializable {
     }
 
     public void setDesCompetencia(String desCompetencia) {
-        this.desCompetencia = desCompetencia.toUpperCase();
+        this.desCompetencia = desCompetencia;
     }
 
-    @XmlTransient
-    public Collection<Competenciascargos> getCompetenciascargosCollection() {
-        return competenciascargosCollection;
-    }
-
-    public void setCompetenciascargosCollection(Collection<Competenciascargos> competenciascargosCollection) {
-        this.competenciascargosCollection = competenciascargosCollection;
-    }
+    
 
     @Override
     public int hashCode() {
@@ -123,6 +119,7 @@ public class EvalCompetencias implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Evalcompetencias[ secuencia=" + secuencia + " ]";
+        return "Entidades.EvalCompetencias[ secuencia=" + secuencia + " ]";
     }
+    
 }
