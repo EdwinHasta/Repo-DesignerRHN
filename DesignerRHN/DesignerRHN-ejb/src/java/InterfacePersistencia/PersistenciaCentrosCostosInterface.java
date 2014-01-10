@@ -49,7 +49,7 @@ public interface PersistenciaCentrosCostosInterface {
     public List<CentrosCostos> buscarCentrosCostos();
 
     /**
-     * Método encargado de buscar el CentroCosto con la secuencia dado por
+     * Método encargado de buscar el CentroCosto con la secuencia dada por
      * parámetro.
      *
      * @param secuencia Secuencia del CentroCosto que se quiere encontrar.
@@ -59,7 +59,7 @@ public interface PersistenciaCentrosCostosInterface {
     public CentrosCostos buscarCentroCostoSecuencia(BigInteger secuencia);
 
     /**
-     * Método encargado de buscar los CentroCosto de una empresa especifica.
+     * Método encargado de buscar los CentroCosto de una empresa específica.
      *
      * @param secEmpresa Identificador único de la empresa a la cual pertenecen
      * los centrosCostos.

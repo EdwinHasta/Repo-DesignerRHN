@@ -12,10 +12,11 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    <f:loadBundle basename="Recursos.detalleconcepto" var="msg" />
                     <p:growl id="growl" showDetail="true" />
-                    <p:panel  id="PanelTotal" header="Detalles del Concepto" style=" font-size: 13px; position: absolute; width: 874px; height: 535px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 535px; text-align: left;" >  
 
-                        <h:outputText value="Concepto : " style="position: absolute;left: 45px; top: 80px;color: #14388B;font-weight: bold"/>
+                        <h:outputText value="#{msg['concepto']}" style="position: absolute;left: 45px; top: 80px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreConcepto" value="#{controlDetalleConcepto.comportamientoConcepto}" style="font-weight: bold; color: #BF1A1A; position: absolute; left: 115px; top: 80px"/>
                         <p:commandButton value="" id="btnDeteleConcepto" style="position: absolute; top: 75px; left: 10px;background-image: url(Imagenes/deleteConcepto.png);background-size: 100% 100%; background-repeat: no-repeat;width: 25px; height: 30px;" actionListener="#{controlDetalleCuenta.validarEliminacionConcepto()}"/>
                         <p:tooltip style="font-size: 12px" for="btnDeteleConcepto" value="Hoja de vida del concepto" />
