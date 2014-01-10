@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,7 +16,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,12 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "PRY_CLIENTES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PryClientes.findAll", query = "SELECT p FROM PryClientes p"),
-    @NamedQuery(name = "PryClientes.findBySecuencia", query = "SELECT p FROM PryClientes p WHERE p.secuencia = :secuencia"),
-    @NamedQuery(name = "PryClientes.findByNombre", query = "SELECT p FROM PryClientes p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "PryClientes.findByDireccion", query = "SELECT p FROM PryClientes p WHERE p.direccion = :direccion"),
-    @NamedQuery(name = "PryClientes.findByTelefono", query = "SELECT p FROM PryClientes p WHERE p.telefono = :telefono"),
-    @NamedQuery(name = "PryClientes.findByContacto", query = "SELECT p FROM PryClientes p WHERE p.contacto = :contacto")})
+    @NamedQuery(name = "PryClientes.findAll", query = "SELECT p FROM PryClientes p")})
 public class PryClientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,19 +36,13 @@ public class PryClientes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    private BigInteger secuencia;
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 50)
     @Column(name = "DIRECCION")
     private String direccion;
-    @Size(max = 30)
     @Column(name = "TELEFONO")
     private String telefono;
-    @Size(max = 30)
     @Column(name = "CONTACTO")
     private String contacto;
     @OneToMany(mappedBy = "pryCliente")
@@ -63,20 +51,20 @@ public class PryClientes implements Serializable {
     public PryClientes() {
     }
 
-    public PryClientes(BigDecimal secuencia) {
+    public PryClientes(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public PryClientes(BigDecimal secuencia, String nombre) {
+    public PryClientes(BigInteger secuencia, String nombre) {
         this.secuencia = secuencia;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -88,7 +76,7 @@ public class PryClientes implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getDireccion() {
@@ -96,7 +84,11 @@ public class PryClientes implements Serializable {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        if (direccion == null) {
+            this.direccion = " ";
+        } else {
+            this.direccion = direccion.toUpperCase();
+        }
     }
 
     public String getTelefono() {
