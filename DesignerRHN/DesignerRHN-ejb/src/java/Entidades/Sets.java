@@ -47,21 +47,14 @@ public class Sets implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "PROMEDIO")
     private BigDecimal promedio;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
     @Column(name = "TIPOSET")
     private String tiposet;
     @Column(name = "PORCENTAJE")

@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "JornadasLaborales.findAll", query = "SELECT j FROM JornadasLaborales j")})
 public class JornadasLaborales implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -89,6 +90,9 @@ public class JornadasLaborales implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -168,5 +172,5 @@ public class JornadasLaborales implements Serializable {
     public String toString() {
         return "Entidades.Jornadaslaborales[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
