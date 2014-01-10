@@ -16,13 +16,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author user
+ * @author PROYECTO01
  */
 @Entity
 @Table(name = "MOTIVOSCESANTIAS")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MotivosCesantias.findAll", query = "SELECT m FROM MotivosCesantias m")})
 public class MotivosCesantias implements Serializable {
@@ -33,8 +36,13 @@ public class MotivosCesantias implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
 
@@ -72,7 +80,7 @@ public class MotivosCesantias implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        this.nombre = nombre;
     }
 
     @Override
@@ -97,7 +105,7 @@ public class MotivosCesantias implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Motivoscesantias[ secuencia=" + secuencia + " ]";
+        return "Entidades.MotivosCesantias[ secuencia=" + secuencia + " ]";
     }
     
 }
