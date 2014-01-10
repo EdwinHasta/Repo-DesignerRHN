@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -74,7 +75,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['fecha']}" sortBy="#{infoVJ.fechavigencia}" filterBy="#{infoVJ.fechavigencia}" filterMatchMode="contains"  width="72" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="#{msg['fecha']}" sortBy="#{infoVJ.fechavigencia}" filterBy="#{infoVJ.fechavigencia}" filterMatchMode="contains"  width="20" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoVJ.fechavigencia}" >
@@ -82,13 +83,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{infoVJ.fechavigencia}" id="editFechaVigencia"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVJ(indice)}" update="editFechaVigencia"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice)}" update="editFechaVigencia"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,0)}" /> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="dateFechaVigencia" value="#{infoVJ.fechavigencia}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarFechasVJ(indice,0)}" update="dateFechaVigencia" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarFechasVJ(indice,0)}" update="dateFechaVigencia" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,0)}" process="@this"/> 
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -101,7 +100,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoVJ.jornadatrabajo.descripcion}"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoVJ.jornadatrabajo.descripcion}"  id="editarNombreJornada" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{infoVJ.jornadatrabajo.descripcion}"  id="editarNombreJornada" style="font-size: 10px; border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice, 'NOMBREJORNADA', infoVJ.jornadatrabajo.descripcion)}" update="editarNombreJornada"/>
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,0,0,0)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,1)}" process="@this"/>
@@ -117,7 +116,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoVJ.tipodescanso.descripcion}"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoVJ.tipodescanso.descripcion}"  id="editarTipoDescanso" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
+                                            <p:inputText value="#{infoVJ.tipodescanso.descripcion}"  id="editarTipoDescanso" style="font-size: 10px; border-radius: 0px; width: 98.5%; text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice, 'TIPODESCANSO', infoVJ.tipodescanso.descripcion)}" update="editarTipoDescanso"/>
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,1,0,0)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,2)}" process="@this"/>
@@ -146,13 +145,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechainicial}" id="editarFechaInicialVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%; text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" update="editarFechaInicialVCT" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" process="@this" update="editarFechaInicialVCT"/>
+                                            <lnk:calendar id="dateFechaInicialVCT" value="#{info.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarFechasVCT(indiceVCT,0)}" update="dateFechaInicialVCT" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarFechasVCT(indiceVCT,0)}" update="dateFechaInicialVCT" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCT(indiceVCT,0)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -168,13 +165,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info.fechafinal}" id="editarFechaFinalVCT" style="font-size: 11px; border-radius: 0px; width: 93.5%; text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" update="editarFechaFinalVCT" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCT(indiceVCT)}" process="@this" update="editarFechaFinalVCT"/>
+                                            <lnk:calendar id="dateFechaFinalVCT" value="#{info.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarFechasVCT(indiceVCT,1)}" update="dateFechaFinalVCT" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarFechasVCT(indiceVCT,1)}" update="dateFechaFinalVCT" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCT(indiceVCT,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -215,13 +210,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info2.fechainicial}" id="editarFechaInicialVCD" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" update="editarFechaInicialVCD" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" process="@this" update="editarFechaInicialVCD"/>
+                                            <lnk:calendar id="dateFechaInicialVCD" value="#{info2.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarFechasVCD(indiceVCD,0)}" update="dateFechaInicialVCD" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarFechasVCD(indiceVCD,0)}" update="dateFechaInicialVCD" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCD(indiceVCD,0)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -237,13 +230,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar value="#{info2.fechafinal}" id="editarFechaFinalVCD" style="font-size: 11px; border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                        locale="es" pattern="dd/MM/yyyy">
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" update="editarFechaFinalVCD" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVCD(indiceVCD)}" process="@this" update="editarFechaFinalVCD"/>
+                                            <lnk:calendar id="dateFechaFinalVCD" value="#{info2.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaJornada.modificarFechasVCD(indiceVCD,1)}" update="dateFechaFinalVCD" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarFechasVCD(indiceVCD,1)}" update="dateFechaFinalVCD" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndiceVCD(indiceVCD,1)}" process="@this"/> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -346,7 +337,7 @@
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarGuardarVJ" header="ATENCIÓN...!" widgetVar="confirmarGuardarVJ"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['desea']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
@@ -354,14 +345,14 @@
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="Rastros Para Tablas Historicos Jornadas" resizable="false" draggable="false" modal="true" height="95" width="470px" style="font-size: 12px" >
                         <h:outputText value="#{msg['seleccionar']}" style="position: absolute; left: 80px; top: 20px;color: blue;font-weight: bold"/>
                         <p:commandButton value="#{msg['vj']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 10px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaJornada()}" process="@this" />
                         <p:commandButton value="#{msg['dd']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 140px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaCompensacionDinero()}" process="@this"/>
                         <p:commandButton value="#{msg['dt']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 286px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaCompensacionTiempo()}" process="@this"/>
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaJornada.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
@@ -407,6 +398,12 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+
+                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaJornada.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
@@ -431,12 +428,14 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevovj']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVJ" style="border: none;">
+
                             <strong><h:outputText value="#{msg['fechavigenciavj']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaVigencia" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" value="#{controlVigenciaJornada.nuevaVigencia.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaVigencia"/>
-                                <p:ajax event="change" update="nuevaFechaVigencia"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaVigNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="nuevaFechaVigencia" value="#{controlVigenciaJornada.nuevaVigencia.fechavigencia}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaVigencia" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaVigencia" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['nombrejornadavj']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
                             <p:inputText id="nuevaJornadaLaboral" value="#{controlVigenciaJornada.nuevaVigencia.jornadatrabajo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px; text-transform: uppercase" onclick="select();" >
@@ -468,12 +467,12 @@
 
                         <p:panel id="duplicarVJ" style="border: none;">
                             <strong><h:outputText value="#{msg['fechavigenciavj']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaVigencia" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlVigenciaJornada.duplicarVJ.fechavigencia}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaVigencia"/>
-                                <p:ajax event="change" update="duplicarFechaVigencia"/>
-                            </p:calendar>
-
+                            <div id="posicionFormulaFechaVigDupliReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="duplicarFechaVigencia" value="#{controlVigenciaJornada.duplicarVJ.fechavigencia}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaVigencia" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaVigencia" process="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <strong><h:outputText value="#{msg['nombrejornadavj']}" style="font-size: 14px; position: absolute; top: 110px; left: 50px" /></strong>
                             <p:inputText id="duplicarJornadaLaboral" value="#{controlVigenciaJornada.duplicarVJ.jornadatrabajo.descripcion}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 110px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,0,2,0)}"/>
@@ -504,19 +503,23 @@
 
                         <p:panel id="nuevaVCT" style="border: none;">
 
+
                             <strong><h:outputText value="#{msg['fechainicialtt']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicialVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicialVCT"/>
-                                <p:ajax event="change" update="nuevaFechaInicialVCT"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniNuevoRegVCT" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="nuevaFechaInicialVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicialVCT" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicialVCT" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['fechafinaltt']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinalVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalVCT"/>
-                                <p:ajax event="change" update="nuevaFechaFinalVCT"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinNuevoRegVCT" style="font-size: 10px; position: absolute; top: 120px; left: 200px">
+                                <lnk:calendar id="nuevaFechaFinalVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinalVCT" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinalVCT" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
 
                             <strong><h:outputText value="#{msg['comentariott']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputTextarea id="nuevaComentarioVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
@@ -537,18 +540,19 @@
                         <p:panel id="duplicadoVCT" style="border: none;">
 
                             <strong><h:outputText value="#{msg['fechainicialtt']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicadoFechaInicialVCT" value="#{controlVigenciaJornada.duplicarVCT.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicadoFechaInicialVCT"/>
-                                <p:ajax event="change" update="duplicadoFechaInicialVCT"/>
-                            </p:calendar>
-
+                            <div id="posicionFormulaFechaIniDupliRegVCT" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="duplicarFechaInicialVCT" value="#{controlVigenciaJornada.duplicarVCT.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicialVCT" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicialVCT" process="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <strong><h:outputText value="#{msg['fechafinaltt']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicadoFechaFinalVCT" value="#{controlVigenciaJornada.duplicarVCT.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicadoFechaFinalVCT"/>
-                                <p:ajax event="change" update="duplicadoFechaFinalVCT"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinDupliRegVCT" style="font-size: 10px; position: absolute; top: 120px; left: 200px">
+                                <lnk:calendar id="duplicarFechaFinalVCT" value="#{controlVigenciaJornada.duplicarVCT.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinalVCT" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinalVCT" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['comentariott']}" style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputTextarea id="duplicadoComentarioVCT" value="#{controlVigenciaJornada.duplicarVCT.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
@@ -567,18 +571,20 @@
 
                         <p:panel id="nuevaVCD" style="border: none;">
                             <strong><h:outputText value="#{msg['fechainicialtd']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicialVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicialVCD"/>
-                                <p:ajax event="change" update="nuevaFechaInicialVCD"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniNuevoRegVCD" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="nuevaFechaInicialVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicialVCD" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicialVCD" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['fechafinaltd']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinalVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinalVCD"/>
-                                <p:ajax event="change" update="nuevaFechaFinalVCD"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinNuevoRegVCD" style="font-size: 10px; position: absolute; top: 120px; left: 200px">
+                                <lnk:calendar id="nuevaFechaFinalVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinalVCD" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinalVCD" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['comentariotd']}"  style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputTextarea id="nuevaComentarioVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase" onclick="select();" >
@@ -597,20 +603,20 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevotd']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVCD" style="border: none;">
-
                             <strong><h:outputText value="#{msg['fechainicialtd']}" style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicialVCD" value="#{controlVigenciaJornada.duplicarVCD.fechainicial}" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicialVCD"/>
-                                <p:ajax event="change" update="duplicarFechaInicialVCD"/>
-                            </p:calendar>
-
+                            <div id="posicionFormulaFechaIniDupliRegVCD" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="duplicarFechaInicialVCD" value="#{controlVigenciaJornada.duplicarVCD.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicialVCD" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicialVCD" process="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <strong><h:outputText value="#{msg['fechafinaltd']}" style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinalVCD" value="#{controlVigenciaJornada.duplicarVCD.fechafinal}" style="font-size: 10px; position: absolute;  top: 120px; left: 200px;" styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinalVCD"/>
-                                <p:ajax event="change" update="duplicarFechaFinalVCD"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinDupliRegVCD" style="font-size: 10px; position: absolute; top: 120px; left: 200px">
+                                <lnk:calendar id="duplicarFechaFinalVCD" value="#{controlVigenciaJornada.duplicarVCD.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinalVCD" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinalVCD" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['comentariotd']}"  style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="duplicarComentarioVCD" value="#{controlVigenciaJornada.duplicarVCD.comentario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px; text-transform: uppercase" onclick="select();" >
@@ -705,13 +711,15 @@
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionBorradoVJ.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="negacionNuevaVJ" header="#{msg['atencion']}" widgetVar="negacionNuevaVJ"  resizable="false" draggable="false" modal="true" height="105" width="460px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['nnvj']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="negacionNuevaVJ.hide();" style="position: absolute; top: 70px; left: 320px" process="@this" />
+                    <p:dialog id="negacionNuevaVJ" header="#{msg['atencion']}" widgetVar="negacionNuevaVJ"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['nnvj']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+
+
+
                 </h:form>
-                
+
                 <h:form id="formExportarVJ">
                     <p:dataTable id="datosVJEmpleadoExportar" var="infoVJ" style="visibility: hidden; display: none;"                           
                                  value="#{controlVigenciaJornada.listVigenciasJornadas}"> 
@@ -736,12 +744,12 @@
                         </p:column>          
                     </p:dataTable>
                 </h:form>
-                
+
                 <h:form id="formExportarVCT">
                     <p:dataTable id="datosVCTVigenciaExportar" var="infoVCT" style="visibility: hidden; display: none;"                           
                                  value="#{controlVigenciaJornada.listVigenciasCompensacionesTiempo}"> 
                         <!--COLUMNAS TABLA DATOS VIGENCIAS COMPENSACION TIEMPO DE UNA VIGENCIA --> 
-                        
+
                         <p:column headerText="#{msg['fechainicialXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['fechainicialX']}"/> </f:facet> 
                             <h:outputText value="#{infoVCT.fechainicial}" >
@@ -755,15 +763,15 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
-                        
+
                         <p:column headerText="#{msg['comentarioX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['comentarioX']}"/> </f:facet> 
                             <h:outputText value="#{infoVCT.comentario}" />
                         </p:column>  
-                        
+
                     </p:dataTable>
                 </h:form>
-                
+
                 <h:form id="formExportarVCD">
                     <p:dataTable id="datosVCDVigenciaExportar" var="infoVCD" style="visibility: hidden; display: none;"                           
                                  value="#{controlVigenciaJornada.listVigenciasCompensacionesDinero}"> 
@@ -781,14 +789,14 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
-                        
+
                         <p:column headerText="#{msg['comentarioX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['comentarioX']}"/> </f:facet> 
                             <h:outputText value="#{infoVCD.comentario}" />
                         </p:column>  
                     </p:dataTable>
                 </h:form>
-                
+
             </ui:define>
         </ui:composition>
     </h:body>
