@@ -299,9 +299,9 @@
                             <fieldset style="position: absolute; width: 187px; height: 136px; border-radius: 7px; left: 418px; top: 91px ">
                                 <legend style="font-size: 11px; color: blue"><strong>#{msg['experiencia']}</strong></legend>
 
-                                <p:commandButton id="btnReferenciaLaboral" value="" style="background-image: url(Imagenes/tipotrabajador.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
+                                <p:commandButton id="btnReferenciaLaboral" value="" action="perReferenciaLaboral" actionListener="#{controlHvReferencias.recibirEmpleado(empleado.secuencia)}" style="background-image: url(Imagenes/tipotrabajador.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
                                 <h:outputText value="#{msg['referencialaboral']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
-                                <p:inputText id="referenciaLaboral" value="#{controlEmpleadoIndividual.referenciasPersonalesP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
+                                <p:inputText id="referenciaLaboral" value="#{controlEmpleadoIndividual.referenciasPersonalesP}"  readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px"/>
 
                                 <p:commandButton id="btnReferenciaFamiliar" value="" style="background-image: url(Imagenes/demanda.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 60px; " process="@this"/>
                                 <h:outputText value="#{msg['referenciafamiliar']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
