@@ -13,39 +13,34 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.nreportenomina" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 552px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 790px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteNomina.salir()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 515px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteNomina.mostrarTodos()}" update=":form:reportesNomina"/>
-                        <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="Mostrar todos los reportes." />
-                        <p:commandButton style="position: absolute; left: 400px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" />
-                        <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
-                        <p:commandButton style="position: absolute; left: 293px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
-                        <p:commandButton style="position: absolute; left: 135px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
+                        <p:commandButton style="position: absolute; left: 790px; top: 506px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteNomina.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 293px; top: 506px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
+                        <p:commandButton style="position: absolute; left: 135px; top: 506px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
                         <p:tooltip style="font-size: 12px" for="ENVIOLOTE" value="Envio de lotes para el envio de gestion documental." />
-                        <p:commandButton style="position: absolute; left: 10px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
+                        <p:commandButton style="position: absolute; left: 10px; top: 506px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 242px;height: 268px;width: 115px; border-radius: 10px;">
+                        <fieldset style="position: absolute; left: 10px; top: 242px;height: 248px;width: 115px; border-radius: 10px;">
                             <h:outputText id="btn" style="position: absolute; left: 18px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:100px ;height:230px; background-repeat: no-repeat; background-size: 100% 100%; "/>
                         </fieldset>
 
-                        <fieldset style="position: absolute; left: 150px; top: 235px; font-size: 10px; width: 690px; height: 278px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 150px; top: 235px; font-size: 10px; width: 690px; height: 258px; border-radius: 10px; ">
                             <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['titulo']}</strong></legend>
 
-                            <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 690px"                           
+                            <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;"                           
                                          value="#{controlNReporteNomina.listaIR}" scrollable="true" scrollHeight="165" scrollWidth="690"
                                          filteredValue="#{controlNReporteNomina.filtrarListInforeportesUsuario}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" paginator="true" rows="5"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10">
 
-                                <p:column style="padding: 0px; text-align: center" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="padding: 0px; text-align: center; width: 50px;" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <h:outputText value="#{info.codigo}" >
                                     </h:outputText>
                                 </p:column>
 
-                                <p:column  id="reporteIR" headerText="#{msg['reporte']}" width="300" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" style="height: 20px" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  id="reporteIR" headerText="#{msg['reporte']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor >  
                                         <f:facet name="output"><h:outputText style="width:260px" value="#{info.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -58,8 +53,8 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column id="tipoIR" headerText="#{msg['tipo']}" width="150" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px" >                                  
-                                    <p:selectOneMenu value="#{info.tipo}"  style="width: 99%; font-weight: bold; "  panelStyle="width: 115px">  
+                                <p:column id="tipoIR" headerText="#{msg['tipo']}" width="110" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px; width: 110px" >                                  
+                                    <p:selectOneMenu value="#{info.tipo}"  style="width: 99%; font-weight: bold; "  panelStyle="width: 105px">  
                                         <f:selectItem itemLabel="#{msg['acrobat']}" itemValue="Acrobat" />  
                                         <f:selectItem itemLabel="#{msg['html']}" itemValue="HTML" />  
                                         <f:selectItem itemLabel="#{msg['xml']}" itemValue="XML" />  
@@ -67,12 +62,12 @@
                                         <f:selectItem itemLabel="#{msg['hojaelectronica']}" itemValue="Hoja Electronic" />
                                     </p:selectOneMenu>
                                 </p:column>
-
-                                <p:column style="padding: 0px;text-align: center" width="120" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:commandButton value="#{msg['generar']}" style="alignment-adjust: central;width: 110px; border-radius: 0px" actionListener="#{controlNReporteNomina.generarReporte(indice)}" process="@this"/>
-                                </p:column>
                             </p:dataTable>
-
+                            
+                            <p:commandButton style="position: absolute; left: 585px; top: 235px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteNomina.mostrarTodos()}" update=":form:reportesNomina"/>
+                            <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="Mostrar todos los reportes." />
+                            <p:commandButton style="position: absolute; left: 470px; top: 235px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" />
+                            <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
                         </fieldset>
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 30px; left: 10px;">  
@@ -591,7 +586,7 @@
                             <p:resetInput target=":form:lovProceso:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <p:dialog header="#{msg['tipotrabajadorTT']}" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovTipoTrabajador" style="font-size: 11px; width: 430px" var="tipoT" value="#{controlNReporteNomina.listTiposTrabajadores}" rowKey="#{tipoT.secuencia}"
@@ -628,7 +623,7 @@
                             <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <p:dialog header="#{msg['estructurasES']}" widgetVar="EstructuraDialogo" draggable="false" resizable="false" closable="false" id="EstructuraDialogo"  
                               showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovEstructura" style="font-size: 11px; width: 430px" var="estructura" value="#{controlNReporteNomina.listEstructuras}" rowKey="#{estructura.secuencia}"
@@ -665,7 +660,7 @@
                             <p:resetInput target=":form:lovEstructura:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
 
                 </h:form>
                 <h:form id="formDialogos">
