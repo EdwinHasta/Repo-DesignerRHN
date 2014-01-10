@@ -75,7 +75,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e);
+            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e);
             return null;
         }
     }

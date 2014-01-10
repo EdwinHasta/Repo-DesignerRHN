@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HvReferencias.findAll", query = "SELECT h FROM HvReferencias h")})
 public class HvReferencias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -55,7 +56,6 @@ public class HvReferencias implements Serializable {
     @JoinColumn(name = "HOJADEVIDA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private HVHojasDeVida hojadevida;
-    
 
     public HvReferencias() {
     }
@@ -106,7 +106,7 @@ public class HvReferencias implements Serializable {
     }
 
     public void setCargo(String cargo) {
-        this.cargo = cargo;
+        this.cargo = cargo.toUpperCase();
     }
 
     public String getTipo() {
@@ -117,7 +117,10 @@ public class HvReferencias implements Serializable {
         this.tipo = tipo;
     }
 
-    public TiposFamiliares getParentesco() {
+public TiposFamiliares getParentesco() {
+        if (parentesco == null) {
+            parentesco = new TiposFamiliares();
+        }
         return parentesco;
     }
 
@@ -157,5 +160,5 @@ public class HvReferencias implements Serializable {
     public String toString() {
         return "Entidades.HvReferencias[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
