@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,10 +35,8 @@ public class HvReferencias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    private BigInteger secuencia;
+    @Size(max = 100)
     @Column(name = "NOMBREPERSONA")
     private String nombrepersona;
     @Column(name = "TELEFONO")
@@ -57,24 +55,25 @@ public class HvReferencias implements Serializable {
     @JoinColumn(name = "HOJADEVIDA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private HVHojasDeVida hojadevida;
+    
 
     public HvReferencias() {
     }
 
-    public HvReferencias(BigDecimal secuencia) {
+    public HvReferencias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public HvReferencias(BigDecimal secuencia, String nombrepersona) {
+    public HvReferencias(BigInteger secuencia, String nombrepersona) {
         this.secuencia = secuencia;
         this.nombrepersona = nombrepersona;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -83,7 +82,7 @@ public class HvReferencias implements Serializable {
     }
 
     public void setNombrepersona(String nombrepersona) {
-        this.nombrepersona = nombrepersona;
+        this.nombrepersona = nombrepersona.toUpperCase();
     }
 
     public Long getTelefono() {

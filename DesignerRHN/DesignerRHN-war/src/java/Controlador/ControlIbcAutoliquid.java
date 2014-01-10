@@ -6,7 +6,6 @@ package Controlador;
 
 import Entidades.Empleados;
 import Entidades.IbcsAutoliquidaciones;
-import Entidades.Mvrs;
 import Entidades.Procesos;
 import Entidades.TiposEntidades;
 import Exportar.ExportarPDF;
@@ -293,10 +292,10 @@ public class ControlIbcAutoliquid implements Serializable {
     public void modificarFechas(int i, int c) {
         IbcsAutoliquidaciones auxiliar = null;
         if (tipoLista == 0) {
-            auxiliar = listIbcsAutoliquidaciones.get(index);
+            auxiliar = listIbcsAutoliquidaciones.get(i);
         }
         if (tipoLista == 1) {
-            auxiliar = filtrarListIbcsAutoliquidaciones.get(index);
+            auxiliar = filtrarListIbcsAutoliquidaciones.get(i);
         }
         if (auxiliar.getFechainicial() != null) {
             boolean retorno = false;

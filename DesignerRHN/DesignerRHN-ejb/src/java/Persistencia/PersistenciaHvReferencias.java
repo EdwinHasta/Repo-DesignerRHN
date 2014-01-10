@@ -3,6 +3,7 @@
  */
 package Persistencia;
 
+import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
 import InterfacePersistencia.PersistenciaHvReferenciasInterface;
 import java.math.BigInteger;
@@ -25,6 +26,60 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    public void crear(HvReferencias hvReferencias) {
+        em.persist(hvReferencias);
+    }
+
+    public void editar(HvReferencias hvReferencias) {
+        em.merge(hvReferencias);
+    }
+
+    public void borrar(HvReferencias hvReferencias) {
+        em.remove(em.merge(hvReferencias));
+    }
+
+    public HvReferencias buscarHvReferencia(BigInteger secuenciaHvReferencias) {
+        try {
+            return em.find(HvReferencias.class, secuenciaHvReferencias);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<HvReferencias> buscarHvReferencias() {
+        Query query = em.createQuery("SELECT te FROM HvEntrevistas te ORDER BY te.fecha ASC ");
+        List<HvReferencias> listHvReferencias = query.getResultList();
+        return listHvReferencias;
+
+    }
+
+    public List<HvReferencias> buscarHvReferenciasPorEmpleado(BigInteger secEmpleado) {
+        try {
+            Query query = em.createQuery("SELECT hr FROM HVHojasDeVida hv , HvReferencias hr , Empleados e WHERE hv.secuencia = hr.hojadevida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl AND hr.tipo='PERSONALES' ORDER BY hr.nombrepersona ");
+            query.setParameter("secuenciaEmpl", secEmpleado);
+
+            List<HvReferencias> listHvReferencias = query.getResultList();
+            return listHvReferencias;
+        } catch (Exception e) {
+            System.out.println("Error en Persistencia Vigencias Normas Empleados " + e);
+            return null;
+        }
+    }
+
+    public List<HVHojasDeVida> buscarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado) {
+        try {
+            System.err.println("secuencia empleado hoja de vida " + secEmpleado);
+            Query query = em.createQuery("SELECT hv FROM HVHojasDeVida hv , HvReferencias hr , Empleados e WHERE hv.secuencia = hr.hojaDeVida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl");
+            query.setParameter("secuenciaEmpl", secEmpleado);
+
+            List<HVHojasDeVida> hvHojasDeVIda = query.getResultList();
+            return hvHojasDeVIda;
+        } catch (Exception e) {
+            System.out.println("Error en Persistencia HvEntrevistas buscarHvHojaDeVidaPorEmpleado " + e);
+            return null;
+        }
+    }
+    
     @Override
     public List<HvReferencias> referenciasPersonalesPersona(BigInteger secuenciaHV) {
         try {

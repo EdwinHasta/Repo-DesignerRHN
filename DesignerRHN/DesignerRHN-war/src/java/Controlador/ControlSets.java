@@ -8,8 +8,10 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarSetsInterface;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -61,6 +63,10 @@ public class ControlSets implements Serializable {
     private Sets duplicarSet;
     private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
+    private Date fechaParametro;
+    private Date fechaIni, fechaFin;
+    private String auxTipoSet;
+    private BigDecimal auxPromedio;
 
     /**
      * Constructor de ControlSet
@@ -92,25 +98,121 @@ public class ControlSets implements Serializable {
         secRegistro = null;
     }
 
-    //EMPLEADO DE LA VIGENCIA
-    /**
-     * Metodo que recibe la secuencia empleado desde la pagina anterior y
-     * obtiene el empleado referenciado
-     *
-     * @param sec Secuencia del Empleado
-     */
     public void recibirEmpleado(Empleados empl) {
         listSets = null;
         empleado = empl;
     }
 
-    /**
-     * Metodo que modifica los cambios efectuados en la tabla Sets de la pagina
-     *
-     * @param indice Fila en la cual se realizo el cambio
-     */
+    public boolean validarDatosRegistro(int i) {
+        boolean retorno = true;
+        if (i == 0) {
+            Sets auxiliar = new Sets();
+            if (tipoLista == 0) {
+                auxiliar = listSets.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtrarSets.get(index);
+            }
+            int tam = 0;
+            if (auxiliar.getTiposet() == null || auxiliar.getTiposet().isEmpty()) {
+                retorno = false;
+            } else {
+                tam = auxiliar.getTiposet().length();
+                if (tam == 0 || tam >= 2) {
+                    retorno = false;
+                }
+            }
+            if (tam == 1) {
+                String tipo = auxiliar.getTiposet();
+                System.out.println("Tipo : " + tipo);
+                if (tipo.equalsIgnoreCase("1") || tipo.equalsIgnoreCase("2")) {
+                    System.out.println("OK");
+                } else {
+                    retorno = false;
+                    System.out.println("Entr :S");
+                }
+            }
+            if (auxiliar.getPromedio() != null) {
+                int signo = auxiliar.getPromedio().signum();
+                if (signo <= 0) {
+                    retorno = false;
+                }
+            } else {
+                retorno = false;
+            }
+        }
+        if (i == 1) {
+            int tam = 0;
+            if (nuevoSet.getTiposet() == null || nuevoSet.getTiposet().isEmpty()) {
+                retorno = false;
+            } else {
+                tam = nuevoSet.getTiposet().length();
+                if (tam == 0 || tam >= 2) {
+                    retorno = false;
+                }
+            }
+            if (tam == 1) {
+                String tipo = nuevoSet.getTiposet();
+                System.out.println("Tipo : " + tipo);
+                if (tipo.equalsIgnoreCase("1") || tipo.equalsIgnoreCase("2")) {
+                    System.out.println("OK");
+                } else {
+                    retorno = false;
+                    System.out.println("Entr :S");
+                }
+            }
+            if (nuevoSet.getPromedio() != null) {
+                int signo = nuevoSet.getPromedio().signum();
+                if (signo <= 0) {
+                    retorno = false;
+                }
+            } else {
+                retorno = false;
+            }
+        }
+        if (i == 2) {
+            int tam = 0;
+            if (duplicarSet.getTiposet() == null || duplicarSet.getTiposet().isEmpty()) {
+                retorno = false;
+            } else {
+                tam = duplicarSet.getTiposet().length();
+                if (tam == 0 || tam >= 2) {
+                    System.out.println("Duplicar error");
+                    retorno = false;
+                }
+            }
+            if (tam == 1) {
+                String tipo = duplicarSet.getTiposet();
+                System.out.println("Tipo : " + tipo);
+                if (tipo.equalsIgnoreCase("1") || tipo.equalsIgnoreCase("2")) {
+                    System.out.println("OK");
+                } else {
+                    retorno = false;
+                    System.out.println("Entr :S");
+                }
+            }
+            if (duplicarSet.getPromedio() != null) {
+                System.out.println("Diferente");
+                int signo = duplicarSet.getPromedio().signum();
+                System.out.println("Signo = " + signo);
+                if (signo <= 0) {
+                    System.out.println("Signp fail");
+                    retorno = false;
+                }
+            } else {
+                System.out.println("Error fuck ");
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
     public void modificarSets(int indice) {
         if (tipoLista == 0) {
+            if (validarDatosRegistro(0) == false) {
+                listSets.get(indice).setPromedio(auxPromedio);
+                listSets.get(indice).setTiposet(auxTipoSet);
+            }
             if (!listSetsCrear.contains(listSets.get(indice))) {
                 if (listSetsModificar.isEmpty()) {
                     listSetsModificar.add(listSets.get(indice));
@@ -123,6 +225,10 @@ public class ControlSets implements Serializable {
             }
         }
         if (tipoLista == 1) {
+            if (validarDatosRegistro(0) == false) {
+                filtrarSets.get(indice).setPromedio(auxPromedio);
+                filtrarSets.get(indice).setTiposet(auxTipoSet);
+            }
             if (!listSetsCrear.contains(filtrarSets.get(indice))) {
                 if (listSetsModificar.isEmpty()) {
                     listSetsModificar.add(filtrarSets.get(indice));
@@ -139,6 +245,113 @@ public class ControlSets implements Serializable {
         secRegistro = null;
     }
 
+    public boolean validarFechasRegistro(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        System.err.println("fechaparametro : " + fechaParametro);
+        boolean retorno = true;
+        if (i == 0) {
+            Sets auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = listSets.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtrarSets.get(index);
+            }
+            if (auxiliar.getFechafinal() != null) {
+                if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (auxiliar.getFechafinal() == null) {
+                if (auxiliar.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 1) {
+            if (nuevoSet.getFechafinal() != null) {
+                if (nuevoSet.getFechainicial().after(fechaParametro) && nuevoSet.getFechainicial().before(nuevoSet.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (nuevoSet.getFechafinal() == null) {
+                if (nuevoSet.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 2) {
+            if (duplicarSet.getFechafinal() != null) {
+                if (duplicarSet.getFechainicial().after(fechaParametro) && duplicarSet.getFechainicial().before(duplicarSet.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (duplicarSet.getFechafinal() == null) {
+                if (duplicarSet.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+    }
+
+    public void modificarFechas(int i, int c) {
+        Sets auxiliar = null;
+        if (tipoLista == 0) {
+            auxiliar = listSets.get(i);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtrarSets.get(i);
+        }
+        if (auxiliar.getFechainicial() != null) {
+            boolean retorno = false;
+            index = i;
+            retorno = validarFechasRegistro(0);
+            if (retorno == true) {
+                cambiarIndice(i, c);
+                modificarSets(i);
+            } else {
+                if (tipoLista == 0) {
+                    listSets.get(i).setFechafinal(fechaFin);
+                    listSets.get(i).setFechainicial(fechaIni);
+                }
+                if (tipoLista == 1) {
+                    filtrarSets.get(i).setFechafinal(fechaFin);
+                    filtrarSets.get(i).setFechainicial(fechaIni);
+
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosSetsEmpleado");
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            if (tipoLista == 0) {
+                listSets.get(i).setFechainicial(fechaIni);
+            }
+            if (tipoLista == 1) {
+                filtrarSets.get(i).setFechainicial(fechaIni);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosSetsEmpleado");
+            context.execute("errorRegNew.show()");
+        }
+    }
+
     //Ubicacion Celda.
     /**
      * Metodo que obtiene la posicion dentro de la tabla Sets
@@ -149,7 +362,20 @@ public class ControlSets implements Serializable {
     public void cambiarIndice(int indice, int celda) {
         index = indice;
         cualCelda = celda;
-        secRegistro = listSets.get(index).getSecuencia();
+        if (tipoLista == 0) {
+            auxPromedio = listSets.get(index).getPromedio();
+            auxTipoSet = listSets.get(index).getTiposet();
+            fechaFin = listSets.get(index).getFechafinal();
+            fechaIni = listSets.get(index).getFechainicial();
+            secRegistro = listSets.get(index).getSecuencia();
+        }
+        if (tipoLista == 1) {
+            auxPromedio = filtrarSets.get(index).getPromedio();
+            auxTipoSet = filtrarSets.get(index).getTiposet();
+            fechaFin = filtrarSets.get(index).getFechafinal();
+            fechaIni = filtrarSets.get(index).getFechainicial();
+            secRegistro = filtrarSets.get(index).getSecuencia();
+        }
     }
     //GUARDAR
 
@@ -272,42 +498,53 @@ public class ControlSets implements Serializable {
      * Metodo que se encarga de agregar un nuevo Set
      */
     public void agregarNuevoSet() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            setsFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaInicial");
-            setsFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            setsFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaFinal");
-            setsFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            setsPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPorcentaje");
-            setsPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            setsPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPromedio");
-            setsPromedio.setFilterStyle("display: none; visibility: hidden;");
-            setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
-            setsTipo.setFilterStyle("display: none; visibility: hidden;");
-            setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
-            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
-            bandera = 0;
-            filtrarSets = null;
-            tipoLista = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevoSet.setSecuencia(l);
-        nuevoSet.setEmpleado(empleado);
-        listSetsCrear.add(nuevoSet);
+        boolean resp = validarDatosRegistro(1);
+        if (nuevoSet.getFechainicial() != null && resp == true) {
+            if (validarFechasRegistro(1) == true) {
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    setsFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaInicial");
+                    setsFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    setsFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaFinal");
+                    setsFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    setsPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPorcentaje");
+                    setsPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    setsPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPromedio");
+                    setsPromedio.setFilterStyle("display: none; visibility: hidden;");
+                    setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
+                    setsTipo.setFilterStyle("display: none; visibility: hidden;");
+                    setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
+                    setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
+                    bandera = 0;
+                    filtrarSets = null;
+                    tipoLista = 0;
+                }
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevoSet.setSecuencia(l);
+                nuevoSet.setEmpleado(empleado);
+                listSetsCrear.add(nuevoSet);
 
-        listSets.add(nuevoSet);
-        nuevoSet = new Sets();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosSetsEmpleado");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+                listSets.add(nuevoSet);
+                nuevoSet = new Sets();
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosSetsEmpleado");
+                context.execute("NuevoRegistroSet.hide()");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                index = -1;
+                secRegistro = null;
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
     //LIMPIAR NUEVO REGISTRO
 
@@ -364,37 +601,48 @@ public class ControlSets implements Serializable {
      * Metodo que confirma el duplicado y actualiza los datos de la tabla Sets
      */
     public void confirmarDuplicar() {
-
-        listSets.add(duplicarSet);
-        listSetsCrear.add(duplicarSet);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosSetsEmpleado");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        boolean resp = validarDatosRegistro(2);
+        if (duplicarSet.getFechainicial() != null && resp == true) {
+            if (validarFechasRegistro(2) == true) {
+                listSets.add(duplicarSet);
+                listSetsCrear.add(duplicarSet);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosSetsEmpleado");
+                context.execute("DuplicarRegistroSet.hide()");
+                index = -1;
+                secRegistro = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    setsFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaInicial");
+                    setsFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    setsFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaFinal");
+                    setsFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    setsPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPorcentaje");
+                    setsPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    setsPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPromedio");
+                    setsPromedio.setFilterStyle("display: none; visibility: hidden;");
+                    setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
+                    setsTipo.setFilterStyle("display: none; visibility: hidden;");
+                    setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
+                    setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
+                    bandera = 0;
+                    filtrarSets = null;
+                    tipoLista = 0;
+                }
+                duplicarSet = new Sets();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            setsFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaInicial");
-            setsFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            setsFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsFechaFinal");
-            setsFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            setsPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPorcentaje");
-            setsPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            setsPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsPromedio");
-            setsPromedio.setFilterStyle("display: none; visibility: hidden;");
-            setsTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTipo");
-            setsTipo.setFilterStyle("display: none; visibility: hidden;");
-            setsTotalIngresos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSetsEmpleado:setsTotalIngresos");
-            setsTotalIngresos.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosSetsEmpleado");
-            bandera = 0;
-            filtrarSets = null;
-            tipoLista = 0;
-        }
-        duplicarSet = new Sets();
     }
 
     //LIMPIAR DUPLICAR
@@ -696,6 +944,5 @@ public class ControlSets implements Serializable {
     public void setBackUpSecRegistro(BigInteger BackUpSecRegistro) {
         this.backUpSecRegistro = BackUpSecRegistro;
     }
-    
-    
+
 }
