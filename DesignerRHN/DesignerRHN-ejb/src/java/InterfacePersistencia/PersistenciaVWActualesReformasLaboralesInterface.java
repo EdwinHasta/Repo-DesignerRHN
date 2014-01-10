@@ -17,7 +17,7 @@ public interface PersistenciaVWActualesReformasLaboralesInterface {
      * sobre la vista VWActualesAfiliacionesPension.
      * El término actual está dado por la fechaHasta de las liquidaciones.
      * @param secuencia Secuencia del empleado.
-     * @return Retorna una VWActualAfiliacionPension con la información de  la Reforma Laboral actual actual de un empleado.
+     * @return Retorna una VWActualAfiliacionPension con la información de  la Reforma Laboral actual de un empleado.
      */
     public VWActualesReformasLaborales buscarReformaLaboral(BigInteger secuencia);
 }

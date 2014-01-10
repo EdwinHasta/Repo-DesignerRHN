@@ -6,7 +6,7 @@ package Administrar;
 
 import Entidades.Empleados;
 import Entidades.MotivosRetiros;
-import Entidades.Motivosdefinitivas;
+import Entidades.MotivosDefinitivas;
 import Entidades.NovedadesSistema;
 import InterfaceAdministrar.AdministrarNovedadesSistemaInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -68,7 +68,7 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
         return persistenciaEmpleados.todosEmpleados();
     }
     
-    public List<Motivosdefinitivas> lovMotivos(){
+    public List<MotivosDefinitivas> lovMotivos(){
         return persistenciaMotivos.buscarMotivosDefinitivas();
     }
     

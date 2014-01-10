@@ -154,7 +154,7 @@ public class AdministrarProyectos implements AdministrarProyectosInterface {
     @Override
     public List<Monedas> listMonedas() {
         try {
-            List<Monedas> listM = persistenciaMonedas.listMonedas();
+            List<Monedas> listM = persistenciaMonedas.buscarMonedas();
             return listM;
         } catch (Exception e) {
             System.out.println("Error listMonedas Admi : " + e.toString());

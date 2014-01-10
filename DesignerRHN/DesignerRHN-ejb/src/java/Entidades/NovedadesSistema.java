@@ -145,10 +145,10 @@ public class NovedadesSistema implements Serializable {
     private MotivosRetiros motivoretiros;
     @JoinColumn(name = "MOTIVODEFINITIVA", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Motivosdefinitivas motivodefinitiva;
+    private MotivosDefinitivas motivodefinitiva;
     @JoinColumn(name = "MOTIVOCESANTIA", referencedColumnName = "SECUENCIA")
     @ManyToOne
-    private Motivoscesantias motivocesantia;
+    private MotivosCesantias motivocesantia;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
@@ -500,22 +500,22 @@ public class NovedadesSistema implements Serializable {
         this.motivoretiros = motivoretiro;
     }
 
-    public Motivosdefinitivas getMotivodefinitiva() {
+    public MotivosDefinitivas getMotivodefinitiva() {
         if (motivodefinitiva == null) {
-            motivodefinitiva = new Motivosdefinitivas();
+            motivodefinitiva = new MotivosDefinitivas();
         }
         return motivodefinitiva;
     }
 
-    public void setMotivodefinitiva(Motivosdefinitivas motivodefinitiva) {
+    public void setMotivodefinitiva(MotivosDefinitivas motivodefinitiva) {
         this.motivodefinitiva = motivodefinitiva;
     }
 
-    public Motivoscesantias getMotivocesantia() {
+    public MotivosCesantias getMotivocesantia() {
         return motivocesantia;
     }
 
-    public void setMotivocesantia(Motivoscesantias motivocesantia) {
+    public void setMotivocesantia(MotivosCesantias motivocesantia) {
         this.motivocesantia = motivocesantia;
     }
 

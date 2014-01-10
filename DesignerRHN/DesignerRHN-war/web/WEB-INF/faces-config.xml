@@ -1806,4 +1806,36 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplIbcs</from-outcome>
+            <to-view-id>/emplibcs.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emplibcs.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasEmplIbcs</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoInvidual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplIbcs</from-outcome>
+            <to-view-id>/perreferencialaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/perreferencialaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasEmplIbcs</from-outcome>
+            <to-view-id>/EmpleadoInvidual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

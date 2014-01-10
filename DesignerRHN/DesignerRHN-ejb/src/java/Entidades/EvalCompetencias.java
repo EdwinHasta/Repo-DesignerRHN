@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Entidades;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author PROYECTO01
+ * @author betelgeuse
  */
 @Entity
 @Table(name = "EVALCOMPETENCIAS")
@@ -29,7 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "EvalCompetencias.findAll", query = "SELECT e FROM EvalCompetencias e")})
 public class EvalCompetencias implements Serializable {
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -95,6 +95,8 @@ public class EvalCompetencias implements Serializable {
         this.desCompetencia = desCompetencia;
     }
 
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -119,5 +121,5 @@ public class EvalCompetencias implements Serializable {
     public String toString() {
         return "Entidades.EvalCompetencias[ secuencia=" + secuencia + " ]";
     }
-
+    
 }

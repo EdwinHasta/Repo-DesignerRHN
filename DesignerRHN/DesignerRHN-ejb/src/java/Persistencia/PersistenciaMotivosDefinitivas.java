@@ -3,8 +3,9 @@
  */
 package Persistencia;
 
-import Entidades.Motivosdefinitivas;
+import Entidades.MotivosDefinitivas;
 import InterfacePersistencia.PersistenciaMotivosDefinitivasInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -12,44 +13,89 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'MotivosDefinitivas'
  * de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefinitivasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-  
+
     @Override
-    public void crear(Motivosdefinitivas motivosDefinitivas) {
+    public void crear(MotivosDefinitivas motivosDefinitivas) {
         em.persist(motivosDefinitivas);
     }
 
     @Override
-    public void editar(Motivosdefinitivas motivosDefinitivas) {
+    public void editar(MotivosDefinitivas motivosDefinitivas) {
         em.merge(motivosDefinitivas);
     }
 
     @Override
-    public void borrar(Motivosdefinitivas motivosDefinitivas) {
+    public void borrar(MotivosDefinitivas motivosDefinitivas) {
         em.remove(em.merge(motivosDefinitivas));
     }
 
     @Override
-    public List<Motivosdefinitivas> buscarMotivosDefinitivas() {
+    public List<MotivosDefinitivas> buscarMotivosDefinitivas() {
         try {
-            Query query = em.createQuery("SELECT md FROM Motivosdefinitivas md ORDER BY md.codigo");
+            Query query = em.createQuery("SELECT md FROM MotivosDefinitivas md ORDER BY md.codigo ASC");
 
-            List<Motivosdefinitivas> motivoD = query.getResultList();
+            List<MotivosDefinitivas> motivoD = query.getResultList();
             return motivoD;
         } catch (Exception e) {
             System.out.println("Error PersistenciaMotivosDefinitivfas.buscarMotivosDefinitivas" + e);
             return null;
+        }
+    }
+
+    @Override
+    public MotivosDefinitivas buscarMotivoDefinitiva(BigInteger secuenciaME) {
+        try {
+            return em.find(MotivosDefinitivas.class, secuenciaME);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public BigInteger contadorNovedadesSistema(BigInteger secuencia) {
+        BigInteger retorno;
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM novedadessistema WHERE motivodefinitiva = ? ";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIAMOTIVOSDEFINITIVAS CONTADORNOVEDADESSISTEMA = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIAMOTIVOSDEFINITIVAS CONTADORNOVEDADESSISTEMA  ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
+        }
+    }
+
+    @Override
+    public BigInteger contadorParametrosCambiosMasivos(BigInteger secuencia) {
+        BigInteger retorno;
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM parametroscambiosmasivos WHERE retimotivodefinitiva =  ? ";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIAMOTIVOSDEFINITIVAS CONTADORPARAMETROSCAMBIOSMASIVOS = " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIAMOTIVOSDEFINITIVAS CONTADORPARAMETROSCAMBIOSMASIVOS  ERROR = " + e);
+            retorno = new BigInteger("-1");
+            return retorno;
         }
     }
 }
