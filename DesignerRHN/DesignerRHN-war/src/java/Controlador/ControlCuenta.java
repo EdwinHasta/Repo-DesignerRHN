@@ -1311,7 +1311,7 @@ public class ControlCuenta implements Serializable {
         try {
             if (listCuentas == null) {
                 listCuentas = null;
-                listCuentas = administrarCuentas.listCuentasEmpresa(empresaActual.getSecuencia());
+                listCuentas = administrarCuentas.listaCuentasEmpresa(empresaActual.getSecuencia());
                 if (listCuentas != null) {
                     for (int i = 0; i < listCuentas.size(); i++) {
                         if (listCuentas.get(i).getRubropresupuestal() == null) {
@@ -1476,7 +1476,7 @@ public class ControlCuenta implements Serializable {
 
     public List<Empresas> getListEmpresas() {
         if (listEmpresas == null) {
-            listEmpresas = administrarCuentas.listEmpresas();
+            listEmpresas = administrarCuentas.listaEmpresas();
             if (!listEmpresas.isEmpty()) {
                 empresaActual = listEmpresas.get(0);
                 backUpEmpresaActual = empresaActual;
@@ -1516,7 +1516,7 @@ public class ControlCuenta implements Serializable {
 
     public List<Rubrospresupuestales> getListRubros() {
         if (listRubros == null) {
-            listRubros = administrarCuentas.listRubros();
+            listRubros = administrarCuentas.lovListaRubros();
         }
         return listRubros;
     }
@@ -1543,7 +1543,7 @@ public class ControlCuenta implements Serializable {
 
     public List<Cuentas> getListCuentasTesoreria() {
         if (listCuentasTesoreria == null) {
-            listCuentasTesoreria = administrarCuentas.listCuentasEmpresa(empresaActual.getSecuencia());
+            listCuentasTesoreria = administrarCuentas.listaCuentasEmpresa(empresaActual.getSecuencia());
         }
         return listCuentasTesoreria;
     }

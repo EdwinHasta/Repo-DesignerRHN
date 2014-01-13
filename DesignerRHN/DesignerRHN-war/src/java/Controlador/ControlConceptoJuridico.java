@@ -869,7 +869,7 @@ public class ControlConceptoJuridico implements Serializable {
         try {
             if (listConceptosJuridicos == null) {
                 listConceptosJuridicos = new ArrayList<ConceptosJuridicos>();
-                listConceptosJuridicos = administrarConceptoJuridico.listConceptosJuridicosPorEmpresa(empresaActual.getSecuencia());
+                listConceptosJuridicos = administrarConceptoJuridico.listaConceptosJuridicosPorEmpresa(empresaActual.getSecuencia());
             }
             return listConceptosJuridicos;
         } catch (Exception e) {
@@ -1021,7 +1021,7 @@ public class ControlConceptoJuridico implements Serializable {
 
     public List<Empresas> getListEmpresas() {
         if (listEmpresas == null) {
-            listEmpresas = administrarConceptoJuridico.listEmpresas();
+            listEmpresas = administrarConceptoJuridico.listaEmpresas();
             if (!listEmpresas.isEmpty()) {
                 empresaActual = listEmpresas.get(0);
                 backUpEmpresaActual = empresaActual;

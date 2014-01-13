@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -10,23 +9,30 @@ import InterfacePersistencia.PersistenciaCursosInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-
+/**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'Cursos'.
+ * @author betelgeuse
+ */
 @Stateful
 public class AdministrarCursos implements AdministrarCursosInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaCursos'.
+     */
     @EJB
     PersistenciaCursosInterface persistenciaCursos;
-    
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
-    public List<Cursos> Cursos(){
+    public List<Cursos> listaCursos(){
         List<Cursos> listaCursos;
         listaCursos = persistenciaCursos.cursos();
         return listaCursos;
-    }
-
-    @Override
-    public List<Cursos>  lovCursos(){
-        return persistenciaCursos.cursos();
     }
 }
 

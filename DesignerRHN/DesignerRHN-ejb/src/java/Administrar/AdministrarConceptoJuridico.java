@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -16,19 +14,32 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
- * @author user
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'ConceptoJuridico'.
+ * @author betelgeuse
  */
 @Stateless
 public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaConceptosJuridicos'.
+     */
     @EJB
     PersistenciaConceptosJuridicosInterface persistenciaConceptosJuridicos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaEmpresas'.
+     */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
-
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
-    public List<ConceptosJuridicos> listConceptosJuridicosPorEmpresa(BigInteger secuencia) {
+    public List<ConceptosJuridicos> listaConceptosJuridicosPorEmpresa(BigInteger secuencia) {
         try {
             List<ConceptosJuridicos> conceptos = persistenciaConceptosJuridicos.buscarConceptosJuridicosEmpresa(secuencia);
             return conceptos;
@@ -41,14 +52,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     @Override
     public void crearConceptosJuridicos(List<ConceptosJuridicos> listCJ) {
         try {
-            for (int i = 0; i < listCJ.size(); i++) {
-                String aux1, aux2, aux3;
-                aux1 = listCJ.get(i).getExpedidopor().toUpperCase();
-                listCJ.get(i).setExpedidopor(aux1);
-                aux2 = listCJ.get(i).getQuien().toUpperCase();
-                listCJ.get(i).setQuien(aux2);
-                aux3 = listCJ.get(i).getTexto().toUpperCase();
-                listCJ.get(i).setTexto(aux3);
+            for (int i = 0; i < listCJ.size(); i++) {                
                 persistenciaConceptosJuridicos.crear(listCJ.get(i));
             }
         } catch (Exception e) {
@@ -59,14 +63,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     @Override
     public void editarConceptosJuridicos(List<ConceptosJuridicos> listCJ) {
         try {
-            for (int i = 0; i < listCJ.size(); i++) {
-                String aux1, aux2, aux3;
-                aux1 = listCJ.get(i).getExpedidopor().toUpperCase();
-                listCJ.get(i).setExpedidopor(aux1);
-                aux2 = listCJ.get(i).getQuien().toUpperCase();
-                listCJ.get(i).setQuien(aux2);
-                aux3 = listCJ.get(i).getTexto().toUpperCase();
-                listCJ.get(i).setTexto(aux3);
+            for (int i = 0; i < listCJ.size(); i++) {                
                 persistenciaConceptosJuridicos.editar(listCJ.get(i));
             }
         } catch (Exception e) {
@@ -86,7 +83,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     }
 
     @Override
-    public List<Empresas> listEmpresas() {
+    public List<Empresas> listaEmpresas() {
         try {
             List<Empresas> empresas = persistenciaEmpresas.buscarEmpresas();
             return empresas;

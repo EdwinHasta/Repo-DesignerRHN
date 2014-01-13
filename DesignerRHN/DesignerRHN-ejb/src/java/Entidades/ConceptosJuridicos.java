@@ -112,7 +112,7 @@ public class ConceptosJuridicos implements Serializable {
     }
 
     public void setExpedidopor(String expedidopor) {
-        this.expedidopor = expedidopor;
+        this.expedidopor = expedidopor.toUpperCase();
     }
 
     public String getQuien() {
@@ -120,7 +120,7 @@ public class ConceptosJuridicos implements Serializable {
     }
 
     public void setQuien(String quien) {
-        this.quien = quien;
+        this.quien = quien.toUpperCase();
     }
 
     public String getTexto() {
@@ -128,7 +128,7 @@ public class ConceptosJuridicos implements Serializable {
     }
 
     public void setTexto(String texto) {
-        this.texto = texto;
+        this.texto = texto.toUpperCase();
     }
 
     public Empresas getEmpresa() {

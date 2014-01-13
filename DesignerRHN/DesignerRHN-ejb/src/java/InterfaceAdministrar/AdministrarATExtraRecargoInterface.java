@@ -62,7 +62,7 @@ public interface AdministrarATExtraRecargoInterface {
      * Método encargado de recuperar los TiposDias para la lista de valores.
      * @return Retorna una lista de TiposDias.
      */
-    public List<TiposDias> listaTiposDias();
+    public List<TiposDias> lovListaTiposDias();
     /**
      * Método encargado de recuperar los TiposJornadas para la lista de valores.
      * @return Retorna una lista de TiposJornadas.

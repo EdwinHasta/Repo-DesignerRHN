@@ -2452,7 +2452,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public List<TiposDias> getLovTiposDias() {
         if (lovTiposDias == null) {
-            lovTiposDias = administrarATExtraRecargo.listaTiposDias();
+            lovTiposDias = administrarATExtraRecargo.lovListaTiposDias();
         }
         return lovTiposDias;
     }
