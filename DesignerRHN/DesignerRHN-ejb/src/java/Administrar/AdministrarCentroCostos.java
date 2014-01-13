@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -11,7 +10,6 @@ import InterfaceAdministrar.AdministrarCentroCostosInterface;
 import InterfacePersistencia.PersistenciaCentrosCostosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaTiposCentrosCostosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -19,75 +17,52 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 
 /**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'CentroCostos'.
  *
- * @author user
+ * @author betelgeuse
  */
 @Stateful
 @LocalBean
 public class AdministrarCentroCostos implements AdministrarCentroCostosInterface {
 
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
     /**
-     * CREACION EJB
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaCentrosCostos'.
      */
     @EJB
     PersistenciaCentrosCostosInterface persistenciaCentrosCostos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaTiposCentrosCostos'.
+     */
     @EJB
     PersistenciaTiposCentrosCostosInterface persistenciaTiposCentrosCostos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaEmpresas'.
+     */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
-    /**
-     *
-     */
-    private List<CentrosCostos> listaCentrosCostos;
-    private CentrosCostos centrosCostos;
-    private List<TiposCentrosCostos> listaTiposCentrosCostos;
-    private TiposCentrosCostos tiposCentrosCostos;
-    private List<Empresas> listaEmpresas;
-    private Empresas empresas;
-    private long contadorEmpresas;
 
     //-------------------------------------------------------------------------------------
-    private BigDecimal contadorComprobantesContables;
-    private BigDecimal contadorDetallesCCConsolidador;
-    private BigDecimal contadorEmpresasV;
-    private BigDecimal contadorEstructuras;
-    private BigDecimal contadorDetallesCCDetalle;
-    private BigDecimal contadorInterconCondor;
-    private BigDecimal contadorInterconDynamics;
-    private BigDecimal contadorInterconGeneral;
-    private BigDecimal contadorInterconHelisa;
-    private BigDecimal contadorInterconSapbo;
-    private BigDecimal contadorInterconSiigo;
-    private BigDecimal contadorInterconTotal;
-    private BigDecimal contadorNovedadesD;
-    private BigDecimal contadorNovedadesC;
-    private BigDecimal contadorProcesosProductivos;
-    private BigDecimal contadorProyecciones;
-    private BigDecimal contadorSolucionesNodosC;
-    private BigDecimal contadorSolucionesNodosD;
-    private BigDecimal contadorSoPanoramas;
-    private BigDecimal contadorTerceros;
-    private BigDecimal contadorUnidadesRegistradas;
-    private BigDecimal contadorVigenciasCuentasC;
-    private BigDecimal contadorVigenciasCuentasD;
-    private BigDecimal contadorVigenciasProrrateos;
-    //************************************EMPRESAS**************************************
-
-    /**
-     * METODO QUE SE ENCARGA DE TRAER LAS EMPRESAS
-     *
-     * @return
-     */
     @Override
     public List<Empresas> buscarEmpresas() {
         try {
-            return listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            return listaEmpresas;
         } catch (Exception e) {
             System.out.println("AdministrarCentroCostos: Falló al buscar las empresas /n" + e.getMessage());
-            return listaEmpresas = null;
+            return null;
         }
     }
-    //************************************CENTROS COSTROS**************************************
 
     @Override
     public void modificarCentroCostos(CentrosCostos centrosCostos) {
@@ -98,10 +73,6 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-    /**
-     *
-     * @param centrosCostos
-     */
     @Override
     public void borrarCentroCostos(CentrosCostos centrosCostos) {
         System.out.println("ENTRE A AdministrarCentroCostos.borrarCentroCostos ");
@@ -113,10 +84,6 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-    /**
-     *
-     * @param centrosCostos
-     */
     @Override
     public void crearCentroCostos(CentrosCostos centrosCostos) {
         System.out.println("ENTRE A AdministrarCentroCostos.crearCentroCostos ");
@@ -128,28 +95,23 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-    /**
-     *
-     * @param secEmpresa
-     * @return
-     */
     @Override
     public List<CentrosCostos> buscarCentrosCostosPorEmpresa(BigInteger secEmpresa) {
         try {
             System.out.println("ENTRE A AdministrarCentroCostos.buscarCentrosCostosPorEmpresa ");
-            listaCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostosEmpr(secEmpresa);
+            List<CentrosCostos> listaCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostosEmpr(secEmpresa);
+            return listaCentrosCostos;
         } catch (Exception e) {
             System.out.println("Error en Administrar CentrosCostos (centrosCostosPorEmpresa)");
-            listaCentrosCostos = null;
-        } finally {
-            return listaCentrosCostos;
+            return null;
         }
     }
 
     @Override
     public List<TiposCentrosCostos> buscarTiposCentrosCostos() {
         try {
-            return listaTiposCentrosCostos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
+            List<TiposCentrosCostos> listaTiposCentrosCostos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
+            return listaTiposCentrosCostos;
         } catch (Exception e) {
             System.out.println("\n AdministrarCentroCostos error en buscarTiposCentroCostos \n" + e.getMessage());
             return null;
@@ -157,279 +119,292 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public long contadorSecueniasEmpresas(BigInteger secEmpresa) {
+    public Long contadorSecueniasEmpresas(BigInteger secEmpresa) {
 
         try {
-            contadorEmpresas = persistenciaCentrosCostos.contadorSecuenciaEmpresa(secEmpresa);
+            Long contadorEmpresas = persistenciaCentrosCostos.contadorSecuenciaEmpresa(secEmpresa);
+            return contadorEmpresas;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSecuenciasEmpresas ERROR===" + e.getMessage());
-            contadorEmpresas = -1;
-        } finally {
-            return contadorEmpresas;
+            return null;
         }
     }
 
-    public BigDecimal contadorComprobantesContables(BigInteger secCentroCosto) {
-
+    @Override
+    public BigInteger contadorComprobantesContables(BigInteger secCentroCosto) {
+        BigInteger contadorComprobantesContables;
         try {
             contadorComprobantesContables = persistenciaCentrosCostos.contadorComprobantesContables(secCentroCosto);
+            return contadorComprobantesContables;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorComprobantesContables ERROR===" + e.getMessage());
-        } finally {
-            return contadorComprobantesContables;
+            return null;
         }
     }
 
-    public BigDecimal contadorDetallesCCConsolidador(BigInteger secCentroCosto) {
+    public BigInteger contadorDetallesCCConsolidador(BigInteger secCentroCosto) {
 
         try {
-            contadorDetallesCCConsolidador = persistenciaCentrosCostos.contadorDetallesCCConsolidador(secCentroCosto);
+            BigInteger contadorDetallesCCConsolidador = persistenciaCentrosCostos.contadorDetallesCCConsolidador(secCentroCosto);
+            return contadorDetallesCCConsolidador;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorDetallesCCConsolidador ERROR===" + e.getMessage());
-        } finally {
-            return contadorDetallesCCConsolidador;
+            return null;
         }
     }
 
-    public BigDecimal contadorDetalleContable(BigInteger secCentroCosto) {
+       public BigInteger contadorDetalleContable(BigInteger secCentroCosto) {
 
         try {
-            contadorDetallesCCDetalle = persistenciaCentrosCostos.contadorDetallesCCDetalle(secCentroCosto);
+            BigInteger contadorDetallesCCDetalle = persistenciaCentrosCostos.contadorDetallesCCDetalle(secCentroCosto);
+            return contadorDetallesCCDetalle;
+
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorDetalleContable ERROR===" + e.getMessage());
-        } finally {
-            return contadorDetallesCCDetalle;
+
+            return null;
         }
     }
 
-    public BigDecimal contadorEmpresas(BigInteger secCentroCosto) {
+    public BigInteger contadorEmpresas(BigInteger secCentroCosto) {
 
         try {
-            contadorEmpresasV = persistenciaCentrosCostos.contadorEmpresas(secCentroCosto);
+            BigInteger contadorEmpresasV;
+            return contadorEmpresasV = persistenciaCentrosCostos.contadorEmpresas(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorEmpresas ERROR===" + e.getMessage());
-        } finally {
-            return contadorEmpresasV;
+
+            return null;
         }
     }
 
-    public BigDecimal contadorEstructuras(BigInteger secCentroCosto) {
+    public BigInteger contadorEstructuras(BigInteger secCentroCosto) {
 
         try {
-            contadorEstructuras = persistenciaCentrosCostos.contadorEstructuras(secCentroCosto);
+            BigInteger contadorEstructuras;
+            return contadorEstructuras = persistenciaCentrosCostos.contadorEstructuras(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorEstructuras ERROR===" + e.getMessage());
-        } finally {
-            return contadorEstructuras;
+
+            return null;
         }
     }
 
-    public BigDecimal contadorInterconCondor(BigInteger secCentroCosto) {
+    public BigInteger contadorInterconCondor(BigInteger secCentroCosto) {
 
         try {
-            contadorInterconCondor = persistenciaCentrosCostos.contadorInterconCondor(secCentroCosto);
+            BigInteger contadorInterconCondor;
+            return contadorInterconCondor = persistenciaCentrosCostos.contadorInterconCondor(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconCondor ERROR===" + e.getMessage());
-        } finally {
-            return contadorInterconCondor;
+            return null;
         }
     }
 
-    public BigDecimal contadorInterconDynamics(BigInteger secCentroCosto) {
+    public BigInteger contadorInterconDynamics(BigInteger secCentroCosto) {
 
         try {
-            contadorInterconDynamics = persistenciaCentrosCostos.contadorInterconDynamics(secCentroCosto);
+            BigInteger contadorInterconDynamics;
+            return contadorInterconDynamics = persistenciaCentrosCostos.contadorInterconDynamics(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconDynamics ERROR===" + e.getMessage());
-        } finally {
-            return contadorInterconDynamics;
+
+            return null;
         }
     }
 
-    public BigDecimal contadorInterconGeneral(BigInteger secCentroCosto) {
+    public BigInteger contadorInterconGeneral(BigInteger secCentroCosto) {
 
         try {
-            contadorInterconGeneral = persistenciaCentrosCostos.contadorInterconGeneral(secCentroCosto);
+            BigInteger contadorInterconGeneral;
+
+            return contadorInterconGeneral = persistenciaCentrosCostos.contadorInterconGeneral(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconGeneral ERROR===" + e.getMessage());
-        } finally {
-            return contadorInterconGeneral;
+
+            return null;
         }
     }
 
-    public BigDecimal contadorInterconHelisa(BigInteger secCentroCosto) {
+    public BigInteger contadorInterconHelisa(BigInteger secCentroCosto) {
 
         try {
-            contadorInterconHelisa = persistenciaCentrosCostos.contadorInterconHelisa(secCentroCosto);
+            BigInteger contadorInterconHelisa;
+            return contadorInterconHelisa = persistenciaCentrosCostos.contadorInterconHelisa(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconHelisa ERROR===" + e.getMessage());
-        } finally {
-            return contadorInterconHelisa;
+
+            return null;
         }
     }
 
-    public BigDecimal contadorInterconSapbo(BigInteger secCentroCosto) {
+    public BigInteger contadorInterconSapbo(BigInteger secCentroCosto) {
 
         try {
-            contadorInterconSapbo = persistenciaCentrosCostos.contadorInterconSapbo(secCentroCosto);
+            BigInteger contadorInterconSapbo;
+            return contadorInterconSapbo = persistenciaCentrosCostos.contadorInterconSapbo(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconSapbo ERROR===" + e.getMessage());
-        } finally {
-            return contadorInterconSapbo;
+            return null;
         }
     }
 
-    public BigDecimal contadorInterconSiigo(BigInteger secCentroCosto) {
+    public BigInteger contadorInterconSiigo(BigInteger secCentroCosto) {
 
         try {
-            contadorInterconSiigo = persistenciaCentrosCostos.contadorInterconSiigo(secCentroCosto);
+            BigInteger contadorInterconSiigo;
+
+            return contadorInterconSiigo = persistenciaCentrosCostos.contadorInterconSiigo(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconSiigo ERROR===" + e.getMessage());
-        } finally {
-            return contadorInterconSiigo;
+            return null;
         }
     }
 
-    public BigDecimal contadorInterconTotal(BigInteger secCentroCosto) {
+    public BigInteger contadorInterconTotal(BigInteger secCentroCosto) {
 
         try {
-            contadorInterconTotal = persistenciaCentrosCostos.contadorInterconTotal(secCentroCosto);
+            BigInteger contadorInterconTotal;
+
+            return contadorInterconTotal = persistenciaCentrosCostos.contadorInterconTotal(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconTotal ERROR===" + e.getMessage());
-        } finally {
-            return contadorInterconTotal;
+            return null;
         }
     }
 
-    public BigDecimal contadorNovedadesD(BigInteger secCentroCosto) {
+    public BigInteger contadorNovedadesD(BigInteger secCentroCosto) {
 
         try {
-            contadorNovedadesD = persistenciaCentrosCostos.contadorNovedadesD(secCentroCosto);
+            BigInteger contadorNovedadesD;
+
+            return contadorNovedadesD = persistenciaCentrosCostos.contadorNovedadesD(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorNovedadesD ERROR===" + e.getMessage());
-        } finally {
-            return contadorNovedadesD;
+            return null;
         }
     }
 
-    public BigDecimal contadorNovedadesC(BigInteger secCentroCosto) {
+    public BigInteger contadorNovedadesC(BigInteger secCentroCosto) {
 
         try {
-            contadorNovedadesC = persistenciaCentrosCostos.contadorNovedadesC(secCentroCosto);
+            BigInteger contadorNovedadesC;
+
+            return contadorNovedadesC = persistenciaCentrosCostos.contadorNovedadesC(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorNovedadesC ERROR===" + e.getMessage());
-        } finally {
-            return contadorNovedadesC;
+            return null;
         }
     }
 
-    public BigDecimal contadorProcesosProductivos(BigInteger secCentroCosto) {
+    public BigInteger contadorProcesosProductivos(BigInteger secCentroCosto) {
 
         try {
-            contadorProcesosProductivos = persistenciaCentrosCostos.contadorProcesosProductivos(secCentroCosto);
+            BigInteger contadorProcesosProductivos;
+            return contadorProcesosProductivos = persistenciaCentrosCostos.contadorProcesosProductivos(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorProcesosProductivos ERROR===" + e.getMessage());
-        } finally {
-            return contadorProcesosProductivos;
+            return null;
         }
     }
 
-    public BigDecimal contadorProyecciones(BigInteger secCentroCosto) {
+    public BigInteger contadorProyecciones(BigInteger secCentroCosto) {
 
         try {
-            contadorProyecciones = persistenciaCentrosCostos.contadorProyecciones(secCentroCosto);
+            BigInteger contadorProyecciones;
+            return contadorProyecciones = persistenciaCentrosCostos.contadorProyecciones(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorProyecciones ERROR===" + e.getMessage());
-        } finally {
-            return contadorProyecciones;
+            return null;
         }
     }
 
-    public BigDecimal contadorSolucionesNodosC(BigInteger secCentroCosto) {
+    public BigInteger contadorSolucionesNodosC(BigInteger secCentroCosto) {
 
         try {
-            contadorSolucionesNodosC = persistenciaCentrosCostos.contadorSolucionesNodosC(secCentroCosto);
+            BigInteger contadorSolucionesNodosC;
+            return contadorSolucionesNodosC = persistenciaCentrosCostos.contadorSolucionesNodosC(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSolucionesNodosC ERROR===" + e.getMessage());
-        } finally {
-            return contadorSolucionesNodosC;
+
+            return null;
         }
     }
 
-    public BigDecimal contadorSolucionesNodosD(BigInteger secCentroCosto) {
+    public BigInteger contadorSolucionesNodosD(BigInteger secCentroCosto) {
 
         try {
-            contadorSolucionesNodosD = persistenciaCentrosCostos.contadorSolucionesNodosD(secCentroCosto);
+            BigInteger contadorSolucionesNodosD;
+            return contadorSolucionesNodosD = persistenciaCentrosCostos.contadorSolucionesNodosD(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSolucionesNodosD ERROR===" + e.getMessage());
-        } finally {
-            return contadorSolucionesNodosD;
+            return null;
         }
     }
 
-    public BigDecimal contadorSoPanoramas(BigInteger secCentroCosto) {
+    public BigInteger contadorSoPanoramas(BigInteger secCentroCosto) {
 
         try {
-            contadorSoPanoramas = persistenciaCentrosCostos.contadorSoPanoramas(secCentroCosto);
+            BigInteger contadorSoPanoramas;
+            return contadorSoPanoramas = persistenciaCentrosCostos.contadorSoPanoramas(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSoPanoramas ERROR===" + e.getMessage());
-        } finally {
-            return contadorSoPanoramas;
+            return null;
         }
     }
 
-    public BigDecimal contadorTerceros(BigInteger secCentroCosto) {
+    public BigInteger contadorTerceros(BigInteger secCentroCosto) {
 
         try {
-            contadorTerceros = persistenciaCentrosCostos.contadorTerceros(secCentroCosto);
+            BigInteger contadorTerceros;
+            return contadorTerceros = persistenciaCentrosCostos.contadorTerceros(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorTerceros ERROR===" + e.getMessage());
-        } finally {
-            return contadorTerceros;
+            return null;
         }
     }
 
-    public BigDecimal contadorUnidadesRegistradas(BigInteger secCentroCosto) {
+    public BigInteger contadorUnidadesRegistradas(BigInteger secCentroCosto) {
 
         try {
-            contadorUnidadesRegistradas = persistenciaCentrosCostos.contadorUnidadesRegistradas(secCentroCosto);
+            BigInteger contadorUnidadesRegistradas;
+            return contadorUnidadesRegistradas = persistenciaCentrosCostos.contadorUnidadesRegistradas(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorUnidadesRegistradas ERROR===" + e.getMessage());
-        } finally {
-            return contadorUnidadesRegistradas;
+            return null;
         }
     }
 
-    public BigDecimal contadorVigenciasCuentasC(BigInteger secCentroCosto) {
+    public BigInteger contadorVigenciasCuentasC(BigInteger secCentroCosto) {
 
         try {
-            contadorVigenciasCuentasC = persistenciaCentrosCostos.contadorVigenciasCuentasC(secCentroCosto);
+            BigInteger contadorVigenciasCuentasC;
+            return contadorVigenciasCuentasC = persistenciaCentrosCostos.contadorVigenciasCuentasC(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorVigenciasCuentasC ERROR===" + e.getMessage());
-        } finally {
-            return contadorVigenciasCuentasC;
+            return null;
         }
     }
 
-    public BigDecimal contadorVigenciasCuentasD(BigInteger secCentroCosto) {
+    public BigInteger contadorVigenciasCuentasD(BigInteger secCentroCosto) {
 
         try {
-            contadorVigenciasCuentasD = persistenciaCentrosCostos.contadorVigenciasCuentasD(secCentroCosto);
+            BigInteger contadorVigenciasCuentasD;
+            return contadorVigenciasCuentasD = persistenciaCentrosCostos.contadorVigenciasCuentasD(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorVigenciasCuentasD ERROR===" + e.getMessage());
-        } finally {
-            return contadorVigenciasCuentasD;
+            return null;
         }
     }
 
-    public BigDecimal contadorVigenciasProrrateos(BigInteger secCentroCosto) {
+    public BigInteger contadorVigenciasProrrateos(BigInteger secCentroCosto) {
 
         try {
-            contadorVigenciasProrrateos = persistenciaCentrosCostos.contadorVigenciasProrrateos(secCentroCosto);
+            BigInteger contadorVigenciasProrrateos;
+            return contadorVigenciasProrrateos = persistenciaCentrosCostos.contadorVigenciasProrrateos(secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorVigenciasProrrateos ERROR===" + e.getMessage());
-        } finally {
-            return contadorVigenciasProrrateos;
+            return null;
         }
     }
 

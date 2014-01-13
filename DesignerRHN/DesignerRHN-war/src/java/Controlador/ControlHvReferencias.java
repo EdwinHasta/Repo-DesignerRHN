@@ -74,8 +74,9 @@ public class ControlHvReferencias implements Serializable {
         nuevoHvReferencia = new HvReferencias();
         duplicarHvReferencia = new HvReferencias();
         empleadoSeleccionado = null;
-        secuenciaEmpleado = BigInteger.valueOf(10661039);
+        secuenciaEmpleado = null;
         listHVHojasDeVida = new ArrayList<HVHojasDeVida>();
+        guardado = true;
     }
 
     public void recibirEmpleado(BigInteger sec) {
@@ -195,6 +196,7 @@ public class ControlHvReferencias implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosHvReferencia");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
@@ -303,6 +305,7 @@ public class ControlHvReferencias implements Serializable {
 
             }
             context.update("form:datosHvReferencia");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -349,6 +352,7 @@ public class ControlHvReferencias implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -421,9 +425,10 @@ public class ControlHvReferencias implements Serializable {
             listHvReferencias = null;
             context.update("form:datosHvReferencia");
             k = 0;
+            guardado = true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -537,7 +542,7 @@ public class ControlHvReferencias implements Serializable {
             context.update("form:datosHvReferencia");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
             context.execute("nuevoRegistroHvReferencias.hide()");
@@ -631,6 +636,7 @@ public class ControlHvReferencias implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
@@ -807,6 +813,14 @@ public class ControlHvReferencias implements Serializable {
 
     public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
         this.empleadoSeleccionado = empleadoSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
     }
 
 }

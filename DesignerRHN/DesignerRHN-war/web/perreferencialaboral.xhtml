@@ -139,7 +139,7 @@
                         </p:toolbar>
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlHvReferencias.cancelarModificacion()}"  value="Refrescar" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 730px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlHvReferencias.revisarDialogoGuardar()}"     process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 730px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlHvReferencias.revisarDialogoGuardar()}"  disabled="#{controlHvReferencias.guardado}"   process="@this"   />
                         <p:commandButton style=" position: absolute; left: 807px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras"  action="atrasEmpleadoIndividualPersonal"  />
 
                         <p:dialog header="ATENCIÓN...!" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  

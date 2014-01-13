@@ -47,8 +47,6 @@ public class VigenciasProrrateosProyectos implements Serializable {
     @NotNull
     @Column(name = "PORCENTAJE")
     private int porcentaje;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;

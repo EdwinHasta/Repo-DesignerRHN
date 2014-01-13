@@ -1823,9 +1823,9 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoInvidual.xhtml</from-view-id>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>emplIbcs</from-outcome>
+            <from-outcome>perReferenciaLaboral</from-outcome>
             <to-view-id>/perreferencialaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -1833,8 +1833,24 @@
     <navigation-rule>
         <from-view-id>/perreferencialaboral.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>atrasEmplIbcs</from-outcome>
-            <to-view-id>/EmpleadoInvidual.xhtml</to-view-id>
+            <from-outcome>atrasEmpleadoIndividualPersonal</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>perReferenciaFamiliar</from-outcome>
+            <to-view-id>/perreferencialaboral1.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/perreferencialaboral1.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>perReferenciaLaboral1Atras</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

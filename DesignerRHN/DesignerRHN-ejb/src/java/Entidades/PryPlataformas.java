@@ -4,9 +4,7 @@
  */
 package Entidades;
 
-import Administrar.AdministrarVigenciasProyectos;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -18,7 +16,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,12 +27,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "PRY_PLATAFORMAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PryPlataformas.findAll", query = "SELECT p FROM PryPlataformas p"),
-    @NamedQuery(name = "PryPlataformas.findBySecuencia", query = "SELECT p FROM PryPlataformas p WHERE p.secuencia = :secuencia"),
-    @NamedQuery(name = "PryPlataformas.findByCodigo", query = "SELECT p FROM PryPlataformas p WHERE p.codigo = :codigo"),
-    @NamedQuery(name = "PryPlataformas.findByDescripcion", query = "SELECT p FROM PryPlataformas p WHERE p.descripcion = :descripcion"),
-    @NamedQuery(name = "PryPlataformas.findByObservacion", query = "SELECT p FROM PryPlataformas p WHERE p.observacion = :observacion")})
+    @NamedQuery(name = "PryPlataformas.findAll", query = "SELECT p FROM PryPlataformas p")})
 public class PryPlataformas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -44,13 +38,9 @@ public class PryPlataformas implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private BigInteger codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Size(max = 100)
     @Column(name = "OBSERVACION")
     private String observacion;
     @OneToMany(mappedBy = "pryPlataforma")
@@ -76,29 +66,29 @@ public class PryPlataformas implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
+        if (descripcion == null) {
             descripcion = (" ");
             return descripcion;
         }
-            
+
         return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public String getObservacion() {
-        if(observacion == null ){
+        if (observacion == null) {
             observacion = (" ");
             return observacion;
         }
@@ -106,7 +96,7 @@ public class PryPlataformas implements Serializable {
     }
 
     public void setObservacion(String observacion) {
-        this.observacion = observacion;
+        this.observacion = observacion.toUpperCase();
     }
 
     @XmlTransient
@@ -142,5 +132,5 @@ public class PryPlataformas implements Serializable {
     public String toString() {
         return "Entidades.PryPlataformas[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

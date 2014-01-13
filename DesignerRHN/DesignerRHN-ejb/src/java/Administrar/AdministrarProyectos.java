@@ -121,7 +121,7 @@ public class AdministrarProyectos implements AdministrarProyectosInterface {
     @Override
     public List<PryClientes> listPryClientes() {
         try {
-            List<PryClientes> listPC = persistenciaPryCliente.pryclientes();
+            List<PryClientes> listPC = persistenciaPryCliente.buscarPryClientes();
             return listPC;
         } catch (Exception e) {
             System.out.println("Error listPryClientes Admi : " + e.toString());

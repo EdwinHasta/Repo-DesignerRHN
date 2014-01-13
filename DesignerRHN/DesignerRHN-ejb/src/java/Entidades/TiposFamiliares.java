@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -31,24 +31,20 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposFamiliares.findAll", query = "SELECT t FROM TiposFamiliares t")})
 public class TiposFamiliares implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private BigInteger secuencia;
     @Column(name = "TIPO")
     private String tipo;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
+    private Integer codigo;
     @Column(name = "CODIGOALTERNATIVO")
-    private Short codigoalternativo;
+    private Integer codigoalternativo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipofamiliar")
     private Collection<Familiares> familiaresCollection;
     @OneToMany(mappedBy = "parentesco")
@@ -57,25 +53,28 @@ public class TiposFamiliares implements Serializable {
     public TiposFamiliares() {
     }
 
-    public TiposFamiliares(BigDecimal secuencia) {
+    public TiposFamiliares(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposFamiliares(BigDecimal secuencia, String tipo, short codigo) {
+    public TiposFamiliares(BigInteger secuencia, String tipo, Integer codigo) {
         this.secuencia = secuencia;
         this.tipo = tipo;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
     public String getTipo() {
+        if (tipo == null) {
+            tipo = " ";
+        }
         return tipo;
     }
 
@@ -83,19 +82,19 @@ public class TiposFamiliares implements Serializable {
         this.tipo = tipo;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public Short getCodigoalternativo() {
+    public Integer getCodigoalternativo() {
         return codigoalternativo;
     }
 
-    public void setCodigoalternativo(Short codigoalternativo) {
+    public void setCodigoalternativo(Integer codigoalternativo) {
         this.codigoalternativo = codigoalternativo;
     }
 
@@ -141,5 +140,5 @@ public class TiposFamiliares implements Serializable {
     public String toString() {
         return "Entidades.TiposFamiliares[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

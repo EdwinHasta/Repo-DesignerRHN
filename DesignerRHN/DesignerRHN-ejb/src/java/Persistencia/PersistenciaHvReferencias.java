@@ -61,21 +61,21 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
             List<HvReferencias> listHvReferencias = query.getResultList();
             return listHvReferencias;
         } catch (Exception e) {
-            System.out.println("Error en Persistencia Vigencias Normas Empleados " + e);
+            System.err.println("Error en Persistencia Vigencias Normas Empleados " + e);
             return null;
         }
     }
 
     public List<HVHojasDeVida> buscarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado) {
         try {
-            System.err.println("secuencia empleado hoja de vida " + secEmpleado);
-            Query query = em.createQuery("SELECT hv FROM HVHojasDeVida hv , HvReferencias hr , Empleados e WHERE hv.secuencia = hr.hojaDeVida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl");
+            System.out.println("PersistenciaHvReferencias secuencia empleado hoja de vida " + secEmpleado);
+            Query query = em.createQuery("SELECT hv FROM HVHojasDeVida hv , HvReferencias hr , Empleados e WHERE hv.secuencia = hr.hojadevida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secEmpleado);
 
             List<HVHojasDeVida> hvHojasDeVIda = query.getResultList();
             return hvHojasDeVIda;
         } catch (Exception e) {
-            System.out.println("Error en Persistencia HvEntrevistas buscarHvHojaDeVidaPorEmpleado " + e);
+            System.err.println("Error en Persistencia HVREFERENCIAS buscarHvHojaDeVidaPorEmpleado " + e);
             return null;
         }
     }

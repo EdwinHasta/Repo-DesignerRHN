@@ -13,13 +13,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'PryPlataformas'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'PryPlataformas' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInterface{
+public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -75,6 +77,21 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
             System.out.println("Error buscarPryPlataformaSecuencia PersistenciaPryPlataformas : " + e.toString());
             PryPlataformas plataformas = null;
             return plataformas;
+        }
+    }
+
+    public BigInteger contadorProyectos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = " SELECT COUNT(*) FROM proyectos p , pry_plataformas pp WHERE p.pry_plataforma = pp.secuencia AND pp.secuencia = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador contadorProyectos persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PERSISTENCIAPRYPLATAFORMAS contadorProyectos. " + e);
+            return retorno;
         }
     }
 }
