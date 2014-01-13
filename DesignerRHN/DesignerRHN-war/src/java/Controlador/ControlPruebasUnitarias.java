@@ -12,10 +12,23 @@ public class ControlPruebasUnitarias implements Serializable {
 
     @EJB
     AdministarReportesInterface administarReportes;
+    private Integer a;
 
     public ControlPruebasUnitarias() {
+        a= null;
     }
 
+    public int exeption(){
+        try {
+            return a.intValue();
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    
+    public void espichoelboton(){
+        System.out.println("imprima: " + exeption());
+    }
     public void crearReportePDF() {
         //administarReportes.generarReporteXLSX();
         administarReportes.generarReportePDF();
