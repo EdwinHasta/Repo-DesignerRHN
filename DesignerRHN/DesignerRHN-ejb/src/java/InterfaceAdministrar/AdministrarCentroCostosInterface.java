@@ -56,7 +56,7 @@ public interface AdministrarCentroCostosInterface {
      * @param secEmpresa
      * @return
      */
-    public long contadorSecueniasEmpresas(BigInteger secEmpresa);
+    public Long contadorSecueniasEmpresas(BigInteger secEmpresa);
 
     public BigDecimal contadorComprobantesContables(BigInteger secCentroCosto);
 
