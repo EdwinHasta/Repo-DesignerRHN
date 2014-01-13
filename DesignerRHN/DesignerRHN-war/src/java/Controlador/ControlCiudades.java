@@ -567,35 +567,16 @@ public class ControlCiudades implements Serializable {
                 listaCiudadesBorrar.clear();
             }
             if (!listaCiudadesBorrar.isEmpty()) {
-                for (int i = 0; i < listaCiudadesBorrar.size(); i++) {
-                    System.out.println("Borrando...");
-                    if (listaCiudadesBorrar.get(i).getDepartamento().getSecuencia() == null) {
-
-                        listaCiudadesBorrar.get(i).setDepartamento(null);
-                        administrarCiudades.borrarCiudad(listaCiudadesBorrar.get(i));
-                    } else {
-
-                        administrarCiudades.borrarCiudad(listaCiudadesBorrar.get(i));
-                    }
-
-                }
+                administrarCiudades.borrarCiudades(listaCiudadesBorrar);
                 System.out.println("Entra");
                 listaCiudadesBorrar.clear();
             }
             if (!listaCiudadesCrear.isEmpty()) {
-                for (int i = 0; i < listaCiudadesCrear.size(); i++) {
-                    System.out.println("Creando...");
-                    if (listaCiudadesCrear.get(i).getDepartamento().getSecuencia() == null) {
-                        listaCiudadesCrear.get(i).setDepartamento(null);
-                        administrarCiudades.crearCiudad(listaCiudadesCrear.get(i));
-                    } else {
-                        administrarCiudades.crearCiudad(listaCiudadesCrear.get(i));
-                    }
-                }
+                administrarCiudades.crearCiudades(listaCiudadesCrear);
                 listaCiudadesCrear.clear();
             }
             if (!listaCiudadesModificar.isEmpty()) {
-                administrarCiudades.modificarCiudad(listaCiudadesModificar);
+                administrarCiudades.modificarCiudades(listaCiudadesModificar);
                 listaCiudadesModificar.clear();
             }
             System.out.println("Se guardaron los datos con exito");
