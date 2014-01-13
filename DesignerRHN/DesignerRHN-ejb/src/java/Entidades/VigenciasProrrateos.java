@@ -48,8 +48,6 @@ public class VigenciasProrrateos implements Serializable {
     @NotNull
     @Column(name = "PORCENTAJE")
     private BigDecimal porcentaje;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;

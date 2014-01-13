@@ -376,6 +376,7 @@ public class ControlSets implements Serializable {
             fechaIni = filtrarSets.get(index).getFechainicial();
             secRegistro = filtrarSets.get(index).getSecuencia();
         }
+        System.out.println("Index : "+index+"//Celda: "+cualCelda);
     }
     //GUARDAR
 

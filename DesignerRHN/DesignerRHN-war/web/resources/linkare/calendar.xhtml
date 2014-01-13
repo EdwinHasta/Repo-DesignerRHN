@@ -12,16 +12,20 @@
     <cc:interface>
 
         <cc:attribute name="value" type="java.util.Date" shortDescription="The value of this component" required="false" />
-        <cc:attribute name="mask" type="java.lang.String"
+        <cc:attribute name="mask" type="java.lang.String" 
                       required="false" default="99/99/9999"
                       shortDescription="The mask of the input component. The default value is 99/99/9999" />
         <cc:attribute name="pattern" type="java.lang.String"
                       required="false" default="dd/MM/yyyy"
                       shortDescription="The date pattern for the component. It should match the mask pattern. 
                       The default value is dd/MM/yyyy" />
+        <cc:attribute name="validator"/>
         <cc:clientBehavior name="dateSelect" targets="calendar" event="dateSelect" />
         <cc:clientBehavior name="select" targets="calendar" event="select" />
         <cc:clientBehavior name="change" targets="calendar" event="change" />
+        <cc:clientBehavior name="click" targets="calendar" event="click"/>
+
+        <cc:editableValueHolder name="forCalendar" targets="calendar" />
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
@@ -29,7 +33,7 @@
         <!-- This component has been simplified but it could include any attribute of the inputMask 
          component that we wish our developer clients to be able to specify -->
         <p:inputMask id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
-                     value="#{cc.attrs.value}" >
+                     value="#{cc.attrs.value}">
             <f:convertDateTime pattern="#{cc.attrs.pattern}" timeZone="America/Bogota" locale="es" />
         </p:inputMask>
  
