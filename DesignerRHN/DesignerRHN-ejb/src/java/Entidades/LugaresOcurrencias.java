@@ -8,6 +8,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +36,7 @@ public class LugaresOcurrencias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -47,20 +48,20 @@ public class LugaresOcurrencias implements Serializable {
     public LugaresOcurrencias() {
     }
 
-    public LugaresOcurrencias(BigDecimal secuencia) {
+    public LugaresOcurrencias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public LugaresOcurrencias(BigDecimal secuencia, short codigo) {
+    public LugaresOcurrencias(BigInteger secuencia, short codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
