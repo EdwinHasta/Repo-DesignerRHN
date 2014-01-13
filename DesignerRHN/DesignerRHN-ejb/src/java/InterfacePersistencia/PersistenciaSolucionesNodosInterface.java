@@ -95,11 +95,16 @@ public interface PersistenciaSolucionesNodosInterface {
     */
    public List<SolucionesNodos> solucionNodoEmpleador(BigInteger secuenciaEmpleado);
    /**
-    * de los empleados que voy a liquidar, cuantos estan en estado 'LIQUIDADO'
-    * @param secProceso
-    * @return 
+    * Método encargado de contar de los empleados que voy a liquidar, para un proceso específico, cuantos estan en estado 'LIQUIDADO'
+    * @param secProceso Secuencia del proceso.
+    * @return Retorna el número de empleados que voy a liquidar con el proceso cuya secuencia coincida con el valor
+    * dado por parámetro.
     */
    public Integer ContarProcesosSN(BigInteger secProceso);
-   
+   /**
+    * 
+    * @param secuencia
+    * @return 
+    */
    public boolean solucionesNodosParaConcepto(BigInteger secuencia);
 }
