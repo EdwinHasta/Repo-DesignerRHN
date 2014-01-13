@@ -5,6 +5,7 @@ import Entidades.Empleados;
 import Entidades.Estructuras;
 import Entidades.MotivosLocalizaciones;
 import Entidades.Proyectos;
+import Entidades.Sets;
 import Entidades.VigenciasLocalizaciones;
 import Entidades.VigenciasProrrateos;
 import Entidades.VigenciasProrrateosProyectos;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -139,6 +141,8 @@ public class ControlVigenciaLocalizacion implements Serializable {
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
     private BigInteger backUp;
     private String nombreTablaRastro;
+    private Date fechaParametro;
+    private Date fechaVigencia, fechaIniVP, fechaFinVP, fechaIniVPP, fechaFinVPP;
 
     public ControlVigenciaLocalizacion() {
 
@@ -268,6 +272,84 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
             index = -1;
             secRegistroVL = null;
+        }
+    }
+
+    public boolean validarFechasRegistro(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        System.err.println("fechaparametro : " + fechaParametro);
+        boolean retorno = true;
+        if (i == 0) {
+            VigenciasLocalizaciones auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = vigenciaLocalizaciones.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtrarVL.get(index);
+            }
+            if (auxiliar.getFechavigencia().after(fechaParametro)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        if (i == 1) {
+            if (nuevaVigencia.getFechavigencia().after(fechaParametro)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        if (i == 2) {
+            if (duplicarVL.getFechavigencia().after(fechaParametro)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public void modificarFechas(int i, int c) {
+        VigenciasLocalizaciones auxiliar = null;
+        if (tipoLista == 0) {
+            auxiliar = vigenciaLocalizaciones.get(index);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtrarVL.get(index);
+        }
+        if (auxiliar.getFechavigencia() != null) {
+            boolean retorno = false;
+            index = i;
+            retorno = validarFechasRegistro(0);
+            if (retorno == true) {
+                cambiarIndice(i, c);
+                modificarVL(i);
+            } else {
+                if (tipoLista == 0) {
+                    vigenciaLocalizaciones.get(i).setFechavigencia(fechaVigencia);
+                }
+                if (tipoLista == 1) {
+                    filtrarVL.get(i).setFechavigencia(fechaVigencia);
+
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVLEmpleado");
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            if (tipoLista == 0) {
+                vigenciaLocalizaciones.get(i).setFechavigencia(fechaVigencia);
+            }
+            if (tipoLista == 1) {
+                filtrarVL.get(i).setFechavigencia(fechaVigencia);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVLEmpleado");
+            context.execute("errorRegNew.show()");
         }
     }
 
@@ -436,6 +518,113 @@ public class ControlVigenciaLocalizacion implements Serializable {
         }
     }
 
+    public boolean validarFechasRegistroVigenciaProrrateo(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        System.err.println("fechaparametro : " + fechaParametro);
+        boolean retorno = true;
+        if (i == 0) {
+            VigenciasProrrateos auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = vigenciasProrrateosVigencia.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtradoVigenciasProrrateosVigencia.get(index);
+            }
+            if (auxiliar.getFechafinal() != null) {
+                if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (auxiliar.getFechafinal() == null) {
+                if (auxiliar.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 1) {
+            if (nuevaVigenciaP.getFechafinal() != null) {
+                if (nuevaVigenciaP.getFechainicial().after(fechaParametro) && nuevaVigenciaP.getFechainicial().before(nuevaVigenciaP.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (nuevaVigenciaP.getFechafinal() == null) {
+                if (nuevaVigenciaP.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 2) {
+            if (duplicarVP.getFechafinal() != null) {
+                if (duplicarVP.getFechainicial().after(fechaParametro) && duplicarVP.getFechainicial().before(duplicarVP.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (duplicarVP.getFechafinal() == null) {
+                if (duplicarVP.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+    }
+
+    public void modificarFechasVigenciasProrrateos(int i, int c) {
+        VigenciasProrrateos auxiliar = null;
+        if (tipoLista == 0) {
+            auxiliar = vigenciasProrrateosVigencia.get(i);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtradoVigenciasProrrateosVigencia.get(i);
+        }
+        if (auxiliar.getFechainicial() != null) {
+            boolean retorno = false;
+            index = i;
+            retorno = validarFechasRegistroVigenciaProrrateo(0);
+            if (retorno == true) {
+                cambiarIndiceVP(i, c);
+                modificarVP(i);
+            } else {
+                if (tipoLista == 0) {
+                    vigenciasProrrateosVigencia.get(i).setFechafinal(fechaFinVP);
+                    vigenciasProrrateosVigencia.get(i).setFechainicial(fechaIniVP);
+                }
+                if (tipoLista == 1) {
+                    filtradoVigenciasProrrateosVigencia.get(i).setFechafinal(fechaFinVP);
+                    filtradoVigenciasProrrateosVigencia.get(i).setFechainicial(fechaIniVP);
+
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVPVigencia");
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            if (tipoLista == 0) {
+                vigenciasProrrateosVigencia.get(i).setFechainicial(fechaIniVP);
+            }
+            if (tipoLista == 1) {
+                filtradoVigenciasProrrateosVigencia.get(i).setFechainicial(fechaIniVP);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVPVigencia");
+            context.execute("errorRegNew.show()");
+        }
+    }
+
     /**
      * Metodo que modifica los cambios efectuados en la tabla VigenciaProrrateo
      * de la pagina
@@ -578,6 +767,113 @@ public class ControlVigenciaLocalizacion implements Serializable {
             cambioVigenciaPP = true;
             indexVPP = -1;
             secRegistroVPP = null;
+        }
+    }
+
+    public boolean validarFechasRegistroVigenciaProrrateoProyecto(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        System.err.println("fechaparametro : " + fechaParametro);
+        boolean retorno = true;
+        if (i == 0) {
+            VigenciasProrrateosProyectos auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = vigenciasProrrateosProyectosVigencia.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtradoVigenciasProrrateosProyectosVigencia.get(index);
+            }
+            if (auxiliar.getFechafinal() != null) {
+                if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (auxiliar.getFechafinal() == null) {
+                if (auxiliar.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 1) {
+            if (nuevaVigenciaPP.getFechafinal() != null) {
+                if (nuevaVigenciaPP.getFechainicial().after(fechaParametro) && nuevaVigenciaPP.getFechainicial().before(nuevaVigenciaPP.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (nuevaVigenciaPP.getFechafinal() == null) {
+                if (nuevaVigenciaPP.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 2) {
+            if (duplicarVPP.getFechafinal() != null) {
+                if (duplicarVPP.getFechainicial().after(fechaParametro) && duplicarVPP.getFechainicial().before(duplicarVPP.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (duplicarVPP.getFechafinal() == null) {
+                if (duplicarVPP.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+    }
+
+    public void modificarFechasVigenciasProrrateosProyecto(int i, int c) {
+        VigenciasProrrateosProyectos auxiliar = null;
+        if (tipoLista == 0) {
+            auxiliar = vigenciasProrrateosProyectosVigencia.get(i);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtradoVigenciasProrrateosProyectosVigencia.get(i);
+        }
+        if (auxiliar.getFechainicial() != null) {
+            boolean retorno = false;
+            index = i;
+            retorno = validarFechasRegistroVigenciaProrrateoProyecto(0);
+            if (retorno == true) {
+                cambiarIndiceVPP(i, c);
+                modificarVPP(i);
+            } else {
+                if (tipoLista == 0) {
+                    vigenciasProrrateosProyectosVigencia.get(i).setFechafinal(fechaFinVPP);
+                    vigenciasProrrateosProyectosVigencia.get(i).setFechainicial(fechaIniVPP);
+                }
+                if (tipoLista == 1) {
+                    filtradoVigenciasProrrateosProyectosVigencia.get(i).setFechafinal(fechaFinVPP);
+                    filtradoVigenciasProrrateosProyectosVigencia.get(i).setFechainicial(fechaIniVPP);
+
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVPPVigencia");
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            if (tipoLista == 0) {
+                vigenciasProrrateosProyectosVigencia.get(i).setFechainicial(fechaIniVPP);
+            }
+            if (tipoLista == 1) {
+                filtradoVigenciasProrrateosProyectosVigencia.get(i).setFechainicial(fechaIniVPP);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVPPVigencia");
+            context.execute("errorRegNew.show()");
         }
     }
 
@@ -1576,49 +1872,53 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que se encarga de agregar un nueva VigenciasLocalizaciones
      */
     public void agregarNuevaVL() {
-        if (nuevaVigencia.getFechavigencia() != null) {
-            if (bandera == 1) {
-                //CERRAR FILTRADO
-                vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
-                vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
-                vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
-                vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-                vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
-                vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-                vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
-                vlProyecto.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
-                bandera = 0;
-                filtrarVL = null;
-                tipoLista = 0;
-            }
-            //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
-            k++;
-            l = BigInteger.valueOf(k);
-            nuevaVigencia.setSecuencia(l);
-            nuevaVigencia.setEmpleado(empleado);
-            listVLCrear.add(nuevaVigencia);
+        if (nuevaVigencia.getFechavigencia() != null && nuevaVigencia.getLocalizacion().getSecuencia() != null && nuevaVigencia.getMotivo().getSecuencia() != null) {
+            if (validarFechasRegistro(1) == true) {
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+                    vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
+                    vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+                    vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                    vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+                    vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
+                    vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+                    vlMotivo.setFilterStyle("display: none; visibility: hidden;");
+                    vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+                    vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
+                    bandera = 0;
+                    filtrarVL = null;
+                    tipoLista = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigencia.setSecuencia(l);
+                nuevaVigencia.setEmpleado(empleado);
+                listVLCrear.add(nuevaVigencia);
 
-            vigenciaLocalizaciones.add(nuevaVigencia);
-            nuevaVigencia = new VigenciasLocalizaciones();
-            nuevaVigencia.setLocalizacion(new Estructuras());
-            nuevaVigencia.getLocalizacion().setCentrocosto(new CentrosCostos());
-            nuevaVigencia.setMotivo(new MotivosLocalizaciones());
-            nuevaVigencia.setProyecto(new Proyectos());
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosVLEmpleado");
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                vigenciaLocalizaciones.add(nuevaVigencia);
+                nuevaVigencia = new VigenciasLocalizaciones();
+                nuevaVigencia.setLocalizacion(new Estructuras());
+                nuevaVigencia.getLocalizacion().setCentrocosto(new CentrosCostos());
+                nuevaVigencia.setMotivo(new MotivosLocalizaciones());
+                nuevaVigencia.setProyecto(new Proyectos());
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVLEmpleado");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                context.execute("NuevoRegistroVL.hide()");
+                index = -1;
+                secRegistroVL = null;
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechaVL.show()");
             }
-            context.execute("NuevoRegistroVL.hide()");
-            index = -1;
-            secRegistroVL = null;
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:negacionNuevaVL");
             context.execute("negacionNuevaVL.show()");
         }
     }
@@ -1642,47 +1942,58 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Agrega una nueva Vigencia Prorrateo
      */
     public void agregarNuevaVP() {
-        cambioVigenciaP = true;
-        //CERRAR FILTRADO
-        if (banderaVP == 1) {
-            vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
-            vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
-            vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
-            vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
-            vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
-            vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
-            vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVPVigencia");
-            banderaVP = 0;
-            filtradoVigenciasProrrateosVigencia = null;
-            tipoListaVP = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaVigenciaP.setSecuencia(l);
-        nuevaVigenciaP.setViglocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
-        listVPCrear.add(nuevaVigenciaP);
-        //  vigenciasProrrateosVigencia.add(nuevaVigenciaP);
-        //  System.out.println("Almaceno a vigenciasProrrateosVigencia el dato nuevaVigenciaP");
+        if (nuevaVigenciaP.getCentrocosto().getSecuencia() != null && nuevaVigenciaP.getPorcentaje() == null && nuevaVigenciaP.getFechainicial() != null) {
+            if (validarFechasRegistroVigenciaProrrateo(1) == true) {
+                cambioVigenciaP = true;
+                //CERRAR FILTRADO
+                if (banderaVP == 1) {
+                    vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+                    vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                    vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+                    vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+                    vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+                    vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+                    vPProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+                    vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVPVigencia");
+                    banderaVP = 0;
+                    filtradoVigenciasProrrateosVigencia = null;
+                    tipoListaVP = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigenciaP.setSecuencia(l);
+                nuevaVigenciaP.setViglocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
+                listVPCrear.add(nuevaVigenciaP);
+                //  vigenciasProrrateosVigencia.add(nuevaVigenciaP);
+                //  System.out.println("Almaceno a vigenciasProrrateosVigencia el dato nuevaVigenciaP");
 
-        nuevaVigenciaP = new VigenciasProrrateos();
-        nuevaVigenciaP.setCentrocosto(new CentrosCostos());
-        nuevaVigenciaP.setProyecto(new Proyectos());
-        index = indexAuxVL;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVPVigencia");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+                nuevaVigenciaP = new VigenciasProrrateos();
+                nuevaVigenciaP.setCentrocosto(new CentrosCostos());
+                nuevaVigenciaP.setProyecto(new Proyectos());
+                index = indexAuxVL;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVPVigencia");
+                context.execute("NuevoRegistroVP.hide();");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                indexVP = -1;
+                secRegistroVP = null;
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show();");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegnew.show();");
         }
-        indexVP = -1;
-        secRegistroVP = null;
     }
 
     /**
@@ -1701,41 +2012,52 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Agrega una nueva vigencia prorrateo proyecto
      */
     public void agregarNuevaVPP() {
-        cambioVigenciaPP = true;
-        //CERRAR FILTRADO
-        if (banderaVP == 1) {
-            vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
-            vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
-            vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
-            vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
-            vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
-            banderaVPP = 0;
-            filtradoVigenciasProrrateosProyectosVigencia = null;
-            tipoListaVPP = 0;
+        if (nuevaVigenciaPP.getFechainicial() != null && nuevaVigenciaPP.getPorcentaje() >= 0 && nuevaVigenciaPP.getProyecto().getSecuencia() != null) {
+            if (validarFechasRegistroVigenciaProrrateoProyecto(1) == true) {
+                cambioVigenciaPP = true;
+                //CERRAR FILTRADO
+                if (banderaVP == 1) {
+                    vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+                    vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+                    vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+                    vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+                    vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
+                    banderaVPP = 0;
+                    filtradoVigenciasProrrateosProyectosVigencia = null;
+                    tipoListaVPP = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigenciaPP.setSecuencia(l);
+                nuevaVigenciaPP.setVigencialocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
+                listVPPCrear.add(nuevaVigenciaPP);
+                //   vigenciasProrrateosProyectosVigencia.add(nuevaVigenciaPP);
+                nuevaVigenciaP = new VigenciasProrrateos();
+                nuevaVigenciaP.setCentrocosto(new CentrosCostos());
+                nuevaVigenciaP.setProyecto(new Proyectos());
+                index = indexAuxVL;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVPPVigencia");
+                context.execute("NuevoRegistroVPP.hide();");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                indexVPP = -1;
+                secRegistroVPP = null;
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show();");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegnew.show();");
         }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaVigenciaPP.setSecuencia(l);
-        nuevaVigenciaPP.setVigencialocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
-        listVPPCrear.add(nuevaVigenciaPP);
-        //   vigenciasProrrateosProyectosVigencia.add(nuevaVigenciaPP);
-        nuevaVigenciaP = new VigenciasProrrateos();
-        nuevaVigenciaP.setCentrocosto(new CentrosCostos());
-        nuevaVigenciaP.setProyecto(new Proyectos());
-        index = indexAuxVL;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVPPVigencia");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-        }
-        indexVPP = -1;
-        secRegistroVPP = null;
     }
 
     /**
@@ -1790,7 +2112,12 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 duplicarVL.setMotivo(filtrarVL.get(index).getMotivo());
                 duplicarVL.setProyecto(filtrarVL.get(index).getProyecto());
             }
-
+            if (duplicarVL.getMotivo() == null) {
+                duplicarVL.setMotivo(new MotivosLocalizaciones());
+            }
+            if (duplicarVL.getLocalizacion() == null) {
+                duplicarVL.setLocalizacion(new Estructuras());
+            }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVL");
             context.execute("DuplicarRegistroVL.show()");
@@ -1804,36 +2131,47 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * VigenciasLocalizaciones
      */
     public void confirmarDuplicar() {
-        vigenciaLocalizaciones.add(duplicarVL);
-        listVLCrear.add(duplicarVL);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVLEmpleado");
-        index = -1;
-        secRegistroVL = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        if (duplicarVL.getFechavigencia() != null && duplicarVL.getLocalizacion().getSecuencia() != null && duplicarVL.getMotivo().getSecuencia() != null) {
+            if (validarFechasRegistro(2) == true) {
+                vigenciaLocalizaciones.add(duplicarVL);
+                listVLCrear.add(duplicarVL);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVLEmpleado");
+                context.execute("DuplicarRegistroVL.hide();");
+                index = -1;
+                secRegistroVL = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+                    vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
+                    vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+                    vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                    vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+                    vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
+                    vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+                    vlMotivo.setFilterStyle("display: none; visibility: hidden;");
+                    vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+                    vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
+                    bandera = 0;
+                    filtrarVL = null;
+                    tipoLista = 0;
+                }
+                duplicarVL = new VigenciasLocalizaciones();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechaVL.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("negacionNuevaVL.show()");
         }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
-            vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
-            vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
-            vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-            vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
-            vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
-            vlProyecto.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
-            bandera = 0;
-            filtrarVL = null;
-            tipoLista = 0;
-        }
-        duplicarVL = new VigenciasLocalizaciones();
     }
-    //LIMPIAR DUPLICAR
+//LIMPIAR DUPLICAR
 
     /**
      * Metodo que limpia los datos de un duplicar Vigencia Localizacion
@@ -1890,37 +2228,48 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * VigenciaProrrateo
      */
     public void confirmarDuplicarVP() {
-        cambioVigenciaP = true;
-        vigenciasProrrateosVigencia.add(duplicarVP);
-        listVPCrear.add(duplicarVP);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVPVigencia");
-        indexVP = -1;
-        secRegistroVP = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        if (duplicarVP.getCentrocosto().getSecuencia() != null && duplicarVP.getPorcentaje() == null && duplicarVP.getFechainicial() != null) {
+            if (validarFechasRegistroVigenciaProrrateo(2) == true) {
+                cambioVigenciaP = true;
+                vigenciasProrrateosVigencia.add(duplicarVP);
+                listVPCrear.add(duplicarVP);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVPVigencia");
+                context.execute("DuplicadoRegistroVP.hide();");
+                indexVP = -1;
+                secRegistroVP = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                if (banderaVP == 1) {
+                    //CERRAR FILTRADO
+                    vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+                    vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                    vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+                    vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+                    vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+                    vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+                    vPProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+                    vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVPVigencia");
+                    banderaVP = 0;
+                    filtradoVigenciasProrrateosVigencia = null;
+                    tipoListaVP = 0;
+                }
+                duplicarVP = new VigenciasProrrateos();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show();");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegnew.show();");
         }
-        if (banderaVP == 1) {
-            //CERRAR FILTRADO
-            vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
-            vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
-            vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
-            vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
-            vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
-            vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
-            vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVPVigencia");
-            banderaVP = 0;
-            filtradoVigenciasProrrateosVigencia = null;
-            tipoListaVP = 0;
-        }
-        duplicarVP = new VigenciasProrrateos();
     }
 
     /**
@@ -1973,32 +2322,43 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Vigencia Prorrateo Proyecto
      */
     public void confirmarDuplicarVPP() {
-        vigenciasProrrateosProyectosVigencia.add(duplicarVPP);
-        listVPPCrear.add(duplicarVPP);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVPPVigencia");
-        indexVPP = -1;
-        secRegistroVPP = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        if (duplicarVPP.getFechainicial() != null && duplicarVPP.getPorcentaje() >= 0 && duplicarVPP.getProyecto().getSecuencia() != null) {
+            if (validarFechasRegistroVigenciaProrrateoProyecto(2) == true) {
+                vigenciasProrrateosProyectosVigencia.add(duplicarVPP);
+                listVPPCrear.add(duplicarVPP);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVPPVigencia");
+                context.execute("DuplicarRegistroVPP.show()");
+                indexVPP = -1;
+                secRegistroVPP = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                if (banderaVPP == 1) {
+                    //CERRAR FILTRADO
+                    vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+                    vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+                    vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+                    vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+                    vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
+                    banderaVPP = 0;
+                    filtradoVigenciasProrrateosProyectosVigencia = null;
+                    tipoListaVPP = 0;
+                }
+                duplicarVPP = new VigenciasProrrateosProyectos();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show();");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegnew.show();");
         }
-        if (banderaVPP == 1) {
-            //CERRAR FILTRADO
-            vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
-            vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
-            vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
-            vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
-            vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
-            banderaVPP = 0;
-            filtradoVigenciasProrrateosProyectosVigencia = null;
-            tipoListaVPP = 0;
-        }
-        duplicarVPP = new VigenciasProrrateosProyectos();
     }
 
     /**
@@ -3049,7 +3409,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         msnConfirmarRastroHistorico = "";
         nombreTablaRastro = "";
     }
-    
+
     public void verificarRastroTabla() {
         if (vigenciaLocalizaciones == null || vigenciasProrrateosProyectosVigencia == null || vigenciasProrrateosVigencia == null) {
             //Dialogo para seleccionar el rato de la tabla deseada
@@ -3061,7 +3421,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             if (index >= 0) {
                 verificarRastroVigenciaLocalizacion();
                 index = -1;
-                
+
             }
             if (indexVP >= 0) {
                 //Metodo Rastro Vigencias Afiliaciones
