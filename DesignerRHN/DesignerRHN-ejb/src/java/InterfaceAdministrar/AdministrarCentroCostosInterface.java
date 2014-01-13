@@ -7,7 +7,6 @@ package InterfaceAdministrar;
 import Entidades.CentrosCostos;
 import Entidades.Empresas;
 import Entidades.TiposCentrosCostos;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -58,51 +57,52 @@ public interface AdministrarCentroCostosInterface {
      */
     public Long contadorSecueniasEmpresas(BigInteger secEmpresa);
 
-    public BigDecimal contadorComprobantesContables(BigInteger secCentroCosto);
+    public BigInteger contadorComprobantesContables(BigInteger secCentroCosto);
 
-    public BigDecimal contadorDetallesCCConsolidador(BigInteger secCentroCosto);
+    public BigInteger contadorDetallesCCConsolidador(BigInteger secCentroCosto);
 
-    public BigDecimal contadorDetalleContable(BigInteger secCentroCosto);
+    public BigInteger contadorDetalleContable(BigInteger secCentroCosto);
 
-    public BigDecimal contadorEmpresas(BigInteger secCentroCosto);
+    public BigInteger contadorEmpresas(BigInteger secCentroCosto);
 
-    public BigDecimal contadorEstructuras(BigInteger secCentroCosto);
+    public BigInteger contadorEstructuras(BigInteger secCentroCosto);
 
-    public BigDecimal contadorInterconCondor(BigInteger secCentroCosto);
+    public BigInteger contadorInterconCondor(BigInteger secCentroCosto);
 
-    public BigDecimal contadorInterconDynamics(BigInteger secCentroCosto);
+    public BigInteger contadorInterconDynamics(BigInteger secCentroCosto);
 
-    public BigDecimal contadorInterconGeneral(BigInteger secCentroCosto);
+    public BigInteger contadorInterconGeneral(BigInteger secCentroCosto);
 
-    public BigDecimal contadorInterconHelisa(BigInteger secCentroCosto);
+    public BigInteger contadorInterconHelisa(BigInteger secCentroCosto);
 
-    public BigDecimal contadorInterconSapbo(BigInteger secCentroCosto);
+    public BigInteger contadorInterconSapbo(BigInteger secCentroCosto);
 
-    public BigDecimal contadorInterconSiigo(BigInteger secCentroCosto);
+    public BigInteger contadorInterconSiigo(BigInteger secCentroCosto);
 
-    public BigDecimal contadorInterconTotal(BigInteger secCentroCosto);
+    public BigInteger contadorInterconTotal(BigInteger secCentroCosto);
 
-    public BigDecimal contadorNovedadesD(BigInteger secCentroCosto);
+    public BigInteger contadorNovedadesD(BigInteger secCentroCosto);
 
-    public BigDecimal contadorNovedadesC(BigInteger secCentroCosto);
+    public BigInteger contadorNovedadesC(BigInteger secCentroCosto);
 
-    public BigDecimal contadorProcesosProductivos(BigInteger secCentroCosto);
+    public BigInteger contadorProcesosProductivos(BigInteger secCentroCosto);
 
-    public BigDecimal contadorProyecciones(BigInteger secCentroCosto);
+    public BigInteger contadorProyecciones(BigInteger secCentroCosto);
 
-    public BigDecimal contadorSolucionesNodosC(BigInteger secCentroCosto);
+    public BigInteger contadorSolucionesNodosC(BigInteger secCentroCosto);
 
-    public BigDecimal contadorSolucionesNodosD(BigInteger secCentroCosto);
+    public BigInteger contadorSolucionesNodosD(BigInteger secCentroCosto);
 
-    public BigDecimal contadorSoPanoramas(BigInteger secCentroCosto);
+    public BigInteger contadorSoPanoramas(BigInteger secCentroCosto);
 
-    public BigDecimal contadorTerceros(BigInteger secCentroCosto);
+    public BigInteger contadorTerceros(BigInteger secCentroCosto);
 
-    public BigDecimal contadorUnidadesRegistradas(BigInteger secCentroCosto);
+    public BigInteger contadorUnidadesRegistradas(BigInteger secCentroCosto);
 
-    public BigDecimal contadorVigenciasCuentasC(BigInteger secCentroCosto);
+    public BigInteger contadorVigenciasCuentasC(BigInteger secCentroCosto);
 
-    public BigDecimal contadorVigenciasCuentasD(BigInteger secCentroCosto);
+    public BigInteger contadorVigenciasCuentasD(BigInteger secCentroCosto);
 
-    public BigDecimal contadorVigenciasProrrateos(BigInteger secCentroCosto);
+    public BigInteger contadorVigenciasProrrateos(BigInteger secCentroCosto);
+
 }

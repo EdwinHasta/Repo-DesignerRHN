@@ -4,7 +4,6 @@
 package InterfacePersistencia;
 
 import Entidades.CentrosCostos;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -76,51 +75,51 @@ public interface PersistenciaCentrosCostosInterface {
      */
     public long contadorSecuenciaEmpresa(BigInteger secEmpresa);
 
-    public BigDecimal contadorComprobantesContables(BigInteger secuencia);
+    public BigInteger contadorComprobantesContables(BigInteger secuencia);
 
-    public BigDecimal contadorDetallesCCConsolidador(BigInteger secuencia);
+    public BigInteger contadorDetallesCCConsolidador(BigInteger secuencia);
 
-    public BigDecimal contadorDetallesCCDetalle(BigInteger secuencia);
+    public BigInteger contadorDetallesCCDetalle(BigInteger secuencia);
 
-    public BigDecimal contadorEmpresas(BigInteger secuencia);
+    public BigInteger contadorEmpresas(BigInteger secuencia);
 
-    public BigDecimal contadorEstructuras(BigInteger secuencia);
+    public BigInteger contadorEstructuras(BigInteger secuencia);
 
-    public BigDecimal contadorInterconCondor(BigInteger secuencia);
+    public BigInteger contadorInterconCondor(BigInteger secuencia);
 
-    public BigDecimal contadorInterconDynamics(BigInteger secuencia);
+    public BigInteger contadorInterconDynamics(BigInteger secuencia);
 
-    public BigDecimal contadorInterconGeneral(BigInteger secuencia);
+    public BigInteger contadorInterconGeneral(BigInteger secuencia);
 
-    public BigDecimal contadorInterconHelisa(BigInteger secuencia);
+    public BigInteger contadorInterconHelisa(BigInteger secuencia);
 
-    public BigDecimal contadorInterconSapbo(BigInteger secuencia);
+    public BigInteger contadorInterconSapbo(BigInteger secuencia);
 
-    public BigDecimal contadorInterconSiigo(BigInteger secuencia);
+    public BigInteger contadorInterconSiigo(BigInteger secuencia);
 
-    public BigDecimal contadorInterconTotal(BigInteger secuencia);
+    public BigInteger contadorInterconTotal(BigInteger secuencia);
 
-    public BigDecimal contadorNovedadesC(BigInteger secuencia);
+    public BigInteger contadorNovedadesC(BigInteger secuencia);
 
-    public BigDecimal contadorNovedadesD(BigInteger secuencia);
+    public BigInteger contadorNovedadesD(BigInteger secuencia);
 
-    public BigDecimal contadorProcesosProductivos(BigInteger secuencia);
+    public BigInteger contadorProcesosProductivos(BigInteger secuencia);
 
-    public BigDecimal contadorProyecciones(BigInteger secuencia);
+    public BigInteger contadorProyecciones(BigInteger secuencia);
 
-    public BigDecimal contadorSolucionesNodosC(BigInteger secuencia);
+    public BigInteger contadorSolucionesNodosC(BigInteger secuencia);
 
-    public BigDecimal contadorSolucionesNodosD(BigInteger secuencia);
+    public BigInteger contadorSolucionesNodosD(BigInteger secuencia);
 
-    public BigDecimal contadorSoPanoramas(BigInteger secuencia);
+    public BigInteger contadorSoPanoramas(BigInteger secuencia);
 
-    public BigDecimal contadorTerceros(BigInteger secuencia);
+    public BigInteger contadorTerceros(BigInteger secuencia);
 
-    public BigDecimal contadorUnidadesRegistradas(BigInteger secuencia);
+    public BigInteger contadorUnidadesRegistradas(BigInteger secuencia);
 
-    public BigDecimal contadorVigenciasCuentasC(BigInteger secuencia);
+    public BigInteger contadorVigenciasCuentasC(BigInteger secuencia);
 
-    public BigDecimal contadorVigenciasCuentasD(BigInteger secuencia);
+    public BigInteger contadorVigenciasCuentasD(BigInteger secuencia);
 
-    public BigDecimal contadorVigenciasProrrateos(BigInteger secuencia);
+    public BigInteger contadorVigenciasProrrateos(BigInteger secuencia);
 }
