@@ -19,7 +19,7 @@ public interface AdministarReportesInterface {
      * Método encargado de generar un comprobante (PDF) para un Empleado específico.
      * @param codigoEmpleado Código del empleado.
      */
-    public void generarReporte(BigInteger codigoEmpleado);
+    public String generarReporte(String nombreReporte, String tipoReporte);
     /**
      * Método encargado de generar un reporte XLSX para un Empleado específico.
      */

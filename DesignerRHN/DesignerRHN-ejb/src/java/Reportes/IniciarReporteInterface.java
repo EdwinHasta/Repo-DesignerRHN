@@ -1,14 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Reportes;
-
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  *
@@ -16,7 +6,7 @@ import java.sql.SQLException;
  */
 public interface IniciarReporteInterface {
     public void inicarConexion(String url, String driver, String user, String psw);
-    public void ejecutarReporte(Connection conection, BigInteger codigoEmpleado);
+    //public void ejecutarReporte(Connection conection, BigInteger codigoEmpleado);
     public void cerrarConexion();
     public void ejecutarReporteXLSX();
     public void inicarC();
@@ -25,4 +15,5 @@ public interface IniciarReporteInterface {
     public void ejecutarReporteXLS();
     public void ejecutarReporteCSV();
     public void ejecutarReporteHTML();
+    public String ejecutarReporte(String nombreReporte, String rutaReporte, String rutaGenerado, String nombreArchivo, String tipoReporte);
 }
