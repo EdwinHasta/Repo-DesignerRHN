@@ -12,7 +12,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 /**
  * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pantalla 'ATExtraRecargo'.
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'Ciudades'.
  * @author betelgeuse
  */
 @Stateful

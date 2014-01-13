@@ -7,33 +7,33 @@ import Entidades.Ciudades;
 import java.util.List;
 
 /**
- * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'ATExtraRecargo'.
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'Ciudades'.
  * @author betelgeuse
  */
 public interface AdministrarCiudadesInterface {
     /**
-     * Método encargado de crear ExtrasRecargos.
-     * @param listaER Lista de los ExtrasRecargos que se van a crear.
+     * Método encargado de crear Ciudades.
+     * @param listaCiudades Lista de los Ciudades que se van a crear.
      */
     public void crearCiudades(List<Ciudades> listaCiudades);
     /**
-     * Método encargado de editar ExtrasRecargos.
-     * @param listaER Lista de los ExtrasRecargos que se van a modificar.
+     * Método encargado de editar Ciudades.
+     * @param listaCiudades Lista de los Ciudades que se van a modificar.
      */
     public void modificarCiudades(List<Ciudades> listaCiudades);
     /**
-     * Método encargado de borrar ExtrasRecargos.
-     * @param listaER Lista de los ExtrasRecargos que se van a eliminar.
+     * Método encargado de borrar Ciudades.
+     * @param listaCiudades Lista de los Ciudades que se van a eliminar.
      */
     public void borrarCiudades(List<Ciudades> listaCiudades);
     /**
-     * Método encargado de recuperar todos los ExtrasRecargos.
-     * @return Retorna una lista de ExtrasRecargos.
+     * Método encargado de recuperar todos los Ciudades.
+     * @return Retorna una lista de Ciudades.
      */
     public List<Ciudades> Ciudades();
     /**
-     * Método encargado de recuperar todos los ExtrasRecargos.
-     * @return Retorna una lista de ExtrasRecargos.
+     * Método encargado de recuperar todos los Ciudades.
+     * @return Retorna una lista de Ciudades.
      */
     public List<Ciudades>  lovCiudades();
 }
