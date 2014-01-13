@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -19,36 +18,43 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 
 /**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'CentroCostos'.
  *
- * @author user
+ * @author betelgeuse
  */
 @Stateful
 @LocalBean
 public class AdministrarCentroCostos implements AdministrarCentroCostosInterface {
 
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
     /**
-     * CREACION EJB
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaCentrosCostos'.
      */
     @EJB
     PersistenciaCentrosCostosInterface persistenciaCentrosCostos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaTiposCentrosCostos'.
+     */
     @EJB
     PersistenciaTiposCentrosCostosInterface persistenciaTiposCentrosCostos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaEmpresas'.
+     */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
-    /**
-     *
-     */
-    private List<CentrosCostos> listaCentrosCostos;
-    private CentrosCostos centrosCostos;
-    private List<TiposCentrosCostos> listaTiposCentrosCostos;
-    private TiposCentrosCostos tiposCentrosCostos;
-    private List<Empresas> listaEmpresas;
-    private Empresas empresas;
-    private long contadorEmpresas;
 
     //-------------------------------------------------------------------------------------
     private BigDecimal contadorComprobantesContables;
-    private BigDecimal contadorDetallesCCConsolidador;
     private BigDecimal contadorEmpresasV;
     private BigDecimal contadorEstructuras;
     private BigDecimal contadorDetallesCCDetalle;
@@ -71,23 +77,17 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     private BigDecimal contadorVigenciasCuentasC;
     private BigDecimal contadorVigenciasCuentasD;
     private BigDecimal contadorVigenciasProrrateos;
-    //************************************EMPRESAS**************************************
 
-    /**
-     * METODO QUE SE ENCARGA DE TRAER LAS EMPRESAS
-     *
-     * @return
-     */
     @Override
     public List<Empresas> buscarEmpresas() {
         try {
-            return listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            return listaEmpresas;
         } catch (Exception e) {
             System.out.println("AdministrarCentroCostos: Falló al buscar las empresas /n" + e.getMessage());
-            return listaEmpresas = null;
+            return null;
         }
     }
-    //************************************CENTROS COSTROS**************************************
 
     @Override
     public void modificarCentroCostos(CentrosCostos centrosCostos) {
@@ -98,10 +98,6 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-    /**
-     *
-     * @param centrosCostos
-     */
     @Override
     public void borrarCentroCostos(CentrosCostos centrosCostos) {
         System.out.println("ENTRE A AdministrarCentroCostos.borrarCentroCostos ");
@@ -113,10 +109,6 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-    /**
-     *
-     * @param centrosCostos
-     */
     @Override
     public void crearCentroCostos(CentrosCostos centrosCostos) {
         System.out.println("ENTRE A AdministrarCentroCostos.crearCentroCostos ");
@@ -128,28 +120,23 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-    /**
-     *
-     * @param secEmpresa
-     * @return
-     */
     @Override
     public List<CentrosCostos> buscarCentrosCostosPorEmpresa(BigInteger secEmpresa) {
         try {
             System.out.println("ENTRE A AdministrarCentroCostos.buscarCentrosCostosPorEmpresa ");
-            listaCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostosEmpr(secEmpresa);
+            List<CentrosCostos> listaCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostosEmpr(secEmpresa);
+            return listaCentrosCostos;
         } catch (Exception e) {
             System.out.println("Error en Administrar CentrosCostos (centrosCostosPorEmpresa)");
-            listaCentrosCostos = null;
-        } finally {
-            return listaCentrosCostos;
+            return null;
         }
     }
 
     @Override
     public List<TiposCentrosCostos> buscarTiposCentrosCostos() {
         try {
-            return listaTiposCentrosCostos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
+            List<TiposCentrosCostos> listaTiposCentrosCostos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
+            return listaTiposCentrosCostos;
         } catch (Exception e) {
             System.out.println("\n AdministrarCentroCostos error en buscarTiposCentroCostos \n" + e.getMessage());
             return null;
@@ -157,37 +144,37 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public long contadorSecueniasEmpresas(BigInteger secEmpresa) {
+    public Long contadorSecueniasEmpresas(BigInteger secEmpresa) {
 
         try {
-            contadorEmpresas = persistenciaCentrosCostos.contadorSecuenciaEmpresa(secEmpresa);
+            Long contadorEmpresas = persistenciaCentrosCostos.contadorSecuenciaEmpresa(secEmpresa);
+            return contadorEmpresas;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSecuenciasEmpresas ERROR===" + e.getMessage());
-            contadorEmpresas = -1;
-        } finally {
-            return contadorEmpresas;
-        }
+            return null;
+        } 
     }
 
+    @Override
     public BigDecimal contadorComprobantesContables(BigInteger secCentroCosto) {
 
         try {
             contadorComprobantesContables = persistenciaCentrosCostos.contadorComprobantesContables(secCentroCosto);
+            return contadorComprobantesContables;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorComprobantesContables ERROR===" + e.getMessage());
-        } finally {
-            return contadorComprobantesContables;
+            return null;
         }
     }
 
     public BigDecimal contadorDetallesCCConsolidador(BigInteger secCentroCosto) {
 
         try {
-            contadorDetallesCCConsolidador = persistenciaCentrosCostos.contadorDetallesCCConsolidador(secCentroCosto);
+            BigDecimal contadorDetallesCCConsolidador = persistenciaCentrosCostos.contadorDetallesCCConsolidador(secCentroCosto);
+            return contadorDetallesCCConsolidador;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorDetallesCCConsolidador ERROR===" + e.getMessage());
-        } finally {
-            return contadorDetallesCCConsolidador;
+            return null;
         }
     }
 
