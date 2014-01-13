@@ -144,7 +144,7 @@ public class Soaccidentes implements Serializable {
     private Personas jefearea;
     @JoinColumn(name = "SITIOOCURRENCIA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private Lugaresocurrencias sitioocurrencia;
+    private LugaresOcurrencias sitioocurrencia;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
@@ -410,11 +410,11 @@ public class Soaccidentes implements Serializable {
         this.jefearea = jefearea;
     }
 
-    public Lugaresocurrencias getSitioocurrencia() {
+    public LugaresOcurrencias getSitioocurrencia() {
         return sitioocurrencia;
     }
 
-    public void setSitioocurrencia(Lugaresocurrencias sitioocurrencia) {
+    public void setSitioocurrencia(LugaresOcurrencias sitioocurrencia) {
         this.sitioocurrencia = sitioocurrencia;
     }
 
