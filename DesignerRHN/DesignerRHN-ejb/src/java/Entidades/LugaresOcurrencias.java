@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -28,6 +27,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "LugaresOcurrencias.findAll", query = "SELECT l FROM LugaresOcurrencias l")})
 public class LugaresOcurrencias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -36,7 +36,7 @@ public class LugaresOcurrencias implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
@@ -47,7 +47,7 @@ public class LugaresOcurrencias implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public LugaresOcurrencias(BigInteger secuencia, Short codigo) {
+    public LugaresOcurrencias(BigInteger secuencia, Integer codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
@@ -60,11 +60,11 @@ public class LugaresOcurrencias implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -100,5 +100,5 @@ public class LugaresOcurrencias implements Serializable {
     public String toString() {
         return "Entidades.Lugaresocurrencias[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
