@@ -1,28 +1,40 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Administrar;
 
 import Entidades.Ciudades;
-import Entidades.Departamentos;
 import InterfaceAdministrar.AdministrarCiudadesInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDepartamentosInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-
+/**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'Ciudades'.
+ * @author betelgeuse
+ */
 @Stateful
 public class AdministrarCiudades implements AdministrarCiudadesInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaCiudades'.
+     */
     @EJB
     PersistenciaCiudadesInterface persistenciaCiudades;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaDepartamentos'.
+     */
     @EJB
     PersistenciaDepartamentosInterface persistenciaDepartamentos;
-    private Ciudades c;
-
-    public List<Departamentos> Departamentos() {
-        List<Departamentos> listaDepartamentos;
-        listaDepartamentos = persistenciaDepartamentos.departamentos();
-        return listaDepartamentos;
-    }
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------    
 
     @Override
     public List<Ciudades> Ciudades() {
@@ -39,27 +51,45 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
     
 
     @Override
-    public void modificarCiudad(List<Ciudades> listaCiudadesModificar) {
-        for (int i = 0; i < listaCiudadesModificar.size(); i++) {
+    public void modificarCiudades(List<Ciudades> listaCiudades) {
+        Ciudades c;
+        for (int i = 0; i < listaCiudades.size(); i++) {
             System.out.println("Modificando...");
-            if (listaCiudadesModificar.get(i).getDepartamento().getSecuencia() == null) {
-                listaCiudadesModificar.get(i).setDepartamento(null);
-                c = listaCiudadesModificar.get(i);
+            if (listaCiudades.get(i).getDepartamento().getSecuencia() == null) {
+                listaCiudades.get(i).setDepartamento(null);
+                c = listaCiudades.get(i);
             } else {
-                c = listaCiudadesModificar.get(i);
+                c = listaCiudades.get(i);
             }
             persistenciaCiudades.editar(c);
         }
     }
 
     @Override
-    public void borrarCiudad(Ciudades ciudades) {
-        persistenciaCiudades.borrar(ciudades);
-    }
+    public void borrarCiudades(List<Ciudades> listaCiudades) {
+        for (int i = 0; i < listaCiudades.size(); i++) {
+            System.out.println("Borrando...");
+            if (listaCiudades.get(i).getDepartamento().getSecuencia() == null) {
 
-    @Override
-    public void crearCiudad(Ciudades ciudades) {
-        persistenciaCiudades.crear(ciudades);
+                listaCiudades.get(i).setDepartamento(null);
+                persistenciaCiudades.borrar(listaCiudades.get(i));
+            } else {
+                persistenciaCiudades.borrar(listaCiudades.get(i));
+            }
+        }        
     }
     
+    @Override
+    public void crearCiudades(List<Ciudades> listaCiudades){
+        for (int i = 0; i < listaCiudades.size(); i++) {
+            System.out.println("Borrando...");
+            if (listaCiudades.get(i).getDepartamento().getSecuencia() == null) {
+
+                listaCiudades.get(i).setDepartamento(null);
+                persistenciaCiudades.crear(listaCiudades.get(i));
+            } else {
+                persistenciaCiudades.crear(listaCiudades.get(i));
+            }
+        }     
+    }
 }
