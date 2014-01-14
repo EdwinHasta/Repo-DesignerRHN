@@ -16,19 +16,32 @@ import Entidades.Terceros;
 import Entidades.TiposTrabajadores;
 import Entidades.TiposAsociaciones;
 import Entidades.UbicacionesGeograficas;
+import InterfaceAdministrar.AdministarReportesInterface;
 import InterfaceAdministrar.AdministrarNReportesNominaInterface;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -39,7 +52,9 @@ import org.primefaces.context.RequestContext;
 public class ControlNReporteNomina implements Serializable {
 
     @EJB
-    AdministrarNReportesNominaInterface administrarReportes;
+    AdministrarNReportesNominaInterface administrarNReportesNomina;
+    @EJB
+    AdministarReportesInterface administarReportes;
     private ParametrosInformes parametroDeInforme;
     private ParametrosInformes nuevoParametroInforme;
     private List<Inforeportes> listaIR;
@@ -90,6 +105,11 @@ public class ControlNReporteNomina implements Serializable {
     private List<Asociaciones> filtrarListAsociaciones;
     private String grupo, ubiGeo, tipoAso, estructura, empresa, tipoTrabajador, tercero, proceso, asociacion;
     private boolean permitirIndex;
+    //ALTO SCROLL TABLA
+    private String altoTabla;
+    private int indice;
+    //EXPORTAR REPORTE
+    private StreamedContent file;
 
     public ControlNReporteNomina() {
         parametroDeInforme = null;
@@ -126,6 +146,8 @@ public class ControlNReporteNomina implements Serializable {
         procesoSeleccionado = new Procesos();
         asociacionSeleccionado = new Asociaciones();
         permitirIndex = true;
+        altoTabla = "185";
+        indice = -1;
     }
 
     public void guardarCambios() {
@@ -154,7 +176,7 @@ public class ControlNReporteNomina implements Serializable {
             if (parametroModificacion.getTipoasociacion().getSecuencia() == null) {
                 parametroModificacion.setTipoasociacion(null);
             }
-            administrarReportes.modificarParametrosInformes(parametroModificacion);
+            administrarNReportesNomina.modificarParametrosInformes(parametroModificacion);
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
         }
@@ -166,7 +188,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void posicionCelda(int i) {
         casilla = i;
-        if (permitirIndex==true) {
+        if (permitirIndex == true) {
             if (casilla == 3) {
                 grupo = parametroDeInforme.getGrupo().getDescripcion();
             }
@@ -747,22 +769,21 @@ public class ControlNReporteNomina implements Serializable {
         permitirIndex = true;
     }
 
-    public void generarReporte(int i) {
-        defaultPropiedadesParametrosReporte();
-        if (tipoLista == 0) {
-            reporteGenerar = listaIR.get(i).getNombre();
-            posicionReporte = i;
-        }
-        if (tipoLista == 1) {
-            if (listaIR.contains(filtrarListInforeportesUsuario.get(i))) {
-                int posicion = listaIR.indexOf(filtrarListInforeportesUsuario.get(i));
-                reporteGenerar = listaIR.get(posicion).getNombre();
-                posicionReporte = posicion;
-            }
-        }
-        mostrarDialogoGenerarReporte();
-    }
-
+    /* public void generarReporte(int i) {
+     defaultPropiedadesParametrosReporte();
+     if (tipoLista == 0) {
+     reporteGenerar = listaIR.get(i).getNombre();
+     posicionReporte = i;
+     }
+     if (tipoLista == 1) {
+     if (listaIR.contains(filtrarListInforeportesUsuario.get(i))) {
+     int posicion = listaIR.indexOf(filtrarListInforeportesUsuario.get(i));
+     reporteGenerar = listaIR.get(posicion).getNombre();
+     posicionReporte = posicion;
+     }
+     }
+     mostrarDialogoGenerarReporte();
+     }*/
     public void mostrarDialogoGenerarReporte() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formDialogos:reporteAGenerar");
@@ -776,7 +797,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void mostrarDialogoBuscarReporte() {
         try {
-            listaIR = administrarReportes.listInforeportesUsuario();
+            listaIR = administrarNReportesNomina.listInforeportesUsuario();
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ReportesDialogo");
             context.execute("ReportesDialogo.show()");
@@ -787,6 +808,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
+            altoTabla = "185";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -817,6 +839,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void actualizarSeleccionInforeporte() {
         if (bandera == 1) {
+            altoTabla = "185";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -854,6 +877,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
+            altoTabla = "163";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -864,6 +888,7 @@ public class ControlNReporteNomina implements Serializable {
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
+            altoTabla = "185";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -881,7 +906,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void reporteModificado(int i) {
         try {
-            listaIRRespaldo = administrarReportes.listInforeportesUsuario();
+            listaIRRespaldo = administrarNReportesNomina.listInforeportesUsuario();
             listaIR = listaIRRespaldo;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:reportesNomina");
@@ -934,6 +959,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void resaltoParametrosParaReporte(int i) {
+        indice = i;
         Inforeportes reporteS = new Inforeportes();
         reporteS = listaIR.get(i);
         defaultPropiedadesParametrosReporte();
@@ -1039,7 +1065,7 @@ public class ControlNReporteNomina implements Serializable {
         try {
             if (parametroDeInforme == null) {
                 parametroDeInforme = new ParametrosInformes();
-                parametroDeInforme = administrarReportes.parametrosDeReporte();
+                parametroDeInforme = administrarNReportesNomina.parametrosDeReporte();
             }
             if (parametroDeInforme.getGrupo() == null) {
                 parametroDeInforme.setGrupo(new GruposConceptos());
@@ -1072,6 +1098,47 @@ public class ControlNReporteNomina implements Serializable {
         }
     }
 
+    public void generarReporte() throws IOException {
+        String nombreReporte, tipoReporte;
+        String pathReporteGenerado = null;
+        if (tipoLista == 0) {
+            nombreReporte = listaIR.get(indice).getNombrereporte();
+            tipoReporte = listaIR.get(indice).getTipo();
+        } else {
+            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+            tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
+        }
+        if (nombreReporte != null && tipoReporte != null) {
+            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+        }
+        if (pathReporteGenerado != null) {
+            exportarReporte(pathReporteGenerado);
+        }
+    }
+
+    public void exportarReporte(String rutaReporteGenerado) throws IOException {
+        File reporte = new File(rutaReporteGenerado);
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        FileInputStream fis = new FileInputStream(reporte);
+        byte[] bytes = new byte[1024];
+        int read;
+        if (!ctx.getResponseComplete()) {
+            String fileName = reporte.getName();
+            HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+            ServletOutputStream out = response.getOutputStream();
+
+            while ((read = fis.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.flush();
+            out.close();
+            System.out.println("\nDescargado\n");
+            ctx.responseComplete();
+        }
+    }
+
+    //GETTER AND SETTER
     public void setParametroDeInforme(ParametrosInformes parametroDeInforme) {
         this.parametroDeInforme = parametroDeInforme;
     }
@@ -1080,7 +1147,7 @@ public class ControlNReporteNomina implements Serializable {
         try {
             if (listaIR == null) {
                 listaIR = new ArrayList<Inforeportes>();
-                listaIR = administrarReportes.listInforeportesUsuario();
+                listaIR = administrarNReportesNomina.listInforeportesUsuario();
             }
             listaIRRespaldo = listaIR;
             return listaIR;
@@ -1165,7 +1232,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<Empleados> getListEmpleados() {
         try {
             if (listEmpleados == null) {
-                listEmpleados = administrarReportes.listEmpleados();
+                listEmpleados = administrarNReportesNomina.listEmpleados();
             }
         } catch (Exception e) {
             listEmpleados = null;
@@ -1181,7 +1248,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<Empresas> getListEmpresas() {
         try {
             if (listEmpresas == null) {
-                listEmpresas = administrarReportes.listEmpresas();
+                listEmpresas = administrarNReportesNomina.listEmpresas();
             }
         } catch (Exception e) {
             listEmpresas = null;
@@ -1197,7 +1264,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<GruposConceptos> getListGruposConceptos() {
         try {
             if (listGruposConceptos == null) {
-                listGruposConceptos = administrarReportes.listGruposConcetos();
+                listGruposConceptos = administrarNReportesNomina.listGruposConcetos();
             }
         } catch (Exception e) {
             listGruposConceptos = null;
@@ -1213,7 +1280,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<UbicacionesGeograficas> getListUbicacionesGeograficas() {
         try {
             if (listUbicacionesGeograficas == null) {
-                listUbicacionesGeograficas = administrarReportes.listUbicacionesGeograficas();
+                listUbicacionesGeograficas = administrarNReportesNomina.listUbicacionesGeograficas();
             }
         } catch (Exception e) {
             listUbicacionesGeograficas = null;
@@ -1229,7 +1296,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<TiposAsociaciones> getListTiposAsociaciones() {
         try {
             if (listTiposAsociaciones == null) {
-                listTiposAsociaciones = administrarReportes.listTiposAsociaciones();
+                listTiposAsociaciones = administrarNReportesNomina.listTiposAsociaciones();
             }
         } catch (Exception e) {
             listTiposAsociaciones = null;
@@ -1245,7 +1312,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<Estructuras> getListEstructuras() {
         try {
             if (listEstructuras == null) {
-                listEstructuras = administrarReportes.listEstructuras();
+                listEstructuras = administrarNReportesNomina.listEstructuras();
             }
         } catch (Exception e) {
             listEstructuras = null;
@@ -1261,7 +1328,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<TiposTrabajadores> getListTiposTrabajadores() {
         try {
             if (listTiposTrabajadores == null) {
-                listTiposTrabajadores = administrarReportes.listTiposTrabajadores();
+                listTiposTrabajadores = administrarNReportesNomina.listTiposTrabajadores();
             }
         } catch (Exception e) {
             listTiposTrabajadores = null;
@@ -1277,7 +1344,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<Terceros> getListTerceros() {
         try {
             if (listTerceros == null) {
-                listTerceros = administrarReportes.listTerceros();
+                listTerceros = administrarNReportesNomina.listTerceros();
             }
         } catch (Exception e) {
             listTerceros = null;
@@ -1293,7 +1360,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<Procesos> getListProcesos() {
         try {
             if (listProcesos == null) {
-                listProcesos = administrarReportes.listProcesos();
+                listProcesos = administrarNReportesNomina.listProcesos();
             }
         } catch (Exception e) {
             listProcesos = null;
@@ -1309,7 +1376,7 @@ public class ControlNReporteNomina implements Serializable {
     public List<Asociaciones> getListAsociaciones() {
         try {
             if (listAsociaciones == null) {
-                listAsociaciones = administrarReportes.listAsociaciones();
+                listAsociaciones = administrarNReportesNomina.listAsociaciones();
             }
         } catch (Exception e) {
             listAsociaciones = null;
@@ -1480,5 +1547,14 @@ public class ControlNReporteNomina implements Serializable {
 
     public void setFiltrarListTiposTrabajadores(List<TiposTrabajadores> filtrarListTiposTrabajadores) {
         this.filtrarListTiposTrabajadores = filtrarListTiposTrabajadores;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public StreamedContent getFile() {
+        System.out.println("FILE: " + file);
+        return file;
     }
 }

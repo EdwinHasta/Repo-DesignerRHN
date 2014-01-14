@@ -350,12 +350,12 @@ public class ControlDeportes implements Serializable {
             System.out.println("secuencia borrado : " + listDeportes.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listDeportes.get(index).getSecuencia());
-                verificarBorradoVigenciasDeportes = administrarDeportes.verificarBorradoVigenciasDeportes(listDeportes.get(index).getSecuencia());
+                verificarBorradoVigenciasDeportes = administrarDeportes.verificarRelacionVigenciasDeportes(listDeportes.get(index).getSecuencia());
                 contadorDeportesPersonas = administrarDeportes.contadorDeportesPersonas(listDeportes.get(index).getSecuencia());
                 contadorParametrosInformes = administrarDeportes.contadorParametrosInformes(listDeportes.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarDeportes.get(index).getSecuencia());
-                verificarBorradoVigenciasDeportes = administrarDeportes.verificarBorradoVigenciasDeportes(filtrarDeportes.get(index).getSecuencia());
+                verificarBorradoVigenciasDeportes = administrarDeportes.verificarRelacionVigenciasDeportes(filtrarDeportes.get(index).getSecuencia());
                 contadorDeportesPersonas = administrarDeportes.contadorDeportesPersonas(filtrarDeportes.get(index).getSecuencia());
                 contadorParametrosInformes = administrarDeportes.contadorParametrosInformes(filtrarDeportes.get(index).getSecuencia());
             }
@@ -386,10 +386,7 @@ public class ControlDeportes implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Deportes");
             if (!borrarDeportes.isEmpty()) {
-                for (int i = 0; i < borrarDeportes.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarDeportes.borrarDeportes(borrarDeportes.get(i));
-                }
+                administrarDeportes.borrarDeportes(borrarDeportes);
                 //mostrarBorrados
                 registrosBorrados = borrarDeportes.size();
                 context.update("form:mostrarBorrados");
@@ -397,12 +394,7 @@ public class ControlDeportes implements Serializable {
                 borrarDeportes.clear();
             }
             if (!crearDeportes.isEmpty()) {
-                for (int i = 0; i < crearDeportes.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarDeportes.crearDeportes(crearDeportes.get(i));
-
-                }
+                administrarDeportes.crearDeportes(crearDeportes);
                 crearDeportes.clear();
             }
             if (!modificarDeportes.isEmpty()) {

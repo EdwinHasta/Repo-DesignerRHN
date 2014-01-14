@@ -2221,7 +2221,7 @@ public class ControlATExtraRecargo implements Serializable {
         try {
             if (listExtrasRecargos == null) {
                 listExtrasRecargos = new ArrayList<ExtrasRecargos>();
-                listExtrasRecargos = administrarATExtraRecargo.listExtrasRecargos();
+                listExtrasRecargos = administrarATExtraRecargo.listaExtrasRecargos();
                 return listExtrasRecargos;
             } else {
                 return listExtrasRecargos;
@@ -2293,10 +2293,10 @@ public class ControlATExtraRecargo implements Serializable {
             listDetallesExtrasRecargos = new ArrayList<DetallesExtrasRecargos>();
             index = indexAux;
             if (tipoLista == 0) {
-                listDetallesExtrasRecargos = administrarATExtraRecargo.listDetallesExtrasRecargos(listExtrasRecargos.get(index).getSecuencia());
+                listDetallesExtrasRecargos = administrarATExtraRecargo.listaDetallesExtrasRecargos(listExtrasRecargos.get(index).getSecuencia());
             }
             if (tipoLista == 1) {
-                listDetallesExtrasRecargos = administrarATExtraRecargo.listDetallesExtrasRecargos(filtrarListExtrasRecargos.get(index).getSecuencia());
+                listDetallesExtrasRecargos = administrarATExtraRecargo.listaDetallesExtrasRecargos(filtrarListExtrasRecargos.get(index).getSecuencia());
             }
         }
         return listDetallesExtrasRecargos;
@@ -2452,7 +2452,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public List<TiposDias> getLovTiposDias() {
         if (lovTiposDias == null) {
-            lovTiposDias = administrarATExtraRecargo.listTiposDias();
+            lovTiposDias = administrarATExtraRecargo.lovListaTiposDias();
         }
         return lovTiposDias;
     }
@@ -2479,7 +2479,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public List<TiposJornadas> getLovTiposJornadas() {
         if (lovTiposJornadas == null) {
-            lovTiposJornadas = administrarATExtraRecargo.listTiposJornadas();
+            lovTiposJornadas = administrarATExtraRecargo.listaTiposJornadas();
         }
         return lovTiposJornadas;
     }
@@ -2506,7 +2506,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public List<Contratos> getLovContratos() {
         if (lovContratos == null) {
-            lovContratos = administrarATExtraRecargo.listContratos();
+            lovContratos = administrarATExtraRecargo.listaContratos();
         }
         return lovContratos;
     }
@@ -2533,7 +2533,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public List<Conceptos> getLovConceptos() {
         if (lovConceptos == null) {
-            lovConceptos = administrarATExtraRecargo.listConceptos();
+            lovConceptos = administrarATExtraRecargo.listaConceptos();
         }
         return lovConceptos;
     }

@@ -14,7 +14,7 @@ import InterfaceAdministrar.AdministrarCentroCostosInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -1024,159 +1024,162 @@ public class ControlBetaCentrosCostos implements Serializable {
         }
     }
 
-    private BigDecimal contadorComprobantesContables;
-    private BigDecimal contadorDetallesCCConsolidador;
-    private BigDecimal contadorEmpresas;
-    private BigDecimal contadorEstructuras;
-    private BigDecimal contadorDetallesCCDetalle;
-    private BigDecimal contadorInterconCondor;
-    private BigDecimal contadorInterconDynamics;
-    private BigDecimal contadorInterconGeneral;
-    private BigDecimal contadorInterconHelisa;
-    private BigDecimal contadorInterconSapbo;
-    private BigDecimal contadorInterconSiigo;
-    private BigDecimal contadorInterconTotal;
-    private BigDecimal contadorNovedadesD;
-    private BigDecimal contadorNovedadesC;
-    private BigDecimal contadorProcesosProductivos;
-    private BigDecimal contadorProyecciones;
-    private BigDecimal contadorSolucionesNodosC;
-    private BigDecimal contadorSolucionesNodosD;
-    private BigDecimal contadorSoPanoramas;
-    private BigDecimal contadorTerceros;
-    private BigDecimal contadorUnidadesRegistradas;
-    private BigDecimal contadorVigenciasCuentasC;
-    private BigDecimal contadorVigenciasCuentasD;
-    private BigDecimal contadorVigenciasProrrateos;
+    private BigInteger contadorComprobantesContables;
+    private BigInteger contadorDetallesCCConsolidador;
+    private BigInteger contadorEmpresas;
+    private BigInteger contadorEstructuras;
+    private BigInteger contadorDetallesCCDetalle;
+    private BigInteger contadorInterconCondor;
+    private BigInteger contadorInterconDynamics;
+    private BigInteger contadorInterconGeneral;
+    private BigInteger contadorInterconHelisa;
+    private BigInteger contadorInterconSapbo;
+    private BigInteger contadorInterconSiigo;
+    private BigInteger contadorInterconTotal;
+    private BigInteger contadorNovedadesD;
+    private BigInteger contadorNovedadesC;
+    private BigInteger contadorProcesosProductivos;
+    private BigInteger contadorProyecciones;
+    private BigInteger contadorSolucionesNodosC;
+    private BigInteger contadorSolucionesNodosD;
+    private BigInteger contadorSoPanoramas;
+    private BigInteger contadorTerceros;
+    private BigInteger contadorUnidadesRegistradas;
+    private BigInteger contadorVigenciasCuentasC;
+    private BigInteger contadorVigenciasCuentasD;
+    private BigInteger contadorVigenciasProrrateos;
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         System.out.println("TIPOLISTA = " + tipoLista);
+        BigInteger pruebilla;
         try {
             if (tipoLista == 0) {
-                System.err.println("Control Secuencia de ControlTiposEmpresas secuencia centro costo" + listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                //  System.err.println("Control Secuencia de ControlTiposEmpresas secuencia centro costo" + listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 contadorComprobantesContables = administrarCentroCostos.contadorComprobantesContables(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC contadorComprobantesContables: " + contadorComprobantesContables);
+                //  System.out.println("ControlBetaCC contadorComprobantesContables: " + contadorComprobantesContables);
                 contadorDetallesCCConsolidador = administrarCentroCostos.contadorDetallesCCConsolidador(listCentrosCostosPorEmpresa.get(index).getSecuencia());;
-                System.out.println("SE TOTEA ControlBetaCC contadorDetallesCCConsolidador: " + contadorDetallesCCConsolidador);
+                // System.out.println("SE TOTEA ControlBetaCC contadorDetallesCCConsolidador: " + contadorDetallesCCConsolidador);
                 contadorEmpresas = administrarCentroCostos.contadorEmpresas(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC contadorEmpresas: " + contadorEmpresas);
+                // System.out.println("ControlBetaCC contadorEmpresas: " + contadorEmpresas);
                 contadorEstructuras = administrarCentroCostos.contadorEstructuras(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC contadorEstructuras " + contadorEstructuras);
+                //  System.out.println("ControlBetaCC contadorEstructuras " + contadorEstructuras);
                 contadorDetallesCCDetalle = administrarCentroCostos.contadorDetalleContable(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorDetallesCCDetalle" + contadorDetallesCCDetalle);
+                // System.out.println("ControlBetaCC: contadorDetallesCCDetalle" + contadorDetallesCCDetalle);
                 contadorInterconCondor = administrarCentroCostos.contadorInterconCondor(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
+                // System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
                 contadorInterconDynamics = administrarCentroCostos.contadorInterconDynamics(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
+                // System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
                 contadorInterconGeneral = administrarCentroCostos.contadorInterconGeneral(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
+                // System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
                 contadorInterconHelisa = administrarCentroCostos.contadorInterconHelisa(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
+                //            System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
                 contadorInterconSapbo = administrarCentroCostos.contadorInterconSapbo(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconSapbo" + contadorInterconSapbo);
+                //            System.out.println("ControlBetaCC: contadorInterconSapbo" + contadorInterconSapbo);
                 contadorInterconSiigo = administrarCentroCostos.contadorInterconSiigo(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC:contadorInterconSiigo" + contadorInterconSiigo);
+                //          System.out.println("ControlBetaCC:contadorInterconSiigo" + contadorInterconSiigo);
                 contadorInterconTotal = administrarCentroCostos.contadorInterconTotal(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconTotal" + contadorInterconTotal);
+                //          System.out.println("ControlBetaCC: contadorInterconTotal" + contadorInterconTotal);
                 contadorNovedadesD = administrarCentroCostos.contadorNovedadesD(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorNovedadesD " + contadorNovedadesD);
+                ///          System.out.println("ControlBetaCC: contadorNovedadesD " + contadorNovedadesD);
                 contadorNovedadesC = administrarCentroCostos.contadorNovedadesC(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorNovedadesC " + contadorNovedadesC);
+                //         System.out.println("ControlBetaCC: contadorNovedadesC " + contadorNovedadesC);
                 contadorProcesosProductivos = administrarCentroCostos.contadorProcesosProductivos(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorProcesosProductivos" + contadorProcesosProductivos);
+                //          System.out.println("ControlBetaCC: contadorProcesosProductivos" + contadorProcesosProductivos);
                 contadorProyecciones = administrarCentroCostos.contadorProyecciones(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorProyecciones" + contadorProyecciones);
+                //        System.out.println("ControlBetaCC: contadorProyecciones" + contadorProyecciones);
                 contadorSolucionesNodosC = administrarCentroCostos.contadorSolucionesNodosC(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorSolucionesNodosC" + contadorSolucionesNodosC);
+                //        System.out.println("ControlBetaCC: contadorSolucionesNodosC" + contadorSolucionesNodosC);
                 contadorSolucionesNodosD = administrarCentroCostos.contadorSolucionesNodosD(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC:contadorSolucionesNodosD " + contadorSolucionesNodosD);
+                //     System.out.println("ControlBetaCC:contadorSolucionesNodosD " + contadorSolucionesNodosD);
                 contadorSoPanoramas = administrarCentroCostos.contadorSoPanoramas(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorSoPanoramas" + contadorSoPanoramas);
+                //      System.out.println("ControlBetaCC: contadorSoPanoramas" + contadorSoPanoramas);
                 contadorTerceros = administrarCentroCostos.contadorTerceros(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorTerceros" + contadorTerceros);
+                //       System.out.println("ControlBetaCC: contadorTerceros" + contadorTerceros);
                 contadorUnidadesRegistradas = administrarCentroCostos.contadorUnidadesRegistradas(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorUnidadesRegistradas" + contadorUnidadesRegistradas);
+                //       System.out.println("ControlBetaCC: contadorUnidadesRegistradas" + contadorUnidadesRegistradas);
                 contadorVigenciasCuentasC = administrarCentroCostos.contadorVigenciasCuentasC(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorVigenciasCuentasC" + contadorVigenciasCuentasC);
+                //      System.out.println("ControlBetaCC: contadorVigenciasCuentasC" + contadorVigenciasCuentasC);
                 contadorVigenciasCuentasD = administrarCentroCostos.contadorVigenciasCuentasD(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorVigenciasCuentasD" + contadorVigenciasCuentasD);
+                //       System.out.println("ControlBetaCC: contadorVigenciasCuentasD" + contadorVigenciasCuentasD);
                 contadorVigenciasProrrateos = administrarCentroCostos.contadorVigenciasProrrateos(listCentrosCostosPorEmpresa.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorVigenciasProrrateos" + contadorVigenciasProrrateos);
+                //     System.out.println("ControlBetaCC: contadorVigenciasProrrateos" + contadorVigenciasProrrateos);
             } else {
-                System.err.println(" FILTRAR  FILTRAR  FILTRAR  FILTRAR Control Secuencia de ControlTiposEmpresas secuencia centro costo" + listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                //               System.err.println(" FILTRAR  FILTRAR  FILTRAR  FILTRAR Control Secuencia de ControlTiposEmpresas secuencia centro costo" + listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 contadorComprobantesContables = administrarCentroCostos.contadorComprobantesContables(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC contadorComprobantesContables: " + contadorComprobantesContables);
+                //             System.out.println("ControlBetaCC contadorComprobantesContables: " + contadorComprobantesContables);
                 contadorDetallesCCConsolidador = administrarCentroCostos.contadorDetallesCCConsolidador(filtrarCentrosCostos.get(index).getSecuencia());;
-                System.out.println("SE TOTEA ControlBetaCC contadorDetallesCCConsolidador: " + contadorDetallesCCConsolidador);
+                //           System.out.println("SE TOTEA ControlBetaCC contadorDetallesCCConsolidador: " + contadorDetallesCCConsolidador);
                 contadorEmpresas = administrarCentroCostos.contadorEmpresas(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC contadorEmpresas: " + contadorEmpresas);
+                //         System.out.println("ControlBetaCC contadorEmpresas: " + contadorEmpresas);
                 contadorEstructuras = administrarCentroCostos.contadorEstructuras(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC contadorEstructuras " + contadorEstructuras);
+                //       System.out.println("ControlBetaCC contadorEstructuras " + contadorEstructuras);
                 contadorDetallesCCDetalle = administrarCentroCostos.contadorDetalleContable(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorDetallesCCDetalle" + contadorDetallesCCDetalle);
+                //     System.out.println("ControlBetaCC: contadorDetallesCCDetalle" + contadorDetallesCCDetalle);
                 contadorInterconCondor = administrarCentroCostos.contadorInterconCondor(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
+                //   System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
                 contadorInterconDynamics = administrarCentroCostos.contadorInterconDynamics(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
+                // System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
                 contadorInterconGeneral = administrarCentroCostos.contadorInterconGeneral(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
+                //System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
                 contadorInterconHelisa = administrarCentroCostos.contadorInterconHelisa(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
+                // System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
                 contadorInterconSapbo = administrarCentroCostos.contadorInterconSapbo(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconSapbo" + contadorInterconSapbo);
+                // System.out.println("ControlBetaCC: contadorInterconSapbo" + contadorInterconSapbo);
                 contadorInterconSiigo = administrarCentroCostos.contadorInterconSiigo(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC:contadorInterconSiigo" + contadorInterconSiigo);
+                //        System.out.println("ControlBetaCC:contadorInterconSiigo" + contadorInterconSiigo);
                 contadorInterconTotal = administrarCentroCostos.contadorInterconTotal(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorInterconTotal" + contadorInterconTotal);
+                //       System.out.println("ControlBetaCC: contadorInterconTotal" + contadorInterconTotal);
                 contadorNovedadesD = administrarCentroCostos.contadorNovedadesD(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorNovedadesD " + contadorNovedadesD);
+                //       System.out.println("ControlBetaCC: contadorNovedadesD " + contadorNovedadesD);
                 contadorNovedadesC = administrarCentroCostos.contadorNovedadesC(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorNovedadesC " + contadorNovedadesC);
+                //     System.out.println("ControlBetaCC: contadorNovedadesC " + contadorNovedadesC);
                 contadorProcesosProductivos = administrarCentroCostos.contadorProcesosProductivos(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorProcesosProductivos" + contadorProcesosProductivos);
+                //     System.out.println("ControlBetaCC: contadorProcesosProductivos" + contadorProcesosProductivos);
                 contadorProyecciones = administrarCentroCostos.contadorProyecciones(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorProyecciones" + contadorProyecciones);
+                //      System.out.println("ControlBetaCC: contadorProyecciones" + contadorProyecciones);
                 contadorSolucionesNodosC = administrarCentroCostos.contadorSolucionesNodosC(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorSolucionesNodosC" + contadorSolucionesNodosC);
+                //      System.out.println("ControlBetaCC: contadorSolucionesNodosC" + contadorSolucionesNodosC);
                 contadorSolucionesNodosD = administrarCentroCostos.contadorSolucionesNodosD(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC:contadorSolucionesNodosD " + contadorSolucionesNodosD);
+                //    System.out.println("ControlBetaCC:contadorSolucionesNodosD " + contadorSolucionesNodosD);
                 contadorSoPanoramas = administrarCentroCostos.contadorSoPanoramas(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorSoPanoramas" + contadorSoPanoramas);
+                //     System.out.println("ControlBetaCC: contadorSoPanoramas" + contadorSoPanoramas);
                 contadorTerceros = administrarCentroCostos.contadorTerceros(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorTerceros" + contadorTerceros);
+                //      System.out.println("ControlBetaCC: contadorTerceros" + contadorTerceros);
                 contadorUnidadesRegistradas = administrarCentroCostos.contadorUnidadesRegistradas(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorUnidadesRegistradas" + contadorUnidadesRegistradas);
+                //       System.out.println("ControlBetaCC: contadorUnidadesRegistradas" + contadorUnidadesRegistradas);
                 contadorVigenciasCuentasC = administrarCentroCostos.contadorVigenciasCuentasC(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorVigenciasCuentasC" + contadorVigenciasCuentasC);
+                //        System.out.println("ControlBetaCC: contadorVigenciasCuentasC" + contadorVigenciasCuentasC);
                 contadorVigenciasCuentasD = administrarCentroCostos.contadorVigenciasCuentasD(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorVigenciasCuentasD" + contadorVigenciasCuentasD);
+                //        System.out.println("ControlBetaCC: contadorVigenciasCuentasD" + contadorVigenciasCuentasD);
                 contadorVigenciasProrrateos = administrarCentroCostos.contadorVigenciasProrrateos(filtrarCentrosCostos.get(index).getSecuencia());
-                System.out.println("ControlBetaCC: contadorVigenciasProrrateos" + contadorVigenciasProrrateos);
+                //       System.out.println("ControlBetaCC: contadorVigenciasProrrateos" + contadorVigenciasProrrateos);
+                //pruebilla = administrarCentroCostos.sumaTotal(filtrarCentrosCostos.get(index).getSecuencia());
+                //System.err.println("pruebilla :::::::::::::::::::::::::::::::: " + pruebilla);
             }
-            if (contadorDetallesCCConsolidador.intValue() == 0
-                    && contadorEmpresas.intValue() == 0
-                    && contadorEstructuras.intValue() == 0
-                    && contadorDetallesCCDetalle.intValue() == 0
-                    && contadorInterconCondor.intValue() == 0
-                    && contadorInterconDynamics.intValue() == 0
-                    && contadorInterconGeneral.intValue() == 0
-                    && contadorInterconHelisa.intValue() == 0
-                    && contadorInterconSapbo.intValue() == 0
-                    && contadorInterconSiigo.intValue() == 0
-                    && contadorInterconTotal.intValue() == 0
-                    && contadorNovedadesD.intValue() == 0
-                    && contadorNovedadesC.intValue() == 0
-                    && contadorProcesosProductivos.intValue() == 0
-                    && contadorProyecciones.intValue() == 0
-                    && contadorSolucionesNodosC.intValue() == 0
-                    && contadorSolucionesNodosD.intValue() == 0
-                    && contadorSoPanoramas.intValue() == 0
-                    && contadorTerceros.intValue() == 0
-                    && contadorUnidadesRegistradas.intValue() == 0
-                    && contadorVigenciasCuentasC.intValue() == 0
-                    && contadorVigenciasCuentasD.intValue() == 0
-                    && contadorVigenciasProrrateos.intValue() == 0) {
+            if (contadorDetallesCCConsolidador.equals(new BigInteger("0"))
+                    && contadorEmpresas.equals(new BigInteger("0"))
+                    && contadorEstructuras.equals(new BigInteger("0"))
+                    && contadorDetallesCCDetalle.equals(new BigInteger("0"))
+                    && contadorInterconCondor.equals(new BigInteger("0"))
+                    && contadorInterconDynamics.equals(new BigInteger("0"))
+                    && contadorInterconGeneral.equals(new BigInteger("0"))
+                    && contadorInterconHelisa.equals(new BigInteger("0"))
+                    && contadorInterconSapbo.equals(new BigInteger("0"))
+                    && contadorInterconSiigo.equals(new BigInteger("0"))
+                    && contadorInterconTotal.equals(new BigInteger("0"))
+                    && contadorNovedadesD.equals(new BigInteger("0"))
+                    && contadorNovedadesC.equals(new BigInteger("0"))
+                    && contadorProcesosProductivos.equals(new BigInteger("0"))
+                    && contadorProyecciones.equals(new BigInteger("0"))
+                    && contadorSolucionesNodosC.equals(new BigInteger("0"))
+                    && contadorSolucionesNodosD.equals(new BigInteger("0"))
+                    && contadorSoPanoramas.equals(new BigInteger("0"))
+                    && contadorTerceros.equals(new BigInteger("0"))
+                    && contadorUnidadesRegistradas.equals(new BigInteger("0"))
+                    && contadorVigenciasCuentasC.equals(new BigInteger("0"))
+                    && contadorVigenciasCuentasD.equals(new BigInteger("0"))
+                    && contadorVigenciasProrrateos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoCentroCosto();
             } else {
@@ -1186,30 +1189,30 @@ public class ControlBetaCentrosCostos implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                contadorComprobantesContables = new BigDecimal(-1);
-                contadorDetallesCCConsolidador = new BigDecimal(-1);
-                contadorEmpresas = new BigDecimal(-1);
-                contadorEstructuras = new BigDecimal(-1);
-                contadorDetallesCCDetalle = new BigDecimal(-1);
-                contadorInterconCondor = new BigDecimal(-1);
-                contadorInterconDynamics = new BigDecimal(-1);
-                contadorInterconGeneral = new BigDecimal(-1);
-                contadorInterconHelisa = new BigDecimal(-1);
-                contadorInterconSapbo = new BigDecimal(-1);
-                contadorInterconSiigo = new BigDecimal(-1);
-                contadorInterconTotal = new BigDecimal(-1);
-                contadorNovedadesD = new BigDecimal(-1);
-                contadorNovedadesC = new BigDecimal(-1);
-                contadorProcesosProductivos = new BigDecimal(-1);
-                contadorProyecciones = new BigDecimal(-1);
-                contadorSolucionesNodosC = new BigDecimal(-1);
-                contadorSolucionesNodosD = new BigDecimal(-1);
-                contadorSoPanoramas = new BigDecimal(-1);
-                contadorTerceros = new BigDecimal(-1);
-                contadorUnidadesRegistradas = new BigDecimal(-1);
-                contadorVigenciasCuentasC = new BigDecimal(-1);
-                contadorVigenciasCuentasD = new BigDecimal(-1);
-                contadorVigenciasProrrateos = new BigDecimal(-1);
+                contadorComprobantesContables = new BigInteger("-1");
+                contadorDetallesCCConsolidador = new BigInteger("-1");
+                contadorEmpresas = new BigInteger("-1");
+                contadorEstructuras = new BigInteger("-1");
+                contadorDetallesCCDetalle = new BigInteger("-1");
+                contadorInterconCondor = new BigInteger("-1");
+                contadorInterconDynamics = new BigInteger("-1");
+                contadorInterconGeneral = new BigInteger("-1");
+                contadorInterconHelisa = new BigInteger("-1");
+                contadorInterconSapbo = new BigInteger("-1");
+                contadorInterconSiigo = new BigInteger("-1");
+                contadorInterconTotal = new BigInteger("-1");
+                contadorNovedadesD = new BigInteger("-1");
+                contadorNovedadesC = new BigInteger("-1");
+                contadorProcesosProductivos = new BigInteger("-1");
+                contadorProyecciones = new BigInteger("-1");
+                contadorSolucionesNodosC = new BigInteger("-1");
+                contadorSolucionesNodosD = new BigInteger("-1");
+                contadorSoPanoramas = new BigInteger("-1");
+                contadorTerceros = new BigInteger("-1");
+                contadorUnidadesRegistradas = new BigInteger("-1");
+                contadorVigenciasCuentasC = new BigInteger("-1");
+                contadorVigenciasCuentasD = new BigInteger("-1");
+                contadorVigenciasProrrateos = new BigInteger("-1");
             }
         } catch (Exception e) {
             System.err.println("ERROR CONTROL BETA CENTROS COSTOS verificarBorrado ERROR " + e);
