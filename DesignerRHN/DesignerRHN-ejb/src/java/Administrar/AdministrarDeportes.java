@@ -72,7 +72,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     }
 
     @Override
-    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secDeporte) {
+    public BigInteger verificarRelacionVigenciasDeportes(BigInteger secDeporte) {
         BigInteger verificarBorradoVigenciasDeportes = null;
         try {
             verificarBorradoVigenciasDeportes = persistenciaDeportes.verificarBorradoVigenciasDeportes(secDeporte);

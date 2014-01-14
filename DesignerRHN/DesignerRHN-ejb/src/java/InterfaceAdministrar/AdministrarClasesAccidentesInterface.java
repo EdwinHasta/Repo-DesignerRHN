@@ -40,6 +40,14 @@ public interface AdministrarClasesAccidentesInterface {
      * @return Retorna la ClaseAccidente cuya secuencia coincida con el valor del parámetro. 
      */
     public ClasesAccidentes mostrarClaseAccidente(BigInteger secClasesAccidentes);
-    
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
+    /**
+     * Método encargado de validar si existe una relación entre un
+     * ClaseAccidente específico y algún AccidenteMedico. Adémas de la revisión,
+     * cuenta cuantas relaciones existen.
+     *
+     * @param secClasesAccidentes Secuencia de un ClaseAccidente.
+     * @return Retorna el número de proyectos relacionados con un ClaseAccidente
+     * cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secClasesAccidentes);
 }

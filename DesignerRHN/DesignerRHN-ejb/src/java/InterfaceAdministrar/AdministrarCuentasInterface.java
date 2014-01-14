@@ -16,17 +16,17 @@ import java.util.List;
 public interface AdministrarCuentasInterface {
     /**
      * Método encargado de crear Cuentas.
-     * @param listaCuentas Lista de los Cuentas que se van a crear.
+     * @param listaCuentas Lista de las Cuentas que se van a crear.
      */
     public void crearCuentas(List<Cuentas> listaCuentas);
     /**
      * Método encargado de editar Cuentas.
-     * @param listaCuentas Lista de los Cuentas que se van a modificar.
+     * @param listaCuentas Lista de las Cuentas que se van a modificar.
      */
     public void modificarCuentas(List<Cuentas> listaCuentas);
     /**
      * Método encargado de borrar Cuentas.
-     * @param listaCuentas Lista de los Cuentas que se van a eliminar.
+     * @param listaCuentas Lista de las Cuentas que se van a eliminar.
      */
     public void borrarCuentas(List<Cuentas> listaCuentas); 
     /**

@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfaceAdministrar;
 
@@ -24,85 +22,209 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'DetalleConcepto'.
+ * @author Andres Pineda.
  */
 public interface AdministrarDetalleConceptoInterface {
-
-    public List<VigenciasCuentas> listVigenciasCuentasConcepto(BigInteger secuencia);
-
-    public void crearVigenciasCuentas(List<VigenciasCuentas> listaVC);
-
-    public void editarVigenciasCuentas(List<VigenciasCuentas> listaVC);
-
-    public void borrarVigenciasCuentas(List<VigenciasCuentas> listaVC);
-
-    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosConcepto(BigInteger secuencia);
-
-    public void crearVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVGC);
-
-    public void editarVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVGC);
-
-    public void borrarVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVGC);
-
-    public List<VigenciasConceptosTT> listVigenciasConceptosTTConcepto(BigInteger secuencia);
-
-    public void crearVigenciasConceptosTT(List<VigenciasConceptosTT> listaVC);
-
-    public void editarVigenciasConceptosTT(List<VigenciasConceptosTT> listaVC);
-
-    public void borrarVigenciasConceptosTT(List<VigenciasConceptosTT> listaVC);
-
-    public List<VigenciasConceptosTC> listVigenciasConceptosTCConcepto(BigInteger secuencia);
-
-    public void crearVigenciasConceptosTC(List<VigenciasConceptosTC> listaVC);
-
-    public void editarVigenciasConceptosTC(List<VigenciasConceptosTC> listaVC);
-
-    public void borrarVigenciasConceptosTC(List<VigenciasConceptosTC> listaVC);
-
-    public List<VigenciasConceptosRL> listVigenciasConceptosRLCConcepto(BigInteger secuencia);
-
-    public void crearVigenciasConceptosRL(List<VigenciasConceptosRL> listaVC);
-
-    public void editarVigenciasConceptosRL(List<VigenciasConceptosRL> listaVC);
-
-    public void borrarVigenciasConceptosRL(List<VigenciasConceptosRL> listaVC);
-
-    public List<FormulasConceptos> listFormulasConceptosConcepto(BigInteger secuencia);
-
-    public void crearFormulasConceptos(List<FormulasConceptos> listaFC);
-
-    public void editarFormulasConceptos(List<FormulasConceptos> listaFC);
-
-    public void borrarFormulasConceptos(List<FormulasConceptos> listaFC);
-
-    public Conceptos conceptoActual(BigInteger secuencia);
-
-    public List<TiposCentrosCostos> listTiposCentrosCostos();
-
-    public List<Cuentas> listCuentas();
-
-    public List<CentrosCostos> listCentrosCostos();
-
-    public List<GruposConceptos> listGruposConceptos();
-
-    public List<TiposTrabajadores> listTiposTrabajadores();
-
-    public List<TiposContratos> listTiposContratos();
-
-    public List<ReformasLaborales> listReformasLaborales();
-
-    public List<Formulas> listFormulas();
-
-    public List<FormulasConceptos> listFormulasConceptos();
-
-    public Long comportamientoAutomaticoConcepto(BigInteger secuencia);
-
-    public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia);
-
-    public boolean eliminarConcepto(BigInteger secuencia);
-
+    /**
+     * Método encargado de recuperar las VigenciasCuentas según el Concepto que tengan asociado.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @return Retorna una lista de VigenciasCuentas.
+     */
+    public List<VigenciasCuentas> listaVigenciasCuentasConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de crear VigenciasCuentas.
+     * @param listaVigenciasCuentas Lista de las VigenciasCuentas que se van a crear.
+     */
+    public void crearVigenciasCuentas(List<VigenciasCuentas> listaVigenciasCuentas);
+    /**
+     * Método encargado de editar VigenciasCuentas.
+     * @param listaVigenciasCuentas Lista de las VigenciasCuentas que se van a modificar.
+     */
+    public void modificarVigenciasCuentas(List<VigenciasCuentas> listaVigenciasCuentas);
+    /**
+     * Método encargado de borrar VigenciasCuentas.
+     * @param listaVigenciasCuentas Lista de las VigenciasCuentas que se van a eliminar.
+     */
+    public void borrarVigenciasCuentas(List<VigenciasCuentas> listaVigenciasCuentas);
+    /**
+     * Método encargado de recuperar las VigenciasGruposConceptos según el Concepto que tengan asociado.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @return Retorna una lista de VigenciasGruposConceptos.
+     */
+    public List<VigenciasGruposConceptos> listaVigenciasGruposConceptosConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de crear VigenciasGruposConceptos.
+     * @param listaVigenGruposConceptos Lista de las VigenciasGruposConceptos que se van a crear.
+     */
+    public void crearVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVigenGruposConceptos);
+    /**
+     * Método encargado de editar VigenGruposConceptos.
+     * @param listaVigenGruposConceptos Lista de las VigenGruposConceptos que se van a modificar.
+     */
+    public void modificarVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVigenGruposConceptos);
+    /**
+     * Método encargado de borrar VigenciasGruposConceptos.
+     * @param listaVigenGruposConceptos Lista de las VigenciasGruposConceptos que se van a eliminar.
+     */
+    public void borrarVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVigenGruposConceptos);
+    /**
+     * Método encargado de recuperar las VigenciasConceptosTT según el Concepto que tengan asociado.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @return Retorna una lista de VigenciasConceptosTT.
+     */
+    public List<VigenciasConceptosTT> listaVigenciasConceptosTTConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de crear VigenciasConceptosTT.
+     * @param listaVigenciasConceptosTT Lista de las VigenciasConceptosTT que se van a crear.
+     */
+    public void crearVigenciasConceptosTT(List<VigenciasConceptosTT> listaVigenciasConceptosTT);
+    /**
+     * Método encargado de editar VigenciasConceptosTT.
+     * @param listaVigenciasConceptosTT Lista de las VigenciasConceptosTT que se van a modificar.
+     */
+    public void modificarVigenciasConceptosTT(List<VigenciasConceptosTT> listaVigenciasConceptosTT);
+    /**
+     * Método encargado de borrar VigenciasConceptosTT.
+     * @param listaVigenciasConceptosTT Lista de las VigenciasConceptosTT que se van a eliminar.
+     */
+    public void borrarVigenciasConceptosTT(List<VigenciasConceptosTT> listaVigenciasConceptosTT);
+    /**
+     * Método encargado de recuperar las VigenciasConceptosTC según el Concepto que tengan asociado.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @return Retorna una lista de VigenciasConceptosTC.
+     */
+    public List<VigenciasConceptosTC> listaVigenciasConceptosTCConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de crear VigenciasConceptosTC.
+     * @param listaVigenciasConceptosTC Lista de las VigenciasConceptosTC que se van a crear.
+     */
+    public void crearVigenciasConceptosTC(List<VigenciasConceptosTC> listaVigenciasConceptosTC);
+    /**
+     * Método encargado de editar VigenciasConceptosTC.
+     * @param listaVigenciasConceptosTC Lista de las VigenciasConceptosTC que se van a modificar.
+     */
+    public void modificarVigenciasConceptosTC(List<VigenciasConceptosTC> listaVigenciasConceptosTC);
+    /**
+     * Método encargado de borrar VigenciasConceptosTC.
+     * @param listaVigenciasConceptosTC Lista de las VigenciasConceptosTC que se van a eliminar.
+     */
+    public void borrarVigenciasConceptosTC(List<VigenciasConceptosTC> listaVigenciasConceptosTC);
+    /**
+     * Método encargado de recuperar las VigenciasConceptosRL según el Concepto que tengan asociado.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @return Retorna una lista de VigenciasConceptosRL.
+     */
+    public List<VigenciasConceptosRL> listaVigenciasConceptosRLCConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de crear VigenciasConceptosRL.
+     * @param listaVigenciasConceptosRL Lista de las VigenciasConceptosRL que se van a crear.
+     */
+    public void crearVigenciasConceptosRL(List<VigenciasConceptosRL> listaVigenciasConceptosRL);
+    /**
+     * Método encargado de editar VigenciasConceptosRL.
+     * @param listaVigenciasConceptosRL Lista de las VigenciasConceptosRL que se van a modificar.
+     */
+    public void modificarVigenciasConceptosRL(List<VigenciasConceptosRL> listaVigenciasConceptosRL);
+    /**
+     * Método encargado de borrar VigenciasConceptosRL.
+     * @param listaVigenciasConceptosRL Lista de las VigenciasConceptosRL que se van a eliminar.
+     */
+    public void borrarVigenciasConceptosRL(List<VigenciasConceptosRL> listaVigenciasConceptosRL);
+    /**
+     * Método encargado de recuperar las FormulasConceptos según el Concepto que tengan asociado.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @return Retorna una lista de FormulasConceptos.
+     */
+    public List<FormulasConceptos> listaFormulasConceptosConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de crear FormulasConceptos.
+     * @param listaFormulasConceptos Lista de las FormulasConceptos que se van a crear.
+     */
+    public void crearFormulasConceptos(List<FormulasConceptos> listaFormulasConceptos);
+    /**
+     * Método encargado de editar FormulasConceptos.
+     * @param listaFormulasConceptos Lista de las FormulasConceptos que se van a modificar.
+     */
+    public void modificarFormulasConceptos(List<FormulasConceptos> listaFormulasConceptos);
+    /**
+     * Método encargado de borrar FormulasConceptos.
+     * @param listaFormulasConceptos Lista de las FormulasConceptos que se van a eliminar.
+     */
+    public void borrarFormulasConceptos(List<FormulasConceptos> listaFormulasConceptos);
+    /**
+     * Método encargado de recuperar el concepto del cual se van a basar los detalles.
+     * @param secConcepto Secuencia del concepto.
+     * @return Retorna el concepto cuya secuencia coincide con el valor del parámetro.
+     */
+    public Conceptos conceptoActual(BigInteger secConcepto);
+    /**
+     * Método encargado de recuperar los TiposCentrosCostos necesarios para la lista de valores.
+     * @return Retorna una lista de TiposCentrosCostos.
+     */
+    public List<TiposCentrosCostos> lovTiposCentrosCostos();
+    /**
+     * Método encargado de recuperar los Cuentas necesarios para la lista de valores.
+     * @return Retorna una lista de Cuentas.
+     */
+    public List<Cuentas> lovCuentas();
+    /**
+     * Método encargado de recuperar los CentrosCostos necesarios para la lista de valores.
+     * @return Retorna una lista de CentrosCostos.
+     */
+    public List<CentrosCostos> lovCentrosCostos();
+    /**
+     * Método encargado de recuperar los GruposConceptos necesarios para la lista de valores.
+     * @return Retorna una lista de GruposConceptos.
+     */
+    public List<GruposConceptos> lovGruposConceptos();
+    /**
+     * Método encargado de recuperar los TiposTrabajadores necesarios para la lista de valores.
+     * @return Retorna una lista de TiposTrabajadores.
+     */
+    public List<TiposTrabajadores> lovTiposTrabajadores();
+    /**
+     * Método encargado de recuperar los TiposContratos necesarios para la lista de valores.
+     * @return Retorna una lista de TiposContratos.
+     */
+    public List<TiposContratos> lovTiposContratos();
+    /**
+     * Método encargado de recuperar los ReformasLaborales necesarios para la lista de valores.
+     * @return Retorna una lista de ReformasLaborales.
+     */
+    public List<ReformasLaborales> lovReformasLaborales();
+    /**
+     * Método encargado de recuperar los Formulas necesarios para la lista de valores.
+     * @return Retorna una lista de Formulas.
+     */
+    public List<Formulas> lovFormulas();
+    /**
+     * Método encargado de recuperar los FormulasConceptos necesarios para la lista de valores.
+     * @return Retorna una lista de FormulasConceptos.
+     */
+    public List<FormulasConceptos> lovFormulasConceptos();
+    /**
+     * Método encargado de recuperar el número de FormulasConceptos asociadas con un concepto específico. Esto
+     * con el fin de determinar si se usa el comportamiento automatico o no.
+     * @param secConcepto Secuencia del concepto.
+     * @return Retorna el número de FormulasConceptos asociadas con el concepto cuya secuencia coincida con el 
+     * valor dado por parámetro.
+     */
+    public Long comportamientoAutomaticoConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de recuperar el número de FormulasConceptos que estan asociadas con un concepto específico y
+     * cuya Formula esta asociada con una FormulaNovedad. Esto con el fin de determinar si se usa 
+     * el comportamiento Semiautomatico o no.
+     * @param secConcepto Secuencia del concepto.
+     * @return Retorna el número de FormulasConceptos que cumplen con las condiciones mencionadas.
+     */
+    public Long comportamientoSemiAutomaticoConcepto(BigInteger secConcepto);
+    /**
+     * Método encargado de eliminar un concepto y los datos referentes a este.
+     * @param secConcepto Secuencia del Concepto.
+     * @return Retorna True si fue posible eliminar el concepto, false de lo contrario.
+     */
+    public boolean eliminarConceptoTotal(BigInteger secConcepto);
+    
     public boolean verificarSolucionesNodosParaConcepto(BigInteger secuencia);
-
 }

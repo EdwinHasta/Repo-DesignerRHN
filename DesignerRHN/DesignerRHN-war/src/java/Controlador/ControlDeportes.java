@@ -350,12 +350,12 @@ public class ControlDeportes implements Serializable {
             System.out.println("secuencia borrado : " + listDeportes.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listDeportes.get(index).getSecuencia());
-                verificarBorradoVigenciasDeportes = administrarDeportes.verificarBorradoVigenciasDeportes(listDeportes.get(index).getSecuencia());
+                verificarBorradoVigenciasDeportes = administrarDeportes.verificarRelacionVigenciasDeportes(listDeportes.get(index).getSecuencia());
                 contadorDeportesPersonas = administrarDeportes.contadorDeportesPersonas(listDeportes.get(index).getSecuencia());
                 contadorParametrosInformes = administrarDeportes.contadorParametrosInformes(listDeportes.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarDeportes.get(index).getSecuencia());
-                verificarBorradoVigenciasDeportes = administrarDeportes.verificarBorradoVigenciasDeportes(filtrarDeportes.get(index).getSecuencia());
+                verificarBorradoVigenciasDeportes = administrarDeportes.verificarRelacionVigenciasDeportes(filtrarDeportes.get(index).getSecuencia());
                 contadorDeportesPersonas = administrarDeportes.contadorDeportesPersonas(filtrarDeportes.get(index).getSecuencia());
                 contadorParametrosInformes = administrarDeportes.contadorParametrosInformes(filtrarDeportes.get(index).getSecuencia());
             }

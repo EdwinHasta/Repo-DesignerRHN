@@ -62,11 +62,11 @@ public interface PersistenciaClasesAccidentesInterface {
     public List<ClasesAccidentes> buscarClasesAccidentes();
 
     /**
-     * Método encargado de revisar si existe una relacion entre un
+     * Método encargado de revisar si existe una relación entre un
      * ClaseAccidente específico y algún AccidenteMedico. Adémas de la revisión,
      * cuenta cuantas relaciones existen.
      *
-     * @param secClasesAccidentes secClasesAccidentes de un ClaseAccidente.
+     * @param secClasesAccidentes Secuencia de un ClaseAccidente.
      * @return Retorna el número de proyectos relacionados con un ClaseAccidente
      * cuya secuencia coincide con el parámetro.
      */
