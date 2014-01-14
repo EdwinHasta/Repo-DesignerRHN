@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -15,19 +14,32 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
- *
- * @author user
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'DetalleCuenta'.
+ * @author Betelgeuse.
  */
 @Stateful
 public class AdministrarDetalleCuenta implements AdministrarDetalleCuentaInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasCuentas'.
+     */
     @EJB
     PersistenciaVigenciasCuentasInterface persistenciaVigenciasCuentas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaCuentas'.
+     */
     @EJB
     PersistenciaCuentasInterface persistenciaCuentas;
-
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
-    public List<VigenciasCuentas> listVigenciasCuentasCredito(BigInteger secuenciaC) {
+    public List<VigenciasCuentas> listaVigenciasCuentasCredito(BigInteger secuenciaC) {
         try {
             List<VigenciasCuentas> listCCredito = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorCredito(secuenciaC);
             return listCCredito;
@@ -38,7 +50,7 @@ public class AdministrarDetalleCuenta implements AdministrarDetalleCuentaInterfa
     }
 
     @Override
-    public List<VigenciasCuentas> listVigenciasCuentasDebito(BigInteger secuenciaC) {
+    public List<VigenciasCuentas> listaVigenciasCuentasDebito(BigInteger secuenciaC) {
         try {
             List<VigenciasCuentas> listCDebito = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorDebito(secuenciaC);
             return listCDebito;
@@ -49,7 +61,7 @@ public class AdministrarDetalleCuenta implements AdministrarDetalleCuentaInterfa
     }
 
     @Override
-    public Cuentas cuentaActual(BigInteger secuencia) {
+    public Cuentas mostrarCuenta(BigInteger secuencia) {
         try {
             Cuentas cuentaActual = persistenciaCuentas.buscarCuentasSecuencia(secuencia);
             return cuentaActual;
