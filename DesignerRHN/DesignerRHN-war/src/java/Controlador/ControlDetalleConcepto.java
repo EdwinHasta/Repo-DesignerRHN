@@ -6241,7 +6241,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void eliminarConcepto() {
-        boolean rep = administrarDetalleConcepto.eliminarConcepto(conceptoActual.getSecuencia());
+        boolean rep = administrarDetalleConcepto.eliminarConceptoTotal(conceptoActual.getSecuencia());
         if (rep == true) {
             salir();
             paginaRetorno = "retornoConcepto";
@@ -6423,7 +6423,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<TiposCentrosCostos> getListTiposCentrosCostos() {
         if (listTiposCentrosCostos == null) {
-            listTiposCentrosCostos = administrarDetalleConcepto.listaTiposCentrosCostos();
+            listTiposCentrosCostos = administrarDetalleConcepto.lovTiposCentrosCostos();
 
         }
         return listTiposCentrosCostos;
@@ -6451,7 +6451,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<Cuentas> getListCuentas() {
         if (listCuentas == null) {
-            listCuentas = administrarDetalleConcepto.listaCuentas();
+            listCuentas = administrarDetalleConcepto.lovCuentas();
         }
         return listCuentas;
     }
@@ -6478,7 +6478,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<CentrosCostos> getListCentrosCostos() {
         if (listCentrosCostos == null) {
-            listCentrosCostos = administrarDetalleConcepto.listaCentrosCostos();
+            listCentrosCostos = administrarDetalleConcepto.lovCentrosCostos();
         }
         return listCentrosCostos;
     }
@@ -6619,7 +6619,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<GruposConceptos> getListGruposConceptos() {
         if (listGruposConceptos == null) {
-            listGruposConceptos = administrarDetalleConcepto.listaGruposConceptos();
+            listGruposConceptos = administrarDetalleConcepto.lovGruposConceptos();
 
         }
         return listGruposConceptos;
@@ -6811,7 +6811,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<TiposTrabajadores> getListTiposTrabajadores() {
         try {
             if (listTiposTrabajadores == null) {
-                listTiposTrabajadores = administrarDetalleConcepto.listaTiposTrabajadores();
+                listTiposTrabajadores = administrarDetalleConcepto.lovTiposTrabajadores();
             }
             return listTiposTrabajadores;
         } catch (Exception e) {
@@ -6906,7 +6906,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<TiposContratos> getListTiposContratos() {
         if (listTiposContratos == null) {
-            listTiposContratos = administrarDetalleConcepto.listaTiposContratos();
+            listTiposContratos = administrarDetalleConcepto.lovTiposContratos();
         }
         return listTiposContratos;
     }
@@ -6998,7 +6998,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<ReformasLaborales> getListReformasLaborales() {
         try {
             if (listReformasLaborales == null) {
-                listReformasLaborales = administrarDetalleConcepto.listaReformasLaborales();
+                listReformasLaborales = administrarDetalleConcepto.lovReformasLaborales();
             }
             return listReformasLaborales;
         } catch (Exception e) {
@@ -7094,7 +7094,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<Formulas> getListFormulas() {
         try {
             if (listFormulas == null) {
-                listFormulas = administrarDetalleConcepto.listaFormulas();
+                listFormulas = administrarDetalleConcepto.lovFormulas();
             }
             return listFormulas;
         } catch (Exception e) {
@@ -7126,7 +7126,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<FormulasConceptos> getListFormulasConceptos() {
         try {
             if (listFormulasConceptos == null) {
-                listFormulasConceptos = administrarDetalleConcepto.listaFormulasConceptos();
+                listFormulasConceptos = administrarDetalleConcepto.lovFormulasConceptos();
             }
             return listFormulasConceptos;
         } catch (Exception e) {

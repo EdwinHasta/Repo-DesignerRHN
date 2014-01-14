@@ -157,9 +157,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<VigenciasCuentas> listaVigenciasCuentasConcepto(BigInteger secuencia) {
+    public List<VigenciasCuentas> listaVigenciasCuentasConcepto(BigInteger secConcepto) {
         try {
-            List<VigenciasCuentas> lista = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorConcepto(secuencia);
+            List<VigenciasCuentas> lista = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorConcepto(secConcepto);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listVigenciasCuentasConcepto Admi : " + e.toString());
@@ -201,7 +201,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposCentrosCostos> listaTiposCentrosCostos() {
+    public List<TiposCentrosCostos> lovTiposCentrosCostos() {
         try {
             List<TiposCentrosCostos> tipos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
             return tipos;
@@ -212,7 +212,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<Cuentas> listaCuentas() {
+    public List<Cuentas> lovCuentas() {
         try {
             List<Cuentas> cuentas = persistenciaCuentas.buscarCuentas();
             return cuentas;
@@ -223,7 +223,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<CentrosCostos> listaCentrosCostos() {
+    public List<CentrosCostos> lovCentrosCostos() {
         try {
             List<CentrosCostos> centros = persistenciaCentrosCostos.buscarCentrosCostos();
             return centros;
@@ -234,9 +234,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasGruposConceptos> listaVigenciasGruposConceptosConcepto(BigInteger secuencia) {
+    public List<VigenciasGruposConceptos> listaVigenciasGruposConceptosConcepto(BigInteger secConcepto) {
         try {
-            List<VigenciasGruposConceptos> lista = persistenciaVigenciasGruposConceptos.listVigenciasGruposConceptosPorConcepto(secuencia);
+            List<VigenciasGruposConceptos> lista = persistenciaVigenciasGruposConceptos.listVigenciasGruposConceptosPorConcepto(secConcepto);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listVigenciasGruposConceptosConcepto Admi : " + e.toString());
@@ -278,7 +278,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<GruposConceptos> listaGruposConceptos() {
+    public List<GruposConceptos> lovGruposConceptos() {
         try {
             List<GruposConceptos> grupos = persistenciaGruposConceptos.buscarGruposConceptos();
             return grupos;
@@ -289,9 +289,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasConceptosTT> listaVigenciasConceptosTTConcepto(BigInteger secuencia) {
+    public List<VigenciasConceptosTT> listaVigenciasConceptosTTConcepto(BigInteger secConcepto) {
         try {
-            List<VigenciasConceptosTT> lista = persistenciaVigenciasConceptosTT.listVigenciasConceptosTTPorConcepto(secuencia);
+            List<VigenciasConceptosTT> lista = persistenciaVigenciasConceptosTT.listVigenciasConceptosTTPorConcepto(secConcepto);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listVigenciasConceptosTTConcepto Admi : " + e.toString());
@@ -333,7 +333,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposTrabajadores> listaTiposTrabajadores() {
+    public List<TiposTrabajadores> lovTiposTrabajadores() {
         try {
             List<TiposTrabajadores> tipos = persistenciaTiposTrabajadores.buscarTiposTrabajadores();
             return tipos;
@@ -344,9 +344,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasConceptosTC> listaVigenciasConceptosTCConcepto(BigInteger secuencia) {
+    public List<VigenciasConceptosTC> listaVigenciasConceptosTCConcepto(BigInteger secConcepto) {
         try {
-            List<VigenciasConceptosTC> lista = persistenciaVigenciasConceptosTC.listVigenciasConceptosTCPorConcepto(secuencia);
+            List<VigenciasConceptosTC> lista = persistenciaVigenciasConceptosTC.listVigenciasConceptosTCPorConcepto(secConcepto);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listVigenciasConceptosTCConcepto Admi : " + e.toString());
@@ -388,7 +388,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposContratos> listaTiposContratos() {
+    public List<TiposContratos> lovTiposContratos() {
         try {
             List<TiposContratos> tipos = persistenciaTiposContratos.tiposContratos();
             return tipos;
@@ -399,9 +399,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasConceptosRL> listaVigenciasConceptosRLCConcepto(BigInteger secuencia) {
+    public List<VigenciasConceptosRL> listaVigenciasConceptosRLCConcepto(BigInteger secConcepto) {
         try {
-            List<VigenciasConceptosRL> lista = persistenciaVigenciasConceptosRL.listVigenciasConceptosRLPorConcepto(secuencia);
+            List<VigenciasConceptosRL> lista = persistenciaVigenciasConceptosRL.listVigenciasConceptosRLPorConcepto(secConcepto);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listVigenciasConceptosRLCConcepto Admi : " + e.toString());
@@ -443,7 +443,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<ReformasLaborales> listaReformasLaborales() {
+    public List<ReformasLaborales> lovReformasLaborales() {
         try {
             List<ReformasLaborales> reformas = persistenciaReformasLaborales.buscarReformasLaborales();
             return reformas;
@@ -454,9 +454,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<FormulasConceptos> listaFormulasConceptosConcepto(BigInteger secuencia) {
+    public List<FormulasConceptos> listaFormulasConceptosConcepto(BigInteger secConcepto) {
         try {
-            List<FormulasConceptos> lista = persistenciaFormulasConceptos.formulasConcepto(secuencia);
+            List<FormulasConceptos> lista = persistenciaFormulasConceptos.formulasConcepto(secConcepto);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listFormulasConceptosConcepto Admi : " + e.toString());
@@ -498,7 +498,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<Formulas> listaFormulas() {
+    public List<Formulas> lovFormulas() {
         try {
             List<Formulas> formulas = persistenciaFormulas.buscarFormulas();
             return formulas;
@@ -509,7 +509,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<FormulasConceptos> listaFormulasConceptos() {
+    public List<FormulasConceptos> lovFormulasConceptos() {
         try {
             List<FormulasConceptos> formulas = persistenciaFormulasConceptos.buscarFormulasConceptos();
             return formulas;
@@ -520,9 +520,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public Long comportamientoAutomaticoConcepto(BigInteger secuencia) {
+    public Long comportamientoAutomaticoConcepto(BigInteger secConcepto) {
         try {
-            Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoAutomaticoSecuenciaConcepto(secuencia);
+            Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoAutomaticoSecuenciaConcepto(secConcepto);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error comportamientoAutomaticoConcepto Admi : " + e.toString());
@@ -531,9 +531,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public Long comportamientoSemiAutomaticoConcepto(BigInteger secuencia) {
+    public Long comportamientoSemiAutomaticoConcepto(BigInteger secConcepto) {
         try {
-            Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoSemiAutomaticoSecuenciaConcepto(secuencia);
+            Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoSemiAutomaticoSecuenciaConcepto(secConcepto);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error comportamientoSemiAutomaticoConcepto Admi : " + e.toString());
@@ -542,9 +542,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public Conceptos conceptoActual(BigInteger secuencia) {
+    public Conceptos conceptoActual(BigInteger secConcepto) {
         try {
-            Conceptos actual = persistenciaConceptos.conceptosPorSecuencia(secuencia);
+            Conceptos actual = persistenciaConceptos.conceptosPorSecuencia(secConcepto);
             return actual;
         } catch (Exception e) {
             System.out.println("Error conceptoActual Admi : " + e.toString());
@@ -553,9 +553,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public boolean eliminarConcepto(BigInteger secuencia) {
+    public boolean eliminarConceptoTotal(BigInteger secConcepto) {
         try {
-            return persistenciaConceptos.eliminarConcepto(secuencia);
+            return persistenciaConceptos.eliminarConcepto(secConcepto);
         } catch (Exception e) {
             System.out.println("Error eliminarConcepto Admi : " + e.toString());
             return false;
@@ -563,9 +563,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public boolean verificarSolucionesNodosParaConcepto(BigInteger secuencia) {
+    public boolean verificarSolucionesNodosParaConcepto(BigInteger secConcepto) {
         try {
-            boolean retorno = persistenciaSolucionesNodos.solucionesNodosParaConcepto(secuencia);
+            boolean retorno = persistenciaSolucionesNodos.solucionesNodosParaConcepto(secConcepto);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error verificarSolucionesNodosParaConcepto Admi : " + e.toString());
