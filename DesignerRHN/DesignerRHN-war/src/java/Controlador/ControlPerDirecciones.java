@@ -1282,7 +1282,7 @@ public class ControlPerDirecciones implements Serializable {
 
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
-            listaCiudades = administrarCiudades.lovCiudades();
+            listaCiudades = administrarCiudades.listaCiudades();
         }
         return listaCiudades;
     }

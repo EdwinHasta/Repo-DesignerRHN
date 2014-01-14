@@ -27,13 +27,8 @@ public interface AdministrarCiudadesInterface {
      */
     public void borrarCiudades(List<Ciudades> listaCiudades);
     /**
-     * Método encargado de recuperar todos los Ciudades.
+     * Método encargado de recuperar todas las Ciudades.
      * @return Retorna una lista de Ciudades.
      */
-    public List<Ciudades> Ciudades();
-    /**
-     * Método encargado de recuperar todos los Ciudades.
-     * @return Retorna una lista de Ciudades.
-     */
-    public List<Ciudades>  lovCiudades();
+    public List<Ciudades> listaCiudades();
 }

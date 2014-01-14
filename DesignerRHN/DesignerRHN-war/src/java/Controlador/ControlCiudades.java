@@ -810,7 +810,7 @@ public class ControlCiudades implements Serializable {
 
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
-            listaCiudades = administrarCiudades.Ciudades();
+            listaCiudades = administrarCiudades.listaCiudades();
             return listaCiudades;
         } else {
             return listaCiudades;
@@ -831,7 +831,7 @@ public class ControlCiudades implements Serializable {
 
     public List<Departamentos> getListaDepartamentos() {
         if (listaDepartamentos.isEmpty()) {
-            listaDepartamentos = administrarDepartamentos.lovDepartamentos();
+            listaDepartamentos = administrarDepartamentos.listaDepartamentos();
         }
         return listaDepartamentos;
     }
