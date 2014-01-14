@@ -160,7 +160,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<TiposDias> listaTiposDias() {
+    public List<TiposDias> lovListaTiposDias() {
         try {
             List<TiposDias> lista = persistenciaTiposDias.buscarTiposDias();
             return lista;

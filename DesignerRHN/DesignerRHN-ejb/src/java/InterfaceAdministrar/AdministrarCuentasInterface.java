@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfaceAdministrar;
 
@@ -11,20 +10,39 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'Cuentas'.
+ * @author betelgeuse
  */
 public interface AdministrarCuentasInterface {
-
-    public void crearCuentas(List<Cuentas> listCuentasCrear);
-
-    public void modificarCuentas(List<Cuentas> listCuentasModificar);
-
-    public void borrarCuentas(List<Cuentas> listCuentasBorrar);
-
-    public List<Cuentas> listCuentasEmpresa(BigInteger secuencia);
-
-    public List<Empresas> listEmpresas();
-
-    public List<Rubrospresupuestales> listRubros();
+    /**
+     * Método encargado de crear Cuentas.
+     * @param listaCuentas Lista de los Cuentas que se van a crear.
+     */
+    public void crearCuentas(List<Cuentas> listaCuentas);
+    /**
+     * Método encargado de editar Cuentas.
+     * @param listaCuentas Lista de los Cuentas que se van a modificar.
+     */
+    public void modificarCuentas(List<Cuentas> listaCuentas);
+    /**
+     * Método encargado de borrar Cuentas.
+     * @param listaCuentas Lista de los Cuentas que se van a eliminar.
+     */
+    public void borrarCuentas(List<Cuentas> listaCuentas); 
+    /**
+     * Método encargado de recuperar las cuentas de una empresa.
+     * @param secEmpresa Secuencia de la empresa.
+     * @return Retorna una lista de cuentas.
+     */
+    public List<Cuentas> listaCuentasEmpresa(BigInteger secEmpresa);
+    /**
+     * Método encargado de recuperar todas las Empresas.
+     * @return Retorna una lista de Empresas.
+     */
+    public List<Empresas> listaEmpresas();
+    /**
+     * Método encargado de recuperar los Rubrospresupuestales necesarios para la lista de valores.
+     * @return Retorna una lista de Rubrospresupuestales.
+     */
+    public List<Rubrospresupuestales> lovListaRubros();
 }

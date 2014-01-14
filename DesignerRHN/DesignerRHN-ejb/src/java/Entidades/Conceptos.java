@@ -149,14 +149,6 @@ public class Conceptos implements Serializable {
     private ClavesSap clavecontablecredito;
     @OneToMany(mappedBy = "concepto")
     private Collection<Categorias> categoriasCollection;
-    /* @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-     private Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection;
-     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-     private Collection<VigenciasConceptosTC> vigenciasconceptostcCollection;
-     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-     private Collection<VigenciasConceptosRL> vigenciasconceptosrlCollection;
-     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-     private Collection<VigenciasConceptosTT> vigenciasconceptosttCollection;*/
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<FormulasConceptos> formulasconceptosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
@@ -283,6 +275,7 @@ public class Conceptos implements Serializable {
     }
 
     public void setIndependiente(String independiente) {
+        
         this.independiente = independiente;
     }
 

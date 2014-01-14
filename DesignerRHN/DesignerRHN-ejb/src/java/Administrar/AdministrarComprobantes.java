@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Administrar;
 
 import Entidades.DetallesFormulas;
@@ -15,24 +18,57 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-
+/**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'Comprobantes'.
+ * @author betelgeuse
+ */
 @Stateful
 public class AdministrarComprobantes implements AdministrarComprobantesInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaSolucionesNodos'.
+     */
     @EJB
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaParametros'.
+     */
     @EJB
     PersistenciaParametrosInterface persistenciaParametros;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaActualUsuario'.
+     */
     @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaParametrosEstructuras'.
+     */
     @EJB
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaDetallesFormulas'.
+     */
     @EJB
     PersistenciaDetallesFormulasInterface persistenciaDetallesFormulas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaHistoriasformulas'.
+     */
     @EJB
     PersistenciaHistoriasformulasInterface persistenciaHistoriasformulas;
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
 
-
+    @Override
     public List<Parametros> parametrosComprobantes() {
         String usuarioBD;
         usuarioBD = persistenciaActualUsuario.actualAliasBD();
@@ -61,6 +97,7 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
         return persistenciaDetallesFormulas.detallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
     }
     
+    @Override
     public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde){
         return persistenciaHistoriasformulas.obtenerSecuenciaHistoriaFormula(secFormula, fechaDesde);
     }

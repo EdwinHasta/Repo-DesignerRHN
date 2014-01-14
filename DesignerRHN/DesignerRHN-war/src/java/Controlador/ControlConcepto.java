@@ -670,7 +670,7 @@ public class ControlConcepto implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listaConceptosEmpresa.get(index).getSecuencia();
-            conceptoRegistro= listaConceptosEmpresa.get(index);
+            conceptoRegistro = listaConceptosEmpresa.get(index);
             if (cualCelda == 3) {
                 codigoUnidad = listaConceptosEmpresa.get(index).getUnidad().getCodigo();
             } else if (cualCelda == 4) {
@@ -1010,44 +1010,15 @@ public class ControlConcepto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado == false) {
             if (!listaConceptosBorrar.isEmpty()) {
-                for (int i = 0; i < listaConceptosBorrar.size(); i++) {
-                    System.out.println("Borrando...");
-                    if (listaConceptosBorrar.get(i).isIndependienteConcepto() == true) {
-                        listaConceptosBorrar.get(i).setIndependiente("S");
-                    } else if (listaConceptosBorrar.get(i).isIndependienteConcepto() == false) {
-                        listaConceptosBorrar.get(i).setIndependiente("N");
-                    }
-
-                    if (listaConceptosBorrar.get(i).getTercero().getSecuencia() == null) {
-                        listaConceptosBorrar.get(i).setTercero(null);
-                        administrarConceptos.borrar(listaConceptosBorrar.get(i));
-                    } else {
-                        administrarConceptos.borrar(listaConceptosBorrar.get(i));
-                    }
-
-                }
+                administrarConceptos.borrarConceptos(listaConceptosBorrar);
                 listaConceptosBorrar.clear();
             }
             if (!listaConceptosEmpresaCrear.isEmpty()) {
-                for (int i = 0; i < listaConceptosEmpresaCrear.size(); i++) {
-                    System.out.println("Creando...");
-                    if (listaConceptosEmpresaCrear.get(i).isIndependienteConcepto() == true) {
-                        listaConceptosEmpresaCrear.get(i).setIndependiente("S");
-                    } else if (listaConceptosEmpresaCrear.get(i).isIndependienteConcepto() == false) {
-                        listaConceptosEmpresaCrear.get(i).setIndependiente("N");
-                    }
-
-                    if (listaConceptosEmpresaCrear.get(i).getTercero().getSecuencia() == null) {
-                        listaConceptosEmpresaCrear.get(i).setTercero(null);
-                        administrarConceptos.crear(listaConceptosEmpresaCrear.get(i));
-                    } else {
-                        administrarConceptos.crear(listaConceptosEmpresaCrear.get(i));
-                    }
-                }
+                administrarConceptos.crearConceptos(listaConceptosEmpresaCrear);
                 listaConceptosEmpresaCrear.clear();
             }
             if (!listaConceptosEmpresaModificar.isEmpty()) {
-                administrarConceptos.modificar(listaConceptosEmpresaModificar);
+                administrarConceptos.modificarConceptos(listaConceptosEmpresaModificar);
                 listaConceptosEmpresaModificar.clear();
             }
             System.out.println("Se guardaron los datos con exito");
@@ -1568,7 +1539,7 @@ public class ControlConcepto implements Serializable {
 
     public List<Empresas> getListaEmpresas() {
         if (listaEmpresas == null) {
-            listaEmpresas = administrarConceptos.listadoEmpresas();
+            listaEmpresas = administrarConceptos.listaEmpresas();
             if (!listaEmpresas.isEmpty()) {
                 empresaActual = listaEmpresas.get(0);
                 backUpEmpresaActual = empresaActual;
@@ -1759,6 +1730,5 @@ public class ControlConcepto implements Serializable {
     public void setConceptoRegistro(Conceptos conceptoRegistro) {
         this.conceptoRegistro = conceptoRegistro;
     }
-    
-    
+
 }

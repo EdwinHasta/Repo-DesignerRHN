@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfaceAdministrar;
 
@@ -8,10 +7,13 @@ import Entidades.Cursos;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'Cursos'.
+ * @author betelgeuse
  */
 public interface AdministrarCursosInterface {
-    public List<Cursos> Cursos();
-    public List<Cursos>  lovCursos();
+    /**
+     * Método encargado de recuperar todos los Cursos.
+     * @return Retorna una lista de Cursos.
+     */
+    public List<Cursos> listaCursos();
 }
