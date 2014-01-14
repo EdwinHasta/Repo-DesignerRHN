@@ -39,16 +39,14 @@ public interface AdministrarDeportesInterface {
      * @param secDeportes Secuencia del Deporte.
      * @return Retorna el Deporte cuya secuencia coincida con el valor del parámetro. 
      */
-
     public Deportes mostrarDeporte(BigInteger secDeportes);
     /**
-     * Método encargado de validar si es posible eliminar una vigenciaDeporte
+     * Método encargado de validar si hay al menos una VigenciaDeporte relacionado con un deporte.
      * @param secDeporte Secuencia del deporte.
-     * @return Retorna 0 si no hay relación entre las tablas, indicando que es posible eliminar la vigenciaDeporte. 
-     * Si existe relación retorna el numero de asociaciones con el deporte cuya secuencia coincida con el valor del parámetro indicando
-     * que No es posible eliminar la VigenciaDeportes.
+     * @return Retorna 0 si no hay relación entre las tablas o retorna el número de asociaciones con el
+     * deporte cuya secuencia coincida con el valor del parámetro indicando.
      */
-    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secDeporte);
+    public BigInteger verificarRelacionVigenciasDeportes(BigInteger secDeporte);
     /**
      * Método encargado de contar la cantidad de deportes que una persona específica ha practicado.
      * @param secDeporte Secuencia del deporte.
@@ -57,9 +55,10 @@ public interface AdministrarDeportesInterface {
      */
     public BigInteger contadorDeportesPersonas(BigInteger secDeporte);
     /**
-     * 
-     * @param secDeporte
-     * @return 
+     * Método encargado de contar la cantidad de ParametrosInformes asociados a un deporte específico.
+     * @param secDeporte Secuencia del Deporte.
+     * @return Retorna un número indicando la cantidad de ParametrosInformes cuyo deporte tenga como 
+     * secuencia el valor dado como parámetro.
      */
     public BigInteger contadorParametrosInformes(BigInteger secDeporte);
 }

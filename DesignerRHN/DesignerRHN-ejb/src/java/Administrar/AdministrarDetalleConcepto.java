@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Administrar;
 
 import Entidades.CentrosCostos;
@@ -35,59 +38,126 @@ import InterfacePersistencia.PersistenciaVigenciasGruposConceptosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 
 /**
- *
- * @author AndresPineda
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'DetalleConcepto'.
+ * @author Andres Pineda.
  */
-@Stateless
+@Stateful
 public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasCuentas'.
+     */
     @EJB
     PersistenciaVigenciasCuentasInterface persistenciaVigenciasCuentas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasGruposConceptos'.
+     */
     @EJB
     PersistenciaVigenciasGruposConceptosInterface persistenciaVigenciasGruposConceptos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosTT'.
+     */
     @EJB
     PersistenciaVigenciasConceptosTTInterface persistenciaVigenciasConceptosTT;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosTC'.
+     */
     @EJB
     PersistenciaVigenciasConceptosTCInterface persistenciaVigenciasConceptosTC;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosRL'.
+     */
     @EJB
     PersistenciaVigenciasConceptosRLInterface persistenciaVigenciasConceptosRL;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulasConceptos'.
+     */
     @EJB
     PersistenciaFormulasConceptosInterface persistenciaFormulasConceptos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaConceptos'.
+     */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
-    //////Listas de valores//////
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTiposCentrosCostos'.
+     */
     @EJB
     PersistenciaTiposCentrosCostosInterface persistenciaTiposCentrosCostos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaCuentas'.
+     */
     @EJB
     PersistenciaCuentasInterface persistenciaCuentas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaCentrosCostos'.
+     */
     @EJB
     PersistenciaCentrosCostosInterface persistenciaCentrosCostos;
-    //////Listas de valores//////
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaGruposConceptos'.
+     */
     @EJB
     PersistenciaGruposConceptosInterface persistenciaGruposConceptos;
-    //////Listas de valores//////
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTiposTrabajadores'.
+     */
     @EJB
     PersistenciaTiposTrabajadoresInterface persistenciaTiposTrabajadores;
-    //////Listas de valores//////
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTiposContratos'.
+     */
     @EJB
     PersistenciaTiposContratosInterface persistenciaTiposContratos;
-    //////Listas de valores//////
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaReformasLaborales'.
+     */
     @EJB
     PersistenciaReformasLaboralesInterface persistenciaReformasLaborales;
-    //////Listas de valores//////
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulas'.
+     */
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'PersistenciaFormulasConceptos'.
+     */
     @EJB
     PersistenciaFormulasConceptosInterface PersistenciaFormulasConceptos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaSolucionesNodos'.
+     */
     @EJB
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
 
-    ///////////VigenciasCuentas/////////////////VigenciasCuentas////////////////////////VigenciasCuentas/////////////
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
-    public List<VigenciasCuentas> listVigenciasCuentasConcepto(BigInteger secuencia) {
+    public List<VigenciasCuentas> listaVigenciasCuentasConcepto(BigInteger secuencia) {
         try {
             List<VigenciasCuentas> lista = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorConcepto(secuencia);
             return lista;
@@ -109,7 +179,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public void editarVigenciasCuentas(List<VigenciasCuentas> listaVC) {
+    public void modificarVigenciasCuentas(List<VigenciasCuentas> listaVC) {
         try {
             for (int i = 0; i < listaVC.size(); i++) {
                 persistenciaVigenciasCuentas.editar(listaVC.get(i));
@@ -131,7 +201,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposCentrosCostos> listTiposCentrosCostos() {
+    public List<TiposCentrosCostos> listaTiposCentrosCostos() {
         try {
             List<TiposCentrosCostos> tipos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
             return tipos;
@@ -142,7 +212,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<Cuentas> listCuentas() {
+    public List<Cuentas> listaCuentas() {
         try {
             List<Cuentas> cuentas = persistenciaCuentas.buscarCuentas();
             return cuentas;
@@ -153,7 +223,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<CentrosCostos> listCentrosCostos() {
+    public List<CentrosCostos> listaCentrosCostos() {
         try {
             List<CentrosCostos> centros = persistenciaCentrosCostos.buscarCentrosCostos();
             return centros;
@@ -162,11 +232,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    ///////////VigenciasCuentas/////////////////VigenciasCuentas////////////////////////VigenciasCuentas/////////////
-
-    ///////////VigenciasGruposConceptos////////////VigenciasGruposConceptos/////////////////VigenciasGruposConceptos///////
+    
     @Override
-    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosConcepto(BigInteger secuencia) {
+    public List<VigenciasGruposConceptos> listaVigenciasGruposConceptosConcepto(BigInteger secuencia) {
         try {
             List<VigenciasGruposConceptos> lista = persistenciaVigenciasGruposConceptos.listVigenciasGruposConceptosPorConcepto(secuencia);
             return lista;
@@ -188,7 +256,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public void editarVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVGC) {
+    public void modificarVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVGC) {
         try {
             for (int i = 0; i < listaVGC.size(); i++) {
                 persistenciaVigenciasGruposConceptos.editar(listaVGC.get(i));
@@ -210,7 +278,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<GruposConceptos> listGruposConceptos() {
+    public List<GruposConceptos> listaGruposConceptos() {
         try {
             List<GruposConceptos> grupos = persistenciaGruposConceptos.buscarGruposConceptos();
             return grupos;
@@ -219,11 +287,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    ///////////VigenciasGruposConceptos////////////VigenciasGruposConceptos/////////////////VigenciasGruposConceptos///////
-
-    ///////////VigenciasConceptosTT////////////VigenciasConceptosTT/////////////////VigenciasConceptosTT///////
+    
     @Override
-    public List<VigenciasConceptosTT> listVigenciasConceptosTTConcepto(BigInteger secuencia) {
+    public List<VigenciasConceptosTT> listaVigenciasConceptosTTConcepto(BigInteger secuencia) {
         try {
             List<VigenciasConceptosTT> lista = persistenciaVigenciasConceptosTT.listVigenciasConceptosTTPorConcepto(secuencia);
             return lista;
@@ -245,7 +311,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public void editarVigenciasConceptosTT(List<VigenciasConceptosTT> listaVC) {
+    public void modificarVigenciasConceptosTT(List<VigenciasConceptosTT> listaVC) {
         try {
             for (int i = 0; i < listaVC.size(); i++) {
                 persistenciaVigenciasConceptosTT.editar(listaVC.get(i));
@@ -267,7 +333,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposTrabajadores> listTiposTrabajadores() {
+    public List<TiposTrabajadores> listaTiposTrabajadores() {
         try {
             List<TiposTrabajadores> tipos = persistenciaTiposTrabajadores.buscarTiposTrabajadores();
             return tipos;
@@ -276,11 +342,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    ///////////VigenciasConceptosTT////////////VigenciasConceptosTT/////////////////VigenciasConceptosTT///////
-
-    ///////////VigenciasConceptosTC////////////VigenciasConceptosTC/////////////////VigenciasConceptosTC///////
+    
     @Override
-    public List<VigenciasConceptosTC> listVigenciasConceptosTCConcepto(BigInteger secuencia) {
+    public List<VigenciasConceptosTC> listaVigenciasConceptosTCConcepto(BigInteger secuencia) {
         try {
             List<VigenciasConceptosTC> lista = persistenciaVigenciasConceptosTC.listVigenciasConceptosTCPorConcepto(secuencia);
             return lista;
@@ -302,7 +366,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public void editarVigenciasConceptosTC(List<VigenciasConceptosTC> listaVC) {
+    public void modificarVigenciasConceptosTC(List<VigenciasConceptosTC> listaVC) {
         try {
             for (int i = 0; i < listaVC.size(); i++) {
                 persistenciaVigenciasConceptosTC.editar(listaVC.get(i));
@@ -324,7 +388,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposContratos> listTiposContratos() {
+    public List<TiposContratos> listaTiposContratos() {
         try {
             List<TiposContratos> tipos = persistenciaTiposContratos.tiposContratos();
             return tipos;
@@ -333,11 +397,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    ///////////VigenciasConceptosTC////////////VigenciasConceptosTC/////////////////VigenciasConceptosTC///////
-
-    ///////////VigenciasConceptosRL////////////VigenciasConceptosRL/////////////////VigenciasConceptosRL///////
+    
     @Override
-    public List<VigenciasConceptosRL> listVigenciasConceptosRLCConcepto(BigInteger secuencia) {
+    public List<VigenciasConceptosRL> listaVigenciasConceptosRLCConcepto(BigInteger secuencia) {
         try {
             List<VigenciasConceptosRL> lista = persistenciaVigenciasConceptosRL.listVigenciasConceptosRLPorConcepto(secuencia);
             return lista;
@@ -359,7 +421,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public void editarVigenciasConceptosRL(List<VigenciasConceptosRL> listaVC) {
+    public void modificarVigenciasConceptosRL(List<VigenciasConceptosRL> listaVC) {
         try {
             for (int i = 0; i < listaVC.size(); i++) {
                 persistenciaVigenciasConceptosRL.editar(listaVC.get(i));
@@ -381,7 +443,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<ReformasLaborales> listReformasLaborales() {
+    public List<ReformasLaborales> listaReformasLaborales() {
         try {
             List<ReformasLaborales> reformas = persistenciaReformasLaborales.buscarReformasLaborales();
             return reformas;
@@ -390,11 +452,9 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    ///////////VigenciasConceptosRL////////////VigenciasConceptosRL/////////////////VigenciasConceptosRL///////
-
-    ///////////FormulasConceptos////////////FormulasConceptos/////////////////FormulasConceptos///////
+    
     @Override
-    public List<FormulasConceptos> listFormulasConceptosConcepto(BigInteger secuencia) {
+    public List<FormulasConceptos> listaFormulasConceptosConcepto(BigInteger secuencia) {
         try {
             List<FormulasConceptos> lista = persistenciaFormulasConceptos.formulasConcepto(secuencia);
             return lista;
@@ -416,7 +476,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public void editarFormulasConceptos(List<FormulasConceptos> listaFC) {
+    public void modificarFormulasConceptos(List<FormulasConceptos> listaFC) {
         try {
             for (int i = 0; i < listaFC.size(); i++) {
                 persistenciaFormulasConceptos.editar(listaFC.get(i));
@@ -438,7 +498,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<Formulas> listFormulas() {
+    public List<Formulas> listaFormulas() {
         try {
             List<Formulas> formulas = persistenciaFormulas.buscarFormulas();
             return formulas;
@@ -449,7 +509,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<FormulasConceptos> listFormulasConceptos() {
+    public List<FormulasConceptos> listaFormulasConceptos() {
         try {
             List<FormulasConceptos> formulas = persistenciaFormulasConceptos.buscarFormulasConceptos();
             return formulas;
@@ -480,9 +540,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return null;
         }
     }
-    ///////////FormulasConceptos////////////FormulasConceptos/////////////////FormulasConceptos///////
-
-    ///////////Conceptos////////////Conceptos/////////////////Conceptos///////
+    
     @Override
     public Conceptos conceptoActual(BigInteger secuencia) {
         try {
@@ -494,6 +552,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
         }
     }
 
+    @Override
     public boolean eliminarConcepto(BigInteger secuencia) {
         try {
             return persistenciaConceptos.eliminarConcepto(secuencia);
@@ -502,9 +561,8 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return false;
         }
     }
-    ///////////Conceptos////////////Conceptos/////////////////Conceptos///////
-    /////////SolucionesNodos////////////////////SolucionesNodos///////////
-
+    
+    @Override
     public boolean verificarSolucionesNodosParaConcepto(BigInteger secuencia) {
         try {
             boolean retorno = persistenciaSolucionesNodos.solucionesNodosParaConcepto(secuencia);
@@ -514,5 +572,4 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
             return false;
         }
     }
-
 }

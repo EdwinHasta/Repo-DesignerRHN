@@ -2565,7 +2565,7 @@ public class ControlDetalleConcepto implements Serializable {
             listVigenciasCuentasCrear.clear();
         }
         if (!listVigenciasCuentasModificar.isEmpty()) {
-            administrarDetalleConcepto.editarVigenciasCuentas(listVigenciasCuentasModificar);
+            administrarDetalleConcepto.modificarVigenciasCuentas(listVigenciasCuentasModificar);
             listVigenciasCuentasModificar.clear();
         }
         listVigenciasCuentasConcepto = null;
@@ -2590,7 +2590,7 @@ public class ControlDetalleConcepto implements Serializable {
             listVigenciasGruposConceptosCrear.clear();
         }
         if (!listVigenciasGruposConceptosModificar.isEmpty()) {
-            administrarDetalleConcepto.editarVigenciasGruposConceptos(listVigenciasGruposConceptosModificar);
+            administrarDetalleConcepto.modificarVigenciasGruposConceptos(listVigenciasGruposConceptosModificar);
             listVigenciasGruposConceptosModificar.clear();
         }
         listVigenciasCuentasConcepto = null;
@@ -2615,7 +2615,7 @@ public class ControlDetalleConcepto implements Serializable {
             listVigenciasConceptosTTCrear.clear();
         }
         if (!listVigenciasConceptosTTModificar.isEmpty()) {
-            administrarDetalleConcepto.editarVigenciasConceptosTT(listVigenciasConceptosTTModificar);
+            administrarDetalleConcepto.modificarVigenciasConceptosTT(listVigenciasConceptosTTModificar);
             listVigenciasConceptosTTModificar.clear();
         }
         listVigenciasConceptosTTConcepto = null;
@@ -2640,7 +2640,7 @@ public class ControlDetalleConcepto implements Serializable {
             listVigenciasConceptosTCCrear.clear();
         }
         if (!listVigenciasConceptosTCModificar.isEmpty()) {
-            administrarDetalleConcepto.editarVigenciasConceptosTC(listVigenciasConceptosTCModificar);
+            administrarDetalleConcepto.modificarVigenciasConceptosTC(listVigenciasConceptosTCModificar);
             listVigenciasConceptosTCModificar.clear();
         }
         listVigenciasConceptosTCConcepto = null;
@@ -2665,7 +2665,7 @@ public class ControlDetalleConcepto implements Serializable {
             listVigenciasConceptosRLCrear.clear();
         }
         if (!listVigenciasConceptosRLModificar.isEmpty()) {
-            administrarDetalleConcepto.editarVigenciasConceptosRL(listVigenciasConceptosRLModificar);
+            administrarDetalleConcepto.modificarVigenciasConceptosRL(listVigenciasConceptosRLModificar);
             listVigenciasConceptosRLModificar.clear();
         }
         listVigenciasConceptosRLConcepto = null;
@@ -2690,7 +2690,7 @@ public class ControlDetalleConcepto implements Serializable {
             listFormulasConceptosCrear.clear();
         }
         if (!listFormulasConceptosModificar.isEmpty()) {
-            administrarDetalleConcepto.editarFormulasConceptos(listFormulasConceptosModificar);
+            administrarDetalleConcepto.modificarFormulasConceptos(listFormulasConceptosModificar);
             listFormulasConceptosModificar.clear();
         }
         listFormulasConceptosConcepto = null;
@@ -6264,7 +6264,7 @@ public class ControlDetalleConcepto implements Serializable {
         try {
             if (listVigenciasCuentasConcepto == null) {
                 listVigenciasCuentasConcepto = new ArrayList<VigenciasCuentas>();
-                listVigenciasCuentasConcepto = administrarDetalleConcepto.listVigenciasCuentasConcepto(conceptoActual.getSecuencia());
+                listVigenciasCuentasConcepto = administrarDetalleConcepto.listaVigenciasCuentasConcepto(conceptoActual.getSecuencia());
             }
             return listVigenciasCuentasConcepto;
         } catch (Exception e) {
@@ -6423,7 +6423,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<TiposCentrosCostos> getListTiposCentrosCostos() {
         if (listTiposCentrosCostos == null) {
-            listTiposCentrosCostos = administrarDetalleConcepto.listTiposCentrosCostos();
+            listTiposCentrosCostos = administrarDetalleConcepto.listaTiposCentrosCostos();
 
         }
         return listTiposCentrosCostos;
@@ -6451,7 +6451,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<Cuentas> getListCuentas() {
         if (listCuentas == null) {
-            listCuentas = administrarDetalleConcepto.listCuentas();
+            listCuentas = administrarDetalleConcepto.listaCuentas();
         }
         return listCuentas;
     }
@@ -6478,7 +6478,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<CentrosCostos> getListCentrosCostos() {
         if (listCentrosCostos == null) {
-            listCentrosCostos = administrarDetalleConcepto.listCentrosCostos();
+            listCentrosCostos = administrarDetalleConcepto.listaCentrosCostos();
         }
         return listCentrosCostos;
     }
@@ -6531,7 +6531,7 @@ public class ControlDetalleConcepto implements Serializable {
         try {
             if (listVigenciasGruposConceptosConcepto == null) {
                 listVigenciasGruposConceptosConcepto = new ArrayList<VigenciasGruposConceptos>();
-                listVigenciasGruposConceptosConcepto = administrarDetalleConcepto.listVigenciasGruposConceptosConcepto(conceptoActual.getSecuencia());
+                listVigenciasGruposConceptosConcepto = administrarDetalleConcepto.listaVigenciasGruposConceptosConcepto(conceptoActual.getSecuencia());
             }
             return listVigenciasGruposConceptosConcepto;
         } catch (Exception e) {
@@ -6619,7 +6619,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<GruposConceptos> getListGruposConceptos() {
         if (listGruposConceptos == null) {
-            listGruposConceptos = administrarDetalleConcepto.listGruposConceptos();
+            listGruposConceptos = administrarDetalleConcepto.listaGruposConceptos();
 
         }
         return listGruposConceptos;
@@ -6649,7 +6649,7 @@ public class ControlDetalleConcepto implements Serializable {
         try {
             if (listVigenciasConceptosTTConcepto == null) {
                 listVigenciasConceptosTTConcepto = new ArrayList<VigenciasConceptosTT>();
-                listVigenciasConceptosTTConcepto = administrarDetalleConcepto.listVigenciasConceptosTTConcepto(conceptoActual.getSecuencia());
+                listVigenciasConceptosTTConcepto = administrarDetalleConcepto.listaVigenciasConceptosTTConcepto(conceptoActual.getSecuencia());
             }
             return listVigenciasConceptosTTConcepto;
         } catch (Exception e) {
@@ -6674,7 +6674,7 @@ public class ControlDetalleConcepto implements Serializable {
         try {
             if (listVigenciasConceptosTCConcepto == null) {
                 listVigenciasConceptosTCConcepto = new ArrayList<VigenciasConceptosTC>();
-                listVigenciasConceptosTCConcepto = administrarDetalleConcepto.listVigenciasConceptosTCConcepto(conceptoActual.getSecuencia());
+                listVigenciasConceptosTCConcepto = administrarDetalleConcepto.listaVigenciasConceptosTCConcepto(conceptoActual.getSecuencia());
             }
             return listVigenciasConceptosTCConcepto;
         } catch (Exception e) {
@@ -6700,7 +6700,7 @@ public class ControlDetalleConcepto implements Serializable {
 
             if (listVigenciasConceptosRLConcepto == null) {
                 listVigenciasConceptosRLConcepto = new ArrayList<VigenciasConceptosRL>();
-                listVigenciasConceptosRLConcepto = administrarDetalleConcepto.listVigenciasConceptosRLCConcepto(conceptoActual.getSecuencia());
+                listVigenciasConceptosRLConcepto = administrarDetalleConcepto.listaVigenciasConceptosRLCConcepto(conceptoActual.getSecuencia());
             }
             return listVigenciasConceptosRLConcepto;
         } catch (Exception e) {
@@ -6724,7 +6724,7 @@ public class ControlDetalleConcepto implements Serializable {
         try {
             if (listFormulasConceptosConcepto == null) {
                 listFormulasConceptosConcepto = new ArrayList<FormulasConceptos>();
-                listFormulasConceptosConcepto = administrarDetalleConcepto.listFormulasConceptosConcepto(conceptoActual.getSecuencia());
+                listFormulasConceptosConcepto = administrarDetalleConcepto.listaFormulasConceptosConcepto(conceptoActual.getSecuencia());
             }
             return listFormulasConceptosConcepto;
         } catch (Exception e) {
@@ -6811,7 +6811,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<TiposTrabajadores> getListTiposTrabajadores() {
         try {
             if (listTiposTrabajadores == null) {
-                listTiposTrabajadores = administrarDetalleConcepto.listTiposTrabajadores();
+                listTiposTrabajadores = administrarDetalleConcepto.listaTiposTrabajadores();
             }
             return listTiposTrabajadores;
         } catch (Exception e) {
@@ -6906,7 +6906,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<TiposContratos> getListTiposContratos() {
         if (listTiposContratos == null) {
-            listTiposContratos = administrarDetalleConcepto.listTiposContratos();
+            listTiposContratos = administrarDetalleConcepto.listaTiposContratos();
         }
         return listTiposContratos;
     }
@@ -6998,7 +6998,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<ReformasLaborales> getListReformasLaborales() {
         try {
             if (listReformasLaborales == null) {
-                listReformasLaborales = administrarDetalleConcepto.listReformasLaborales();
+                listReformasLaborales = administrarDetalleConcepto.listaReformasLaborales();
             }
             return listReformasLaborales;
         } catch (Exception e) {
@@ -7094,7 +7094,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<Formulas> getListFormulas() {
         try {
             if (listFormulas == null) {
-                listFormulas = administrarDetalleConcepto.listFormulas();
+                listFormulas = administrarDetalleConcepto.listaFormulas();
             }
             return listFormulas;
         } catch (Exception e) {
@@ -7126,7 +7126,7 @@ public class ControlDetalleConcepto implements Serializable {
     public List<FormulasConceptos> getListFormulasConceptos() {
         try {
             if (listFormulasConceptos == null) {
-                listFormulasConceptos = administrarDetalleConcepto.listFormulasConceptos();
+                listFormulasConceptos = administrarDetalleConcepto.listaFormulasConceptos();
             }
             return listFormulasConceptos;
         } catch (Exception e) {
