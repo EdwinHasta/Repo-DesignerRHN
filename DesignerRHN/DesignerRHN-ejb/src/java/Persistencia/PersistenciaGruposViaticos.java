@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Persistencia;
 
 import Entidades.GruposViaticos;
@@ -22,24 +21,28 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInterface {
 
-      /**
+    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
+
+    @Override
     public void crear(GruposViaticos gruposViaticos) {
         em.persist(gruposViaticos);
     }
 
+    @Override
     public void editar(GruposViaticos gruposViaticos) {
         em.merge(gruposViaticos);
     }
 
+    @Override
     public void borrar(GruposViaticos gruposViaticos) {
         em.remove(em.merge(gruposViaticos));
     }
 
+    @Override
     public GruposViaticos buscarGrupoViatico(BigInteger secuenciaGV) {
         try {
             return em.find(GruposViaticos.class, secuenciaGV);
@@ -48,6 +51,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
         }
     }
 
+    @Override
     public List<GruposViaticos> buscarGruposViaticos() {
         Query query = em.createQuery("SELECT ec FROM GruposViaticos ec  ORDER BY ec.codigo ASC");
         List<GruposViaticos> listGruposViaticos = query.getResultList();
@@ -55,13 +59,14 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
 
     }
 
+    @Override
     public BigInteger contadorCargos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM cargos WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = new BigInteger (query.getSingleResult().toString());
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador contadorCargos persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -70,13 +75,14 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
         }
     }
 
+    @Override
     public BigInteger contadorPlantas(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM plantas WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = new BigInteger (query.getSingleResult().toString());
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("persistenciaGruposViativos contardorPlantas Contador " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -85,13 +91,14 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
         }
     }
 
+    @Override
     public BigInteger contadorTablasViaticos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM tablasviaticos  WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = new BigInteger (query.getSingleResult().toString());
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("persistenciaGruposViativos  contadorTablasViaticos Contador " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -100,13 +107,14 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
         }
     }
 
-    public BigInteger contadorEersviaticos(BigInteger secuencia) {
+    @Override
+    public BigInteger contadorEersViaticos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM eersviaticos WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = new BigInteger (query.getSingleResult().toString());
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("persistenciaGruposViativos contadorEersviaticos Contador :" + retorno);
             return retorno;
         } catch (Exception e) {

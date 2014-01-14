@@ -48,14 +48,14 @@ public interface PersistenciaCentrosCostosInterface {
     public List<CentrosCostos> buscarCentrosCostos();
 
     /**
-     * Método encargado de buscar el CentroCosto con la secuencia dada por
+     * Método encargado de buscar el CentroCosto con la secCentroCosto dada por
      * parámetro.
      *
-     * @param secuencia Secuencia del CentroCosto que se quiere encontrar.
-     * @return Retorna el CentroCosto identificado con la secuencia dada por
-     * parámetro.
+     * @param secCentroCosto Secuencia del CentroCosto que se quiere encontrar.
+     * @return Retorna el CentroCosto identificado con la secCentroCosto dada
+     * por parámetro.
      */
-    public CentrosCostos buscarCentroCostoSecuencia(BigInteger secuencia);
+    public CentrosCostos buscarCentroCostoSecuencia(BigInteger secCentroCosto);
 
     /**
      * Método encargado de buscar los CentroCosto de una empresa específica.
@@ -63,63 +63,288 @@ public interface PersistenciaCentrosCostosInterface {
      * @param secEmpresa Identificador único de la empresa a la cual pertenecen
      * los centrosCostos.
      * @return Retorna una lista de CentrosCostos que pertenecen a la empresa
-     * con secuencia igual a la pasada por parametro.
+     * con secCentroCosto igual a la pasada por parametro.
      */
     public List<CentrosCostos> buscarCentrosCostosEmpr(BigInteger secEmpresa);
 
     /**
-     * Método encargado de
+     * Método encargado de contar la cantidad de datos en la tabla EMPRESAS
      *
      * @param secEmpresa
-     * @return
+     * @return Retonar el numero de empresas
      */
     public long contadorSecuenciaEmpresa(BigInteger secEmpresa);
 
-    public BigInteger contadorComprobantesContables(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún Comprobante Contable. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de Comprobantes Contables relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorComprobantesContables(BigInteger secCentroCosto);
 
-    public BigInteger contadorDetallesCCConsolidador(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún DetalleCCConsolidador. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de DetalleCCConsolidador relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorDetallesCCConsolidador(BigInteger secCentroCosto);
 
-    public BigInteger contadorDetallesCCDetalle(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún DetallesCCDetalle. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de DetallesCCDetalle relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorDetallesCCDetalle(BigInteger secCentroCosto);
 
-    public BigInteger contadorEmpresas(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún Empresas. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de Empresas relacionados con el CentroCosto
+     * cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorEmpresas(BigInteger secCentroCosto);
 
-    public BigInteger contadorEstructuras(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún Estructuras. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de Estructuras relacionados con el CentroCosto
+     * cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorEstructuras(BigInteger secCentroCosto);
 
-    public BigInteger contadorInterconCondor(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún InterconCondor. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de InterconCondor relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorInterconCondor(BigInteger secCentroCosto);
 
-    public BigInteger contadorInterconDynamics(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún InterconCondor. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de InterconCondor relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorInterconDynamics(BigInteger secCentroCosto);
 
-    public BigInteger contadorInterconGeneral(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún InterconGeneral. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de InterconGeneral relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorInterconGeneral(BigInteger secCentroCosto);
 
-    public BigInteger contadorInterconHelisa(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún InterconHelisa. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de InterconHelisa relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorInterconHelisa(BigInteger secCentroCosto);
 
-    public BigInteger contadorInterconSapbo(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún InterconSapbo. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de InterconSapbo relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorInterconSapbo(BigInteger secCentroCosto);
 
-    public BigInteger contadorInterconSiigo(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún InterconSiigo. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de InterconSiigo relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorInterconSiigo(BigInteger secCentroCosto);
 
-    public BigInteger contadorInterconTotal(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún InterconTotal. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de InterconTotal relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorInterconTotal(BigInteger secCentroCosto);
 
-    public BigInteger contadorNovedadesC(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún NovedadesC. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de NovedadesC relacionados con el CentroCosto
+     * cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorNovedadesC(BigInteger secCentroCosto);
 
-    public BigInteger contadorNovedadesD(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún NovedadesD. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de NovedadesD relacionados con el CentroCosto
+     * cuya secCentroCosto coincide con el parámetro.
+     */
 
-    public BigInteger contadorProcesosProductivos(BigInteger secuencia);
+    public BigInteger contadorNovedadesD(BigInteger secCentroCosto);
 
-    public BigInteger contadorProyecciones(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún ProcesosProductivos. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de ProcesosProductivos relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
 
-    public BigInteger contadorSolucionesNodosC(BigInteger secuencia);
+    public BigInteger contadorProcesosProductivos(BigInteger secCentroCosto);
 
-    public BigInteger contadorSolucionesNodosD(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún Proyecciones. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de Proyecciones relacionados con el CentroCosto
+     * cuya secCentroCosto coincide con el parámetro.
+     */
 
-    public BigInteger contadorSoPanoramas(BigInteger secuencia);
+    public BigInteger contadorProyecciones(BigInteger secCentroCosto);
 
-    public BigInteger contadorTerceros(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún SolucionesNodosC. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de SolucionesNodosC relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorSolucionesNodosC(BigInteger secCentroCosto);
 
-    public BigInteger contadorUnidadesRegistradas(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún SolucionesNodosD. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de SolucionesNodosD relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+    public BigInteger contadorSolucionesNodosD(BigInteger secCentroCosto);
 
-    public BigInteger contadorVigenciasCuentasC(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún SoPanoramas. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de SoPanoramas relacionados con el CentroCosto
+     * cuya secCentroCosto coincide con el parámetro.
+     */
 
-    public BigInteger contadorVigenciasCuentasD(BigInteger secuencia);
+    public BigInteger contadorSoPanoramas(BigInteger secCentroCosto);
 
-    public BigInteger contadorVigenciasProrrateos(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún Terceros. además de la revisión, cuenta cuantas
+     * relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de Terceros relacionados con el CentroCosto
+     * cuya secCentroCosto coincide con el parámetro.
+     */
+
+    public BigInteger contadorTerceros(BigInteger secCentroCosto);
+
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún UnidadesRegistradas. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de UnidadesRegistradas relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+
+    public BigInteger contadorUnidadesRegistradas(BigInteger secCentroCosto);
+
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún VigenciasCuentasC. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de VigenciasCuentasC relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+
+    public BigInteger contadorVigenciasCuentasC(BigInteger secCentroCosto);
+
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún VigenciasCuentasD. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de VigenciasCuentasD relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+
+    public BigInteger contadorVigenciasCuentasD(BigInteger secCentroCosto);
+
+    /**
+     * Método encargado de revisar si existe una relación entre un CentroCosto
+     * específica y algún VigenciasProrrateos. además de la revisión, cuenta
+     * cuantas relaciónes existen.
+     *
+     * @param secCentroCosto Secuencia del CentroCosto.
+     * @return Retorna el número de VigenciasProrrateos relacionados con el
+     * CentroCosto cuya secCentroCosto coincide con el parámetro.
+     */
+
+    public BigInteger contadorVigenciasProrrateos(BigInteger secCentroCosto);
 }

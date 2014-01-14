@@ -41,14 +41,15 @@ public interface PersistenciaGruposInfAdicionalesInterface {
     public void borrar(GruposInfAdicionales gruposInfAdicionales);
 
     /**
-     * Método encargado de buscar el GrupoInfAdicional con la secuencia dada por
-     * parámetro.
+     * Método encargado de buscar el GrupoInfAdicional con la
+     * secGruposInfAdicionales dada por parámetro.
      *
-     * @param secuencia Secuencia del GrupoInfAdicional que se quiere encontrar.
-     * @return Retorna el GrupoInfAdicional identificado con la secuencia dada
-     * por parámetro.
+     * @param secGruposInfAdicionales Secuencia del GrupoInfAdicional que se
+     * quiere encontrar.
+     * @return Retorna el GrupoInfAdicional identificado con la
+     * secGruposInfAdicionales dada por parámetro.
      */
-    public GruposInfAdicionales buscarGrupoInfAdicional(BigInteger secuencia);
+    public GruposInfAdicionales buscarGrupoInfAdicional(BigInteger secGruposInfAdicionales);
 
     /**
      * Método encargado de buscar todos los GruposInfAdicionales existentes en
@@ -58,5 +59,14 @@ public interface PersistenciaGruposInfAdicionalesInterface {
      */
     public List<GruposInfAdicionales> buscarGruposInfAdicionales();
 
-    public BigInteger contadorInformacionesAdicionales(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre una
+     * GruposInfAdicionales específica y algún InformeAdicional. Adémas de la
+     * revisión, cuenta cuantas relaciones existen.
+     *
+     * @param secGruposInfAdicionales Secuencia del GruposInfAdicionales.
+     * @return Retorna el número de InformacionesAdicionales relacionados con la
+     * moneda cuya secGruposInfAdicionales coincide con el parámetro.
+     */
+    public BigInteger contadorInformacionesAdicionales(BigInteger secGruposInfAdicionales);
 }

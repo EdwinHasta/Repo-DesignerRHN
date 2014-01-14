@@ -33,11 +33,11 @@ public interface PersistenciaEvalEvaluadoresInterface {
      */
     public void borrar(EvalEvaluadores evalEvaluadores);
     /**
-     * Método encargado de buscar el EvalEvaluador con la secuencia dada por parámetro.
-     * @param secuencia Identificador único del EvalEvaluador que se quiere encontrar.
-     * @return Retorna el EvalEvaluador identificada con el secuencia dada por parámetro.
+     * Método encargado de buscar el EvalEvaluador con la secEvalEvaluadores dada por parámetro.
+     * @param secEvalEvaluadores Identificador único del EvalEvaluador que se quiere encontrar.
+     * @return Retorna el EvalEvaluador identificada con el secEvalEvaluadores dada por parámetro.
      */
-    public EvalEvaluadores buscarEvalEvaluador(BigInteger secuencia);
+    public EvalEvaluadores buscarEvalEvaluador(BigInteger secEvalEvaluadores);
     /**
      * Método encargado de buscar todos los EvalEvaluadores existentes, ordenados por código, en la base de datos.
      * @return Retorna una lista de EvalEvaluadores.
@@ -45,8 +45,8 @@ public interface PersistenciaEvalEvaluadoresInterface {
     public List<EvalEvaluadores> buscarEvalEvaluadores();
     /**
      * Método encargado de contar las relaciones de un EvalEvaluador específico con una EvalPrueba.
-     * @param secuencia Secuencia del EvalEvaluador
-     * @return Retorna el número de EvalPruebas cuyo EvalEvaluador tiene como secuencia el valor dado por parámetro.
+     * @param secEvalEvaluadores Secuencia del EvalEvaluador
+     * @return Retorna el número de EvalPruebas cuyo EvalEvaluador tiene como secEvalEvaluadores el valor dado por parámetro.
      */
-    public Long verificarBorradoEvalPruebas(BigInteger secuencia);
+    public BigInteger verificarBorradoEvalPruebas(BigInteger secEvalEvaluadores);
 }

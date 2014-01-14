@@ -40,14 +40,15 @@ public interface PersistenciaEnfermedadesInterface {
     public void borrar(Enfermedades enfermedades);
 
     /**
-     * Método encargado de buscar la Enfermedad con la secuencia dada por
+     * Método encargado de buscar la Enfermedad con la secEnfermedades dada por
      * parámetro.
      *
-     * @param secuencia Secuencia de la Enfermedad que se quiere encontrar.
-     * @return Retorna la Enfermedad identificada con la secuencia dada por
-     * parámetro.
+     * @param secEnfermedades secEnfermedades de la Enfermedad que se quiere
+     * encontrar.
+     * @return Retorna la Enfermedad identificada con la secEnfermedades dada
+     * por parámetro.
      */
-    public Enfermedades buscarEnfermedad(BigInteger secuencia);
+    public Enfermedades buscarEnfermedad(BigInteger secEnfermedades);
 
     /**
      * Método encargado de buscar todas las Enfermedades existentes en la base
@@ -57,13 +58,58 @@ public interface PersistenciaEnfermedadesInterface {
      */
     public List<Enfermedades> buscarEnfermedades();
 
-    public BigInteger contadorAusentimos(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre una Enfermedad
+     * específica y algún Proyecto. Adémas de la revisión, cuenta cuantas
+     * relaciones existen.
+     *
+     * @param secEnfermedades secEnfermedades de la Enfermedad.
+     * @return Retorna el número de Ausentimos relacionados con la Enfermedad
+     * cuya secEnfermedades coincide con el parámetro.
+     */
+    public BigInteger contadorAusentimos(BigInteger secEnfermedades);
 
-    public BigInteger contadorDetallesLicencias(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre una Enfermedad
+     * específica y algún DetallesLicencias. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEnfermedades secEnfermedades de la Enfermedad.
+     * @return Retorna el número de DetallesLicencias relacionados con la
+     * Enfermedad cuya secEnfermedades coincide con el parámetro.
+     */
+    public BigInteger contadorDetallesLicencias(BigInteger secEnfermedades);
 
-    public BigInteger contadorEnfermedadesPadecidas(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre una Enfermedad
+     * específica y algúna EnfermedadesPadecidas. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEnfermedades secEnfermedades de la Enfermedad.
+     * @return Retorna el número de EnfermedadesPadecidas relacionados con la
+     * Enfermedad cuya secEnfermedades coincide con el parámetro.
+     */
+    public BigInteger contadorEnfermedadesPadecidas(BigInteger secEnfermedades);
 
-    public BigInteger contadorSoausentismos(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre una Enfermedad
+     * específica y algún SoAusentismos. Adémas de la revisión, cuenta cuantas
+     * relaciones existen.
+     *
+     * @param secEnfermedades secEnfermedades de la Enfermedad.
+     * @return Retorna el número de SoAusentismos relacionados con la Enfermedad
+     * cuya secEnfermedades coincide con el parámetro.
+     */
+    public BigInteger contadorSoausentismos(BigInteger secEnfermedades);
 
-    public BigInteger contadorSorevisionessSistemas(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre una Enfermedad
+     * específica y algún SorevisionessSistemas. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEnfermedades secEnfermedades de la Enfermedad.
+     * @return Retorna el número de SorevisionessSistemas relacionados con la
+     * Enfermedad cuya secEnfermedades coincide con el parámetro.
+     */
+    public BigInteger contadorSorevisionessSistemas(BigInteger secEnfermedades);
 }
