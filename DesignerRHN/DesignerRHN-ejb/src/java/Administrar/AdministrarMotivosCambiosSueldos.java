@@ -24,7 +24,6 @@ public class AdministrarMotivosCambiosSueldos implements AdministrarMotivosCambi
     private MotivosCambiosSueldos motivoCambioSueldoSeleccionado;
     private MotivosCambiosSueldos motivoCambioSueldo;
     private List<MotivosCambiosSueldos> listMotivosCambiosCargos;
-    private Long verificadorVS;
 
     @Override
     public void modificarMotivosCambiosSueldos(List<MotivosCambiosSueldos> listMotivosCambiosSueldosModificadas) {
@@ -58,13 +57,14 @@ public class AdministrarMotivosCambiosSueldos implements AdministrarMotivosCambi
     }
 
     @Override
-    public Long verificarBorradoVS(BigInteger secuenciaMovitoCambioSueldo) {
+    public BigInteger verificarBorradoVS(BigInteger secuenciaMovitoCambioSueldo) {
+        BigInteger verificadorVS = null;
+
         try {
-            verificadorVS = persistenciaMotivosCambiosSueldos.verificarBorradoVigenciasSueldos(secuenciaMovitoCambioSueldo);
+            return verificadorVS = persistenciaMotivosCambiosSueldos.verificarBorradoVigenciasSueldos(secuenciaMovitoCambioSueldo);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarMotivosCambiosSueldos verificarBorradoVS ERROR :" + e);
-        } finally {
-            return verificadorVS;
+            return null;
         }
     }
 }

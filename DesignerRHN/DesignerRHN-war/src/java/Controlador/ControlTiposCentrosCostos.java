@@ -61,9 +61,9 @@ public class ControlTiposCentrosCostos implements Serializable {
     private BigInteger secRegistro;
     private Column codigo, nombre, grupoTipoCC;
     //borrado
-    private Long borradoCC;
-    private Long borradoVC;
-    private Long borradoRP;
+    private BigInteger borradoCC;
+    private BigInteger borradoVC;
+    private BigInteger borradoRP;
     private int registrosBorrados;
     private String mensajeValidacion;
 
@@ -82,6 +82,7 @@ public class ControlTiposCentrosCostos implements Serializable {
         nuevoTipoCentroCosto.setGrupotipocc(new GruposTiposCC());
         duplicarTipoCentroCosto = new TiposCentrosCostos();
         duplicarTipoCentroCosto.setGrupotipocc(new GruposTiposCC());
+        guardado = true;
 
     }
 
@@ -193,6 +194,7 @@ public class ControlTiposCentrosCostos implements Serializable {
             }
             permitirIndex = true;
             context.update("form:datosTipoEntidad");
+            context.update("form:ACEPTAR");
         } else if (tipoActualizacion == 1) {
             nuevoTipoCentroCosto.setGrupotipocc(grupoTipoCCSeleccionada);
             context.update("formularioDialogos:nuevoTipoCentroCosto");
@@ -249,6 +251,7 @@ public class ControlTiposCentrosCostos implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosTipoCentroCosto");
+        context.update("form:ACEPTAR");
     }
     //-----------------------------------------------------------------------
 
@@ -403,6 +406,7 @@ public class ControlTiposCentrosCostos implements Serializable {
             }
         }
         context.update("form:datosTipoCentroCosto");
+        context.update("form:ACEPTAR");
 
     }
     //------------------------------------------------------------------------- 
@@ -596,9 +600,8 @@ public class ControlTiposCentrosCostos implements Serializable {
 
             context.update("form:datosTipoCentroCosto");
             if (guardado == true) {
-
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("nuevoRegistroTipoCentroCosto.hide()");
             index = -1;
@@ -671,9 +674,10 @@ public class ControlTiposCentrosCostos implements Serializable {
             listTiposCentrosCostos = null;
             context.update("form:datosTipoCentroCosto");
             k = 0;
+            guardado = true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -764,7 +768,7 @@ public class ControlTiposCentrosCostos implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -856,20 +860,19 @@ public class ControlTiposCentrosCostos implements Serializable {
                 borradoVC = administrarTiposCentrosCostos.verificarBorradoVC(filtrarTiposCentrosCostos.get(index).getSecuencia());
                 borradoRP = administrarTiposCentrosCostos.verificarBorradoRP(filtrarTiposCentrosCostos.get(index).getSecuencia());
             }
-            if (borradoCC.intValue() == 0 && borradoVC.intValue() == 0 && borradoRP.intValue() == 0) {
+            if (borradoCC.equals(new BigInteger("0")) && borradoVC.equals(new BigInteger("0")) && borradoRP.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarTiposCentrosCostos();
-            }
-            if (borradoCC.intValue() != 0 || borradoVC.intValue() != 0 || borradoRP.intValue() != 0) {
+            } else {
                 System.out.println("Borrado>0");
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                borradoCC = new Long(-1);
-                borradoVC = new Long(-1);
-                borradoRP = new Long(-1);
+                borradoCC = new BigInteger("-1");
+                borradoVC = new BigInteger("-1");
+                borradoRP = new BigInteger("-1");
             }
 
         } catch (Exception e) {
@@ -919,6 +922,7 @@ public class ControlTiposCentrosCostos implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
 
@@ -1050,6 +1054,14 @@ public class ControlTiposCentrosCostos implements Serializable {
 
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
     }
 
 }

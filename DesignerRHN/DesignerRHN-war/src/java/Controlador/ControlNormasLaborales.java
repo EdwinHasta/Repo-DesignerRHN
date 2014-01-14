@@ -35,7 +35,7 @@ public class ControlNormasLaborales implements Serializable {
     AdministrarNormasLaboralesInterface administrarNormasLaborales;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<NormasLaborales> listNormasLaborales;
     private List<NormasLaborales> filtrarNormasLaborales;
     private List<NormasLaborales> crearNormaLaboral;
@@ -56,7 +56,7 @@ public class ControlNormasLaborales implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private Long borradoVC;
+    private BigInteger borradoVC;
 
     public ControlNormasLaborales() {
         listNormasLaborales = null;
@@ -67,6 +67,7 @@ public class ControlNormasLaborales implements Serializable {
         editarNormaLaboral = new NormasLaborales();
         nuevoNormaLaboral = new NormasLaborales();
         duplicarNormaLaboral = new NormasLaborales();
+        guardado = true;
     }
 
     public void eventoFiltrar() {
@@ -106,7 +107,6 @@ public class ControlNormasLaborales implements Serializable {
                 tipoActualizacion = 2;
             }
 
-
         } catch (Exception e) {
             System.out.println("ERROR ControlNormasLaborales.asignarIndex ERROR======" + e.getMessage());
         }
@@ -143,6 +143,7 @@ public class ControlNormasLaborales implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosNormaLaboral");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
@@ -230,7 +231,6 @@ public class ControlNormasLaborales implements Serializable {
                 }
             } else {
 
-
                 if (!crearNormaLaboral.contains(filtrarNormasLaborales.get(indice))) {
                     if (filtrarNormasLaborales.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -252,7 +252,6 @@ public class ControlNormasLaborales implements Serializable {
 
                     }
 
-
                     if (filtrarNormasLaborales.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -261,7 +260,6 @@ public class ControlNormasLaborales implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-
 
                     if (banderita == true) {
                         if (modificarNormaLaboral.isEmpty()) {
@@ -284,6 +282,7 @@ public class ControlNormasLaborales implements Serializable {
 
             }
             context.update("form:datosNormaLaboral");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -331,6 +330,7 @@ public class ControlNormasLaborales implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -338,19 +338,22 @@ public class ControlNormasLaborales implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         try {
-            borradoVC = administrarNormasLaborales.verificarBorradoVNE(listNormasLaborales.get(index).getSecuencia());
-            if (borradoVC.intValue() == 0) {
+            if (tipoLista == 0) {
+                borradoVC = administrarNormasLaborales.verificarBorradoVNE(listNormasLaborales.get(index).getSecuencia());
+            } else {
+                borradoVC = administrarNormasLaborales.verificarBorradoVNE(filtrarNormasLaborales.get(index).getSecuencia());
+            }
+            if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarNormasLaborales();
-            }
-            if (borradoVC.intValue() != 0) {
+            } else {
                 System.out.println("Borrado>0");
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                borradoVC = new Long(-1);
+                borradoVC = new BigInteger("-1");
             }
 
         } catch (Exception e) {
@@ -391,9 +394,10 @@ public class ControlNormasLaborales implements Serializable {
             listNormasLaborales = null;
             context.update("form:datosNormaLaboral");
             k = 0;
+            guardado = true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -492,7 +496,7 @@ public class ControlNormasLaborales implements Serializable {
             context.update("form:datosNormaLaboral");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
             context.execute("nuevoRegistroNormaLaboral.hide()");
@@ -579,7 +583,6 @@ public class ControlNormasLaborales implements Serializable {
             contador++;
         }
 
-
         if (contador == 2) {
 
             System.out.println("Datos Duplicando: " + duplicarNormaLaboral.getSecuencia() + "  " + duplicarNormaLaboral.getCodigo());
@@ -593,6 +596,7 @@ public class ControlNormasLaborales implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -638,7 +642,7 @@ public class ControlNormasLaborales implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    
+
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -671,9 +675,8 @@ public class ControlNormasLaborales implements Serializable {
         }
         index = -1;
     }
-    
-   //-------------------------------------------------------------------------- 
 
+    //-------------------------------------------------------------------------- 
     public List<NormasLaborales> getListNormasLaborales() {
         if (listNormasLaborales == null) {
             listNormasLaborales = administrarNormasLaborales.mostrarNormasLaborales();
@@ -740,5 +743,13 @@ public class ControlNormasLaborales implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }

@@ -85,8 +85,8 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     }
 
     @Override
-    public Long verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo) {
-        Long verificadorVC = null;
+    public BigInteger verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo) {
+        BigInteger verificadorVC = null;
         try {
             verificadorVC = persistenciaMotivosCambiosCargos.verificarBorradoVigenciasCargos(secuenciaMovitoCambioCargo);
         } catch (Exception e) {

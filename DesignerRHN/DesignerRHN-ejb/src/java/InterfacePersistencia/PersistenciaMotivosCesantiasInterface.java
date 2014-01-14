@@ -42,13 +42,13 @@ public interface PersistenciaMotivosCesantiasInterface {
     public void borrar(MotivosCesantias motivosCesantias);
 
     /**
-     * Método encargado de buscar la Moneda con la secuencia dada por parámetro.
+     * Método encargado de buscar la Moneda con la secMotivosCesantias dada por parámetro.
      *
-     * @param secuencia Secuencia de la Moneda que se quiere encontrar.
-     * @return Retorna la Moneda identificada con la secuencia dada por
+     * @param secMotivosCesantias Secuencia de la Moneda que se quiere encontrar.
+     * @return Retorna la Moneda identificada con la secMotivosCesantias dada por
      * parámetro.
      */
-    public MotivosCesantias buscarMotivoCensantia(BigInteger secuencia);
+    public MotivosCesantias buscarMotivoCensantia(BigInteger secMotivosCesantias);
 
     /**
      * Método encargado de buscar todas los Motivos Cesantias existentes en la
@@ -63,9 +63,9 @@ public interface PersistenciaMotivosCesantiasInterface {
      * Cesantia específica y algúna Novedad Sistema. Adémas de la revisión,
      * cuenta cuantas relaciones existen.
      *
-     * @param secuencia Secuencia del Motivo Cesantia.
+     * @param secMotivosCesantias Secuencia del Motivo Cesantia.
      * @return Retorna el número de proyectos relacionados con el Motivo
-     * Censantia cuya secuencia coincide con el parámetro.
+     * Censantia cuya secMotivosCesantias coincide con el parámetro.
      */
-    public BigInteger contadorNovedadesSistema(BigInteger secuencia);
+    public BigInteger contadorNovedadesSistema(BigInteger secMotivosCesantias);
 }

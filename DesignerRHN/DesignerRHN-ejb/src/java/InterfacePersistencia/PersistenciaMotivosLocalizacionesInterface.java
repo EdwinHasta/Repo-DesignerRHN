@@ -36,10 +36,10 @@ public interface PersistenciaMotivosLocalizacionesInterface {
      */
     public List<MotivosLocalizaciones> buscarMotivosLocalizaciones();
     /**
-     * Método encargado de buscar el MotivoLocalizacion con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del MotivoLocalizacion que se quiere encontrar.
-     * @return Retorna el MotivoLocalizacion identificado con la secuencia dada por parámetro.
+     * Método encargado de buscar el MotivoLocalizacion con la secMotivosLocalizaciones dada por parámetro.
+     * @param secMotivosLocalizaciones Secuencia del MotivoLocalizacion que se quiere encontrar.
+     * @return Retorna el MotivoLocalizacion identificado con la secMotivosLocalizaciones dada por parámetro.
      */
-    public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(BigInteger secuencia);
+    public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(BigInteger secMotivosLocalizaciones);
     
 }

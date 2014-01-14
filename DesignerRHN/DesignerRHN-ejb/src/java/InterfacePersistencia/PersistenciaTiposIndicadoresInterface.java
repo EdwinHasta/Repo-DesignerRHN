@@ -49,14 +49,14 @@ public interface PersistenciaTiposIndicadoresInterface {
     public List<TiposIndicadores> buscarTiposIndicadores();
 
     /**
-     * Método encargado de buscar el TipoIndicador con la secuencia dada por
+     * Método encargado de buscar el TipoIndicador con la secTiposIndicadores dada por
      * parámetro.
      *
-     * @param secuencia Secuencia del TipoIndicador que se quiere encontrar.
-     * @return Retorna el TipoIndicador identificado con la secuencia dada por
+     * @param secTiposIndicadores Secuencia del TipoIndicador que se quiere encontrar.
+     * @return Retorna el TipoIndicador identificado con la secTiposIndicadores dada por
      * parámetro.
      */
-    public TiposIndicadores buscarTiposIndicadoresSecuencia(BigInteger secuencia);
+    public TiposIndicadores buscarTiposIndicadoresSecuencia(BigInteger secTiposIndicadores);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoIndicador
@@ -65,7 +65,7 @@ public interface PersistenciaTiposIndicadoresInterface {
      *
      * @param secTiposIndicadores Secuencia del TipoIndicadores.
      * @return Retorna el número de proyectos relacionados con el TipoIndicador
-     * cuya secuenciaTR coincide con el parámetro.
+     * cuya secTiposIndicadoresTR coincide con el parámetro.
      */
     public BigInteger contadorVigenciasIndicadores(BigInteger secTiposIndicadores);
 }

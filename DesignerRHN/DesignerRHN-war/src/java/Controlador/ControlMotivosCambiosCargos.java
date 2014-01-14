@@ -56,7 +56,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private Long borradoVC;
 
     /**
      * Creates a new instance of ControlMotivosCambiosCargos
@@ -71,6 +70,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         editarMotivoCambioCargo = new MotivosCambiosCargos();
         nuevoMotivoCambioCargo = new MotivosCambiosCargos();
         duplicarMotivoCambioCargo = new MotivosCambiosCargos();
+        guardado = true;
     }
 
     public void eventoFiltrar() {
@@ -110,7 +110,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 tipoActualizacion = 2;
             }
 
-
         } catch (Exception e) {
             System.out.println("ERROR ControlMotiviosCambiosCargos.asignarIndex ERROR======" + e.getMessage());
         }
@@ -147,6 +146,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMotivoCambioCargo");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
@@ -234,7 +234,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 }
             } else {
 
-
                 if (!crearMotivoCambioCargo.contains(filtrarMotivosCambiosCargos.get(indice))) {
                     if (filtrarMotivosCambiosCargos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -242,7 +241,14 @@ public class ControlMotivosCambiosCargos implements Serializable {
                     } else {
                         for (int j = 0; j < listMotivosCambiosCargos.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosCambiosCargos.get(indice).getCodigo() == listMotivosCambiosCargos.get(j).getCodigo()) {
+                                if (filtrarMotivosCambiosCargos.get(indice).getCodigo() == listMotivosCambiosCargos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < filtrarMotivosCambiosCargos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarMotivosCambiosCargos.get(indice).getCodigo() == filtrarMotivosCambiosCargos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -256,7 +262,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
                     }
 
-
                     if (filtrarMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -265,7 +270,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-
 
                     if (banderita == true) {
                         if (modificarMotivoCambioCargo.isEmpty()) {
@@ -288,6 +292,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
             }
             context.update("form:datosMotivoCambioCargo");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -335,26 +340,32 @@ public class ControlMotivosCambiosCargos implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            context.update("form:ACEPTAR");
         }
 
     }
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
+        BigInteger borradoVC;
+
         try {
-            borradoVC = administrarMotivosCambiosCargos.verificarBorradoVC(listMotivosCambiosCargos.get(index).getSecuencia());
-            if (borradoVC.intValue() == 0) {
+            if (tipoLista == 0) {
+                borradoVC = administrarMotivosCambiosCargos.verificarBorradoVC(listMotivosCambiosCargos.get(index).getSecuencia());
+            } else {
+                borradoVC = administrarMotivosCambiosCargos.verificarBorradoVC(filtrarMotivosCambiosCargos.get(index).getSecuencia());
+            }
+            if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarMotivosCambiosCargos();
-            }
-            if (borradoVC.intValue() != 0) {
+            } else {
                 System.out.println("Borrado>0");
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                borradoVC = new Long(-1);
+                borradoVC = new BigInteger("-1");
             }
 
         } catch (Exception e) {
@@ -395,9 +406,10 @@ public class ControlMotivosCambiosCargos implements Serializable {
             listMotivosCambiosCargos = null;
             context.update("form:datosMotivoCambioCargo");
             k = 0;
+            guardado = true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -497,7 +509,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             context.update("form:datosMotivoCambioCargo");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             System.out.println("Despues de la bandera guardado");
 
@@ -586,7 +598,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
             contador++;
         }
 
-
         if (contador == 2) {
 
             System.out.println("Datos Duplicando: " + duplicarMotivoCambioCargo.getSecuencia() + "  " + duplicarMotivoCambioCargo.getCodigo());
@@ -600,7 +611,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -646,10 +657,8 @@ public class ControlMotivosCambiosCargos implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    
-    
-    
-     public void verificarRastro() {
+
+    public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
         if (!listMotivosCambiosCargos.isEmpty()) {
@@ -681,7 +690,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
         }
         index = -1;
     }
-    
 
     //--------------------------------------------------------------------------
     public List<MotivosCambiosCargos> getListMotivosCambiosCargos() {
@@ -742,6 +750,13 @@ public class ControlMotivosCambiosCargos implements Serializable {
     public void setDuplicarMotivoCambioCargo(MotivosCambiosCargos duplicarMotivoCambioCargo) {
         this.duplicarMotivoCambioCargo = duplicarMotivoCambioCargo;
     }
-    
-    
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }

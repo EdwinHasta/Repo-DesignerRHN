@@ -44,13 +44,8 @@ public class TiposEntidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @JoinColumn(name = "RUBROPRESUPUESTAL", referencedColumnName = "SECUENCIA")

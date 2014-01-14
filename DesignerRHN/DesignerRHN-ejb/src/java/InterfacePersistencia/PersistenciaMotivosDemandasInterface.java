@@ -42,9 +42,10 @@ public interface PersistenciaMotivosDemandasInterface {
 
     /**
      * Método encargado de buscar todos los MotivosDemandas existentes en la
-     * base de datos, ordenados por secuencia.
+     * base de datos, ordenados por secMotivosDemandas.
      *
-     * @return Retorna una lista de MotivosDemandas ordenados por secuencia.
+     * @return Retorna una lista de MotivosDemandas ordenados por
+     * secMotivosDemandas.
      */
     public List<MotivosDemandas> buscarMotivosDemandas();
 
@@ -53,11 +54,20 @@ public interface PersistenciaMotivosDemandasInterface {
      * específica y algúna Demanda. Adémas de la revisión, cuenta cuantas
      * relaciones existen.
      *
-     * @param secuencia Secuencia del Motivo Demanda.
+     * @param secMotivosDemandas Secuencia del Motivo Demanda.
      * @return Retorna el número de Demandas relacionados con el Motivo Demanda
-     * cuya secuencia coincide con el parámetro.
+     * cuya secMotivosDemandas coincide con el parámetro.
      */
-    public BigInteger contadorDemandas(BigInteger secuencia);
+    public BigInteger contadorDemandas(BigInteger secMotivosDemandas);
 
-    public MotivosDemandas buscarMotivoDemanda(BigInteger secuenciaE);
+    /**
+     * Método encargado de buscar el MotivoDemanda con la secMotivosDemandas
+     * dada por parámetro.
+     *
+     * @param secMotivosDemandas Secuencia del MotivoDemandas que se quiere
+     * encontrar.
+     * @return Retorna el MotivoDemanda identificado con la secMotivosDemandas
+     * dada por parámetro.
+     */
+    public MotivosDemandas buscarMotivoDemanda(BigInteger secMotivosDemandas);
 }

@@ -24,7 +24,6 @@ public class AdministrarNormasLaborales implements AdministrarNormasLaboralesInt
     private NormasLaborales NormaLaboralSeleccionada;
     private NormasLaborales motivoCambioCargo;
     private List<NormasLaborales> listMotivosCambiosCargos;
-    private Long verificadorVNE;
 
     @Override
     public void modificarNormasLaborales(List<NormasLaborales> listNormasLaboralesModificadas) {
@@ -58,13 +57,14 @@ public class AdministrarNormasLaborales implements AdministrarNormasLaboralesInt
     }
 
     @Override
-    public Long verificarBorradoVNE(BigInteger secuenciaNormasLaborales) {
+    public BigInteger verificarBorradoVNE(BigInteger secuenciaNormasLaborales) {
+        BigInteger verificadorVNE = null;
+
         try {
-            verificadorVNE = persistenciaNormasLaborales.verificarBorradoNormasLaborales(secuenciaNormasLaborales);
+            return verificadorVNE = persistenciaNormasLaborales.verificarBorradoNormasLaborales(secuenciaNormasLaborales);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarNormasLaborales verificarBorradoVNE ERROR :" + e);
-        } finally {
-            return verificadorVNE;
+            return null;
         }
     }
 }

@@ -32,11 +32,11 @@ public interface PersistenciaTiposChequeosInterface {
      */
     public void borrar(TiposChequeos tiposChequeos);
     /**
-     * Método encargado de buscar el TipoChequeo con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del TipoChequeo que se quiere encontrar.
-     * @return Retorna el TipoChequeo identificada con la secuencia dada por parámetro.
+     * Método encargado de buscar el TipoChequeo con la secTiposChequeos dada por parámetro.
+     * @param secTiposChequeos Secuencia del TipoChequeo que se quiere encontrar.
+     * @return Retorna el TipoChequeo identificada con la secTiposChequeos dada por parámetro.
      */
-    public TiposChequeos buscarTipoChequeo(BigInteger secuencia);
+    public TiposChequeos buscarTipoChequeo(BigInteger secTiposChequeos);
     /**
      * Método encargado de buscar todos los TiposChequeos existentes en la base de datos, ordenadas por código.
      * @return Retorna una lista de TiposChequeos.
@@ -44,16 +44,16 @@ public interface PersistenciaTiposChequeosInterface {
     public List<TiposChequeos> buscarTiposChequeos();
     /**
      * Método encargado de recuperar cuantos ChequeosMedicos están asociados a un TipoChequeo específico.
-     * @param secuencia Secuencia de TipoChequeo.
-     * @return Retorna el número de ChequeosMedicos cuyo atributo 'TipoChequeo' tiene como secuencia el 
+     * @param secTiposChequeos Secuencia de TipoChequeo.
+     * @return Retorna el número de ChequeosMedicos cuyo atributo 'TipoChequeo' tiene como secTiposChequeos el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorChequeosMedicos(BigInteger secuencia);
+    public BigInteger contadorChequeosMedicos(BigInteger secTiposChequeos);
     /**
      * Método encargado de recuperar cuantos TiposExamenesCargos están asociados a un TipoChequeo específico.
-     * @param secuencia Secuencia de TipoChequeo.
-     * @return Retorna el número de TiposExamenesCargos cuyo atributo 'TipoChequeo' tiene como secuencia el 
+     * @param secTiposChequeos Secuencia de TipoChequeo.
+     * @return Retorna el número de TiposExamenesCargos cuyo atributo 'TipoChequeo' tiene como secTiposChequeos el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorTiposExamenesCargos(BigInteger secuencia);
+    public BigInteger contadorTiposExamenesCargos(BigInteger secTiposChequeos);
 }

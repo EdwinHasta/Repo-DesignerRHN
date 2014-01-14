@@ -36,27 +36,27 @@ public interface PersistenciaTiposEntidadesInterface {
      */
     public List<TiposEntidades> buscarTiposEntidades();
     /**
-     * Método encargado de buscar el TipoEntidad con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del TipoEntidad que se quiere encontrar.
-     * @return Retorna el TipoEntidad identificado con la secuencia dada por parámetro.
+     * Método encargado de buscar el TipoEntidad con la secTipoEntidad dada por parámetro.
+     * @param secTipoEntidad Secuencia del TipoEntidad que se quiere encontrar.
+     * @return Retorna el TipoEntidad identificado con la secTipoEntidad dada por parámetro.
      */
-    public TiposEntidades buscarTiposEntidadesSecuencia(BigInteger secuencia);
+    public TiposEntidades buscarTiposEntidadesSecuencia(BigInteger secTipoEntidad);
     /**
-     * Método encargado de verificar si existe un TipoEntidad cuya secuencia coincide con la dada por parámetro
+     * Método encargado de verificar si existe un TipoEntidad cuya secTipoEntidad coincide con la dada por parámetro
      * y esta asociada con alguna VigenciaAfiliacion.
      * @param secTipoEntidad Secuencia del TipoEntidad.
      * @return Retorna el numero de VigenciasAfiliaciones que tienen asociadas el TipoEntidad.
      * Si no encuentra ningún dato, retorna null.
      */
-    public Long verificarBorrado(BigInteger secTipoEntidad);
+    public BigInteger verificarBorrado(BigInteger secTipoEntidad);
     /**
-     * Método encargado de verificar si existe un TipoEntidad cuya secuencia coincide con la dada por parámetro
+     * Método encargado de verificar si existe un TipoEntidad cuya secTipoEntidad coincide con la dada por parámetro
      * y esta asociada con alguna FormulaContratoEntidad.
      * @param secTipoEntidad Secuencia del TipoEntidad.
      * @return Retorna el numero de FormulasContratosEntidades que tienen asociadas el TipoEntidad.
      * Si no encuentra ningún dato, retorna null.
      */
-    public Long verificarBorradoFCE(BigInteger secTipoEntidad);
+    public BigInteger verificarBorradoFCE(BigInteger secTipoEntidad);
     /**
      * Método encargado de buscar todos los TiposEntidades, si y solo si existe un GrupoTipoEntidad con código entre 1 y 8
      * asociado a uno de los TiposEntidades.

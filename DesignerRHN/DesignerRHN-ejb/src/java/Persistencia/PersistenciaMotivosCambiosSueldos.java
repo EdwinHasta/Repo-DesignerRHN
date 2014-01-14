@@ -81,12 +81,12 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     }
 
     @Override
-    public Long verificarBorradoVigenciasSueldos(BigInteger secuencia) {
-        Long retorno = new Long(-1);
+    public BigInteger verificarBorradoVigenciasSueldos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vs) FROM VigenciasSueldos vs WHERE vs.motivocambiosueldo.secuencia =:secMotivosCambiosSueldos ");
             query.setParameter("secMotivosCambiosSueldos", secuencia);
-            retorno = (Long) query.getSingleResult();
+            retorno = new BigInteger (query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosCambiosSueldos retorno ==" + retorno.intValue());
         } catch (Exception e) {
             System.err.println("ERROR EN PersistenciaMotivosCambiosSueldos verificarBorradoVigenciasSueldos ERROR :" + e);
