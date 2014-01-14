@@ -386,10 +386,7 @@ public class ControlDeportes implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Deportes");
             if (!borrarDeportes.isEmpty()) {
-                for (int i = 0; i < borrarDeportes.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarDeportes.borrarDeportes(borrarDeportes.get(i));
-                }
+                administrarDeportes.borrarDeportes(borrarDeportes);
                 //mostrarBorrados
                 registrosBorrados = borrarDeportes.size();
                 context.update("form:mostrarBorrados");
@@ -397,12 +394,7 @@ public class ControlDeportes implements Serializable {
                 borrarDeportes.clear();
             }
             if (!crearDeportes.isEmpty()) {
-                for (int i = 0; i < crearDeportes.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarDeportes.crearDeportes(crearDeportes.get(i));
-
-                }
+                administrarDeportes.crearDeportes(crearDeportes);
                 crearDeportes.clear();
             }
             if (!modificarDeportes.isEmpty()) {
