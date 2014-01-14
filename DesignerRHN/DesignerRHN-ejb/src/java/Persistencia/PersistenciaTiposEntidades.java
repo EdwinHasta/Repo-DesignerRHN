@@ -14,12 +14,14 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'TiposEntidades'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposEntidades' de la
+ * base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -51,7 +53,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaTiposEntidades");
         }
-    }   
+    }
 
     @Override
     public List<TiposEntidades> buscarTiposEntidades() {
@@ -80,13 +82,12 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public Long verificarBorrado(BigInteger secTipoEntidad) {
+    public BigInteger verificarBorrado(BigInteger secTipoEntidad) {
         try {
-            Long conteo;
+            BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(va) FROM VigenciasAfiliaciones va WHERE va.tipoentidad.secuencia = :secuencia");
             query.setParameter("secuencia", secTipoEntidad);
-            conteo = (Long) query.getSingleResult();
-            return conteo;
+            return retorno = new BigInteger(query.getSingleResult().toString());
         } catch (Exception e) {
             System.err.println("Error PersistenciaTiposEntidades.verificarBorrado.");
             System.err.println("Exception: " + e);
@@ -95,13 +96,12 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public Long verificarBorradoFCE(BigInteger secTipoEntidad) {
+    public BigInteger verificarBorradoFCE(BigInteger secTipoEntidad) {
         try {
-            Long conteo;
+            BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(fce) FROM FormulasContratosEntidades fce WHERE fce.tipoentidad.secuencia = :secuencia");
             query.setParameter("secuencia", secTipoEntidad);
-            conteo = (Long) query.getSingleResult();
-            return conteo;
+            return retorno = new BigInteger(query.getSingleResult().toString());
         } catch (Exception e) {
             System.err.println("Error PersistenciaTiposEntidades.verificarBorradoFCE.");
             System.err.println("Exception: " + e);
@@ -116,7 +116,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
             List<TiposEntidades> tiposEntidades = (List<TiposEntidades>) query.getResultList();
             return tiposEntidades;
         } catch (Exception e) {
-            System.out.println("Error buscarTiposEntidadesIBCS PersistenciaTiposEntidades : "+e.toString());
+            System.out.println("Error buscarTiposEntidadesIBCS PersistenciaTiposEntidades : " + e.toString());
             List<TiposEntidades> tiposEntidades = null;
             return tiposEntidades;
         }

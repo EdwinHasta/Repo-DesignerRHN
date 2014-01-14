@@ -55,7 +55,7 @@ public class ControlMotivosContratos implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private Long borradoVC;
+    private BigInteger borradoVC;
 
     public ControlMotivosContratos() {
 
@@ -67,6 +67,7 @@ public class ControlMotivosContratos implements Serializable {
         editarMotivoContrato = new MotivosContratos();
         nuevoMotivoContrato = new MotivosContratos();
         duplicarMotivoContrato = new MotivosContratos();
+        guardado=true;
     }
 
     public void eventoFiltrar() {
@@ -106,7 +107,6 @@ public class ControlMotivosContratos implements Serializable {
                 tipoActualizacion = 2;
             }
 
-
         } catch (Exception e) {
             System.out.println("ERROR ControlMotiviosCambiosCargos.asignarIndex ERROR======" + e.getMessage());
         }
@@ -143,6 +143,7 @@ public class ControlMotivosContratos implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMotivoContrato");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
@@ -230,7 +231,6 @@ public class ControlMotivosContratos implements Serializable {
                 }
             } else {
 
-
                 if (!crearMotivoContratos.contains(filtrarMotivosContratos.get(indice))) {
                     if (filtrarMotivosContratos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -252,7 +252,6 @@ public class ControlMotivosContratos implements Serializable {
 
                     }
 
-
                     if (filtrarMotivosContratos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -261,7 +260,6 @@ public class ControlMotivosContratos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-
 
                     if (banderita == true) {
                         if (modificarMotivoContrato.isEmpty()) {
@@ -284,6 +282,7 @@ public class ControlMotivosContratos implements Serializable {
 
             }
             context.update("form:datosMotivoContrato");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -331,6 +330,7 @@ public class ControlMotivosContratos implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -338,19 +338,21 @@ public class ControlMotivosContratos implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         try {
-            borradoVC = administrarMotivosContratos.verificarBorradoVC(listMotivosContratos.get(index).getSecuencia());
-            if (borradoVC.intValue() == 0) {
+            if (tipoLista == 0) {
+                borradoVC = administrarMotivosContratos.verificarBorradoVC(listMotivosContratos.get(index).getSecuencia());
+            } else {
+                borradoVC = administrarMotivosContratos.verificarBorradoVC(filtrarMotivosContratos.get(index).getSecuencia());
+            }
+            if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarMotivosContratos();
-            }
-            if (borradoVC.intValue() != 0) {
+            } else {
                 System.out.println("Borrado>0");
-
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                borradoVC = new Long(-1);
+                borradoVC = new BigInteger("-1");
             }
 
         } catch (Exception e) {
@@ -391,9 +393,11 @@ public class ControlMotivosContratos implements Serializable {
             listMotivosContratos = null;
             context.update("form:datosMotivoContrato");
             k = 0;
+       guardado=true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -493,7 +497,7 @@ public class ControlMotivosContratos implements Serializable {
             context.update("form:datosMotivoContrato");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             System.out.println("Despues de la bandera guardado");
 
@@ -582,7 +586,6 @@ public class ControlMotivosContratos implements Serializable {
             contador++;
         }
 
-
         if (contador == 2) {
 
             System.out.println("Datos Duplicando: " + duplicarMotivoContrato.getSecuencia() + "  " + duplicarMotivoContrato.getCodigo());
@@ -596,7 +599,7 @@ public class ControlMotivosContratos implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -743,4 +746,13 @@ public class ControlMotivosContratos implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+    
 }

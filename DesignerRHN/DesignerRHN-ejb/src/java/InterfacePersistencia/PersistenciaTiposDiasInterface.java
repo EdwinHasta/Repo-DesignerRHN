@@ -40,14 +40,14 @@ public interface PersistenciaTiposDiasInterface {
     public void borrar(TiposDias tiposDias);
 
     /**
-     * Método encargado de buscar el TipoDia con la secuencia dada por
+     * Método encargado de buscar el TipoDia con la secTiposDias dada por
      * parámetro.
      *
-     * @param secuencia Secuencia del TipoDia que se quiere encontrar.
-     * @return Retorna el TipoDia identificado con la secuencia dada por
+     * @param secTiposDias Secuencia del TipoDia que se quiere encontrar.
+     * @return Retorna el TipoDia identificado con la secTiposDias dada por
      * parámetro.
      */
-    public TiposDias buscarTipoDia(BigInteger secuencia);
+    public TiposDias buscarTipoDia(BigInteger secTiposDias);
 
     /**
      * Método encargado de buscar todos los TiposDias existentes en la base de
@@ -62,20 +62,20 @@ public interface PersistenciaTiposDiasInterface {
      * definido y algun DiasLaborales. Ademas de la revision, cuenta cuantas
      * relaciones existen.
      *
-     * @param secuencia Secuencia del TiposDias.
-     * @return Retorna el número de relaciones entre el TiposDias cuya secuencia
+     * @param secTiposDias Secuencia del TiposDias.
+     * @return Retorna el número de relaciones entre el TiposDias cuya secTiposDias
      * coincida con la dada por parámetro y la tabla DiasLaborales
      */
-    public BigInteger contadorDiasLaborales(BigInteger secuencia);
+    public BigInteger contadorDiasLaborales(BigInteger secTiposDias);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TiposDias
      * definido y algun ExtrasRecargos. Ademas de la revision, cuenta cuantas
      * relaciones existen.
      *
-     * @param secuencia Secuencia del TiposDias.
-     * @return Retorna el número de relaciones entre el TiposDias cuya secuencia
+     * @param secTiposDias Secuencia del TiposDias.
+     * @return Retorna el número de relaciones entre el TiposDias cuya secTiposDias
      * coincida con la dada por parámetro y la tabla ExtrasRecargos
      */
-    public BigInteger contadorExtrasRecargos(BigInteger secuencia);
+    public BigInteger contadorExtrasRecargos(BigInteger secTiposDias);
 }

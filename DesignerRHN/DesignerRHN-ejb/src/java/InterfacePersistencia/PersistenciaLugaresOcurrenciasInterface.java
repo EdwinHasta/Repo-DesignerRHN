@@ -43,15 +43,15 @@ public interface PersistenciaLugaresOcurrenciasInterface {
     public void borrar(LugaresOcurrencias lugaresOcurrencias);
 
     /**
-     * Método encargado de buscar un LugarOcurrencia con la secuencia dada por
+     * Método encargado de buscar un LugarOcurrencia con la secLugaresOcurrencias dada por
      * parámetro.
      *
-     * @param secuenciaLO Secuencia del Lugar Ocurrencia que se quiere
+     * @param secLugaresOcurrencias Secuencia del Lugar Ocurrencia que se quiere
      * encontrar.
-     * @return Retorna un LugarOcurrencia identificado con la secuencia dada por
+     * @return Retorna un LugarOcurrencia identificado con la secLugaresOcurrencias dada por
      * parámetro.
      */
-    public LugaresOcurrencias buscarLugaresOcurrencias(BigInteger secuenciaLO);
+    public LugaresOcurrencias buscarLugaresOcurrencias(BigInteger secLugaresOcurrencias);
 
     /**
      * Método encargado de buscar todas los LugaresOcurrencias existentes en la
@@ -66,9 +66,9 @@ public interface PersistenciaLugaresOcurrenciasInterface {
      * LugaresOcurrencias específica y algún Proyecto. Adémas de la revisión,
      * cuenta cuantas relaciones existen.
      *
-     * @param secuencia Secuencia del LugarOcurrencia.
+     * @param secLugaresOcurrencias Secuencia del LugarOcurrencia.
      * @return Retorna el número de SoAccidntes relacionados con el
-     * LugarOcurrencia cuya secuencia coincide con el parámetro.
+     * LugarOcurrencia cuya secLugaresOcurrencias coincide con el parámetro.
      */
-    public BigInteger contadorSoAccidentes(BigInteger secuencia);
+    public BigInteger contadorSoAccidentes(BigInteger secLugaresOcurrencias);
 }

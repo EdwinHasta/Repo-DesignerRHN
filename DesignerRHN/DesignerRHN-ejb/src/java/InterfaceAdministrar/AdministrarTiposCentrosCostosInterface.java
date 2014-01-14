@@ -31,9 +31,9 @@ public interface AdministrarTiposCentrosCostosInterface {
 
     public List<GruposTiposCC> mostrarGruposTiposCC();
 
-    public Long verificarBorradoCC(BigInteger secuenciaTipoEntidad);
+    public BigInteger verificarBorradoCC(BigInteger secuenciaTipoEntidad);
 
-    public Long verificarBorradoVC(BigInteger secuenciaTipoEntidad);
+    public BigInteger verificarBorradoVC(BigInteger secuenciaTipoEntidad);
 
-    public Long verificarBorradoRP(BigInteger secuenciaTipoEntidad);
+    public BigInteger verificarBorradoRP(BigInteger secuenciaTipoEntidad);
 }

@@ -26,5 +26,5 @@ public interface AdministrarMotivosCambiosSueldosInterface {
 
     public MotivosCambiosSueldos mostrarMotivoCambioCargo(BigInteger secMotivosCambiosSueldos);
 
-    public Long verificarBorradoVS(BigInteger secuenciaMovitoCambioSueldo);
+    public BigInteger verificarBorradoVS(BigInteger secuenciaMovitoCambioSueldo);
 }

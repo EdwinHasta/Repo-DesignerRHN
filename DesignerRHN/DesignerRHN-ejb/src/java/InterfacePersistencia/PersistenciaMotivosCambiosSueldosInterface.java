@@ -37,15 +37,15 @@ public interface PersistenciaMotivosCambiosSueldosInterface {
      */
     public List<MotivosCambiosSueldos> buscarMotivosCambiosSueldos();
     /**
-     * Método encargado de buscar el MotivoCambioSueldo con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del MotivoCambioSueldo que se quiere encontrar.
-     * @return Retorna el MotivoCambioSueldo identificado con la secuencia dada por parámetro.
+     * Método encargado de buscar el MotivoCambioSueldo con la secMotivosCambiosSueldos dada por parámetro.
+     * @param secMotivosCambiosSueldos Secuencia del MotivoCambioSueldo que se quiere encontrar.
+     * @return Retorna el MotivoCambioSueldo identificado con la secMotivosCambiosSueldos dada por parámetro.
      */
-    public MotivosCambiosSueldos buscarMotivoCambioSueldoSecuencia(BigInteger secuencia);
+    public MotivosCambiosSueldos buscarMotivoCambioSueldoSecuencia(BigInteger secMotivosCambiosSueldos);
     /**
      * Método encargado de verificar si hay al menos una VigenciaSueldo asociada a un MotivoCambioSueldo.
-     * @param secuencia Secuencia del MotivoCambioSueldo
+     * @param secMotivosCambiosSueldos Secuencia del MotivoCambioSueldo
      * @return Retorna un valor mayor a cero si existe alguna VigenciaSueldo asociada a un MotivoCambioSueldo.
      */
-    public Long verificarBorradoVigenciasSueldos(BigInteger secuencia);
+    public BigInteger verificarBorradoVigenciasSueldos(BigInteger secMotivosCambiosSueldos);
 }

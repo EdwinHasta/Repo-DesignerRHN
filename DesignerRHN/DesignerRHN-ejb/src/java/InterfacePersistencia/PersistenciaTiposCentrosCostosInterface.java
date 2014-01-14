@@ -33,35 +33,35 @@ public interface PersistenciaTiposCentrosCostosInterface {
      */
     public void borrar(TiposCentrosCostos tiposCentrosCostos);
     /**
-     * Método encargado de buscar el TipoCentroCosto con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del TipoCentroCosto que se quiere encontrar.
-     * @return Retorna el TipoCentroCosto identificado con la secuencia dada por parámetro.
+     * Método encargado de buscar el TipoCentroCosto con la secTiposCentrosCostos dada por parámetro.
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto que se quiere encontrar.
+     * @return Retorna el TipoCentroCosto identificado con la secTiposCentrosCostos dada por parámetro.
      */
-    public TiposCentrosCostos buscarTipoCentrosCostos(BigInteger secuencia);
+    public TiposCentrosCostos buscarTipoCentrosCostos(BigInteger secTiposCentrosCostos);
     /**
      * Método encargado de buscar todos los TiposCentrosCostos existentes en la base de datos.
      * @return Retorna una lista de TiposCentrosCostos.
      */
     public List<TiposCentrosCostos> buscarTiposCentrosCostos();
     /**
-     * Método encargado de contar los CentrosCostos asociados a el TipoCentroCosto cuya secuencia coincide con la del 
+     * Método encargado de contar los CentrosCostos asociados a el TipoCentroCosto cuya secTiposCentrosCostos coincide con la del 
      * parámetro.
-     * @param secuencia Secuencia del TipoCentroCosto
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto
      * @return Retorna un Número con la cantidad de CentrosCostos asociados a un TipoCentroCosto.
      */
-    public Long verificarBorradoCentrosCostos(BigInteger secuencia);
+    public BigInteger verificarBorradoCentrosCostos(BigInteger secTiposCentrosCostos);
     /**
-     * Método encargado de contar las VigenciasCuentas asociadas a el TipoCentroCosto cuya secuencia coincide con la del 
+     * Método encargado de contar las VigenciasCuentas asociadas a el TipoCentroCosto cuya secTiposCentrosCostos coincide con la del 
      * parámetro.
-     * @param secuencia Secuencia del TipoCentroCosto
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto
      * @return Retorna un Número con la cantidad de VigenciasCuentas asociados a un TipoCentroCosto.
      */
-    public Long verificarBorradoVigenciasCuentas(BigInteger secuencia);
+    public BigInteger verificarBorradoVigenciasCuentas(BigInteger secTiposCentrosCostos);
     /**
-     * Método encargado de contar los RiesgosProfesionales asociados a el TipoCentroCosto cuya secuencia coincide con la del 
+     * Método encargado de contar los RiesgosProfesionales asociados a el TipoCentroCosto cuya secTiposCentrosCostos coincide con la del 
      * parámetro.
-     * @param secuencia Secuencia del TipoCentroCosto
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto
      * @return Retorna un Número con la cantidad de RiesgosProfesionales asociados a un TipoCentroCosto.
      */
-    public Long verificarBorradoRiesgosProfesionales(BigInteger secuencia);
+    public BigInteger verificarBorradoRiesgosProfesionales(BigInteger secTiposCentrosCostos);
 }

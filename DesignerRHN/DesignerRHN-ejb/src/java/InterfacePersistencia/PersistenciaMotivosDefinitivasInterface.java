@@ -53,22 +53,31 @@ public interface PersistenciaMotivosDefinitivasInterface {
      * Definitiva específica y algúna Novedas Sistema. Adémas de la revisión,
      * cuenta cuantas relaciones existen.
      *
-     * @param secuencia Secuencia del Motivo Definitiva.
+     * @param secMotivosDefinitivas Secuencia del Motivo Definitiva.
      * @return Retorna el número de Novedades Sistemas relacionados con la
-     * moneda cuya secuencia coincide con el parámetro.
+     * moneda cuya secMotivosDefinitivas coincide con el parámetro.
      */
-    public BigInteger contadorNovedadesSistema(BigInteger secuencia);
+    public BigInteger contadorNovedadesSistema(BigInteger secMotivosDefinitivas);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Motivo
      * Definitiva específica y algúna Parameto Cambio Masivo. Adémas de la
      * revisión, cuenta cuantas relaciones existen.
      *
-     * @param secuencia Secuencia del Motivo Definitiva.
+     * @param secMotivosDefinitivas Secuencia del Motivo Definitiva.
      * @return Retorna el número de Parameto Cambio Masivo relacionados con la
-     * moneda cuya secuencia coincide con el parámetro.
+     * moneda cuya secMotivosDefinitivas coincide con el parámetro.
      */
-    public BigInteger contadorParametrosCambiosMasivos(BigInteger secuencia);
+    public BigInteger contadorParametrosCambiosMasivos(BigInteger secMotivosDefinitivas);
 
-    public MotivosDefinitivas buscarMotivoDefinitiva(BigInteger secuenciaME);
+    /**
+     * Método encargado de buscar el MotivoDefinitiva con la
+     * secMotivosDefinitivas dada por parámetro.
+     *
+     * @param secMotivosDefinitivas Secuencia del MotivoDefinitiva que se quiere
+     * encontrar.
+     * @return Retorna el MotivoDefinitiva identificado con la
+     * secMotivosDefinitivas dada por parámetro.
+     */
+    public MotivosDefinitivas buscarMotivoDefinitiva(BigInteger secMotivosDefinitivas);
 }

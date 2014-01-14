@@ -33,11 +33,11 @@ public interface PersistenciaTiposEmbargosInterface {
      */
     public void borrar(TiposEmbargos tiposEmbargos);
     /**
-     * Método encargado de buscar el TipoEmbargo con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del TipoEmbargo que se quiere encontrar.
-     * @return Retorna el TipoEmbargo identificada con la secuencia dada por parámetro.
+     * Método encargado de buscar el TipoEmbargo con la secTiposEmbargos dada por parámetro.
+     * @param secTiposEmbargos Secuencia del TipoEmbargo que se quiere encontrar.
+     * @return Retorna el TipoEmbargo identificada con la secTiposEmbargos dada por parámetro.
      */
-    public TiposEmbargos buscarTipoEmbargo(BigInteger secuencia);
+    public TiposEmbargos buscarTipoEmbargo(BigInteger secTiposEmbargos);
     /**
      * Método encargado de buscar todos los TiposEmbargos existentes en la base de datos, ordenadas por código.
      * @return Retorna una lista de TiposEmbargos.
@@ -45,16 +45,16 @@ public interface PersistenciaTiposEmbargosInterface {
     public List<TiposEmbargos> buscarTiposEmbargos();
     /**
      * Método encargado de recuperar cuantos EerPrestamos están asociados a un TipoEmbargo específico.
-     * @param secuencia Secuencia de TipoEmbargo.
-     * @return Retorna el número de EerPrestamos cuyo atributo 'TipoEmbargo' tiene como secuencia el 
+     * @param secTiposEmbargos Secuencia de TipoEmbargo.
+     * @return Retorna el número de EerPrestamos cuyo atributo 'TipoEmbargo' tiene como secTiposEmbargos el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorEerPrestamos(BigInteger secuencia);
+    public BigInteger contadorEerPrestamos(BigInteger secTiposEmbargos);
     /**
      * Método encargado de recuperar cuantos FormasDtos están asociados a un TipoEmbargo específico.
-     * @param secuencia Secuencia de TipoEmbargo.
-     * @return Retorna el número de FormasDtos cuyo atributo 'TipoEmbargo' tiene como secuencia el 
+     * @param secTiposEmbargos Secuencia de TipoEmbargo.
+     * @return Retorna el número de FormasDtos cuyo atributo 'TipoEmbargo' tiene como secTiposEmbargos el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorFormasDtos(BigInteger secuencia);
+    public BigInteger contadorFormasDtos(BigInteger secTiposEmbargos);
 }
