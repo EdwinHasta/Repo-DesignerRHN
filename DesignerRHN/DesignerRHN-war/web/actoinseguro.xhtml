@@ -105,7 +105,7 @@
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlSoActosInseguros.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
                         <p:commandButton style=" position: absolute; left: 698px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlSoActosInseguros.revisarDialogoGuardar()}" disabled="#{controlSoActosInseguros.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}"/>
+                        <p:commandButton style=" position: absolute; left: 785px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"/>
 
                         <p:dialog header="#{msg['atencion']}" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
                                   showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 11px;">
