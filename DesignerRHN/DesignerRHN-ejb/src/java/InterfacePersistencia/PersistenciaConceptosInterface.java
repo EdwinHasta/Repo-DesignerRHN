@@ -124,7 +124,11 @@ public interface PersistenciaConceptosInterface {
      * parámetro.
      */
     public Conceptos conceptosPorSecuencia(BigInteger secuencia);
-
+    /**
+     * Elimina un concepto y todos los datos asociados a este.
+     * @param secuenciaConcepto Secuencia del concepto que se va a eliminar
+     * @return Retorna True si fue posible eliminar el concepto, false de lo contrario.
+     */
     public boolean eliminarConcepto(BigInteger secuenciaConcepto);
 
     public String conceptoParaFormulaContrato(BigInteger secuencia, Date fechaFin);

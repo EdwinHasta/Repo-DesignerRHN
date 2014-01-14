@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -14,48 +12,70 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'Deportes'.
  *
- * @author user
+ * @author betelgeuse
  */
 @Stateful
 public class AdministrarDeportes implements AdministrarDeportesInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaDeportes'.
+     */
     @EJB
     PersistenciaDeportesInterface persistenciaDeportes;
-    private Deportes deporteSeleccionado;
-    private Deportes deportes;
-    private List<Deportes> listDeportes;
 
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------  
+    @Override
     public void modificarDeportes(List<Deportes> listDeportesModificadas) {
         for (int i = 0; i < listDeportesModificadas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            deporteSeleccionado = listDeportesModificadas.get(i);
+            Deportes deporteSeleccionado = listDeportesModificadas.get(i);
             persistenciaDeportes.editar(deporteSeleccionado);
         }
     }
 
-    public void borrarDeportes(Deportes deportes) {
-        persistenciaDeportes.borrar(deportes);
+    @Override
+    public void borrarDeportes(List<Deportes> listaDeportes) {
+        for (int i = 0; i < listaDeportes.size(); i++) {
+            System.out.println("Borrando...");
+            persistenciaDeportes.borrar(listaDeportes.get(i));
+        }
     }
 
-    public void crearDeportes(Deportes deportes) {
-        persistenciaDeportes.crear(deportes);
+    @Override
+    public void crearDeportes(List<Deportes> listaDeportes) {
+        for (int i = 0; i < listaDeportes.size(); i++) {
+            System.out.println("Creando...");
+            persistenciaDeportes.crear(listaDeportes.get(i));
+        }
     }
 
+    @Override
     public List<Deportes> mostrarDeportes() {
-        listDeportes = persistenciaDeportes.buscarDeportes();
+        List<Deportes> listDeportes = persistenciaDeportes.buscarDeportes();
         return listDeportes;
     }
 
+    @Override
     public Deportes mostrarDeporte(BigInteger secDeportes) {
-        deportes = persistenciaDeportes.buscarDeporte(secDeportes);
+        Deportes deportes = persistenciaDeportes.buscarDeporte(secDeportes);
         return deportes;
     }
 
-    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secuenciaTiposAuxilios) {
+    @Override
+    public BigInteger verificarRelacionVigenciasDeportes(BigInteger secDeporte) {
         BigInteger verificarBorradoVigenciasDeportes = null;
         try {
-            verificarBorradoVigenciasDeportes = persistenciaDeportes.verificarBorradoVigenciasDeportes(secuenciaTiposAuxilios);
+            verificarBorradoVigenciasDeportes = persistenciaDeportes.verificarBorradoVigenciasDeportes(secDeporte);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARDEPORTES verificarBorradoVigenciasDeportes ERROR :" + e);
         } finally {
@@ -63,10 +83,11 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
         }
     }
 
-    public BigInteger contadorDeportesPersonas(BigInteger secuenciaTiposAuxilios) {
+    @Override
+    public BigInteger contadorDeportesPersonas(BigInteger secDeporte) {
         BigInteger contadorDeportesPersonas = null;
         try {
-            contadorDeportesPersonas = persistenciaDeportes.contadorDeportesPersonas(secuenciaTiposAuxilios);
+            contadorDeportesPersonas = persistenciaDeportes.contadorDeportesPersonas(secDeporte);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARDEPORTES contadorDeportesPersonas ERROR :" + e);
         } finally {
@@ -74,10 +95,11 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
         }
     }
 
-    public BigInteger contadorParametrosInformes(BigInteger secuenciaTiposAuxilios) {
+    @Override
+    public BigInteger contadorParametrosInformes(BigInteger secDeporte) {
         BigInteger contadorParametrosInformes = null;
         try {
-            contadorParametrosInformes = persistenciaDeportes.contadorParametrosInformes(secuenciaTiposAuxilios);
+            contadorParametrosInformes = persistenciaDeportes.contadorParametrosInformes(secDeporte);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARDEPORTES contadorParametrosInformes ERROR :" + e);
         } finally {

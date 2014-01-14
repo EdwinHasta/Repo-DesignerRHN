@@ -53,10 +53,24 @@ public interface PersistenciaFormulasConceptosInterface {
      * @return Retorna true si existe una relación entre la fórmula y el concepto
      */
     public boolean verificarFormulaCargue_Concepto(BigInteger secConcepto, BigInteger secFormula);
-    
+    /**
+     * Método encargado de contar la cantidad de formulasConceptos, con un concepto específico.
+     * @param secConcepto Secuencia del concepto.
+     * @return Retorna el numero de formulasConceptos cuyo concepto tiene como secuencia la dada por parámetro.
+     */
     public Long comportamientoConceptoAutomaticoSecuenciaConcepto(BigInteger secConcepto);
-    
+    /**
+     * Método encargado de contar la cantidad formulasConceptos, con un concepto específico, y que tienen asociada
+     * una formulaNovedad.
+     * @param secConcepto Secuencia del concepto.
+     * @return Retorna el numero de formulasConceptos cuyo concepto tiene como secuencia el valor dado por parámetro y 
+     * además están asociadas con alguna formulaNovedad.
+     */
     public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(BigInteger secConcepto);
-    
-    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(BigInteger secuenciaF);
+    /**
+     * Método encargado de buscar las formulasConceptos, con una fórmula específica.
+     * @param secFormula Secuencia de la fórmula.
+     * @return Retorna una lista de FormulasConceptos cuya fórmula tiene como secuencia el valor del parámetro.
+     */
+    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(BigInteger secFormula);
 }

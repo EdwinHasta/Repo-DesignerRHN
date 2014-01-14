@@ -14,12 +14,14 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'EvalEvaluadores'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'EvalEvaluadores' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -76,12 +78,12 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public Long verificarBorradoEvalPruebas(BigInteger secuencia) {
-        Long retorno = new Long(-1);
+    public BigInteger verificarBorradoEvalPruebas(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vp) FROM EvalPruebas vp WHERE vp.evalevaluador.secuencia =:secEvalEvalualores ");
             query.setParameter("secEvalEvalualores", secuencia);
-            retorno = (Long) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaEvalEvaluadores retorno ==" + retorno.intValue());
         } catch (Exception e) {
             System.err.println("ERROR EN PersistenciaEvalEvaluadores verificarBorrado ERROR :" + e);

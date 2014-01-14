@@ -40,15 +40,15 @@ public interface PersistenciaEstadosCivilesInterface {
     public void borrar(EstadosCiviles estadosCiviles);
 
     /**
-     * Método encargado de buscar el EstadoCivil con la secuencia dada por
+     * Método encargado de buscar el EstadoCivil con la secEstadoCivil dada por
      * parámetro.
      *
-     * @param secuencia Identificador único del EstadoCivil que se quiere
+     * @param secEstadoCivil Identificador único del EstadoCivil que se quiere
      * encontrar.
-     * @return Retorna el EstadoCivil identificado con la secuencia dada por
-     * parámetro.
+     * @return Retorna el EstadoCivil identificado con la secEstadoCivil dada
+     * por parámetro.
      */
-    public EstadosCiviles buscarEstadoCivil(BigInteger secuencia);
+    public EstadosCiviles buscarEstadoCivil(BigInteger secEstadoCivil);
 
     /**
      * Método encargado de buscar todos los EstadosCiviles existentes en la base
@@ -58,5 +58,14 @@ public interface PersistenciaEstadosCivilesInterface {
      */
     public List<EstadosCiviles> buscarEstadosCiviles();
 
-    public BigInteger contadorVigenciasEstadosCiviles(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre un EstadoCivil
+     * específica y algúna VigenciaEstadoCivil. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEstadoCivil secEstadoCivil del EstadoCivil.
+     * @return Retorna el número de VigenciasEstadosCiviles relacionados con el
+     * EstadoCivil cuya secEstadoCivil coincide con el parámetro.
+     */
+    public BigInteger contadorVigenciasEstadosCiviles(BigInteger secEstadoCivil);
 }

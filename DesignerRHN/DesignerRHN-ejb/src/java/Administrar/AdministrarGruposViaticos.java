@@ -26,6 +26,7 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
     private GruposViaticos evalGruposViaticos;
     private List<GruposViaticos> listGruposViaticos;
 
+    @Override
     public void modificarGruposViaticos(List<GruposViaticos> listGruposViativosModificadas) {
         for (int i = 0; i < listGruposViativosModificadas.size(); i++) {
             System.out.println("Administrar Modificando...");
@@ -34,10 +35,12 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
         }
     }
 
+    @Override
     public void borrarGruposViaticos(GruposViaticos gruposViaticos) {
         persistenciaGruposViaticos.borrar(gruposViaticos);
     }
 
+    @Override
     public void crearGruposViaticos(GruposViaticos gruposViaticos) {
         persistenciaGruposViaticos.crear(gruposViaticos);
     }
@@ -48,11 +51,13 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
         return listGruposViaticos;
     }
 
+    @Override
     public GruposViaticos mostrarGrupoViatico(BigInteger secGruposViaticos) {
         evalGruposViaticos = persistenciaGruposViaticos.buscarGrupoViatico(secGruposViaticos);
         return evalGruposViaticos;
     }
 
+    @Override
     public BigInteger verificarBorradoCargos(BigInteger secuenciaCargos) {
         BigInteger verificadorCargos = null;
         try {
@@ -65,6 +70,7 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
         }
     }
 
+    @Override
     public BigInteger verificarBorradoPlantas(BigInteger secuenciaCargos) {
         BigInteger verificadorPlantas = null;
         try {
@@ -77,6 +83,7 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
         }
     }
 
+    @Override
     public BigInteger verificarTablasViaticos(BigInteger secuenciaCargos) {
         BigInteger verificadorTablasViaticos = null;
         try {
@@ -89,11 +96,12 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
         }
     }
 
+    @Override
     public BigInteger verificarEersViaticos(BigInteger secuenciaCargos) {
         BigInteger verificadorErsViaticos = null;
         try {
             System.err.println("Secuencia Borrado  Tablas ErsViaticos" + secuenciaCargos);
-            verificadorErsViaticos = persistenciaGruposViaticos.contadorEersviaticos(secuenciaCargos);
+            verificadorErsViaticos = persistenciaGruposViaticos.contadorEersViaticos(secuenciaCargos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarGruposViativos verificarEersViaticos ERROR :" + e);
         } finally {

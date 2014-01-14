@@ -47,7 +47,23 @@ public interface PersistenciaIdiomasInterface {
      */
     public List<Idiomas> buscarIdiomas();
 
-    public Idiomas buscarIdioma(BigInteger secuenciaI);
+    /**
+     * Método encargado de buscar un Idioma con la secuencia dada por parámetro.
+     *
+     * @param secIdiomas Secuencia del Idioma que se quiere encontrar.
+     * @return Retorna el Idioma identificado con la secuencia dada por
+     * parámetro.
+     */
+    public Idiomas buscarIdioma(BigInteger secIdiomas);
 
-    public BigInteger contadorIdiomasPersonas(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre un Idioma
+     * específica y algún IdiomaPersona. Adémas de la revisión, cuenta cuantas
+     * relaciones existen.
+     *
+     * @param secIdiomas Secuencia del Idioma.
+     * @return Retorna el número de IdiomasPersonas relacionados con un Idioma
+     * cuya secIdiomas coincide con el parámetro.
+     */
+    public BigInteger contadorIdiomasPersonas(BigInteger secIdiomas);
 }

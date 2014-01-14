@@ -28,7 +28,6 @@ public interface PersistenciaTiposFamiliaresInterface {
 
     public List<TiposFamiliares> buscarTiposFamiliares();
 
-    public BigDecimal contadorHvReferencias(BigInteger secuencia);
+    public BigInteger contadorHvReferencias(BigInteger secuencia);
 
-    public BigDecimal asignarNuevoCodigo();
 }

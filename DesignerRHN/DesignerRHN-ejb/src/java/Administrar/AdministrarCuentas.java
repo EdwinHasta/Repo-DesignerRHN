@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Administrar;
 
 import Entidades.Cuentas;
@@ -13,24 +16,36 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
- *
- * @author user
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'Cuentas'.
+ * @author betelgeuse
  */
 @Stateful
 public class AdministrarCuentas implements AdministrarCuentasInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaEmpresas'.
+     */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaCuentas'.
+     */
     @EJB
     PersistenciaCuentasInterface persistenciaCuentas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaRubrosPresupuestales'.
+     */
     @EJB
     PersistenciaRubrosPresupuestalesInterface persistenciaRubrosPresupuestales;
-    //// ---- ////
-    Cuentas cuenta;
-    List<Cuentas> listCuentas;
-    List<Empresas> listEmpresas;
-    List<Rubrospresupuestales> listRubros;
-
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
     public void crearCuentas(List<Cuentas> listCuentasCrear) {
         try {
@@ -65,35 +80,35 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     }
 
     @Override
-    public List<Cuentas> listCuentasEmpresa(BigInteger secuencia) {
+    public List<Cuentas> listaCuentasEmpresa(BigInteger secuencia) {
         try {
-            listCuentas = persistenciaCuentas.buscarCuentasSecuenciaEmpresa(secuencia);
+            List<Cuentas> listCuentas = persistenciaCuentas.buscarCuentasSecuenciaEmpresa(secuencia);
             return listCuentas;
         } catch (Exception e) {
             System.out.println("Error en listCuentasEmpresa Admi : " + e.toString());
-            return listCuentas;
+            return null;
         }
     }
 
     @Override
-    public List<Empresas> listEmpresas() {
+    public List<Empresas> listaEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listEmpresas = persistenciaEmpresas.buscarEmpresas();
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error en listEmpresas Admi : " + e.toString());
-            return listEmpresas;
+            return null;
         }
     }
 
     @Override
-    public List<Rubrospresupuestales> listRubros() {
+    public List<Rubrospresupuestales> lovListaRubros() {
         try {
-            listRubros = persistenciaRubrosPresupuestales.buscarRubros();
+            List<Rubrospresupuestales> listRubros = persistenciaRubrosPresupuestales.buscarRubros();
             return listRubros;
         } catch (Exception e) {
             System.out.println("Error en listRubros Admi : " + e.toString());
-            return listRubros;
+            return null;
         }
     }
 }

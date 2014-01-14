@@ -72,7 +72,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<ExtrasRecargos> listExtrasRecargos() {
+    public List<ExtrasRecargos> listaExtrasRecargos() {
         try {
             List<ExtrasRecargos> lista = persistenciaExtrasRecargos.buscarExtrasRecargos();
             return lista;
@@ -116,7 +116,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<DetallesExtrasRecargos> listDetallesExtrasRecargos(BigInteger secuencia) {
+    public List<DetallesExtrasRecargos> listaDetallesExtrasRecargos(BigInteger secuencia) {
         try {
             List<DetallesExtrasRecargos> lista = persistenciaDetallesExtrasRecargos.buscaDetallesExtrasRecargosPorSecuenciaExtraRecargo(secuencia);
             return lista;
@@ -160,7 +160,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<TiposDias> listTiposDias() {
+    public List<TiposDias> lovListaTiposDias() {
         try {
             List<TiposDias> lista = persistenciaTiposDias.buscarTiposDias();
             return lista;
@@ -171,7 +171,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<TiposJornadas> listTiposJornadas() {
+    public List<TiposJornadas> listaTiposJornadas() {
         try {
             List<TiposJornadas> lista = persistenciaTiposJornadas.buscarTiposJornadas();
             return lista;
@@ -182,7 +182,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<Contratos> listContratos() {
+    public List<Contratos> listaContratos() {
         try {
             List<Contratos> lista = persistenciaContratos.buscarContratos();
             return lista;
@@ -193,7 +193,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<Conceptos> listConceptos() {
+    public List<Conceptos> listaConceptos() {
         try {
             List<Conceptos> lista = persistenciaConceptos.buscarConceptos();
             return lista;

@@ -23,7 +23,7 @@ public interface PersistenciaHistoriasformulasInterface {
      * HistoriaFormula
      * @param fecha Fecha a la cual se quiere saber, la ultima HistoriaFormula
      * hecha.
-     * @return Retorna la secuencia de la ultima HistoriaFormula de una formula
+     * @return Retorna la secuencia de la última HistoriaFormula de una formula
      * a una fecha específica.
      */
     public BigInteger obtenerSecuenciaHistoriaFormula(BigInteger secFormula, String fecha);

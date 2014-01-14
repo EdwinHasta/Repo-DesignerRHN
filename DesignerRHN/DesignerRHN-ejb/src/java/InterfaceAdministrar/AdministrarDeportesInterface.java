@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package InterfaceAdministrar;
 
 import Entidades.Deportes;
@@ -12,18 +9,56 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'Deportes'.
+ * @author betelgeuse
  */
 @Local
 public interface AdministrarDeportesInterface {
-
-    public void modificarDeportes(List<Deportes> listDeportesModificadas);
-    public void borrarDeportes(Deportes deportes);
-    public void crearDeportes(Deportes deportes) ;
+    /**
+     * Método encargado de crear Deportes.
+     * @param listaDeportes Lista de los Deportes que se van a crear.
+     */
+    public void crearDeportes(List<Deportes> listaDeportes);
+    /**
+     * Método encargado de editar Deportes.
+     * @param listaDeportes Lista de los Deportes que se van a modificar.
+     */
+    public void modificarDeportes(List<Deportes> listaDeportes);
+    /**
+     * Método encargado de borrar Deportes.
+     * @param listaDeportes Lista de los Deportes que se van a eliminar.
+     */
+    public void borrarDeportes(List<Deportes> listaDeportes);
+    /**
+     * Método encargado de recuperar todas las Deportes.
+     * @return Retorna una lista de Deportes.
+     */
     public List<Deportes> mostrarDeportes();
+    /**
+     * Método encargado de recuperar un Deporte dada su secuencia.
+     * @param secDeportes Secuencia del Deporte.
+     * @return Retorna el Deporte cuya secuencia coincida con el valor del parámetro. 
+     */
     public Deportes mostrarDeporte(BigInteger secDeportes);
-    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secuenciaTiposAuxilios);
-    public BigInteger contadorDeportesPersonas(BigInteger secuenciaTiposAuxilios);
-    public BigInteger contadorParametrosInformes(BigInteger secuenciaTiposAuxilios);
+    /**
+     * Método encargado de validar si hay al menos una VigenciaDeporte relacionado con un deporte.
+     * @param secDeporte Secuencia del deporte.
+     * @return Retorna 0 si no hay relación entre las tablas o retorna el número de asociaciones con el
+     * deporte cuya secuencia coincida con el valor del parámetro indicando.
+     */
+    public BigInteger verificarRelacionVigenciasDeportes(BigInteger secDeporte);
+    /**
+     * Método encargado de contar la cantidad de deportes que una persona específica ha practicado.
+     * @param secDeporte Secuencia del deporte.
+     * @return Retorna un número indicando la cantidad de deportes que ha practicado la persona cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contadorDeportesPersonas(BigInteger secDeporte);
+    /**
+     * Método encargado de contar la cantidad de ParametrosInformes asociados a un deporte específico.
+     * @param secDeporte Secuencia del Deporte.
+     * @return Retorna un número indicando la cantidad de ParametrosInformes cuyo deporte tenga como 
+     * secuencia el valor dado como parámetro.
+     */
+    public BigInteger contadorParametrosInformes(BigInteger secDeporte);
 }

@@ -5,7 +5,6 @@ package Persistencia;
 
 import Entidades.CentrosCostos;
 import InterfacePersistencia.PersistenciaCentrosCostosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -127,14 +126,14 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorComprobantesContables(BigInteger secuencia) {
+    public BigInteger contadorComprobantesContables(BigInteger secuencia) {
         try {
 
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, comprobantescontables ccs WHERE cc.secuencia = ccs.centrocostoconsolidador AND cc.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             System.err.println("PersistenciaCENTROSCOSTOS contadorComprobantesContables  " + query.getSingleResult());
-            return (BigDecimal) query.getSingleResult();
+            return new BigInteger(query.getSingleResult().toString());
 
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorHvReferencias. " + e);
@@ -142,13 +141,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorDetallesCCConsolidador(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorDetallesCCConsolidador(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, detallescc dcc WHERE cc.secuencia = dcc.ccconsolidador AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorDetallesCCConsolidador. " + e);
@@ -156,13 +155,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorDetallesCCDetalle(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorDetallesCCDetalle(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, detallescc dcc WHERE cc.secuencia = dcc.ccdetalle AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorDetallesCCDetalle. " + e);
@@ -170,13 +169,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorEmpresas(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorEmpresas(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, empresas e WHERE cc.secuencia = e.centrocosto AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorEmpresas. " + e);
@@ -184,13 +183,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorEstructuras(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorEstructuras(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, estructuras e WHERE cc.secuencia = e.centrocosto AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorEstructuras. " + e);
@@ -198,13 +197,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorInterconCondor(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorInterconCondor(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_condor ic WHERE cc.secuencia = ic.centrocosto AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorInterconCondor. " + e);
@@ -212,13 +211,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorInterconDynamics(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorInterconDynamics(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_dynamics id WHERE cc.secuencia = id.centrocosto AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorInterconDynamics. " + e);
@@ -226,13 +225,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorInterconGeneral(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorInterconGeneral(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_general ig WHERE cc.secuencia = ig.centrocosto AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorInterconGeneral. " + e);
@@ -240,13 +239,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorInterconHelisa(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorInterconHelisa(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_helisa ih WHERE cc.secuencia = ih.centrocosto AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorInterconHelisa. " + e);
@@ -254,13 +253,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorInterconSapbo(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorInterconSapbo(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_sapbo isp WHERE cc.secuencia = isp.centrocosto AND cc.secuencia=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorInterconSapbo. " + e);
@@ -268,13 +267,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorInterconSiigo(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorInterconSiigo(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_siigo isi WHERE cc.secuencia = isi.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorInterconSiigo. " + e);
@@ -282,13 +281,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorInterconTotal(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorInterconTotal(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_total it WHERE cc.secuencia = it.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorInterconTotal. " + e);
@@ -296,13 +295,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorNovedadesC(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorNovedadesC(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, novedades n WHERE cc.secuencia = n.centrocostoc AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorNovedadesC. " + e);
@@ -310,13 +309,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorNovedadesD(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorNovedadesD(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, novedades n WHERE cc.secuencia = n.centrocostod AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorNovedadesD. " + e);
@@ -324,13 +323,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorProcesosProductivos(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorProcesosProductivos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, procesosproductivos pp WHERE cc.secuencia = pp.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorProcesosProductivos. " + e);
@@ -338,13 +337,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorProyecciones(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorProyecciones(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, proyecciones p WHERE cc.secuencia = p.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorProyecciones. " + e);
@@ -352,13 +351,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorSolucionesNodosC(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorSolucionesNodosC(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, solucionesnodos sn WHERE cc.secuencia = sn.centrocostoc AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorSolucionesNodosC. " + e);
@@ -366,13 +365,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorSolucionesNodosD(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorSolucionesNodosD(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, solucionesnodos sn WHERE cc.secuencia = sn.centrocostod AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorSolucionesNodosD. " + e);
@@ -380,13 +379,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorSoPanoramas(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorSoPanoramas(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, sopanoramas sp WHERE cc.secuencia = sp.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorSoPanoramas. " + e);
@@ -394,13 +393,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorTerceros(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorTerceros(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, terceros t WHERE cc.secuencia = t.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorTerceros. " + e);
@@ -408,13 +407,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorUnidadesRegistradas(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorUnidadesRegistradas(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, unidadesregistradas ur WHERE cc.secuencia = ur.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorUnidadesRegistradas. " + e);
@@ -422,13 +421,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorVigenciasCuentasC(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorVigenciasCuentasC(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, vigenciascuentas vc WHERE cc.secuencia = vc.consolidadorc AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorVigenciasCuentasC. " + e);
@@ -436,13 +435,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorVigenciasCuentasD(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorVigenciasCuentasD(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, vigenciascuentas vc WHERE cc.secuencia = vc.consolidadord AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorVigenciasCuentasD. " + e);
@@ -450,13 +449,13 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    public BigDecimal contadorVigenciasProrrateos(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorVigenciasProrrateos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, vigenciasprorrateos vp WHERE cc.secuencia = vp.centrocosto AND cc.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             return retorno;
         } catch (Exception e) {
             System.out.println("Error PERSISTENCIACENTROSCOSTOS  contadorVigenciasProrrateos. " + e);

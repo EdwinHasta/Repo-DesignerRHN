@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfaceAdministrar;
 
@@ -8,10 +7,13 @@ import Entidades.Departamentos;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'Departamentos'.
+ * @author betelgeuse
  */
 public interface AdministrarDepartamentosInterface {
-    public List<Departamentos> Departamentos();
-    public List<Departamentos>  lovDepartamentos();
+    /**
+     * Método encargado de recuperar todos los Departamentos.
+     * @return Retorna una lista de Departamentos.
+     */
+    public List<Departamentos> listaDepartamentos();
 }
