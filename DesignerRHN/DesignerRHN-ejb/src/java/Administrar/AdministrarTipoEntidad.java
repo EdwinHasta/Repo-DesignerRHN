@@ -34,7 +34,6 @@ public class AdministrarTipoEntidad implements AdministrarTipoEntidadInterface {
     private List<TiposEntidades> listTiposEntidades;
     private List<Grupostiposentidades> listGruposTiposEntidades;
     private List<VigenciasAfiliaciones> listVigenciasAfiliaciones;
-    private Long verificador;
 
     @Override
     public void modificarTipoEntidad(List<TiposEntidades> listTiposEntidadesModificadas) {
@@ -85,24 +84,28 @@ public class AdministrarTipoEntidad implements AdministrarTipoEntidadInterface {
     }
 
     @Override
-    public Long verificarBorrado(BigInteger secuenciaTipoEntidad) {
+    public BigInteger verificarBorrado(BigInteger secuenciaTipoEntidad) {
+        BigInteger verificador;
+
         try {
-            verificador = persistenciaTiposEntidades.verificarBorrado(secuenciaTipoEntidad);
+            return verificador = persistenciaTiposEntidades.verificarBorrado(secuenciaTipoEntidad);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTipoEntidad verificarBorrado ERROR :" + e);
-        } finally {
-            return verificador;
+
+            return null;
         }
     }
 
     @Override
-    public Long verificarBorradoFCE(BigInteger secuenciaTipoEntidad) {
+    public BigInteger verificarBorradoFCE(BigInteger secuenciaTipoEntidad) {
+        BigInteger verificador;
+
         try {
-            verificador = persistenciaTiposEntidades.verificarBorradoFCE(secuenciaTipoEntidad);
+            return verificador = persistenciaTiposEntidades.verificarBorradoFCE(secuenciaTipoEntidad);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTipoEntidad verificarBorradoFCE ERROR :" + e);
-        } finally {
-            return verificador;
+
+            return null;
         }
     }
 }

@@ -26,5 +26,5 @@ public interface AdministrarNormasLaboralesInterface {
 
     public NormasLaborales mostrarMotivoContrato(BigInteger secNormasLaborales);
 
-    public Long verificarBorradoVNE(BigInteger secuenciaNormasLaborales);
+    public BigInteger verificarBorradoVNE(BigInteger secuenciaNormasLaborales);
 }

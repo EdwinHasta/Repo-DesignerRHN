@@ -33,11 +33,11 @@ public interface PersistenciaPartesCuerpoInterface {
      */
     public void borrar(PartesCuerpo partesCuerpo);
     /**
-     * Método encargado de buscar la ParteCuerpo con la secuencia dada por parámetro.
-     * @param secuencia Secuencia de la ParteCuerpo que se quiere encontrar.
-     * @return Retorna la ParteCuerpo identificada con la secuencia dada por parámetro.
+     * Método encargado de buscar la ParteCuerpo con la secPartesCuerpo dada por parámetro.
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo que se quiere encontrar.
+     * @return Retorna la ParteCuerpo identificada con la secPartesCuerpo dada por parámetro.
      */
-    public PartesCuerpo buscarParteCuerpo(BigInteger secuencia);
+    public PartesCuerpo buscarParteCuerpo(BigInteger secPartesCuerpo);
     /**
      * Método encargado de buscar todas las PartesCuerpo existentes en la base de datos, ordenadas por código.
      * @return Retorna una lista de PartesCuerpo.
@@ -45,23 +45,23 @@ public interface PersistenciaPartesCuerpoInterface {
     public List<PartesCuerpo> buscarPartesCuerpo();
     /**
      * Método encargado de recuperar cuantos SoAccidentesMedicos estan asociados a una ParteCuerpo específica.
-     * @param secuencia Secuencia de la ParteCuerpo.
-     * @return Retorna el numero de SoAccidentesMedicos cuyo atributo 'Parte' tiene como secuencia el 
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo.
+     * @return Retorna el numero de SoAccidentesMedicos cuyo atributo 'Parte' tiene como secPartesCuerpo el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia);
+    public BigInteger contadorSoAccidentesMedicos(BigInteger secPartesCuerpo);
     /**
      * Método encargado de recuperar cuantos SoDetallesExamenes estan asociados a una ParteCuerpo específica.
-     * @param secuencia Secuencia de la ParteCuerpo.
-     * @return Retorna el numero de SoDetallesExamenes cuyo atributo 'ParteCuerpo' tiene como secuencia el 
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo.
+     * @return Retorna el numero de SoDetallesExamenes cuyo atributo 'ParteCuerpo' tiene como secPartesCuerpo el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorDetallesExamenes(BigInteger secuencia);
+    public BigInteger contadorDetallesExamenes(BigInteger secPartesCuerpo);
     /**
      * Método encargado de recuperar cuantos SoDetallesRevisiones están asociados a una ParteCuerpo específica.
-     * @param secuencia Secuencia de la ParteCuerpo.
-     * @return Retorna el número de SoDetallesRevisiones cuyo atributo 'Organo' tiene como secuencia el 
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo.
+     * @return Retorna el número de SoDetallesRevisiones cuyo atributo 'Organo' tiene como secPartesCuerpo el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorSoDetallesRevisiones(BigInteger secuencia);
+    public BigInteger contadorSoDetallesRevisiones(BigInteger secPartesCuerpo);
 }

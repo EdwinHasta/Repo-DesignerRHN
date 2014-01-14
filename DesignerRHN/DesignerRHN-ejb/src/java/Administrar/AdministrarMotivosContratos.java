@@ -24,7 +24,6 @@ public class AdministrarMotivosContratos implements AdministrarMotivosContratosI
     private MotivosContratos motivoCambioCargoSeleccionado;
     private MotivosContratos motivoCambioCargo;
     private List<MotivosContratos> listMotivosCambiosCargos;
-    private Long verificadorVTC;
 
     @Override
     public void modificarMotivosContratos(List<MotivosContratos> listMotivosCambiosCargosModificadas) {
@@ -58,13 +57,14 @@ public class AdministrarMotivosContratos implements AdministrarMotivosContratosI
     }
 
     @Override
-    public Long verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo) {
+    public BigInteger verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo) {
+        BigInteger verificadorVTC = null;
+
         try {
-            verificadorVTC = persistenciaMotivosContratos.verificarBorradoVigenciasTiposContratos(secuenciaMovitoCambioCargo);
+            return verificadorVTC = persistenciaMotivosContratos.verificarBorradoVigenciasTiposContratos(secuenciaMovitoCambioCargo);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarMotivosContratos verificarBorradoVC ERROR :" + e);
-        } finally {
-            return verificadorVTC;
+            return null;
         }
     }
 }

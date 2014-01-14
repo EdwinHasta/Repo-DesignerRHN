@@ -8,48 +8,73 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'MotivosCambiosCargos' 
- * de la base de datos.
+ * Interface encargada de determinar las operaciones que se realizan sobre la
+ * tabla 'MotivosCambiosCargos' de la base de datos.
+ *
  * @author betelgeuse
  */
 public interface PersistenciaMotivosCambiosCargosInterface {
+
     /**
      * Método encargado de insertar un MotivoCambioCargo en la base de datos.
+     *
      * @param motivoCambioCargo MotivoCambioCargo que se quiere crear.
      */
     public void crear(MotivosCambiosCargos motivoCambioCargo);
-    /***
+
+    /**
+     * *
      * Método encargado de modificar un MotivoCambioCargo de la base de datos.
-     * Este método recibe la información del parámetro para hacer un 'merge' con la 
-     * información de la base de datos.
-     * @param motivoCambioCargo MotivoCambioCargo con los cambios que se van a realizar.
+     * Este método recibe la información del parámetro para hacer un 'merge' con
+     * la información de la base de datos.
+     *
+     * @param motivoCambioCargo MotivoCambioCargo con los cambios que se van a
+     * realizar.
      */
     public void editar(MotivosCambiosCargos motivoCambioCargo);
+
     /**
-     * Método encargado de eliminar de la base de datos el MotivoCambioCargo que entra por parámetro.
+     * Método encargado de eliminar de la base de datos el MotivoCambioCargo que
+     * entra por parámetro.
+     *
      * @param motivoCambioCargo MotivoCambioCargo que se quiere eliminar.
      */
     public void borrar(MotivosCambiosCargos motivoCambioCargo);
+
     /**
-     * Método encargado de buscar el MotivoCambioCargo con la secuencia dada por parámetro.
+     * Método encargado de buscar el MotivoCambioCargo con la secuencia dada por
+     * parámetro.
+     *
      * @param secuencia Secuencia del MotivoCambioCargo que se quiere encontrar.
-     * @return Retorna el MotivoCambioCargo identificado con la secuencia dada por parámetro.
+     * @return Retorna el MotivoCambioCargo identificado con la secuencia dada
+     * por parámetro.
      */
     public MotivosCambiosCargos buscarMotivoCambioCargo(BigInteger secuencia);
+
     /**
-     * Método encargado de buscar todos los MotivosCambiosCargos existentes en la base de datos.
+     * Método encargado de buscar todos los MotivosCambiosCargos existentes en
+     * la base de datos.
+     *
      * @return Retorna una lista de MotivosCambiosCargos.
      */
-    public List<MotivosCambiosCargos> buscarMotivosCambiosCargos(); 
+    public List<MotivosCambiosCargos> buscarMotivosCambiosCargos();
+
     /**
-     * Método encargado de buscar todos los nombres de los MotivosCambiosCargos existentes en la base de datos.
-     * @return Retorna una lista con los nombres de los MotivosCambiosCargos existentes en la base de datos.
+     * Método encargado de buscar todos los nombres de los MotivosCambiosCargos
+     * existentes en la base de datos.
+     *
+     * @return Retorna una lista con los nombres de los MotivosCambiosCargos
+     * existentes en la base de datos.
      */
     public List<String> buscarNombresMotivosCambiosCargos();
+
     /**
-     * Método encargado de verificar si hay al menos una VigenciaCargo asociada a un MotivoCambioCargo.
+     * Método encargado de verificar si hay al menos una VigenciaCargo asociada
+     * a un MotivoCambioCargo.
+     *
      * @param secuencia Secuencia del MotivoCambioCargo
-     * @return Retorna un valor mayor a cero si existe alguna VigenciaCargo asociada a un MotivoCambioCargo.
+     * @return Retorna un valor mayor a cero si existe alguna VigenciaCargo
+     * asociada a un MotivoCambioCargo.
      */
-    public Long verificarBorradoVigenciasCargos(BigInteger secuencia);
+    public BigInteger verificarBorradoVigenciasCargos(BigInteger secuencia);
 }

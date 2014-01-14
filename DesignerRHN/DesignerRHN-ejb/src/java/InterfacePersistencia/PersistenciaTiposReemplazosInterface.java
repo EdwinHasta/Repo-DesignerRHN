@@ -41,14 +41,14 @@ public interface PersistenciaTiposReemplazosInterface {
     public void borrar(TiposReemplazos tiposReemplazos);
 
     /**
-     * Método encargado de buscar un TipoReemplazo con la secuenciaTR dada por
+     * Método encargado de buscar un TipoReemplazo con la secTiposReemplazos dada por
      * parámetro.
      *
-     * @param secuenciaTR Secuencia del TipoReemplazo que se quiere encontrar.
-     * @return Retorna la Moneda identificada con la secuenciaTR dada por
+     * @param secTiposReemplazos Secuencia del TipoReemplazo que se quiere encontrar.
+     * @return Retorna la Moneda identificada con la secTiposReemplazos dada por
      * parámetro.
      */
-    public TiposReemplazos buscarTipoReemplazo(BigInteger secuenciaTR);
+    public TiposReemplazos buscarTipoReemplazo(BigInteger secTiposReemplazos);
 
     /**
      * Método encargado de buscar todos los TiposReemplazos existentes en la
@@ -63,31 +63,31 @@ public interface PersistenciaTiposReemplazosInterface {
      * específica y algúna Encagatura. Adémas de la revisión, cuenta cuantas
      * relaciones existen.
      *
-     * @param secuenciaTR Secuencia de la Moneda.
+     * @param secTiposReemplazos Secuencia de la Moneda.
      * @return Retorna el número de proyectos relacionados con el TipoReemplazo
-     * cuya secuenciaTR coincide con el parámetro.
+     * cuya secTiposReemplazos coincide con el parámetro.
      */
-    public BigInteger contadorEncargaturas(BigInteger secuenciaTR);
+    public BigInteger contadorEncargaturas(BigInteger secTiposReemplazos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoReemplazo
      * específica y algúna contadorProgramacionesTiempos. Adémas de la revisión,
      * cuenta cuantas relaciones existen.
      *
-     * @param secuenciaTR Secuencia de la Moneda.
+     * @param secTiposReemplazos Secuencia de la Moneda.
      * @return Retorna el número de proyectos relacionados con el TipoReemplazo
-     * cuya secuenciaTR coincide con el parámetro.
+     * cuya secTiposReemplazos coincide con el parámetro.
      */
-    public BigInteger contadorProgramacionesTiempos(BigInteger secuenciaTR);
+    public BigInteger contadorProgramacionesTiempos(BigInteger secTiposReemplazos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoReemplazo
      * específica y algúna contadorReemplazos. Adémas de la revisión, cuenta
      * cuantas relaciones existen.
      *
-     * @param secuenciaTR Secuencia de la Moneda.
+     * @param secTiposReemplazos Secuencia de la Moneda.
      * @return Retorna el número de proyectos relacionados con el TipoReemplazo
-     * cuya secuenciaTR coincide con el parámetro.
+     * cuya secTiposReemplazos coincide con el parámetro.
      */
-    public BigInteger contadorReemplazos(BigInteger secuenciaTR);
+    public BigInteger contadorReemplazos(BigInteger secTiposReemplazos);
 }

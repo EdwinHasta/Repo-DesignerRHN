@@ -17,13 +17,15 @@ import javax.persistence.criteria.CriteriaQuery;
 /**
  * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'NormasLaborales'
- * (Para verificar que esta asociado a una VigenciaNormaEmpleado, se realiza la operacion sobre la tabla VigenciasNormasEmpleados)
- * de la base de datos.
+ * (Para verificar que esta asociado a una VigenciaNormaEmpleado, se realiza la
+ * operacion sobre la tabla VigenciasNormasEmpleados) de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 @LocalBean
 public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -62,12 +64,12 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
     }
 
     @Override
-    public Long verificarBorradoNormasLaborales(BigInteger secuencia) {
-        Long retorno = new Long(-1);
+    public BigInteger verificarBorradoNormasLaborales(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vn) FROM VigenciasNormasEmpleados vn WHERE vn.normalaboral.secuencia =:secNormaLaboral ");
             query.setParameter("secNormaLaboral", secuencia);
-            retorno = (Long) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosCambiosSueldos retorno ==" + retorno.intValue());
 
         } catch (Exception e) {

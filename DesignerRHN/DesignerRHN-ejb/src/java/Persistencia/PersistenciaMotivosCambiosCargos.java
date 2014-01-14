@@ -14,14 +14,16 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless.<br> 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'MotivosCambiosCargos'
- * de la base de datos.
- * (Para verificar que esta asociado a una VigenciaCargo, se realiza la operacion sobre la tabla VigenciasCargos)
+ * de la base de datos. (Para verificar que esta asociado a una VigenciaCargo,
+ * se realiza la operacion sobre la tabla VigenciasCargos)
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCambiosCargosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -80,12 +82,12 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     }
 
     @Override
-    public Long verificarBorradoVigenciasCargos(BigInteger secuencia) {
-        Long retorno = new Long(-1);
+    public BigInteger verificarBorradoVigenciasCargos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vc) FROM VigenciasCargos vc WHERE vc.motivocambiocargo.secuencia =:secMotivoCambioCargo");
             query.setParameter("secMotivoCambioCargo", secuencia);
-            retorno = (Long) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosCambiosCargos retorno ==" + retorno.intValue());
 
         } catch (Exception e) {

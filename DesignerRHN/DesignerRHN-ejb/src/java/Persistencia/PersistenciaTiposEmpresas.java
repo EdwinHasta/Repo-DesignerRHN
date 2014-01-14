@@ -6,7 +6,7 @@
 package Persistencia;
 
 import Entidades.TiposEmpresas;
-import InterfaceAdministrar.PersistenciaTiposEmpresasInterface;
+import InterfacePersistencia.PersistenciaTiposEmpresasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;

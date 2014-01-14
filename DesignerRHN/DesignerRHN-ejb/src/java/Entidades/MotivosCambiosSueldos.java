@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -33,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "MotivosCambiosSueldos.findAll", query = "SELECT m FROM MotivosCambiosSueldos m")})
 public class MotivosCambiosSueldos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -40,13 +40,8 @@ public class MotivosCambiosSueldos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 1)
@@ -64,7 +59,7 @@ public class MotivosCambiosSueldos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public MotivosCambiosSueldos(BigInteger secuencia, short codigo, String nombre) {
+    public MotivosCambiosSueldos(BigInteger secuencia, Integer codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -78,11 +73,11 @@ public class MotivosCambiosSueldos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -91,7 +86,7 @@ public class MotivosCambiosSueldos implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getSueldopromedio() {
@@ -112,13 +107,18 @@ public class MotivosCambiosSueldos implements Serializable {
     }
 
     public Boolean getEstadoSueldoPromedio() {
+        if(this.sueldopromedio == null || this.sueldopromedio.equals("N")) {
+            this.estadoSueldoPromedio = false;
+        } else {
+            this.estadoSueldoPromedio = true;
+        }
         return estadoSueldoPromedio;
     }
 
     public void setEstadoSueldoPromedio(Boolean estadoSueldoPromedio) {
         this.estadoSueldoPromedio = estadoSueldoPromedio;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -143,5 +143,5 @@ public class MotivosCambiosSueldos implements Serializable {
     public String toString() {
         return "Entidades.Motivoscambiossueldos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
