@@ -21,37 +21,47 @@ public class AdministrarEventos implements AdministrarEventosInterface {
 
     @EJB
     PersistenciaEventosInterface persistenciaEventos;
-    private Eventos eventoSeleccionado;
-    private Eventos eventos;
-    private List<Eventos> listEventos;
 
-    public void modificarEventos(List<Eventos> listDeportesModificadas) {
-        for (int i = 0; i < listDeportesModificadas.size(); i++) {
+    @Override
+    public void modificarEventos(List<Eventos> listaEventos) {
+        for (int i = 0; i < listaEventos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            eventoSeleccionado = listDeportesModificadas.get(i);
-            persistenciaEventos.editar(eventoSeleccionado);
+            persistenciaEventos.editar(listaEventos.get(i));
         }
     }
 
-    public void borrarEventos(Eventos deportes) {
-        persistenciaEventos.borrar(deportes);
+    @Override
+    public void borrarEventos(List<Eventos> listaEventos) {
+        for (int i = 0; i < listaEventos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaEventos.borrar(listaEventos.get(i));
+        }
     }
 
-    public void crearEventos(Eventos deportes) {
-        persistenciaEventos.crear(deportes);
+    @Override
+    public void crearEventos(List<Eventos> listaEventos) {
+        for (int i = 0; i < listaEventos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaEventos.crear(listaEventos.get(i));
+        }
     }
 
-    public List<Eventos> mostrarEventos() {
+    @Override
+    public List<Eventos> consultarEventos() {
+        List<Eventos> listEventos;
         listEventos = persistenciaEventos.buscarEventos();
         return listEventos;
     }
 
-    public Eventos mostrarEvento(BigInteger secDeportes) {
+    @Override
+    public Eventos consultarEvento(BigInteger secDeportes) {
+        Eventos eventos;
         eventos = persistenciaEventos.buscarEvento(secDeportes);
         return eventos;
     }
 
-    public BigInteger verificarBorradoVigenciasEventos(BigInteger secuenciaEventos) {
+    @Override
+    public BigInteger verificarVigenciasEventos(BigInteger secuenciaEventos) {
         BigInteger verificadorVigenciasEventos = null;
         try {
             System.err.println("Secuencia VigenciasEventos " + secuenciaEventos);

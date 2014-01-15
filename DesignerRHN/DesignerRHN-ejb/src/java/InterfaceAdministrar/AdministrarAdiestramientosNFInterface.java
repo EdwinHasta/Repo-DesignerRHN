@@ -15,5 +15,5 @@ public interface AdministrarAdiestramientosNFInterface {
      * Método encargado de recuperar todos los AdiestramientosNF.
      * @return Retorna una lista de AdiestramientosNF.
      */
-    public List<AdiestramientosNF> adiestramientosNF();
+    public List<AdiestramientosNF> consultarAdiestramientosNF();
 }

@@ -6,7 +6,6 @@
 package InterfaceAdministrar;
 
 import Entidades.SoActosInseguros;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -18,15 +17,53 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarSoActosInsegurosInterface {
 
-    public void modificarSoActosInseguros(List<SoActosInseguros> listSoActosInsegurosPModificada);
+    /**
+     * Método encargado de modificar SoActosInseguros.
+     *
+     * @param listaSoActosInseguros Lista SoActosInseguros que se van a
+     * modificar.
+     */
+    public void modificarSoActosInseguros(List<SoActosInseguros> listaSoActosInseguros);
 
-    public void borrarSoActosInseguros(SoActosInseguros soActosInseguros);
+    /**
+     * Método encargado de borrar SoActosInseguros.
+     *
+     * @param listaSoActosInseguros Lista SoActosInseguros que se van a borrar.
+     *
+     */
+    public void borrarSoActosInseguros(List<SoActosInseguros> listaSoActosInseguros);
 
-    public void crearSoActosInseguros(SoActosInseguros soActosInseguros);
+    /**
+     * Método encargado de crear SoActosInseguros.
+     *
+     * @param listaSoActosInseguros Lista SoActosInseguros que se van a crear.
+     *
+     */
+    public void crearSoActosInseguros(List<SoActosInseguros> listaSoActosInseguros);
 
-    public List<SoActosInseguros> mostrarSoActosInseguros();
+    /**
+     * Metodo encargado de traer todas las SoActosInseguros de la base de datos.
+     *
+     * @return Lista de SoActosInseguros.
+     */
+    public List<SoActosInseguros> consultarSoActosInseguros();
 
-    public SoActosInseguros mostrarSoActoInseguro(BigInteger secSoCondicionesAmbientalesP);
+    /**
+     * Método encargado de recuperar un SoActosInseguros dada su secuencia.
+     *
+     * @param secSoActoInseguro Secuencia del SoActoInseguro.
+     * @return Retorna el SoActoInseguro cuya secuencia coincida con el valor
+     * del parámetro.
+     */
+    public SoActosInseguros consultarSoActoInseguro(BigInteger secSoActoInseguro);
 
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
+    /**
+     * Método encargado de contar la cantidad de SoAccidentesMedicos
+     * relacionadas con un SoActoInseguro específico.
+     *
+     * @param secSoActoInseguro Secuencia del SoActoInseguro.
+     * @return Retorna un número indicando la cantidad de SoAccidentesMedicos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secSoActoInseguro);
 }

@@ -15,7 +15,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -1066,19 +1065,19 @@ public class ControlBetaCentrosCostos implements Serializable {
                 //  System.out.println("ControlBetaCC contadorEstructuras " + contadorEstructuras);
                 contadorDetallesCCDetalle = administrarCentroCostos.contadorDetalleContable(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC: contadorDetallesCCDetalle" + contadorDetallesCCDetalle);
-                contadorInterconCondor = administrarCentroCostos.contadorInterconCondor(listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                contadorInterconCondor = administrarCentroCostos.contadorInterConCondor(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
-                contadorInterconDynamics = administrarCentroCostos.contadorInterconDynamics(listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                contadorInterconDynamics = administrarCentroCostos.contadorInterConDynamics(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
-                contadorInterconGeneral = administrarCentroCostos.contadorInterconGeneral(listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                contadorInterconGeneral = administrarCentroCostos.contadorInterConGeneral(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
-                contadorInterconHelisa = administrarCentroCostos.contadorInterconHelisa(listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                contadorInterconHelisa = administrarCentroCostos.contadorInterConHelisa(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 //            System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
-                contadorInterconSapbo = administrarCentroCostos.contadorInterconSapbo(listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                contadorInterconSapbo = administrarCentroCostos.contadorInterConSapbo(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 //            System.out.println("ControlBetaCC: contadorInterconSapbo" + contadorInterconSapbo);
-                contadorInterconSiigo = administrarCentroCostos.contadorInterconSiigo(listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                contadorInterconSiigo = administrarCentroCostos.contadorInterConSiigo(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 //          System.out.println("ControlBetaCC:contadorInterconSiigo" + contadorInterconSiigo);
-                contadorInterconTotal = administrarCentroCostos.contadorInterconTotal(listCentrosCostosPorEmpresa.get(index).getSecuencia());
+                contadorInterconTotal = administrarCentroCostos.contadorInterConTotal(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 //          System.out.println("ControlBetaCC: contadorInterconTotal" + contadorInterconTotal);
                 contadorNovedadesD = administrarCentroCostos.contadorNovedadesD(listCentrosCostosPorEmpresa.get(index).getSecuencia());
                 ///          System.out.println("ControlBetaCC: contadorNovedadesD " + contadorNovedadesD);
@@ -1116,19 +1115,19 @@ public class ControlBetaCentrosCostos implements Serializable {
                 //       System.out.println("ControlBetaCC contadorEstructuras " + contadorEstructuras);
                 contadorDetallesCCDetalle = administrarCentroCostos.contadorDetalleContable(filtrarCentrosCostos.get(index).getSecuencia());
                 //     System.out.println("ControlBetaCC: contadorDetallesCCDetalle" + contadorDetallesCCDetalle);
-                contadorInterconCondor = administrarCentroCostos.contadorInterconCondor(filtrarCentrosCostos.get(index).getSecuencia());
+                contadorInterconCondor = administrarCentroCostos.contadorInterConCondor(filtrarCentrosCostos.get(index).getSecuencia());
                 //   System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
-                contadorInterconDynamics = administrarCentroCostos.contadorInterconDynamics(filtrarCentrosCostos.get(index).getSecuencia());
+                contadorInterconDynamics = administrarCentroCostos.contadorInterConDynamics(filtrarCentrosCostos.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
-                contadorInterconGeneral = administrarCentroCostos.contadorInterconGeneral(filtrarCentrosCostos.get(index).getSecuencia());
+                contadorInterconGeneral = administrarCentroCostos.contadorInterConGeneral(filtrarCentrosCostos.get(index).getSecuencia());
                 //System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
-                contadorInterconHelisa = administrarCentroCostos.contadorInterconHelisa(filtrarCentrosCostos.get(index).getSecuencia());
+                contadorInterconHelisa = administrarCentroCostos.contadorInterConHelisa(filtrarCentrosCostos.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
-                contadorInterconSapbo = administrarCentroCostos.contadorInterconSapbo(filtrarCentrosCostos.get(index).getSecuencia());
+                contadorInterconSapbo = administrarCentroCostos.contadorInterConSapbo(filtrarCentrosCostos.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC: contadorInterconSapbo" + contadorInterconSapbo);
-                contadorInterconSiigo = administrarCentroCostos.contadorInterconSiigo(filtrarCentrosCostos.get(index).getSecuencia());
+                contadorInterconSiigo = administrarCentroCostos.contadorInterConSiigo(filtrarCentrosCostos.get(index).getSecuencia());
                 //        System.out.println("ControlBetaCC:contadorInterconSiigo" + contadorInterconSiigo);
-                contadorInterconTotal = administrarCentroCostos.contadorInterconTotal(filtrarCentrosCostos.get(index).getSecuencia());
+                contadorInterconTotal = administrarCentroCostos.contadorInterConTotal(filtrarCentrosCostos.get(index).getSecuencia());
                 //       System.out.println("ControlBetaCC: contadorInterconTotal" + contadorInterconTotal);
                 contadorNovedadesD = administrarCentroCostos.contadorNovedadesD(filtrarCentrosCostos.get(index).getSecuencia());
                 //       System.out.println("ControlBetaCC: contadorNovedadesD " + contadorNovedadesD);
@@ -1277,10 +1276,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarCentrosCostos.isEmpty()) {
-                for (int i = 0; i < borrarCentrosCostos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarCentroCostos.borrarCentroCostos(borrarCentrosCostos.get(i));
-                }
+                administrarCentroCostos.borrarCentroCostos(borrarCentrosCostos);
                 //mostrarBorrados
                 registrosBorrados = borrarCentrosCostos.size();
                 context.update("form:mostrarBorrados");
@@ -1288,20 +1284,11 @@ public class ControlBetaCentrosCostos implements Serializable {
                 borrarCentrosCostos.clear();
             }
             if (!crearCentrosCostos.isEmpty()) {
-                for (int i = 0; i < crearCentrosCostos.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarCentroCostos.crearCentroCostos(crearCentrosCostos.get(i));
-
-                }
+                administrarCentroCostos.crearCentroCostos(crearCentrosCostos);
                 crearCentrosCostos.clear();
             }
             if (!modificarCentrosCostos.isEmpty()) {
-                for (int i = 0; i < modificarCentrosCostos.size(); i++) {
-                    System.out.println("Modificando...");
-                    System.out.println("Mano de obra " + modificarCentrosCostos.get(i).getManoobra());
-                    administrarCentroCostos.modificarCentroCostos(modificarCentrosCostos.get(i));
-                }
+                administrarCentroCostos.modificarCentroCostos(modificarCentrosCostos);
                 modificarCentrosCostos.clear();
             }
             System.out.println("Se guardaron los datos con exito");
@@ -1420,7 +1407,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                         empresaSeleccionada = getListaEmpresas().get(indiceEmpresaMostrada);
                         getListCentrosCostosPorEmpresaBoton();
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: empresaSeleccionada = " + empresaSeleccionada.getNombre());
-                        listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                        listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: Empresa cambio a: " + empresaSeleccionada.getNombre());
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:nombreEmpresa");
@@ -1436,7 +1423,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                         empresaSeleccionada = getListaEmpresas().get(indiceEmpresaMostrada);
                         getListCentrosCostosPorEmpresaBoton();
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: empresaSeleccionada = " + empresaSeleccionada.getNombre());
-                        listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                        listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: Empresa cambio a: " + empresaSeleccionada.getNombre());
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:nombreEmpresa");
@@ -1694,12 +1681,12 @@ public class ControlBetaCentrosCostos implements Serializable {
             if (empresaSeleccionada == null) {
                 getEmpresaSeleccionada();
                 if (listCentrosCostosPorEmpresa == null) {
-                    listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                    listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                 } else {
                     System.out.println(".-.");
                 }
             } else if (listCentrosCostosPorEmpresa == null) {
-                listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
             }
             return listCentrosCostosPorEmpresa;
         } catch (Exception e) {
@@ -1711,7 +1698,7 @@ public class ControlBetaCentrosCostos implements Serializable {
     public List<CentrosCostos> getListCentrosCostosPorEmpresaBoton() {
         try {
             if (listCentrosCostosPorEmpresaBoton == null) {
-                //listCentrosCostosPorEmpresaBoton = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                //listCentrosCostosPorEmpresaBoton = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                 listCentrosCostosPorEmpresaBoton = listCentrosCostosPorEmpresa;
             }
             return listCentrosCostosPorEmpresaBoton;
@@ -1758,7 +1745,7 @@ public class ControlBetaCentrosCostos implements Serializable {
 
     public List<TiposCentrosCostos> getListaTiposCentrosCostos() {
         if (listaTiposCentrosCostos == null) {
-            listaTiposCentrosCostos = administrarCentroCostos.buscarTiposCentrosCostos();
+            listaTiposCentrosCostos = administrarCentroCostos.lovTiposCentrosCostos();
         }
         return listaTiposCentrosCostos;
     }

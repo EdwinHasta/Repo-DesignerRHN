@@ -345,9 +345,9 @@ public class ControlEvalEvaluadores implements Serializable {
         BigInteger borradoVC = new BigInteger("-1");
         try {
             if (tipoLista == 0) {
-                borradoVC = administrarEvalEvaluadores.verificarBorradoEP(listEvalEvaluadores.get(index).getSecuencia());
+                borradoVC = administrarEvalEvaluadores.verificarEvalPruebas(listEvalEvaluadores.get(index).getSecuencia());
             } else {
-                borradoVC = administrarEvalEvaluadores.verificarBorradoEP(filtrarEvalEvaluadores.get(index).getSecuencia());
+                borradoVC = administrarEvalEvaluadores.verificarEvalPruebas(filtrarEvalEvaluadores.get(index).getSecuencia());
             }
             if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -372,10 +372,7 @@ public class ControlEvalEvaluadores implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Motivos Contratos");
             if (!borrarEvalEvaluadores.isEmpty()) {
-                for (int i = 0; i < borrarEvalEvaluadores.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarEvalEvaluadores.borrarEvalEvaluadores(borrarEvalEvaluadores.get(i));
-                }
+                administrarEvalEvaluadores.borrarEvalEvaluadores(borrarEvalEvaluadores);
                 //mostrarBorrados
                 registrosBorrados = borrarEvalEvaluadores.size();
                 context.update("form:mostrarBorrados");
@@ -383,12 +380,7 @@ public class ControlEvalEvaluadores implements Serializable {
                 borrarEvalEvaluadores.clear();
             }
             if (!crearEvalEvaluadores.isEmpty()) {
-                for (int i = 0; i < crearEvalEvaluadores.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarEvalEvaluadores.crearEvalEvaluadores(crearEvalEvaluadores.get(i));
-
-                }
+                administrarEvalEvaluadores.crearEvalEvaluadores(crearEvalEvaluadores);
                 crearEvalEvaluadores.clear();
             }
             if (!modificarEvalEvaluadores.isEmpty()) {
@@ -687,7 +679,7 @@ public class ControlEvalEvaluadores implements Serializable {
     //***/*/*/*/*-*-*--*/-*/-*/*-/*/*/*/-*/-*/-*/-*/*/-*/**/****----*///**-----
     public List<EvalEvaluadores> getListEvalEvaluadores() {
         if (listEvalEvaluadores == null) {
-            listEvalEvaluadores = administrarEvalEvaluadores.mostrarEvalEvaluadores();
+            listEvalEvaluadores = administrarEvalEvaluadores.consultarEvalEvaluadores();
         }
         return listEvalEvaluadores;
     }

@@ -402,10 +402,7 @@ public class ControlEvalDimensiones implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones EvalDimensiones");
             if (!borrarEvalDimensiones.isEmpty()) {
-                for (int i = 0; i < borrarEvalDimensiones.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarEvalDimensiones.borrarEvalDimensiones(borrarEvalDimensiones.get(i));
-                }
+                administrarEvalDimensiones.borrarEvalDimensiones(borrarEvalDimensiones);
                 //mostrarBorrados
                 registrosBorrados = borrarEvalDimensiones.size();
                 context.update("form:mostrarBorrados");
@@ -413,12 +410,7 @@ public class ControlEvalDimensiones implements Serializable {
                 borrarEvalDimensiones.clear();
             }
             if (!crearEvalDimensiones.isEmpty()) {
-                for (int i = 0; i < crearEvalDimensiones.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarEvalDimensiones.crearEvalDimensiones(crearEvalDimensiones.get(i));
-
-                }
+                administrarEvalDimensiones.crearEvalDimensiones(crearEvalDimensiones);
                 crearEvalDimensiones.clear();
             }
             if (!modificarEvalDimensiones.isEmpty()) {
@@ -717,7 +709,7 @@ public class ControlEvalDimensiones implements Serializable {
 
     public List<EvalDimensiones> getListEvalDimensiones() {
         if (listEvalDimensiones == null) {
-            listEvalDimensiones = administrarEvalDimensiones.mostrarEvalDimensiones();
+            listEvalDimensiones = administrarEvalDimensiones.consultarEvalDimensiones();
         }
         return listEvalDimensiones;
     }

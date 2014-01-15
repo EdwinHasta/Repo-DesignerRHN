@@ -22,36 +22,46 @@ public class AdministrarEvalDimensiones implements AdministrarEvalDimensionesInt
 
     @EJB
     PersistenciaEvalDimensionesInterface persistenciaTiposCentrosCostos;
-    private EvalDimensiones evalDimensionesSeleccionado;
-    private EvalDimensiones evalDimensiones;
-    private List<EvalDimensiones> listEvalDimensiones;
 
-    public void modificarEvalDimensiones(List<EvalDimensiones> listTiposEntidadesModificadas) {
-        for (int i = 0; i < listTiposEntidadesModificadas.size(); i++) {
+    @Override
+    public void modificarEvalDimensiones(List<EvalDimensiones> listaEvalDimensiones) {
+        for (int i = 0; i < listaEvalDimensiones.size(); i++) {
             System.out.println("Administrar Modificando...");
-            evalDimensionesSeleccionado = listTiposEntidadesModificadas.get(i);
-            persistenciaTiposCentrosCostos.editar(evalDimensionesSeleccionado);
+            persistenciaTiposCentrosCostos.editar(listaEvalDimensiones.get(i));
         }
     }
 
-    public void borrarEvalDimensiones(EvalDimensiones tipoCentroCosto) {
-        persistenciaTiposCentrosCostos.borrar(tipoCentroCosto);
+    @Override
+    public void borrarEvalDimensiones(List<EvalDimensiones> listaEvalDimensiones) {
+        for (int i = 0; i < listaEvalDimensiones.size(); i++) {
+            System.out.println("Administrar Modificando...");
+            persistenciaTiposCentrosCostos.borrar(listaEvalDimensiones.get(i));
+        }
     }
 
-    public void crearEvalDimensiones(EvalDimensiones tiposCentrosCostos) {
-        persistenciaTiposCentrosCostos.crear(tiposCentrosCostos);
+    @Override
+    public void crearEvalDimensiones(List<EvalDimensiones> listaEvalDimensiones) {
+        for (int i = 0; i < listaEvalDimensiones.size(); i++) {
+            System.out.println("Administrar Modificando...");
+            persistenciaTiposCentrosCostos.crear(listaEvalDimensiones.get(i));
+        }
     }
 
-    public EvalDimensiones buscarEvalDimension(BigInteger secTipoCentrosCostos) {
+    @Override
+    public EvalDimensiones consultarEvalDimension(BigInteger secTipoCentrosCostos) {
+        EvalDimensiones evalDimensiones;
         evalDimensiones = persistenciaTiposCentrosCostos.buscarEvalDimension(secTipoCentrosCostos);
         return evalDimensiones;
     }
 
-    public List<EvalDimensiones> mostrarEvalDimensiones() {
+    @Override
+    public List<EvalDimensiones> consultarEvalDimensiones() {
+        List<EvalDimensiones> listEvalDimensiones;
         listEvalDimensiones = persistenciaTiposCentrosCostos.buscarEvalDimensiones();
         return listEvalDimensiones;
     }
 
+    @Override
     public BigInteger verificarEvalPlanillas(BigInteger secuenciaTiposAuxilios) {
         BigInteger verificarEvalPlanillas = null;
         try {

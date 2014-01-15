@@ -398,7 +398,7 @@ public class ControlEmplAcumulados implements Serializable {
     //-----------------------------------------------------------------------------
     public Empleados getEmpleadoSeleccionado() {
         if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarEmplAcumulados.mostrarEmpleado(secuenciaEmpleado);
+            empleadoSeleccionado = administrarEmplAcumulados.consultarEmpleado(secuenciaEmpleado);
         }
         return empleadoSeleccionado;
     }
@@ -410,7 +410,7 @@ public class ControlEmplAcumulados implements Serializable {
     public List<VWAcumulados> getListVWAcumuladosPorEmpleado() {
         try {
             if (listVWAcumuladosPorEmpleado == null) {
-                listVWAcumuladosPorEmpleado = administrarEmplAcumulados.mostrarVWAcumuladosPorEmpleado(secuenciaEmpleado);
+                listVWAcumuladosPorEmpleado = administrarEmplAcumulados.consultarVWAcumuladosPorEmpleado(secuenciaEmpleado);
             }
         } catch (Exception e) {
             listVWAcumuladosPorEmpleado = null;

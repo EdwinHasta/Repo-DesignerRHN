@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package InterfaceAdministrar;
 
 import Entidades.Ciudades;
@@ -18,13 +17,68 @@ import javax.ejb.Local;
  */
 @Local
 public interface AdministrarJuzgadosInterface {
-     public List<Ciudades> buscarCiudades();
 
-    public void modificarJuzgados(Juzgados juzgados);
-    public void borrarJuzgados(Juzgados juzgados);
-    public void crearJuzgados(Juzgados juzgados) ;
-    public List<Juzgados> buscarJuzgadosPorCiudad(BigInteger secCiudad) ;
-    public List<Juzgados> buscarJuzgadosPorCiudadGeneral();
-    public BigInteger verificarEerPrestamos(BigInteger secuenciaJuzgados);
+    /**
+     * Método encargado de recuperar las Ciudades necesarias para la lista de
+     * valores.
+     *
+     * @return Retorna una lista de Ciudades.
+     */
+    public List<Ciudades> consultarLOVCiudades();
+
+    /**
+     * Método encargado de modificar Juzgados.
+     *
+     * @param listaJuzgados Lista Juzgados que se van a modificar.
+     */
+    public void modificarJuzgados(List<Juzgados> listaJuzgados);
+
+    /**
+     * Método encargado de borrar Juzgados.
+     *
+     * @param listaJuzgados Lista Juzgados que se van a borrar.
+     */
+    public void borrarJuzgados(List<Juzgados> listaJuzgados);
+
+    /**
+     * Método encargado de crear Juzgados.
+     *
+     * @param listaJuzgados Lista Juzgados que se van a crear.
+     */
+    public void crearJuzgados(List<Juzgados> listaJuzgados);
+
+    /**
+     * Metodo Encargado de traer las Juzgados de una Ciudad Especifica.
+     *
+     * @param secCiudad Secuencia de las Ciuades.
+     * @return Lista de Juzgados.
+     */
+    public List<Juzgados> consultarJuzgadosPorCiudad(BigInteger secCiudad);
+
+    /**
+     * Método encargado de recuperar los Juzgados necesarias para la lista de
+     * valores.
+     *
+     * @return Retorna una lista de Juzgados.
+     */
+    public List<Juzgados> LOVJuzgadosPorCiudadGeneral();
+
+    /**
+     * Método encargado de contar la cantidad de EerPrestamos relacionadas con
+     * un Juzgado específico.
+     *
+     * @param secJuzgados Secuencia del Juzgados.
+     * @return Retorna un número indicando la cantidad de EerPrestamos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarEerPrestamos(BigInteger secJuzgados);
+
+    /**
+     * Metodo encargado de revisar si la cadena ingresada es un numero o una
+     * letra
+     *
+     * @param cadena
+     * @return Retorna true si es numero o false si es una letra
+     */
     public boolean isNumeric(String cadena);
 }

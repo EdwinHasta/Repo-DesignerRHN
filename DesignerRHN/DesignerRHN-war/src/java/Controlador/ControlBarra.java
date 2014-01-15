@@ -67,15 +67,15 @@ public class ControlBarra implements Serializable {
     }
 
     public void contarLiquidados() {
-        totalEmpleadosLiquidados = administrarBarra.empleadosLiquidados();
+        totalEmpleadosLiquidados = administrarBarra.contarEmpleadosLiquidados();
         RequestContext.getCurrentInstance().update("form:empleadosLiquidados");
     }
 
     public void liquidar() {
         RequestContext context = RequestContext.getCurrentInstance();
         empezar = true;
-        usuarioBD = administrarBarra.usuarioBD();
-        permisoParaLiquidar = administrarBarra.permisosLiquidar(usuarioBD);
+        usuarioBD = administrarBarra.consultarUsuarioBD();
+        permisoParaLiquidar = administrarBarra.verificarPermisosLiquidar(usuarioBD);
         if (permisoParaLiquidar == true) {
             administrarBarra.inicializarParametrosEstados();
             administrarBarra.liquidarNomina();
@@ -185,13 +185,13 @@ public class ControlBarra implements Serializable {
         if (parametroEstructura != null) {
             liquidacionesCerradas = administrarBarra.liquidacionesCerradas(formatoFecha.format(parametroEstructura.getFechadesdecausado()), formatoFecha.format(parametroEstructura.getFechahastacausado()));
         }
-        liquidacionesAbiertas = administrarBarra.preNomina();
+        liquidacionesAbiertas = administrarBarra.consultarPreNomina();
         context.update("form:datosLiquidacionesCerradas");
         context.update("form:datosLiquidacionesAbiertas");
     }
 
     public void consultarEstadoDatos() {
-        if (parametroEstructura != null && administrarBarra.estadoConsultaDatos(parametroEstructura.getEstructura().getOrganigrama().getEmpresa().getSecuencia()).equals("S")) {
+        if (parametroEstructura != null && administrarBarra.consultarEstadoConsultaDatos(parametroEstructura.getEstructura().getOrganigrama().getEmpresa().getSecuencia()).equals("S")) {
             consultarDatos();
         }
     }
@@ -299,7 +299,7 @@ public class ControlBarra implements Serializable {
     //GETTER AND SETTER
 
     public Integer getTotalEmpleadosParaLiquidar() {
-        totalEmpleadosParaLiquidar = administrarBarra.empleadosParaLiquidar();
+        totalEmpleadosParaLiquidar = administrarBarra.contarEmpleadosParaLiquidar();
         if (totalEmpleadosParaLiquidar == 0) {
             botonLiquidar = true;
         } else {
@@ -323,7 +323,7 @@ public class ControlBarra implements Serializable {
     public Integer getBarra() {
         if (empezar == true) {
             RequestContext context = RequestContext.getCurrentInstance();
-            String estado = administrarBarra.estadoLiquidacion(usuarioBD);
+            String estado = administrarBarra.consultarEstadoLiquidacion(usuarioBD);
             if (preparandoDatos == true) {
                 barra = 101;
                 context.update("form:barra");
@@ -338,7 +338,7 @@ public class ControlBarra implements Serializable {
                 if (barra == null) {
                     barra = 0;
                 } else {
-                    barra = administrarBarra.progresoLiquidacion(totalEmpleadosParaLiquidar);
+                    barra = administrarBarra.consultarProgresoLiquidacion(totalEmpleadosParaLiquidar);
                     if (!estado.equalsIgnoreCase("FINALIZADO")) {
                         if (barra >= 100) {
                             barra = 100;
@@ -400,7 +400,7 @@ public class ControlBarra implements Serializable {
 
     public ParametrosEstructuras getParametroEstructura() {
         if (parametroEstructura == null) {
-            parametroEstructura = administrarBarra.parametrosLiquidacion();
+            parametroEstructura = administrarBarra.consultarParametrosLiquidacion();
         }
         return parametroEstructura;
     }

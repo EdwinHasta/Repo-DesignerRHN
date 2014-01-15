@@ -381,10 +381,7 @@ public class ControlIdiomas implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando GuardarIdiomas");
             if (!borrarIdiomas.isEmpty()) {
-                for (int i = 0; i < borrarIdiomas.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarIdiomas.borrarIdiomas(borrarIdiomas.get(i));
-                }
+                administrarIdiomas.borrarIdiomas(borrarIdiomas);
                 //mostrarBorrados
                 registrosBorrados = borrarIdiomas.size();
                 context.update("form:mostrarBorrados");
@@ -392,12 +389,8 @@ public class ControlIdiomas implements Serializable {
                 borrarIdiomas.clear();
             }
             if (!crearIdiomas.isEmpty()) {
-                for (int i = 0; i < crearIdiomas.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarIdiomas.crearIdiomas(crearIdiomas.get(i));
-
-                }
+                System.out.println("Creando...");
+                administrarIdiomas.crearIdiomas(crearIdiomas);
                 crearIdiomas.clear();
             }
             if (!modificarIdiomas.isEmpty()) {
@@ -471,7 +464,7 @@ public class ControlIdiomas implements Serializable {
                 contador++;
             }
         }
-        if (nuevoIdioma.getNombre() == (null)||nuevoIdioma.getNombre().equals(" ")) {
+        if (nuevoIdioma.getNombre() == (null) || nuevoIdioma.getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 

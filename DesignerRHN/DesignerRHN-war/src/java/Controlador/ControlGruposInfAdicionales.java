@@ -365,9 +365,9 @@ public class ControlGruposInfAdicionales implements Serializable {
         try {
             System.err.println("Control Secuencia de verificarBorrado  a borrar");
             if (tipoLista == 0) {
-                vigenciasEstadosAficilaciones = administrarGruposInfAdicionales.verificadorInformacionesAdicionales(listGruposInfAdicionales.get(index).getSecuencia());
+                vigenciasEstadosAficilaciones = administrarGruposInfAdicionales.verificarInformacionesAdicionales(listGruposInfAdicionales.get(index).getSecuencia());
             } else {
-                vigenciasEstadosAficilaciones = administrarGruposInfAdicionales.verificadorInformacionesAdicionales(filtrarGruposInfAdicionales.get(index).getSecuencia());
+                vigenciasEstadosAficilaciones = administrarGruposInfAdicionales.verificarInformacionesAdicionales(filtrarGruposInfAdicionales.get(index).getSecuencia());
             }
             if (vigenciasEstadosAficilaciones.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -404,10 +404,8 @@ public class ControlGruposInfAdicionales implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando GruposInfAdicionales");
             if (!borrarGruposInfAdicionales.isEmpty()) {
-                for (int i = 0; i < borrarGruposInfAdicionales.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarGruposInfAdicionales.borrarGruposInfAdicionales(borrarGruposInfAdicionales.get(i));
-                }
+             administrarGruposInfAdicionales.borrarGruposInfAdicionales(borrarGruposInfAdicionales);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarGruposInfAdicionales.size();
                 context.update("form:mostrarBorrados");
@@ -415,12 +413,7 @@ public class ControlGruposInfAdicionales implements Serializable {
                 borrarGruposInfAdicionales.clear();
             }
             if (!crearGruposInfAdicionales.isEmpty()) {
-                for (int i = 0; i < crearGruposInfAdicionales.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarGruposInfAdicionales.crearGruposInfAdicionales(crearGruposInfAdicionales.get(i));
-
-                }
+               administrarGruposInfAdicionales.crearGruposInfAdicionales(crearGruposInfAdicionales);
                 crearGruposInfAdicionales.clear();
             }
             if (!modificarGruposInfAdicionales.isEmpty()) {
@@ -737,7 +730,7 @@ public class ControlGruposInfAdicionales implements Serializable {
 
     public List<GruposInfAdicionales> getListGruposInfAdicionales() {
         if (listGruposInfAdicionales == null) {
-            listGruposInfAdicionales = administrarGruposInfAdicionales.mostrarGruposInfAdicionales();
+            listGruposInfAdicionales = administrarGruposInfAdicionales.consultarGruposInfAdicionales();
         }
         return listGruposInfAdicionales;
     }

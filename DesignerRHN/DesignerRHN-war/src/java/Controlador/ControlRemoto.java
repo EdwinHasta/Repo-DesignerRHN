@@ -179,13 +179,13 @@ public class ControlRemoto implements Serializable {
         identificacion = trabajador.getEmpleado().getPersona().getNumerodocumento();
 
         try {
-            vwActualesCargos = administrarCarpetaPersonal.ConsultarCargo(secuencia);
+            vwActualesCargos = administrarCarpetaPersonal.consultarActualCargoEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesCargos = null;
         }
 
         try {
-            vwActualesTiposContratos = administrarCarpetaPersonal.ConsultarTipoContrato(secuencia);
+            vwActualesTiposContratos = administrarCarpetaPersonal.consultarActualTipoContratoEmpleado(secuencia);
             fechaActualesTiposContratos = formato.format(vwActualesTiposContratos.getFechaVigencia());
         } catch (Exception e) {
             vwActualesTiposContratos = null;
@@ -193,74 +193,74 @@ public class ControlRemoto implements Serializable {
         }
 
         try {
-            vwActualesNormasEmpleados = administrarCarpetaPersonal.ConsultarNormaLaboral(secuencia);
+            vwActualesNormasEmpleados = administrarCarpetaPersonal.consultarActualNormaLaboralEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesNormasEmpleados = null;
         }
 
         try {
-            vwActualesAfiliacionesSalud = administrarCarpetaPersonal.ConsultarAfiliacionSalud(secuencia);
+            vwActualesAfiliacionesSalud = administrarCarpetaPersonal.consultarActualAfiliacionSaludEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesAfiliacionesSalud = null;
         }
 
         try {
-            vwActualesAfiliacionesPension = administrarCarpetaPersonal.ConsultarAfiliacionPension(secuencia);
+            vwActualesAfiliacionesPension = administrarCarpetaPersonal.consultarActualAfiliacionPensionEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesAfiliacionesPension = null;
         }
 
         try {
-            vwActualesLocalizaciones = administrarCarpetaPersonal.ConsultarLocalizacion(secuencia);
+            vwActualesLocalizaciones = administrarCarpetaPersonal.consultarActualLocalizacionEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesLocalizaciones = null;
         }
 
         try {
-            vwActualesTiposTrabajadores = administrarCarpetaPersonal.ConsultarTipoTrabajador(secuencia);
+            vwActualesTiposTrabajadores = administrarCarpetaPersonal.consultarActualTipoTrabajadorEmpleado(secuencia);
         } catch (Exception e) {
 
             vwActualesTiposTrabajadores = null;
         }
 
         try {
-            vwActualesContratos = administrarCarpetaPersonal.ConsultarContrato(secuencia);
+            vwActualesContratos = administrarCarpetaPersonal.consultarActualContratoEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesContratos = null;
         }
 
         try {
-            vwActualesJornadas = administrarCarpetaPersonal.ConsultarJornada(secuencia);
+            vwActualesJornadas = administrarCarpetaPersonal.consultarActualJornadaEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesJornadas = null;
         }
 
         try {
-            Sueldo = "TOTAL: " + nf.format(administrarCarpetaPersonal.ConsultarSueldo(secuencia));
+            Sueldo = "TOTAL: " + nf.format(administrarCarpetaPersonal.consultarActualSueldoEmpleado(secuencia));
         } catch (Exception e) {
             Sueldo = null;
         }
 
         try {
-            vwActualesReformasLaborales = administrarCarpetaPersonal.ConsultarReformaLaboral(secuencia);
+            vwActualesReformasLaborales = administrarCarpetaPersonal.consultarActualReformaLaboralEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesReformasLaborales = null;
         }
 
         try {
-            vwActualesUbicaciones = administrarCarpetaPersonal.ConsultarUbicacion(secuencia);
+            vwActualesUbicaciones = administrarCarpetaPersonal.consultarActualUbicacionEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesUbicaciones = null;
         }
 
         try {
-            vwActualesFormasPagos = administrarCarpetaPersonal.ConsultarFormaPago(secuencia);
+            vwActualesFormasPagos = administrarCarpetaPersonal.consultarActualFormaPagoEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesFormasPagos = null;
         }
 
         try {
-            vwActualesVigenciasViajeros = administrarCarpetaPersonal.ConsultarTipoViajero(secuencia);
+            vwActualesVigenciasViajeros = administrarCarpetaPersonal.consultarActualTipoViajeroEmpleado(secuencia);
         } catch (Exception e) {
             vwActualesVigenciasViajeros = null;
         }
@@ -273,7 +273,7 @@ public class ControlRemoto implements Serializable {
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "ACTIVO";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
+        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
         if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             vwActualesTiposTrabajadoresesLista = backup;
@@ -306,7 +306,7 @@ public class ControlRemoto implements Serializable {
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "PENSIONADO";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
+        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
         if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             vwActualesTiposTrabajadoresesLista = backup;
@@ -337,7 +337,7 @@ public class ControlRemoto implements Serializable {
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "RETIRADO";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
+        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
         if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             vwActualesTiposTrabajadoresesLista = backup;
@@ -369,7 +369,7 @@ public class ControlRemoto implements Serializable {
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "DISPONIBLE";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
+        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
         if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             vwActualesTiposTrabajadoresesLista = backup;
@@ -498,7 +498,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void mostrarTodos() {
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
+        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
 
         mostrarT = true;
         buscarEmp = false;
@@ -597,7 +597,7 @@ public class ControlRemoto implements Serializable {
 // Carpeta Designer //
     public List<Modulos> getListModulos() {
         if (listModulos == null) {
-            listModulos = administrarCarpetaDesigner.ConsultarModulos();
+            listModulos = administrarCarpetaDesigner.consultarModulos();
             return listModulos;
         } else {
             return listModulos;
@@ -606,7 +606,7 @@ public class ControlRemoto implements Serializable {
 
     public void cambiarTablas() {
         secuenciaMod = selectModulo.getSecuencia();
-        listTablas = administrarCarpetaDesigner.ConsultarTablas(secuenciaMod);
+        listTablas = administrarCarpetaDesigner.consultarTablas(secuenciaMod);
         if (listTablas != null && !listTablas.isEmpty()) {
             buscarTablasLOV = false;
         } else {
@@ -655,7 +655,7 @@ public class ControlRemoto implements Serializable {
         selectTabla = tab;
         System.out.println(selectTabla.getSecuencia());
         BigInteger secuenciaTab = selectTabla.getSecuencia();
-        pantalla = administrarCarpetaDesigner.ConsultarPantalla(secuenciaTab);
+        pantalla = administrarCarpetaDesigner.consultarPantalla(secuenciaTab);
         System.out.println(pantalla.getNombre());
         RequestContext context = RequestContext.getCurrentInstance();
         tablaExportar = "Tablas";
@@ -675,7 +675,7 @@ public class ControlRemoto implements Serializable {
             if (listModulos != null && !listModulos.isEmpty()) {
                 selectModulo = listModulos.get(0);
                 secuenciaMod = selectModulo.getSecuencia();
-                listTablas = administrarCarpetaDesigner.ConsultarTablas(secuenciaMod);
+                listTablas = administrarCarpetaDesigner.consultarTablas(secuenciaMod);
                 if (listTablas != null && !listTablas.isEmpty()) {
                     buscarTablasLOV = false;
                 }
@@ -807,7 +807,7 @@ public class ControlRemoto implements Serializable {
             return vwActualesTiposTrabajadoresesLista;
         } else if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             tipo = "ACTIVO";
-            vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
+            vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
             return vwActualesTiposTrabajadoresesLista;
         } else {
             return vwActualesTiposTrabajadoresesLista = null;
@@ -824,12 +824,12 @@ public class ControlRemoto implements Serializable {
     }
 
     public DetallesEmpresas getDetallesEmpresas() {
-        detallesEmpresas = administrarCarpetaPersonal.ConsultarEmpresa();
+        detallesEmpresas = administrarCarpetaPersonal.consultarDetalleEmpresaUsuario();
         return detallesEmpresas;
     }
 
     public Usuarios getUsuarios() {
-        String alias = administrarCarpetaPersonal.actualUsuario();
+        String alias = administrarCarpetaPersonal.consultarAliasActualUsuario();
         usuarios = administrarCarpetaPersonal.ConsultarUsuario(alias);
         return usuarios;
     }
@@ -980,7 +980,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public List<VWActualesTiposTrabajadores> getBuscarEmplTipo() {
-        buscarEmplTipo = administrarCarpetaPersonal.FiltrarTipoTrabajador(tipo);
+        buscarEmplTipo = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
         return buscarEmplTipo;
     }
 
@@ -1045,7 +1045,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public String getFotoEmpleado() {
-        persona = administrarCarpetaPersonal.buscarFotoPersona(identificacion);
+        persona = administrarCarpetaPersonal.consultarFotoPersona(identificacion);
         if (persona.getPathfoto() == null || persona.getPathfoto().equalsIgnoreCase("N")) {
             fotoEmpleado = "default.jpg";
             return fotoEmpleado;
@@ -1115,7 +1115,7 @@ public class ControlRemoto implements Serializable {
     public void buscarTablas() {
         if (selectModulo != null) {
             filtradoListTablasLOV = null;
-            listTablasLOV = administrarCarpetaDesigner.ConsultarTablas(selectModulo.getSecuencia());
+            listTablasLOV = administrarCarpetaDesigner.consultarTablas(selectModulo.getSecuencia());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:lovTablas");
             context.execute("buscarTablasDialogo.show()");
@@ -1157,7 +1157,7 @@ public class ControlRemoto implements Serializable {
 
     public void mostrarTodo_Tablas() {
         listTablas.clear();
-        listTablas = administrarCarpetaDesigner.ConsultarTablas(selectModulo.getSecuencia());
+        listTablas = administrarCarpetaDesigner.consultarTablas(selectModulo.getSecuencia());
         filterListTablas = null;
         System.out.println("Tamaño: " + listTablas.size());
         mostrarTodasTablas = true;

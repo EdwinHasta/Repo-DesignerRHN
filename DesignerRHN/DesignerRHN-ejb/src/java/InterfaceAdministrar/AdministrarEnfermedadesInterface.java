@@ -17,23 +17,95 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarEnfermedadesInterface {
 
-    public void modificarEnfermedades(List<Enfermedades> listDeportesModificadas);
+    /**
+     * Método encargado de modificar Enfermedades.
+     *
+     * @param listEnfermedades Lista de las Enfermedades que se van a modificar.
+     */
+    public void modificarEnfermedades(List<Enfermedades> listEnfermedades);
 
-    public void borrarEnfermedades(Enfermedades deportes);
+    /**
+     * Método encargado de borrar Enfermedades.
+     *
+     * @param listEnfermedades Lista de las Enfermedades que se van a borrar.
+     */
+    public void borrarEnfermedades(List<Enfermedades> listEnfermedades);
 
-    public void crearEnfermedades(Enfermedades deportes);
+    /**
+     * Método encargado de crear Enfermedades.
+     *
+     * @param listEnfermedades Lista de las Enfermedades que se van a crear.
+     */
+    public void crearEnfermedades(List<Enfermedades> listEnfermedades);
 
-    public List<Enfermedades> mostrarEnfermedades();
+    /**
+     * Método encargado de recuperar una Enfermedad dada su secuencia.
+     *
+     * @param secEnfermedades Secuencia de la Enfermedades.
+     * @return Retorna una Enfermedad cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public Enfermedades consultarEnfermedad(BigInteger secEnfermedades);
 
-    public Enfermedades mostrarEnfermedad(BigInteger secDeportes);
+    /**
+     * Método encargado de recuperar todos las Enfermedades.
+     *
+     * @return Retorna una lista de Enfermedades.
+     */
+    public List<Enfermedades> consultarEnfermedades();
 
-    public BigInteger contadorAusentimos(BigInteger secuenciaTiposAuxilios);
+    /**
+     * Método encargado de validar si existe una relación entre un Enfermedad
+     * específica y algún AccidenteMedico. Adémas de la revisión, cuenta cuantas
+     * relaciones existen.
+     *
+     * @param secEnfermedades Secuencia de una Enfermedad.
+     * @return Retorna el número de proyectos relacionados con una Enfermedad
+     * cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarAusentimos(BigInteger secEnfermedades);
 
-    public BigInteger contadorDetallesLicencias(BigInteger secuenciaTiposAuxilios);
+    /**
+     * Método encargado de validar si existe una relación entre una Enfermedad
+     * específica y algún DetallesLicencias. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEnfermedades Secuencia de una Enfermedad.
+     * @return Retorna el número de DetallesLicencias relacionados con una
+     * Enfermedad cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarDetallesLicencias(BigInteger secEnfermedades);
 
-    public BigInteger contadorEnfermedadesPadecidas(BigInteger secuenciaTiposAuxilios);
+    /**
+     * Método encargado de validar si existe una relación entre una Enfermedad
+     * específica y algún EnfermedadesPadecidas. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEnfermedades Secuencia de una Enfermedad.
+     * @return Retorna el número de EnfermedadesPadecidas relacionados con una
+     * Enfermedad cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarEnfermedadesPadecidas(BigInteger secEnfermedades);
 
-    public BigInteger contadorSoausentismos(BigInteger secuenciaTiposAuxilios);
+    /**
+     * Método encargado de validar si existe una relación entre un Enfermedad
+     * específica y algún SoAusentismos. Adémas de la revisión, cuenta cuantas
+     * relaciones existen.
+     *
+     * @param secEnfermedades Secuencia de una Enfermedad.
+     * @return Retorna el número de SoAusentismos relacionados con una
+     * Enfermedad cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarSoAusentismos(BigInteger secEnfermedades);
 
-    public BigInteger contadorSorevisionessSistemas(BigInteger secuenciaTiposAuxilios);
+    /**
+     * Método encargado de validar si existe una relación entre un Enfermedad
+     * específica y algún SoRevisionesSistemas. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEnfermedades Secuencia de una Enfermedad.
+     * @return Retorna el número de SoRevisionesSistemas relacionados
+     * con una Enfermedad cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarSoRevisionesSistemas(BigInteger secEnfermedades);
 }

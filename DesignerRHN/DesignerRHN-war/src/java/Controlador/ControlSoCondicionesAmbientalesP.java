@@ -395,10 +395,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO SO CONDICIONES AMBIENTALES P");
             if (!borrarSoCondicionesAmbientalesP.isEmpty()) {
-                for (int i = 0; i < borrarSoCondicionesAmbientalesP.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarSoCondicionesAmbientalesP.borrarSoCondicionesAmbientalesP(borrarSoCondicionesAmbientalesP.get(i));
-                }
+                administrarSoCondicionesAmbientalesP.borrarSoCondicionesAmbientalesP(borrarSoCondicionesAmbientalesP);
                 //mostrarBorrados
                 registrosBorrados = borrarSoCondicionesAmbientalesP.size();
                 context.update("form:mostrarBorrados");
@@ -406,12 +403,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                 borrarSoCondicionesAmbientalesP.clear();
             }
             if (!crearSoCondicionesAmbientalesP.isEmpty()) {
-                for (int i = 0; i < crearSoCondicionesAmbientalesP.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarSoCondicionesAmbientalesP.crearSoCondicionesAmbientalesP(crearSoCondicionesAmbientalesP.get(i));
-
-                }
+                administrarSoCondicionesAmbientalesP.crearSoCondicionesAmbientalesP(crearSoCondicionesAmbientalesP);
                 crearSoCondicionesAmbientalesP.clear();
             }
             if (!modificarSoCondicionesAmbientalesP.isEmpty()) {
@@ -709,7 +701,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<SoCondicionesAmbientalesP> getListSoCondicionesAmbientalesP() {
         if (listSoCondicionesAmbientalesP == null) {
-            listSoCondicionesAmbientalesP = administrarSoCondicionesAmbientalesP.mostrarSoCondicionesAmbientalesP();
+            listSoCondicionesAmbientalesP = administrarSoCondicionesAmbientalesP.consultarSoCondicionesAmbientalesP();
         }
         return listSoCondicionesAmbientalesP;
     }

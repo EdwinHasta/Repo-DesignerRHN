@@ -151,7 +151,7 @@ public class CargarArchivoPlano implements Serializable {
 
             listTempNovedades.clear();
             listErrores.clear();
-            
+
             while ((sCadena = bf.readLine()) != null) {
                 tNovedades = new TempNovedades();
 
@@ -395,7 +395,7 @@ public class CargarArchivoPlano implements Serializable {
             insertarNovedadTempNovedades();
             System.out.println("Termino de Insertar");
             listTempNovedades = null;
-            listTempNovedades = administrarCargueArchivos.listaTempNovedades(UsuarioBD.getAlias());
+            listTempNovedades = administrarCargueArchivos.consultarTempNovedades(UsuarioBD.getAlias());
             System.out.println("Termino de traer las tempNovedades para validarlas");
             subTotal = new BigDecimal(0);
             validarNovedades();
@@ -427,8 +427,8 @@ public class CargarArchivoPlano implements Serializable {
     public void validarNovedades() {
         boolean validacion = false;
         List<String> erroresN;
-        documentosSoporteCargados = administrarCargueArchivos.obtenerDocumentosSoporteCargados(UsuarioBD.getAlias());
-        BigInteger secEmpresa = administrarCargueArchivos.empresaParametros(UsuarioBD.getAlias());
+        documentosSoporteCargados = administrarCargueArchivos.consultarDocumentosSoporteCargadosUsuario(UsuarioBD.getAlias());
+        BigInteger secEmpresa = administrarCargueArchivos.consultarParametrosEmpresa(UsuarioBD.getAlias());
         for (int i = 0; i < listTempNovedades.size(); i++) {
             ErroresNovedades errorNovedad = new ErroresNovedades();
             //NUMERO DE ERRORES EN LA FILA
@@ -442,7 +442,7 @@ public class CargarArchivoPlano implements Serializable {
                 //PRIMERA FASE (EXISTENCIA)
                 //VALIDACION EMPLEADO
                 if (listTempNovedades.get(i).getEmpleado() != null) {
-                    validacion = administrarCargueArchivos.existenciaEmpleado(listTempNovedades.get(i).getEmpleado(), secEmpresa);
+                    validacion = administrarCargueArchivos.verificarEmpleadoEmpresa(listTempNovedades.get(i).getEmpleado(), secEmpresa);
                     if (validacion == false) {
                         errores++;
                         erroresN.add("El código del empleado: " + listTempNovedades.get(i).getEmpleado() + ", no existe.");
@@ -453,7 +453,7 @@ public class CargarArchivoPlano implements Serializable {
                 }
                 //VALIDACION CONCEPTO
                 if (listTempNovedades.get(i).getConcepto() != null) {
-                    validacion = administrarCargueArchivos.existenciaConcepto(listTempNovedades.get(i).getConcepto());
+                    validacion = administrarCargueArchivos.verificarConcepto(listTempNovedades.get(i).getConcepto());
                     if (validacion == false) {
                         errores++;
                         erroresN.add("El concepto: " + listTempNovedades.get(i).getConcepto() + ", no existe.");
@@ -464,7 +464,7 @@ public class CargarArchivoPlano implements Serializable {
                 }
                 //VALIDACION PERIODICIDAD
                 if (listTempNovedades.get(i).getPeriodicidad() != null) {
-                    validacion = administrarCargueArchivos.existenciaPeriodicidad(listTempNovedades.get(i).getPeriodicidad());
+                    validacion = administrarCargueArchivos.verificarPeriodicidad(listTempNovedades.get(i).getPeriodicidad());
                     if (validacion == false) {
                         errores++;
                         erroresN.add("La periodicidad:" + listTempNovedades.get(i).getPeriodicidad() + ", no existe.");
@@ -512,7 +512,7 @@ public class CargarArchivoPlano implements Serializable {
                 }
                 //VALIDAR TERCERO
                 if (listTempNovedades.get(i).getTercero() != null) {
-                    validacion = administrarCargueArchivos.existenciaTercero(listTempNovedades.get(i).getTercero());
+                    validacion = administrarCargueArchivos.verificarTercero(listTempNovedades.get(i).getTercero());
                     if (validacion == false) {
                         errores++;
                         erroresN.add("El codigo del tercero:" + listTempNovedades.get(i).getTercero() + ", no existe.");
@@ -526,14 +526,14 @@ public class CargarArchivoPlano implements Serializable {
             }
             //SEGUNDA ETAPA
             if (errores == 0) {
-                validacion = administrarCargueArchivos.validarTipoEmpleadoActivo(listTempNovedades.get(i).getEmpleado(), secEmpresa);
+                validacion = administrarCargueArchivos.verificarTipoEmpleadoActivo(listTempNovedades.get(i).getEmpleado(), secEmpresa);
                 if (validacion == true) {
-                    Empleados empleado = administrarCargueArchivos.buscarEmpleadoCodigo(listTempNovedades.get(i).getEmpleado(), secEmpresa);
-                    VWActualesTiposTrabajadores vwActualTipoTrabajador = administrarCargueArchivos.buscarTipoTrabajador(empleado.getSecuencia());
-                    VWActualesReformasLaborales vwActualReformaLaboral = administrarCargueArchivos.buscarActualReformaLaboral(empleado.getSecuencia());
-                    VWActualesTiposContratos vwActualTiposContratos = administrarCargueArchivos.buscarActualTipoContrato(empleado.getSecuencia());
+                    Empleados empleado = administrarCargueArchivos.consultarEmpleadoEmpresa(listTempNovedades.get(i).getEmpleado(), secEmpresa);
+                    VWActualesTiposTrabajadores vwActualTipoTrabajador = administrarCargueArchivos.consultarActualTipoTrabajadorEmpleado(empleado.getSecuencia());
+                    VWActualesReformasLaborales vwActualReformaLaboral = administrarCargueArchivos.consultarActualReformaLaboralEmpleado(empleado.getSecuencia());
+                    VWActualesTiposContratos vwActualTiposContratos = administrarCargueArchivos.consultarActualTipoContratoEmpleado(empleado.getSecuencia());
 
-                    Conceptos concepto = administrarCargueArchivos.validarConceptoEmpresa(listTempNovedades.get(i).getConcepto(), empleado.getEmpresa().getSecuencia());
+                    Conceptos concepto = administrarCargueArchivos.verificarConceptoEmpresa(listTempNovedades.get(i).getConcepto(), empleado.getEmpresa().getSecuencia());
                     if (concepto != null) {
                         if (concepto.getActivo().equalsIgnoreCase("S")) {
                             String tipoConcepto = administrarCargueArchivos.determinarTipoConcepto(concepto.getSecuencia());
@@ -598,19 +598,19 @@ public class CargarArchivoPlano implements Serializable {
                                     erroresN.add("El concepto es semi-automatico, por lo tanto valor total no puede estar vacio y debe ser cero (0).");
                                 }
                                 if (usarFormulaConcepto.equals("N")) {
-                                    validacion = administrarCargueArchivos.validarFormulaCargue_Concepto(concepto.getSecuencia(), formulaUsada.getSecuencia());
+                                    validacion = administrarCargueArchivos.verificarFormulaCargueConcepto(concepto.getSecuencia(), formulaUsada.getSecuencia());
                                     if (validacion == false) {
                                         errores++;
                                         erroresN.add("La formula seleccionada para el cargue no coicide con la del concepto.");
                                     }
                                 }
-                                validacion = administrarCargueArchivos.validarNecesidadTercero(concepto.getSecuencia());
+                                validacion = administrarCargueArchivos.verificarNecesidadTercero(concepto.getSecuencia());
                                 if (validacion == true && listTempNovedades.get(i).getTercero() == null) {
                                     errores++;
                                     erroresN.add("El concepto pertenece al grupo 1, por lo tanto es necesario un tercero.");
                                 }
                                 if (listTempNovedades.get(i).getTercero() != null) {
-                                    validacion = administrarCargueArchivos.validarTerceroEmpresaEmpleado(listTempNovedades.get(i).getTercero(), empleado.getEmpresa().getSecuencia());
+                                    validacion = administrarCargueArchivos.verificarTerceroEmpresa(listTempNovedades.get(i).getTercero(), empleado.getEmpresa().getSecuencia());
                                     if (validacion == false) {
                                         errores++;
                                         erroresN.add("El tercero con nit: " + listTempNovedades.get(i).getTercero() + " no existe para la empresa a la cual esta vinculado el empleado.");
@@ -727,13 +727,10 @@ public class CargarArchivoPlano implements Serializable {
 
     public void insertarNovedadTempNovedades() {
         if (!listTempNovedades.isEmpty()) {
-            for (int i = 0; i < listTempNovedades.size(); i++) {
-                administrarCargueArchivos.crearTempNovedades(listTempNovedades.get(i));
-            }
+            administrarCargueArchivos.crearTempNovedades(listTempNovedades);
         }
     }
 
-    //LOV FORMULAS
     public void formulaParaUsar() {
         formulaUsada = formulaSelecionada;
         filtradoFormulas = null;
@@ -852,7 +849,7 @@ public class CargarArchivoPlano implements Serializable {
                 administrarCargueArchivos.cargarTempNovedades(listTempNovedades.get(0).getFechareporte(), formulaUsada.getNombrecorto(), usarFormulaConcepto);
                 int registrosNAntes = listTempNovedades.size();
                 System.out.println("Registros en 'N' antes del cargue: " + registrosNAntes);
-                listTempNovedades = administrarCargueArchivos.listaTempNovedades(UsuarioBD.getAlias());
+                listTempNovedades = administrarCargueArchivos.consultarTempNovedades(UsuarioBD.getAlias());
                 int registrosNDespues = listTempNovedades.size();
                 System.out.println("Registros en 'N' despues del cargue: " + registrosNDespues);
                 diferenciaRegistrosN = registrosNAntes - registrosNDespues;
@@ -882,7 +879,7 @@ public class CargarArchivoPlano implements Serializable {
     public void borrarRegistrosNoCargados() {
         administrarCargueArchivos.borrarRegistrosTempNovedades(UsuarioBD.getAlias());
         listTempNovedades = null;
-        listTempNovedades = administrarCargueArchivos.listaTempNovedades(UsuarioBD.getAlias());
+        listTempNovedades = administrarCargueArchivos.consultarTempNovedades(UsuarioBD.getAlias());
         nombreArchivoPlano = null;
         subTotal = new BigDecimal(0);
         botones = false;
@@ -899,7 +896,7 @@ public class CargarArchivoPlano implements Serializable {
 
     public void reversar() {
         RequestContext context = RequestContext.getCurrentInstance();
-        resultado = administrarCargueArchivos.reversar(UsuarioBD, documentoSoporteReversar);
+        resultado = administrarCargueArchivos.reversarNovedades(UsuarioBD, documentoSoporteReversar);
         documentoSoporteReversar = null;
         context.update("form:documentoR");
         context.execute("reversarDialogo.hide()");
@@ -922,7 +919,7 @@ public class CargarArchivoPlano implements Serializable {
 
     public void confirmarReversar() {
         RequestContext context = RequestContext.getCurrentInstance();
-        documentosSoporteCargados = administrarCargueArchivos.obtenerDocumentosSoporteCargados(UsuarioBD.getAlias());
+        documentosSoporteCargados = administrarCargueArchivos.consultarDocumentosSoporteCargadosUsuario(UsuarioBD.getAlias());
         hs.addAll(documentosSoporteCargados);
         documentosSoporteCargados.clear();
         documentosSoporteCargados.addAll(hs);
@@ -978,7 +975,7 @@ public class CargarArchivoPlano implements Serializable {
         if (UsuarioBD == null) {
             UsuarioBD = administrarCargueArchivos.actualUsuario();
         }
-        listTempNovedades = administrarCargueArchivos.listaTempNovedades(UsuarioBD.getAlias());
+        listTempNovedades = administrarCargueArchivos.consultarTempNovedades(UsuarioBD.getAlias());
 
         return listTempNovedades;
     }
@@ -993,7 +990,7 @@ public class CargarArchivoPlano implements Serializable {
 
     public List<Formulas> getListaFormulas() {
         if (listaFormulas == null) {
-            listaFormulas = administrarCargueArchivos.formulasCargue();
+            listaFormulas = administrarCargueArchivos.consultarFormulasCargue();
         }
         return listaFormulas;
     }
@@ -1040,7 +1037,7 @@ public class CargarArchivoPlano implements Serializable {
 
     public Formulas getFormulaUsada() {
         if (formulaUsada == null) {
-            formulaUsada = administrarCargueArchivos.formulaCargueInicial();
+            formulaUsada = administrarCargueArchivos.consultarFormulaCargueInicial();
         }
         return formulaUsada;
     }
@@ -1079,7 +1076,7 @@ public class CargarArchivoPlano implements Serializable {
 
     public List<String> getDocumentosSoporteCargados() {
         //if (documentosSoporteCargados == null) {
-        documentosSoporteCargados = administrarCargueArchivos.obtenerDocumentosSoporteCargados(UsuarioBD.getAlias());
+        documentosSoporteCargados = administrarCargueArchivos.consultarDocumentosSoporteCargadosUsuario(UsuarioBD.getAlias());
         hs.addAll(documentosSoporteCargados);
         documentosSoporteCargados.clear();
         documentosSoporteCargados.addAll(hs);

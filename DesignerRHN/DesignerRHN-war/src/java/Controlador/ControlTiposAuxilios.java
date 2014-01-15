@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Controlador;
 
 import Entidades.TiposAuxilios;
@@ -405,10 +404,7 @@ public class ControlTiposAuxilios implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO TIPOAUXILIO");
             if (!borrarTiposAuxilios.isEmpty()) {
-                for (int i = 0; i < borrarTiposAuxilios.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposAuxilios.borrarTiposAuxilios(borrarTiposAuxilios.get(i));
-                }
+                administrarTiposAuxilios.borrarTiposAuxilios(borrarTiposAuxilios);
                 //mostrarBorrados
                 registrosBorrados = borrarTiposAuxilios.size();
                 context.update("form:mostrarBorrados");
@@ -416,12 +412,7 @@ public class ControlTiposAuxilios implements Serializable {
                 borrarTiposAuxilios.clear();
             }
             if (!crearTiposAuxilios.isEmpty()) {
-                for (int i = 0; i < crearTiposAuxilios.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposAuxilios.crearTiposAuxilios(crearTiposAuxilios.get(i));
-
-                }
+                administrarTiposAuxilios.crearTiposAuxilios(crearTiposAuxilios);
                 crearTiposAuxilios.clear();
             }
             if (!modificarTiposAuxilios.isEmpty()) {
@@ -715,7 +706,7 @@ public class ControlTiposAuxilios implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<TiposAuxilios> getListTiposAuxilios() {
         if (listTiposAuxilios == null) {
-            listTiposAuxilios = administrarTiposAuxilios.mostrarTiposAuxilios();
+            listTiposAuxilios = administrarTiposAuxilios.consultarTiposAuxilios();
         }
         return listTiposAuxilios;
     }

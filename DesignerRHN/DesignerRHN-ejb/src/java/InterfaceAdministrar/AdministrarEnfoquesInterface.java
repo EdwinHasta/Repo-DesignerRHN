@@ -17,17 +17,51 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarEnfoquesInterface {
 
-    public void modificarEnfoques(List<Enfoques> listEnfoquesModificadas);
+    /**
+     * Método encargado de modificar Enfoques.
+     *
+     * @param listaEnfoques Lista de las Enfoques que se van a modificar.
+     */
+    public void modificarEnfoques(List<Enfoques> listaEnfoques);
 
-    public void borrarEnfoques(Enfoques motivosLocalizaciones);
+    /**
+     * Método encargado de borrar Enfoques.
+     *
+     * @param listaEnfoques Lista de las Enfoques que se van a borrar.
+     */
+    public void borrarEnfoques(List<Enfoques> listaEnfoques);
 
-    public void crearEnfoques(Enfoques motivosLocalizaciones);
+    /**
+     * Método encargado de crear Enfoques.
+     *
+     * @param listaEnfoques Lista de las Enfoques que se van a crear.
+     */
+    public void crearEnfoques(List<Enfoques> listaEnfoques);
 
-    public void buscarEnfoques(Enfoques motivosLocalizaciones);
+    /**
+     * Método encargado de recuperar un Enfoque dada su secuencia.
+     *
+     * @param secEnfoques Secuencia de los Enfoques.
+     * @return Retorna una Enfermedad cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public Enfoques consultarEnfoque(BigInteger secEnfoques);
 
-    public List<Enfoques> mostrarEnfoques();
+    /**
+     * Método encargado de recuperar todos los Enfoques.
+     *
+     * @return Retorna una lista de Enfoques.
+     */
+    public List<Enfoques> consultarEnfoques();
 
-    public Enfoques mostrarEnfoque(BigInteger secEnfoques);
-
-    public BigInteger verificarTiposDetalles(BigInteger secuenciaTiposAuxilios);
+    /**
+     * Método encargado de validar si existe una relación entre un Enfoque
+     * específica y algún TiposDetalles. Adémas de la revisión, cuenta cuantas
+     * relaciones existen.
+     *
+     * @param secEnfoques Secuencia de una Enfoque.
+     * @return Retorna el número de TiposDetalles relacionados con una Enfoque
+     * cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarTiposDetalles(BigInteger secEnfoques);
 }

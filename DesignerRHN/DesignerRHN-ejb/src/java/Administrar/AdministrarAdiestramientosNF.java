@@ -30,7 +30,7 @@ public class AdministrarAdiestramientosNF implements AdministrarAdiestramientosN
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<AdiestramientosNF> adiestramientosNF(){
+    public List<AdiestramientosNF> consultarAdiestramientosNF(){
         return persistenciaAdiestramientosNF.adiestramientosNF();
     }    
 }

@@ -19,17 +19,58 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarHvEntrevistasInterface {
 
-    public void borrarHvEntrevistas(HvEntrevistas hvEntrevistas);
+    /**
+     * Método encargado de modificar HvEntrevistas.
+     *
+     * @param listHvEntrevistas Lista HvEntrevistas que se van a modificar.
+     */
+    public void modificarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas);
 
-    public void crearHvEntrevistas(HvEntrevistas hvEntrevistas);
+    /**
+     * Método encargado de borrar HvEntrevistas.
+     *
+     * @param listHvEntrevistas Lista HvEntrevistas que se van a borrar.
+     */
+    public void borrarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas);
 
-    public void modificarHvEntrevistas(List<HvEntrevistas> listHvEntrevistasModificadas);
+    /**
+     * Método encargado de crear HvEntrevistas.
+     *
+     * @param listHvEntrevistas Lista HvEntrevistas que se van a crear.
+     */
+    public void crearHvEntrevistas(List<HvEntrevistas> listHvEntrevistas);
 
-    public List<HvEntrevistas> MostrarHvEntrevistasPorEmpleado(BigInteger secEmpleado);
+    /**
+     * Metodo Encargado de traer las HvEntrevistas de un Empleado Especifico.
+     *
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Lista de HvEntrevistas.
+     */
+    public List<HvEntrevistas> consultarHvEntrevistasPorEmpleado(BigInteger secEmpleado);
 
-    public HvEntrevistas mostrarHvEntrevista(BigInteger secHvEntrevista);
+    /**
+     * Método encargado de recuperar un HvEntrevista dada su secuencia.
+     *
+     * @param secHvEntrevista Secuencia del HvEntrevista.
+     * @return Retorna un HvEntrevistas cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public HvEntrevistas consultarHvEntrevista(BigInteger secHvEntrevista);
 
-    public Empleados buscarEmpleado(BigInteger secuencia);
+    /**
+     * *
+     * Metodo encargado de buscar un Empleado especifico
+     *
+     * @param secEmpleado Secuencia del Empleado
+     * @return Empleado.
+     */
+    public Empleados buscarEmpleado(BigInteger secEmpleado);
 
+    /**
+     * Metodo encargado de traer las HVHojasDeVida de un empleado especifico
+     *
+     * @param secuencia
+     * @return lista HVHojasDeVida
+     */
     public List<HVHojasDeVida> buscarHVHojasDeVida(BigInteger secuencia);
 }

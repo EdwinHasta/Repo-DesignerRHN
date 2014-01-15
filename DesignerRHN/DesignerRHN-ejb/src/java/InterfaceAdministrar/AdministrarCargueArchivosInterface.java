@@ -23,14 +23,14 @@ import java.util.List;
 public interface AdministrarCargueArchivosInterface {
     /**
      * Método encargado de crear TempNovedades.
-     * @param tnovedad Lista de los TempNovedades que se van a crear.
+     * @param listaTempNovedades Lista de los TempNovedades que se van a crear.
      */
-    public void crearTempNovedades(TempNovedades tnovedad);
+    public void crearTempNovedades(List<TempNovedades> listaTempNovedades);
     /**
-     * Método encargado de editar TempNovedades.
-     * @param tnovedad Lista de los TempNovedades que se van a modificar.
+     * Método encargado de editar la TempNovedad.
+     * @param tempNovedades TempNovedades que se va a modificar.
      */
-    public void modificarTempNovedades(TempNovedades tnovedad);
+    public void modificarTempNovedades(TempNovedades tempNovedades);
     /**
      * Método encargado de borrar todos los RegistrosTempNovedades.
      * @param usuarioBD Lista de los ExtrasRecargos que se van a eliminar.
@@ -47,14 +47,14 @@ public interface AdministrarCargueArchivosInterface {
      * @param usuarioBD Alias del usuario que está usando el aplicativo.
      * @return Retorna la secuencia de la empresa.
      */
-    public BigInteger empresaParametros(String usuarioBD);
+    public BigInteger consultarParametrosEmpresa(String usuarioBD);
     /**
      * Método encargado de recuperar las TempNovedad cuyo ESTADO es igual a 'N' y 
      * esta relacionada con el usuario que entra por parámetro.
      * @param usuarioBD Alias del usuario asociado a la TempNovedad.
      * @return Retorna una lista de TempNovedades.
      */
-    public List<TempNovedades> listaTempNovedades(String usuarioBD);
+    public List<TempNovedades> consultarTempNovedades(String usuarioBD);
     /**
      * Método encargado de averiguar si un empleado específico existe para una empresa.<br>
      * <font color="blue"><strong>PRIMERA ETAPA VALIDACION</strong></font>
@@ -63,28 +63,28 @@ public interface AdministrarCargueArchivosInterface {
      * @return Retorna True si existe el empleado con el código igual al parámetro 'codEmpleado' y pertenece a la 
      * empresa cuya secuencia coincide con el parámetro.
      */
-    public boolean existenciaEmpleado(BigInteger codEmpleado, BigInteger secEmpresa);
+    public boolean verificarEmpleadoEmpresa(BigInteger codEmpleado, BigInteger secEmpresa);
     /**
      * Método encargado de validar que el código que entra por parámetro existe.<br>
      * <font color="blue"><strong>PRIMERA ETAPA VALIDACION</strong></font>
      * @param codConcepto Código del concepto.
      * @return True si el Código está en la base de datos.
      */
-    public boolean existenciaConcepto(BigInteger codConcepto);
+    public boolean verificarConcepto(BigInteger codConcepto);
     /**
      * Método encargado de validar si hay al menos una Periodicidad con el código dado como parámetro.<br>
      * <font color="blue"><strong>PRIMERA ETAPA VALIDACION</strong></font>
      * @param codPeriodicidad Código de la Periodicidad.
      * @return Retorna true si existe alguna Periodicidad con el código dado por parámetro.
      */
-    public boolean existenciaPeriodicidad(BigInteger codPeriodicidad);
+    public boolean verificarPeriodicidad(BigInteger codPeriodicidad);
     /**
      * Método encargado de validar si existe por lo menos un tercero con el nit que entra por parámetro.<br>
      * <font color="blue"><strong>PRIMERA ETAPA VALIDACION</strong></font>
      * @param nitTercero Nit del Tercero.
      * @return Retorna True si existe al menos un Tercero con el nit del parámetro, False de lo contrario.
      */
-    public boolean existenciaTercero(BigInteger nitTercero);
+    public boolean verificarTercero(BigInteger nitTercero);
     /**
      * Método encargado de validar si un Empleado, perteneciente a una empresa específica, esta 'ACTIVO'
      * en el momento de la fechaHasta de la liquidación.<br>
@@ -94,7 +94,7 @@ public interface AdministrarCargueArchivosInterface {
      * @return Retorna True si el empleado, cuyo código es igual al parámetro 'codEmpleado' 
      * y que pertenece a la Empresa cuya secuencia coincide con el parámetro 'secEmpresa', es de tipo 'ACTIVO'.
      */
-    public boolean validarTipoEmpleadoActivo(BigInteger codEmpleado, BigInteger secEmpresa);
+    public boolean verificarTipoEmpleadoActivo(BigInteger codEmpleado, BigInteger secEmpresa);
     /**
      * Método encargado de recuperar un empleado de una empresa específica.
      * <font color="blue"><strong>SEGUNDA ETAPA VALIDACION</strong></font>
@@ -102,38 +102,38 @@ public interface AdministrarCargueArchivosInterface {
      * @param secEmpresa Secuencia de la empresa a la que el usuario pertenecería.
      * @return Retorna el empleado que cumple las características dadas por los parámetros.
      */
-    public Empleados buscarEmpleadoCodigo(BigInteger codEmpleado, BigInteger secEmpresa);
+    public Empleados consultarEmpleadoEmpresa(BigInteger codEmpleado, BigInteger secEmpresa);
     /**
      * Método encargado de recuperar el TipoTrabajador actual de un empleado.
      * El término actual está dado por la fechaHasta de las liquidaciones.
-     * @param secuencia Secuencia del empleado.
+     * @param secEmpleado Secuencia del empleado.
      * @return Retorna una VWActualesTiposTrabajadores con la información del TipoTrabajador actual de un empleado.
      */
-    public VWActualesTiposTrabajadores buscarTipoTrabajador(BigInteger secuencia);
+    public VWActualesTiposTrabajadores consultarActualTipoTrabajadorEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la Reforma Laboral actual de un empleado.
      * El término actual está dado por la fechaHasta de las liquidaciones.
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualAfiliacionPension con la información de  la Reforma Laboral actual de un empleado.
      */
-    public VWActualesReformasLaborales buscarActualReformaLaboral(BigInteger secuencia);
+    public VWActualesReformasLaborales consultarActualReformaLaboralEmpleado(BigInteger secuencia);
     /**
      * Método encargado de buscar el Tipo Contrato actual de un empleado.
      * El término actual está dado por la fechaHasta de las liquidaciones.
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesTiposContratos con la información del Tipo Contrato actual de un empleado. 
      */
-    public VWActualesTiposContratos buscarActualTipoContrato(BigInteger secuencia);
+    public VWActualesTiposContratos consultarActualTipoContratoEmpleado(BigInteger secuencia);
     /**
-     * Método encargado de recuperar los conceptos cuyo código existe y pertencen a
+     * Método encargado de recuperar el concepto cuyo código existe y pertencen a
      * una empresa especifica.
      * <font color="blue"><strong>SEGUNDA ETAPA VALIDACION</strong></font>
      * @param codigoConcepto Código del concepto que se quiere buscar.
      * @param secEmpresa Secuencia de la empresa a la que pertenece el concepto
-     * @return Retorna la lista de Conceptos cuyo código concuerda con el dado y
+     * @return Retorna el Concepto cuyo código concuerda con el parámetro 'codigoConcepto' y
      * que pertenecen a la empresa con secuencia igual a la dada por parámetro. 
      */
-    public Conceptos validarConceptoEmpresa(BigInteger codigoConcepto, BigInteger secEmpresa);
+    public Conceptos verificarConceptoEmpresa(BigInteger codigoConcepto, BigInteger secEmpresa);
     /**
      * Método encargado de determinar el Tipo de un concepto específico. El Tipo del concepto puede ser
      * 'AUTOMATICO', 'SEMI-AUTOMATICO', 'MANUAL' dependiendo de las relaciones que el concepto tenga. 
@@ -165,12 +165,12 @@ public interface AdministrarCargueArchivosInterface {
      * a la hora de subir un archivo plano.
      * @return Retorna una lista de Formulas.
      */
-    public List<Formulas> formulasCargue();
+    public List<Formulas> consultarFormulasCargue();
     /**
      * Método encargado de recuperar la Formula por default para cargar un archivo plano.
      * @return Retorna la Formula por default, 'LIQNOV'.
      */
-    public Formulas formulaCargueInicial();
+    public Formulas consultarFormulaCargueInicial();
     /**
      * Método encargado de validar que una FormulaConcepto esté asociada con un concepto al momento de hace el 
      * cargue de archivos.
@@ -179,7 +179,7 @@ public interface AdministrarCargueArchivosInterface {
      * @param secFormula Secuencia de la FormulaConcepto.
      * @return Retorna true si existe una relación entre la fórmula y el concepto.
      */
-    public boolean validarFormulaCargue_Concepto(BigInteger secConcepto, BigInteger secFormula);
+    public boolean verificarFormulaCargueConcepto(BigInteger secConcepto, BigInteger secFormula);
     /**
      * Método encargado de validar la existencia de al menos una VigenciaGrupoConcepto asociada a un Concepto específico
      * y además que este asociada con el GrupoConcepto uno (NIT).
@@ -188,16 +188,16 @@ public interface AdministrarCargueArchivosInterface {
      * @return Retorna True si existe al menos una VigenciaGrupoConcepto cuyo Concepto tenga como secuencia
      * la dada por el parámetro "secuencia". 
      */
-    public boolean validarNecesidadTercero(BigInteger secuencia);
+    public boolean verificarNecesidadTercero(BigInteger secuencia);
     /**
-     * Método encargado de validar si existe al menos un Tercero con el nit recibido por parámetro y que esta 
+     * Método encargado de validar si existe al menos un Tercero con el nit recibido por parámetro y que está 
      * relacionado con la empresa cuya secuencia coincide con la recibida por parámetro.
      * <font color="blue"><strong>VALIDACION PARA CARGUE DE ARCHIVOS</strong></font>
      * @param nit Nit del Tercero.
      * @param secEmpresa Secuencia de la empresa con la que el Tercero estaría relacionado.
      * @return Retorna True si existe al menos un Tercero que cumpla las condiciones mencionadas, False de lo contrario.
      */
-    public boolean validarTerceroEmpresaEmpleado(BigInteger nit, BigInteger secEmpresa);
+    public boolean verificarTerceroEmpresa(BigInteger nit, BigInteger secEmpresa);
     /**
      * Método encargado de RECUPERAR los datos del DocumentosSoporte de cada una de las TempNovedades
      * cuyo ESTADO es igual a 'C' y esta relacionada con el usuario que entra por parámetro.
@@ -205,7 +205,7 @@ public interface AdministrarCargueArchivosInterface {
      * @return Retorna una lista de String con los DocumentosSoporte de las TempNovedades que cumplen 
      * las condiciones. 
      */
-    public List<String> obtenerDocumentosSoporteCargados(String usuarioBD);
+    public List<String> consultarDocumentosSoporteCargadosUsuario(String usuarioBD);
     /**
      * Método encargado de cargar las TempNovedades a Novedades. 
      * Cuando una TempNovedad es cargada en Novedades, cambia de Estado 'N' a estado 'C'.
@@ -223,7 +223,7 @@ public interface AdministrarCargueArchivosInterface {
      * @param documentoSoporte Texto referente al atributo documentoSoporte de la Novedad(del cargue archivos).
      * @return Retorna el número de Novedades eliminadas, 0 si no se puede reversar ningúna novedad (el cargue de archivos).
      */
-    public int reversar(ActualUsuario usuarioBD, String documentoSoporte);
+    public int reversarNovedades(ActualUsuario usuarioBD, String documentoSoporte);
     /**
      * Método encargado de recuperar la información de lo acorrido al borrar todas las novedades
      * del usuario que está usando el aplicativo.

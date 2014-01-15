@@ -48,10 +48,9 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     List<FormasPagos> listFormasPagos;
     List<MetodosPagos> listMetodosPagos;
     List<Periodicidades> listPeriodicidades;
-    
 
     @Override
-    public List<VigenciasFormasPagos> vigenciasFormasPagosPorEmplelado(BigInteger secEmpleado) {
+    public List<VigenciasFormasPagos> consultarVigenciasFormasPagosPorEmpleado(BigInteger secEmpleado) {
         try {
             listVigenciasFormasPagosPorEmpleado = PersistenciaVigenciasFormasPagos.buscarVigenciasFormasPagosPorEmpleado(secEmpleado);
         } catch (Exception e) {
@@ -62,21 +61,26 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     }
 
     @Override
-    public void modificarVigenciasFormasPagos(List<VigenciasFormasPagos> listVigenciasFormasPagosModificadas) {
-        for (int i = 0; i < listVigenciasFormasPagosModificadas.size(); i++) {
+    public void modificarVigenciasFormasPagos(List<VigenciasFormasPagos> listaVigenciasFormasPagos) {
+        for (int i = 0; i < listaVigenciasFormasPagos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            vigenciaFormaPagoPorEmpleado = listVigenciasFormasPagosModificadas.get(i);
-            if(vigenciaFormaPagoPorEmpleado.getSucursal().getSecuencia()==null)
-            {
-            vigenciaFormaPagoPorEmpleado.setSucursal(null);
+            listaVigenciasFormasPagos.get(i);
+            if (vigenciaFormaPagoPorEmpleado.getSucursal().getSecuencia() == null) {
+                vigenciaFormaPagoPorEmpleado.setSucursal(null);
             }
-            PersistenciaVigenciasFormasPagos.editar(vigenciaFormaPagoPorEmpleado);
+            PersistenciaVigenciasFormasPagos.editar(listaVigenciasFormasPagos.get(i));
         }
     }
 
     @Override
-    public void borrarVigenciasFormasPagos(VigenciasFormasPagos vigenciasFormasPagos) {
-        PersistenciaVigenciasFormasPagos.borrar(vigenciasFormasPagos);
+    public void borrarVigenciasFormasPagos(List<VigenciasFormasPagos> listaVigenciasFormasPagos) {
+        for (int i = 0; i < listaVigenciasFormasPagos.size(); i++) {
+            System.out.println("Administrar Modificando...");
+            if (vigenciaFormaPagoPorEmpleado.getSucursal().getSecuencia() == null) {
+                vigenciaFormaPagoPorEmpleado.setSucursal(null);
+            }
+            PersistenciaVigenciasFormasPagos.borrar(listaVigenciasFormasPagos.get(i));
+        }
     }
 
     @Override
@@ -85,7 +89,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     }
 
     @Override
-    public Empleados buscarEmpleado(BigInteger secuencia) {
+    public Empleados consultarEmpleado(BigInteger secuencia) {
         try {
             empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);
             return empleado;
@@ -97,42 +101,45 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     }
 
     @Override
-    public List<Sucursales> buscarSucursales() {
+    public List<Sucursales> consultarLOVSucursales() {
         try {
             listSucursales = persistenciaSucursales.buscarSucursales();
             return listSucursales;
         } catch (Exception e) {
-            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de sucursales "+e);
+            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de sucursales " + e);
             return null;
         }
     }
+
     @Override
-    public List<FormasPagos> buscarFormasPagos() {
+    public List<FormasPagos> consultarLOVFormasPagos() {
         try {
             listFormasPagos = PersistenciaFormasPagos.buscarFormasPagos();
             return listFormasPagos;
         } catch (Exception e) {
-            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Formas pagos "+ e);
+            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Formas pagos " + e);
             return null;
         }
     }
+
     @Override
-    public List<MetodosPagos> buscarMetodosPagos() {
+    public List<MetodosPagos> consultarLOVMetodosPagos() {
         try {
-          listMetodosPagos = PersistenciaMetodosPagos.buscarMetodosPagos();
+            listMetodosPagos = PersistenciaMetodosPagos.buscarMetodosPagos();
             return listMetodosPagos;
         } catch (Exception e) {
-            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Metodos Pagos "+e);
+            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Metodos Pagos " + e);
             return null;
         }
     }
+
     @Override
-    public List<Periodicidades> buscarPerdiocidades() {
+    public List<Periodicidades> consultarLOVPerdiocidades() {
         try {
-          listPeriodicidades = persistenciaPeriodicidades.buscarPeriodicidades();
+            listPeriodicidades = persistenciaPeriodicidades.buscarPeriodicidades();
             return listPeriodicidades;
         } catch (Exception e) {
-            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Periodicidades "+e);
+            System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Periodicidades " + e);
             return null;
         }
     }

@@ -32,7 +32,7 @@ public class AdministrarAdiestramientosF implements AdministrarAdiestramientosFI
     //--------------------------------------------------------------------------
     
     @Override
-    public List<AdiestramientosF> adiestramientosF(){
+    public List<AdiestramientosF> consultarAdiestramientosF(){
         return persistenciaAdiestramientosF.adiestramientosF();
     }
 }

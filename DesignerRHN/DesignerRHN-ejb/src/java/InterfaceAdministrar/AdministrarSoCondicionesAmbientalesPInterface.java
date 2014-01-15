@@ -17,15 +17,57 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarSoCondicionesAmbientalesPInterface {
 
-    public void modificarSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesPModificada);
+    /**
+     * Método encargado de modificar SoCondicionesAmbientalesP.
+     *
+     * @param listSoCondicionesAmbientalesP Lista SoCondicionesAmbientalesP que
+     * se van a modificar.
+     */
+    public void modificarSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP);
 
-    public void borrarSoCondicionesAmbientalesP(SoCondicionesAmbientalesP soCondicionesAmbientalesP);
+    /**
+     * Método encargado de borrar SoCondicionesAmbientalesP.
+     *
+     * @param listSoCondicionesAmbientalesP Lista SoCondicionesAmbientalesP que
+     * se van a borrar.
+     */
+    public void borrarSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP);
 
-    public void crearSoCondicionesAmbientalesP(SoCondicionesAmbientalesP soCondicionesAmbientalesP);
+    /**
+     * Método encargado de crear SoCondicionesAmbientalesP.
+     *
+     * @param listSoCondicionesAmbientalesP Lista SoCondicionesAmbientalesP que
+     * se van a crear.
+     */
+    public void crearSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP);
 
-    public List<SoCondicionesAmbientalesP> mostrarSoCondicionesAmbientalesP();
+    /**
+     * Metodo encargado de traer todas las SoCondicionesAmbientalesP de la base
+     * de datos.
+     *
+     * @return Lista de SoCondicionesAmbientalesP.
+     */
+    public List<SoCondicionesAmbientalesP> consultarSoCondicionesAmbientalesP();
 
-    public SoCondicionesAmbientalesP mostrarSoCondicionAmbientalP(BigInteger secSoCondicionesAmbientalesP);
+    /**
+     * Método encargado de recuperar un SoCondicionesAmbientalesP dada su
+     * secuencia.
+     *
+     * @param secSoCondicionAmbientalPeligrosa Secuencia del
+     * SoCondicionesAmbientalesP.
+     * @return Retorna el SoCondicionAmbientalP cuya secuencia coincida con el
+     * valor del parámetro.
+     */
+    public SoCondicionesAmbientalesP consultarSoCondicionAmbientalP(BigInteger secSoCondicionAmbientalPeligrosa);
 
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
+    /**
+     * Método encargado de contar la cantidad de SoAccidentesMedicos
+     * relacionadas con un SoCondicionesAmbientalesP específico.
+     *
+     * @param secSoCondicionAmbientalPeligrosa Secuencia del
+     * SoCondicionesAmbientalesP.
+     * @return Retorna un número indicando la cantidad de SoAccidentesMedicos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarSoAccidentesMedicos(BigInteger secSoCondicionAmbientalPeligrosa);
 }
