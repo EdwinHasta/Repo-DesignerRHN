@@ -22,6 +22,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+    
 
     @Override
     public void crear(Empleados empleados) {
@@ -57,7 +58,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     @Override
     public List<Empleados> todosEmpleados() {
         try {
-            Query query = em.createQuery("SELECT e FROM Empleados e ORDER BY e.codigoempleado");
+            Query query = em.createQuery("SELECT e FROM Empleados e ORDER BY e.codigoempleado ASC");
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {

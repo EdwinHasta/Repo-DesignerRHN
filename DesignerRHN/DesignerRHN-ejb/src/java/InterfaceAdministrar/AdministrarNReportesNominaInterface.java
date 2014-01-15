@@ -23,68 +23,81 @@ import java.util.List;
  * @author user
  */
 public interface AdministrarNReportesNominaInterface {
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public ParametrosInformes parametrosDeReporte();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Inforeportes> listInforeportesUsuario();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Empresas> listEmpresas();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<GruposConceptos> listGruposConcetos();
+
     /**
-     * 
-     * @param parametroInforme 
+     *
+     * @param parametroInforme
      */
     public void modificarParametrosInformes(ParametrosInformes parametroInforme);
-    
+
     public List<Asociaciones> listAsociaciones();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Procesos> listProcesos();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Terceros> listTerceros();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<TiposTrabajadores> listTiposTrabajadores();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Estructuras> listEstructuras();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<TiposAsociaciones> listTiposAsociaciones();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<UbicacionesGeograficas> listUbicacionesGeograficas();
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Empleados> listEmpleados();
-    
+
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR);
+
 }

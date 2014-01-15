@@ -37,4 +37,6 @@ public interface AdministrarNReporteLaboralInterface {
     public List<Empleados> listEmpleados();
     public List<Empresas> listEmpresas();
     
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR);
+    
 }
