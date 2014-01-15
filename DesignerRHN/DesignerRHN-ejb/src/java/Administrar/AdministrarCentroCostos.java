@@ -65,33 +65,40 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public void modificarCentroCostos(CentrosCostos centrosCostos) {
+    public void modificarCentroCostos(List<CentrosCostos> listaCentrosCostos) {
         try {
-            persistenciaCentrosCostos.editar(centrosCostos);
+            for (int i = 0; i < listaCentrosCostos.size(); i++) {
+                System.out.println("Modificando...");
+                persistenciaCentrosCostos.editar(listaCentrosCostos.get(i));
+            }
         } catch (Exception e) {
-            System.out.println("AdministrarCentrosCostos: Falló al editar el CentroCosto /n" + e.getMessage());
+            System.err.println("AdministrarCentrosCostos: Falló al editar el CentroCosto /n" + e.getMessage());
         }
     }
 
     @Override
-    public void borrarCentroCostos(CentrosCostos centrosCostos) {
+    public void borrarCentroCostos(List<CentrosCostos> listaCentrosCostos) {
         System.out.println("ENTRE A AdministrarCentroCostos.borrarCentroCostos ");
         try {
-            System.out.println("AdministrarCentroCostos.borrarCentroCostos(CentrosCostos centrosCostos=====" + centrosCostos.getNombre());
-            persistenciaCentrosCostos.borrar(centrosCostos);
+            for (int i = 0; i < listaCentrosCostos.size(); i++) {
+                System.out.println("Borrando...");
+                persistenciaCentrosCostos.borrar(listaCentrosCostos.get(i));
+            }
         } catch (Exception e) {
-            System.out.println("ERROR AdministrarCentroCostos.borrarCentroCostos ERROR=====" + e.getMessage());
+            System.err.println("ERROR AdministrarCentroCostos.borrarCentroCostos ERROR=====" + e.getMessage());
         }
     }
 
     @Override
-    public void crearCentroCostos(CentrosCostos centrosCostos) {
+    public void crearCentroCostos(List<CentrosCostos> listaCentrosCostos) {
         System.out.println("ENTRE A AdministrarCentroCostos.crearCentroCostos ");
         try {
-            System.out.println("ENTRE A AdministrarCentroCostos.crearCentroCostos EN EL TRY");
-            persistenciaCentrosCostos.crear(centrosCostos);
+            for (int i = 0; i < listaCentrosCostos.size(); i++) {
+                System.out.println("Creando...");
+                persistenciaCentrosCostos.crear(listaCentrosCostos.get(i));
+            }
         } catch (Exception e) {
-            System.out.println("ERROR AdministrarCentroCostos.crearCentroCostos ERROR======" + e.getMessage());
+            System.err.println("ERROR AdministrarCentroCostos.crearCentroCostos ERROR======" + e.getMessage());
         }
     }
 
@@ -108,24 +115,12 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public List<TiposCentrosCostos> buscarTiposCentrosCostos() {
+    public List<TiposCentrosCostos> lovTiposCentrosCostos() {
         try {
             List<TiposCentrosCostos> listaTiposCentrosCostos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
             return listaTiposCentrosCostos;
         } catch (Exception e) {
             System.out.println("\n AdministrarCentroCostos error en buscarTiposCentroCostos \n" + e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Long contadorSecueniasEmpresas(BigInteger secEmpresa) {
-
-        try {
-            Long contadorEmpresas = persistenciaCentrosCostos.contadorSecuenciaEmpresa(secEmpresa);
-            return contadorEmpresas;
-        } catch (Exception e) {
-            System.out.println("ERROR administrarCentrosCostos.contadorSecuenciasEmpresas ERROR===" + e.getMessage());
             return null;
         }
     }
@@ -155,7 +150,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-       public BigInteger contadorDetalleContable(BigInteger secCentroCosto) {
+    public BigInteger contadorDetalleContable(BigInteger secCentroCosto) {
 
         try {
             BigInteger contadorDetallesCCDetalle = persistenciaCentrosCostos.contadorDetallesCCDetalle(secCentroCosto);
@@ -195,7 +190,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public BigInteger contadorInterconCondor(BigInteger secCentroCosto) {
+    public BigInteger contadorInterConCondor(BigInteger secCentroCosto) {
 
         try {
             BigInteger contadorInterconCondor;
@@ -207,7 +202,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public BigInteger contadorInterconDynamics(BigInteger secCentroCosto) {
+    public BigInteger contadorInterConDynamics(BigInteger secCentroCosto) {
 
         try {
             BigInteger contadorInterconDynamics;
@@ -220,7 +215,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public BigInteger contadorInterconGeneral(BigInteger secCentroCosto) {
+    public BigInteger contadorInterConGeneral(BigInteger secCentroCosto) {
 
         try {
             BigInteger contadorInterconGeneral;
@@ -234,7 +229,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public BigInteger contadorInterconHelisa(BigInteger secCentroCosto) {
+    public BigInteger contadorInterConHelisa(BigInteger secCentroCosto) {
 
         try {
             BigInteger contadorInterconHelisa;
@@ -247,7 +242,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public BigInteger contadorInterconSapbo(BigInteger secCentroCosto) {
+    public BigInteger contadorInterConSapbo(BigInteger secCentroCosto) {
 
         try {
             BigInteger contadorInterconSapbo;
@@ -259,7 +254,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public BigInteger contadorInterconSiigo(BigInteger secCentroCosto) {
+    public BigInteger contadorInterConSiigo(BigInteger secCentroCosto) {
 
         try {
             BigInteger contadorInterconSiigo;
@@ -271,9 +266,9 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-    @Override
-    public BigInteger contadorInterconTotal(BigInteger secCentroCosto) {
 
+    @Override
+    public BigInteger contadorInterConTotal(BigInteger secCentroCosto) {
         try {
             BigInteger contadorInterconTotal;
 
