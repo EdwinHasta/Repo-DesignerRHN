@@ -68,14 +68,6 @@ public interface PersistenciaCentrosCostosInterface {
     public List<CentrosCostos> buscarCentrosCostosEmpr(BigInteger secEmpresa);
 
     /**
-     * Método encargado de contar la cantidad de datos en la tabla EMPRESAS
-     *
-     * @param secEmpresa
-     * @return Retonar el numero de empresas
-     */
-    public long contadorSecuenciaEmpresa(BigInteger secEmpresa);
-
-    /**
      * Método encargado de revisar si existe una relación entre un CentroCosto
      * específica y algún Comprobante Contable. además de la revisión, cuenta
      * cuantas relaciónes existen.
@@ -227,7 +219,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de NovedadesD relacionados con el CentroCosto
      * cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorNovedadesD(BigInteger secCentroCosto);
 
     /**
@@ -239,7 +230,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de ProcesosProductivos relacionados con el
      * CentroCosto cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorProcesosProductivos(BigInteger secCentroCosto);
 
     /**
@@ -251,7 +241,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de Proyecciones relacionados con el CentroCosto
      * cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorProyecciones(BigInteger secCentroCosto);
 
     /**
@@ -285,7 +274,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de SoPanoramas relacionados con el CentroCosto
      * cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorSoPanoramas(BigInteger secCentroCosto);
 
     /**
@@ -297,7 +285,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de Terceros relacionados con el CentroCosto
      * cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorTerceros(BigInteger secCentroCosto);
 
     /**
@@ -309,7 +296,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de UnidadesRegistradas relacionados con el
      * CentroCosto cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorUnidadesRegistradas(BigInteger secCentroCosto);
 
     /**
@@ -321,7 +307,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de VigenciasCuentasC relacionados con el
      * CentroCosto cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorVigenciasCuentasC(BigInteger secCentroCosto);
 
     /**
@@ -333,7 +318,6 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de VigenciasCuentasD relacionados con el
      * CentroCosto cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorVigenciasCuentasD(BigInteger secCentroCosto);
 
     /**
@@ -345,6 +329,5 @@ public interface PersistenciaCentrosCostosInterface {
      * @return Retorna el número de VigenciasProrrateos relacionados con el
      * CentroCosto cuya secCentroCosto coincide con el parámetro.
      */
-
     public BigInteger contadorVigenciasProrrateos(BigInteger secCentroCosto);
 }
