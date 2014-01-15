@@ -224,13 +224,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                for (int i = 0; i < borrarVigenciasFormasPagosPorEmpleado.size(); i++) {
-                    System.out.println("Borrando...");
-                    if (borrarVigenciasFormasPagosPorEmpleado.get(i).getSucursal().getSecuencia() == null) {
-                        borrarVigenciasFormasPagosPorEmpleado.get(i).setSucursal(null);
-                    }
-                    administrarEmplVigenciasFormasPagos.borrarVigenciasFormasPagos(borrarVigenciasFormasPagosPorEmpleado.get(i));
-                }
+
+                administrarEmplVigenciasFormasPagos.borrarVigenciasFormasPagos(borrarVigenciasFormasPagosPorEmpleado);
                 borrarVigenciasFormasPagosPorEmpleado.clear();
             }
             if (!crearVigenciasFormasPagosPorEmpleado.isEmpty()) {
@@ -1186,7 +1181,6 @@ public class ControlVigenciasFormasPagos implements Serializable {
             tipoActualizacion = 2;
             RequestContext context = RequestContext.getCurrentInstance();
 
-
             context.update("form:sucursalesDialogo");
             context.execute("sucursalesDialogo.show()");
         }
@@ -1213,7 +1207,6 @@ public class ControlVigenciasFormasPagos implements Serializable {
         } else if (tipoNuevo == 1) {
             tipoActualizacion = 2;
             RequestContext context = RequestContext.getCurrentInstance();
-
 
             context.update("form:metodosPagosialogo");
             context.execute("metodosPagosialogo.show()");
@@ -1244,7 +1237,6 @@ public class ControlVigenciasFormasPagos implements Serializable {
             context.update("form:periodicidadesDialogo");
             context.execute("periodicidadesDialogo.show()");
         }
-
 
     }
 
@@ -1484,7 +1476,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
      */
     public Empleados getEmpleadoSeleccionado() {
         if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarEmplVigenciasFormasPagos.buscarEmpleado(secuenciaEmpleado);
+            empleadoSeleccionado = administrarEmplVigenciasFormasPagos.consultarEmpleado(secuenciaEmpleado);
         }
         return empleadoSeleccionado;
     }
@@ -1496,7 +1488,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
     public List<VigenciasFormasPagos> getListVigenciasFormasPagosPorEmpleado() {
         try {
             if (listVigenciasFormasPagosPorEmpleado == null) {
-                listVigenciasFormasPagosPorEmpleado = administrarEmplVigenciasFormasPagos.vigenciasFormasPagosPorEmplelado(secuenciaEmpleado);
+                listVigenciasFormasPagosPorEmpleado = administrarEmplVigenciasFormasPagos.consultarVigenciasFormasPagosPorEmpleado(secuenciaEmpleado);
             }
             return listVigenciasFormasPagosPorEmpleado;
         } catch (Exception e) {
@@ -1527,7 +1519,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
     public List<Sucursales> getListaSucursales() {
         if (listaSucursales == null) {
-            listaSucursales = administrarEmplVigenciasFormasPagos.buscarSucursales();
+            listaSucursales = administrarEmplVigenciasFormasPagos.consultarLOVSucursales();
         }
         return listaSucursales;
     }
@@ -1554,7 +1546,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
     public List<Periodicidades> getListaPeriodicidades() {
         if (listaPeriodicidades == null) {
-            listaPeriodicidades = administrarEmplVigenciasFormasPagos.buscarPerdiocidades();
+            listaPeriodicidades = administrarEmplVigenciasFormasPagos.consultarLOVPerdiocidades();
         }
         return listaPeriodicidades;
     }
@@ -1581,7 +1573,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
     public List<MetodosPagos> getListaMetodosPagos() {
         if (listaMetodosPagos == null) {
-            listaMetodosPagos = administrarEmplVigenciasFormasPagos.buscarMetodosPagos();
+            listaMetodosPagos = administrarEmplVigenciasFormasPagos.consultarLOVMetodosPagos();
         }
         return listaMetodosPagos;
     }

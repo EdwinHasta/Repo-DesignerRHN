@@ -22,43 +22,47 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
 
     @EJB
     PersistenciaGruposViaticosInterface persistenciaGruposViaticos;
-    private GruposViaticos gruposViaticosSeleccionada;
-    private GruposViaticos evalGruposViaticos;
-    private List<GruposViaticos> listGruposViaticos;
 
     @Override
-    public void modificarGruposViaticos(List<GruposViaticos> listGruposViativosModificadas) {
-        for (int i = 0; i < listGruposViativosModificadas.size(); i++) {
+    public void modificarGruposViaticos(List<GruposViaticos> listGruposViaticos) {
+        for (int i = 0; i < listGruposViaticos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            gruposViaticosSeleccionada = listGruposViativosModificadas.get(i);
-            persistenciaGruposViaticos.editar(gruposViaticosSeleccionada);
+            persistenciaGruposViaticos.editar(listGruposViaticos.get(i));
         }
     }
 
     @Override
-    public void borrarGruposViaticos(GruposViaticos gruposViaticos) {
-        persistenciaGruposViaticos.borrar(gruposViaticos);
+    public void borrarGruposViaticos(List<GruposViaticos> listGruposViaticos) {
+        for (int i = 0; i < listGruposViaticos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaGruposViaticos.borrar(listGruposViaticos.get(i));
+        }
     }
 
     @Override
-    public void crearGruposViaticos(GruposViaticos gruposViaticos) {
-        persistenciaGruposViaticos.crear(gruposViaticos);
+    public void crearGruposViaticos(List<GruposViaticos> listGruposViaticos) {
+        for (int i = 0; i < listGruposViaticos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaGruposViaticos.crear(listGruposViaticos.get(i));
+        }
     }
 
     @Override
-    public List<GruposViaticos> mostrarGruposViaticos() {
+    public List<GruposViaticos> consultarGruposViaticos() {
+        List<GruposViaticos> listGruposViaticos;
         listGruposViaticos = persistenciaGruposViaticos.buscarGruposViaticos();
         return listGruposViaticos;
     }
 
     @Override
-    public GruposViaticos mostrarGrupoViatico(BigInteger secGruposViaticos) {
+    public GruposViaticos consultarGrupoViatico(BigInteger secGruposViaticos) {
+        GruposViaticos evalGruposViaticos;
         evalGruposViaticos = persistenciaGruposViaticos.buscarGrupoViatico(secGruposViaticos);
         return evalGruposViaticos;
     }
 
     @Override
-    public BigInteger verificarBorradoCargos(BigInteger secuenciaCargos) {
+    public BigInteger verificarCargos(BigInteger secuenciaCargos) {
         BigInteger verificadorCargos = null;
         try {
             System.err.println("Secuencia Borrado  Cargos" + secuenciaCargos);
@@ -71,7 +75,7 @@ public class AdministrarGruposViaticos implements AdministrarGruposViaticosInter
     }
 
     @Override
-    public BigInteger verificarBorradoPlantas(BigInteger secuenciaCargos) {
+    public BigInteger verificarPlantas(BigInteger secuenciaCargos) {
         BigInteger verificadorPlantas = null;
         try {
             System.err.println("Secuencia Borrado  Plantas" + secuenciaCargos);

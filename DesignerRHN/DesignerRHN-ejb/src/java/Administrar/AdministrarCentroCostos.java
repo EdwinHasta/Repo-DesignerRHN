@@ -103,7 +103,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     }
 
     @Override
-    public List<CentrosCostos> buscarCentrosCostosPorEmpresa(BigInteger secEmpresa) {
+    public List<CentrosCostos> consultarCentrosCostosPorEmpresa(BigInteger secEmpresa) {
         try {
             System.out.println("ENTRE A AdministrarCentroCostos.buscarCentrosCostosPorEmpresa ");
             List<CentrosCostos> listaCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostosEmpr(secEmpresa);
@@ -425,5 +425,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
             return null;
         }
     }
+
+
 
 }

@@ -17,21 +17,80 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarGruposViaticosInterface {
 
-    public void modificarGruposViaticos(List<GruposViaticos> listGruposViativosModificadas);
+    /**
+     * Método encargado de modificar GruposViaticos.
+     *
+     * @param listaGruposViativos Lista GruposViaticos que se van a modificar.
+     */
+    public void modificarGruposViaticos(List<GruposViaticos> listaGruposViativos);
 
-    public void borrarGruposViaticos(GruposViaticos gruposViaticos);
+    /**
+     * Método encargado de borrar GruposViaticos.
+     *
+     * @param listaGruposViativos Lista GruposViaticos que se van a borrar.
+     */
+    public void borrarGruposViaticos(List<GruposViaticos> listaGruposViativos);
 
-    public void crearGruposViaticos(GruposViaticos gruposViaticos);
+    /**
+     * Método encargado de crear GruposViaticos.
+     *
+     * @param listaGruposViativos Lista GruposViaticos que se van a crear.
+     */
+    public void crearGruposViaticos(List<GruposViaticos> listaGruposViativos);
 
-    public List<GruposViaticos> mostrarGruposViaticos();
+    /**
+     * Método encargado de recuperar un GrupoViatico dada su secuencia.
+     *
+     * @param secGruposViaticos Secuencia del GrupoViatico.
+     * @return Retorna un GruposViaticos cuya secuencia coincida con el valor
+     * del parámetro.
+     */
+    public GruposViaticos consultarGrupoViatico(BigInteger secGruposViaticos);
 
-    public GruposViaticos mostrarGrupoViatico(BigInteger secGruposViaticos);
+    /**
+     * Metodo encargado de traer todas los GruposViaticos de la base de datos.
+     *
+     * @return Lista de GruposViaticos.
+     */
+    public List<GruposViaticos> consultarGruposViaticos();
 
-    public BigInteger verificarBorradoCargos(BigInteger secuenciaCargos);
+    /**
+     * Método encargado de contar la cantidad de Cargos relacionadas con un
+     * GrupoViatico específico.
+     *
+     * @param secGruposViaticos Secuencia del GruposViaticos.
+     * @return Retorna un número indicando la cantidad de Cargos cuya secuencia
+     * coincide con el valor del parámetro.
+     */
+    public BigInteger verificarCargos(BigInteger secGruposViaticos);
 
-    public BigInteger verificarBorradoPlantas(BigInteger secuenciaCargos);
+    /**
+     * Método encargado de contar la cantidad de Plantas relacionadas con un
+     * GrupoViatico específico.
+     *
+     * @param secGruposViaticos Secuencia del GruposViaticos.
+     * @return Retorna un número indicando la cantidad de GruposViaticos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarPlantas(BigInteger secGruposViaticos);
 
-    public BigInteger verificarTablasViaticos(BigInteger secuenciaCargos);
+    /**
+     * Método encargado de contar la cantidad de TablasViaticos relacionadas con
+     * un GrupoViatico específico.
+     *
+     * @param secGruposViaticos Secuencia del GruposViaticos.
+     * @return Retorna un número indicando la cantidad de TablasViaticos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarTablasViaticos(BigInteger secGruposViaticos);
 
-    public BigInteger verificarEersViaticos(BigInteger secuenciaCargos);
+    /**
+     * Método encargado de contar la cantidad de EersViaticos relacionadas con
+     * un GrupoViatico específico.
+     *
+     * @param secGruposViaticos Secuencia del GruposViaticos.
+     * @return Retorna un número indicando la cantidad de EersViaticos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarEersViaticos(BigInteger secGruposViaticos);
 }

@@ -11,7 +11,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarEvalCompetenciasInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -350,9 +349,9 @@ public class ControlEvalCompetencias implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlEvalCompetencias ");
             if (tipoLista == 0) {
-                competenciasCargos = administrarEvalCompetencias.verificarBorradoCompetenciasCargos(listEvalCompetencias.get(index).getSecuencia());
+                competenciasCargos = administrarEvalCompetencias.verificarCompetenciasCargos(listEvalCompetencias.get(index).getSecuencia());
             } else {
-                competenciasCargos = administrarEvalCompetencias.verificarBorradoCompetenciasCargos(filtrarEvalCompetencias.get(index).getSecuencia());
+                competenciasCargos = administrarEvalCompetencias.verificarCompetenciasCargos(filtrarEvalCompetencias.get(index).getSecuencia());
             }
             if (competenciasCargos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -387,10 +386,9 @@ public class ControlEvalCompetencias implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarEvalCompetencias");
             if (!borrarEvalCompetencias.isEmpty()) {
-                for (int i = 0; i < borrarEvalCompetencias.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarEvalCompetencias.borrarEvalCompetencias(borrarEvalCompetencias.get(i));
-                }
+
+                administrarEvalCompetencias.borrarEvalCompetencias(borrarEvalCompetencias);
+
                 //mostrarBorrados
                 registrosBorrados = borrarEvalCompetencias.size();
                 context.update("form:mostrarBorrados");
@@ -398,12 +396,9 @@ public class ControlEvalCompetencias implements Serializable {
                 borrarEvalCompetencias.clear();
             }
             if (!crearEvalCompetencias.isEmpty()) {
-                for (int i = 0; i < crearEvalCompetencias.size(); i++) {
 
-                    System.out.println("Creando...");
-                    administrarEvalCompetencias.crearEvalCompetencias(crearEvalCompetencias.get(i));
+                administrarEvalCompetencias.crearEvalCompetencias(crearEvalCompetencias);
 
-                }
                 crearEvalCompetencias.clear();
             }
             if (!modificarEvalCompetencias.isEmpty()) {
@@ -705,7 +700,7 @@ public class ControlEvalCompetencias implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<EvalCompetencias> getListEvalCompetencias() {
         if (listEvalCompetencias == null) {
-            listEvalCompetencias = administrarEvalCompetencias.mostrarEvalCompetencias();
+            listEvalCompetencias = administrarEvalCompetencias.consultarEvalCompetencias();
         }
         return listEvalCompetencias;
     }

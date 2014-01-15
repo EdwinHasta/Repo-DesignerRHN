@@ -730,7 +730,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             if (!borrarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
                 for (int i = 0; i < borrarEmplVigenciaNormaLaboralPorEmplado.size(); i++) {
                     System.out.println("Borrando...");
-                    administrarVigenciaNormaLaboral.borrarVigenciaNormaLaboral(borrarEmplVigenciaNormaLaboralPorEmplado.get(i));
+                    administrarVigenciaNormaLaboral.borrarVigenciaNormaLaboral(borrarEmplVigenciaNormaLaboralPorEmplado);
                 }
                 //mostrarBorrados
                 registrosBorrados = borrarEmplVigenciaNormaLaboralPorEmplado.size();
@@ -746,7 +746,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                     System.out.println("Fecha :" + crearEmplVigenciaNormaLaboralPorEmplado.get(i).getFechavigencia());
                     System.out.println("Norma Laboral : " + crearEmplVigenciaNormaLaboralPorEmplado.get(i).getNormalaboral().getNombre());
                     System.out.println("-----------------------------------------------");
-                    administrarVigenciaNormaLaboral.crearVigenciaNormaLaboral(crearEmplVigenciaNormaLaboralPorEmplado.get(i));
+                    administrarVigenciaNormaLaboral.crearVigenciaNormaLaboral(crearEmplVigenciaNormaLaboralPorEmplado);
 
                 }
                 crearEmplVigenciaNormaLaboralPorEmplado.clear();
@@ -1065,7 +1065,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<VigenciasNormasEmpleados> getListEmplVigenciaNormaLaboralPorEmpleado() {
         if (listEmplVigenciaNormaLaboralPorEmpleado == null) {
-            listEmplVigenciaNormaLaboralPorEmpleado = administrarVigenciaNormaLaboral.vigenciasNormasEmpleadosPorEmpleado(secuenciaEmpleado);
+            listEmplVigenciaNormaLaboralPorEmpleado = administrarVigenciaNormaLaboral.consultarVigenciasNormasEmpleadosPorEmpleado(secuenciaEmpleado);
         }
         return listEmplVigenciaNormaLaboralPorEmpleado;
     }
@@ -1132,7 +1132,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public Empleados getEmpleadoSeleccionado() {
         if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarVigenciaNormaLaboral.buscarEmpleado(secuenciaEmpleado);
+            empleadoSeleccionado = administrarVigenciaNormaLaboral.consultarEmpleado(secuenciaEmpleado);
         }
         return empleadoSeleccionado;
     }
@@ -1143,7 +1143,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public List<NormasLaborales> getListaNormasLaborales() {
         if (listaNormasLaborales == null) {
-            listaNormasLaborales = administrarVigenciaNormaLaboral.mostrarNormasLaborales();
+            listaNormasLaborales = administrarVigenciaNormaLaboral.lovNormasLaborales();
         }
         return listaNormasLaborales;
     }

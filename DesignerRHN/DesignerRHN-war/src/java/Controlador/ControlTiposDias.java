@@ -434,10 +434,8 @@ public class ControlTiposDias implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando TiposDias");
             if (!borrarTiposDias.isEmpty()) {
-                for (int i = 0; i < borrarTiposDias.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposDias.borrarTiposDias(borrarTiposDias.get(i));
-                }
+                administrarTiposDias.borrarTiposDias(borrarTiposDias);
+
                 //mostrarBorrados
                 registrosBorrados = borrarTiposDias.size();
                 context.update("form:mostrarBorrados");
@@ -445,12 +443,7 @@ public class ControlTiposDias implements Serializable {
                 borrarTiposDias.clear();
             }
             if (!crearTiposDias.isEmpty()) {
-                for (int i = 0; i < crearTiposDias.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposDias.crearTiposDias(crearTiposDias.get(i));
-
-                }
+                administrarTiposDias.crearTiposDias(crearTiposDias);
                 crearTiposDias.clear();
             }
             if (!modificarTiposDias.isEmpty()) {
@@ -526,7 +519,7 @@ public class ControlTiposDias implements Serializable {
             }
         }
         System.out.println("NUEVA DESCRIPCION : " + nuevoTipoDia.getDescripcion());
-        if (nuevoTipoDia.getDescripcion().equals(" ") ||nuevoTipoDia.getDescripcion().equals(null) || nuevoTipoDia.getDescripcion().isEmpty()) {
+        if (nuevoTipoDia.getDescripcion().equals(" ") || nuevoTipoDia.getDescripcion().equals(null) || nuevoTipoDia.getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Debe tener una descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 

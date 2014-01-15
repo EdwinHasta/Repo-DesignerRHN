@@ -8,7 +8,6 @@ package Administrar;
 import InterfaceAdministrar.AdministrarJuzgadosInterface;
 import Entidades.Ciudades;
 import Entidades.Juzgados;
-import Entidades.TiposCentrosCostos;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaJuzgadosInterface;
 import java.math.BigInteger;
@@ -30,23 +29,13 @@ public class AdministrarJuzgados implements AdministrarJuzgadosInterface {
     PersistenciaJuzgadosInterface persistenciaJuzgados;
     @EJB
     PersistenciaCiudadesInterface persistenciaCiudades;
-    /**
-     *
-     */
-    private List<Juzgados> listaJuzgados;
-    private Juzgados juzgados;
-    private List<TiposCentrosCostos> listaTiposCentrosCostos;
-    private TiposCentrosCostos tiposCentrosCostos;
-    private List<Ciudades> listaCiudades;
-    private Ciudades empresas;
 
-    //************************************EMPRESAS**************************************
     /**
-     * METODO QUE SE ENCARGA DE TRAER LAS EMPRESAS
      *
-     * @return
      */
-    public List<Ciudades> buscarCiudades() {
+    @Override
+    public List<Ciudades> consultarLOVCiudades() {
+        List<Ciudades> listaCiudades;
         try {
             return listaCiudades = persistenciaCiudades.ciudades();
         } catch (Exception e) {
@@ -54,59 +43,69 @@ public class AdministrarJuzgados implements AdministrarJuzgadosInterface {
             return listaCiudades = null;
         }
     }
-    //************************************CENTROS COSTROS**************************************
 
-    public void modificarJuzgados(Juzgados juzgados) {
+    @Override
+    public void modificarJuzgados(List<Juzgados> listaJuzgados) {
         try {
-            persistenciaJuzgados.editar(juzgados);
+            for (int i = 0; i < listaJuzgados.size(); i++) {
+                System.out.println("Administrar Modificando");
+                persistenciaJuzgados.editar(listaJuzgados.get(i));
+            }
         } catch (Exception e) {
             System.out.println("AdministrarCentrosCostos: Falló al editar el CentroCosto /n" + e.getMessage());
         }
     }
 
-    public void borrarJuzgados(Juzgados juzgados) {
-        // System.out.println("ENTRE A AdministrarCentroCostos.borrarCentroCostos ");
+    @Override
+    public void borrarJuzgados(List<Juzgados> listaJuzgados) {
         try {
-            persistenciaJuzgados.borrar(juzgados);
+            for (int i = 0; i < listaJuzgados.size(); i++) {
+                System.out.println("Administrar Borrando");
+                persistenciaJuzgados.borrar(listaJuzgados.get(i));
+            }
         } catch (Exception e) {
             System.out.println("ERROR ADNUBUSTRARJUZGADOS BORRARJUZGADOS" + e.getMessage());
         }
     }
 
-    /**
-     *
-     * @param juzgados
-     */
-    public void crearJuzgados(Juzgados juzgados) {
+    @Override
+    public void crearJuzgados(List<Juzgados> listaJuzgados) {
         try {
-            persistenciaJuzgados.crear(juzgados);
+            for (int i = 0; i < listaJuzgados.size(); i++) {
+                System.out.println("Administrar Creando");
+                persistenciaJuzgados.crear(listaJuzgados.get(i));
+            }
         } catch (Exception e) {
             System.out.println("ERROR ADMINISTRARJUZGADOS CREAR JUZGADO " + e.getMessage());
         }
     }
 
-    public List<Juzgados> buscarJuzgadosPorCiudad(BigInteger secCiudad) {
+    public List<Juzgados> consultarJuzgadosPorCiudad(BigInteger secCiudad) {
+        List<Juzgados> listaJuzgados;
         try {
-            listaJuzgados = persistenciaJuzgados.buscarJuzgadosPorCiudad(secCiudad);
+            return listaJuzgados = persistenciaJuzgados.buscarJuzgadosPorCiudad(secCiudad);
         } catch (Exception e) {
             System.out.println("Error en ADMINISTRARJUZGADOS BUSCARJUZGADOPORCIUDAD");
             listaJuzgados = null;
-        } finally {
+
             return listaJuzgados;
         }
     }
 
-    public List<Juzgados> buscarJuzgadosPorCiudadGeneral() {
+    @Override
+    public List<Juzgados> LOVJuzgadosPorCiudadGeneral() {
+        List<Juzgados> listaJuzgados;
         try {
-            listaJuzgados = persistenciaJuzgados.buscarJuzgados();
+            return listaJuzgados = persistenciaJuzgados.buscarJuzgados();
         } catch (Exception e) {
             System.out.println("Error en ADMINISTRARJUZGADOS BUSCARJUZGADOSPORCIUDADGENERAL " + e);
             listaJuzgados = null;
-        } finally {
+
             return listaJuzgados;
         }
     }
 
+    @Override
     public BigInteger verificarEerPrestamos(BigInteger secuenciaJuzgados) {
         BigInteger verificarBorradoEerPrestamos = null;
         try {
@@ -119,6 +118,7 @@ public class AdministrarJuzgados implements AdministrarJuzgadosInterface {
         }
     }
 
+    @Override
     public boolean isNumeric(String cadena) {
         try {
             Integer.parseInt(cadena);

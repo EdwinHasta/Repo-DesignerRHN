@@ -17,13 +17,45 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarEstadosCivilesInterface {
 
-    public void modificarEstadosCiviles(List<EstadosCiviles> listDeportesModificadas);
+    /**
+     * Método encargado de modificar EstadosCiviles.
+     *
+     * @param listaEstadosCiviles Lista de las EstadosCiviles que se van a
+     * modificar.
+     */
+    public void modificarEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles);
 
-    public void borrarEstadosCiviles(EstadosCiviles deportes);
+    /**
+     * Método encargado de borrar EstadosCiviles.
+     *
+     * @param listaEstadosCiviles Lista de las EstadosCiviles que se van a
+     * borrar.
+     */
+    public void borrarEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles);
 
-    public void crearEstadosCiviles(EstadosCiviles deportes);
+    /**
+     * Método encargado de crear EstadosCiviles.
+     *
+     * @param listaEstadosCiviles Lista de las EstadosCiviles que se van a
+     * crear.
+     */
+    public void crearEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles);
 
-    public List<EstadosCiviles> mostrarEstadosCiviles();
+    /**
+     * Método encargado de recuperar todos los Estados Civiles.
+     *
+     * @return Retorna una lista de Estados Civiles.
+     */
+    public List<EstadosCiviles> consultarEstadosCiviles();
 
-    public BigInteger verificarBorradoVigenciasEstadoCiviles(BigInteger secuenciaEstadosCiviles);
+    /**
+     * Método encargado de validar si existe una relación entre un EstadoCivil
+     * específica y algúna VigenciaEstadoCivil. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secEstadosCiviles Secuencia de un EstadoCivil.
+     * @return Retorna el número de VigenciasEstadosCiviles relacionados con una
+     * EstadoCivil cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarVigenciasEstadosCiviles(BigInteger secEstadosCiviles);
 }

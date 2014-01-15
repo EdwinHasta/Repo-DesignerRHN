@@ -48,12 +48,13 @@ public interface AdministrarCentroCostosInterface {
     public void crearCentroCostos(List<CentrosCostos> listaCentrosCostos);
 
     /**
-     * Metodo Encargado de traer los CentrosCentros de una Empresa Especifica.
+     * Metodo Encargado de traer los CentrosCentros de una Empresa Especifica y
+     * el campo COMODIN es igual a 'N'.
      *
      * @param secEmpresa Secuencia de la Empresa.
      * @return Lista de CentrosCostos.
      */
-    public List<CentrosCostos> buscarCentrosCostosPorEmpresa(BigInteger secEmpresa);
+    public List<CentrosCostos> consultarCentrosCostosPorEmpresa(BigInteger secEmpresa);
 
     /**
      * Método encargado de recuperar los TiposCentrosCostos necesarios para la

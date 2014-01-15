@@ -22,32 +22,36 @@ public class AdministrarIdiomas implements AdministrarIdiomasInterface {
 
     @EJB
     PersistenciaIdiomasInterface persistenciaIdiomas;
-    private Idiomas idiomaSeleccionado;
-    private Idiomas idiomas;
-    private List<Idiomas> listIdiomas;
 
-    public void modificarIdiomas(List<Idiomas> listTiposIndicadoresModificadas) {
-        for (int i = 0; i < listTiposIndicadoresModificadas.size(); i++) {
+    public void modificarIdiomas(List<Idiomas> listaIdiomas) {
+        for (int i = 0; i < listaIdiomas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            idiomaSeleccionado = listTiposIndicadoresModificadas.get(i);
-            persistenciaIdiomas.editar(idiomaSeleccionado);
+            persistenciaIdiomas.editar(listaIdiomas.get(i));
         }
     }
 
-    public void borrarIdiomas(Idiomas idiomas) {
-        persistenciaIdiomas.borrar(idiomas);
+    public void borrarIdiomas(List<Idiomas> listaIdiomas) {
+        for (int i = 0; i < listaIdiomas.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaIdiomas.borrar(listaIdiomas.get(i));
+        }
     }
 
-    public void crearIdiomas(Idiomas idiomas) {
-        persistenciaIdiomas.crear(idiomas);
+    public void crearIdiomas(List<Idiomas> listaIdiomas) {
+        for (int i = 0; i < listaIdiomas.size(); i++) {
+            System.out.println("Administrar crear...");
+            persistenciaIdiomas.crear(listaIdiomas.get(i));
+        }
     }
 
     public List<Idiomas> mostrarIdiomas() {
+        List<Idiomas> listIdiomas;
         listIdiomas = persistenciaIdiomas.buscarIdiomas();
         return listIdiomas;
     }
 
-    public Idiomas mostrarIdioma(BigInteger secIdiomas) {
+    public Idiomas consultarIdioma(BigInteger secIdiomas) {
+        Idiomas idiomas;
         idiomas = persistenciaIdiomas.buscarIdioma(secIdiomas);
         return idiomas;
     }

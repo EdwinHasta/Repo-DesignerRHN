@@ -21,21 +21,76 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarEmplVigenciasFormasPagosInterface {
 
-    public List<VigenciasFormasPagos> vigenciasFormasPagosPorEmplelado(BigInteger secEmpleado);
+    /**
+     * Metodo Encargado de traer las VigenciasFormasPagos de un Empleado
+     * Especifico.
+     *
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Lista de VigenciasFormasPagos.
+     */
+    public List<VigenciasFormasPagos> consultarVigenciasFormasPagosPorEmpleado(BigInteger secEmpleado);
 
-    public void modificarVigenciasFormasPagos(List<VigenciasFormasPagos> listVigenciasFormasPagosModificadas);
+    /**
+     * Metodo encargado de Modificar VigenciasFormasPagos.
+     *
+     * @param listVigenciasFormasPagos Lista VigenciasFormasPagos que se van a
+     * modificar.
+     */
+    public void modificarVigenciasFormasPagos(List<VigenciasFormasPagos> listVigenciasFormasPagos);
 
-    public void borrarVigenciasFormasPagos(VigenciasFormasPagos vigenciasFormasPagos);
+    /**
+     * Metodo encargado de borrar VigenciasFormasPagos.
+     *
+     * @param listVigenciasFormasPagos Lista VigenciasFormasPagos que se van a
+     * borrar.
+     */
+    public void borrarVigenciasFormasPagos(List<VigenciasFormasPagos> listVigenciasFormasPagos);
 
+    /**
+     * Metodo encargado de crear VigenciasFormasPagos.
+     *
+     * @param vigenciasFormasPagos vigenciasFormasPagos que se va a crear.
+     */
     public void crearVigencasFormasPagos(VigenciasFormasPagos vigenciasFormasPagos);
 
-    public Empleados buscarEmpleado(BigInteger secuencia);
+    /**
+     * *
+     * Metodo encargado de buscar un Empleado especifico
+     *
+     * @param secEmpleado Secuencia del Empleado
+     * @return Empleado .
+     */
+    public Empleados consultarEmpleado(BigInteger secEmpleado);
 
-    public List<Sucursales> buscarSucursales();
+    /**
+     * Método encargado de recuperar las Sucursales necesarias para la lista de
+     * valores.
+     *
+     * @return Retorna una lista de Sucursales.
+     */
+    public List<Sucursales> consultarLOVSucursales();
 
-    public List<FormasPagos> buscarFormasPagos();
+    /**
+     * Método encargado de recuperar las FormasPagos necesarias para la lista de
+     * valores.
+     *
+     * @return Retorna una lista de FormasPagos.
+     */
+    public List<FormasPagos> consultarLOVFormasPagos();
 
-    public List<MetodosPagos> buscarMetodosPagos();
+    /**
+     * Método encargado de recuperar los MetodosPagos necesarias para la lista
+     * de valores.
+     *
+     * @return Retorna una lista de MetodosPagos.
+     */
+    public List<MetodosPagos> consultarLOVMetodosPagos();
 
-    public List<Periodicidades> buscarPerdiocidades();
+    /**
+     * Método encargado de recuperar las Periodicidades necesarias para la lista
+     * de valores.
+     *
+     * @return Retorna una lista de Periodicidades.
+     */
+    public List<Periodicidades> consultarLOVPerdiocidades();
 }

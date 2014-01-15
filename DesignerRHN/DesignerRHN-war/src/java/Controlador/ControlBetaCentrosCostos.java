@@ -1407,7 +1407,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                         empresaSeleccionada = getListaEmpresas().get(indiceEmpresaMostrada);
                         getListCentrosCostosPorEmpresaBoton();
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: empresaSeleccionada = " + empresaSeleccionada.getNombre());
-                        listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                        listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: Empresa cambio a: " + empresaSeleccionada.getNombre());
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:nombreEmpresa");
@@ -1423,7 +1423,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                         empresaSeleccionada = getListaEmpresas().get(indiceEmpresaMostrada);
                         getListCentrosCostosPorEmpresaBoton();
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: empresaSeleccionada = " + empresaSeleccionada.getNombre());
-                        listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                        listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                         System.out.println("CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada: Empresa cambio a: " + empresaSeleccionada.getNombre());
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:nombreEmpresa");
@@ -1681,12 +1681,12 @@ public class ControlBetaCentrosCostos implements Serializable {
             if (empresaSeleccionada == null) {
                 getEmpresaSeleccionada();
                 if (listCentrosCostosPorEmpresa == null) {
-                    listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                    listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                 } else {
                     System.out.println(".-.");
                 }
             } else if (listCentrosCostosPorEmpresa == null) {
-                listCentrosCostosPorEmpresa = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
             }
             return listCentrosCostosPorEmpresa;
         } catch (Exception e) {
@@ -1698,7 +1698,7 @@ public class ControlBetaCentrosCostos implements Serializable {
     public List<CentrosCostos> getListCentrosCostosPorEmpresaBoton() {
         try {
             if (listCentrosCostosPorEmpresaBoton == null) {
-                //listCentrosCostosPorEmpresaBoton = administrarCentroCostos.buscarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
+                //listCentrosCostosPorEmpresaBoton = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
                 listCentrosCostosPorEmpresaBoton = listCentrosCostosPorEmpresa;
             }
             return listCentrosCostosPorEmpresaBoton;

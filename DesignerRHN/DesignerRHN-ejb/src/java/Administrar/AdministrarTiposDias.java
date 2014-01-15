@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarTiposDiasInterface;
@@ -21,56 +20,66 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarTiposDias implements AdministrarTiposDiasInterface {
 
-   @EJB
+    @EJB
     PersistenciaTiposDiasInterface persistenciaTiposDias;
-    private TiposDias tipoDiaSeleccionado;
-    private TiposDias tiposDias;
-    private List<TiposDias> listTiposDias;
 
-    public void modificarTiposDias(List<TiposDias> listaTiposDiasModificados) {
-        for (int i = 0; i < listaTiposDiasModificados.size(); i++) {
+    @Override
+    public void modificarTiposDias(List<TiposDias> listaTiposDias) {
+        for (int i = 0; i < listaTiposDias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tipoDiaSeleccionado = listaTiposDiasModificados.get(i);
-            persistenciaTiposDias.editar(tipoDiaSeleccionado);
+            persistenciaTiposDias.editar(listaTiposDias.get(i));
         }
     }
 
-    public void borrarTiposDias(TiposDias tiposDias) {
-        persistenciaTiposDias.borrar(tiposDias);
+    @Override
+    public void borrarTiposDias(List<TiposDias> listaTiposDias) {
+        for (int i = 0; i < listaTiposDias.size(); i++) {
+            System.out.println("Administrar Borrar...");
+            persistenciaTiposDias.borrar(listaTiposDias.get(i));
+        }
     }
 
-    public void crearTiposDias(TiposDias tiposDias) {
-        persistenciaTiposDias.crear(tiposDias);
+    @Override
+    public void crearTiposDias(List<TiposDias> listaTiposDias) {
+        for (int i = 0; i < listaTiposDias.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposDias.crear(listaTiposDias.get(i));
+        }
     }
 
+    @Override
     public List<TiposDias> mostrarTiposDias() {
+        List<TiposDias> listTiposDias;
         listTiposDias = persistenciaTiposDias.buscarTiposDias();
         return listTiposDias;
     }
 
+    @Override
     public TiposDias mostrarTipoDia(BigInteger secTipoDia) {
+        TiposDias tiposDias;
         tiposDias = persistenciaTiposDias.buscarTipoDia(secTipoDia);
         return tiposDias;
     }
 
+    @Override
     public BigInteger verificarDiasLaborales(BigInteger secuenciaTiposDias) {
-        BigInteger verificarBorradoDiasLaborales = null;
+        BigInteger verificarBorradoDiasLaborales;
         try {
-            verificarBorradoDiasLaborales = persistenciaTiposDias.contadorDiasLaborales(secuenciaTiposDias);
+            return verificarBorradoDiasLaborales = persistenciaTiposDias.contadorDiasLaborales(secuenciaTiposDias);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSDIAS VERIFICARDIASLABORALES ERROR :" + e);
-        } finally {
-            return verificarBorradoDiasLaborales;
+            return null;
         }
     }
+
+    @Override
     public BigInteger verificarExtrasRecargos(BigInteger secuenciaTiposDias) {
-        BigInteger verificarBorradoExtrasRecargos = null;
+        BigInteger verificarBorradoExtrasRecargos;
         try {
-            verificarBorradoExtrasRecargos = persistenciaTiposDias.contadorExtrasRecargos(secuenciaTiposDias);
+            return verificarBorradoExtrasRecargos = persistenciaTiposDias.contadorExtrasRecargos(secuenciaTiposDias);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSDIAS VERIFICAREXTRASRECARGOS ERROR :" + e);
-        } finally {
-            return verificarBorradoExtrasRecargos;
+            return null;
         }
     }
 }

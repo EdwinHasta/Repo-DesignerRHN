@@ -358,13 +358,13 @@ public class ControlGruposViaticos implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlGruposViaticos ");
             if (tipoLista == 0) {
-                cargos = administrarGruposViaticos.verificarBorradoCargos(listGruposViaticos.get(index).getSecuencia());
-                plantas = administrarGruposViaticos.verificarBorradoPlantas(listGruposViaticos.get(index).getSecuencia());
+                cargos = administrarGruposViaticos.verificarCargos(listGruposViaticos.get(index).getSecuencia());
+                plantas = administrarGruposViaticos.verificarPlantas(listGruposViaticos.get(index).getSecuencia());
                 tablasViaticos = administrarGruposViaticos.verificarTablasViaticos(listGruposViaticos.get(index).getSecuencia());
                 ersViaticos = administrarGruposViaticos.verificarEersViaticos(listGruposViaticos.get(index).getSecuencia());
             } else {
-                cargos = administrarGruposViaticos.verificarBorradoCargos(filtrarGruposViaticos.get(index).getSecuencia());
-                plantas = administrarGruposViaticos.verificarBorradoPlantas(filtrarGruposViaticos.get(index).getSecuencia());
+                cargos = administrarGruposViaticos.verificarCargos(filtrarGruposViaticos.get(index).getSecuencia());
+                plantas = administrarGruposViaticos.verificarPlantas(filtrarGruposViaticos.get(index).getSecuencia());
                 tablasViaticos = administrarGruposViaticos.verificarTablasViaticos(filtrarGruposViaticos.get(index).getSecuencia());
                 ersViaticos = administrarGruposViaticos.verificarEersViaticos(filtrarGruposViaticos.get(index).getSecuencia());
             }
@@ -405,10 +405,7 @@ public class ControlGruposViaticos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarGruposViaticos");
             if (!borrarGruposViaticos.isEmpty()) {
-                for (int i = 0; i < borrarGruposViaticos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarGruposViaticos.borrarGruposViaticos(borrarGruposViaticos.get(i));
-                }
+                administrarGruposViaticos.borrarGruposViaticos(borrarGruposViaticos);
                 //mostrarBorrados
                 registrosBorrados = borrarGruposViaticos.size();
                 context.update("form:mostrarBorrados");
@@ -416,12 +413,8 @@ public class ControlGruposViaticos implements Serializable {
                 borrarGruposViaticos.clear();
             }
             if (!crearGruposViaticos.isEmpty()) {
-                for (int i = 0; i < crearGruposViaticos.size(); i++) {
+                administrarGruposViaticos.crearGruposViaticos(crearGruposViaticos);
 
-                    System.out.println("Creando...");
-                    administrarGruposViaticos.crearGruposViaticos(crearGruposViaticos.get(i));
-
-                }
                 crearGruposViaticos.clear();
             }
             if (!modificarGruposViaticos.isEmpty()) {
@@ -740,7 +733,7 @@ public class ControlGruposViaticos implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*
     public List<GruposViaticos> getListGruposViaticos() {
         if (listGruposViaticos == null) {
-            listGruposViaticos = administrarGruposViaticos.mostrarGruposViaticos();
+            listGruposViaticos = administrarGruposViaticos.consultarGruposViaticos();
         }
         return listGruposViaticos;
     }

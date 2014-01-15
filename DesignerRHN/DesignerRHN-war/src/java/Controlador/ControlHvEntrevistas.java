@@ -436,23 +436,15 @@ public class ControlHvEntrevistas implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarEvalCompetencias");
             if (!borrarHvEntrevistas.isEmpty()) {
-                for (int i = 0; i < borrarHvEntrevistas.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarHvEntrevistas.borrarHvEntrevistas(borrarHvEntrevistas.get(i));
-                }
-                //mostrarBorrados
+                administrarHvEntrevistas.borrarHvEntrevistas(borrarHvEntrevistas);
+                 //mostrarBorrados
                 registrosBorrados = borrarHvEntrevistas.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarHvEntrevistas.clear();
             }
             if (!crearHvEntrevistas.isEmpty()) {
-                for (int i = 0; i < crearHvEntrevistas.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarHvEntrevistas.crearHvEntrevistas(crearHvEntrevistas.get(i));
-
-                }
+                administrarHvEntrevistas.crearHvEntrevistas(crearHvEntrevistas);
                 crearHvEntrevistas.clear();
             }
             if (!modificarHvEntrevistas.isEmpty()) {
@@ -792,7 +784,7 @@ public class ControlHvEntrevistas implements Serializable {
 
     public List<HvEntrevistas> getListHvEntrevistas() {
         if (listHvEntrevistas == null) {
-            listHvEntrevistas = administrarHvEntrevistas.MostrarHvEntrevistasPorEmpleado(secuenciaEmpleado);
+            listHvEntrevistas = administrarHvEntrevistas.consultarHvEntrevistasPorEmpleado(secuenciaEmpleado);
         }
         return listHvEntrevistas;
     }
