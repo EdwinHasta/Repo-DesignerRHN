@@ -12,18 +12,26 @@ import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
 import Entidades.Procesos;
 import Entidades.TiposTrabajadores;
+import InterfaceAdministrar.AdministarReportesInterface;
 import InterfaceAdministrar.AdministrarReportesBancosInterface;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -35,6 +43,9 @@ public class ControlReportesBancos implements Serializable {
 
     @EJB
     AdministrarReportesBancosInterface administrarReportesBancos;
+    @EJB
+    AdministarReportesInterface administarReportes;
+    //
     private ParametrosInformes parametroDeInforme;
     private List<Inforeportes> listaIR;
     private List<Inforeportes> filtrarListInforeportesUsuario;
@@ -74,9 +85,22 @@ public class ControlReportesBancos implements Serializable {
     private List<Ciudades> filtrarListCiudades;
     //
     private String banco, empresa, tipoTrabajador, proceso, ciudad;
-    private boolean permitirIndex;
+    private boolean permitirIndex, cambiosReporte;
+    //ALTO SCROLL TABLA
+    private String altoTabla;
+    private int indice;
+    //EXPORTAR REPORTE
+    private StreamedContent file;
+    //
+    private List<Inforeportes> listaInfoReportesModificados;
+    //
+    private BigInteger auxCodigo;
+    private String auxNombre;
 
     public ControlReportesBancos() {
+        cambiosReporte = true;
+        listaInfoReportesModificados = new ArrayList<Inforeportes>();
+        altoTabla = "185";
         parametroDeInforme = null;
         listaIR = null;
         listaIRRespaldo = new ArrayList<Inforeportes>();
@@ -103,28 +127,66 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
     }
 
+    public void cambiarIndexInforeporte(int i) {
+        if (tipoLista == 0) {
+            auxCodigo = listaIR.get(i).getCodigo();
+            auxNombre = listaIR.get(i).getNombre();
+        }
+        if (tipoLista == 1) {
+            auxCodigo = filtrarListInforeportesUsuario.get(i).getCodigo();
+            auxNombre = filtrarListInforeportesUsuario.get(i).getNombre();
+        }
+        resaltoParametrosParaReporte(i);
+    }
+
+    public void dispararDialogoGuardarCambios() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("confirmarGuardar.show()");
+
+    }
+
+    public void guardarYSalir() {
+        guardarCambios();
+        salir();
+    }
+
     public void guardarCambios() {
         try {
-            if (parametroModificacion.getCodigoempleadodesde() == null) {
-                parametroModificacion.setCodigoempleadodesde(null);
-            }
-            if (parametroModificacion.getCodigoempleadohasta() == null) {
-                parametroModificacion.setCodigoempleadohasta(null);
-            }
-            if (parametroModificacion.getTipotrabajador().getSecuencia() == null) {
-                parametroModificacion.setTipotrabajador(null);
-            }
-            if (parametroModificacion.getProceso().getSecuencia() == null) {
-                parametroModificacion.setProceso(null);
-            }
-            if (parametroModificacion.getEmpresa().getSecuencia() == null) {
-                parametroModificacion.setEmpresa(null);
-            }
-            if (parametroModificacion.getCiudad().getSecuencia() == null) {
-                parametroModificacion.setCiudad(null);
-            }
+            if (cambiosReporte == false) {
+                if (parametroModificacion != null) {
+                    if (parametroModificacion.getCodigoempleadodesde() == null) {
+                        parametroModificacion.setCodigoempleadodesde(null);
+                    }
+                    if (parametroModificacion.getCodigoempleadohasta() == null) {
+                        parametroModificacion.setCodigoempleadohasta(null);
+                    }
+                    if (parametroModificacion.getTipotrabajador().getSecuencia() == null) {
+                        parametroModificacion.setTipotrabajador(null);
+                    }
+                    if (parametroModificacion.getProceso().getSecuencia() == null) {
+                        parametroModificacion.setProceso(null);
+                    }
+                    if (parametroModificacion.getEmpresa().getSecuencia() == null) {
+                        parametroModificacion.setEmpresa(null);
+                    }
+                    if (parametroModificacion.getCiudad().getSecuencia() == null) {
+                        parametroModificacion.setCiudad(null);
+                    }
 
-            administrarReportesBancos.modificarParametrosInformes(parametroModificacion);
+                    administrarReportesBancos.modificarParametrosInformes(parametroModificacion);
+                }
+            }
+            if (!listaInfoReportesModificados.isEmpty()) {
+                System.out.println("Entro a guardarCambiosInfoReportes");
+                System.out.println("listaInfoReportesModificados : " + listaInfoReportesModificados.size());
+                for (int i = 0; i < listaInfoReportesModificados.size(); i++) {
+                    System.out.println("Modificara InfoReporte : " + listaInfoReportesModificados.get(i).getSecuencia());
+                }
+                administrarReportesBancos.guardarCambiosInfoReportes(listaInfoReportesModificados); 
+            }
+            cambiosReporte = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:ACEPTAR");
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
         }
@@ -132,6 +194,9 @@ public class ControlReportesBancos implements Serializable {
 
     public void modificarParametroInforme() {
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
     }
 
     public void posicionCelda(int i) {
@@ -161,7 +226,6 @@ public class ControlReportesBancos implements Serializable {
         int indiceUnicoElemento = -1;
         int coincidencias = 0;
 
-
         if (campoConfirmar.equalsIgnoreCase("EMPRESA")) {
             parametroDeInforme.getEmpresa().setNombre(empresa);
 
@@ -176,13 +240,14 @@ public class ControlReportesBancos implements Serializable {
                 parametroModificacion = parametroDeInforme;
                 listEmpresas.clear();
                 getListEmpresas();
+                cambiosReporte = true;
+                context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
                 context.update("form:EmpresaDialogo");
                 context.execute("EmpresaDialogo.show()");
             }
         }
-
 
         if (campoConfirmar.equalsIgnoreCase("TIPOTRABAJADOR")) {
             parametroDeInforme.getTipotrabajador().setNombre(tipoTrabajador);
@@ -197,6 +262,8 @@ public class ControlReportesBancos implements Serializable {
                 parametroModificacion = parametroDeInforme;
                 listTiposTrabajadores.clear();
                 getListTiposTrabajadores();
+                cambiosReporte = true;
+                context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
                 context.update("form:TipoTrabajadorDialogo");
@@ -217,6 +284,8 @@ public class ControlReportesBancos implements Serializable {
                 parametroModificacion = parametroDeInforme;
                 listProcesos.clear();
                 getListProcesos();
+                cambiosReporte = true;
+                context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
                 context.update("form:ProcesoDialogo");
@@ -236,6 +305,8 @@ public class ControlReportesBancos implements Serializable {
                 parametroModificacion = parametroDeInforme;
                 listBancos.clear();
                 getListBancos();
+                cambiosReporte = true;
+                context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
                 context.update("form:BancoDialogo");
@@ -255,6 +326,8 @@ public class ControlReportesBancos implements Serializable {
                 parametroModificacion = parametroDeInforme;
                 listCiudades.clear();
                 getListCiudades();
+                cambiosReporte = true;
+                context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
                 context.update("form:CiudadDialogo");
@@ -382,6 +455,7 @@ public class ControlReportesBancos implements Serializable {
     public void refrescarParametros() {
         defaultPropiedadesParametrosReporte();
         parametroDeInforme = null;
+        parametroModificacion = null;
         listBancos = null;
         listCiudades = null;
         listEmpleados = null;
@@ -430,7 +504,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:tipoTrabajadorParametro");
         context.update("form:fechaCorteParametro");
         context.update("form:ciudadParametro");
-        
+
     }
 
     public void activarAceptar() {
@@ -441,7 +515,9 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadodesde(empleadoSeleccionado.getCodigoempleado());
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:empleadoDesdeParametro");
         empleadoSeleccionado = null;
         aceptar = true;
@@ -460,7 +536,9 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadohasta(empleadoSeleccionado.getCodigoempleado());
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:empleadoHastaParametro");
         empleadoSeleccionado = null;
         aceptar = true;
@@ -478,7 +556,9 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
         parametroDeInforme.setEmpresa(empresaSeleccionada);
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:empresaParametro");
         empresaSeleccionada = null;
         aceptar = true;
@@ -496,7 +576,9 @@ public class ControlReportesBancos implements Serializable {
     public void actualizarTipoTrabajador() {
         parametroDeInforme.setTipotrabajador(tipoTSeleccionado);
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:tipoTrabajadorParametro");
         tipoTSeleccionado = null;
         aceptar = true;
@@ -516,7 +598,9 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
         parametroDeInforme.setProceso(procesoSeleccionado);
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:procesoParametro");
         procesoSeleccionado = null;
         aceptar = true;
@@ -535,7 +619,9 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
         parametroDeInforme.setBanco(bancoSeleccionado);
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:bancoParametro");
         bancoSeleccionado = null;
         aceptar = true;
@@ -554,7 +640,9 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
         parametroDeInforme.setCiudad(ciudadSeleccionada);
         parametroModificacion = parametroDeInforme;
+        cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:ciudadParametro");
         ciudadSeleccionada = null;
         aceptar = true;
@@ -609,11 +697,12 @@ public class ControlReportesBancos implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
+            altoTabla = "185";
+            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
+            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:reportesNomina");
+            RequestContext.getCurrentInstance().update("form:reportesBancos");
             bandera = 0;
             filtrarListInforeportesUsuario = null;
             tipoLista = 0;
@@ -629,23 +718,108 @@ public class ControlReportesBancos implements Serializable {
         listBancos = null;
         listCiudades = null;
         casilla = -1;
+        listaInfoReportesModificados.clear();
+        cambiosReporte = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
     }
 
+    
+    public void cancelarYSalir() {
+        cancelarModificaciones();
+        salir();
+    }
+
+    public void cancelarModificaciones() {
+        if (bandera == 1) {
+            defaultPropiedadesParametrosReporte();
+            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:codigoIR");
+            codigoIR.setFilterStyle("display: none; visibility: hidden;");
+            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");
+            reporteIR.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "185";
+            RequestContext.getCurrentInstance().update("form:reportesBancos");
+            bandera = 0;
+            filtrarListInforeportesUsuario = null;
+            tipoLista = 0;
+        }
+        defaultPropiedadesParametrosReporte();
+        listaIR = null;
+        listaIRRespaldo = null;
+        casilla = -1;
+        listaInfoReportesModificados.clear();
+        cambiosReporte = true;
+        getParametroDeInforme();
+        getListaIR();
+        refrescarParametros();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+        context.update("form:reportesBancos");
+    }
+
+    public void reporteModificado(int i) {
+        if (tipoLista == 0) {
+            listaIR.get(i).setCodigo(auxCodigo);
+            listaIR.get(i).setNombre(auxNombre);
+        }
+        if (tipoLista == 1) {
+            filtrarListInforeportesUsuario.get(i).setCodigo(auxCodigo);
+            filtrarListInforeportesUsuario.get(i).setNombre(auxNombre);
+        }
+        RequestContext.getCurrentInstance().update("form:reportesBancos");
+    }
+
+    public void modificacionTipoReporte(int i) {
+        cambiosReporte = false;
+        System.out.println("Modificacion Reporte A Generar");
+        if (tipoLista == 0) {
+            if (listaInfoReportesModificados.isEmpty()) {
+                System.out.println("Op..1");
+                listaInfoReportesModificados.add(listaIR.get(i));
+            } else {
+                if ((!listaInfoReportesModificados.isEmpty()) && (!listaInfoReportesModificados.contains(listaIR.get(i)))) {
+                    listaInfoReportesModificados.add(listaIR.get(i));
+                    System.out.println("Op..2");
+                } else {
+                    int posicion = listaInfoReportesModificados.indexOf(listaIR.get(i));
+                    listaInfoReportesModificados.set(posicion, listaIR.get(i));
+                    System.out.println("Op..3");
+                }
+            }
+        }
+        if (tipoLista == 1) {
+            if (listaInfoReportesModificados.isEmpty()) {
+                listaInfoReportesModificados.add(filtrarListInforeportesUsuario.get(i));
+            } else {
+                if ((!listaInfoReportesModificados.isEmpty()) && (!listaInfoReportesModificados.contains(filtrarListInforeportesUsuario.get(i)))) {
+                    listaInfoReportesModificados.add(filtrarListInforeportesUsuario.get(i));
+                } else {
+                    int posicion = listaInfoReportesModificados.indexOf(filtrarListInforeportesUsuario.get(i));
+                    listaInfoReportesModificados.set(posicion, filtrarListInforeportesUsuario.get(i));
+                }
+            }
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+    }
+    
     public void activarCtrlF11() {
         if (bandera == 0) {
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
+            altoTabla = "163";
+            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
+            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");
             reporteIR.setFilterStyle("width: 200px");
-            RequestContext.getCurrentInstance().update("form:reportesNomina");
+            RequestContext.getCurrentInstance().update("form:reportesBancos");
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
+            altoTabla = "185";
+            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:reporteIR");
+            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:reportesNomina");
+            RequestContext.getCurrentInstance().update("form:reportesBancos");
             bandera = 0;
             filtrarListInforeportesUsuario = null;
             tipoLista = 0;
@@ -653,18 +827,7 @@ public class ControlReportesBancos implements Serializable {
         }
 
     }
-
-    public void reporteModificado(int i) {
-        try {
-            listaIRRespaldo = administrarReportesBancos.listInforeportesUsuario();
-            listaIR = listaIRRespaldo;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:reportesNomina");
-        } catch (Exception e) {
-            System.out.println("Error en reporteModificado : " + e.toString());
-        }
-    }
-
+    
     public void reporteSeleccionado(int i) {
         System.out.println("Posicion del reporte : " + i);
     }
@@ -684,25 +847,30 @@ public class ControlReportesBancos implements Serializable {
         RequestContext.getCurrentInstance().update("form:fechaCorteParametro");
 
         empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametro");
-        empleadoDesdeParametro.setStyle("position: absolute; top: 40px; left: 120px;font-size: 11px;height: 10px;width: 90px;");
+        empleadoDesdeParametro.setStyle("position: absolute; top: 40px; left: 120px;height: 15px;width: 90px;");
         RequestContext.getCurrentInstance().update("form:empleadoDesdeParametro");
 
         empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametro");
-        empleadoHastaParametro.setStyle("position: absolute; top: 40px; left: 390px;font-size: 11px;height: 10px;width: 90px;");
+        empleadoHastaParametro.setStyle("position: absolute; top: 40px; left: 390px;height: 15px;width: 90px;");
         RequestContext.getCurrentInstance().update("form:empleadoHastaParametro");
 
         tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tipoTrabajadorParametro");
-        tipoTrabajadorParametro.setStyle("position: absolute; top: 115px; left: 390px;font-size: 11px;height: 10px;width: 180px;");
+        tipoTrabajadorParametro.setStyle("position: absolute; top: 115px; left: 390px;height: 15px;width: 180px;");
         RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
 
         ciudadParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:ciudadParametro");
-        ciudadParametro.setStyle("position: absolute; top: 45px; left: 690px;font-size: 11px;height: 10px;");
+        ciudadParametro.setStyle("position: absolute; top: 45px; left: 690px;height: 15px;");
         RequestContext.getCurrentInstance().update("form:ciudadParametro");
     }
 
     public void resaltoParametrosParaReporte(int i) {
         Inforeportes reporteS = new Inforeportes();
-        reporteS = listaIR.get(i);
+        if (tipoLista == 0) {
+            reporteS = listaIR.get(i);
+        }
+        if (tipoLista == 1) {
+            reporteS = filtrarListInforeportesUsuario.get(i);
+        }
         defaultPropiedadesParametrosReporte();
         if (reporteS.getFecdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Desde -";
@@ -719,27 +887,27 @@ public class ControlReportesBancos implements Serializable {
         if (reporteS.getEmdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Desde -";
             empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametro");
-            empleadoDesdeParametro.setStyle("position: absolute; top: 40px; left: 120px;font-size: 11px;height: 10px;width: 90px;text-decoration: underline; color: red;");
+            empleadoDesdeParametro.setStyle("position: absolute; top: 40px; left: 120px;height: 15px;width: 90px;text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:empleadoDesdeParametro");
         }
         if (reporteS.getEmhasta().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Hasta -";
             empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametro");
-            empleadoHastaParametro.setStyle("position: absolute; top: 40px; left: 390px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
+            empleadoHastaParametro.setStyle("position: absolute; top: 40px; left: 390px;height: 15px;width: 90px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:empleadoHastaParametro");
         }
 
         if (reporteS.getTipotrabajador().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Tipo Trabajador -";
             tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tipoTrabajadorParametro");
-            tipoTrabajadorParametro.setStyle("position: absolute; top: 115px; left: 390px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
+            tipoTrabajadorParametro.setStyle("position: absolute; top: 115px; left: 390px;height: 15px;width: 180px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
         }
 
         if (reporteS.getCiudad().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Ciudad -";
             ciudadParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:ciudadParametro");
-            ciudadParametro.setStyle("position: absolute; top: 45px; left: 690px;font-size: 11px;height: 10px;text-decoration: underline; color: red;");
+            ciudadParametro.setStyle("position: absolute; top: 45px; left: 690px;height: 15px;text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
         }
     }
@@ -747,7 +915,12 @@ public class ControlReportesBancos implements Serializable {
     public void parametrosDeReporte(int i) {
         requisitosReporte = "";
         Inforeportes reporteS = new Inforeportes();
-        reporteS = listaIR.get(i);
+        if (tipoLista == 0) {
+            reporteS = listaIR.get(i);
+        }
+        if (tipoLista == 1) {
+            reporteS = filtrarListInforeportesUsuario.get(i);
+        }
         RequestContext context = RequestContext.getCurrentInstance();
         if (reporteS.getFecdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Desde -";
@@ -775,6 +948,44 @@ public class ControlReportesBancos implements Serializable {
 
     public void cancelarRequisitosReporte() {
         requisitosReporte = "";
+    }
+    
+    public void generarReporte() throws IOException {
+        String nombreReporte;
+        String pathReporteGenerado = null;
+        if (tipoLista == 0) {
+            nombreReporte = listaIR.get(indice).getNombrereporte();
+        } else {
+            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+        }
+        if (nombreReporte != null) {
+            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, "TXT");
+        }
+        if (pathReporteGenerado != null) {
+            exportarReporte(pathReporteGenerado);
+        }
+    }
+
+    public void exportarReporte(String rutaReporteGenerado) throws IOException {
+        File reporte = new File(rutaReporteGenerado);
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        FileInputStream fis = new FileInputStream(reporte);
+        byte[] bytes = new byte[1024];
+        int read;
+        if (!ctx.getResponseComplete()) {
+            String fileName = reporte.getName();
+            HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+            ServletOutputStream out = response.getOutputStream();
+
+            while ((read = fis.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.flush();
+            out.close();
+            System.out.println("\nDescargado\n");
+            ctx.responseComplete();
+        }
     }
 
     public ParametrosInformes getParametroDeInforme() {
@@ -1082,4 +1293,37 @@ public class ControlReportesBancos implements Serializable {
     public void setFiltrarListCiudades(List<Ciudades> filtrarListCiudades) {
         this.filtrarListCiudades = filtrarListCiudades;
     }
+    
+        public boolean isCambiosReporte() {
+        return cambiosReporte;
+    }
+
+    public void setCambiosReporte(boolean cambiosReporte) {
+        this.cambiosReporte = cambiosReporte;
+    }
+
+    public List<Inforeportes> getListaInfoReportesModificados() {
+        return listaInfoReportesModificados;
+    }
+
+    public void setListaInfoReportesModificados(List<Inforeportes> listaInfoReportesModificados) {
+        this.listaInfoReportesModificados = listaInfoReportesModificados;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public StreamedContent getFile() {
+        return file;
+    }
+
+    public void setFile(StreamedContent file) {
+        this.file = file;
+    }
+
 }

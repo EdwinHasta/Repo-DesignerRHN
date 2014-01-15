@@ -21,5 +21,6 @@ public interface AdministrarNReporteBienestarInterface {
     public void modificarParametrosInformes(ParametrosInformes parametroInforme);
     public List<Actividades> listActividades();
     public List<Empleados> listEmpleados();
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR);
     
 }

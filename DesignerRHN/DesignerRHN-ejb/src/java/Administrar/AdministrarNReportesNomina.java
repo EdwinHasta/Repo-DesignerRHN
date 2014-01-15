@@ -40,7 +40,7 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarNReportesNomina implements AdministrarNReportesNominaInterface {
-
+    
     @EJB
     PersistenciaInforeportesInterface persistenciaInforeportes;
     @EJB
@@ -54,7 +54,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
-    PersistenciaUbicacionesGeograficasInterface  persistenciaUbicacionesGeograficas;
+    PersistenciaUbicacionesGeograficasInterface persistenciaUbicacionesGeograficas;
     @EJB
     PersistenciaEstructurasInterface persistenciaEstructuras;
     @EJB
@@ -83,7 +83,6 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     List<Procesos> listProcesos;
     List<Asociaciones> listAsociaciones;
     
-
     @Override
     public ParametrosInformes parametrosDeReporte() {
         try {
@@ -95,7 +94,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-
+    
     @Override
     public List<Inforeportes> listInforeportesUsuario() {
         try {
@@ -109,11 +108,11 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     }
     
     @Override
-    public void modificarParametrosInformes(ParametrosInformes parametroInforme){
-        try{
+    public void modificarParametrosInformes(ParametrosInformes parametroInforme) {
+        try {
             persistenciaParametrosInformes.editar(parametroInforme);
-        }catch(Exception e){
-            System.out.println("Error modificarParametrosInformes : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error modificarParametrosInformes : " + e.toString());
         }
     }
     
@@ -129,101 +128,112 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     }
     
     @Override
-    public List<GruposConceptos> listGruposConcetos(){
-        try{
+    public List<GruposConceptos> listGruposConcetos() {
+        try {
             listGruposConceptos = persistenciaGruposConceptos.buscarGruposConceptos();
             return listGruposConceptos;
-        }catch(Exception e){
-            System.out.println("Error listGruposConcetos : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listGruposConcetos : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<Empleados> listEmpleados(){
-        try{
+    public List<Empleados> listEmpleados() {
+        try {
             listEmpleados = persistenciaEmpleado.buscarEmpleados();
             return listEmpleados;
-        }catch(Exception e){
-            System.out.println("Error listEmpleados : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listEmpleados : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<UbicacionesGeograficas> listUbicacionesGeograficas(){
-        try{
+    public List<UbicacionesGeograficas> listUbicacionesGeograficas() {
+        try {
             listUbicacionesGeograficas = persistenciaUbicacionesGeograficas.buscarUbicacionesGeograficas();
             return listUbicacionesGeograficas;
-        }catch(Exception e){
-            System.out.println("Error listUbicacionesGeograficas : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listUbicacionesGeograficas : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<TiposAsociaciones> listTiposAsociaciones(){
-        try{
+    public List<TiposAsociaciones> listTiposAsociaciones() {
+        try {
             listTiposAsociaciones = persistenciaTiposAsociaciones.buscarTiposAsociaciones();
             return listTiposAsociaciones;
-        }catch(Exception e){
-            System.out.println("Error listTiposAsociaciones : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listTiposAsociaciones : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<Estructuras> listEstructuras(){
-        try{
+    public List<Estructuras> listEstructuras() {
+        try {
             listEstructuras = persistenciaEstructuras.buscarEstructuras();
             return listEstructuras;
-        }catch(Exception e){
-            System.out.println("Error listEstructuras : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listEstructuras : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<TiposTrabajadores> listTiposTrabajadores(){
-        try{
+    public List<TiposTrabajadores> listTiposTrabajadores() {
+        try {
             listTiposTrabajadores = persistenciaTiposTrabajadores.buscarTiposTrabajadores();
             return listTiposTrabajadores;
-        }catch(Exception e){
-            System.out.println("Error listTiposTrabajadores : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listTiposTrabajadores : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<Terceros> listTerceros(){
-        try{
+    public List<Terceros> listTerceros() {
+        try {
             listTerceros = persistenciaTerceros.buscarTerceros();
             return listTerceros;
-        }catch(Exception e){
-            System.out.println("Error listTerceros : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listTerceros : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<Procesos> listProcesos(){
-        try{
+    public List<Procesos> listProcesos() {
+        try {
             listProcesos = persistenciaProcesos.buscarProcesos();
             return listProcesos;
-        }catch(Exception e){
-            System.out.println("Error listProcesos : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listProcesos : " + e.toString());
             return null;
         }
     }
     
     @Override
-    public List<Asociaciones> listAsociaciones(){
-        try{
+    public List<Asociaciones> listAsociaciones() {
+        try {
             listAsociaciones = persistenciaAsociaciones.buscarAsociaciones();
             return listAsociaciones;
-        }catch(Exception e){
-            System.out.println("Error listAsociaciones : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error listAsociaciones : " + e.toString());
             return null;
+        }
+    }
+    
+     @Override 
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR) {
+        try {
+            for (int i = 0; i < listaIR.size(); i++) {
+                persistenciaInforeportes.editar(listaIR.get(i));
+            }
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosInfoReportes Admi : " + e.toString());
         }
     }
 }
