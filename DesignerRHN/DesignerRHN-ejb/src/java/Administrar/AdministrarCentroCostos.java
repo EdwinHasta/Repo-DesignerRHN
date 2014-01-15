@@ -266,9 +266,9 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
-
     @Override
     public BigInteger contadorInterConTotal(BigInteger secCentroCosto) {
+
         try {
             BigInteger contadorInterconTotal;
 
