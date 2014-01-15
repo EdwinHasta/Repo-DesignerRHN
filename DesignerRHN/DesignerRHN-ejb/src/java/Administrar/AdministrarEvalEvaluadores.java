@@ -25,7 +25,6 @@ public class AdministrarEvalEvaluadores implements AdministrarEvalEvaluadoresInt
     private EvalEvaluadores valEvaluadoresSeleccionado;
     private EvalEvaluadores valEvaluadores;
     private List<EvalEvaluadores> listEvalEvaluadores;
-    private Long verificadorVP;
 
     public void modificarEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadoresModificadas) {
         for (int i = 0; i < listEvalEvaluadoresModificadas.size(); i++) {
@@ -53,7 +52,8 @@ public class AdministrarEvalEvaluadores implements AdministrarEvalEvaluadoresInt
         return valEvaluadores;
     }
 
-    public Long verificarBorradoEP(BigInteger secuenciaMovitoCambioCargo) {
+    public BigInteger verificarBorradoEP(BigInteger secuenciaMovitoCambioCargo) {
+        BigInteger verificadorVP = new BigInteger("-1");
         try {
             verificadorVP = persistenciaEvalEvaluadores.verificarBorradoEvalPruebas(secuenciaMovitoCambioCargo);
         } catch (Exception e) {

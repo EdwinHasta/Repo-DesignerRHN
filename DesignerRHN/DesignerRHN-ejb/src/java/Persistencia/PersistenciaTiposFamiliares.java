@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaTiposFamiliaresInterface;
@@ -22,13 +21,14 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresInterface {
-  /**
+
+    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
-     public void crear(TiposFamiliares tiposFamiliares) {
+
+    public void crear(TiposFamiliares tiposFamiliares) {
         em.persist(tiposFamiliares);
     }
 
@@ -55,13 +55,13 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
 
     }
 
-    public BigDecimal contadorHvReferencias(BigInteger secuencia) {
-        BigDecimal retorno = new BigDecimal(-1);
+    public BigInteger contadorHvReferencias(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT COUNT(*) FROM tiposfamiliares tf , hvreferencias hvr WHERE hvr.parentesco = tf.secuencia AND tf.secuencia =?";
+            String sqlQuery = "SELECT COUNT(*)FROM  hvreferencias hvr WHERE parentesco =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigDecimal) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("Contador PERSISTENCIATIPOSFAMILIARES contadorHvReferencias  " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -70,17 +70,4 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
         }
     }
 
-    public BigDecimal asignarNuevoCodigo() {
-        BigDecimal siguiente = new BigDecimal(-1);
-        try {
-            String sqlQuery = "SELECT MAX(tf.codigo)FROM tiposfamiliares tf";
-            Query query = em.createNativeQuery(sqlQuery);
-            siguiente = (BigDecimal) query.getSingleResult();
-            System.err.println("PERSISTENCIATIPOSFAMILIARES asignarNuevoCodigo  " + siguiente);
-            return siguiente;
-        } catch (Exception e) {
-            System.out.println("Error PERSISTENCIATIPOSFAMILIARES  asignarNuevoCodigo. " + e);
-            return siguiente;
-        }
-    }
 }

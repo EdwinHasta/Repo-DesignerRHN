@@ -33,11 +33,11 @@ public interface PersistenciaSoCondicionesTrabajosInterface {
      */
     public void borrar(SoCondicionesTrabajos soCondicionesTrabajos);
     /**
-     * Método encargado de buscar la SoCondicionTrabajo con la secuencia dada por parámetro.
-     * @param secuencia Secuencia de la SoCondicionTrabajo que se quiere encontrar.
-     * @return Retorna la SoCondicionTrabajo identificada con la secuencia dada por parámetro.
+     * Método encargado de buscar la SoCondicionTrabajo con la secSoCondicionTrabajo dada por parámetro.
+     * @param secSoCondicionTrabajo Secuencia de la SoCondicionTrabajo que se quiere encontrar.
+     * @return Retorna la SoCondicionTrabajo identificada con la secSoCondicionTrabajo dada por parámetro.
      */
-    public SoCondicionesTrabajos buscarSoCondicionTrabajo(BigInteger secuencia);
+    public SoCondicionesTrabajos buscarSoCondicionTrabajo(BigInteger secSoCondicionTrabajo);
     /**
      * Método encargado de buscar todas las SoCondicionesTrabajos existentes en la base de datos, ordenadas por código.
      * @return Retorna una lista de SoCondicionesTrabajos.
@@ -45,30 +45,30 @@ public interface PersistenciaSoCondicionesTrabajosInterface {
     public List<SoCondicionesTrabajos> buscarSoCondicionesTrabajos();
     /**
      * Método encargado de recuperar cuantas Inspecciones están asociadas a una SoCondicionTrabajo específica.
-     * @param secuencia Secuencia de SoCondicionTrabajo.
-     * @return Retorna el número de Inspecciones cuyo atributo 'FactorRiesgo' tiene como secuencia el 
+     * @param secSoCondicionTrabajo Secuencia de SoCondicionTrabajo.
+     * @return Retorna el número de Inspecciones cuyo atributo 'FactorRiesgo' tiene como secSoCondicionTrabajo el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorInspecciones(BigInteger secuencia);
+    public BigInteger contadorInspecciones(BigInteger secSoCondicionTrabajo);
     /**
      * Método encargado de recuperar cuantos SoAccidentesMedicos están asociados a una SoCondicionTrabajo específica.
-     * @param secuencia Secuencia de la SoCondicionTrabajo.
-     * @return Retorna el número de SoAccidentesMedicos cuyo atributo 'FactorRiesgo' tiene como secuencia el 
+     * @param secSoCondicionTrabajo Secuencia de la SoCondicionTrabajo.
+     * @return Retorna el número de SoAccidentesMedicos cuyo atributo 'FactorRiesgo' tiene como secSoCondicionTrabajo el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia);
+    public BigInteger contadorSoAccidentesMedicos(BigInteger secSoCondicionTrabajo);
     /**
      * Método encargado de recuperar cuantos SoDetallesPanoramas están asociados a una SoCondicionTrabajo específica.
-     * @param secuencia Secuencia de la SoCondicionTrabajo.
-     * @return Retorna el número de SoDetallesPanoramas cuyo atributo 'CondicionTrabajo' tiene como secuencia el 
+     * @param secSoCondicionTrabajo Secuencia de la SoCondicionTrabajo.
+     * @return Retorna el número de SoDetallesPanoramas cuyo atributo 'CondicionTrabajo' tiene como secSoCondicionTrabajo el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorSoDetallesPanoramas(BigInteger secuencia);
+    public BigInteger contadorSoDetallesPanoramas(BigInteger secSoCondicionTrabajo);
     /**
      * Método encargado de recuperar cuantos SoExposicionesFr están asociados a una SoCondicionTrabajo específica.
-     * @param secuencia Secuencia de la SoCondicionTrabajo.
-     * @return Retorna el número de SoExposicionesFr cuyo atributo 'Indicador' tiene como secuencia el 
+     * @param secSoCondicionTrabajo Secuencia de la SoCondicionTrabajo.
+     * @return Retorna el número de SoExposicionesFr cuyo atributo 'Indicador' tiene como secSoCondicionTrabajo el 
      * valor dado por parámetro.
      */
-    public BigInteger contadorSoExposicionesFr(BigInteger secuencia);
+    public BigInteger contadorSoExposicionesFr(BigInteger secSoCondicionTrabajo);
 }

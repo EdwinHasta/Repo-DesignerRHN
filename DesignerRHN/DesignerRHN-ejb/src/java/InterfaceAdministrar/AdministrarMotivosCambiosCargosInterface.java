@@ -22,5 +22,5 @@ public interface AdministrarMotivosCambiosCargosInterface {
     public void modificarMotivosCambiosCargos(List<MotivosCambiosCargos> listMotivosCambiosCargosModificadas);
     public void borrarMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos);
     public void crearMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos);
-    public Long verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo);
+    public BigInteger verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo);
 }

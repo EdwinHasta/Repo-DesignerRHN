@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -14,19 +12,31 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'ClasesAccidentes'.
  *
- * @author user
+ * @author betelgeuse
  */
 @Stateful
 public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaClasesAccidentes'.
+     */
     @EJB
     PersistenciaClasesAccidentesInterface persistenciaClasesAccidentes;
-    private ClasesAccidentes clasesAccidentesSeleccionada;
-    private ClasesAccidentes clasesAccidentes;
-    private List<ClasesAccidentes> listClasesAccidentes;
 
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
+    @Override
     public void modificarClasesAccidentes(List<ClasesAccidentes> listClasesAccidentesModificada) {
+        ClasesAccidentes clasesAccidentesSeleccionada;
         for (int i = 0; i < listClasesAccidentesModificada.size(); i++) {
             System.out.println("Administrar Modificando...");
             clasesAccidentesSeleccionada = listClasesAccidentesModificada.get(i);
@@ -34,24 +44,35 @@ public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesI
         }
     }
 
-    public void borrarClasesAccidentes(ClasesAccidentes tiposAccidentes) {
-        persistenciaClasesAccidentes.borrar(tiposAccidentes);
+    @Override
+    public void borrarClasesAccidentes(List<ClasesAccidentes> listaClasesAccidentes) {
+        for (int i = 0; i < listaClasesAccidentes.size(); i++) {
+            System.out.println("Borrando...");
+            persistenciaClasesAccidentes.borrar(listaClasesAccidentes.get(i));
+        }
     }
 
-    public void crearClasesAccidentes(ClasesAccidentes TiposAccidentes) {
-        persistenciaClasesAccidentes.crear(TiposAccidentes);
+    @Override
+    public void crearClasesAccidentes(List<ClasesAccidentes> listaClasesAccidentes) {
+        for (int i = 0; i < listaClasesAccidentes.size(); i++) {
+            System.out.println("Creando...");
+            persistenciaClasesAccidentes.crear(listaClasesAccidentes.get(i));
+        }
     }
 
-    public List<ClasesAccidentes> mostrarClasesAccidentes() {
-        listClasesAccidentes = persistenciaClasesAccidentes.buscarClasesAccidentes();
+    @Override
+    public List<ClasesAccidentes> listaClasesAccidentes() {
+        List<ClasesAccidentes> listClasesAccidentes = persistenciaClasesAccidentes.buscarClasesAccidentes();
         return listClasesAccidentes;
     }
 
+    @Override
     public ClasesAccidentes mostrarClaseAccidente(BigInteger secClasesAccidentes) {
-        clasesAccidentes = persistenciaClasesAccidentes.buscarClaseAccidente(secClasesAccidentes);
+        ClasesAccidentes clasesAccidentes = persistenciaClasesAccidentes.buscarClaseAccidente(secClasesAccidentes);
         return clasesAccidentes;
     }
 
+    @Override
     public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
         BigInteger verificarSoAccidtenesMedicos = null;
         try {

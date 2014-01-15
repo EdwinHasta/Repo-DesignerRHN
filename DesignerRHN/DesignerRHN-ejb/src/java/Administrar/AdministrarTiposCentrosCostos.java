@@ -29,9 +29,6 @@ public class AdministrarTiposCentrosCostos implements AdministrarTiposCentrosCos
     private TiposCentrosCostos tipoEntidad;
     private List<TiposCentrosCostos> listTiposEntidades;
     private List<GruposTiposCC> listGruposTiposEntidades;
-    private Long verificadorCC;
-    private Long verificadorVC;
-    private Long verificadorRP;
 
     @Override
     public void modificarTipoCentrosCostos(List<TiposCentrosCostos> listTiposEntidadesModificadas) {
@@ -74,36 +71,37 @@ public class AdministrarTiposCentrosCostos implements AdministrarTiposCentrosCos
         listGruposTiposEntidades = persistenciaGruposTiposCC.buscarGruposTiposCC();
         return listGruposTiposEntidades;
     }
-    
-    
+
     @Override
-     public Long verificarBorradoCC(BigInteger secuenciaTipoEntidad) {
+    public BigInteger verificarBorradoCC(BigInteger secuenciaTipoEntidad) {
+        BigInteger verificadorCC;
         try {
-            verificadorCC = persistenciaTiposCentrosCostos.verificarBorradoCentrosCostos(secuenciaTipoEntidad);
+            return verificadorCC = persistenciaTiposCentrosCostos.verificarBorradoCentrosCostos(secuenciaTipoEntidad);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposCentrosCostos verificarBorradoCC ERROR :" + e);
-        } finally {
-            return verificadorCC;
+            return null;
         }
     }
+
     @Override
-     public Long verificarBorradoVC(BigInteger secuenciaTipoEntidad) {
+    public BigInteger verificarBorradoVC(BigInteger secuenciaTipoEntidad) {
+        BigInteger verificadorVC;
         try {
-            verificadorVC = persistenciaTiposCentrosCostos.verificarBorradoVigenciasCuentas(secuenciaTipoEntidad);
+            return verificadorVC = persistenciaTiposCentrosCostos.verificarBorradoVigenciasCuentas(secuenciaTipoEntidad);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposCentrosCostos verificarBorradoVC ERROR :" + e);
-        } finally {
-            return verificadorVC;
+            return null;
         }
     }
+
     @Override
-     public Long verificarBorradoRP(BigInteger secuenciaTipoEntidad) {
+    public BigInteger verificarBorradoRP(BigInteger secuenciaTipoEntidad) {
+        BigInteger verificadorRP;
         try {
-            verificadorRP = persistenciaTiposCentrosCostos.verificarBorradoRiesgosProfesionales(secuenciaTipoEntidad);
+            return verificadorRP = persistenciaTiposCentrosCostos.verificarBorradoRiesgosProfesionales(secuenciaTipoEntidad);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTipoEntidad verificarBorrado ERROR :" + e);
-        } finally {
-            return verificadorRP;
+            return null;
         }
     }
 }

@@ -88,12 +88,12 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     }
 
     @Override
-    public Long verificarBorradoVigenciasTiposContratos(BigInteger secuencia) {
-        Long retorno = new Long(-1);
+    public BigInteger verificarBorradoVigenciasTiposContratos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(v) FROM VigenciasTiposContratos v WHERE v.motivocontrato.secuencia =:secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
-            retorno = (Long) query.getSingleResult();
+            retorno = new BigInteger (query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosContratos retorno ==" + retorno.intValue());
 
         } catch (Exception e) {

@@ -33,11 +33,11 @@ public interface PersistenciaTiposExamenesInterface {
      */
     public void borrar(TiposExamenes tiposExamenes);
     /**
-     * Método encargado de buscar el TipoExamen con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del TipoExamen que se quiere encontrar.
-     * @return Retorna el TipoExamen identificado con la secuencia dada por parámetro.
+     * Método encargado de buscar el TipoExamen con la secTipoExamen dada por parámetro.
+     * @param secTipoExamen Secuencia del TipoExamen que se quiere encontrar.
+     * @return Retorna el TipoExamen identificado con la secTipoExamen dada por parámetro.
      */
-    public TiposExamenes buscarTipoExamen(BigInteger secuencia);
+    public TiposExamenes buscarTipoExamen(BigInteger secTipoExamen);
     /**
      * Método encargado de buscar todos los TiposExamenes existentes en la base de datos, ordenados por código.
      * @return Retorna una lista de TiposExamenes.
@@ -46,17 +46,17 @@ public interface PersistenciaTiposExamenesInterface {
     /**
      * Método encargado de revisar si existe una relacion entre un TipoExamen definido y algún TipoExamenCargo.
      * Ademas de la revision, cuenta cuantas relaciones existen.
-     * @param secuencia Secuencia del TipoExamen.
-     * @return Retorna el número de relaciones entre el TipoExamen cuya secuencia coincida con la dada por parámetro y 
+     * @param secTipoExamen Secuencia del TipoExamen.
+     * @return Retorna el número de relaciones entre el TipoExamen cuya secTipoExamen coincida con la dada por parámetro y 
      * la tabla TiposExamenesCargos
      */
-    public BigInteger contadorTiposExamenesCargos(BigInteger secuencia);
+    public BigInteger contadorTiposExamenesCargos(BigInteger secTipoExamen);
     /**
      * Método encargado de revisar si existe una relacion entre un TipoExamen definido y alguna VigenciasExamenesMedicos.
      * Ademas de la revision, cuenta cuantas relaciones existen.
-     * @param secuencia Secuencia del TipoExamen.
-     * @return Retorna el número de relaciones entre el TipoExamen cuya secuencia coincida con la dada por parámetro y 
+     * @param secTipoExamen Secuencia del TipoExamen.
+     * @return Retorna el número de relaciones entre el TipoExamen cuya secTipoExamen coincida con la dada por parámetro y 
      * la tabla VigenciasExamenesMedicos
      */
-    public BigInteger contadorVigenciasExamenesMedicos(BigInteger secuencia);
+    public BigInteger contadorVigenciasExamenesMedicos(BigInteger secTipoExamen);
 }

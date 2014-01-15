@@ -202,7 +202,6 @@ public class VigenciasSueldos implements Serializable {
     }
 
     public boolean isCheckRetroactivo() {
-        
         if(this.retroactivo == null || this.retroactivo.equals("N")){
             this.checkRetroactivo = false;
         }

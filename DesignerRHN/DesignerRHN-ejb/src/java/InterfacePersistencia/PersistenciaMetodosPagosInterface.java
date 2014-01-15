@@ -42,14 +42,15 @@ public interface PersistenciaMetodosPagosInterface {
     public void borrar(MetodosPagos metodosPagos);
 
     /**
-     * Método encargado de buscar el MetodoPago con la secuencia dada por
+     * Método encargado de buscar el MetodoPago con la secMetodosPagos dada por
      * parámetro.
      *
-     * @param secuencia Secuencia del MetodoPago que se quiere encontrar.
-     * @return Retorna el MetodoPago identificado con la secuencia dada por
-     * parámetro.
+     * @param secMetodosPagos secMetodosPagos del MetodoPago que se quiere
+     * encontrar.
+     * @return Retorna el MetodoPago identificado con la secMetodosPagos dada
+     * por parámetro.
      */
-    public MetodosPagos buscarMetodosPagosEmpleado(BigInteger secuencia);
+    public MetodosPagos buscarMetodosPagosEmpleado(BigInteger secMetodosPagos);
 
     /**
      * Método encargado de buscar todos los MetodosPagos existentes en la base
@@ -59,5 +60,14 @@ public interface PersistenciaMetodosPagosInterface {
      */
     public List<MetodosPagos> buscarMetodosPagos();
 
-    public BigInteger contadorvigenciasformaspagos(BigInteger secuencia);
+    /**
+     * Método encargado de revisar si existe una relacion entre una MetodoPago
+     * específica y algúna VigenciaFormaPago. Adémas de la revisión, cuenta
+     * cuantas relaciones existen.
+     *
+     * @param secMetodosPagos secMetodosPagos del MetodoPago.
+     * @return Retorna el número de VigenciasFormasPagos relacionados con el
+     * MetodoPago cuya secMetodosPagos coincide con el parámetro.
+     */
+    public BigInteger contadorvigenciasformaspagos(BigInteger secMetodosPagos);
 }

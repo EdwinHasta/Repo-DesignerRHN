@@ -66,7 +66,7 @@ public class AdministrarNovedadesReemplazos implements AdministrarNovedadesReemp
 
     @Override
     public List<TiposReemplazos> lovTiposReemplazos() {
-        return persistenciaTiposReemplazos.tiposReemplazos();
+        return persistenciaTiposReemplazos.buscarTiposReemplazos();
     }
 
     @Override

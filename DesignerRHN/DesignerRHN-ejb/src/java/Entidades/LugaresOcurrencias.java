@@ -18,13 +18,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author user
+ * @author Administrador
  */
 @Entity
 @Table(name = "LUGARESOCURRENCIAS")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "LugaresOcurrencias.findAll", query = "SELECT l FROM LugaresOcurrencias l")})
 public class LugaresOcurrencias implements Serializable {
@@ -35,8 +37,11 @@ public class LugaresOcurrencias implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
-    private Short codigo;
+    private short codigo;
+    @Size(max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
@@ -47,7 +52,7 @@ public class LugaresOcurrencias implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public LugaresOcurrencias(BigInteger secuencia, Short codigo) {
+    public LugaresOcurrencias(BigInteger secuencia, short codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
@@ -60,11 +65,11 @@ public class LugaresOcurrencias implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
+    public short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(short codigo) {
         this.codigo = codigo;
     }
 
@@ -73,9 +78,10 @@ public class LugaresOcurrencias implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        this.descripcion = descripcion;
     }
 
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -83,6 +89,7 @@ public class LugaresOcurrencias implements Serializable {
         return hash;
     }
 
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -96,9 +103,10 @@ public class LugaresOcurrencias implements Serializable {
         return true;
     }
 
+    
     @Override
     public String toString() {
-        return "Entidades.Lugaresocurrencias[ secuencia=" + secuencia + " ]";
+        return "Entidades.LugaresOcurrencias[ secuencia=" + secuencia + " ]";
     }
     
 }

@@ -39,7 +39,7 @@ public interface AdministrarTipoEntidadInterface {
      * @param secuenciaTipoEntidad
      * @return
      */
-    public Long verificarBorrado(BigInteger secuenciaTipoEntidad);
+    public BigInteger verificarBorrado(BigInteger secuenciaTipoEntidad);
 
-    public Long verificarBorradoFCE(BigInteger secuenciaTipoEntidad);
+    public BigInteger verificarBorradoFCE(BigInteger secuenciaTipoEntidad);
 }

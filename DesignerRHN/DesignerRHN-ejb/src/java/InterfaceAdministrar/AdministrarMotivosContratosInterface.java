@@ -26,5 +26,5 @@ public interface AdministrarMotivosContratosInterface {
 
     public MotivosContratos mostrarMotivoContrato(BigInteger secMotivosCambiosCargos);
 
-    public Long verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo);
+    public BigInteger verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo);
 }

@@ -27,5 +27,5 @@ public interface AdministrarEvalEvaluadoresInterface {
 
     public EvalEvaluadores mostrarEvalEvaluador(BigInteger secEvalEvaluadores);
 
-    public Long verificarBorradoEP(BigInteger secuenciaMovitoCambioCargo);
+    public BigInteger verificarBorradoEP(BigInteger secuenciaMovitoCambioCargo);
 }

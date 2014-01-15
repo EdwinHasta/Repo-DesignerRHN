@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package InterfaceAdministrar;
 
 import Entidades.ConceptosJuridicos;
@@ -12,15 +9,34 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'ConceptosJuridicos'.
+ * @author Betelgeuse.
  */
 public interface AdministrarConceptoJuridicoInterface {
-    
-    public List<ConceptosJuridicos> listConceptosJuridicosPorEmpresa(BigInteger secuencia);
-    public void crearConceptosJuridicos(List<ConceptosJuridicos> listCJ);
-    public void editarConceptosJuridicos(List<ConceptosJuridicos> listCJ);
-    public void borrarConceptosJuridicos(List<ConceptosJuridicos> listCJ);
-    public List<Empresas> listEmpresas();
-    
+    /**
+     * Método encargado de crear ConceptosJuridicos.
+     * @param listaConceptoJuridico Lista de los ConceptosJuridicos que se van a crear.
+     */
+    public void crearConceptosJuridicos(List<ConceptosJuridicos> listaConceptoJuridico);
+    /**
+     * Método encargado de editar ConceptosJuridicos.
+     * @param listaConceptoJuridico Lista de los ConceptosJuridicos que se van a modificar.
+     */
+    public void editarConceptosJuridicos(List<ConceptosJuridicos> listaConceptoJuridico);
+    /**
+     * Método encargado de borrar ConceptosJuridicos.
+     * @param listaConceptoJuridico Lista de los ConceptosJuridicos que se van a eliminar.
+     */
+    public void borrarConceptosJuridicos(List<ConceptosJuridicos> listaConceptoJuridico);
+    /**
+     * Método encargado de recuperar los conceptos juridicos de una empresa específica.
+     * @param secEmpresa Seciencia de la empresa.
+     * @return Retorna la lista de ConceptosJuridicos que estan asociados a una empresa.
+     */
+    public List<ConceptosJuridicos> listaConceptosJuridicosPorEmpresa(BigInteger secEmpresa);
+    /**
+     * Método encargado de recuperar todas las Empresas.
+     * @return Retorna una lista de Empresas.
+     */
+    public List<Empresas> listaEmpresas();
 }

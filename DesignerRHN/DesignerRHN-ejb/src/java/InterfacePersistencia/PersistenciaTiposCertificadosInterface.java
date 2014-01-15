@@ -33,11 +33,11 @@ public interface PersistenciaTiposCertificadosInterface {
      */
     public void borrar(TiposCertificados tiposCertificados);
     /**
-     * Método encargado de buscar el TipoCertificado con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del TipoCertificado que se quiere encontrar.
-     * @return Retorna el TipoCertificado identificado con la secuencia dada por parámetro.
+     * Método encargado de buscar el TipoCertificado con la secTiposCertificados dada por parámetro.
+     * @param secTiposCertificados Secuencia del TipoCertificado que se quiere encontrar.
+     * @return Retorna el TipoCertificado identificado con la secTiposCertificados dada por parámetro.
      */
-    public TiposCertificados buscarTipoCertificado(BigInteger secuencia);
+    public TiposCertificados buscarTipoCertificado(BigInteger secTiposCertificados);
     /**
      * Método encargado de buscar todos los TiposCertificados existentes en la base de datos.
      * @return Retorna una lista de TiposCertificados.

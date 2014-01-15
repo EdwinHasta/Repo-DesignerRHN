@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -9,23 +8,30 @@ import InterfaceAdministrar.AdministrarDepartamentosInterface;
 import InterfacePersistencia.PersistenciaDepartamentosInterface;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-
-@Stateless
+import javax.ejb.Stateful;
+/**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'Departamentos'.
+ * @author betelgeuse
+ */
+@Stateful
 public class AdministrarDepartamentos implements AdministrarDepartamentosInterface{
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaDepartamentos'.
+     */
     @EJB
     PersistenciaDepartamentosInterface persistenciaDepartamentos;
-    
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
-    public List<Departamentos> Departamentos(){
+    public List<Departamentos> listaDepartamentos(){
         List<Departamentos> listaDepartamentos;
         listaDepartamentos = persistenciaDepartamentos.departamentos();
         return listaDepartamentos;
-    }
-
-    @Override
-    public List<Departamentos>  lovDepartamentos(){
-        return persistenciaDepartamentos.departamentos();
     }
 }

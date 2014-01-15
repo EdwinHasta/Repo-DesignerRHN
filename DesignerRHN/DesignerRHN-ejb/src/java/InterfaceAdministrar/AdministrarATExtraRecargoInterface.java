@@ -36,7 +36,7 @@ public interface AdministrarATExtraRecargoInterface {
      * Método encargado de recuperar todos los ExtrasRecargos.
      * @return Retorna una lista de ExtrasRecargos.
      */
-    public List<ExtrasRecargos> listExtrasRecargos();
+    public List<ExtrasRecargos> listaExtrasRecargos();
     /**
      * Método encargado de crear DetallesExtrasRecargos.
      * @param listaDER Lista de los DetallesExtrasRecargos que se van a crear.
@@ -57,25 +57,25 @@ public interface AdministrarATExtraRecargoInterface {
      * @param secuencia Secuencia del ExtraCargo.
      * @return Retorna una lista de DetallesExtrasRecargos.
      */
-    public List<DetallesExtrasRecargos> listDetallesExtrasRecargos(BigInteger secuencia);
+    public List<DetallesExtrasRecargos> listaDetallesExtrasRecargos(BigInteger secuencia);
     /**
      * Método encargado de recuperar los TiposDias para la lista de valores.
      * @return Retorna una lista de TiposDias.
      */
-    public List<TiposDias> listTiposDias();
+    public List<TiposDias> lovListaTiposDias();
     /**
      * Método encargado de recuperar los TiposJornadas para la lista de valores.
      * @return Retorna una lista de TiposJornadas.
      */
-    public List<TiposJornadas> listTiposJornadas();
+    public List<TiposJornadas> listaTiposJornadas();
     /**
      * Método encargado de recuperar los Contratos para la lista de valores.
      * @return Retorna una lista de Contratos.
      */
-    public List<Contratos> listContratos();
+    public List<Contratos> listaContratos();
     /**
      * Método encargado de recuperar los Conceptos para la lista de valores.
      * @return Retorna una lista de Conceptos.
      */
-    public List<Conceptos> listConceptos();
+    public List<Conceptos> listaConceptos();
 }

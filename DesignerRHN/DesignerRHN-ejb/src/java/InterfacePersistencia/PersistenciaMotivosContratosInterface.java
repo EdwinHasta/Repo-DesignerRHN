@@ -31,11 +31,11 @@ public interface PersistenciaMotivosContratosInterface {
      */
     public void borrar(MotivosContratos motivosContratos);
     /**
-     * Método encargado de buscar el MotivoContrato con la secuencia dada por parámetro.
-     * @param secuencia Secuencia del MotivoContrato que se quiere encontrar.
-     * @return Retorna el MotivoContrato identificado con la secuencia dada por parámetro.
+     * Método encargado de buscar el MotivoContrato con la secMotivosContratos dada por parámetro.
+     * @param secMotivosContratos Secuencia del MotivoContrato que se quiere encontrar.
+     * @return Retorna el MotivoContrato identificado con la secMotivosContratos dada por parámetro.
      */
-    public MotivosContratos buscarMotivoContrato(BigInteger secuencia);
+    public MotivosContratos buscarMotivoContrato(BigInteger secMotivosContratos);
     /**
      * Método encargado de buscar todos los MotivosContratos existentes en la base de datos.
      * @return Retorna una lista de MotivosContratos.
@@ -43,10 +43,10 @@ public interface PersistenciaMotivosContratosInterface {
     public List<MotivosContratos> buscarMotivosContratos();
     /**
      * Método encargado de verificar si hay al menos una VigenciaTipoContrato asociada a un MotivoContrato.
-     * @param secuencia Secuencia del MotivoContrato
+     * @param secMotivosContratos Secuencia del MotivoContrato
      * @return Retorna un valor mayor a cero si existe alguna VigenciaTipoContrato asociada a un MotivoContrato.
      */
-    public Long verificarBorradoVigenciasTiposContratos(BigInteger secuencia);
+    public BigInteger verificarBorradoVigenciasTiposContratos(BigInteger secMotivosContratos);
     /**
      * Método encargado de buscar todos los MotivosContratos existentes en la base de datos, ordenados por código.
      * @return Retorna una lista de MotivosContratos ordenados por código.

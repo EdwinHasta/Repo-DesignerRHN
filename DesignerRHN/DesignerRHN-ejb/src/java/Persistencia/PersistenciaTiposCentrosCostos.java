@@ -18,11 +18,13 @@ import javax.persistence.criteria.CriteriaQuery;
  * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'TiposCentrosCostos'
  * de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 @LocalBean
 public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosCostosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -77,14 +79,14 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
             return null;
         }
     }
-    
-     @Override
-    public Long verificarBorradoCentrosCostos(BigInteger secuencia) {
-        Long retorno = new Long(-1);
+
+    @Override
+    public BigInteger verificarBorradoCentrosCostos(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(cc) FROM CentrosCostos cc WHERE cc.tipocentrocosto.secuencia = :secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
-            retorno = (Long) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaTiposCentrosCostos retorno ==" + retorno.intValue());
 
         } catch (Exception e) {
@@ -93,14 +95,14 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
             return retorno;
         }
     }
-     
-   @Override
-    public Long verificarBorradoVigenciasCuentas(BigInteger secuencia) {
-        Long retorno = new Long(-1);
+
+    @Override
+    public BigInteger verificarBorradoVigenciasCuentas(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vc) FROM VigenciasCuentas vc WHERE vc.tipocc.secuencia  = :secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
-            retorno = (Long) query.getSingleResult();
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaTiposCentrosCostos retorno ==" + retorno.intValue());
 
         } catch (Exception e) {
@@ -108,17 +110,18 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
         } finally {
             return retorno;
         }
-    }  
-   
-   @Override
-    public Long verificarBorradoRiesgosProfesionales(BigInteger secuencia) {
-        Long retorno = new Long(-1);
-        try {
-            Query query = em.createQuery("SELECT count(rp) FROM RiesgosProfesionales rp WHERE rp.tipocentrocosto.secuencia =:secTipoCentroCosto ");
-            query.setParameter("secTipoCentroCosto", secuencia);
-            retorno = (Long) query.getSingleResult();
-            System.err.println("PersistenciaTiposCentrosCostos retorno ==" + retorno.intValue());
+    }
 
+    @Override
+    public BigInteger verificarBorradoRiesgosProfesionales(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM riesgosprofesionales WHERE tipocentrocosto = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PersistenciaTiposCentrosCostos VerificarBorradoProfesionales Contador : " + retorno);
+            return retorno;
         } catch (Exception e) {
             System.err.println("ERROR EN PersistenciaTiposCentrosCostos verificarBorrado ERROR :" + e);
         } finally {

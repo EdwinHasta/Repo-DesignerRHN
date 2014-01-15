@@ -42,9 +42,9 @@ public class TiposFamiliares implements Serializable {
     @Column(name = "TIPO")
     private String tipo;
     @Column(name = "CODIGO")
-    private short codigo;
+    private Integer codigo;
     @Column(name = "CODIGOALTERNATIVO")
-    private Short codigoalternativo;
+    private Integer codigoalternativo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipofamiliar")
     private Collection<Familiares> familiaresCollection;
     @OneToMany(mappedBy = "parentesco")
@@ -57,7 +57,7 @@ public class TiposFamiliares implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public TiposFamiliares(BigInteger secuencia, String tipo, short codigo) {
+    public TiposFamiliares(BigInteger secuencia, String tipo, Integer codigo) {
         this.secuencia = secuencia;
         this.tipo = tipo;
         this.codigo = codigo;
@@ -82,19 +82,19 @@ public class TiposFamiliares implements Serializable {
         this.tipo = tipo;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public Short getCodigoalternativo() {
+    public Integer getCodigoalternativo() {
         return codigoalternativo;
     }
 
-    public void setCodigoalternativo(Short codigoalternativo) {
+    public void setCodigoalternativo(Integer codigoalternativo) {
         this.codigoalternativo = codigoalternativo;
     }
 
