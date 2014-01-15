@@ -15,5 +15,5 @@ public interface AdministrarDepartamentosInterface {
      * Método encargado de recuperar todos los Departamentos.
      * @return Retorna una lista de Departamentos.
      */
-    public List<Departamentos> listaDepartamentos();
+    public List<Departamentos> consultarDepartamentos();
 }

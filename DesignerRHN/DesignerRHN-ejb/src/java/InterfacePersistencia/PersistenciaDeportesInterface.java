@@ -31,32 +31,32 @@ public interface PersistenciaDeportesInterface {
      */
     public void borrar(Deportes deportes);
     /**
-     * Método encargado de buscar el Deporte con el ID dado por parámetro.
-     * @param id Identificador único del Deporte que se quiere encontrar.
-     * @return Retorna el Deporte identificado con el ID dado por parámetro.
+     * Método encargado de buscar el Deporte con la secuencia dada por parámetro.
+     * @param secuencia Secuencia del Deporte que se quiere encontrar.
+     * @return Retorna el Deporte cuya secuencia coincide con el parámetro dado.
      */
-    public Deportes buscarDeporte(Object id);
+    public Deportes buscarDeporte(BigInteger secuencia);
     /**
      * Método encargado de buscar todos los Deportes existentes en la base de datos.
      * @return Retorna una lista de Deportes.
      */
     public List<Deportes> buscarDeportes();
     /**
-     *
+     * 
      * @param secuencia
      * @return
      */
     public BigInteger contadorParametrosInformes(BigInteger secuencia);
 
     /**
-     *
+     * 
      * @param secuencia
      * @return
      */
     public BigInteger contadorDeportesPersonas(BigInteger secuencia);
 
     /**
-     *
+     * 
      * @param secuencia
      * @return
      */

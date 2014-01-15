@@ -29,7 +29,7 @@ public class AdministrarDepartamentos implements AdministrarDepartamentosInterfa
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<Departamentos> listaDepartamentos(){
+    public List<Departamentos> consultarDepartamentos(){
         List<Departamentos> listaDepartamentos;
         listaDepartamentos = persistenciaDepartamentos.departamentos();
         return listaDepartamentos;

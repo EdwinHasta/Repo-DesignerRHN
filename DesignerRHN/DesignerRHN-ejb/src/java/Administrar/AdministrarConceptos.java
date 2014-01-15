@@ -62,32 +62,32 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa) {
+    public List<Conceptos> consultarConceptosEmpresa(BigInteger secEmpresa) {
         return persistenciaConceptos.conceptosPorEmpresa(secEmpresa);
     }
 
     @Override
-    public List<Conceptos> conceptosEmpresaAtivos_Inactivos(BigInteger secEmpresa, String estado) {
+    public List<Conceptos> consultarConceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado) {
         return persistenciaConceptos.conceptosEmpresaActivos_Inactivos(secEmpresa, estado);
     }
 
     @Override
-    public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa) {
+    public List<Conceptos> consultarConceptosEmpresaSinPasivos(BigInteger secEmpresa) {
         return persistenciaConceptos.conceptosEmpresaSinPasivos(secEmpresa);
     }
 
     @Override
-    public List<Empresas> listaEmpresas() {
+    public List<Empresas> consultarEmpresas() {
         return persistenciaEmpresas.buscarEmpresas();
     }
 
     @Override
-    public List<Unidades> lovUnidades() {
+    public List<Unidades> consultarLOVUnidades() {
         return persistenciaUnidades.lovUnidades();
     }
 
     @Override
-    public List<Terceros> lovTerceros(BigInteger secEmpresa) {
+    public List<Terceros> consultarLOVTerceros(BigInteger secEmpresa) {
         return persistenciaTerceros.lovTerceros(secEmpresa);
     }
 

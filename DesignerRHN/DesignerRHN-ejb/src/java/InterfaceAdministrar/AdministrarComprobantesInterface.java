@@ -19,26 +19,26 @@ public interface AdministrarComprobantesInterface {
      * Método encargado de recuperar los Parámetros del usuario que esta usando la sesión del aplicativo.
      * @return Retorna una lista con los Parámetros asociados al usuario.
      */
-    public List<Parametros> parametrosComprobantes();
+    public List<Parametros> consultarParametrosComprobantesActualUsuario();
     /**
      * Método encargado de recuperar el ParámetroEstructura del usuario que esta usando la sesión del aplicativo.
      * @return Retorna un ParámetroEstructura asociado al usuario.
      */
-    public ParametrosEstructuras parametroEstructura();
+    public ParametrosEstructuras consultarParametroEstructuraActualUsuario();
     /**
      * Método encargado de recuperar las SolucionesNodos que se tendrán en cuenta para generar el comprobante
      * de un empleado específico.
      * @param secEmpleado Secuencia del empleado.
      * @return Retorna la lista de SolucionesNodos que completan el comprobante de un empleado.
      */
-    public List<SolucionesNodos> solucionesNodosEmpleado(BigInteger secEmpleado);
+    public List<SolucionesNodos> consultarSolucionesNodosEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar las SolucionesNodos que se tendrán en cuenta para generar el comprobante
      * de un empleador específico.
      * @param secEmpleado Secuencia del empleador.
      * @return Retorna la lista de SolucionesNodos que completan el comprobante de un empleador.
      */
-    public List<SolucionesNodos> solucionesNodosEmpleador(BigInteger secEmpleado);
+    public List<SolucionesNodos> consultarSolucionesNodosEmpleador(BigInteger secEmpleado);
     /**
      * Método encargado de recibir la información de la formula que afecta en los cálculos de un empleado específico en un 
      * momento definido. 
@@ -49,7 +49,7 @@ public interface AdministrarComprobantesInterface {
      * @param secHistoriaFormula Secuencia de la HistoriaFormula.
      * @return Retorna una lista de DetallesFormulas con la información requerida.
      */
-    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
+    public List<DetallesFormulas> consultarDetallesFormulasEmpleado(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
     /**
      * Método encargado de recuperar la secuencia de la última HistoriaFormula a
      * una fecha dada y que está asociada con una formula especifica.
@@ -60,5 +60,5 @@ public interface AdministrarComprobantesInterface {
      * @return Retorna la secuencia de la ultima HistoriaFormula de una formula
      * a una fecha específica.
      */
-    public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde);
+    public BigInteger consultarHistoriaFormulaFormula(BigInteger secFormula, String fechaDesde);
 }

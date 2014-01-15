@@ -80,7 +80,7 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     }
 
     @Override
-    public List<Cuentas> listaCuentasEmpresa(BigInteger secuencia) {
+    public List<Cuentas> consultarCuentasEmpresa(BigInteger secuencia) {
         try {
             List<Cuentas> listCuentas = persistenciaCuentas.buscarCuentasSecuenciaEmpresa(secuencia);
             return listCuentas;
@@ -91,7 +91,7 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     }
 
     @Override
-    public List<Empresas> listaEmpresas() {
+    public List<Empresas> consultarEmpresas() {
         try {
             List<Empresas> listEmpresas = persistenciaEmpresas.buscarEmpresas();
             return listEmpresas;
@@ -102,7 +102,7 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     }
 
     @Override
-    public List<Rubrospresupuestales> lovListaRubros() {
+    public List<Rubrospresupuestales> consultarLOVRubros() {
         try {
             List<Rubrospresupuestales> listRubros = persistenciaRubrosPresupuestales.buscarRubros();
             return listRubros;

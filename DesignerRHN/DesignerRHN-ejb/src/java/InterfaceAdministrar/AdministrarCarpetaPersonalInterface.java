@@ -113,25 +113,25 @@ public interface AdministrarCarpetaPersonalInterface {
      * @param alias Alias del Usuario que se quiere encontrar.
      * @return Retorna el Usuario identificado con el alias dado por parámetro.
      */
-    public Usuarios ConsultarUsuario(String alias);
+    public Usuarios consultarUsuario(String alias);
     /**
      * Método encargado de recuperar los Parametros Estructuras del Usuario conectado.
      * @return Retorna un ParametroEstructura, el cual esta asociado con el usuario conectado.
      */
-    public ParametrosEstructuras ConsultarParametros();
+    public ParametrosEstructuras consultarParametrosUsuario();
     /**
      * Método encargado de recuperar las VigenciasCargos de un empleado específico. 
      * @param secEmpleado Secuencia del Empleado.
      * @return Retorna una lista de VigenciasCargos asociadas al empleado cuya secuencia coincide con el 
      * valor del parámetro.
      */
-    public List<VigenciasCargos> vigenciasEmpleado(BigInteger secEmpleado);
+    public List<VigenciasCargos> consultarVigenciasCargosEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar los VWActualesTiposTrabajadores, para obtener todos los
      * empleados sin importar el tipo.
      * @return Retorna una lista con todos los VWActualesTiposTrabajadores de la vista.
      */
-    public List<VWActualesTiposTrabajadores> busquedaRapidaEmpleados();
+    public List<VWActualesTiposTrabajadores> consultarRapidaEmpleados();
     /**
      * Método encargado de recuperar una Persona según su identificación.
      * @param identificacion Identificación de la Persona.

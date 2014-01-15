@@ -845,7 +845,7 @@ public class ControlConcepto implements Serializable {
                 context.execute("confirmarGuardar.show()");
             }
         } else {
-            listaConceptosEmpresa_Estado = administrarConceptos.conceptosEmpresaSinPasivos(empresaActual.getSecuencia());
+            listaConceptosEmpresa_Estado = administrarConceptos.consultarConceptosEmpresaSinPasivos(empresaActual.getSecuencia());
             context.update("formularioDialogos:ConceptosDialogo");
             context.execute("ConceptosDialogo.show()");
             cambioConcepto = 1;
@@ -1516,9 +1516,9 @@ public class ControlConcepto implements Serializable {
     public List<Conceptos> getListaConceptosEmpresa() {
         if (listaConceptosEmpresa == null) {
             if (!estadoConceptoEmpresa.equals("TODOS")) {
-                listaConceptosEmpresa = administrarConceptos.conceptosEmpresaAtivos_Inactivos(empresaActual.getSecuencia(), estadoConceptoEmpresa);
+                listaConceptosEmpresa = administrarConceptos.consultarConceptosEmpresaActivos_Inactivos(empresaActual.getSecuencia(), estadoConceptoEmpresa);
             } else {
-                listaConceptosEmpresa = administrarConceptos.conceptosEmpresa(empresaActual.getSecuencia());
+                listaConceptosEmpresa = administrarConceptos.consultarConceptosEmpresa(empresaActual.getSecuencia());
             }
             listaConceptosEmpresa_Estado = listaConceptosEmpresa;
         }
@@ -1539,7 +1539,7 @@ public class ControlConcepto implements Serializable {
 
     public List<Empresas> getListaEmpresas() {
         if (listaEmpresas == null) {
-            listaEmpresas = administrarConceptos.listaEmpresas();
+            listaEmpresas = administrarConceptos.consultarEmpresas();
             if (!listaEmpresas.isEmpty()) {
                 empresaActual = listaEmpresas.get(0);
                 backUpEmpresaActual = empresaActual;
@@ -1571,7 +1571,7 @@ public class ControlConcepto implements Serializable {
 
     public List<Unidades> getListaUnidades() {
         if (listaUnidades.isEmpty()) {
-            listaUnidades = administrarConceptos.lovUnidades();
+            listaUnidades = administrarConceptos.consultarLOVUnidades();
         }
         return listaUnidades;
     }
@@ -1598,7 +1598,7 @@ public class ControlConcepto implements Serializable {
 
     public List<Terceros> getListaTerceros() {
         if (listaTerceros.isEmpty()) {
-            listaTerceros = administrarConceptos.lovTerceros(empresaActual.getSecuencia());
+            listaTerceros = administrarConceptos.consultarLOVTerceros(empresaActual.getSecuencia());
         }
         return listaTerceros;
     }
