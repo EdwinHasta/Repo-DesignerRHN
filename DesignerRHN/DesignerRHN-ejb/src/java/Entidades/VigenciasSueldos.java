@@ -41,8 +41,6 @@ public class VigenciasSueldos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAVIGENCIA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechavigencia;
@@ -58,8 +56,6 @@ public class VigenciasSueldos implements Serializable {
     @Column(name = "FECHASISTEMA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechasistema;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAVIGENCIARETROACTIVO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechavigenciaretroactivo;

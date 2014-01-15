@@ -17,7 +17,6 @@ import InterfacePersistencia.PersistenciaTiposEntidadesInterface;
 import InterfacePersistencia.PersistenciaTiposSueldosInterface;
 import InterfacePersistencia.PersistenciaVigenciasAfiliacionesInterface;
 import InterfacePersistencia.PersistenciaVigenciasSueldosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,7 +28,7 @@ import javax.ejb.Stateful;
  * @author AndresPineda
  */
 @Stateful
-public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosInterface{
+public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosInterface{ 
 
     @EJB
     PersistenciaVigenciasSueldosInterface persistenciaVigenciasSueldos;
@@ -230,10 +229,10 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
         }
     }
     
-    @Override
-    public List<TercerosSucursales> tercerosSucursales() {
+    @Override 
+    public List<TercerosSucursales> tercerosSucursales(BigInteger secuencia) {
         try {
-            listTercerosSucursales = persistenciaTercerosSucursales.buscarTercerosSucursales();
+            listTercerosSucursales = persistenciaTercerosSucursales.buscarTercerosSucursalesPorTerceroSecuencia(secuencia);
             return listTercerosSucursales;
         } catch (Exception e) {
             System.out.println("Error tercerosSucursales AdmiVigenciasSueldos");

@@ -88,10 +88,11 @@ public interface AdministrarVigenciasSueldosInterface {
      */
     public List<Terceros> terceros();
     /**
-     * Obtiene la lista de TercerosSucursales
+     * Obtiene la lista de TercerosSucursales para un Tercero especifico
+     * @param secuencia Secuencia del Tercero
      * @return Lista de TercerosSucursales
      */
-    public List<TercerosSucursales> tercerosSucursales();
+    public List<TercerosSucursales> tercerosSucursales(BigInteger secuencia);
     /**
      * Crea una neva TerceraSucursal
      * @param tercerosSucursales Objeto a crear

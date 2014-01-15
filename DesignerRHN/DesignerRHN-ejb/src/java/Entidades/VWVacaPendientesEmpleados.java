@@ -47,13 +47,9 @@ public class VWVacaPendientesEmpleados implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "DIASPENDIENTES")
     private BigInteger diaspendientes;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "INICIALCAUSACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inicialcausacion;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FINALCAUSACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date finalcausacion;
