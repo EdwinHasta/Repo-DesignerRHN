@@ -547,31 +547,15 @@ public class ControlLegislacion implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado == false) {
             if (!listaContratosBorrar.isEmpty()) {
-                for (int i = 0; i < listaContratosBorrar.size(); i++) {
-                    System.out.println("Borrando...");
-                    if (listaContratosBorrar.get(i).getTipocotizante().getSecuencia() == null) {
-                        listaContratosBorrar.get(i).setTipocotizante(null);
-                        administrarContratos.borrar(listaContratosBorrar.get(i));
-                    } else {
-                        administrarContratos.borrar(listaContratosBorrar.get(i));
-                    }
-                }
+                administrarContratos.borrarConceptos(listaContratosBorrar);
                 listaContratosBorrar.clear();
             }
             if (!listaContratosEmpresaCrear.isEmpty()) {
-                for (int i = 0; i < listaContratosEmpresaCrear.size(); i++) {
-                    System.out.println("Creando...");
-                    if (listaContratosEmpresaCrear.get(i).getTipocotizante().getSecuencia() == null) {
-                        listaContratosEmpresaCrear.get(i).setTipocotizante(null);
-                        administrarContratos.crear(listaContratosEmpresaCrear.get(i));
-                    } else {
-                        administrarContratos.crear(listaContratosEmpresaCrear.get(i));
-                    }
-                }
+                administrarContratos.crearConceptos(listaContratosEmpresaCrear);
                 listaContratosEmpresaCrear.clear();
             }
             if (!listaContratosModificar.isEmpty()) {
-                administrarContratos.modificar(listaContratosModificar);
+                administrarContratos.modificarConceptos(listaContratosModificar);
                 listaContratosModificar.clear();
             }
             System.out.println("Se guardaron los datos con exito");
@@ -899,7 +883,7 @@ public class ControlLegislacion implements Serializable {
     //GETTER AND SETTER
     public List<Contratos> getListaContratos() {
         if (listaContratos == null) {
-            listaContratos = administrarContratos.contratos();
+            listaContratos = administrarContratos.listaContratos();
         }
         return listaContratos;
     }
@@ -918,7 +902,7 @@ public class ControlLegislacion implements Serializable {
 
     public List<Contratos> getListaContratoLOV() {
         if (listaContratoLOV == null) {
-            listaContratoLOV = administrarContratos.contratos();
+            listaContratoLOV = administrarContratos.listaContratos();
         }
         return listaContratoLOV;
     }

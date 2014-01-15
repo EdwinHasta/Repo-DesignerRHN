@@ -37,13 +37,13 @@
                                         <h:outputText value="Código"/>
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="Nombre" sortBy="#{info.nombreTE}" filterBy="#{info.nombreTE}" filterMatchMode="contains" id="nombre" width="275" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Nombre" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="nombre" width="275" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.nombreTE}" style=" text-transform: uppercase" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.nombre}" style=" text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.nombreTE}" id="editarNombre" style=" font-size: 10px; border-radius: 0px; width: 295px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.nombre}" id="editarNombre" style=" font-size: 10px; border-radius: 0px; width: 295px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlTiposEntidades.cambiarIndice(indice, 1)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlTiposEntidades.modificarTipoEntidad(indice, 'N', info.nombreTE)}" update="nombre"/>
+                                                <p:ajax event="change" listener="#{controlTiposEntidades.modificarTipoEntidad(indice, 'N', info.nombre)}" update="nombre"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -119,8 +119,8 @@
                         </p:toolbar>
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR"  actionListener="#{controlTiposEntidades.cancelarModificacion()}" value="Refrescar" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 698px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();"  update="datosTipoEntidad"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras"    />
+                        <p:commandButton style=" position: absolute; left: 730px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 807px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
 
 
@@ -256,7 +256,7 @@
                         <p:commandButton id="cancelarCodigo" value="Atras" onclick="editCodigo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
                     <p:dialog id="editNombre" header="Editar Nómbre" widgetVar="editNombre" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlTiposEntidades.editarTipoEntidad.nombreTE}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlTiposEntidades.editarTipoEntidad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarNombre" value="Atras" onclick="editSucursal.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
                     <p:dialog id="editGrupoAsociado" header="Editar Grupo Asociado" widgetVar="editGrupoAsociado" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
@@ -277,7 +277,7 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="Nombre: "  style="font-size: 12px; position: absolute; top: 110px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlTiposEntidades.nuevoTipoEntidad.nombreTE}" style="font-size: 12px; width: 102px; position: absolute; left: 150px; top: 105px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlTiposEntidades.nuevoTipoEntidad.nombre}" style="font-size: 12px; width: 102px; position: absolute; left: 150px; top: 105px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Nombre" />
@@ -309,7 +309,7 @@
                             <p:watermark for="duplicarCodigo" value="Codigo" />
 
                             <strong><h:outputText value="Nombre"  style="font-size: 12px; position: absolute; top: 110px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposEntidades.duplicarTipoEntidad.nombreTE}"  style="font-size: 12px; width: 102px; position: absolute; left: 150px; top: 105px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlTiposEntidades.duplicarTipoEntidad.nombre}"  style="font-size: 12px; width: 102px; position: absolute; left: 150px; top: 105px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Nombre" />
@@ -348,7 +348,7 @@
 
                         <p:column>  
                             <f:facet name="header"><h:outputText value="Nombre" /></f:facet>
-                            <h:outputText value="#{info.nombreTE}"/>
+                            <h:outputText value="#{info.nombre}"/>
                         </p:column>
 
                         <p:column headerText="GrupoTipoEntidad">                                                              

@@ -359,11 +359,12 @@ public class ControlClasesAccidentes implements Serializable {
     public void verificarBorrado() {
         System.out.println("verificarBorrado");
         try {
-            if(tipoLista==0){
-            verificarBorradoAccidentes = administrarClasesAccidentes.verificarSoAccidentesMedicos(listClasesAccidentes.get(index).getSecuencia());
-            }else{
-            verificarBorradoAccidentes = administrarClasesAccidentes.verificarSoAccidentesMedicos(filtrarClasesAccidentes.get(index).getSecuencia());
-            }if (verificarBorradoAccidentes.equals(new BigInteger("0"))) {
+            if (tipoLista == 0) {
+                verificarBorradoAccidentes = administrarClasesAccidentes.verificarSoAccidentesMedicos(listClasesAccidentes.get(index).getSecuencia());
+            } else {
+                verificarBorradoAccidentes = administrarClasesAccidentes.verificarSoAccidentesMedicos(filtrarClasesAccidentes.get(index).getSecuencia());
+            }
+            if (verificarBorradoAccidentes.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoClaseAccidente();
             } else {
@@ -397,10 +398,7 @@ public class ControlClasesAccidentes implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO CLASES ACCIDENTES");
             if (!borrarClasesAccidentes.isEmpty()) {
-                for (int i = 0; i < borrarClasesAccidentes.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarClasesAccidentes.borrarClasesAccidentes(borrarClasesAccidentes.get(i));
-                }
+                administrarClasesAccidentes.borrarClasesAccidentes(borrarClasesAccidentes);
                 //mostrarBorrados
                 registrosBorrados = borrarClasesAccidentes.size();
                 context.update("form:mostrarBorrados");
@@ -408,25 +406,20 @@ public class ControlClasesAccidentes implements Serializable {
                 borrarClasesAccidentes.clear();
             }
             if (!crearClasesAccidentes.isEmpty()) {
-                for (int i = 0; i < crearClasesAccidentes.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarClasesAccidentes.crearClasesAccidentes(crearClasesAccidentes.get(i));
-
-                }
+                administrarClasesAccidentes.crearClasesAccidentes(crearClasesAccidentes);
                 crearClasesAccidentes.clear();
             }
-         if(bandera==1){
-            //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
-            bandera = 0;
-            filtrarClasesAccidentes = null;
-            tipoLista = 0;
-        }
+            if (bandera == 1) {
+                //CERRAR FILTRADO
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+                codigo.setFilterStyle("display: none; visibility: hidden;");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+                descripcion.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
+                bandera = 0;
+                filtrarClasesAccidentes = null;
+                tipoLista = 0;
+            }
             if (!modificarClasesAccidentes.isEmpty()) {
                 administrarClasesAccidentes.modificarClasesAccidentes(modificarClasesAccidentes);
                 modificarClasesAccidentes.clear();
@@ -722,7 +715,7 @@ public class ControlClasesAccidentes implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<ClasesAccidentes> getListClasesAccidentes() {
         if (listClasesAccidentes == null) {
-            listClasesAccidentes = administrarClasesAccidentes.mostrarClasesAccidentes();
+            listClasesAccidentes = administrarClasesAccidentes.listaClasesAccidentes();
 
         }
         return listClasesAccidentes;

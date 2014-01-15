@@ -24,7 +24,7 @@
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                                 <p:ajax event="filter" listener="#{controlEmplAcumulados.eventoFiltrar()}"/>
 
-                                <p:column   headerText="Concepto Codigo" sortBy="#{info.concepto_Codigo}" filterBy="#{info.concepto_Codigo}" filterMatchMode="contains" id="conceptoCodigo" width="50" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column   headerText="Concepto C." sortBy="#{info.concepto_Codigo}" filterBy="#{info.concepto_Codigo}" filterMatchMode="contains" id="conceptoCodigo" width="55" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet  name="output"><h:outputText value="#{info.concepto_Codigo}" /></f:facet>  
                                         <f:facet name="input" >
@@ -36,9 +36,10 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Concepto Codigo"/>
+                                        <h:outputText value="Concepto C."/>
                                     </f:facet>
-                                </p:column>  
+                                </p:column> 
+                                <p:tooltip for="conceptoCodigo" value=" Concepto Codigo"/>
                                 <p:column headerText="Descripcion Concepto" sortBy="#{info.concepto_Descripcion}" filterBy="#{info.concepto_Descripcion}" filterMatchMode="contains" id="conceptoDescripcion" width="310" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.concepto_Descripcion}" /></f:facet>  
@@ -364,7 +365,7 @@
                         </p:toolbar>
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh"  actionListener="#{controlEmplAcumulados.cancelarModificacion()}" id="REFRESCAR" value="Refrescar" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras"    />
+                        <p:commandButton style=" position: absolute; left: 807px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplAcumulados.activarCtrlF11()}"  /> 
 

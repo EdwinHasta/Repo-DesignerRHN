@@ -56,7 +56,6 @@ public class ControlEvalEvaluadores implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private Long borradoVC;
 
     public ControlEvalEvaluadores() {
 
@@ -343,24 +342,23 @@ public class ControlEvalEvaluadores implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
+        BigInteger borradoVC = new BigInteger("-1");
         try {
             if (tipoLista == 0) {
                 borradoVC = administrarEvalEvaluadores.verificarBorradoEP(listEvalEvaluadores.get(index).getSecuencia());
             } else {
                 borradoVC = administrarEvalEvaluadores.verificarBorradoEP(filtrarEvalEvaluadores.get(index).getSecuencia());
             }
-            if (borradoVC.intValue() == 0) {
+            if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarEvalEvaluadores();
-            }
-            if (borradoVC.intValue() != 0) {
+            } else {
                 System.out.println("Borrado>0");
-
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                borradoVC = new Long(-1);
+                borradoVC = new BigInteger("-1");
             }
 
         } catch (Exception e) {

@@ -60,8 +60,8 @@ public class ControlTiposEntidades implements Serializable {
     private BigInteger secRegistro;
     private Column codigo, nombre, grupoAsociado;
     //borrado
-    private Long borrado;
-    private Long borradoFCE;
+    private BigInteger borrado;
+    private BigInteger borradoFCE;
     private int registrosBorrados;
 
     public ControlTiposEntidades() {
@@ -74,6 +74,7 @@ public class ControlTiposEntidades implements Serializable {
         editarTipoEntidad = new TiposEntidades();
         nuevoTipoEntidad = new TiposEntidades();
         nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
+        guardado=true;
 
     }
 
@@ -186,6 +187,7 @@ public class ControlTiposEntidades implements Serializable {
             }
             permitirIndex = true;
             context.update("form:datosTipoEntidad");
+            context.update("form:ACEPTAR");
         } else if (tipoActualizacion == 1) {
             nuevoTipoEntidad.setGrupo(grupoTipoEntidadSeleccionada);
             context.update("formularioDialogos:nuevoTipoEntidad");
@@ -268,7 +270,6 @@ public class ControlTiposEntidades implements Serializable {
                     secRegistro = null;
                 }
             } else {
-
 
                 if (!crearTiposEntidades.contains(filtrarTiposEntidades.get(indice))) {
                     if (filtrarTiposEntidades.get(indice).getCodigo() == a) {
@@ -356,6 +357,7 @@ public class ControlTiposEntidades implements Serializable {
             }
         }
         context.update("form:datosTipoEntidad");
+        context.update("form:ACEPTAR");
 
     }
 
@@ -475,6 +477,7 @@ public class ControlTiposEntidades implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosTipoEntidad");
+        context.update("form:ACEPTAR");
     }
     private String mensajeValidacion;
 
@@ -527,7 +530,6 @@ public class ControlTiposEntidades implements Serializable {
             contador++;
             duplicados = 0;
 
-
         }//TENER PRESENTE ------------------------------------------------------
         /*if (nuevaVigenciaFormasPago.getFechavigencia() == null) {
          mensajeValidacion = " * Fecha Vigencia \n";
@@ -578,7 +580,7 @@ public class ControlTiposEntidades implements Serializable {
             context.update("form:datosTipoEntidad");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("nuevoRegistroTipoEntidad.hide()");
             index = -1;
@@ -646,40 +648,24 @@ public class ControlTiposEntidades implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         try {
-            borrado = administrarTipoEntidad.verificarBorrado(listTiposEntidades.get(index).getSecuencia());
-            borradoFCE = administrarTipoEntidad.verificarBorradoFCE(listTiposEntidades.get(index).getSecuencia());
-            if (borrado.intValue() == 0 && borradoFCE.intValue() == 0) {
+            if (tipoLista == 0) {
+                borrado = administrarTipoEntidad.verificarBorrado(listTiposEntidades.get(index).getSecuencia());
+                borradoFCE = administrarTipoEntidad.verificarBorradoFCE(listTiposEntidades.get(index).getSecuencia());
+            } else {
+                borrado = administrarTipoEntidad.verificarBorrado(filtrarTiposEntidades.get(index).getSecuencia());
+                borradoFCE = administrarTipoEntidad.verificarBorradoFCE(filtrarTiposEntidades.get(index).getSecuencia());
+            }
+
+            if (borrado.equals(new BigInteger("0")) && borradoFCE.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarTiposEntidades();
-            }
-            if (0 < borrado.intValue() && borradoFCE.intValue() > 0) {
+            } else {
                 System.out.println("Borrado>0");
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-            }
-            if (0 == borrado.intValue() && borradoFCE.intValue() > 0) {
-                System.out.println("Borrado>0");
-
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:validacionBorrar");
-                context.execute("validacionBorrar.show()");
-                index = -1;
-            }
-            if (0 < borrado.intValue() && borradoFCE.intValue() == 0) {
-                System.out.println("Borrado>0");
-
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:validacionBorrar");
-                context.execute("validacionBorrar.show()");
-                index = -1;
-            }
-            if (borrado.intValue() == -1 && borradoFCE.intValue() == -1) {
-                System.out.println("Borrado==-1");
-                System.err.println("ERROR ERROR ERROR");
-                index = - 1;
             }
         } catch (Exception e) {
             System.err.println("ERROR ControlTiposEntidades verificarBorrado ERROR " + e);
@@ -729,6 +715,7 @@ public class ControlTiposEntidades implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -806,7 +793,6 @@ public class ControlTiposEntidades implements Serializable {
 
         }
 
-
         if (contador == 3) {
 
             System.out.println("Datos Duplicando: " + duplicarTipoEntidad.getSecuencia() + "  " + duplicarTipoEntidad.getCodigo());
@@ -820,7 +806,7 @@ public class ControlTiposEntidades implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -882,9 +868,10 @@ public class ControlTiposEntidades implements Serializable {
             listTiposEntidades = null;
             context.update("form:datosTipoEntidad");
             k = 0;
+            guardado=true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -907,7 +894,7 @@ public class ControlTiposEntidades implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    
+
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -1035,5 +1022,13 @@ public class ControlTiposEntidades implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }
