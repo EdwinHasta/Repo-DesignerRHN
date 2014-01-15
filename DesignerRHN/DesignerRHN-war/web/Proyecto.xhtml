@@ -217,8 +217,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="dateFechaInicial" value="#{info.fechainicial}" >  
-                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificacionesFechas(indiceP,8)}" update="dateFechaInicial" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlProyecto.modificacionesFechas(indiceP,8)}" update="dateFechaInicial"  process="@this"/>
+                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificacionesFechas(indiceP,8)}"  process="@this"/>
+                                                <p:ajax event="change" listener="#{controlProyecto.modificacionesFechas(indiceP,8)}" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlProyecto.cambiarIndiceP(indiceP,8)}" process="@this"/> 
                                             </lnk:calendar> 
                                         </f:facet>  
@@ -238,8 +238,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editarFechaFinalP" value="#{info.fechafinal}" >  
-                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificacionesFechas(indiceP,9)}" update="editarFechaFinalP"  process="@this"/>
-                                                <p:ajax event="change" listener="#{controlProyecto.modificacionesFechas(indiceP,9)}" update="editarFechaFinalP"  process="@this"/>
+                                                <p:ajax event="dateSelect" listener="#{controlProyecto.modificacionesFechas(indiceP,9)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlProyecto.modificacionesFechas(indiceP,9)}"  process="@this"/>
                                                 <p:ajax event="select" listener="#{controlProyecto.cambiarIndiceP(indiceP,9)}" process="@this"/> 
                                             </lnk:calendar> 
                                         </f:facet>  

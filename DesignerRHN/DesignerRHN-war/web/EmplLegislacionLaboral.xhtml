@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -27,7 +28,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciasContratos.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="vcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Inicial" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="35" id="vcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechainicial}" >
@@ -35,13 +36,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{info.fechainicial}" id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasContratos.modificarVC(indice)}" update="editFechaInicial"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,'0')}" /> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechainicial}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciasContratos.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciasContratos.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,0)}" process="@this"/> 
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -50,7 +49,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="vcFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="font-size: 11px" headerText="Final" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="40" id="vcFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechafinal}" >
@@ -58,13 +57,11 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:calendar  style="font-size: 10px;" value="#{info.fechafinal}" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasContratos.modificarVC(indice)}" update="editFechaFinal"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,'1')}" /> 
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
+                                            <lnk:calendar id="dateFechaFinal" value="#{info.fechafinal}" > 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciasContratos.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciasContratos.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice,1)}" process="@this"/> 
+                                            </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -73,14 +70,14 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="Legislación Laboral" sortBy="#{info.contrato.descripcion}" filterBy="#{info.contrato.descripcion}" filterMatchMode="contains" id="vcContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="font-size: 11px" headerText="Legislación Laboral" sortBy="#{info.contrato.descripcion}" filterBy="#{info.contrato.descripcion}" filterMatchMode="contains" id="vcContrato" width="145" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.contrato.descripcion}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.contrato.descripcion}" id="editarContrato" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"   > 
                                                 <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice, 'LEGISLACIONLABORAL', info.contrato.descripcion)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice, '2')}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'0', '0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0, 0)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -95,8 +92,8 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipocontrato.nombre}" id="editarTipoContrato" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"  > 
                                                 <p:ajax event="change" listener="#{controlVigenciasContratos.modificarVC(indice, 'TIPOCONTRATO', info.tipocontrato.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice, '3')}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'1', '0')}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasContratos.cambiarIndice(indice, 3)}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,1,0)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -277,6 +274,17 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                    
+                     <p:dialog id="errorRegNew" header="ATENCIÓN" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="80" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Los campos Fecha Inicial-Legislacion Laboral son obligatorios." style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechas" header="ATENCIÓN" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La fecha inicial es menor a 01/01/1900 y/o la fecha final es menor a la fecha inicial." style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasContratos.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
@@ -286,39 +294,41 @@
 
                         <p:panel id="nuevaVC" style="border: none;">
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaInicial" style="font-size: 10px; position: absolute;  top: 70px; left: 200px;" value="#{controlVigenciasContratos.nuevaVigencia.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicial"/>
-                                <p:ajax event="change" update="nuevaFechaInicial"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="nuevaFechaInicial" value="#{controlVigenciasContratos.nuevaVigencia.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="nuevaFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlVigenciasContratos.nuevaVigencia.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaFinal"/>
-                                <p:ajax event="change" update="nuevaFechaFinal"/>
-                            </p:calendar>
+                            <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 120px; left: 200px">
+                                <lnk:calendar id="nuevaFechaFinal" value="#{controlVigenciasContratos.nuevaVigencia.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="Legislación Laboral: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="nuevaLegislacionLaboral" value="#{controlVigenciasContratos.nuevaVigencia.contrato.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 170px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,1)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('1', 'LEGISLACIONLABORAL')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.nuevaVigencia.contrato.descripcion, '1')}" />
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(1, 'LEGISLACIONLABORAL')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.nuevaVigencia.contrato.descripcion, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnNuevoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'0','1')}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnNuevoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,0,1)}"/>   
                             <p:watermark for="nuevaLegislacionLaboral" value="Legislación Laboral" />
 
                             <strong><h:outputText value="Tipo Contrato: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="nuevoTipoContrato" value="#{controlVigenciasContratos.nuevaVigencia.tipocontrato.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'1','1')}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('1', 'TIPOCONTRATO')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.nuevaVigencia.tipocontrato.nombre, '1')}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,1,1)}"/>
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(1, 'TIPOCONTRATO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.nuevaVigencia.tipocontrato.nombre, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnNuevoTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'1','1')}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnNuevoTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,1,1)}"/>   
                             <p:watermark for="nuevoTipoContrato" value="Tipo Contrato" />
 
                             <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarNuevaVC()}" update="nuevaVC" process="@this"/>
-                            <p:commandButton id="agregarVC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.agregarNuevaVC()}" onclick="NuevoRegistroVC.hide();"  />
+                            <p:commandButton id="agregarVC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.agregarNuevaVC()}"/>
                             <p:commandButton id="cancelarVC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -329,40 +339,40 @@
 
                         <p:panel id="duplicarVC" style="border: none;">
                             <strong><h:outputText value="Fecha Inicial: " style="font-size: 14px; position: absolute; top: 70px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaInicial" style="font-size: 10px; position: absolute; top: 70px; left: 200px;" value="#{controlVigenciasContratos.duplicarVC.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicial"/>
-                                <p:ajax event="change" update="duplicarFechaInicial"/>
-                            </p:calendar>
-
+                            <div id="posicionFormulaFechaIniDupliReg" style="font-size: 10px; position: absolute; top: 70px; left: 200px">
+                                <lnk:calendar id="duplicarFechaInicial" value="#{controlVigenciasContratos.duplicarVC.fechainicial}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicial" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaInicial" process="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <strong><h:outputText value="Fecha Final: " style="font-size: 14px; position: absolute; top: 120px; left: 50px;" /></strong>
-                            <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 120px; left: 200px;" value="#{controlVigenciasContratos.duplicarVC.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
-                                <p:ajax event="change" update="duplicarFechaFinal"/>
-                            </p:calendar>
-
+                            <div id="posicionFormulaFechaFinDupliReg" style="font-size: 10px; position: absolute; top: 120px; left: 200px">
+                                <lnk:calendar id="duplicarFechaFinal" value="#{controlVigenciasContratos.duplicarVC.fechafinal}" >
+                                    <p:ajax event="dateSelect" update="duplicarFechaFinal" process="@this"/>
+                                    <p:ajax event="change" update="duplicarFechaFinal" process="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="Legislación Laboral: " style="font-size: 14px; position: absolute; top: 170px; left: 50px" /></strong>
                             <p:inputText id="duplicarLegislacionLaboral" value="#{controlVigenciasContratos.duplicarVC.contrato.descripcion}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 170px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'0','2')}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('2', 'LEGISLACIONLABORAL')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.duplicarVC.contrato.descripcion, '2')}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(2, 'LEGISLACIONLABORAL')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('LEGISLACIONLABORAL', controlVigenciasContratos.duplicarVC.contrato.descripcion, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnDuplicarContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'0','2')}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 170px;  " id="btnDuplicarContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,0,2)}"/>   
                             <p:watermark for="duplicarLegislacionLaboral" value="Legislación Laboral" />
 
                             <strong><h:outputText value="Tipo Contrato: " style="font-size: 14px; position: absolute; top: 220px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoContrato" value="#{controlVigenciasContratos.duplicarVC.tipocontrato.nombre}" style="font-size: 12px; width: 140px; position: absolute; left: 200px; top: 220px;">
-                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,'1','2')}"/>
-                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar('2', 'TIPOCONTRATO')}" />
-                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.duplicarVC.tipocontrato.nombre, '2')}" /> 
+                                <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,1,2)}"/>
+                                <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(2, 'TIPOCONTRATO')}" />
+                                <p:ajax event="change" listener="#{controlVigenciasContratos.autocompletarNuevoyDuplicado('TIPOCONTRATO', controlVigenciasContratos.duplicarVC.tipocontrato.nombre, 2)}" /> 
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnDuplicarTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,'1','2')}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 220px;  " id="btnDuplicarTipoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasContratos.asignarIndex(indice,1,2)}"/>   
                             <p:watermark for="duplicarTipoContrato" value="Tipo Contrato" />
 
                             <p:commandButton id="limpiarDuplicadoVC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarduplicarVC()}" update="duplicarVC" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.confirmarDuplicar()}" onclick="DuplicarRegistroVC.hide();"  />
+                            <p:commandButton id="agregarDuplicadoVC" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 270px;"  process="@this" actionListener="#{controlVigenciasContratos.confirmarDuplicar()}"/>
                             <p:commandButton id="cancelarDuplicadoVC" value="Cancelar" style="font-size: 11px; position: absolute; left: 280px; top: 270px;" actionListener="#{controlVigenciasContratos.limpiarduplicarVC()}" update="duplicarVC" onclick="DuplicarRegistroVC.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>

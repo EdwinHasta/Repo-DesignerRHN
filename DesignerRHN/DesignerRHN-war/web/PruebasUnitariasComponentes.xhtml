@@ -14,21 +14,11 @@
         <h:form id="form">
             <p:panel id="PanelTotal" header="PRUEBAS" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" >
                 <h:form id="form">
-                    <lnk:calendar id="dateFechaFinal" value="#{controlPruebasUnitarias.fechaPrueba}">
-                        <p:ajax event="change" listener="#{controlPruebasUnitarias.cambioRealizado()}" onerror="#{controlPruebasUnitarias.cambioNoRealizado()}"  process="@this">
-                            <f:validator validatorId="validacionLnkCalendarFechaFinal" for="forCalendar" />
-                        </p:ajax>
-                        <p:ajax  event="dateSelect" listener="#{controlPruebasUnitarias.cambioRealizado()}" onerror="#{controlPruebasUnitarias.cambioNoRealizado()}" process="@this">
-                            <f:validator validatorId="validacionLnkCalendarFechaFinal" for="forCalendar" >
-                                
-                            </f:validator>
-                        </p:ajax>
-                    </lnk:calendar>
-                    <lnk:calendar id="dateFechaAux" value="#{controlPruebasUnitarias.auxFecha}">
-                        <p:ajax event="select" listener="#{controlPruebasUnitarias.select()}"/>
-                    </lnk:calendar>
-                    <h:commandButton value="Submit" />
-                    <h:message for="dateFechaFinal" errorStyle="color:red; display:block" />
+                    <p:commandButton value="PDF" actionListener="#{controlPruebasUnitarias.crearReportePDF()}"/>
+                    <p:commandButton value="XLSX" actionListener="#{controlPruebasUnitarias.crearReporteXLSX()}"/>
+                    <p:commandButton value="XLS Solo datos" actionListener="#{controlPruebasUnitarias.crearReporteXLS()}"/>
+                    <p:commandButton value="CVS" actionListener="#{controlPruebasUnitarias.crearReporteCSV()}"/>
+                    <p:commandButton value="HTML" actionListener="#{controlPruebasUnitarias.crearReporteHTML()}"/>
                 </h:form>
             </p:panel>
         </h:form>

@@ -189,13 +189,10 @@ public class ControlProyecto implements Serializable {
             if (duplicarProyecto.getFechafinal() == null && duplicarProyecto.getFechainicial() != null) {
                 retorno = false;
             }
-        }
-        System.out.println("valor de retorno : " + retorno);
-        return retorno;
+        }        return retorno;
     }
 
     public void modificacionesFechas(int i, int c) {
-        System.out.println("Indice : " + i);
         Proyectos auxiliar = new Proyectos();
         if (tipoListaP == 0) {
             auxiliar = listProyectos.get(i);
@@ -204,32 +201,24 @@ public class ControlProyecto implements Serializable {
             auxiliar = filtrarListProyectos.get(i);
         }
         boolean retorno = false;
-        System.out.println("auxiliar : "+auxiliar.getFechainicial());
         if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() == null)) {
-            System.out.println("If 1");
             retorno = true;
         }
-        if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() != null)) {
+        else if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() != null)) {
             indexP = i;
-            System.out.println("If 2");
             retorno = validarFechasRegistro(0);
         }
-        if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() == null)) {
-            System.out.println("If 3");
+        else if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() == null)) {
             retorno = true;
         }
-        if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() != null)) {
-            System.out.println("If 4");
+        else if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() != null)) {
             retorno = false;
             fechaFin = null;
             fechaInic = null;
         }
-        System.out.println("Retorno = " + retorno);
         if (retorno == true) {
             cambiarIndiceP(i, c);
             modificarProyecto(i);
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProyectos");
         } else {
             if (tipoListaP == 0) {
                 listProyectos.get(indexP).setFechafinal(fechaFin);
@@ -254,7 +243,6 @@ public class ControlProyecto implements Serializable {
      */
     public void modificarProyecto(int indice) {
         if (tipoListaP == 0) {
-            indexP = indice;
             if (!listProyectoCrear.contains(listProyectos.get(indice))) {
                 if (listProyectoModificar.isEmpty()) {
                     listProyectoModificar.add(listProyectos.get(indice));
@@ -611,7 +599,6 @@ public class ControlProyecto implements Serializable {
     }
 
     public void cambiarIndiceP(int indice, int celda) {
-        System.out.println("Permitir Index : " + permitirIndexP);
         if (permitirIndexP == true) {
             indexP = indice;
             cualCeldaP = celda;
@@ -875,7 +862,6 @@ public class ControlProyecto implements Serializable {
             context.execute("NuevoRegistroP.hide()");
 
         } else {
-            System.out.println("Error fechas");
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorFechas.show()");
         }
@@ -1017,7 +1003,6 @@ public class ControlProyecto implements Serializable {
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorFechas.show()");
-            System.out.println("Error fechas");
         }
     }
 

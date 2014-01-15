@@ -116,7 +116,7 @@ public class ControlEmplDemanda implements Serializable {
     public boolean validarFechasRegistro(int i) {
         boolean retorno = true;
         fechaParametro = new Date();
-        fechaParametro.setYear(90);
+        fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
         if (i == 0) {
