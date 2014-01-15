@@ -17,11 +17,11 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarElementosCausasAccidentesInterface {
 
-    public void modificarElementosCausasAccidentes(List<ElementosCausasAccidentes> listElementosCausasAccidentes);
+    public void crearElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes);
 
-    public void borrarElementosCausasAccidentes(ElementosCausasAccidentes elementosCausasAccidentes);
+    public void modificarElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes);
 
-    public void crearElementosCausasAccidentes(ElementosCausasAccidentes elementosCausasAccidentes);
+    public void borrarElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes);
 
     public List<ElementosCausasAccidentes> mostrarElementosCausasAccidentes();
 

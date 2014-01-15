@@ -142,6 +142,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorDetallesCCConsolidador(BigInteger secCentroCosto) {
 
         try {
@@ -153,6 +154,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
        public BigInteger contadorDetalleContable(BigInteger secCentroCosto) {
 
         try {
@@ -166,6 +168,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorEmpresas(BigInteger secCentroCosto) {
 
         try {
@@ -178,6 +181,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorEstructuras(BigInteger secCentroCosto) {
 
         try {
@@ -190,6 +194,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorInterconCondor(BigInteger secCentroCosto) {
 
         try {
@@ -201,6 +206,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorInterconDynamics(BigInteger secCentroCosto) {
 
         try {
@@ -213,6 +219,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorInterconGeneral(BigInteger secCentroCosto) {
 
         try {
@@ -226,6 +233,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorInterconHelisa(BigInteger secCentroCosto) {
 
         try {
@@ -238,6 +246,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorInterconSapbo(BigInteger secCentroCosto) {
 
         try {
@@ -249,6 +258,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorInterconSiigo(BigInteger secCentroCosto) {
 
         try {
@@ -261,6 +271,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorInterconTotal(BigInteger secCentroCosto) {
 
         try {
@@ -273,6 +284,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorNovedadesD(BigInteger secCentroCosto) {
 
         try {
@@ -285,6 +297,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorNovedadesC(BigInteger secCentroCosto) {
 
         try {
@@ -297,6 +310,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorProcesosProductivos(BigInteger secCentroCosto) {
 
         try {
@@ -308,6 +322,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorProyecciones(BigInteger secCentroCosto) {
 
         try {
@@ -319,6 +334,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorSolucionesNodosC(BigInteger secCentroCosto) {
 
         try {
@@ -331,6 +347,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorSolucionesNodosD(BigInteger secCentroCosto) {
 
         try {
@@ -342,6 +359,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorSoPanoramas(BigInteger secCentroCosto) {
 
         try {
@@ -353,6 +371,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorTerceros(BigInteger secCentroCosto) {
 
         try {
@@ -364,6 +383,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorUnidadesRegistradas(BigInteger secCentroCosto) {
 
         try {
@@ -375,6 +395,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorVigenciasCuentasC(BigInteger secCentroCosto) {
 
         try {
@@ -386,6 +407,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorVigenciasCuentasD(BigInteger secCentroCosto) {
 
         try {
@@ -397,6 +419,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         }
     }
 
+    @Override
     public BigInteger contadorVigenciasProrrateos(BigInteger secCentroCosto) {
 
         try {

@@ -66,22 +66,22 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public Integer empleadosParaLiquidar() {
-        return persistenciaParametrosEstados.empleadosParaLiquidar(usuarioBD());
+    public Integer contarEmpleadosParaLiquidar() {
+        return persistenciaParametrosEstados.empleadosParaLiquidar(consultarUsuarioBD());
     }
 
     @Override
-    public Integer empleadosLiquidados() {
-        return persistenciaParametrosEstados.empleadosLiquidados(usuarioBD());
+    public Integer contarEmpleadosLiquidados() {
+        return persistenciaParametrosEstados.empleadosLiquidados(consultarUsuarioBD());
     }
 
     @Override
-    public boolean permisosLiquidar(String usuarioBD) {
+    public boolean verificarPermisosLiquidar(String usuarioBD) {
         return persistenciaCandados.permisoLiquidar(usuarioBD);
     }
 
     @Override
-    public String usuarioBD() {
+    public String consultarUsuarioBD() {
         return persistenciaActualUsuario.actualAliasBD();
     }
 
@@ -91,13 +91,13 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     }
 
     @Override
-    public String estadoLiquidacion(String usuarioBD) {
+    public String consultarEstadoLiquidacion(String usuarioBD) {
         return persistenciaCandados.estadoLiquidacion(usuarioBD);
     }
 
     @Override
-    public ParametrosEstructuras parametrosLiquidacion() {
-        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD());
+    public ParametrosEstructuras consultarParametrosLiquidacion() {
+        return persistenciaParametrosEstructuras.buscarParametro(consultarUsuarioBD());
     }
 
     @Override
@@ -106,7 +106,7 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     }
 
     @Override
-    public Integer progresoLiquidacion(Integer totalEmpleadoALiquidar) {
+    public Integer consultarProgresoLiquidacion(Integer totalEmpleadoALiquidar) {
         return persistenciaCandados.progresoLiquidacion(totalEmpleadoALiquidar);
     }
 
@@ -121,12 +121,12 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     }
 
     @Override
-    public List<ConsultasLiquidaciones> preNomina() {
+    public List<ConsultasLiquidaciones> consultarPreNomina() {
         return persistenciaConsultasLiquidaciones.preNomina();
     }
 
     @Override
-    public String estadoConsultaDatos(BigInteger secuenciaEmpresa) {
+    public String consultarEstadoConsultaDatos(BigInteger secuenciaEmpresa) {
         return persistenciaEmpresas.estadoConsultaDatos(secuenciaEmpresa);
     }
 }

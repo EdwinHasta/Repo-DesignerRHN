@@ -15,99 +15,99 @@ import java.util.List;
 public interface AdministrarCarpetaPersonalInterface {
     /**
      * Método encargado de recuperar el cargo actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesCargos con la información requerida.
      */
-    public VWActualesCargos ConsultarCargo(BigInteger secuenciaEmpleado);
+    public VWActualesCargos consultarActualCargoEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar el Tipo Contrato actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesTiposContratos con la información requerida.
      */
-    public VWActualesTiposContratos ConsultarTipoContrato(BigInteger secuenciaEmpleado);
+    public VWActualesTiposContratos consultarActualTipoContratoEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la Norma actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesNormasEmpleados con la información requerida.
      */
-    public VWActualesNormasEmpleados ConsultarNormaLaboral(BigInteger secuenciaEmpleado);
+    public VWActualesNormasEmpleados consultarActualNormaLaboralEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la afiliación a salud actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesAfiliacionesSalud con la información requerida.
      */
-    public VWActualesAfiliacionesSalud ConsultarAfiliacionSalud(BigInteger secuenciaEmpleado);
+    public VWActualesAfiliacionesSalud consultarActualAfiliacionSaludEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la afiliación a pensión actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesAfiliacionesPension con la información requerida.
      */
-    public VWActualesAfiliacionesPension ConsultarAfiliacionPension(BigInteger secuenciaEmpleado);
+    public VWActualesAfiliacionesPension consultarActualAfiliacionPensionEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la localización actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesLocalizaciones con la información requerida.
      */
-    public VWActualesLocalizaciones ConsultarLocalizacion(BigInteger secuenciaEmpleado);
+    public VWActualesLocalizaciones consultarActualLocalizacionEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar el tipo de trabajador actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesTiposTrabajadores con la información requerida.
      */
-    public VWActualesTiposTrabajadores ConsultarTipoTrabajador(BigInteger secuenciaEmpleado);
+    public VWActualesTiposTrabajadores consultarActualTipoTrabajadorEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar el contrato actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesContratos con la información requerida.
      */
-    public VWActualesContratos ConsultarContrato(BigInteger secuenciaEmpleado);
+    public VWActualesContratos consultarActualContratoEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la jornada actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesJornadas con la información requerida.
      */
-    public VWActualesJornadas ConsultarJornada(BigInteger secuenciaEmpleado);
+    public VWActualesJornadas consultarActualJornadaEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar el sueldo actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un BigDecimal con la información requerida.
      */
-    public BigDecimal ConsultarSueldo(BigInteger secuenciaEmpleado);
+    public BigDecimal consultarActualSueldoEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la reforma laboral actual aplicada a un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesReformasLaborales con la información requerida.
      */
-    public VWActualesReformasLaborales ConsultarReformaLaboral(BigInteger secuenciaEmpleado);
+    public VWActualesReformasLaborales consultarActualReformaLaboralEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la Ubicación actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesUbicaciones con la información requerida.
      */
-    public VWActualesUbicaciones ConsultarUbicacion(BigInteger secuenciaEmpleado);
+    public VWActualesUbicaciones consultarActualUbicacionEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar la forma de pago actual para un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesFormasPagos con la información requerida.
      */
-    public VWActualesFormasPagos ConsultarFormaPago(BigInteger secuenciaEmpleado);
+    public VWActualesFormasPagos consultarActualFormaPagoEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar el tipo viajero actual de un empleado específico.
-     * @param secuenciaEmpleado Secuencia del Empleado.
+     * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesUbicaciones con la información requerida.
      */
-    public VWActualesVigenciasViajeros ConsultarTipoViajero(BigInteger secuenciaEmpleado);
+    public VWActualesVigenciasViajeros consultarActualTipoViajeroEmpleado(BigInteger secEmpleado);
     /**
      * Método encargado de recuperar los empleados asociados con un tipoTrabajador específico.
      * @param tipo Tipo del trabajador por el cual se va a filtrar.
      * @return Retorna una lista de VWActualesTiposTrabajadores con la informacion requerida.
      */
-    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(String tipo);
+    public List<VWActualesTiposTrabajadores> consultarEmpleadosTipoTrabajador(String tipo);
     /**
      * Método encargado de recuperar la información de la empresa a la cual pertenece el Usuario conectado.
      * @return Retorna el DetalleEmpresa con la información de la empresa.
      */
-    public DetallesEmpresas ConsultarEmpresa();
+    public DetallesEmpresas consultarDetalleEmpresaUsuario();
     /**
      * Método encargado de recuperar el Usuario cuyo alias coincida con el dado por parámetro.
      * @param alias Alias del Usuario que se quiere encontrar.
@@ -138,7 +138,7 @@ public interface AdministrarCarpetaPersonalInterface {
      * @return Retorna la persona cuya identificación coincide con el valor del parámetro con el fin de
      * recuperar la foto.
      */
-    public Personas buscarFotoPersona(BigInteger identificacion);
+    public Personas consultarFotoPersona(BigInteger identificacion);
     /**
      * Método encargado de actualizar la foto de una persona específica.
      * @param identificacion Identificación de la persona a la cual se le va a actualizar la foto.
@@ -149,15 +149,15 @@ public interface AdministrarCarpetaPersonalInterface {
      * @param secuencia Secuencia del Empleado que se quiere recuperar.
      * @return Retorna el empleado cuya secuencia coincida con el valor dado por parámetro.
      */
-    public Empleados buscarEmpleado(BigInteger secuencia);
+    public Empleados consultarEmpleado(BigInteger secuencia);
     /**
      * Método encargado de editar VigenciasCargos.
      * @param vigenciasCargos Lista de las VigenciasCargos que se van a modificar.
      */
     public void editarVigenciasCargos(List<VigenciasCargos> vigenciasCargos);
     /**
-     * Método encargado de recuperar el usuario que está conectado en la sesión actual.
+     * Método encargado de recuperar el Alias del usuario que está conectado en la sesión actual.
      * @return Retorna un String con el Alias del usuario que esta conectado en la sesion actual.
      */
-    public String actualUsuario();
+    public String consultarAliasActualUsuario();
 }

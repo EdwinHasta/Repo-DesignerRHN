@@ -72,7 +72,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<ExtrasRecargos> listaExtrasRecargos() {
+    public List<ExtrasRecargos> consultarExtrasRecargos() {
         try {
             List<ExtrasRecargos> lista = persistenciaExtrasRecargos.buscarExtrasRecargos();
             return lista;
@@ -116,7 +116,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<DetallesExtrasRecargos> listaDetallesExtrasRecargos(BigInteger secuencia) {
+    public List<DetallesExtrasRecargos> consultarDetallesExtrasRecargos(BigInteger secuencia) {
         try {
             List<DetallesExtrasRecargos> lista = persistenciaDetallesExtrasRecargos.buscaDetallesExtrasRecargosPorSecuenciaExtraRecargo(secuencia);
             return lista;
@@ -160,7 +160,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<TiposDias> lovListaTiposDias() {
+    public List<TiposDias> consultarLOVListaTiposDias() {
         try {
             List<TiposDias> lista = persistenciaTiposDias.buscarTiposDias();
             return lista;
@@ -171,7 +171,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<TiposJornadas> listaTiposJornadas() {
+    public List<TiposJornadas> consultarLOVTiposJornadas() {
         try {
             List<TiposJornadas> lista = persistenciaTiposJornadas.buscarTiposJornadas();
             return lista;
@@ -182,7 +182,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<Contratos> listaContratos() {
+    public List<Contratos> consultarLOVContratos() {
         try {
             List<Contratos> lista = persistenciaContratos.buscarContratos();
             return lista;
@@ -193,7 +193,7 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
     }
 
     @Override
-    public List<Conceptos> listaConceptos() {
+    public List<Conceptos> consultarLOVConceptos() {
         try {
             List<Conceptos> lista = persistenciaConceptos.buscarConceptos();
             return lista;
@@ -202,5 +202,4 @@ public class AdministrarATExtraRecargo implements AdministrarATExtraRecargoInter
             return null;
         }
     }
-
 }

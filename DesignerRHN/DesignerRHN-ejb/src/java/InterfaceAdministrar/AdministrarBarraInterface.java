@@ -17,18 +17,18 @@ public interface AdministrarBarraInterface {
      * Método encargado de recuperar la cantidad de empleados a liquidar.
      * @return Retorna el número de Empleados a liquidar. 
      */
-    public Integer empleadosParaLiquidar();
+    public Integer contarEmpleadosParaLiquidar();
     /**
      * Método encargado de recuperar la cantidad de empleados liquidados.
      * @return Retorna el número de Empleados liquidados. 
      */
-    public Integer empleadosLiquidados();
+    public Integer contarEmpleadosLiquidados();
     /**
      * Método encargado de averiguar si un usuario tiene permisos para liquidar.
      * @param usuarioBD Alias del usuario.
      * @return Retorna True si el usuario cuyo Alias coincide con el parámetro tiene permisos para liquidar.
      */
-    public boolean permisosLiquidar(String usuarioBD);
+    public boolean verificarPermisosLiquidar(String usuarioBD);
     /**
      * Método encargado de correr el proceso para liquidar nómina.
      */
@@ -37,18 +37,18 @@ public interface AdministrarBarraInterface {
      * Método encargado de recuperar el Alias del usuario que está usando el aplicativo.
      * @return Retorna un String con el Alias del usuario.
      */
-    public String usuarioBD();
+    public String consultarUsuarioBD();
     /**
      * Método encargado de recuperar en que estado está la liquidación. 
      * @param usuarioBD Alias del usuario que hace la liquidación.
      * @return Retorna un String con el estado de la liquidación.
      */
-    public String estadoLiquidacion(String usuarioBD);
+    public String consultarEstadoLiquidacion(String usuarioBD);
     /**
      * Método encargado de recuperar las fechas, la estructura y el proceso para los parámetros de liquidación.
      * @return Retorna un ParametroEstructura con la parte de la información para los parámetros de liquidación.
      */
-    public ParametrosEstructuras parametrosLiquidacion();
+    public ParametrosEstructuras consultarParametrosLiquidacion();
     /**
      * Método encargado de inicializar el estado del párametro a liquidar.
      */
@@ -58,7 +58,7 @@ public interface AdministrarBarraInterface {
      * @param totalEmpleadoALiquidar El número total de los empleados que se van a liquidar.
      * @return Retorna un Integer con el progreso de la liquidación.
      */
-    public Integer progresoLiquidacion(Integer totalEmpleadoALiquidar);
+    public Integer consultarProgresoLiquidacion(Integer totalEmpleadoALiquidar);
     /**
      * Método encargado de cancelar, por medio de la comunicación con la persistencia,
      * la liquidación realizada por un usuario específico.
@@ -76,12 +76,12 @@ public interface AdministrarBarraInterface {
      * Método encargado de recuperar las liquidaciones NO cerradas.
      * @return Retorna una lista de ConsultasLiquidaciones realizadas para preNomina 
      */
-    public List<ConsultasLiquidaciones> preNomina();
+    public List<ConsultasLiquidaciones> consultarPreNomina();
     /**
      * Método encargado de recuperar la información del campo barraconsultadatos de la tabla 'Empresas', por medio de la persistencia.
      * Recibe como resultado 'S' o 'N' y define si se muestra el proceso despues de liquidar o no
      * @param secuenciaEmpresa Secuencia de la Empresa.
      * @return Retorna un String 'S' si se muestra el proceso despues de liquidar o 'N' de lo contrario.
      */
-    public String estadoConsultaDatos(BigInteger secuenciaEmpresa);
+    public String consultarEstadoConsultaDatos(BigInteger secuenciaEmpresa);
 }

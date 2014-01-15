@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -16,19 +15,44 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
-
+/**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'Direcciones'.
+ *
+ * @author betelgeuse
+ */
 @Stateful
-public class AdministrarDirecciones implements AdministrarDireccionesInterface{
-    
+public class AdministrarDirecciones implements AdministrarDireccionesInterface {
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaPersonas'.
+     */
     @EJB
     PersistenciaPersonasInterface persistenciaPersonas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'PersistenciaCiudades'.
+     */
     @EJB
     PersistenciaCiudadesInterface PersistenciaCiudades;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaDirecciones'.
+     */
     @EJB
     PersistenciaDireccionesInterface persistenciaDirecciones;
-    private Direcciones d;
 
-@Override
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
+    @Override
     public List<Direcciones> direccionesPersona(BigInteger secPersona) {
         try {
             return persistenciaDirecciones.direccionesPersona(secPersona);
@@ -37,44 +61,51 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface{
             return null;
         }
     }
-    
-    @Override
-    public Personas encontrarPersona(BigInteger secPersona){
-        return persistenciaPersonas.buscarPersonaSecuencia(secPersona);
-    } 
-    
-        //Lista de Valores Ciudades
 
     @Override
-    public List<Ciudades>  lovCiudades(){
+    public Personas mostrarPersona(BigInteger secPersona) {
+        return persistenciaPersonas.buscarPersonaSecuencia(secPersona);
+    }
+
+    @Override
+    public List<Ciudades> lovCiudades() {
         return PersistenciaCiudades.ciudades();
     }
-    
-     @Override
-    public void modificarDireccion(List<Direcciones> listaDireccionesModificar) {
-        for (int i = 0; i < listaDireccionesModificar.size(); i++) {
+
+    @Override
+    public void modificarDireccion(List<Direcciones> listaDirecciones) {
+        Direcciones d;
+        for (int i = 0; i < listaDirecciones.size(); i++) {
             System.out.println("Modificando...");
-            if (listaDireccionesModificar.get(i).getCiudad().getSecuencia() == null) {
-                listaDireccionesModificar.get(i).setCiudad(null);
-                d = listaDireccionesModificar.get(i);
+            if (listaDirecciones.get(i).getCiudad().getSecuencia() == null) {
+                listaDirecciones.get(i).setCiudad(null);
+                d = listaDirecciones.get(i);
             } else {
-                d = listaDireccionesModificar.get(i);
+                d = listaDirecciones.get(i);
             }
-            
-            
             persistenciaDirecciones.editar(d);
         }
     }
 
     @Override
-    public void borrarDireccion(Direcciones direcciones) {
-        persistenciaDirecciones.borrar(direcciones);
+    public void borrarDireccion(List<Direcciones> listaDirecciones) {
+        for (int i = 0; i < listaDirecciones.size(); i++) {
+            System.out.println("Borrando...");
+            if (listaDirecciones.get(i).getHipoteca() == null) {
+                listaDirecciones.get(i).setHipoteca("N");
+            }
+            persistenciaDirecciones.borrar(listaDirecciones.get(i));
+        }        
     }
-
 
     @Override
-    public void crearDireccion(Direcciones direcciones) {
-        persistenciaDirecciones.crear(direcciones);
+    public void crearDireccion(List<Direcciones> listaDirecciones) {
+        for (int i = 0; i < listaDirecciones.size(); i++) {
+            System.out.println("Borrando...");
+            if (listaDirecciones.get(i).getHipoteca() == null) {
+                listaDirecciones.get(i).setHipoteca("N");
+            }
+            persistenciaDirecciones.crear(listaDirecciones.get(i));
+        }      
     }
-    
 }

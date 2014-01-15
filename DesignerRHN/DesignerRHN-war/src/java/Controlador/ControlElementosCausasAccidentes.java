@@ -406,23 +406,14 @@ public class ControlElementosCausasAccidentes implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando ELEMENTOS CAUSAS ACCIDENTES");
             if (!borrarElementosCausasAccidentes.isEmpty()) {
-                for (int i = 0; i < borrarElementosCausasAccidentes.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarElementosCausasAccidentes.borrarElementosCausasAccidentes(borrarElementosCausasAccidentes.get(i));
-                }
-                //mostrarBorrados
+                administrarElementosCausasAccidentes.borrarElementosCausasAccidentes(borrarElementosCausasAccidentes);
                 registrosBorrados = borrarElementosCausasAccidentes.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarElementosCausasAccidentes.clear();
             }
             if (!crearElementosCausasAccidentes.isEmpty()) {
-                for (int i = 0; i < crearElementosCausasAccidentes.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarElementosCausasAccidentes.crearElementosCausasAccidentes(crearElementosCausasAccidentes.get(i));
-
-                }
+                administrarElementosCausasAccidentes.crearElementosCausasAccidentes(crearElementosCausasAccidentes);
                 crearElementosCausasAccidentes.clear();
             }
             if (!modificarElementosCausasAccidentes.isEmpty()) {
