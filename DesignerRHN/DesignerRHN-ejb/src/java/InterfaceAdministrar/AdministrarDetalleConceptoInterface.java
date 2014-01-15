@@ -28,7 +28,7 @@ import java.util.List;
 public interface AdministrarDetalleConceptoInterface {
     /**
      * Método encargado de recuperar las VigenciasCuentas según el Concepto que tengan asociado.
-     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasCuentas.
      */
     public List<VigenciasCuentas> listaVigenciasCuentasConcepto(BigInteger secConcepto);
@@ -49,7 +49,7 @@ public interface AdministrarDetalleConceptoInterface {
     public void borrarVigenciasCuentas(List<VigenciasCuentas> listaVigenciasCuentas);
     /**
      * Método encargado de recuperar las VigenciasGruposConceptos según el Concepto que tengan asociado.
-     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasGruposConceptos.
      */
     public List<VigenciasGruposConceptos> listaVigenciasGruposConceptosConcepto(BigInteger secConcepto);
@@ -70,7 +70,7 @@ public interface AdministrarDetalleConceptoInterface {
     public void borrarVigenciasGruposConceptos(List<VigenciasGruposConceptos> listaVigenGruposConceptos);
     /**
      * Método encargado de recuperar las VigenciasConceptosTT según el Concepto que tengan asociado.
-     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasConceptosTT.
      */
     public List<VigenciasConceptosTT> listaVigenciasConceptosTTConcepto(BigInteger secConcepto);
@@ -91,7 +91,7 @@ public interface AdministrarDetalleConceptoInterface {
     public void borrarVigenciasConceptosTT(List<VigenciasConceptosTT> listaVigenciasConceptosTT);
     /**
      * Método encargado de recuperar las VigenciasConceptosTC según el Concepto que tengan asociado.
-     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasConceptosTC.
      */
     public List<VigenciasConceptosTC> listaVigenciasConceptosTCConcepto(BigInteger secConcepto);
@@ -112,7 +112,7 @@ public interface AdministrarDetalleConceptoInterface {
     public void borrarVigenciasConceptosTC(List<VigenciasConceptosTC> listaVigenciasConceptosTC);
     /**
      * Método encargado de recuperar las VigenciasConceptosRL según el Concepto que tengan asociado.
-     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasConceptosRL.
      */
     public List<VigenciasConceptosRL> listaVigenciasConceptosRLCConcepto(BigInteger secConcepto);
@@ -133,7 +133,7 @@ public interface AdministrarDetalleConceptoInterface {
     public void borrarVigenciasConceptosRL(List<VigenciasConceptosRL> listaVigenciasConceptosRL);
     /**
      * Método encargado de recuperar las FormulasConceptos según el Concepto que tengan asociado.
-     * @param secConcepto Secuencia del Concepto por el cual se filtrará la búsqueda.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de FormulasConceptos.
      */
     public List<FormulasConceptos> listaFormulasConceptosConcepto(BigInteger secConcepto);
@@ -225,6 +225,10 @@ public interface AdministrarDetalleConceptoInterface {
      * @return Retorna True si fue posible eliminar el concepto, false de lo contrario.
      */
     public boolean eliminarConceptoTotal(BigInteger secConcepto);
-    
-    public boolean verificarSolucionesNodosParaConcepto(BigInteger secuencia);
+    /**
+     * Método encargado de recuperar las SolucionesNodos según el Concepto que tengan asociado.
+     * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
+     * @return Retorna una lista de SolucionesNodos.
+     */
+    public boolean verificarSolucionesNodosParaConcepto(BigInteger secConcepto);
 }

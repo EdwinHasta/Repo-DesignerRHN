@@ -393,7 +393,7 @@ public class ControlVigenciaDeporte implements Serializable {
 
     public boolean validarFechasRegistro(int i) {
         fechaParametro = new Date();
-        fechaParametro.setYear(90);
+        fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
         boolean retorno = true;

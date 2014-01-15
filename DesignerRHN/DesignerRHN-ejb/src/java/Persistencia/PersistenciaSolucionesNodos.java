@@ -197,15 +197,10 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public boolean solucionesNodosParaConcepto(BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.concepto.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT count(sn) FROM SolucionesNodos sn WHERE sn.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             Long valor =(Long) query.getSingleResult();
-            if(valor>0){
-                return true;
-            }
-            else {
-                return false;
-            }
+            return valor>0;
         } catch (Exception e) {
             System.out.println("Error solucionesNodosParaConcepto PersistenciaSolucionesNodos : "+e.toString());
             return false;
