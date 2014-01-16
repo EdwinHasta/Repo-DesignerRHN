@@ -33,32 +33,32 @@ public interface AdministrarDeportesInterface {
      * Método encargado de recuperar todas las Deportes.
      * @return Retorna una lista de Deportes.
      */
-    public List<Deportes> mostrarDeportes();
+    public List<Deportes> consultarDeportes();
     /**
      * Método encargado de recuperar un Deporte dada su secuencia.
      * @param secDeportes Secuencia del Deporte.
      * @return Retorna el Deporte cuya secuencia coincida con el valor del parámetro. 
      */
-    public Deportes mostrarDeporte(BigInteger secDeportes);
+    public Deportes consultarDeporte(BigInteger secDeportes);
     /**
-     * Método encargado de validar si hay al menos una VigenciaDeporte relacionado con un deporte.
+     * Método encargado de contar la cantidad de relaciones entre un deporte y la tabla VigenciasDeportes.
      * @param secDeporte Secuencia del deporte.
      * @return Retorna 0 si no hay relación entre las tablas o retorna el número de asociaciones con el
      * deporte cuya secuencia coincida con el valor del parámetro indicando.
      */
-    public BigInteger verificarRelacionVigenciasDeportes(BigInteger secDeporte);
+    public BigInteger contarVigenciasDeportesDeporte(BigInteger secDeporte);
     /**
-     * Método encargado de contar la cantidad de deportes que una persona específica ha practicado.
+     * Método encargado de contar la cantidad de personas que han practicado un deporte específico.
      * @param secDeporte Secuencia del deporte.
      * @return Retorna un número indicando la cantidad de deportes que ha practicado la persona cuya
      * secuencia coincide con el valor del parámetro.
      */
-    public BigInteger contadorDeportesPersonas(BigInteger secDeporte);
+    public BigInteger contarPersonasDeporte(BigInteger secDeporte);
     /**
      * Método encargado de contar la cantidad de ParametrosInformes asociados a un deporte específico.
      * @param secDeporte Secuencia del Deporte.
      * @return Retorna un número indicando la cantidad de ParametrosInformes cuyo deporte tenga como 
      * secuencia el valor dado como parámetro.
      */
-    public BigInteger contadorParametrosInformes(BigInteger secDeporte);
+    public BigInteger contarParametrosInformesDeportes(BigInteger secDeporte);
 }

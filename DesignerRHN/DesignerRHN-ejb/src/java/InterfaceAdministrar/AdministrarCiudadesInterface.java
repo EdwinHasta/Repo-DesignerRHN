@@ -30,5 +30,5 @@ public interface AdministrarCiudadesInterface {
      * Método encargado de recuperar todas las Ciudades.
      * @return Retorna una lista de Ciudades.
      */
-    public List<Ciudades> listaCiudades();
+    public List<Ciudades> consultarCiudades();
 }

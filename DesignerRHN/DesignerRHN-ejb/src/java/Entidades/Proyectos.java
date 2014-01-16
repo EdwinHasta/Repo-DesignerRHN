@@ -132,11 +132,14 @@ public class Proyectos implements Serializable {
     }
 
     public String getDescripcionproyecto() {
+        if(descripcionproyecto!=null){
+            return descripcionproyecto.toUpperCase();
+        }
         return descripcionproyecto;
     }
 
     public void setDescripcionproyecto(String descripcionproyecto) {
-        this.descripcionproyecto = descripcionproyecto;
+        this.descripcionproyecto = descripcionproyecto.toUpperCase();
     }
 
     public BigInteger getMonto() {

@@ -29,5 +29,6 @@ public interface AdministrarReportesBancosInterface {
     public List<Procesos> listProcesos();
     public List<Bancos> listBancos();
     public List<Ciudades> listCiudades();
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR);
     
 }

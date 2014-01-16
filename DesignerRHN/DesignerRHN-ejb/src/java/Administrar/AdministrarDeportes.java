@@ -60,19 +60,19 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     }
 
     @Override
-    public List<Deportes> mostrarDeportes() {
+    public List<Deportes> consultarDeportes() {
         List<Deportes> listDeportes = persistenciaDeportes.buscarDeportes();
         return listDeportes;
     }
 
     @Override
-    public Deportes mostrarDeporte(BigInteger secDeportes) {
+    public Deportes consultarDeporte(BigInteger secDeportes) {
         Deportes deportes = persistenciaDeportes.buscarDeporte(secDeportes);
         return deportes;
     }
 
     @Override
-    public BigInteger verificarRelacionVigenciasDeportes(BigInteger secDeporte) {
+    public BigInteger contarVigenciasDeportesDeporte(BigInteger secDeporte) {
         BigInteger verificarBorradoVigenciasDeportes = null;
         try {
             verificarBorradoVigenciasDeportes = persistenciaDeportes.verificarBorradoVigenciasDeportes(secDeporte);
@@ -84,7 +84,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     }
 
     @Override
-    public BigInteger contadorDeportesPersonas(BigInteger secDeporte) {
+    public BigInteger contarPersonasDeporte(BigInteger secDeporte) {
         BigInteger contadorDeportesPersonas = null;
         try {
             contadorDeportesPersonas = persistenciaDeportes.contadorDeportesPersonas(secDeporte);
@@ -96,7 +96,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     }
 
     @Override
-    public BigInteger contadorParametrosInformes(BigInteger secDeporte) {
+    public BigInteger contarParametrosInformesDeportes(BigInteger secDeporte) {
         BigInteger contadorParametrosInformes = null;
         try {
             contadorParametrosInformes = persistenciaDeportes.contadorParametrosInformes(secDeporte);

@@ -45,7 +45,7 @@ public class ControlCerrarLiquidacion implements Serializable {
         opcionLiquidacion = tipoLiquidacion;
     }
     public void confirmarCierreLiquidacion() {
-        Integer conteo = administrarCerrarLiquidacion.conteoProcesoSN(parametroEstructura.getProceso().getSecuencia());
+        Integer conteo = administrarCerrarLiquidacion.consultarConteoProcesoSN(parametroEstructura.getProceso().getSecuencia());
         if (conteo == totalEmpleadosParaLiquidar) {
             cerrarLiquidacion();
         } else {
@@ -67,7 +67,7 @@ public class ControlCerrarLiquidacion implements Serializable {
     public void confirmarAbrirLiquidacion() {
         String fechaDesde = formatoFecha.format(parametroEstructura.getFechadesdecausado());
         String fechaHasta = formatoFecha.format(parametroEstructura.getFechahastacausado());
-        Integer conteo = administrarCerrarLiquidacion.conteoLiquidacionesCerradas(parametroEstructura.getProceso().getSecuencia(), fechaDesde, fechaHasta);
+        Integer conteo = administrarCerrarLiquidacion.contarLiquidacionesCerradas(parametroEstructura.getProceso().getSecuencia(), fechaDesde, fechaHasta);
         RequestContext context = RequestContext.getCurrentInstance();
         if (conteo > 0) {
             context.execute("confirmarBorrarComprobante.show();");
@@ -91,7 +91,7 @@ public class ControlCerrarLiquidacion implements Serializable {
     }
     //GETTER AND SETTER
     public Integer getTotalEmpleadosParaLiquidar() {
-        totalEmpleadosParaLiquidar = administrarCerrarLiquidacion.empleadosParaLiquidar();
+        totalEmpleadosParaLiquidar = administrarCerrarLiquidacion.contarEmpleadosParaLiquidar();
         return totalEmpleadosParaLiquidar;
     }
 
@@ -108,7 +108,7 @@ public class ControlCerrarLiquidacion implements Serializable {
     }
 
     public String getUsuarioBD() {
-        usuarioBD = administrarCerrarLiquidacion.usuarioBD();
+        usuarioBD = administrarCerrarLiquidacion.consultarAliasUsuarioBD();
         return usuarioBD;
     }
 
@@ -118,7 +118,7 @@ public class ControlCerrarLiquidacion implements Serializable {
 
     public ParametrosEstructuras getParametroEstructura() {
         if (parametroEstructura == null) {
-            parametroEstructura = administrarCerrarLiquidacion.parametrosLiquidacion();
+            parametroEstructura = administrarCerrarLiquidacion.consultarParametrosLiquidacion();
         }
         return parametroEstructura;
     }
@@ -130,7 +130,7 @@ public class ControlCerrarLiquidacion implements Serializable {
     public List<Parametros> getListaParametros() {
         if (listaParametros == null) {
             getUsuarioBD();
-            listaParametros = administrarCerrarLiquidacion.empleadosCerrarLiquidacion(usuarioBD);
+            listaParametros = administrarCerrarLiquidacion.consultarEmpleadosCerrarLiquidacion(usuarioBD);
         }
         return listaParametros;
     }

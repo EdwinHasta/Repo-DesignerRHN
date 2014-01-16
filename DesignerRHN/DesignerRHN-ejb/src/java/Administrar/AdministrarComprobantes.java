@@ -69,36 +69,36 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     //--------------------------------------------------------------------------
 
     @Override
-    public List<Parametros> parametrosComprobantes() {
+    public List<Parametros> consultarParametrosComprobantesActualUsuario() {
         String usuarioBD;
         usuarioBD = persistenciaActualUsuario.actualAliasBD();
         return persistenciaParametros.parametrosComprobantes(usuarioBD);
     }
 
     @Override
-    public ParametrosEstructuras parametroEstructura() {
+    public ParametrosEstructuras consultarParametroEstructuraActualUsuario() {
         String usuarioBD;
         usuarioBD = persistenciaActualUsuario.actualAliasBD();
         return persistenciaParametrosEstructuras.buscarParametro(usuarioBD);
     }
     
     @Override
-    public List<SolucionesNodos> solucionesNodosEmpleado(BigInteger secEmpleado){
+    public List<SolucionesNodos> consultarSolucionesNodosEmpleado(BigInteger secEmpleado){
         return persistenciaSolucionesNodos.solucionNodoEmpleado(secEmpleado);
     }
     
     @Override
-    public List<SolucionesNodos> solucionesNodosEmpleador(BigInteger secEmpleado){
+    public List<SolucionesNodos> consultarSolucionesNodosEmpleador(BigInteger secEmpleado){
         return persistenciaSolucionesNodos.solucionNodoEmpleador(secEmpleado);
     }
     
     @Override
-    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula){
+    public List<DetallesFormulas> consultarDetallesFormulasEmpleado(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula){
         return persistenciaDetallesFormulas.detallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
     }
     
     @Override
-    public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde){
+    public BigInteger consultarHistoriaFormulaFormula(BigInteger secFormula, String fechaDesde){
         return persistenciaHistoriasformulas.obtenerSecuenciaHistoriaFormula(secFormula, fechaDesde);
     }
 }

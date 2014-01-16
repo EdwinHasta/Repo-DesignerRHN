@@ -35,24 +35,24 @@ public interface AdministrarConceptosInterface {
      * Método encargado de recuperar las unidades necesarias para la lista de valores.
      * @return Retorna una lista de Unidades.
      */
-    public List<Unidades> lovUnidades();
+    public List<Unidades> consultarLOVUnidades();
     /**
      * Método encargado de recuperar los terceros para la lista de valores de una empresa específica.
      * @param secEmpresa Secuencia de la empresa.
      * @return Retorna una lista de terceros.
      */
-    public List<Terceros> lovTerceros(BigInteger secEmpresa);
+    public List<Terceros> consultarLOVTerceros(BigInteger secEmpresa);
     /**
      * Método encargado de recuperar todas las Empresas.
      * @return Retorna una lista de Empresas.
      */
-    public List<Empresas> listaEmpresas();
+    public List<Empresas> consultarEmpresas();
     /**
      * Método encargado de recuperar los conceptos según la empresa que tengan asociada.
      * @param secEmpresa Secuencia de la Empresa.
      * @return Retorna una lista de conceptos.
      */
-    public List<Conceptos> conceptosEmpresa(BigInteger secEmpresa);
+    public List<Conceptos> consultarConceptosEmpresa(BigInteger secEmpresa);
     /**
      * Método encargado de recuperar los conceptos de una empresa según su estado.
      * Su estado puede ser 'ACTIVO' o 'INACTIVO'.
@@ -60,13 +60,13 @@ public interface AdministrarConceptosInterface {
      * @param estado Estado del concepto.
      * @return Retorna una lista de conceptos.
      */
-    public List<Conceptos> conceptosEmpresaAtivos_Inactivos(BigInteger secEmpresa, String estado);
+    public List<Conceptos> consultarConceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado);
     /**
      * M[etodo encargado de recuperar los todos conceptos NO pasivos de una empresa.
      * @param secEmpresa Secuencia de la Empresa.
      * @return Retorna una lista de Conceptos.
      */
-    public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa);
+    public List<Conceptos> consultarConceptosEmpresaSinPasivos(BigInteger secEmpresa);
     /**
      * Método encargado de clonar un concepto.
      * @param secConceptoOrigen Secuencia del concepto que se va a clonar.

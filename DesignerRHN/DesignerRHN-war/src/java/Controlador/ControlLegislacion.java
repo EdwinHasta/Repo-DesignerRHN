@@ -883,7 +883,7 @@ public class ControlLegislacion implements Serializable {
     //GETTER AND SETTER
     public List<Contratos> getListaContratos() {
         if (listaContratos == null) {
-            listaContratos = administrarContratos.listaContratos();
+            listaContratos = administrarContratos.consultarContratos();
         }
         return listaContratos;
     }
@@ -902,7 +902,7 @@ public class ControlLegislacion implements Serializable {
 
     public List<Contratos> getListaContratoLOV() {
         if (listaContratoLOV == null) {
-            listaContratoLOV = administrarContratos.listaContratos();
+            listaContratoLOV = administrarContratos.consultarContratos();
         }
         return listaContratoLOV;
     }
@@ -937,7 +937,7 @@ public class ControlLegislacion implements Serializable {
 
     public List<TiposCotizantes> getListaTiposCotizantes() {
         if (listaTiposCotizantes.isEmpty()) {
-            listaTiposCotizantes = administrarContratos.lovTiposCotizantes();
+            listaTiposCotizantes = administrarContratos.consultaLOVTiposCotizantes();
         }
         return listaTiposCotizantes;
     }
