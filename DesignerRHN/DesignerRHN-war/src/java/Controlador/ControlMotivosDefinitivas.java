@@ -385,12 +385,12 @@ public class ControlMotivosDefinitivas implements Serializable {
             System.out.println("secuencia borrado : " + listMotivosDefinitivas.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listMotivosDefinitivas.get(index).getSecuencia());
-                novedadesSistema = administrarMotivosDefinitivas.verificarNovedadesSistema(listMotivosDefinitivas.get(index).getSecuencia());
-                verificarParametrosCambiosMasivos = administrarMotivosDefinitivas.verificarParametrosCambiosMasivos(listMotivosDefinitivas.get(index).getSecuencia());
+                novedadesSistema = administrarMotivosDefinitivas.contarNovedadesSistemasMotivoDefinitiva(listMotivosDefinitivas.get(index).getSecuencia());
+                verificarParametrosCambiosMasivos = administrarMotivosDefinitivas.contarParametrosCambiosMasivosMotivoDefinitiva(listMotivosDefinitivas.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarMotivosDefinitivas.get(index).getSecuencia());
-                novedadesSistema = administrarMotivosDefinitivas.verificarNovedadesSistema(filtrarMotivosDefinitivas.get(index).getSecuencia());
-                verificarParametrosCambiosMasivos = administrarMotivosDefinitivas.verificarParametrosCambiosMasivos(filtrarMotivosDefinitivas.get(index).getSecuencia());
+                novedadesSistema = administrarMotivosDefinitivas.contarNovedadesSistemasMotivoDefinitiva(filtrarMotivosDefinitivas.get(index).getSecuencia());
+                verificarParametrosCambiosMasivos = administrarMotivosDefinitivas.contarParametrosCambiosMasivosMotivoDefinitiva(filtrarMotivosDefinitivas.get(index).getSecuencia());
             }
             if (!novedadesSistema.equals(new BigInteger("0")) || !verificarParametrosCambiosMasivos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -475,10 +475,8 @@ public class ControlMotivosDefinitivas implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO MOTIVOSDEFINITIVAS");
             if (!borrarMotivosDefinitivas.isEmpty()) {
-                for (int i = 0; i < borrarMotivosDefinitivas.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosDefinitivas.borrarMotivosDefinitivas(borrarMotivosDefinitivas.get(i));
-                }
+  administrarMotivosDefinitivas.borrarMotivosDefinitivas(borrarMotivosDefinitivas);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarMotivosDefinitivas.size();
                 context.update("form:mostrarBorrados");
@@ -486,12 +484,8 @@ public class ControlMotivosDefinitivas implements Serializable {
                 borrarMotivosDefinitivas.clear();
             }
             if (!crearMotivosDefinitivas.isEmpty()) {
-                for (int i = 0; i < crearMotivosDefinitivas.size(); i++) {
+ administrarMotivosDefinitivas.crearMotivosDefinitivas(crearMotivosDefinitivas);
 
-                    System.out.println("Creando...");
-                    administrarMotivosDefinitivas.crearMotivosDefinitivas(crearMotivosDefinitivas.get(i));
-
-                }
                 crearMotivosDefinitivas.clear();
             }
             if (!modificarMotivosDefinitivas.isEmpty()) {

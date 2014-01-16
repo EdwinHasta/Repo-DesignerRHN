@@ -16,15 +16,52 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosContratosInterface {
 
-    public void modificarMotivosContratos(List<MotivosContratos> listMotivosCambiosCargosModificadas);
+    /**
+     * Método encargado de modificar MotivosContratos.
+     *
+     * @param listaMotivosContratos Lista MotivosContratos que se van a
+     * modificar.
+     */
+    public void modificarMotivosContratos(List<MotivosContratos> listaMotivosContratos);
 
-    public void borrarMotivosContratos(MotivosContratos motivosCambiosCargos);
+    /**
+     * Método encargado de borrar MotivosContratos.
+     *
+     * @param listaMotivosContratos Lista MotivosContratos que se van a borrar.
+     */
+    public void borrarMotivosContratos(List<MotivosContratos> listaMotivosContratos);
 
-    public void crearMotivosContratos(MotivosContratos motivosCambiosCargos);
+    /**
+     * Método encargado de crear MotivosContratos.
+     *
+     * @param listaMotivosContratos Lista MotivosContratos que se van a crear.
+     */
+    public void crearMotivosContratos(List<MotivosContratos> listaMotivosContratos);
 
-    public List<MotivosContratos> mostrarMotivosContratos();
+    /**
+     * Método encargado de recuperar las MotivosContratos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de MotivosContratos.
+     */
+    public List<MotivosContratos> consultarMotivosContratos();
 
-    public MotivosContratos mostrarMotivoContrato(BigInteger secMotivosCambiosCargos);
+    /**
+     * Método encargado de recuperar una MotivoContrato dada su secuencia.
+     *
+     * @param secMotivosContratos Secuencia del MotivoContrato
+     * @return Retorna una MotivosContratos.
+     */
+    public MotivosContratos consultarMotivoContrato(BigInteger secMotivosContratos);
 
-    public BigInteger verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo);
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * MotivoContrato específica y algún TiposContratos. Adémas de la
+     * revisión, establece cuantas relaciones existen.
+     *
+     * @param secMotivosContratos Secuencia del MotivoContrato.
+     * @return Retorna el número de TiposContratos relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contarVigenciasTiposContratosMotivoContrato(BigInteger secMotivosContratos);
 }

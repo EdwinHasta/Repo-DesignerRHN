@@ -71,17 +71,6 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     }
 
     @Override
-    public List<String> buscarNombresMotivosCambiosCargos() {
-        try {
-            List<String> nombresMotivosCambiosCargos = (List<String>) em.createNamedQuery("MotivosCambiosCargos.findNombres").getResultList();
-            return nombresMotivosCambiosCargos;
-        } catch (Exception e) {
-            System.out.println("PersistenciaMotivosCambiosCargos: buscarNombresMotivosCambios trae null");
-            return null;
-        }
-    }
-
-    @Override
     public BigInteger verificarBorradoVigenciasCargos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {

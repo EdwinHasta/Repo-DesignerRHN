@@ -17,17 +17,60 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarLesionesInterface {
 
-    public void modificarLesiones(List<Lesiones> listLesionesModificadas);
+    /**
+     * Método encargado de modificar Lesiones.
+     *
+     * @param listaLesiones Lista Lesiones que se van a modificar.
+     */
+    public void modificarLesiones(List<Lesiones> listaLesiones);
 
-    public void borrarLesiones(Lesiones lesiones);
+    /**
+     * Método encargado de borrar Lesiones.
+     *
+     * @param listaLesiones Lista Lesiones que se van a borrar.
+     */
+    public void borrarLesiones(List<Lesiones> listaLesiones);
 
-    public void crearLesiones(Lesiones lesiones);
+    /**
+     * Método encargado de crear Lesiones.
+     *
+     * @param listaLesiones Lista Lesiones que se van a crear.
+     */
+    public void crearLesiones(List<Lesiones> listaLesiones);
 
-    public List<Lesiones> mostrarLesiones();
+    /**
+     * Método encargado de recuperar un Lesion dada su secuencia.
+     *
+     * @param secLesiones Secuencia de la Lesion.
+     * @return Retorna una Lesion cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public Lesiones consultarLesion(BigInteger secLesiones);
 
-    public Lesiones mostrarLesion(BigInteger secLesion);
+    /**
+     * Metodo encargado de traer todas las Lesiones de la base de datos.
+     *
+     * @return Lista de Lesiones.
+     */
+    public List<Lesiones> consultarLesiones();
 
-    public BigInteger verificarBorradoDetallesLicensias(BigInteger secuenciaLesiones);
+    /**
+     * Método encargado de contar la cantidad de DetallesLicensias relacionadas
+     * con una Lesion específico.
+     *
+     * @param secLesiones Secuencia de la Lesion.
+     * @return Retorna un número indicando la cantidad de DetallesLicensias cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarDetallesLicensiasLesion(BigInteger secLesiones);
 
-    public BigInteger verificarBorradoSoAccidentesDomesticos(BigInteger secuenciaVigenciasExamenesMedicos);
+    /**
+     * Método encargado de contar la cantidad de SoAccidentesMedicos
+     * relacionadas con una Lesion específico.
+     *
+     * @param secLesiones Secuencia de la Lesion.
+     * @return Retorna un número indicando la cantidad de SoAccidentesDomesticos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSoAccidentesDomesticosLesion(BigInteger secLesiones);
 }

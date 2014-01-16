@@ -17,15 +17,51 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosPrestamosInterface {
 
-    public void modificarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamosModificados);
+    /**
+     * Método encargado de modificar MotivosPrestamos.
+     *
+     * @param listaMotivosPrestamos Lista MotivosPrestamos que se van a modificar.
+     */
+    public void modificarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos);
 
-    public void borrarMotivosPrestamos(MotivosPrestamos tiposDias);
+    /**
+     * Método encargado de borrar MotivosPrestamos.
+     *
+     * @param listaMotivosPrestamos Lista MotivosPrestamos que se van a borrar.
+     */
+    public void borrarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos);
 
-    public void crearMotivosPrestamos(MotivosPrestamos tiposDias);
+    /**
+     * Método encargado de crear MotivosPrestamos.
+     *
+     * @param listaMotivosPrestamos Lista MotivosPrestamos que se van a crear.
+     */
+    public void crearMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos);
 
+    /**
+     * Método encargado de recuperar las MotivosPrestamos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de MotivosPrestamos.
+     */
     public List<MotivosPrestamos> mostrarMotivosPrestamos();
 
-    public MotivosPrestamos mostrarMotivoPrestamo(BigInteger secMotivoPrestamo);
+    /**
+     * Método encargado de recuperar una MotivosPrestamos dada su secuencia.
+     *
+     * @param secMotivosPrestamos Secuencia del MotivosPrestamos
+     * @return Retorna una MotivosPrestamos.
+     */
+    public MotivosPrestamos mostrarMotivoPrestamo(BigInteger secMotivosPrestamos);
 
-    public BigInteger verificarEersPrestamos(BigInteger secuenciaMotivosPrestamos);
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * MotivosPrestamos específica y algún EersPrestamos. Adémas de la revisión,
+     * establece cuantas relaciones existen.
+     *
+     * @param secMotivosPrestamos Secuencia del MotivosPrestamos.
+     * @return Retorna el número de EersPrestamos relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarEersPrestamosMotivoPrestamo(BigInteger secMotivosPrestamos);
 }

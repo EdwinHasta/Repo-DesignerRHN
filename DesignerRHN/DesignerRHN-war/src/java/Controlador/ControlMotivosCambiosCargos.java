@@ -351,9 +351,9 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
         try {
             if (tipoLista == 0) {
-                borradoVC = administrarMotivosCambiosCargos.verificarBorradoVC(listMotivosCambiosCargos.get(index).getSecuencia());
+                borradoVC = administrarMotivosCambiosCargos.contarVigenciasCargosMotivoCambioCargo(listMotivosCambiosCargos.get(index).getSecuencia());
             } else {
-                borradoVC = administrarMotivosCambiosCargos.verificarBorradoVC(filtrarMotivosCambiosCargos.get(index).getSecuencia());
+                borradoVC = administrarMotivosCambiosCargos.contarVigenciasCargosMotivoCambioCargo(filtrarMotivosCambiosCargos.get(index).getSecuencia());
             }
             if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -379,10 +379,8 @@ public class ControlMotivosCambiosCargos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarMotivoCambioCargo.isEmpty()) {
-                for (int i = 0; i < borrarMotivoCambioCargo.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosCambiosCargos.borrarMotivosCambiosCargos(borrarMotivoCambioCargo.get(i));
-                }
+                administrarMotivosCambiosCargos.borrarMotivosCambiosCargos(borrarMotivoCambioCargo);
+
                 //mostrarBorrados
                 registrosBorrados = borrarMotivoCambioCargo.size();
                 context.update("form:mostrarBorrados");
@@ -390,12 +388,8 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 borrarMotivoCambioCargo.clear();
             }
             if (!crearMotivoCambioCargo.isEmpty()) {
-                for (int i = 0; i < crearMotivoCambioCargo.size(); i++) {
 
-                    System.out.println("Creando...");
-                    administrarMotivosCambiosCargos.crearMotivosCambiosCargos(crearMotivoCambioCargo.get(i));
-
-                }
+                administrarMotivosCambiosCargos.crearMotivosCambiosCargos(crearMotivoCambioCargo);
                 crearMotivoCambioCargo.clear();
             }
             if (!modificarMotivoCambioCargo.isEmpty()) {

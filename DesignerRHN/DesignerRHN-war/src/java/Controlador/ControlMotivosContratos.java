@@ -67,7 +67,7 @@ public class ControlMotivosContratos implements Serializable {
         editarMotivoContrato = new MotivosContratos();
         nuevoMotivoContrato = new MotivosContratos();
         duplicarMotivoContrato = new MotivosContratos();
-        guardado=true;
+        guardado = true;
     }
 
     public void eventoFiltrar() {
@@ -339,9 +339,9 @@ public class ControlMotivosContratos implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             if (tipoLista == 0) {
-                borradoVC = administrarMotivosContratos.verificarBorradoVC(listMotivosContratos.get(index).getSecuencia());
+                borradoVC = administrarMotivosContratos.contarVigenciasTiposContratosMotivoContrato(listMotivosContratos.get(index).getSecuencia());
             } else {
-                borradoVC = administrarMotivosContratos.verificarBorradoVC(filtrarMotivosContratos.get(index).getSecuencia());
+                borradoVC = administrarMotivosContratos.contarVigenciasTiposContratosMotivoContrato(filtrarMotivosContratos.get(index).getSecuencia());
             }
             if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -366,25 +366,18 @@ public class ControlMotivosContratos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Motivos Contratos");
             if (!borrarMotivoContrato.isEmpty()) {
-                for (int i = 0; i < borrarMotivoContrato.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosContratos.borrarMotivosContratos(borrarMotivoContrato.get(i));
-                }
-                //mostrarBorrados
+                System.out.println("Borrando...");
+                administrarMotivosContratos.borrarMotivosContratos(borrarMotivoContrato);
                 registrosBorrados = borrarMotivoContrato.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarMotivoContrato.clear();
             }
             if (!crearMotivoContratos.isEmpty()) {
-                for (int i = 0; i < crearMotivoContratos.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarMotivosContratos.crearMotivosContratos(crearMotivoContratos.get(i));
-
-                }
-                crearMotivoContratos.clear();
+                administrarMotivosContratos.crearMotivosContratos(crearMotivoContratos);
             }
+            crearMotivoContratos.clear();
+
             if (!modificarMotivoContrato.isEmpty()) {
                 administrarMotivosContratos.modificarMotivosContratos(modificarMotivoContrato);
                 modificarMotivoContrato.clear();
@@ -393,11 +386,12 @@ public class ControlMotivosContratos implements Serializable {
             listMotivosContratos = null;
             context.update("form:datosMotivoContrato");
             k = 0;
-       guardado=true;
+            guardado = true;
         }
         index = -1;
-        
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+        RequestContext.getCurrentInstance()
+                .update("form:ACEPTAR");
 
     }
 
@@ -682,7 +676,7 @@ public class ControlMotivosContratos implements Serializable {
 //-----------------------//---------------//----------------------//------------
     public List<MotivosContratos> getListMotivosContratos() {
         if (listMotivosContratos == null) {
-            listMotivosContratos = administrarMotivosContratos.mostrarMotivosContratos();
+            listMotivosContratos = administrarMotivosContratos.consultarMotivosContratos();
         }
         return listMotivosContratos;
     }
@@ -754,5 +748,5 @@ public class ControlMotivosContratos implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-    
+
 }

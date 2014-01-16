@@ -309,9 +309,9 @@ public class ControlMetodoPago implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlTiposTallas ");
             if (tipoLista == 0) {
-                verificarVigenciasFormasPagos = administrarMetodosPagos.verificarVigenciasFormasPagos(listMetodosPagos.get(index).getSecuencia());
+                verificarVigenciasFormasPagos = administrarMetodosPagos.verificarMetodosPagosVigenciasFormasPagos(listMetodosPagos.get(index).getSecuencia());
             } else {
-                verificarVigenciasFormasPagos = administrarMetodosPagos.verificarVigenciasFormasPagos(filtrarMetodosPagos.get(index).getSecuencia());
+                verificarVigenciasFormasPagos = administrarMetodosPagos.verificarMetodosPagosVigenciasFormasPagos(filtrarMetodosPagos.get(index).getSecuencia());
             }
             if (verificarVigenciasFormasPagos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -386,10 +386,7 @@ public class ControlMetodoPago implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarMetodosPagos.isEmpty()) {
-                for (int i = 0; i < borrarMetodosPagos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMetodosPagos.borrarMetodosPagos(borrarMetodosPagos.get(i));
-                }
+                administrarMetodosPagos.borrarMetodosPagos(borrarMetodosPagos);
                 //mostrarBorrados
                 registrosBorrados = borrarMetodosPagos.size();
                 context.update("form:mostrarBorrados");
@@ -397,12 +394,7 @@ public class ControlMetodoPago implements Serializable {
                 borrarMetodosPagos.clear();
             }
             if (!crearMetodosPagos.isEmpty()) {
-                for (int i = 0; i < crearMetodosPagos.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarMetodosPagos.crearMetodosPagos(crearMetodosPagos.get(i));
-
-                }
+                administrarMetodosPagos.crearMetodosPagos(crearMetodosPagos);
                 crearMetodosPagos.clear();
             }
             if (!modificarMetodosPagos.isEmpty()) {
@@ -704,7 +696,7 @@ public class ControlMetodoPago implements Serializable {
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
     public List<MetodosPagos> getListMetodosPagos() {
         if (listMetodosPagos == null) {
-            listMetodosPagos = administrarMetodosPagos.mostrarMetodosPagos();
+            listMetodosPagos = administrarMetodosPagos.consultarMetodosPagos();
             for (int i = 0; i < listMetodosPagos.size(); i++) {
                 System.out.println(listMetodosPagos.get(i).getSecuencia());
             }

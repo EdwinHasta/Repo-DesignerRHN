@@ -347,9 +347,9 @@ public class ControlMotivosDemandas implements Serializable {
         try {
             System.err.println("Control Secuencia de MotivosDemandas a borrar");
             if (tipoLista == 0) {
-                demandas = administrarMotivosDemandas.verificarBorradoDemanda(listMotivosDemandas.get(index).getSecuencia());
+                demandas = administrarMotivosDemandas.contarDemandasMotivoDemanda(listMotivosDemandas.get(index).getSecuencia());
             } else {
-                demandas = administrarMotivosDemandas.verificarBorradoDemanda(filtrarMotivosDemandas.get(index).getSecuencia());
+                demandas = administrarMotivosDemandas.contarDemandasMotivoDemanda(filtrarMotivosDemandas.get(index).getSecuencia());
             }
             if (demandas.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -386,10 +386,8 @@ public class ControlMotivosDemandas implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando MotivoDemanda");
             if (!borrarMotivosDemandas.isEmpty()) {
-                for (int i = 0; i < borrarMotivosDemandas.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosDemandas.borrarMotivosDemandas(borrarMotivosDemandas.get(i));
-                }
+ administrarMotivosDemandas.borrarMotivosDemandas(borrarMotivosDemandas);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarMotivosDemandas.size();
                 context.update("form:mostrarBorrados");
@@ -397,12 +395,9 @@ public class ControlMotivosDemandas implements Serializable {
                 borrarMotivosDemandas.clear();
             }
             if (!crearMotivosDemandas.isEmpty()) {
-                for (int i = 0; i < crearMotivosDemandas.size(); i++) {
+ administrarMotivosDemandas.crearMotivosDemandas(crearMotivosDemandas);
 
-                    System.out.println("Creando...");
-                    administrarMotivosDemandas.crearMotivosDemandas(crearMotivosDemandas.get(i));
-
-                }
+                
                 crearMotivosDemandas.clear();
             }
             if (!modificarMotivosDemandas.isEmpty()) {
@@ -695,7 +690,7 @@ public class ControlMotivosDemandas implements Serializable {
 
     public List<MotivosDemandas> getListMotivosDemandas() {
         if (listMotivosDemandas == null) {
-            listMotivosDemandas = administrarMotivosDemandas.mostrarMotivosDemandas();
+            listMotivosDemandas = administrarMotivosDemandas.consultarMotivosDemandas();
         }
         return listMotivosDemandas;
     }

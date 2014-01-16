@@ -17,15 +17,51 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosDemandasInterface {
 
-    public void modificarMotivosDemandas(List<MotivosDemandas> listMotivosDemandasModificadas);
+    /**
+     * Método encargado de modificar MotivosDemandas.
+     *
+     * @param listaMotivosDemandas Lista MotivosDemandas que se van a modificar.
+     */
+    public void modificarMotivosDemandas(List<MotivosDemandas> listaMotivosDemandas);
 
-    public void borrarMotivosDemandas(MotivosDemandas motivoDemanda);
+    /**
+     * Método encargado de borrar MotivosDemandas.
+     *
+     * @param listaMotivosDemandas Lista MotivosDemandas que se van a borrar.
+     */
+    public void borrarMotivosDemandas(List<MotivosDemandas> listaMotivosDemandas);
 
-    public void crearMotivosDemandas(MotivosDemandas motivoDemanda);
+    /**
+     * Método encargado de crear MotivosDemandas.
+     *
+     * @param listaMotivosDemandas Lista MotivosDemandas que se van a crear.
+     */
+    public void crearMotivosDemandas(List<MotivosDemandas> listaMotivosDemandas);
 
-    public List<MotivosDemandas> mostrarMotivosDemandas();
+    /**
+     * Método encargado de recuperar las MotivosDemandas para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de MotivosDemandas.
+     */
+    public List<MotivosDemandas> consultarMotivosDemandas();
 
-    public MotivosDemandas mostrarMotivoDemanda(BigInteger secMotivoDemanda);
+    /**
+     * Método encargado de recuperar una MotivosDemandas dada su secuencia.
+     *
+     * @param secMotivosDemandas Secuencia del MotivosDemandas
+     * @return Retorna una MotivosDemandas.
+     */
+    public MotivosDemandas consultarMotivoDemanda(BigInteger secMotivosDemandas);
 
-    public BigInteger verificarBorradoDemanda(BigInteger secuenciaEventos);
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * MotivosDemandas específica y algún Demandas. Adémas de la revisión,
+     * establece cuantas relaciones existen.
+     *
+     * @param secMotivosDemandas Secuencia del MotivosDemandas.
+     * @return Retorna el número de Demandas relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contarDemandasMotivoDemanda(BigInteger secMotivosDemandas);
 }

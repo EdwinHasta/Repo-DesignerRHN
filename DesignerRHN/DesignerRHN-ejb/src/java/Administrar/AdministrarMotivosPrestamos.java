@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarMotivosPrestamosInterface;
@@ -21,46 +20,55 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarMotivosPrestamos implements AdministrarMotivosPrestamosInterface {
 
-     @EJB
+    @EJB
     PersistenciaMotivosPrestamosInterface persistenciaMotivosPrestamos;
-    private MotivosPrestamos motivoPrestamoSeleccionado;
-    private MotivosPrestamos motivosPrestamos;
-    private List<MotivosPrestamos> listMotivosPrestamos;
 
-    public void modificarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamosModificados) {
-        for (int i = 0; i < listaMotivosPrestamosModificados.size(); i++) {
+    @Override
+    public void modificarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos) {
+        for (int i = 0; i < listaMotivosPrestamos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivoPrestamoSeleccionado = listaMotivosPrestamosModificados.get(i);
-            persistenciaMotivosPrestamos.editar(motivoPrestamoSeleccionado);
+            persistenciaMotivosPrestamos.editar(listaMotivosPrestamos.get(i));
         }
     }
 
-    public void borrarMotivosPrestamos(MotivosPrestamos tiposDias) {
-        persistenciaMotivosPrestamos.borrar(tiposDias);
+    @Override
+    public void borrarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos) {
+        for (int i = 0; i < listaMotivosPrestamos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosPrestamos.borrar(listaMotivosPrestamos.get(i));
+        }
     }
 
-    public void crearMotivosPrestamos(MotivosPrestamos tiposDias) {
-        persistenciaMotivosPrestamos.crear(tiposDias);
+    @Override
+    public void crearMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos) {
+        for (int i = 0; i < listaMotivosPrestamos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosPrestamos.crear(listaMotivosPrestamos.get(i));
+        }
     }
 
+    @Override
     public List<MotivosPrestamos> mostrarMotivosPrestamos() {
+        List<MotivosPrestamos> listMotivosPrestamos;
         listMotivosPrestamos = persistenciaMotivosPrestamos.buscarMotivosPrestamos();
         return listMotivosPrestamos;
     }
 
+    @Override
     public MotivosPrestamos mostrarMotivoPrestamo(BigInteger secMotivoPrestamo) {
+        MotivosPrestamos motivosPrestamos;
         motivosPrestamos = persistenciaMotivosPrestamos.buscarMotivoPrestamo(secMotivoPrestamo);
         return motivosPrestamos;
     }
 
-    public BigInteger verificarEersPrestamos(BigInteger secuenciaMotivosPrestamos) {
-        BigInteger verificarBorradoEersPrestamos = null;
+    @Override
+    public BigInteger verificarEersPrestamosMotivoPrestamo(BigInteger secuenciaMotivosPrestamos) {
         try {
-            verificarBorradoEersPrestamos = persistenciaMotivosPrestamos.contadorEersPrestamos(secuenciaMotivosPrestamos);
+            BigInteger verificarBorradoEersPrestamos = null;
+            return verificarBorradoEersPrestamos = persistenciaMotivosPrestamos.contadorEersPrestamos(secuenciaMotivosPrestamos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARMOTIVOSPRESTAMOS VERIFICARDIASLABORALES ERROR :" + e);
-        } finally {
-            return verificarBorradoEersPrestamos;
+            return null;
         }
     }
 }

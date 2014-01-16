@@ -21,43 +21,47 @@ public class AdministrarNormasLaborales implements AdministrarNormasLaboralesInt
 
     @EJB
     PersistenciaNormasLaboralesInterface persistenciaNormasLaborales;
-    private NormasLaborales NormaLaboralSeleccionada;
-    private NormasLaborales motivoCambioCargo;
-    private List<NormasLaborales> listMotivosCambiosCargos;
 
     @Override
-    public void modificarNormasLaborales(List<NormasLaborales> listNormasLaboralesModificadas) {
-        for (int i = 0; i < listNormasLaboralesModificadas.size(); i++) {
+    public void modificarNormasLaborales(List<NormasLaborales> listNormasLaborales) {
+        for (int i = 0; i < listNormasLaborales.size(); i++) {
             System.out.println("Administrar Modificando...");
-            NormaLaboralSeleccionada = listNormasLaboralesModificadas.get(i);
-            persistenciaNormasLaborales.editar(NormaLaboralSeleccionada);
+            persistenciaNormasLaborales.editar(listNormasLaborales.get(i));
         }
     }
 
     @Override
-    public void borrarNormasLaborales(NormasLaborales normasLaborales) {
-        persistenciaNormasLaborales.borrar(normasLaborales);
+    public void borrarNormasLaborales(List<NormasLaborales> listNormasLaborales) {
+        for (int i = 0; i < listNormasLaborales.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaNormasLaborales.borrar(listNormasLaborales.get(i));
+        }
     }
 
     @Override
-    public void crearNormasLaborales(NormasLaborales normasLaborales) {
-        persistenciaNormasLaborales.crear(normasLaborales);
+    public void crearNormasLaborales(List<NormasLaborales> listNormasLaborales) {
+        for (int i = 0; i < listNormasLaborales.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaNormasLaborales.crear(listNormasLaborales.get(i));
+        }
     }
 
     @Override
     public List<NormasLaborales> mostrarNormasLaborales() {
+        List<NormasLaborales> listMotivosCambiosCargos;
         listMotivosCambiosCargos = persistenciaNormasLaborales.buscarNormasLaborales();
         return listMotivosCambiosCargos;
     }
 
     @Override
     public NormasLaborales mostrarMotivoContrato(BigInteger secNormasLaborales) {
+        NormasLaborales motivoCambioCargo;
         motivoCambioCargo = persistenciaNormasLaborales.buscarNormaLaboral(secNormasLaborales);
         return motivoCambioCargo;
     }
 
     @Override
-    public BigInteger verificarBorradoVNE(BigInteger secuenciaNormasLaborales) {
+    public BigInteger verificarVigenciasNormasEmpleadoNormaLaboral(BigInteger secuenciaNormasLaborales) {
         BigInteger verificadorVNE = null;
 
         try {

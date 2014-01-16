@@ -26,38 +26,43 @@ public class AdministrarMotivosCambiosSueldos implements AdministrarMotivosCambi
     private List<MotivosCambiosSueldos> listMotivosCambiosCargos;
 
     @Override
-    public void modificarMotivosCambiosSueldos(List<MotivosCambiosSueldos> listMotivosCambiosSueldosModificadas) {
-        for (int i = 0; i < listMotivosCambiosSueldosModificadas.size(); i++) {
+    public void modificarMotivosCambiosSueldos(List<MotivosCambiosSueldos> listaMotivosCambiosSueldos) {
+        for (int i = 0; i < listaMotivosCambiosSueldos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivoCambioSueldoSeleccionado = listMotivosCambiosSueldosModificadas.get(i);
-            persistenciaMotivosCambiosSueldos.editar(motivoCambioSueldoSeleccionado);
+            persistenciaMotivosCambiosSueldos.editar(listaMotivosCambiosSueldos.get(i));
         }
     }
 
     @Override
-    public void borrarMotivosCambiosSueldos(MotivosCambiosSueldos motivosCambiosSueldos) {
-        persistenciaMotivosCambiosSueldos.borrar(motivosCambiosSueldos);
+    public void borrarMotivosCambiosSueldos(List<MotivosCambiosSueldos> listaMotivosCambiosSueldos) {
+        for (int i = 0; i < listaMotivosCambiosSueldos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosCambiosSueldos.borrar(listaMotivosCambiosSueldos.get(i));
+        }
     }
 
     @Override
-    public void crearMotivosCambiosSueldos(MotivosCambiosSueldos motivosCambiosSueldos) {
-        persistenciaMotivosCambiosSueldos.crear(motivosCambiosSueldos);
+    public void crearMotivosCambiosSueldos(List<MotivosCambiosSueldos> listaMotivosCambiosSueldos) {
+        for (int i = 0; i < listaMotivosCambiosSueldos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosCambiosSueldos.crear(listaMotivosCambiosSueldos.get(i));
+        }
     }
 
     @Override
-    public List<MotivosCambiosSueldos> mostrarMotivosCambiosSueldos() {
+    public List<MotivosCambiosSueldos> consultarMotivosCambiosSueldos() {
         listMotivosCambiosCargos = persistenciaMotivosCambiosSueldos.buscarMotivosCambiosSueldos();
         return listMotivosCambiosCargos;
     }
 
     @Override
-    public MotivosCambiosSueldos mostrarMotivoCambioCargo(BigInteger secMotivosCambiosSueldos) {
+    public MotivosCambiosSueldos consultarMotivoCambioCargo(BigInteger secMotivosCambiosSueldos) {
         motivoCambioSueldo = persistenciaMotivosCambiosSueldos.buscarMotivoCambioSueldoSecuencia(secMotivosCambiosSueldos);
         return motivoCambioSueldo;
     }
 
     @Override
-    public BigInteger verificarBorradoVS(BigInteger secuenciaMovitoCambioSueldo) {
+    public BigInteger contarVigenciasSueldosMotivoCambioSueldo(BigInteger secuenciaMovitoCambioSueldo) {
         BigInteger verificadorVS = null;
 
         try {

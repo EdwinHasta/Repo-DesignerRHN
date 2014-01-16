@@ -44,7 +44,7 @@ public interface AdministrarMonedasInterface {
      *
      * @return Retorna una lista de Contratos.
      */
-    public List<Monedas> mostrarMonedas();
+    public List<Monedas> consultarMonedas();
 
     /**
      * Método encargado de recuperar una Moneda dada su secuencia.
@@ -52,7 +52,7 @@ public interface AdministrarMonedasInterface {
      * @param secuencia Secuencia de la Moneda
      * @return Retorna una Moneda.
      */
-    public Monedas mostrarMoneda(BigInteger secuencia);
+    public Monedas consultarMoneda(BigInteger secuencia);
 
     /**
      * Método encargado de consultar si existe una relacion entre una Moneda
@@ -63,5 +63,5 @@ public interface AdministrarMonedasInterface {
      * @return Retorna el número de proyectos relacionados con la moneda cuya
      * secuencia coincide con el parámetro.
      */
-    public BigInteger verificarBorradoProyecto(BigInteger secuencia);
+    public BigInteger verificarMonedasProyecto(BigInteger secuencia);
 }
