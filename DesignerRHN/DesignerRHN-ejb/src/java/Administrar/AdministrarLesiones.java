@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarLesionesInterface;
 import Entidades.Lesiones;
 import InterfacePersistencia.PersistenciaLesionesInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -22,57 +20,66 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarLesiones implements AdministrarLesionesInterface {
 
- @EJB
+    @EJB
     PersistenciaLesionesInterface persistenciaLesiones;
-    private Lesiones lesionSeleccionada;
-    private Lesiones lesiones;
-    private List<Lesiones> listLesiones;
-    private BigInteger verificarBorradoDetallesLicensias;
-    private BigInteger verificadorVigenciasExamenesMedicos;
 
-    public void modificarLesiones(List<Lesiones> listLesionesModificadas) {
-        for (int i = 0; i < listLesionesModificadas.size(); i++) {
+    @Override
+    public void modificarLesiones(List<Lesiones> listaLesiones) {
+        for (int i = 0; i < listaLesiones.size(); i++) {
             System.out.println("Administrar Modificando...");
-            lesionSeleccionada = listLesionesModificadas.get(i);
-            persistenciaLesiones.editar(lesionSeleccionada);
+            persistenciaLesiones.editar(listaLesiones.get(i));
         }
     }
 
-    public void borrarLesiones(Lesiones lesiones) {
-        persistenciaLesiones.borrar(lesiones);
+    @Override
+    public void borrarLesiones(List<Lesiones> listaLesiones) {
+        for (int i = 0; i < listaLesiones.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaLesiones.borrar(listaLesiones.get(i));
+        }
     }
 
-    public void crearLesiones(Lesiones lesiones) {
-        persistenciaLesiones.crear(lesiones);
+    @Override
+    public void crearLesiones(List<Lesiones> listaLesiones) {
+        for (int i = 0; i < listaLesiones.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaLesiones.crear(listaLesiones.get(i));
+        }
     }
 
-    public List<Lesiones> mostrarLesiones() {
+    @Override
+    public List<Lesiones> consultarLesiones() {
+        List<Lesiones> listLesiones;
         listLesiones = persistenciaLesiones.buscarLesiones();
         return listLesiones;
     }
 
-    public Lesiones mostrarLesion(BigInteger secLesion) {
+    @Override
+    public Lesiones consultarLesion(BigInteger secLesion) {
+        Lesiones lesiones;
         lesiones = persistenciaLesiones.buscarLesion(secLesion);
         return lesiones;
     }
 
-    public BigInteger verificarBorradoDetallesLicensias(BigInteger secuenciaLesiones) {
+    @Override
+    public BigInteger contarDetallesLicensiasLesion(BigInteger secuenciaLesiones) {
         try {
-            verificarBorradoDetallesLicensias = persistenciaLesiones.contadorDetallesLicensias(secuenciaLesiones);
+            BigInteger verificarBorradoDetallesLicensias;
+            return verificarBorradoDetallesLicensias = persistenciaLesiones.contadorDetallesLicensias(secuenciaLesiones);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarLesiones verificarBorradoDetallesLicensias ERROR :" + e);
-        } finally {
-            return verificarBorradoDetallesLicensias;
+            return null;
         }
     }
 
-    public BigInteger verificarBorradoSoAccidentesDomesticos(BigInteger secuenciaVigenciasExamenesMedicos) {
+    @Override
+    public BigInteger contarSoAccidentesDomesticosLesion(BigInteger secuenciaVigenciasExamenesMedicos) {
         try {
-            verificadorVigenciasExamenesMedicos = persistenciaLesiones.contadorSoAccidentesDomesticos(secuenciaVigenciasExamenesMedicos);
+            BigInteger verificadorVigenciasExamenesMedicos;
+            return verificadorVigenciasExamenesMedicos = persistenciaLesiones.contadorSoAccidentesDomesticos(secuenciaVigenciasExamenesMedicos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarLesiones verificarBorradoSoAccidentesDomesticos ERROR :" + e);
-        } finally {
-            return verificadorVigenciasExamenesMedicos;
+            return null;
         }
     }
 }

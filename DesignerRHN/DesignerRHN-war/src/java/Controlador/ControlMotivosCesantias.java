@@ -320,10 +320,10 @@ public class ControlMotivosCesantias implements Serializable {
             System.out.println("secuencia borrado : " + listMotivosCesantias.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listMotivosCesantias.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosCesantias.verificarNovedadesSistema(listMotivosCesantias.get(index).getSecuencia());
+                verificarEerPrestamos = administrarMotivosCesantias.contarNovedadesSistemasMotivoCesantia(listMotivosCesantias.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarMotivosCesantias.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosCesantias.verificarNovedadesSistema(filtrarMotivosCesantias.get(index).getSecuencia());
+                verificarEerPrestamos = administrarMotivosCesantias.contarNovedadesSistemasMotivoCesantia(filtrarMotivosCesantias.get(index).getSecuencia());
             }
             if (!verificarEerPrestamos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -407,10 +407,7 @@ public class ControlMotivosCesantias implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO MOTIVOCESANTIA");
             if (!borrarMotivosCesantias.isEmpty()) {
-                for (int i = 0; i < borrarMotivosCesantias.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosCesantias.borrarMotivosCesantias(borrarMotivosCesantias.get(i));
-                }
+                administrarMotivosCesantias.borrarMotivosCesantias(borrarMotivosCesantias);
                 //mostrarBorrados
                 registrosBorrados = borrarMotivosCesantias.size();
                 context.update("form:mostrarBorrados");
@@ -418,12 +415,8 @@ public class ControlMotivosCesantias implements Serializable {
                 borrarMotivosCesantias.clear();
             }
             if (!crearMotivosCesantias.isEmpty()) {
-                for (int i = 0; i < crearMotivosCesantias.size(); i++) {
+                administrarMotivosCesantias.crearMotivosCesantias(crearMotivosCesantias);
 
-                    System.out.println("Creando...");
-                    administrarMotivosCesantias.crearMotivosCesantias(crearMotivosCesantias.get(i));
-
-                }
                 crearMotivosCesantias.clear();
             }
             if (!modificarMotivosCesantias.isEmpty()) {
@@ -717,7 +710,7 @@ public class ControlMotivosCesantias implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<MotivosCesantias> getListMotivosCesantias() {
         if (listMotivosCesantias == null) {
-            listMotivosCesantias = administrarMotivosCesantias.mostrarMotivosCesantias();
+            listMotivosCesantias = administrarMotivosCesantias.consultarMotivosCesantias();
         }
         return listMotivosCesantias;
     }

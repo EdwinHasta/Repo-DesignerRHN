@@ -21,37 +21,41 @@ public class AdministrarMotivosMvrs implements AdministrarMotivosMvrsInterface {
 
     @EJB
     PersistenciaMotivosMvrsInterface persistenciaMotivosMvrs;
-    private Motivosmvrs motivoMvrsSeleccionada;
-    private Motivosmvrs motivoMvrs;
-    private List<Motivosmvrs> listMotivoMvrs;
 
     @Override
-    public void modificarMotivosMvrs(List<Motivosmvrs> listNormasLaboralesModificadas) {
-        for (int i = 0; i < listNormasLaboralesModificadas.size(); i++) {
+    public void modificarMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs) {
+        for (int i = 0; i < listaMotivosMvrs.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivoMvrsSeleccionada = listNormasLaboralesModificadas.get(i);
-            persistenciaMotivosMvrs.editar(motivoMvrsSeleccionada);
+            persistenciaMotivosMvrs.editar(listaMotivosMvrs.get(i));
         }
     }
 
     @Override
-    public void borrarMotivosMvrs(Motivosmvrs motivosMvrs) {
-        persistenciaMotivosMvrs.borrar(motivosMvrs);
+    public void borrarMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs) {
+        for (int i = 0; i < listaMotivosMvrs.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosMvrs.borrar(listaMotivosMvrs.get(i));
+        }
     }
 
     @Override
-    public void crearMotivosMvrs(Motivosmvrs notivosMvrs) {
-        persistenciaMotivosMvrs.crear(notivosMvrs);
+    public void crearMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs) {
+        for (int i = 0; i < listaMotivosMvrs.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosMvrs.crear(listaMotivosMvrs.get(i));
+        }
     }
 
     @Override
-    public List<Motivosmvrs> mostrarMotivosMvrs() {
+    public List<Motivosmvrs> consultarMotivosMvrs() {
+        List<Motivosmvrs> listMotivoMvrs;
         listMotivoMvrs = persistenciaMotivosMvrs.buscarMotivosMvrs();
         return listMotivoMvrs;
     }
 
     @Override
-    public Motivosmvrs mostrarMotivosMvrs(BigInteger secMotivosMvrs) {
+    public Motivosmvrs consultarMotivosMvrs(BigInteger secMotivosMvrs) {
+        Motivosmvrs motivoMvrs;
         motivoMvrs = persistenciaMotivosMvrs.buscarMotivosMvrs(secMotivosMvrs);
         return motivoMvrs;
     }

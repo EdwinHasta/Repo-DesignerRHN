@@ -46,19 +46,19 @@ public class AdministrarMonedas implements AdministrarMonedasInterface {
     }
 
     @Override
-    public List<Monedas> mostrarMonedas() {
+    public List<Monedas> consultarMonedas() {
         listMonedas = persistenciaMonedas.buscarMonedas();
         return listMonedas;
     }
 
     @Override
-    public Monedas mostrarMoneda(BigInteger secMoneda) {
+    public Monedas consultarMoneda(BigInteger secMoneda) {
         monedas = persistenciaMonedas.buscarMoneda(secMoneda);
         return monedas;
     }
 
     @Override
-    public BigInteger verificarBorradoProyecto(BigInteger secuenciaIdiomas) {
+    public BigInteger verificarMonedasProyecto(BigInteger secuenciaIdiomas) {
         BigInteger verificadorProyectos = null;
         try {
             System.err.println("Secuencia Borrado Proyecto" + secuenciaIdiomas);

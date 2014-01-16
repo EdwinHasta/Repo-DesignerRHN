@@ -22,38 +22,47 @@ public class AdministrarMotivosCesantias implements AdministrarMotivosCesantiasI
 
     @EJB
     PersistenciaMotivosCesantiasInterface persistenciaMotivosCensantias;
-    private MotivosCesantias motivosCensantiasSeleccionado;
-    private MotivosCesantias motivosCensantias;
-    private List<MotivosCesantias> listMotivosCensantias;
 
-    public void modificarMotivosCesantias(List<MotivosCesantias> listaMotivosPrestamosModificados) {
-        for (int i = 0; i < listaMotivosPrestamosModificados.size(); i++) {
+    @Override
+    public void modificarMotivosCesantias(List<MotivosCesantias> listaMotivosCesantias) {
+        for (int i = 0; i < listaMotivosCesantias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivosCensantiasSeleccionado = listaMotivosPrestamosModificados.get(i);
-            persistenciaMotivosCensantias.editar(motivosCensantiasSeleccionado);
+            persistenciaMotivosCensantias.editar(listaMotivosCesantias.get(i));
         }
     }
 
-    public void borrarMotivosCesantias(MotivosCesantias tiposDias) {
-        persistenciaMotivosCensantias.borrar(tiposDias);
-    }
-
-    public void crearMotivosCesantias(MotivosCesantias tiposDias) {
-        persistenciaMotivosCensantias.crear(tiposDias);
+    @Override
+    public void borrarMotivosCesantias(List<MotivosCesantias> listaMotivosCesantias) {
+        for (int i = 0; i < listaMotivosCesantias.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosCensantias.borrar(listaMotivosCesantias.get(i));
+        }
     }
 
     @Override
-    public List<MotivosCesantias> mostrarMotivosCesantias() {
+    public void crearMotivosCesantias(List<MotivosCesantias> listaMotivosCesantias) {
+        for (int i = 0; i < listaMotivosCesantias.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosCensantias.crear(listaMotivosCesantias.get(i));
+        }
+    }
+
+    @Override
+    public List<MotivosCesantias> consultarMotivosCesantias() {
+        List<MotivosCesantias> listMotivosCensantias;
         listMotivosCensantias = persistenciaMotivosCensantias.buscarMotivosCesantias();
         return listMotivosCensantias;
     }
 
-    public MotivosCesantias mostrarMotivoCesantia(BigInteger secMotivoPrestamo) {
+    @Override
+    public MotivosCesantias consultarMotivoCesantia(BigInteger secMotivoPrestamo) {
+        MotivosCesantias motivosCensantias;
         motivosCensantias = persistenciaMotivosCensantias.buscarMotivoCensantia(secMotivoPrestamo);
         return motivosCensantias;
     }
 
-    public BigInteger verificarNovedadesSistema(BigInteger secuenciaMotivosCesantias) {
+    @Override
+    public BigInteger contarNovedadesSistemasMotivoCesantia(BigInteger secuenciaMotivosCesantias) {
         BigInteger verificarNovedadesSistema = null;
         try {
             verificarNovedadesSistema = persistenciaMotivosCensantias.contadorNovedadesSistema(secuenciaMotivosCesantias);

@@ -335,9 +335,9 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         //try {
         if (tipoLista == 0) {
-            borradoVS = administrarMotivosCambiosSueldos.verificarBorradoVS(listMotivosCambiosSueldos.get(index).getSecuencia());
+            borradoVS = administrarMotivosCambiosSueldos.contarVigenciasSueldosMotivoCambioSueldo(listMotivosCambiosSueldos.get(index).getSecuencia());
         } else {
-            borradoVS = administrarMotivosCambiosSueldos.verificarBorradoVS(filtrarMotivosCambiosSueldos.get(index).getSecuencia());
+            borradoVS = administrarMotivosCambiosSueldos.contarVigenciasSueldosMotivoCambioSueldo(filtrarMotivosCambiosSueldos.get(index).getSecuencia());
         }
         if (borradoVS.equals(new BigInteger("0"))) {
             System.out.println("Borrado==0");
@@ -669,10 +669,8 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarMotivosCambiosSueldos.isEmpty()) {
-                for (int i = 0; i < borrarMotivosCambiosSueldos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosCambiosSueldos.borrarMotivosCambiosSueldos(borrarMotivosCambiosSueldos.get(i));
-                }
+                administrarMotivosCambiosSueldos.borrarMotivosCambiosSueldos(borrarMotivosCambiosSueldos);
+
                 //mostrarBorrados
                 registrosBorrados = borrarMotivosCambiosSueldos.size();
                 context.update("form:mostrarBorrados");
@@ -680,12 +678,8 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                 borrarMotivosCambiosSueldos.clear();
             }
             if (!crearMotivosCambiosSueldos.isEmpty()) {
-                for (int i = 0; i < crearMotivosCambiosSueldos.size(); i++) {
+                administrarMotivosCambiosSueldos.crearMotivosCambiosSueldos(crearMotivosCambiosSueldos);
 
-                    System.out.println("Creando...");
-                    administrarMotivosCambiosSueldos.crearMotivosCambiosSueldos(crearMotivosCambiosSueldos.get(i));
-
-                }
                 crearMotivosCambiosSueldos.clear();
             }
             if (!modificarrMotivosCambiosSueldos.isEmpty()) {
@@ -759,7 +753,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
 
     public List<MotivosCambiosSueldos> getListMotivosCambiosSueldos() {
         if (listMotivosCambiosSueldos == null) {
-            listMotivosCambiosSueldos = administrarMotivosCambiosSueldos.mostrarMotivosCambiosSueldos();
+            listMotivosCambiosSueldos = administrarMotivosCambiosSueldos.consultarMotivosCambiosSueldos();
         }
         return listMotivosCambiosSueldos;
     }

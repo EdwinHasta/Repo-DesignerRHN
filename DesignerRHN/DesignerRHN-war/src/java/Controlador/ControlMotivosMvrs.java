@@ -33,9 +33,9 @@ public class ControlMotivosMvrs implements Serializable {
 
     @EJB
     AdministrarMotivosMvrsInterface administrarMotivosMvrs;
-     @EJB
+    @EJB
     AdministrarRastrosInterface administrarRastros;
-   
+
     private List<Motivosmvrs> listMotivosMvrs;
     private List<Motivosmvrs> filtrarMotivosMvrs;
     private List<Motivosmvrs> crearMotivoMvrs;
@@ -104,7 +104,6 @@ public class ControlMotivosMvrs implements Serializable {
             } else if (LND == 2) {
                 tipoActualizacion = 2;
             }
-
 
         } catch (Exception e) {
             System.out.println("ERROR ControlNormasLaborales.asignarIndex ERROR======" + e.getMessage());
@@ -229,7 +228,6 @@ public class ControlMotivosMvrs implements Serializable {
                 }
             } else {
 
-
                 if (!crearMotivoMvrs.contains(filtrarMotivosMvrs.get(indice))) {
                     if (filtrarMotivosMvrs.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -251,7 +249,6 @@ public class ControlMotivosMvrs implements Serializable {
 
                     }
 
-
                     if (filtrarMotivosMvrs.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -260,7 +257,6 @@ public class ControlMotivosMvrs implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-
 
                     if (banderita == true) {
                         if (modificarMotivoMvrs.isEmpty()) {
@@ -363,10 +359,7 @@ public class ControlMotivosMvrs implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Motivos Mvrs");
             if (!borrarMotivoMvrs.isEmpty()) {
-                for (int i = 0; i < borrarMotivoMvrs.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosMvrs.borrarMotivosMvrs(borrarMotivoMvrs.get(i));
-                }
+                administrarMotivosMvrs.borrarMotivosMvrs(borrarMotivoMvrs);
                 //mostrarBorrados
                 registrosBorrados = borrarMotivoMvrs.size();
                 context.update("form:mostrarBorrados");
@@ -374,12 +367,7 @@ public class ControlMotivosMvrs implements Serializable {
                 borrarMotivoMvrs.clear();
             }
             if (!crearMotivoMvrs.isEmpty()) {
-                for (int i = 0; i < crearMotivoMvrs.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarMotivosMvrs.crearMotivosMvrs(crearMotivoMvrs.get(i));
-
-                }
+                administrarMotivosMvrs.crearMotivosMvrs(crearMotivoMvrs);
                 crearMotivoMvrs.clear();
             }
             if (!modificarMotivoMvrs.isEmpty()) {
@@ -578,7 +566,6 @@ public class ControlMotivosMvrs implements Serializable {
             contador++;
         }
 
-
         if (contador == 2) {
 
             System.out.println("Datos Duplicando: " + duplicarMotivosMvrs.getSecuencia() + "  " + duplicarMotivosMvrs.getCodigo());
@@ -638,8 +625,6 @@ public class ControlMotivosMvrs implements Serializable {
         secRegistro = null;
     }
 
-    
-    
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -672,10 +657,11 @@ public class ControlMotivosMvrs implements Serializable {
         }
         index = -1;
     }
- //-----------------------------------------------------------------------------   
+
+    //-----------------------------------------------------------------------------   
     public List<Motivosmvrs> getListMotivosMvrs() {
         if (listMotivosMvrs == null) {
-            listMotivosMvrs = administrarMotivosMvrs.mostrarMotivosMvrs();
+            listMotivosMvrs = administrarMotivosMvrs.consultarMotivosMvrs();
         }
         return listMotivosMvrs;
     }
@@ -739,6 +725,5 @@ public class ControlMotivosMvrs implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
-    
+
 }
