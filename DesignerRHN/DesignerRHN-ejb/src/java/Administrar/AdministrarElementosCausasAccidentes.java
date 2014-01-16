@@ -61,22 +61,22 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     }
 
     @Override
-    public List<ElementosCausasAccidentes> mostrarElementosCausasAccidentes() {
+    public List<ElementosCausasAccidentes> consultarElementosCausasAccidentes() {
         List<ElementosCausasAccidentes> listElementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementosCausasAccidentes();
         return listElementosCausasAccidentes;
     }
 
     @Override
-    public ElementosCausasAccidentes mostrarElementoCausaAccidente(BigInteger secElementosCausasAccidentes) {
+    public ElementosCausasAccidentes consultarElementoCausaAccidente(BigInteger secElementosCausasAccidentes) {
         ElementosCausasAccidentes elementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementoCausaAccidente(secElementosCausasAccidentes);
         return elementosCausasAccidentes;
     }
 
     @Override
-    public BigInteger contadorSoAccidentes(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger contarSoAccidentesCausa(BigInteger secTiposAuxilios) {
         BigInteger contadorSoAccidentes = null;
         try {
-            contadorSoAccidentes = persistenciaElementosCausasAccidentes.contadorSoAccidentes(secuenciaTiposAuxilios);
+            contadorSoAccidentes = persistenciaElementosCausasAccidentes.contadorSoAccidentes(secTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARELEMENTOSCAUSASACCIDENTES contadorSoAccidentes ERROR :" + e);
         } finally {
@@ -85,10 +85,10 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     }
 
     @Override
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger contarSoAccidentesMedicosElementoCausaAccidente(BigInteger secTiposAuxilios) {
         BigInteger contadorSoAccidentesMedicos = null;
         try {
-            contadorSoAccidentesMedicos = persistenciaElementosCausasAccidentes.contadorSoAccidentesMedicos(secuenciaTiposAuxilios);
+            contadorSoAccidentesMedicos = persistenciaElementosCausasAccidentes.contadorSoAccidentesMedicos(secTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARELEMENTOSCAUSASACCIDENTES contadorSoAccidentesMedicos ERROR :" + e);
         } finally {
@@ -97,10 +97,10 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     }
 
     @Override
-    public BigInteger contadorSoIndicadoresFr(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger contarSoIndicadoresFrElementoCausaAccidente(BigInteger secTiposAuxilios) {
         BigInteger contadorSoIndicadoresFr = null;
         try {
-            contadorSoIndicadoresFr = persistenciaElementosCausasAccidentes.contadorSoIndicadoresFr(secuenciaTiposAuxilios);
+            contadorSoIndicadoresFr = persistenciaElementosCausasAccidentes.contadorSoIndicadoresFr(secTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARELEMENTOSCAUSASACCIDENTES contadorSoIndicadoresFr ERROR :" + e);
         } finally {

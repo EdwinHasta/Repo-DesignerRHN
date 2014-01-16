@@ -19,14 +19,14 @@ public interface AdministrarDetalleCuentaInterface {
      * @return Retorna una lista de VigenciasCuentas cuya Cuenta de credito tiene como secuencia el
      * valor dado por parámetro.
      */
-    public List<VigenciasCuentas> listaVigenciasCuentasCredito(BigInteger secCredito);
+    public List<VigenciasCuentas> consultarListaVigenciasCuentasCredito(BigInteger secCredito);
     /**
      * Método encargado de recuperar las VigenciasCuentas asociadas a una Cuenta debito.
      * @param secDebito Secuencia de la cuenta de debito.
      * @return Retorna una lista de VigenciasCuentas cuya Cuenta debito tiene como secuencia el
      * valor dado por parámetro.
      */
-    public List<VigenciasCuentas> listaVigenciasCuentasDebito(BigInteger secDebito);
+    public List<VigenciasCuentas> consultarListaVigenciasCuentasDebito(BigInteger secDebito);
     /**
      * Método encargado de recuperar una Cuenta dada su secuencia.
      * @param secCuenta Secuencia de la Cuenta.

@@ -20,42 +20,42 @@ public interface AdministrarDetalleLegislacionInterface {
      * Método encargado de recuperar los Terceros necesarios para la lista de valores.
      * @return Retorna una lista de Terceros.
      */
-    public List<Terceros> lovTerceros();
+    public List<Terceros> consultarLOVTerceros();
     /**
      * Método encargado de recuperar los Periodicidades necesarios para la lista de valores.
      * @return Retorna una lista de Periodicidades.
      */
-    public List<Periodicidades> lovPeriodicidades();
+    public List<Periodicidades> consultarLOVPeriodicidades();
     /**
      * Método encargado de recuperar los Formulas necesarios para la lista de valores.
      * @return Retorna una lista de Formulas.
      */
-    public List<Formulas> lovFormulas();
+    public List<Formulas> consultarLOVFormulas();
     /**
      * Metodo encargado de recuperar la FormulasContratos según el Contrato que tengan asociado.
-     * @param secuencia Secuencia del contrato por el cual se quiere filtrar.
+     * @param secContrato Secuencia del contrato por el cual se quiere filtrar.
      * @return Retorna una lista de Formulascontratos.
      */
-    public List<Formulascontratos> listaFormulasContratosParaContrato(BigInteger secuencia);
+    public List<Formulascontratos> consultarListaFormulasContratosContrato(BigInteger secContrato);
     /**
      * Método encargado de crear Formulascontratos.
      * @param listaFormulascontratos Lista de las Formulascontratos que se van a crear.
      */
-    public void crearFormulaContrato(List<Formulascontratos> listaFormulascontratos);
+    public void crearFormulasContratos(List<Formulascontratos> listaFormulascontratos);
     /**
      * Método encargado de editar Formulascontratos.
      * @param listaFormulascontratos Lista de las Formulascontratos que se van a modificar.
      */
-    public void modificarFormulaContrato(List<Formulascontratos> listaFormulascontratos);
+    public void modificarFormulasContratos(List<Formulascontratos> listaFormulascontratos);
     /**
      * Método encargado de borrar Formulascontratos.
      * @param listaFormulascontratos Lista de las Formulascontratos que se van a eliminar.
      */
-    public void borrarFormulaContrato(List<Formulascontratos> listaFormulascontratos);
+    public void borrarFormulasContratos(List<Formulascontratos> listaFormulascontratos);
     /**
-     * Método encargado de recuperar un Contrato dada su secuencia.
+     * Método encargado de recuperar un Contrato dada su secContrato.
      * @param secContrato Secuencia del Contrato.
-     * @return Retorna el Contrato cuya secuencia coincida con el valor del parámetro. 
+     * @return Retorna el Contrato cuya secContrato coincida con el valor del parámetro. 
      */
-    public Contratos mostrarContrato(BigInteger secContrato);
+    public Contratos consultarContrato(BigInteger secContrato);
 }

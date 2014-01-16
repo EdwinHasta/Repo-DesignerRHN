@@ -157,7 +157,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<VigenciasCuentas> listaVigenciasCuentasConcepto(BigInteger secConcepto) {
+    public List<VigenciasCuentas> consultarListaVigenciasCuentasConcepto(BigInteger secConcepto) {
         try {
             List<VigenciasCuentas> lista = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorConcepto(secConcepto);
             return lista;
@@ -201,7 +201,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposCentrosCostos> lovTiposCentrosCostos() {
+    public List<TiposCentrosCostos> consultarLOVTiposCentrosCostos() {
         try {
             List<TiposCentrosCostos> tipos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
             return tipos;
@@ -212,7 +212,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<Cuentas> lovCuentas() {
+    public List<Cuentas> consultarLOVCuentas() {
         try {
             List<Cuentas> cuentas = persistenciaCuentas.buscarCuentas();
             return cuentas;
@@ -223,7 +223,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<CentrosCostos> lovCentrosCostos() {
+    public List<CentrosCostos> consultarLOVCentrosCostos() {
         try {
             List<CentrosCostos> centros = persistenciaCentrosCostos.buscarCentrosCostos();
             return centros;
@@ -234,7 +234,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasGruposConceptos> listaVigenciasGruposConceptosConcepto(BigInteger secConcepto) {
+    public List<VigenciasGruposConceptos> consultarListaVigenciasGruposConceptosConcepto(BigInteger secConcepto) {
         try {
             List<VigenciasGruposConceptos> lista = persistenciaVigenciasGruposConceptos.listVigenciasGruposConceptosPorConcepto(secConcepto);
             return lista;
@@ -278,7 +278,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<GruposConceptos> lovGruposConceptos() {
+    public List<GruposConceptos> consultarLOVGruposConceptos() {
         try {
             List<GruposConceptos> grupos = persistenciaGruposConceptos.buscarGruposConceptos();
             return grupos;
@@ -289,7 +289,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasConceptosTT> listaVigenciasConceptosTTConcepto(BigInteger secConcepto) {
+    public List<VigenciasConceptosTT> consultarListaVigenciasConceptosTTConcepto(BigInteger secConcepto) {
         try {
             List<VigenciasConceptosTT> lista = persistenciaVigenciasConceptosTT.listVigenciasConceptosTTPorConcepto(secConcepto);
             return lista;
@@ -333,7 +333,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposTrabajadores> lovTiposTrabajadores() {
+    public List<TiposTrabajadores> consultarLOVTiposTrabajadores() {
         try {
             List<TiposTrabajadores> tipos = persistenciaTiposTrabajadores.buscarTiposTrabajadores();
             return tipos;
@@ -344,7 +344,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasConceptosTC> listaVigenciasConceptosTCConcepto(BigInteger secConcepto) {
+    public List<VigenciasConceptosTC> consultarListaVigenciasConceptosTCConcepto(BigInteger secConcepto) {
         try {
             List<VigenciasConceptosTC> lista = persistenciaVigenciasConceptosTC.listVigenciasConceptosTCPorConcepto(secConcepto);
             return lista;
@@ -388,7 +388,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<TiposContratos> lovTiposContratos() {
+    public List<TiposContratos> consultarLOVTiposContratos() {
         try {
             List<TiposContratos> tipos = persistenciaTiposContratos.tiposContratos();
             return tipos;
@@ -399,7 +399,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<VigenciasConceptosRL> listaVigenciasConceptosRLCConcepto(BigInteger secConcepto) {
+    public List<VigenciasConceptosRL> consultarListaVigenciasConceptosRLCConcepto(BigInteger secConcepto) {
         try {
             List<VigenciasConceptosRL> lista = persistenciaVigenciasConceptosRL.listVigenciasConceptosRLPorConcepto(secConcepto);
             return lista;
@@ -443,7 +443,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<ReformasLaborales> lovReformasLaborales() {
+    public List<ReformasLaborales> consultarLOVReformasLaborales() {
         try {
             List<ReformasLaborales> reformas = persistenciaReformasLaborales.buscarReformasLaborales();
             return reformas;
@@ -454,7 +454,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public List<FormulasConceptos> listaFormulasConceptosConcepto(BigInteger secConcepto) {
+    public List<FormulasConceptos> consultarListaFormulasConceptosConcepto(BigInteger secConcepto) {
         try {
             List<FormulasConceptos> lista = persistenciaFormulasConceptos.formulasConcepto(secConcepto);
             return lista;
@@ -498,7 +498,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<Formulas> lovFormulas() {
+    public List<Formulas> consultarLOVFormulas() {
         try {
             List<Formulas> formulas = persistenciaFormulas.buscarFormulas();
             return formulas;
@@ -509,7 +509,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public List<FormulasConceptos> lovFormulasConceptos() {
+    public List<FormulasConceptos> consultarLOVFormulasConceptos() {
         try {
             List<FormulasConceptos> formulas = persistenciaFormulasConceptos.buscarFormulasConceptos();
             return formulas;
@@ -520,7 +520,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public Long comportamientoAutomaticoConcepto(BigInteger secConcepto) {
+    public Long contarFormulasConceptosConcepto(BigInteger secConcepto) {
         try {
             Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoAutomaticoSecuenciaConcepto(secConcepto);
             return retorno;
@@ -531,7 +531,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
 
     @Override
-    public Long comportamientoSemiAutomaticoConcepto(BigInteger secConcepto) {
+    public Long contarFormulasNovedadesConcepto(BigInteger secConcepto) {
         try {
             Long retorno = PersistenciaFormulasConceptos.comportamientoConceptoSemiAutomaticoSecuenciaConcepto(secConcepto);
             return retorno;
@@ -542,7 +542,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public Conceptos conceptoActual(BigInteger secConcepto) {
+    public Conceptos consultarConceptoActual(BigInteger secConcepto) {
         try {
             Conceptos actual = persistenciaConceptos.conceptosPorSecuencia(secConcepto);
             return actual;
@@ -563,7 +563,7 @@ public class AdministrarDetalleConcepto implements AdministrarDetalleConceptoInt
     }
     
     @Override
-    public boolean verificarSolucionesNodosParaConcepto(BigInteger secConcepto) {
+    public boolean verificarSolucionesNodosConcepto(BigInteger secConcepto) {
         try {
             boolean retorno = persistenciaSolucionesNodos.solucionesNodosParaConcepto(secConcepto);
             return retorno;

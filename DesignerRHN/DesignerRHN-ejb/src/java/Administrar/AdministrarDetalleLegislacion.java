@@ -70,7 +70,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override 
-    public List<Terceros> lovTerceros() {
+    public List<Terceros> consultarLOVTerceros() {
         try {
             List<Terceros> lista = persistenciaTerceros.buscarTerceros();
             return lista;
@@ -81,7 +81,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public List<Periodicidades> lovPeriodicidades() {
+    public List<Periodicidades> consultarLOVPeriodicidades() {
         try {
             List<Periodicidades> lista = persistenciaPeriodicidades.buscarPeriodicidades();
             return lista;
@@ -92,7 +92,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public List<Formulas> lovFormulas() {
+    public List<Formulas> consultarLOVFormulas() {
         try {
             List<Formulas> lista = persistenciaFormulas.buscarFormulas();
             return lista;
@@ -103,9 +103,9 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public List<Formulascontratos> listaFormulasContratosParaContrato(BigInteger secuencia) {
+    public List<Formulascontratos> consultarListaFormulasContratosContrato(BigInteger secContrato) {
         try {
-            List<Formulascontratos> lista = persistenciaFormulasContratos.formulasContratosParaContratoSecuencia(secuencia);
+            List<Formulascontratos> lista = persistenciaFormulasContratos.formulasContratosParaContratoSecuencia(secContrato);
             int tam = lista.size();
             if (tam >= 1) {
                 for (int i = 0; i < tam; i++) {
@@ -121,13 +121,13 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public void crearFormulaContrato(List<Formulascontratos> listaFC) {
+    public void crearFormulasContratos(List<Formulascontratos> listaFormulasContratos) {
         try {
-            for (int i = 0; i < listaFC.size(); i++) {
-                if (listaFC.get(i).getTercero().getSecuencia() == null) {
-                    listaFC.get(i).setTercero(null);
+            for (int i = 0; i < listaFormulasContratos.size(); i++) {
+                if (listaFormulasContratos.get(i).getTercero().getSecuencia() == null) {
+                    listaFormulasContratos.get(i).setTercero(null);
                 }
-                persistenciaFormulasContratos.crear(listaFC.get(i));
+                persistenciaFormulasContratos.crear(listaFormulasContratos.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearFormulaContrato Admi : " + e.toString());
@@ -135,13 +135,13 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public void borrarFormulaContrato(List<Formulascontratos> listaFC) {
+    public void borrarFormulasContratos(List<Formulascontratos> listaFormulasContratos) {
         try {
-            for (int i = 0; i < listaFC.size(); i++) {
-                if (listaFC.get(i).getTercero().getSecuencia() == null) {
-                    listaFC.get(i).setTercero(null);
+            for (int i = 0; i < listaFormulasContratos.size(); i++) {
+                if (listaFormulasContratos.get(i).getTercero().getSecuencia() == null) {
+                    listaFormulasContratos.get(i).setTercero(null);
                 }
-                persistenciaFormulasContratos.borrar(listaFC.get(i));
+                persistenciaFormulasContratos.borrar(listaFormulasContratos.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarrFormulaContrato Admi : " + e.toString());
@@ -149,13 +149,13 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override
-    public void modificarFormulaContrato(List<Formulascontratos> listaFC) {
+    public void modificarFormulasContratos(List<Formulascontratos> listaFormulasContratos) {
         try {
-            for (int i = 0; i < listaFC.size(); i++) {
-                if (listaFC.get(i).getTercero().getSecuencia() == null) {
-                    listaFC.get(i).setTercero(null);
+            for (int i = 0; i < listaFormulasContratos.size(); i++) {
+                if (listaFormulasContratos.get(i).getTercero().getSecuencia() == null) {
+                    listaFormulasContratos.get(i).setTercero(null);
                 }
-                persistenciaFormulasContratos.editar(listaFC.get(i));
+                persistenciaFormulasContratos.editar(listaFormulasContratos.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarFormulaContrato Admi : " + e.toString());
@@ -163,14 +163,13 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override
-    public Contratos mostrarContrato(BigInteger secuencia) {
+    public Contratos consultarContrato(BigInteger secContrato) {
         try {
-            Contratos act = persistenciaContratos.buscarContratoSecuencia(secuencia);
+            Contratos act = persistenciaContratos.buscarContratoSecuencia(secContrato);
             return act;
         } catch (Exception e) {
             System.out.println("Error contratoActual Admi : "+e.toString());
             return null;
         }
     }
-
 }
