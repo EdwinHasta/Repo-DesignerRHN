@@ -17,17 +17,62 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosEmbargosInterface {
 
-    public void modificarMotivosEmbargos(List<MotivosEmbargos> listaMotivosPrestamosModificados);
+    /**
+     * Método encargado de modificar MotivosEmbargos.
+     *
+     * @param listaMotivosEmbargos Lista MotivosEmbargos que se van a modificar.
+     */
+    public void modificarMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos);
 
-    public void borrarMotivosEmbargos(MotivosEmbargos tiposDias);
+    /**
+     * Método encargado de borrar MotivosEmbargos.
+     *
+     * @param listaMotivosEmbargos Lista MotivosEmbargos que se van a borrar.
+     */
+    public void borrarMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos);
 
-    public void crearMotivosEmbargos(MotivosEmbargos tiposDias);
+    /**
+     * Método encargado de crear MotivosEmbargos.
+     *
+     * @param listaMotivosEmbargos Lista MotivosEmbargos que se van a crear.
+     */
+    public void crearMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos);
 
+    /**
+     * Método encargado de recuperar las MotivosEmbargos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de MotivosEmbargos.
+     */
     public List<MotivosEmbargos> mostrarMotivosEmbargos();
 
+    /**
+     * Método encargado de recuperar una MotivosEmbargos dada su secuencia.
+     *
+     * @param secMotivoPrestamo Secuencia del MotivosEmbargos
+     * @return Retorna una MotivosEmbargos.
+     */
     public MotivosEmbargos mostrarMotivoEmbargo(BigInteger secMotivoPrestamo);
 
-    public BigInteger verificarEersPrestamos(BigInteger secuenciaTiposDias);
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * MotivosEmbargos específica y algún EersPrestamos. Adémas de la revisión,
+     * establece cuantas relaciones existen.
+     *
+     * @param secMotivoPrestamo Secuencia del MotivosEmbargos.
+     * @return Retorna el número de EersPrestamos relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contarEersPrestamosMotivoEmbargo(BigInteger secMotivoPrestamo);
 
-    public BigInteger verificarEmbargos(BigInteger secuenciaTiposDias);
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * MotivosEmbargos específica y algún Embargos. Adémas de la revisión,
+     * establece cuantas relaciones existen.
+     *
+     * @param secMotivoPrestamo Secuencia del MotivosEmbargos.
+     * @return Retorna el número de Embargos relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contarEmbargosMotivoEmbargo(BigInteger secMotivoPrestamo);
 }

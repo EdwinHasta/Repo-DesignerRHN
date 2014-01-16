@@ -143,7 +143,7 @@ public class ControlDetalleLegislacion implements Serializable {
         index = -1;
         contratoActual = new Contratos();
         listFormulasContratosDetalle = null;
-        contratoActual = administrarDetalleLegislacion.contratoActual(secuencia);
+        contratoActual = administrarDetalleLegislacion.mostrarContrato(secuencia);
         System.out.println("contratoActual : " + contratoActual.getSecuencia());
         getListFormulasContratosDetalle();
         listFormulasContratos = null;
@@ -596,7 +596,7 @@ public class ControlDetalleLegislacion implements Serializable {
     public void guardarCambiosFormulaContrato() {
         if (guardado == false) {
             if (!listFormulasContratosBorrar.isEmpty()) {
-                administrarDetalleLegislacion.borrarrFormulaContrato(listFormulasContratosBorrar);
+                administrarDetalleLegislacion.borrarFormulaContrato(listFormulasContratosBorrar);
                 listFormulasContratosBorrar.clear();
             }
             if (!listFormulasContratosCrear.isEmpty()) {
@@ -604,7 +604,7 @@ public class ControlDetalleLegislacion implements Serializable {
                 listFormulasContratosCrear.clear();
             }
             if (!listFormulasContratosModificar.isEmpty()) {
-                administrarDetalleLegislacion.editarFormulaContrato(listFormulasContratosModificar);
+                administrarDetalleLegislacion.modificarFormulaContrato(listFormulasContratosModificar);
                 listFormulasContratosModificar.clear();
             }
             listFormulasContratosDetalle = null;
@@ -1817,7 +1817,7 @@ public class ControlDetalleLegislacion implements Serializable {
         try {
             if (listFormulasContratosDetalle == null) {
                 listFormulasContratosDetalle = new ArrayList<Formulascontratos>();
-                listFormulasContratosDetalle = administrarDetalleLegislacion.listFormulasContratosParaFormula(contratoActual.getSecuencia());
+                listFormulasContratosDetalle = administrarDetalleLegislacion.listaFormulasContratosParaContrato(contratoActual.getSecuencia());
                 if (listFormulasContratosDetalle != null) {
                     for (int i = 0; i < listFormulasContratosDetalle.size(); i++) {
                         if (listFormulasContratosDetalle.get(i).getFormula() == null) {
@@ -1985,7 +1985,7 @@ public class ControlDetalleLegislacion implements Serializable {
 
     public List<Terceros> getListTerceros() {
         if (listTerceros == null) {
-            listTerceros = administrarDetalleLegislacion.listTerceros();
+            listTerceros = administrarDetalleLegislacion.lovTerceros();
         }
         return listTerceros;
     }
@@ -2036,7 +2036,7 @@ public class ControlDetalleLegislacion implements Serializable {
 
     public List<Periodicidades> getListPeriodicidades() {
         if (listPeriodicidades == null) {
-            listPeriodicidades = administrarDetalleLegislacion.listPeriodicidades();
+            listPeriodicidades = administrarDetalleLegislacion.lovPeriodicidades();
         }
         return listPeriodicidades;
     }
@@ -2063,7 +2063,7 @@ public class ControlDetalleLegislacion implements Serializable {
 
     public List<Formulas> getListFormulas() {
         if (listFormulas == null) {
-            listFormulas = administrarDetalleLegislacion.listFormulas();
+            listFormulas = administrarDetalleLegislacion.lovFormulas();
         }
         return listFormulas;
     }
@@ -2090,7 +2090,7 @@ public class ControlDetalleLegislacion implements Serializable {
 
     public List<Formulascontratos> getListFormulasContratos() {
         if (listFormulasContratos == null) {
-            listFormulasContratos = administrarDetalleLegislacion.listFormulasContratosParaFormula(contratoActual.getSecuencia());
+            listFormulasContratos = administrarDetalleLegislacion.listaFormulasContratosParaContrato(contratoActual.getSecuencia());
         }
         return listFormulasContratos;
     }

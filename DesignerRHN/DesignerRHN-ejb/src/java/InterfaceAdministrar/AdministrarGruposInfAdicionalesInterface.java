@@ -17,15 +17,54 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarGruposInfAdicionalesInterface {
 
-    public void modificarGruposInfAdicionales(List<GruposInfAdicionales> listDeportesModificadas);
+    /**
+     * Método encargado de modificar GruposInfAdicionales.
+     *
+     * @param listaGruposInfAdicionales Lista GruposInfAdicionales que se van a
+     * modificar.
+     */
+    public void modificarGruposInfAdicionales(List<GruposInfAdicionales> listaGruposInfAdicionales);
 
-    public void borrarGruposInfAdicionales(GruposInfAdicionales deportes);
+    /**
+     * Método encargado de borrar GruposInfAdicionales.
+     *
+     * @param listaGruposInfAdicionales Lista GruposInfAdicionales que se van a
+     * borrar.
+     */
+    public void borrarGruposInfAdicionales(List<GruposInfAdicionales> listaGruposInfAdicionales);
 
-    public void crearGruposInfAdicionales(GruposInfAdicionales deportes);
+    /**
+     * Método encargado de crear GruposInfAdicionales.
+     *
+     * @param listaGruposInfAdicionales Lista GruposInfAdicionales que se van a
+     * crear.
+     */
+    public void crearGruposInfAdicionales(List<GruposInfAdicionales> listaGruposInfAdicionales);
 
-    public List<GruposInfAdicionales> mostrarGruposInfAdicionales();
+    /**
+     * Método encargado de recuperar un GrupoInfAdicional dada su secuencia.
+     *
+     * @param secGruposInfAdicionales Secuencia del GrupoInfAdicional.
+     * @return Retorna un GrupoInfAdicional cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public GruposInfAdicionales consultarGrupoInfAdicional(BigInteger secGruposInfAdicionales);
 
-    public GruposInfAdicionales mostrarGrupoInfAdicional(BigInteger secDeportes);
+    /**
+     * Metodo encargado de traer todas los GruposInfAdicionales de la base de
+     * datos.
+     *
+     * @return Lista de GruposInfAdicionales.
+     */
+    public List<GruposInfAdicionales> consultarGruposInfAdicionales();
 
-    public BigInteger verificadorInformacionesAdicionales(BigInteger secuenciaGruposInfAdicionales);
+    /**
+     * Método encargado de contar la cantidad de InformesAdicionales
+     * relacionadas con un GrupoInfAdicional específico.
+     *
+     * @param secGruposInfAdicionales Secuencia del GrupoInfAdicional.
+     * @return Retorna un número indicando la cantidad de InformesAdicionales
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarInformacionesAdicionales(BigInteger secGruposInfAdicionales);
 }

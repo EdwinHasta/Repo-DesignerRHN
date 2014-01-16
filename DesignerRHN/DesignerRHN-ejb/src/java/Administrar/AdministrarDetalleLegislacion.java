@@ -1,3 +1,6 @@
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
+ */
 package Administrar;
 
 import Entidades.Contratos;
@@ -13,33 +16,61 @@ import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
- * @author PROYECTO01
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla 'DetalleLegislacion'.
+ * @author Andres Pineda.
  */
 @Stateless
 public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislacionInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaTerceros'.
+     */
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaPeriodicidades'.
+     */
     @EJB
     PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaConceptos'.
+     */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulasContratos'.
+     */
     @EJB
     PersistenciaFormulasContratosInterface persistenciaFormulasContratos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulas'.
+     */
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia 'persistenciaContratos'.
+     */
     @EJB
     PersistenciaContratosInterface persistenciaContratos;
-
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override 
-    public List<Terceros> listTerceros() {
+    public List<Terceros> lovTerceros() {
         try {
             List<Terceros> lista = persistenciaTerceros.buscarTerceros();
             return lista;
@@ -50,7 +81,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public List<Periodicidades> listPeriodicidades() {
+    public List<Periodicidades> lovPeriodicidades() {
         try {
             List<Periodicidades> lista = persistenciaPeriodicidades.buscarPeriodicidades();
             return lista;
@@ -61,7 +92,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public List<Formulas> listFormulas() {
+    public List<Formulas> lovFormulas() {
         try {
             List<Formulas> lista = persistenciaFormulas.buscarFormulas();
             return lista;
@@ -72,11 +103,11 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public List<Formulascontratos> listFormulasContratosParaFormula(BigInteger secuencia) {
+    public List<Formulascontratos> listaFormulasContratosParaContrato(BigInteger secuencia) {
         try {
             List<Formulascontratos> lista = persistenciaFormulasContratos.formulasContratosParaContratoSecuencia(secuencia);
             int tam = lista.size();
-            if (tam>=1) {
+            if (tam >= 1) {
                 for (int i = 0; i < tam; i++) {
                     String aux = persistenciaConceptos.conceptoParaFormulaContrato(lista.get(i).getFormula().getSecuencia(), lista.get(i).getFechafinal());
                     lista.get(i).setStrConcepto(aux);
@@ -104,7 +135,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override 
-    public void borrarrFormulaContrato(List<Formulascontratos> listaFC) {
+    public void borrarFormulaContrato(List<Formulascontratos> listaFC) {
         try {
             for (int i = 0; i < listaFC.size(); i++) {
                 if (listaFC.get(i).getTercero().getSecuencia() == null) {
@@ -118,7 +149,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override
-    public void editarFormulaContrato(List<Formulascontratos> listaFC) {
+    public void modificarFormulaContrato(List<Formulascontratos> listaFC) {
         try {
             for (int i = 0; i < listaFC.size(); i++) {
                 if (listaFC.get(i).getTercero().getSecuencia() == null) {
@@ -132,23 +163,13 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     }
 
     @Override
-    public Contratos contratoActual(BigInteger secuencia) {
+    public Contratos mostrarContrato(BigInteger secuencia) {
         try {
             Contratos act = persistenciaContratos.buscarContratoSecuencia(secuencia);
             return act;
         } catch (Exception e) {
             System.out.println("Error contratoActual Admi : "+e.toString());
             return null;
-        }
-    }
-    
-    public String obtenerConcepto(BigInteger secuencia, Date fecha){
-        try{
-            String aux = persistenciaConceptos.conceptoParaFormulaContrato(secuencia, fecha);
-            return aux;
-            }catch(Exception e){
-            System.out.println("Error obtenerConcepto Admi : "+e.toString());
-            return "";
         }
     }
 

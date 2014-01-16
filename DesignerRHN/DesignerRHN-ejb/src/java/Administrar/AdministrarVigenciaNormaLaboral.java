@@ -34,19 +34,14 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
     PersistenciaNormasLaboralesInterface persistenciaNormasLaborales;
     @EJB
     PersistenciaVigenciasNormasEmpleadosInterface persistenciaVigenciasNormasEmpleados;
-    /**
-     * Creacion de atributos
-     */
-    List<VigenciasNormasEmpleados> vigenciasNormasEmpleados; //esta lista es la que se mostrara en la tabla de vigencias
-    VigenciasNormasEmpleados vne;
-    Empleados empleado;
-    List<NormasLaborales> normasLaborales;
 
     /**
      * Creacion de metodos
      */
     @Override
-    public List<VigenciasNormasEmpleados> vigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasNormasEmpleados> consultarVigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado) {
+        List<VigenciasNormasEmpleados> vigenciasNormasEmpleados; //esta lista es la que se mostrara en la tabla de vigencias
+
         try {
             vigenciasNormasEmpleados = persistenciaVigenciasNormasEmpleados.buscarVigenciasNormasEmpleadosEmpl(secEmpleado);
         } catch (Exception e) {
@@ -55,24 +50,30 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
         }
         return vigenciasNormasEmpleados;
     }
-
-    public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listVNEModificadas) {
-        for (int i = 0; i < listVNEModificadas.size(); i++) {
+    @Override
+    public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
+        for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
             System.out.println("Modificando...");
-            vne = listVNEModificadas.get(i);
-            persistenciaVigenciasNormasEmpleados.editar(vne);
+            persistenciaVigenciasNormasEmpleados.editar(listaVigenciasNormasEmpleados.get(i));
         }
     }
-
-    public void borrarVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEMpleados) {
-        persistenciaVigenciasNormasEmpleados.borrar(vigenciasNormasEMpleados);
+    @Override
+    public void borrarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
+        for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
+            System.out.println("borrar...");
+            persistenciaVigenciasNormasEmpleados.borrar(listaVigenciasNormasEmpleados.get(i));
+        }
     }
-
-    public void crearVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
-        persistenciaVigenciasNormasEmpleados.crear(vigenciasNormasEmpleados);
+    @Override
+    public void crearVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
+        for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
+            System.out.println("crear...");
+            persistenciaVigenciasNormasEmpleados.crear(listaVigenciasNormasEmpleados.get(i));
+        }
     }
-
-    public Empleados buscarEmpleado(BigInteger secuencia) {
+    @Override
+    public Empleados consultarEmpleado(BigInteger secuencia) {
+        Empleados empleado;
         try {
             empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
             return empleado;
@@ -82,7 +83,10 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
         }
     }
 
-    public List<NormasLaborales> mostrarNormasLaborales() {
+    @Override
+    public List<NormasLaborales> lovNormasLaborales() {
+            List<NormasLaborales> normasLaborales;
+
         try {
             normasLaborales = persistenciaNormasLaborales.buscarNormasLaborales();
             return normasLaborales;

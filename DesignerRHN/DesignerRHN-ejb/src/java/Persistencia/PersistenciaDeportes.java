@@ -55,11 +55,9 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
 
     @Override
-    public Deportes buscarDeporte(Object id) {
+    public Deportes buscarDeporte(BigInteger secuencia) {
         try {
-            BigInteger in;
-            in = (BigInteger) id;
-            return em.find(Deportes.class, in);
+            return em.find(Deportes.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarDeporte PersistenciaDeportes : "+e.toString());
             return null;
@@ -77,7 +75,9 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
             return null;
         }
     }
-public BigInteger contadorParametrosInformes(BigInteger secuencia) {
+    
+    @Override
+    public BigInteger contadorParametrosInformes(BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT (*) FROM parametrosinformes WHERE deporte =  ?";
@@ -94,6 +94,7 @@ public BigInteger contadorParametrosInformes(BigInteger secuencia) {
 
     }
 
+    @Override
     public BigInteger contadorDeportesPersonas(BigInteger secuencia) {
         BigInteger retorno;
         try {
@@ -110,6 +111,7 @@ public BigInteger contadorParametrosInformes(BigInteger secuencia) {
         }
     }
 
+    @Override
     public BigInteger verificarBorradoVigenciasDeportes(BigInteger secuencia) {
         BigInteger retorno;
         try {

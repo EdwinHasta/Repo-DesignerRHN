@@ -22,37 +22,41 @@ public class AdministrarMotivosDefinitivas implements AdministrarMotivosDefiniti
 
     @EJB
     PersistenciaMotivosDefinitivasInterface persistenciaMotivosDefinitivas;
-    private MotivosDefinitivas motivosDefinitivasSeleccionado;
-    private MotivosDefinitivas motivosDefinitivas;
-    private List<MotivosDefinitivas> listMotivosDefinitivas;
 
-    public void modificarMotivosDefinitivas(List<MotivosDefinitivas> listaMotivosPrestamosModificados) {
-        for (int i = 0; i < listaMotivosPrestamosModificados.size(); i++) {
+    public void modificarMotivosDefinitivas(List<MotivosDefinitivas> listaMotivosDefinitivas) {
+        for (int i = 0; i < listaMotivosDefinitivas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivosDefinitivasSeleccionado = listaMotivosPrestamosModificados.get(i);
-            persistenciaMotivosDefinitivas.editar(motivosDefinitivasSeleccionado);
+            persistenciaMotivosDefinitivas.editar(listaMotivosDefinitivas.get(i));
         }
     }
 
-    public void borrarMotivosDefinitivas(MotivosDefinitivas tiposDias) {
-        persistenciaMotivosDefinitivas.borrar(tiposDias);
+    public void borrarMotivosDefinitivas(List<MotivosDefinitivas> listaMotivosDefinitivas) {
+        for (int i = 0; i < listaMotivosDefinitivas.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosDefinitivas.borrar(listaMotivosDefinitivas.get(i));
+        }
     }
 
-    public void crearMotivosDefinitivas(MotivosDefinitivas tiposDias) {
-        persistenciaMotivosDefinitivas.crear(tiposDias);
+    public void crearMotivosDefinitivas(List<MotivosDefinitivas> listaMotivosDefinitivas) {
+        for (int i = 0; i < listaMotivosDefinitivas.size(); i++) {
+            System.out.println("Administrar Crenando...");
+            persistenciaMotivosDefinitivas.crear(listaMotivosDefinitivas.get(i));
+        }
     }
 
     public List<MotivosDefinitivas> mostrarMotivosDefinitivas() {
+        List<MotivosDefinitivas> listMotivosDefinitivas;
         listMotivosDefinitivas = persistenciaMotivosDefinitivas.buscarMotivosDefinitivas();
         return listMotivosDefinitivas;
     }
 
     public MotivosDefinitivas mostrarMotivoDefinitiva(BigInteger secMotivoPrestamo) {
+        MotivosDefinitivas motivosDefinitivas;
         motivosDefinitivas = persistenciaMotivosDefinitivas.buscarMotivoDefinitiva(secMotivoPrestamo);
         return motivosDefinitivas;
     }
 
-    public BigInteger verificarNovedadesSistema(BigInteger secuenciaMotivosCesantias) {
+    public BigInteger contarNovedadesSistemasMotivoDefinitiva(BigInteger secuenciaMotivosCesantias) {
         BigInteger verificarNovedadesSistema = null;
         try {
             verificarNovedadesSistema = persistenciaMotivosDefinitivas.contadorNovedadesSistema(secuenciaMotivosCesantias);
@@ -63,7 +67,7 @@ public class AdministrarMotivosDefinitivas implements AdministrarMotivosDefiniti
         }
     }
 
-    public BigInteger verificarParametrosCambiosMasivos(BigInteger secuenciaMotivosCesantias) {
+    public BigInteger contarParametrosCambiosMasivosMotivoDefinitiva(BigInteger secuenciaMotivosCesantias) {
         BigInteger verificarParametrosCambiosMasivos = null;
         try {
             verificarParametrosCambiosMasivos = persistenciaMotivosDefinitivas.contadorParametrosCambiosMasivos(secuenciaMotivosCesantias);

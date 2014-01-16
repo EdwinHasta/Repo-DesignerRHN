@@ -17,15 +17,54 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarEvalCompetenciasInterface {
 
-    public void modificarEvalCompetencias(List<EvalCompetencias> listTiposEmpresasModificadas);
+    /**
+     * Método encargado de modificar EvalCompetencias.
+     *
+     * @param listEvalCompetencias Lista de las EvalCompetencias que se van a
+     * modificar.
+     */
+    public void modificarEvalCompetencias(List<EvalCompetencias> listEvalCompetencias);
 
-    public void borrarEvalCompetencias(EvalCompetencias tipoEmpresa);
+    /**
+     * Método encargado de modificar EvalCompetencias.
+     *
+     * @param listEvalCompetencias Lista de las EvalCompetencias que se van a
+     * modificar.
+     */
+    public void borrarEvalCompetencias(List<EvalCompetencias> listEvalCompetencias);
 
-    public void crearEvalCompetencias(EvalCompetencias tipoEmpresa);
+    /**
+     * Método encargado de crear EvalCompetencias.
+     *
+     * @param listEvalCompetencias Lista de las EvalCompetencias que se van a
+     * crear.
+     */
+    public void crearEvalCompetencias(List<EvalCompetencias> listEvalCompetencias);
 
-    public List<EvalCompetencias> mostrarEvalCompetencias();
+    /**
+     * Método encargado de recuperar una EvalCompetencia dada su secuencia.
+     *
+     * @param secEvalCompetencias Secuencia de la EvalCompetencias.
+     * @return Retorna un EvalCompetencias cuya secuencia coincida con el valor
+     * del parámetro.
+     */
+    public EvalCompetencias consultarEvalCompetencia(BigInteger secEvalCompetencias);
 
-    public EvalCompetencias mostrarEvalCompetencia(BigInteger secTipoEmpresa);
+    /**
+     * Método encargado de recuperar todos las EvalCompetencias.
+     *
+     * @return Retorna una lista de EvalCompetencias.
+     */
+    public List<EvalCompetencias> consultarEvalCompetencias();
 
-    public BigInteger verificarBorradoCompetenciasCargos(BigInteger secuenciaCompetenciasCargos);
+    /**
+     * Método encargado de validar si existe una relación entre un
+     * EvalCompetencia específica y algún CompetenciaCargo. Adémas de la
+     * revisión, cuenta cuantas relaciones existen.
+     *
+     * @param secEvalCompetencias Secuencia de una EvalCompetencia.
+     * @return Retorna el número de CompetenciaCargo relacionados con una
+     * Enfermedad cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarCompetenciasCargos(BigInteger secEvalCompetencias);
 }

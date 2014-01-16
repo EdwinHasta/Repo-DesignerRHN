@@ -377,23 +377,14 @@ public class ControlEnfoques implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Motivos Localizacion");
             if (!borrarEnfoques.isEmpty()) {
-                for (int i = 0; i < borrarEnfoques.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarEnfoques.borrarEnfoques(borrarEnfoques.get(i));
-                }
-                //mostrarBorrados
+                administrarEnfoques.borrarEnfoques(borrarEnfoques);
                 registrosBorrados = borrarEnfoques.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarEnfoques.clear();
             }
             if (!crearEnfoques.isEmpty()) {
-                for (int i = 0; i < crearEnfoques.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarEnfoques.crearEnfoques(crearEnfoques.get(i));
-
-                }
+                administrarEnfoques.crearEnfoques(crearEnfoques);
                 crearEnfoques.clear();
             }
             if (!modificarEnfoques.isEmpty()) {
@@ -691,7 +682,7 @@ public class ControlEnfoques implements Serializable {
     //--/-*/-*/-*/-*/*/*/*/*/****/////-----*****/////-*/-*/*/*/-*/-*/-*/-*/-*/-*/-*/
     public List<Enfoques> getListEnfoques() {
         if (listEnfoques == null) {
-            listEnfoques = administrarEnfoques.mostrarEnfoques();
+            listEnfoques = administrarEnfoques.consultarEnfoques();
         }
         return listEnfoques;
     }

@@ -160,4 +160,15 @@ public class AdministrarReportesBancos implements AdministrarReportesBancosInter
             return null;
         }
     }
+    
+     @Override  
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR) {
+        try {
+            for (int i = 0; i < listaIR.size(); i++) {
+                persistenciaInforeportes.editar(listaIR.get(i));
+            }
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosInfoReportes Admi : " + e.toString());
+        }
+    }
 }

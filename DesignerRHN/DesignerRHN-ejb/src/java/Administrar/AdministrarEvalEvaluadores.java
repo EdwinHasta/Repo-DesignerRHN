@@ -26,33 +26,44 @@ public class AdministrarEvalEvaluadores implements AdministrarEvalEvaluadoresInt
     private EvalEvaluadores valEvaluadores;
     private List<EvalEvaluadores> listEvalEvaluadores;
 
-    public void modificarEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadoresModificadas) {
-        for (int i = 0; i < listEvalEvaluadoresModificadas.size(); i++) {
+    @Override
+    public void modificarEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadores) {
+        for (int i = 0; i < listEvalEvaluadores.size(); i++) {
             System.out.println("Administrar Modificando...");
-            valEvaluadoresSeleccionado = listEvalEvaluadoresModificadas.get(i);
-            persistenciaEvalEvaluadores.editar(valEvaluadoresSeleccionado);
+            persistenciaEvalEvaluadores.editar(listEvalEvaluadores.get(i));
         }
     }
 
-    public void borrarEvalEvaluadores(EvalEvaluadores evalEvaluadores) {
-        persistenciaEvalEvaluadores.borrar(evalEvaluadores);
+    @Override
+    public void borrarEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadores) {
+        for (int i = 0; i < listEvalEvaluadores.size(); i++) {
+            System.out.println("Administrar Borrar...");
+            persistenciaEvalEvaluadores.borrar(listEvalEvaluadores.get(i));
+        }
     }
 
-    public void crearEvalEvaluadores(EvalEvaluadores evalEvaluadores) {
-        persistenciaEvalEvaluadores.crear(evalEvaluadores);
+    @Override
+    public void crearEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadores) {
+        for (int i = 0; i < listEvalEvaluadores.size(); i++) {
+            System.out.println("Administrar Crear...");
+            persistenciaEvalEvaluadores.crear(listEvalEvaluadores.get(i));
+        }
     }
 
-    public List<EvalEvaluadores> mostrarEvalEvaluadores() {
+    @Override
+    public List<EvalEvaluadores> consultarEvalEvaluadores() {
         listEvalEvaluadores = persistenciaEvalEvaluadores.buscarEvalEvaluadores();
         return listEvalEvaluadores;
     }
 
-    public EvalEvaluadores mostrarEvalEvaluador(BigInteger secEvalEvaluadores) {
+    @Override
+    public EvalEvaluadores consultarEvalEvaluador(BigInteger secEvalEvaluadores) {
         valEvaluadores = persistenciaEvalEvaluadores.buscarEvalEvaluador(secEvalEvaluadores);
         return valEvaluadores;
     }
 
-    public BigInteger verificarBorradoEP(BigInteger secuenciaMovitoCambioCargo) {
+    @Override
+    public BigInteger verificarEvalPruebas(BigInteger secuenciaMovitoCambioCargo) {
         BigInteger verificadorVP = new BigInteger("-1");
         try {
             verificadorVP = persistenciaEvalEvaluadores.verificarBorradoEvalPruebas(secuenciaMovitoCambioCargo);

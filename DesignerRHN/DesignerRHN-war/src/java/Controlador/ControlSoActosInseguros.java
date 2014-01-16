@@ -391,10 +391,7 @@ public class ControlSoActosInseguros implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO SO ACTPS INSEGUROS");
             if (!borrarSoActosInseguros.isEmpty()) {
-                for (int i = 0; i < borrarSoActosInseguros.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarSoActosInseguros.borrarSoActosInseguros(borrarSoActosInseguros.get(i));
-                }
+                administrarSoActosInseguros.borrarSoActosInseguros(borrarSoActosInseguros);
                 //mostrarBorrados
                 registrosBorrados = borrarSoActosInseguros.size();
                 context.update("form:mostrarBorrados");
@@ -402,12 +399,7 @@ public class ControlSoActosInseguros implements Serializable {
                 borrarSoActosInseguros.clear();
             }
             if (!crearSoActosInseguros.isEmpty()) {
-                for (int i = 0; i < crearSoActosInseguros.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarSoActosInseguros.crearSoActosInseguros(crearSoActosInseguros.get(i));
-
-                }
+                administrarSoActosInseguros.crearSoActosInseguros(crearSoActosInseguros);
                 crearSoActosInseguros.clear();
             }
             if (!modificarSoActosInseguros.isEmpty()) {
@@ -705,7 +697,7 @@ public class ControlSoActosInseguros implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<SoActosInseguros> getListSoActosInseguros() {
         if (listSoActosInseguros == null) {
-            listSoActosInseguros = administrarSoActosInseguros.mostrarSoActosInseguros();
+            listSoActosInseguros = administrarSoActosInseguros.consultarSoActosInseguros();
         }
         return listSoActosInseguros;
     }

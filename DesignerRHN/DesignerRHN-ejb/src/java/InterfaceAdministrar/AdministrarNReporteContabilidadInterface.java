@@ -21,5 +21,6 @@ public interface AdministrarNReporteContabilidadInterface {
     public void modificarParametrosInformes(ParametrosInformes parametroInforme);
     public List<Procesos> listProcesos();
     public List<Empleados> listEmpleados();
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR);
     
 }

@@ -72,7 +72,8 @@ public class AdministarReportes implements AdministarReportesInterface {
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public void datosConexion() {
+    public void consultarDatosConexion() {
+        Connection conexion;
         if (entityManagerGlobal != null) {
             EntityManager em = entityManagerGlobal.getEmf().createEntityManager();
             em.getTransaction().begin();
@@ -82,11 +83,6 @@ public class AdministarReportes implements AdministarReportesInterface {
         }
     }
 
-    /*@Override
-     public void generarReporte(BigInteger codigoEmpleado) {
-     datosConexion();
-     //reporte.ejecutarReporte(conexion, codigoEmpleado);
-     }*/
     @Override
     public String generarReporte(String nombreReporte, String tipoReporte) {
         Generales general = persistenciaGenerales.obtenerRutas();

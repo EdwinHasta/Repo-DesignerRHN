@@ -19,39 +19,49 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarEvalCompetencias implements AdministrarEvalCompetenciasInterface {
 
-  @EJB
+    @EJB
     PersistenciaEvalCompetenciasInterface persistenciaEvalCompetencias;
-    private EvalCompetencias evalCompetenciasSeleccionada;
-    private EvalCompetencias evalCompetencias;
-    private List<EvalCompetencias> listEvalCompetencias;
 
-    public void modificarEvalCompetencias(List<EvalCompetencias> listTiposEmpresasModificadas) {
-        for (int i = 0; i < listTiposEmpresasModificadas.size(); i++) {
+    @Override
+    public void modificarEvalCompetencias(List<EvalCompetencias> listEvalCompetencias) {
+        for (int i = 0; i < listEvalCompetencias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            evalCompetenciasSeleccionada = listTiposEmpresasModificadas.get(i);
-            persistenciaEvalCompetencias.editar(evalCompetenciasSeleccionada);
+            persistenciaEvalCompetencias.editar(listEvalCompetencias.get(i));
         }
     }
 
-    public void borrarEvalCompetencias(EvalCompetencias tipoEmpresa) {
-        persistenciaEvalCompetencias.borrar(tipoEmpresa);
+    @Override
+    public void borrarEvalCompetencias(List<EvalCompetencias> listEvalCompetencias) {
+        for (int i = 0; i < listEvalCompetencias.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaEvalCompetencias.borrar(listEvalCompetencias.get(i));
+        }
     }
 
-    public void crearEvalCompetencias(EvalCompetencias tipoEmpresa) {
-        persistenciaEvalCompetencias.crear(tipoEmpresa);
+    @Override
+    public void crearEvalCompetencias(List<EvalCompetencias> listEvalCompetencias) {
+        for (int i = 0; i < listEvalCompetencias.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaEvalCompetencias.crear(listEvalCompetencias.get(i));
+        }
     }
 
-    public List<EvalCompetencias> mostrarEvalCompetencias() {
+    @Override
+    public List<EvalCompetencias> consultarEvalCompetencias() {
+        List<EvalCompetencias> listEvalCompetencias;
         listEvalCompetencias = persistenciaEvalCompetencias.buscarEvalCompetencias();
         return listEvalCompetencias;
     }
 
-    public EvalCompetencias mostrarEvalCompetencia(BigInteger secTipoEmpresa) {
+    @Override
+    public EvalCompetencias consultarEvalCompetencia(BigInteger secTipoEmpresa) {
+        EvalCompetencias evalCompetencias;
         evalCompetencias = persistenciaEvalCompetencias.buscarEvalCompetencia(secTipoEmpresa);
         return evalCompetencias;
     }
 
-    public BigInteger verificarBorradoCompetenciasCargos(BigInteger secuenciaCompetenciasCargos) {
+    @Override
+    public BigInteger verificarCompetenciasCargos(BigInteger secuenciaCompetenciasCargos) {
         BigInteger verificadorCompetenciasCargos = null;
         try {
             System.err.println("Secuencia Borrado Competencias Cargos" + secuenciaCompetenciasCargos);

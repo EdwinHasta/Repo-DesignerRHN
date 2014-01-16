@@ -14,8 +14,8 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla
- * 'CentrosCostos' de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'CentrosCostos' de la
+ * base de datos
  *
  * @author Hugo David Sin Gutiérrez
  */
@@ -32,7 +32,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     public void crear(CentrosCostos centrosCostos) {
         try {
             System.out.println("PersistenciaCentrosCostos mano de obra " + centrosCostos.getManoobra());
-            if (centrosCostos.getManoobra().isEmpty() || centrosCostos.getManoobra().equals("")|| centrosCostos.getManoobra().equals(" ")) {
+            if (centrosCostos.getManoobra().isEmpty() || centrosCostos.getManoobra().equals("") || centrosCostos.getManoobra().equals(" ")) {
                 centrosCostos.setManoobra(null);
             }
             em.persist(centrosCostos);
@@ -97,35 +97,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
-    /**
-     * Método realizado por ?????
-     *
-     * @param secEmpresa
-     * @return
-     */
     @Override
-    public long contadorSecuenciaEmpresa(BigInteger secEmpresa) {
-        long so, vc, vp;
-        long total;
-        try {
-            Query query = em.createQuery("SELECT COUNT(so) FROM SolucionesNodos so WHERE so.secuencia = :secuenciaEmpr");
-            query.setParameter("secuenciaEmpr", secEmpresa);
-            so = query.getMaxResults();
-            Query qury = em.createQuery("SELECT COUNT(vc) FROM VigenciasCuentas vc WHERE vc.secuencia = :secuenciaEmpr");
-            qury.setParameter("secuenciaEmpr", secEmpresa);
-            vc = qury.getMaxResults();
-            Query que = em.createQuery("SELECT COUNT(vp) FROM VigenciasProrrateos vp WHERE vp.secuencia = :secuenciaEmpr");
-            que.setParameter("secuenciaEmpr", secEmpresa);
-            vp = que.getMaxResults();
-            total = so + vc + vp;
-            return total;
-        } catch (Exception e) {
-            System.out.println("Error en Persistencia PersistenciaCentrosCostos BuscarCentrosCostosEmpr " + e);
-            total = -1;
-            return total;
-        }
-    }
-
     public BigInteger contadorComprobantesContables(BigInteger secuencia) {
         try {
 

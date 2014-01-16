@@ -11,14 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'TercerosSucursales'
  * de la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucursalesInterface{
+public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucursalesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -77,16 +80,16 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
             return tercerosSucursales;
         }
     }
-    
+
     @Override
-    public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(BigInteger secuencia){
-        try{
+    public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(BigInteger secuencia) {
+        try {
             Query query = em.createQuery("SELECT ts FROM TercerosSucursales ts WHERE ts.tercero.secuencia = :secuenciaT");
             query.setParameter("secuenciaT", secuencia);
             List<TercerosSucursales> listTercerosS = query.getResultList();
             return listTercerosS;
-        } catch(Exception e){
-            System.out.println("Error buscarTercerosSucursalesPorTerceroSecuencia PersistenciaTerceroSurcusal : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error buscarTercerosSucursalesPorTerceroSecuencia PersistenciaTerceroSurcusal : " + e.toString());
             return null;
         }
     }

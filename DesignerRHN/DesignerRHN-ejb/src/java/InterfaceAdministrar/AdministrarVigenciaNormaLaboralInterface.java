@@ -18,15 +18,53 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarVigenciaNormaLaboralInterface {
 
-    public List<VigenciasNormasEmpleados> vigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado);
+    /**
+     * Metodo Encargado de traer las VigenciasNormasEmpleados de un Empleado
+     * Especifico.
+     *
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Lista de VigenciasNormasEmpleados.
+     */
+    public List<VigenciasNormasEmpleados> consultarVigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado);
 
-    public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listVNEModificadas);
+    /**
+     * Metodo encargado de Modificar VigenciasNormasEmpleados.
+     *
+     * @param listaVigenciasNormasEmpleados Lista VigenciasNormasEmpleados que
+     * se van a modificar.
+     */
+    public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados);
 
-    public void borrarVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEMpleados);
+    /**
+     * Metodo encargado de borrar VigenciasNormasEmpleados.
+     *
+     * @param listaVigenciasNormasEmpleados Lista VigenciasNormasEmpleados que
+     * se van a borrar.
+     */
+    public void borrarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados);
 
-    public void crearVigenciaNormaLaboral(VigenciasNormasEmpleados vigenciasNormasEmpleados);
+    /**
+     * Método encargado de crear VigenciasNormasEmpleados.
+     *
+     * @param listaVigenciasNormasEmpleados Lista VigenciasNormasEmpleados que
+     * se van a crear.
+     */
+    public void crearVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados);
 
-    public Empleados buscarEmpleado(BigInteger secuencia);
+    /**
+     * *
+     * Metodo encargado de buscar un Empleado especifico
+     *
+     * @param secEmpleado Secuencia del Empleado
+     * @return Empleado .
+     */
+    public Empleados consultarEmpleado(BigInteger secEmpleado);
 
-    public List<NormasLaborales> mostrarNormasLaborales();
+    /**
+     * Método encargado de recuperar las NormasLaborales necesarias para la
+     * lista de valores.
+     *
+     * @return Retorna una lista de NormasLaborales.
+     */
+    public List<NormasLaborales> lovNormasLaborales();
 }

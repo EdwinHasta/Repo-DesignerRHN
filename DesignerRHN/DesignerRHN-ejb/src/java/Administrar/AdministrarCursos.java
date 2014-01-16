@@ -29,7 +29,7 @@ public class AdministrarCursos implements AdministrarCursosInterface {
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<Cursos> listaCursos(){
+    public List<Cursos> consultarCursos(){
         List<Cursos> listaCursos;
         listaCursos = persistenciaCursos.cursos();
         return listaCursos;

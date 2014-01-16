@@ -29,7 +29,7 @@ public class AdministrarCargos implements  AdministrarCargosInterface{
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<Cargos> cargos() {
+    public List<Cargos> consultarCargos() {
         return persistenciaCargos.buscarCargos();        
     }
 }

@@ -715,7 +715,7 @@ public class ControlClasesAccidentes implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<ClasesAccidentes> getListClasesAccidentes() {
         if (listClasesAccidentes == null) {
-            listClasesAccidentes = administrarClasesAccidentes.listaClasesAccidentes();
+            listClasesAccidentes = administrarClasesAccidentes.consultarClasesAccidentes();
 
         }
         return listClasesAccidentes;

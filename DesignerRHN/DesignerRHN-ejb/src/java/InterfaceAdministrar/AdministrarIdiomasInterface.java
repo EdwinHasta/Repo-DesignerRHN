@@ -17,15 +17,50 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarIdiomasInterface {
 
-    public void modificarIdiomas(List<Idiomas> listTiposIndicadoresModificadas);
+    /**
+     * Método encargado de modificar Idiomas.
+     *
+     * @param listaIdiomas Lista Idiomas que se van a modificar.
+     */
+    public void modificarIdiomas(List<Idiomas> listaIdiomas);
 
-    public void borrarIdiomas(Idiomas idiomas);
+    /**
+     * Método encargado de borrar Idiomas.
+     *
+     * @param listaIdiomas Lista Idiomas que se van a borrar.
+     */
+    public void borrarIdiomas(List<Idiomas> listaIdiomas);
 
-    public void crearIdiomas(Idiomas idiomas);
+    /**
+     * Método encargado de crear Idiomas.
+     *
+     * @param listaIdiomas Lista Idiomas que se van a crear.
+     */
+    public void crearIdiomas(List<Idiomas> listaIdiomas);
 
+    /**
+     * Método encargado de recuperar un Idioma dada su secuencia.
+     *
+     * @param secIdiomas Secuencia del Idioma.
+     * @return Retorna un Idioma cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public Idiomas consultarIdioma(BigInteger secIdiomas);
+
+    /**
+     * Metodo encargado de traer todas los Idiomas de la base de datos.
+     *
+     * @return Lista de Idiomas.
+     */
     public List<Idiomas> mostrarIdiomas();
 
-    public Idiomas mostrarIdioma(BigInteger secIdiomas);
-
-    public BigInteger verificarBorradoIdiomasPersonas(BigInteger secuenciaIdiomas);
+    /**
+     * Método encargado de contar la cantidad de IdiomasPersonas relacionadas
+     * con un Idioma específico.
+     *
+     * @param secIdiomas Secuencia del Idiomas.
+     * @return Retorna un número indicando la cantidad de IdiomasPersonas cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarBorradoIdiomasPersonas(BigInteger secIdiomas);
 }

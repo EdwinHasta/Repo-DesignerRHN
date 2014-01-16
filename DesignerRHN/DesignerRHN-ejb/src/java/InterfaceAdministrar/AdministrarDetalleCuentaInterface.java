@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfaceAdministrar;
 
@@ -10,14 +9,28 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'DetalleConcepto'.
+ * @author betelgeuse.
  */
 public interface AdministrarDetalleCuentaInterface {
-
-    public List<VigenciasCuentas> listVigenciasCuentasCredito(BigInteger secuenciaC);
-
-    public List<VigenciasCuentas> listVigenciasCuentasDebito(BigInteger secuenciaC);
-
-    public Cuentas cuentaActual(BigInteger secuencia);
+    /**
+     * Método encargado de recuperar las VigenciasCuentas asociadas a una Cuenta de credito.
+     * @param secCredito Secuencia de la cuenta de credito.
+     * @return Retorna una lista de VigenciasCuentas cuya Cuenta de credito tiene como secuencia el
+     * valor dado por parámetro.
+     */
+    public List<VigenciasCuentas> listaVigenciasCuentasCredito(BigInteger secCredito);
+    /**
+     * Método encargado de recuperar las VigenciasCuentas asociadas a una Cuenta debito.
+     * @param secDebito Secuencia de la cuenta de debito.
+     * @return Retorna una lista de VigenciasCuentas cuya Cuenta debito tiene como secuencia el
+     * valor dado por parámetro.
+     */
+    public List<VigenciasCuentas> listaVigenciasCuentasDebito(BigInteger secDebito);
+    /**
+     * Método encargado de recuperar una Cuenta dada su secuencia.
+     * @param secCuenta Secuencia de la Cuenta.
+     * @return Retorna la Cuenta cuya secuencia coincida con el valor del parámetro. 
+     */
+    public Cuentas mostrarCuenta(BigInteger secCuenta);
 }

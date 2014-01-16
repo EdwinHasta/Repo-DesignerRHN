@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarSoCondicionesAmbientalesPInterface;
 import Entidades.SoCondicionesAmbientalesP;
 import InterfacePersistencia.PersistenciaSoCondicionesAmbientalesPInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -24,45 +22,54 @@ public class AdministrarSoCondicionesAmbientalesP implements AdministrarSoCondic
 
     @EJB
     PersistenciaSoCondicionesAmbientalesPInterface persistenciaSoCondicionesAmbientalesP;
-    private SoCondicionesAmbientalesP soCondicionesAmbientalesPSeleccionada;
-    private SoCondicionesAmbientalesP soCondicionesAmbientalesP;
-    private List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP;
-    private BigInteger verificarSoAccidtenesMedicos;
 
-    public void modificarSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesPModificada) {
-        for (int i = 0; i < listSoCondicionesAmbientalesPModificada.size(); i++) {
+    @Override
+    public void modificarSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP) {
+        for (int i = 0; i < listSoCondicionesAmbientalesP.size(); i++) {
             System.out.println("Administrar Modificando...");
-            soCondicionesAmbientalesPSeleccionada = listSoCondicionesAmbientalesPModificada.get(i);
-            persistenciaSoCondicionesAmbientalesP.editar(soCondicionesAmbientalesPSeleccionada);
+            persistenciaSoCondicionesAmbientalesP.editar(listSoCondicionesAmbientalesP.get(i));
         }
     }
 
-    public void borrarSoCondicionesAmbientalesP(SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
-        persistenciaSoCondicionesAmbientalesP.borrar(soCondicionesAmbientalesP);
+    @Override
+    public void borrarSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP) {
+        for (int i = 0; i < listSoCondicionesAmbientalesP.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaSoCondicionesAmbientalesP.borrar(listSoCondicionesAmbientalesP.get(i));
+        }
     }
 
-    public void crearSoCondicionesAmbientalesP(SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
-        persistenciaSoCondicionesAmbientalesP.crear(soCondicionesAmbientalesP);
+    @Override
+    public void crearSoCondicionesAmbientalesP(List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP) {
+        for (int i = 0; i < listSoCondicionesAmbientalesP.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaSoCondicionesAmbientalesP.crear(listSoCondicionesAmbientalesP.get(i));
+        }
     }
 
-    public List<SoCondicionesAmbientalesP> mostrarSoCondicionesAmbientalesP() {
+    @Override
+    public List<SoCondicionesAmbientalesP> consultarSoCondicionesAmbientalesP() {
+        List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP;
         listSoCondicionesAmbientalesP = persistenciaSoCondicionesAmbientalesP.buscarSoCondicionesAmbientalesP();
         return listSoCondicionesAmbientalesP;
     }
 
-    public SoCondicionesAmbientalesP mostrarSoCondicionAmbientalP(BigInteger secSoCondicionesAmbientalesP) {
+    @Override
+    public SoCondicionesAmbientalesP consultarSoCondicionAmbientalP(BigInteger secSoCondicionesAmbientalesP) {
+        SoCondicionesAmbientalesP soCondicionesAmbientalesP;
         soCondicionesAmbientalesP = persistenciaSoCondicionesAmbientalesP.buscarSoCondicionAmbientalP(secSoCondicionesAmbientalesP);
         return soCondicionesAmbientalesP;
     }
 
+    @Override
     public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
+        BigInteger verificarSoAccidtenesMedicos;
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
-            verificarSoAccidtenesMedicos = persistenciaSoCondicionesAmbientalesP.contadorSoAccidentesMedicos(secuenciaElementos);
+            return verificarSoAccidtenesMedicos = persistenciaSoCondicionesAmbientalesP.contadorSoAccidentesMedicos(secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARSOCONDICIONSEAMBIENTALESP verificarSoAccidtenesMedicos ERROR :" + e);
-        } finally {
-            return verificarSoAccidtenesMedicos;
+            return null;
         }
     }
 }

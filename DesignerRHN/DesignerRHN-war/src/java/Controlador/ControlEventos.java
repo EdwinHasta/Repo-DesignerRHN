@@ -393,7 +393,7 @@ public class ControlEventos implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             System.err.println("Control Secuencia de verificarBorrado  a borrar");
-            vigenciasEventos = administrarEventos.verificarBorradoVigenciasEventos(listEventos.get(index).getSecuencia());
+            vigenciasEventos = administrarEventos.verificarVigenciasEventos(listEventos.get(index).getSecuencia());
 
             if (vigenciasEventos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -442,10 +442,7 @@ public class ControlEventos implements Serializable {
             }
             System.out.println("Realizando GruposInfAdicionales");
             if (!borrarEventos.isEmpty()) {
-                for (int i = 0; i < borrarEventos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarEventos.borrarEventos(borrarEventos.get(i));
-                }
+                administrarEventos.borrarEventos(borrarEventos);
                 //mostrarBorrados
                 registrosBorrados = borrarEventos.size();
                 context.update("form:mostrarBorrados");
@@ -453,12 +450,7 @@ public class ControlEventos implements Serializable {
                 borrarEventos.clear();
             }
             if (!crearEventos.isEmpty()) {
-                for (int i = 0; i < crearEventos.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarEventos.crearEventos(crearEventos.get(i));
-
-                }
+                administrarEventos.crearEventos(crearEventos);
                 crearEventos.clear();
             }
             if (!modificarEventos.isEmpty()) {
@@ -804,7 +796,7 @@ public class ControlEventos implements Serializable {
 
     public List<Eventos> getListEventos() {
         if (listEventos == null) {
-            listEventos = administrarEventos.mostrarEventos();
+            listEventos = administrarEventos.consultarEventos();
         }
         return listEventos;
     }

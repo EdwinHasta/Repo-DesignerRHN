@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Controlador;
 
 import Entidades.Ciudades;
@@ -548,10 +547,8 @@ public class ControlJuzgados implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarJuzgados.isEmpty()) {
-                for (int i = 0; i < borrarJuzgados.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarJuzgados.borrarJuzgados(borrarJuzgados.get(i));
-                }
+                administrarJuzgados.borrarJuzgados(borrarJuzgados);
+
                 //mostrarBorrados
                 registrosBorrados = borrarJuzgados.size();
                 context.update("form:mostrarBorrados");
@@ -559,18 +556,12 @@ public class ControlJuzgados implements Serializable {
                 borrarJuzgados.clear();
             }
             if (!crearJuzgados.isEmpty()) {
-                for (int i = 0; i < crearJuzgados.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarJuzgados.crearJuzgados(crearJuzgados.get(i));
-
-                }
+                administrarJuzgados.crearJuzgados(crearJuzgados);
                 crearJuzgados.clear();
             }
             if (!modificarJuzgados.isEmpty()) {
-                for (int i = 0; i < modificarJuzgados.size(); i++) {
-                    administrarJuzgados.modificarJuzgados(modificarJuzgados.get(i));
-                }
+                administrarJuzgados.modificarJuzgados(modificarJuzgados);
+
                 modificarJuzgados.clear();
             }
             System.out.println("Se guardaron los datos con exito");
@@ -1221,7 +1212,7 @@ public class ControlJuzgados implements Serializable {
      *------------------------------------------------------------------------------*/
     public List<Juzgados> getListJuzgadosPorCiudad() {
         if (listJuzgadosPorCiudad == null) {
-            listJuzgadosPorCiudad = administrarJuzgados.buscarJuzgadosPorCiudadGeneral();
+            listJuzgadosPorCiudad = administrarJuzgados.LOVJuzgadosPorCiudadGeneral();
         }
         return listJuzgadosPorCiudad;
     }
@@ -1264,7 +1255,7 @@ public class ControlJuzgados implements Serializable {
 
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
-            listaCiudades = administrarJuzgados.buscarCiudades();
+            listaCiudades = administrarJuzgados.consultarLOVCiudades();
         }
         return listaCiudades;
     }
@@ -1275,7 +1266,7 @@ public class ControlJuzgados implements Serializable {
 
     public List<Juzgados> getListaJuzgadosPorCiudadBoton() {
         if (listaJuzgadosPorCiudadBoton == null) {
-            listaJuzgadosPorCiudadBoton = administrarJuzgados.buscarJuzgadosPorCiudad(ciudadSeleccionada.getSecuencia());
+            listaJuzgadosPorCiudadBoton = administrarJuzgados.consultarJuzgadosPorCiudad(ciudadSeleccionada.getSecuencia());
             listJuzgadosPorCiudad = listaJuzgadosPorCiudadBoton;
             RequestContext.getCurrentInstance().update("form:datosJuzgados");
         }

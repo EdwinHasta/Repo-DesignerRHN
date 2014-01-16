@@ -576,7 +576,7 @@ public class ControlVigenciasNormasEmpleado implements Serializable {
     }
 
     public Empleados getEmpleado() {
-        empleado = administrarVigenciaNormaLaboral.buscarEmpleado(secuenciaEmpleado);
+        empleado = administrarVigenciaNormaLaboral.consultarEmpleado(secuenciaEmpleado);
         return empleado;
     }
 

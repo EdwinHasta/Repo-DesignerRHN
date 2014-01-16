@@ -16,16 +16,48 @@ import javax.ejb.Local;
  */
 @Local
 public interface AdministrarMetodosPagosInterface {
+  /**
+     * Método encargado de modificar MetodosPagos.
+     *
+     * @param listaMetodosPagos Lista MetodosPagos que se van a modificar.
+     */
+    public void modificarMetodosPagos(List<MetodosPagos> listaMetodosPagos);
+ /**
+     * Método encargado de borrar MetodosPagos.
+     *
+     * @param listaMetodosPagos Lista MetodosPagos que se van a borrar.
+     */
+    public void borrarMetodosPagos(List<MetodosPagos> listaMetodosPagos);
+/**
+     * Método encargado de crear MetodosPagos.
+     *
+     * @param listaMetodosPagos Lista MetodosPagos que se van a crear.
+     */
+    public void crearMetodosPagos(List<MetodosPagos> listaMetodosPagos);
 
-    public void modificarMetodosPagos(List<MetodosPagos> listMotivosCambiosCargosModificadas);
+    /**
+     * Método encargado de recuperar un MetodoPago dada su secuencia.
+     *
+     * @param secMetodosPagos Secuencia del MetodoPago.
+     * @return Retorna una Lesion cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public MetodosPagos consultarMetodoPago(BigInteger secMetodosPagos);
 
-    public void borrarMetodosPagos(MetodosPagos metodosPagos);
+    /**
+     * Metodo encargado de traer todas las MetodosPagos de la base de datos.
+     *
+     * @return Lista de MetodosPagos.
+     */
+    public List<MetodosPagos> consultarMetodosPagos();
 
-    public void crearMetodosPagos(MetodosPagos metodosPagos);
-
-    public List<MetodosPagos> mostrarMetodosPagos();
-
-    public MetodosPagos mostrarMetodoPago(BigInteger secMetodosPagos);
-
-    public BigInteger verificarVigenciasFormasPagos(BigInteger secuenciaMetodoPago);
+    /**
+     * Método encargado de contar la cantidad de VigenciasFormasPagos
+     * relacionadas con un MetodoPago específico.
+     *
+     * @param secMetodoPago Secuencia del MetodoPago.
+     * @return Retorna un número indicando la cantidad de VigenciasFormasPagos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger verificarMetodosPagosVigenciasFormasPagos(BigInteger secMetodoPago);
 }

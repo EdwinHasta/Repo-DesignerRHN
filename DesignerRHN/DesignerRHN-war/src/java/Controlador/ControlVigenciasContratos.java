@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -76,6 +77,8 @@ public class ControlVigenciasContratos implements Serializable {
     private boolean permitirIndex;
     private BigInteger backUpSecRegistro;
     private BigInteger secRegistro;
+    private Date fechaParametro;
+    private Date fechaIni, fechaFin;
 
     public ControlVigenciasContratos() {
         secRegistro = null;
@@ -150,6 +153,113 @@ public class ControlVigenciasContratos implements Serializable {
             }
             index = -1;
             secRegistro = null;
+        }
+    }
+
+    public boolean validarFechasRegistro(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        System.err.println("fechaparametro : " + fechaParametro);
+        boolean retorno = true;
+        if (i == 0) {
+            VigenciasContratos auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = vigenciasContratos.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtrarVC.get(index);
+            }
+            if (auxiliar.getFechafinal() != null) {
+                if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (auxiliar.getFechafinal() == null) {
+                if (auxiliar.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 1) {
+            if (nuevaVigencia.getFechafinal() != null) {
+                if (nuevaVigencia.getFechainicial().after(fechaParametro) && nuevaVigencia.getFechainicial().before(nuevaVigencia.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (nuevaVigencia.getFechafinal() == null) {
+                if (nuevaVigencia.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 2) {
+            if (duplicarVC.getFechafinal() != null) {
+                if (duplicarVC.getFechainicial().after(fechaParametro) && duplicarVC.getFechainicial().before(duplicarVC.getFechafinal())) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            if (duplicarVC.getFechafinal() == null) {
+                if (duplicarVC.getFechainicial().after(fechaParametro)) {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+    }
+
+    public void modificarFechas(int i, int c) {
+        VigenciasContratos auxiliar = null;
+        if (tipoLista == 0) {
+            auxiliar = vigenciasContratos.get(index);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtrarVC.get(index);
+        }
+        if (auxiliar.getFechainicial() != null) {
+            boolean retorno = false;
+            index = i;
+            retorno = validarFechasRegistro(0);
+            if (retorno == true) {
+                cambiarIndice(i, c);
+                modificarVC(i);
+            } else {
+                if (tipoLista == 0) {
+                    vigenciasContratos.get(i).setFechafinal(fechaFin);
+                    vigenciasContratos.get(i).setFechainicial(fechaIni);
+                }
+                if (tipoLista == 1) {
+                    filtrarVC.get(i).setFechafinal(fechaFin);
+                    filtrarVC.get(i).setFechainicial(fechaIni);
+
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVCEmpleado");
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            if (tipoLista == 0) {
+                vigenciasContratos.get(i).setFechainicial(fechaIni);
+            }
+            if (tipoLista == 1) {
+                filtrarVC.get(i).setFechainicial(fechaIni);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVCEmpleado");
+            context.execute("errorRegNew.show()");
         }
     }
 
@@ -356,14 +466,27 @@ public class ControlVigenciasContratos implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = vigenciasContratos.get(index).getSecuencia();
-            if (cualCelda == 2) {
-                legislacionLaboral = vigenciasContratos.get(index).getContrato().getDescripcion();
-            } else if (cualCelda == 3) {
-                tipoContrato = vigenciasContratos.get(index).getTipocontrato().getNombre();
+            if (tipoLista == 0) {
+                fechaIni = vigenciasContratos.get(index).getFechainicial();
+                fechaFin = vigenciasContratos.get(index).getFechafinal();
+                secRegistro = vigenciasContratos.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    legislacionLaboral = vigenciasContratos.get(index).getContrato().getDescripcion();
+                } else if (cualCelda == 3) {
+                    tipoContrato = vigenciasContratos.get(index).getTipocontrato().getNombre();
+                }
+            }
+            if (tipoLista == 1) {
+                fechaIni = filtrarVC.get(index).getFechainicial();
+                fechaFin = filtrarVC.get(index).getFechafinal();
+                secRegistro = filtrarVC.get(index).getSecuencia();
+                if (cualCelda == 2) {
+                    legislacionLaboral = filtrarVC.get(index).getContrato().getDescripcion();
+                } else if (cualCelda == 3) {
+                    tipoContrato = filtrarVC.get(index).getTipocontrato().getNombre();
+                }
             }
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     //GUARDAR
@@ -372,17 +495,14 @@ public class ControlVigenciasContratos implements Serializable {
      */
     public void guardarCambiosVC() {
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Vigencias Contratos");
             if (!listVCBorrar.isEmpty()) {
                 for (int i = 0; i < listVCBorrar.size(); i++) {
-                    System.out.println("Borrando...");
                     administrarVigenciasContratos.borrarVC(listVCBorrar.get(i));
                 }
                 listVCBorrar.clear();
             }
             if (!listVCCrear.isEmpty()) {
                 for (int i = 0; i < listVCCrear.size(); i++) {
-                    System.out.println("Creando...");
                     administrarVigenciasContratos.crearVC(listVCCrear.get(i));
                 }
                 listVCCrear.clear();
@@ -391,7 +511,6 @@ public class ControlVigenciasContratos implements Serializable {
                 administrarVigenciasContratos.modificarVC(listVCModificar);
                 listVCModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
             vigenciasContratos = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVCEmpleado");
@@ -451,7 +570,6 @@ public class ControlVigenciasContratos implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFechaInicial");
                 context.execute("editarFechaInicial.show()");
@@ -479,40 +597,51 @@ public class ControlVigenciasContratos implements Serializable {
      * Metodo que se encarga de agregar un nueva VigenciasContratos
      */
     public void agregarNuevaVC() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            vcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaInicial");
-            vcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaFinal");
-            vcFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vcContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcContrato");
-            vcContrato.setFilterStyle("display: none; visibility: hidden;");
-            vcTipoContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcTipoContrato");
-            vcTipoContrato.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
-            bandera = 0;
-            filtrarVC = null;
-            tipoLista = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaVigencia.setSecuencia(l);
-        nuevaVigencia.setEmpleado(empleado);
-        listVCCrear.add(nuevaVigencia);
+        if (nuevaVigencia.getFechainicial() != null && nuevaVigencia.getContrato().getSecuencia() != null) {
+            if (validarFechasRegistro(1) == true) {
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    vcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaInicial");
+                    vcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaFinal");
+                    vcFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    vcContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcContrato");
+                    vcContrato.setFilterStyle("display: none; visibility: hidden;");
+                    vcTipoContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcTipoContrato");
+                    vcTipoContrato.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
+                    bandera = 0;
+                    filtrarVC = null;
+                    tipoLista = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigencia.setSecuencia(l);
+                nuevaVigencia.setEmpleado(empleado);
+                listVCCrear.add(nuevaVigencia);
 
-        vigenciasContratos.add(nuevaVigencia);
-        nuevaVigencia = new VigenciasContratos();
-        nuevaVigencia.setContrato(new Contratos());
-        nuevaVigencia.setTipocontrato(new TiposContratos());
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVCEmpleado");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+                vigenciasContratos.add(nuevaVigencia);
+                nuevaVigencia = new VigenciasContratos();
+                nuevaVigencia.setContrato(new Contratos());
+                nuevaVigencia.setTipocontrato(new TiposContratos());
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVCEmpleado");
+                context.execute("NuevoRegistroVC.hide()");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                index = -1;
+                secRegistro = null;
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
     //LIMPIAR NUEVO REGISTRO
 
@@ -554,7 +683,9 @@ public class ControlVigenciasContratos implements Serializable {
                 duplicarVC.setContrato(filtrarVC.get(index).getContrato());
                 duplicarVC.setTipocontrato(filtrarVC.get(index).getTipocontrato());
             }
-
+            if (duplicarVC.getTipocontrato() == null) {
+                duplicarVC.setTipocontrato(new TiposContratos());
+            }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVC");
             context.execute("DuplicarRegistroVC.show()");
@@ -568,33 +699,43 @@ public class ControlVigenciasContratos implements Serializable {
      * VigenciasContratos
      */
     public void confirmarDuplicar() {
-
-        vigenciasContratos.add(duplicarVC);
-        listVCCrear.add(duplicarVC);
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVCEmpleado");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+        if (duplicarVC.getFechainicial() != null && duplicarVC.getContrato().getSecuencia() != null) {
+            if (validarFechasRegistro(2) == true) {
+                vigenciasContratos.add(duplicarVC);
+                listVCCrear.add(duplicarVC);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVCEmpleado");
+                context.execute("DuplicarRegistroVC.hide()");
+                index = -1;
+                secRegistro = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                }
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    vcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vcFechaInicial");
+                    vcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaFinal");
+                    vcFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    vcContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcContrato");
+                    vcContrato.setFilterStyle("display: none; visibility: hidden;");
+                    vcTipoContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcTipoContrato");
+                    vcTipoContrato.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
+                    bandera = 0;
+                    filtrarVC = null;
+                    tipoLista = 0;
+                }
+                duplicarVC = new VigenciasContratos();
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorRegNew.show()");
         }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            vcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vcFechaInicial");
-            vcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaFinal");
-            vcFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vcContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcContrato");
-            vcContrato.setFilterStyle("display: none; visibility: hidden;");
-            vcTipoContrato = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcTipoContrato");
-            vcTipoContrato.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
-            bandera = 0;
-            filtrarVC = null;
-            tipoLista = 0;
-        }
-        duplicarVC = new VigenciasContratos();
     }
     //LIMPIAR DUPLICAR
 
@@ -662,7 +803,6 @@ public class ControlVigenciasContratos implements Serializable {
      */
     public void activarCtrlF11() {
         if (bandera == 0) {
-            System.out.println("Activar");
             vcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaInicial");
             vcFechaInicial.setFilterStyle("width: 60px");
             vcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaFinal");
@@ -674,7 +814,6 @@ public class ControlVigenciasContratos implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
             vcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaInicial");
             vcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             vcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFechaFinal");
@@ -735,7 +874,6 @@ public class ControlVigenciasContratos implements Serializable {
             tipoActualizacion = 0;
         } else if (LND == 1) {
             tipoActualizacion = 1;
-            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
         } else if (LND == 2) {
             tipoActualizacion = 2;
         }
@@ -980,9 +1118,16 @@ public class ControlVigenciasContratos implements Serializable {
         try {
             if (vigenciasContratos == null) {
                 return vigenciasContratos = administrarVigenciasContratos.VigenciasContratosEmpleado(empleado.getSecuencia());
-            } else {
-                return vigenciasContratos;
             }
+            if (!vigenciasContratos.isEmpty()) {
+                for (int i = 0; i < vigenciasContratos.size(); i++) {
+                    if (vigenciasContratos.get(i).getTipocontrato() == null) {
+                        vigenciasContratos.get(i).setTipocontrato(new TiposContratos());
+                    }
+                }
+            }
+            return vigenciasContratos;
+
         } catch (Exception e) {
             System.out.println("Error...!! getVigenciasContratosEmpleado ");
             return null;

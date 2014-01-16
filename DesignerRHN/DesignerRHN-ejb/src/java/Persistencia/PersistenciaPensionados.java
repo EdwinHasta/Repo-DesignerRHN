@@ -89,12 +89,13 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     @Override
     public Pensionados buscarPensionVigenciaSecuencia(BigInteger secVigencia) {
         try {
+            System.out.println("secVigencia : "+secVigencia);
             Query query = em.createQuery("SELECT p FROM Pensionados p WHERE p.vigenciatipotrabajador.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
             Pensionados pensionVigencia = (Pensionados) query.getSingleResult();
             return pensionVigencia;
         } catch (Exception e) {
-            System.out.println("buscarPensionVigenciaSecuencia Error (PersistenciaPensionados)");
+            System.out.println("buscarPensionVigenciaSecuencia Error (PersistenciaPensionados): "+e.toString());
             return new Pensionados();
         }
     }

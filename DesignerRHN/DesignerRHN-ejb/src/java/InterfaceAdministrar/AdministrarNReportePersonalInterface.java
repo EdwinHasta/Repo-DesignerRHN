@@ -37,5 +37,6 @@ public interface AdministrarNReportePersonalInterface {
     public List<Empleados> listEmpleados();
     public List<TiposTelefonos> listTiposTelefonos();
     public List<EstadosCiviles> listEstadosCiviles();
+    public void guardarCambiosInfoReportes(List<Inforeportes> listaIR);
     
 }

@@ -22,37 +22,41 @@ public class AdministrarEnfermedades implements AdministrarEnfermedadesInterface
 
     @EJB
     PersistenciaEnfermedadesInterface persistenciaEnfermedades;
-    private Enfermedades enfermedadSeleccionado;
-    private Enfermedades enfermedad;
-    private List<Enfermedades> listEnfermedades;
 
     public void modificarEnfermedades(List<Enfermedades> listDeportesModificadas) {
         for (int i = 0; i < listDeportesModificadas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            enfermedadSeleccionado = listDeportesModificadas.get(i);
-            persistenciaEnfermedades.editar(enfermedadSeleccionado);
+            persistenciaEnfermedades.editar(listDeportesModificadas.get(i));
         }
     }
 
-    public void borrarEnfermedades(Enfermedades deportes) {
-        persistenciaEnfermedades.borrar(deportes);
+    public void borrarEnfermedades(List<Enfermedades> listDeportesModificadas) {
+        for (int i = 0; i < listDeportesModificadas.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaEnfermedades.borrar(listDeportesModificadas.get(i));
+        }
     }
 
-    public void crearEnfermedades(Enfermedades deportes) {
-        persistenciaEnfermedades.crear(deportes);
+    public void crearEnfermedades(List<Enfermedades> listDeportesModificadas) {
+        for (int i = 0; i < listDeportesModificadas.size(); i++) {
+            System.out.println("Administrar Crear...");
+            persistenciaEnfermedades.crear(listDeportesModificadas.get(i));
+        }
     }
 
-    public List<Enfermedades> mostrarEnfermedades() {
+    public List<Enfermedades> consultarEnfermedades() {
+        List<Enfermedades> listEnfermedades;
         listEnfermedades = persistenciaEnfermedades.buscarEnfermedades();
         return listEnfermedades;
     }
 
-    public Enfermedades mostrarEnfermedad(BigInteger secDeportes) {
+    public Enfermedades consultarEnfermedad(BigInteger secDeportes) {
+        Enfermedades enfermedad;
         enfermedad = persistenciaEnfermedades.buscarEnfermedad(secDeportes);
         return enfermedad;
     }
 
-    public BigInteger contadorAusentimos(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger verificarAusentimos(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorAusentimos = null;
         try {
             contadorAusentimos = persistenciaEnfermedades.contadorAusentimos(secuenciaTiposAuxilios);
@@ -63,7 +67,7 @@ public class AdministrarEnfermedades implements AdministrarEnfermedadesInterface
         }
     }
 
-    public BigInteger contadorDetallesLicencias(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger verificarDetallesLicencias(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorDetallesLicencias = null;
         try {
             contadorDetallesLicencias = persistenciaEnfermedades.contadorDetallesLicencias(secuenciaTiposAuxilios);
@@ -74,7 +78,7 @@ public class AdministrarEnfermedades implements AdministrarEnfermedadesInterface
         }
     }
 
-    public BigInteger contadorEnfermedadesPadecidas(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger verificarEnfermedadesPadecidas(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorEnfermedadesPadecidas = null;
         try {
             contadorEnfermedadesPadecidas = persistenciaEnfermedades.contadorEnfermedadesPadecidas(secuenciaTiposAuxilios);
@@ -85,7 +89,7 @@ public class AdministrarEnfermedades implements AdministrarEnfermedadesInterface
         }
     }
 
-    public BigInteger contadorSoausentismos(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger verificarSoAusentismos(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorSoausentismos = null;
         try {
             contadorSoausentismos = persistenciaEnfermedades.contadorSoausentismos(secuenciaTiposAuxilios);
@@ -95,7 +99,8 @@ public class AdministrarEnfermedades implements AdministrarEnfermedadesInterface
             return contadorSoausentismos;
         }
     }
-    public BigInteger contadorSorevisionessSistemas(BigInteger secuenciaTiposAuxilios) {
+
+    public BigInteger verificarSoRevisionesSistemas(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorSorevisionessSistemas = null;
         try {
             contadorSorevisionessSistemas = persistenciaEnfermedades.contadorSorevisionessSistemas(secuenciaTiposAuxilios);

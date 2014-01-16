@@ -22,36 +22,36 @@ public class AdministrarEnfoques implements AdministrarEnfoquesInterface {
 
     @EJB
     PersistenciaEnfoquesInterface PersistenciaEnfoques;
-    private Enfoques EnfoqueSeleccionado;
-    private Enfoques enfoques;
-    private List<Enfoques> listEnfoques;
 
-    public void modificarEnfoques(List<Enfoques> listEnfoquesModificadas) {
-        for (int i = 0; i < listEnfoquesModificadas.size(); i++) {
+    public void modificarEnfoques(List<Enfoques> listEnfoques) {
+        for (int i = 0; i < listEnfoques.size(); i++) {
             System.out.println("Administrar Modificando...");
-            EnfoqueSeleccionado = listEnfoquesModificadas.get(i);
-            PersistenciaEnfoques.editar(EnfoqueSeleccionado);
+            PersistenciaEnfoques.editar(listEnfoques.get(i));
         }
     }
 
-    public void borrarEnfoques(Enfoques motivosLocalizaciones) {
-        PersistenciaEnfoques.borrar(motivosLocalizaciones);
+    public void borrarEnfoques(List<Enfoques> listEnfoques) {
+        for (int i = 0; i < listEnfoques.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            PersistenciaEnfoques.borrar(listEnfoques.get(i));
+        }
     }
 
-    public void crearEnfoques(Enfoques motivosLocalizaciones) {
-        PersistenciaEnfoques.crear(motivosLocalizaciones);
+    public void crearEnfoques(List<Enfoques> listEnfoques) {
+        for (int i = 0; i < listEnfoques.size(); i++) {
+            System.out.println("Administrar Creando...");
+            PersistenciaEnfoques.crear(listEnfoques.get(i));
+        }
     }
 
-    public void buscarEnfoques(Enfoques motivosLocalizaciones) {
-        PersistenciaEnfoques.crear(motivosLocalizaciones);
-    }
-
-    public List<Enfoques> mostrarEnfoques() {
+    public List<Enfoques> consultarEnfoques() {
+        List<Enfoques> listEnfoques;
         listEnfoques = PersistenciaEnfoques.buscarEnfoques();
         return listEnfoques;
     }
 
-    public Enfoques mostrarEnfoque(BigInteger secEnfoques) {
+    public Enfoques consultarEnfoque(BigInteger secEnfoques) {
+        Enfoques enfoques;
         enfoques = PersistenciaEnfoques.buscarEnfoque(secEnfoques);
         return enfoques;
     }

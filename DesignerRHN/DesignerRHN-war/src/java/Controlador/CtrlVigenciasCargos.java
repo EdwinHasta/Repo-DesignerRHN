@@ -130,7 +130,7 @@ public class CtrlVigenciasCargos implements Serializable {
 
     public Empleados getEmpleado() {
         try {
-            empleado = administrarCarpetaPersonal.buscarEmpleado(secuencia);
+            empleado = administrarCarpetaPersonal.consultarEmpleado(secuencia);
         } catch (Exception e) {
             System.out.println("Upsss");
         }
@@ -140,7 +140,7 @@ public class CtrlVigenciasCargos implements Serializable {
     public List<VigenciasCargos> getVigenciasCargosEmpleados() {
         try {
             //BigInteger a = BigInteger.valueOf(10661039);
-            vigenciasCargosEmpleados = administrarCarpetaPersonal.vigenciasEmpleado(secuencia);
+            vigenciasCargosEmpleados = administrarCarpetaPersonal.consultarVigenciasCargosEmpleado(secuencia);
         } catch (Exception e) {
             System.out.println("Tambien Upsss");
         }
@@ -192,7 +192,7 @@ public class CtrlVigenciasCargos implements Serializable {
     public List<Aficiones> getListAficiones() {
         if (listAficiones == null) {
 //            listAficiones = administrarCarpetaDesigner.buscarAficiones();
-            listAficiones = administrarCarpetaDesigner.buscarAficiones();
+            listAficiones = administrarCarpetaDesigner.consultarAficiones();
             return listAficiones;
         } else {
             return listAficiones;
@@ -269,7 +269,7 @@ public class CtrlVigenciasCargos implements Serializable {
                 listAficionesCrear.clear();
             }
             if (!listAficionesModificar.isEmpty()) {
-                administrarCarpetaDesigner.modificarAficion(listAficionesModificar);
+                administrarCarpetaDesigner.modificarAficiones(listAficionesModificar);
                 listAficionesModificar.clear();
             }
             listAficiones = null;

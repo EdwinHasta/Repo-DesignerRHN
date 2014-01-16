@@ -26,33 +26,44 @@ public class AdministrarGruposInfAdicionales implements AdministrarGruposInfAdic
     private GruposInfAdicionales gruposInfAdicionales;
     private List<GruposInfAdicionales> listGruposInfAdicionales;
 
-    public void modificarGruposInfAdicionales(List<GruposInfAdicionales> listDeportesModificadas) {
-        for (int i = 0; i < listDeportesModificadas.size(); i++) {
+    @Override
+    public void modificarGruposInfAdicionales(List<GruposInfAdicionales> listGruposInfAdicionales) {
+        for (int i = 0; i < listGruposInfAdicionales.size(); i++) {
             System.out.println("Administrar Modificando...");
-            grupoInfAdicionalSeleccionado = listDeportesModificadas.get(i);
-            persistenciaGruposInfAdicionales.editar(grupoInfAdicionalSeleccionado);
+            persistenciaGruposInfAdicionales.editar(listGruposInfAdicionales.get(i));
         }
     }
 
-    public void borrarGruposInfAdicionales(GruposInfAdicionales deportes) {
-        persistenciaGruposInfAdicionales.borrar(deportes);
+    @Override
+    public void borrarGruposInfAdicionales(List<GruposInfAdicionales> listGruposInfAdicionales) {
+        for (int i = 0; i < listGruposInfAdicionales.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaGruposInfAdicionales.borrar(listGruposInfAdicionales.get(i));
+        }
     }
 
-    public void crearGruposInfAdicionales(GruposInfAdicionales deportes) {
-        persistenciaGruposInfAdicionales.crear(deportes);
+    @Override
+    public void crearGruposInfAdicionales(List<GruposInfAdicionales> listGruposInfAdicionales) {
+        for (int i = 0; i < listGruposInfAdicionales.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaGruposInfAdicionales.crear(listGruposInfAdicionales.get(i));
+        }
     }
 
-    public List<GruposInfAdicionales> mostrarGruposInfAdicionales() {
+    @Override
+    public List<GruposInfAdicionales> consultarGruposInfAdicionales() {
         listGruposInfAdicionales = persistenciaGruposInfAdicionales.buscarGruposInfAdicionales();
         return listGruposInfAdicionales;
     }
 
-    public GruposInfAdicionales mostrarGrupoInfAdicional(BigInteger secDeportes) {
+    @Override
+    public GruposInfAdicionales consultarGrupoInfAdicional(BigInteger secDeportes) {
         gruposInfAdicionales = persistenciaGruposInfAdicionales.buscarGrupoInfAdicional(secDeportes);
         return gruposInfAdicionales;
     }
 
-    public BigInteger verificadorInformacionesAdicionales(BigInteger secuenciaGruposInfAdicionales) {
+    @Override
+    public BigInteger verificarInformacionesAdicionales(BigInteger secuenciaGruposInfAdicionales) {
         BigInteger verificadorInformacionesAdicionales = null;
         try {
             System.err.println("Secuencia Grupo Inf Adicional : " + secuenciaGruposInfAdicionales);

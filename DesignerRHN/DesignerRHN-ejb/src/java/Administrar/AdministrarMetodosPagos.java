@@ -22,37 +22,47 @@ public class AdministrarMetodosPagos implements AdministrarMetodosPagosInterface
 
     @EJB
     PersistenciaMetodosPagosInterface persistenciaMetodosPagos;
-    private MetodosPagos metodosPagoSeleccionado;
-    private MetodosPagos metodosPago;
-    private List<MetodosPagos> listMetodosPagos;
 
-    public void modificarMetodosPagos(List<MetodosPagos> listMotivosCambiosCargosModificadas) {
-        for (int i = 0; i < listMotivosCambiosCargosModificadas.size(); i++) {
+    @Override
+    public void modificarMetodosPagos(List<MetodosPagos> listaMetodosPagos) {
+        for (int i = 0; i < listaMetodosPagos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            metodosPagoSeleccionado = listMotivosCambiosCargosModificadas.get(i);
-            persistenciaMetodosPagos.editar(metodosPagoSeleccionado);
+            persistenciaMetodosPagos.editar(listaMetodosPagos.get(i));
         }
     }
 
-    public void borrarMetodosPagos(MetodosPagos metodosPagos) {
-        persistenciaMetodosPagos.borrar(metodosPagos);
+    @Override
+    public void borrarMetodosPagos(List<MetodosPagos> listaMetodosPagos) {
+        for (int i = 0; i < listaMetodosPagos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMetodosPagos.borrar(listaMetodosPagos.get(i));
+        }
     }
 
-    public void crearMetodosPagos(MetodosPagos metodosPagos) {
-        persistenciaMetodosPagos.crear(metodosPagos);
+    @Override
+    public void crearMetodosPagos(List<MetodosPagos> listaMetodosPagos) {
+        for (int i = 0; i < listaMetodosPagos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMetodosPagos.crear(listaMetodosPagos.get(i));
+        }
     }
 
-    public List<MetodosPagos> mostrarMetodosPagos() {
+    @Override
+    public List<MetodosPagos> consultarMetodosPagos() {
+        List<MetodosPagos> listMetodosPagos;
         listMetodosPagos = persistenciaMetodosPagos.buscarMetodosPagos();
         return listMetodosPagos;
     }
 
-    public MetodosPagos mostrarMetodoPago(BigInteger secMetodosPagos) {
+    @Override
+    public MetodosPagos consultarMetodoPago(BigInteger secMetodosPagos) {
+        MetodosPagos metodosPago;
         metodosPago = persistenciaMetodosPagos.buscarMetodosPagosEmpleado(secMetodosPagos);
         return metodosPago;
     }
 
-    public BigInteger verificarVigenciasFormasPagos(BigInteger secuenciaMetodoPago) {
+    @Override
+    public BigInteger verificarMetodosPagosVigenciasFormasPagos(BigInteger secuenciaMetodoPago) {
         BigInteger verificarVigenciasFormasPagos = null;
         try {
             verificarVigenciasFormasPagos = persistenciaMetodosPagos.contadorvigenciasformaspagos(secuenciaMetodoPago);

@@ -108,7 +108,7 @@ public class ControlDetalleCuenta implements Serializable {
     public void recibirCuenta(BigInteger cuenta) {
         listCuentasCredito = null;
         listCuentasDebito = null;
-        cuentaActual = administrarDetalleCuenta.cuentaActual(cuenta);
+        cuentaActual = administrarDetalleCuenta.mostrarCuenta(cuenta);
     }
 
     public void posicionCredito() {
@@ -639,7 +639,7 @@ public class ControlDetalleCuenta implements Serializable {
     public List<VigenciasCuentas> getListCuentasCredito() {
         try {
             if (listCuentasCredito == null) {
-                listCuentasCredito = administrarDetalleCuenta.listVigenciasCuentasCredito(cuentaActual.getSecuencia());
+                listCuentasCredito = administrarDetalleCuenta.listaVigenciasCuentasCredito(cuentaActual.getSecuencia());
             }
             return listCuentasCredito;
         } catch (Exception e) {
@@ -663,7 +663,7 @@ public class ControlDetalleCuenta implements Serializable {
     public List<VigenciasCuentas> getListCuentasDebito() {
         try {
             if (listCuentasDebito == null) {
-                listCuentasDebito = administrarDetalleCuenta.listVigenciasCuentasDebito(cuentaActual.getSecuencia());
+                listCuentasDebito = administrarDetalleCuenta.listaVigenciasCuentasDebito(cuentaActual.getSecuencia());
             }
             return listCuentasDebito;
         } catch (Exception e) {

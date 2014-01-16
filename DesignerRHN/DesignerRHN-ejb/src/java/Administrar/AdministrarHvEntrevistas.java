@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import Entidades.Empleados;
@@ -24,32 +23,38 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterface {
 
-   @EJB
+    @EJB
     PersistenciaHvEntrevistasInterface persistenciaHvEntrevistas;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
-    List<HvEntrevistas> listHvEntrevistas;
-    HvEntrevistas hvEntrevistas;
-    Empleados empleado;
-    List<HVHojasDeVida> hvHojasDeVida;
 
-    public void borrarHvEntrevistas(HvEntrevistas hvEntrevistas) {
-        persistenciaHvEntrevistas.borrar(hvEntrevistas);
-    }
-
-    public void crearHvEntrevistas(HvEntrevistas hvEntrevistas) {
-        persistenciaHvEntrevistas.crear(hvEntrevistas);
-    }
-
-    public void modificarHvEntrevistas(List<HvEntrevistas> listHvEntrevistasModificadas) {
-        for (int i = 0; i < listHvEntrevistasModificadas.size(); i++) {
+    @Override
+    public void modificarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas) {
+        for (int i = 0; i < listHvEntrevistas.size(); i++) {
             System.out.println("Modificando...");
-            hvEntrevistas = listHvEntrevistasModificadas.get(i);
-            persistenciaHvEntrevistas.editar(hvEntrevistas);
+            persistenciaHvEntrevistas.editar(listHvEntrevistas.get(i));
         }
     }
 
-    public List<HvEntrevistas> MostrarHvEntrevistasPorEmpleado(BigInteger secEmpleado) {
+    @Override
+    public void borrarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas) {
+        for (int i = 0; i < listHvEntrevistas.size(); i++) {
+            System.out.println("Borrando...");
+            persistenciaHvEntrevistas.borrar(listHvEntrevistas.get(i));
+        }
+    }
+
+    @Override
+    public void crearHvEntrevistas(List<HvEntrevistas> listHvEntrevistas) {
+        for (int i = 0; i < listHvEntrevistas.size(); i++) {
+            System.out.println("Creando...");
+            persistenciaHvEntrevistas.crear(listHvEntrevistas.get(i));
+        }
+    }
+
+    @Override
+    public List<HvEntrevistas> consultarHvEntrevistasPorEmpleado(BigInteger secEmpleado) {
+        List<HvEntrevistas> listHvEntrevistas;
         try {
             listHvEntrevistas = persistenciaHvEntrevistas.buscarHvEntrevistasPorEmpleado(secEmpleado);
         } catch (Exception e) {
@@ -59,12 +64,16 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
         return listHvEntrevistas;
     }
 
-    public HvEntrevistas mostrarHvEntrevista(BigInteger secHvEntrevista) {
-        persistenciaHvEntrevistas.buscarHvEntrevista(secHvEntrevista);
+    @Override
+    public HvEntrevistas consultarHvEntrevista(BigInteger secHvEntrevista) {
+        HvEntrevistas hvEntrevistas;
+        hvEntrevistas = persistenciaHvEntrevistas.buscarHvEntrevista(secHvEntrevista);
         return hvEntrevistas;
     }
 
+    @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
+        Empleados empleado;
         try {
             empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);
             return empleado;
@@ -75,7 +84,9 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
         }
     }
 
+    @Override
     public List<HVHojasDeVida> buscarHVHojasDeVida(BigInteger secuencia) {
+        List<HVHojasDeVida> hvHojasDeVida;
         try {
             hvHojasDeVida = persistenciaHvEntrevistas.buscarHvHojaDeVidaPorEmpleado(secuencia);
             return hvHojasDeVida;

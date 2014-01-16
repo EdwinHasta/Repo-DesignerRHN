@@ -45,9 +45,6 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
      */
     @EJB
     PersistenciaPantallasInterface persistenciaPantallas;
-    
-
-//persistencia de pruebas
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia 'persistenciaAficiones'.
@@ -79,7 +76,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<Modulos> ConsultarModulos() {
+    public List<Modulos> consultarModulos() {
         try {
             listModulos = persistenciaModulos.buscarModulos();
             return listModulos;
@@ -90,7 +87,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     }
     
     @Override
-    public List<Tablas> ConsultarTablas(BigInteger secuenciaMod) {
+    public List<Tablas> consultarTablas(BigInteger secuenciaMod) {
         try {
             listTablas = persistenciaTablas.buscarTablas(secuenciaMod);
             return listTablas;
@@ -101,7 +98,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     }
     
     @Override
-    public Pantallas ConsultarPantalla(BigInteger secuenciaTab) {
+    public Pantallas consultarPantalla(BigInteger secuenciaTab) {
         try {
             pantalla = persistenciaPantallas.buscarPantalla(secuenciaTab);
             return pantalla;
@@ -112,7 +109,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     }
     
     @Override
-    public List<Aficiones> buscarAficiones() {
+    public List<Aficiones> consultarAficiones() {
         try {
             listAficiones = persistenciaAficiones.buscarAficiones();
             return listAficiones;
@@ -123,13 +120,13 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     }
     
     @Override
-    public Aficiones unaAficion(BigInteger secuencia) {
+    public Aficiones consultarAficion(BigInteger secuencia) {
         aficion = persistenciaAficiones.buscarAficion(secuencia);
         return aficion;
     }
     
     @Override
-    public void modificarAficion(List<Aficiones> listAficiones) {
+    public void modificarAficiones(List<Aficiones> listAficiones) {
         for (int i = 0; i < listAficiones.size(); i++) {
             System.out.println("Modificando...");
             aficion = listAficiones.get(i);
@@ -138,7 +135,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     }
     
     @Override
-    public Integer sugerenciaCodigoAficiones() {
+    public Integer sugerirCodigoAficiones() {
         if (persistenciaAficiones == null) {
             System.out.println("Persistencia vacia.");
         }
@@ -162,7 +159,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     }
     
     @Override
-    public Aficiones buscarAfiCodigo(Short cod) {
+    public Aficiones consultarAficionCodigo(Short cod) {
         aficion = persistenciaAficiones.buscarAficionCodigo(cod);
         return aficion;
     }

@@ -351,18 +351,18 @@ public class ControlEnfermedades implements Serializable {
             System.out.println("secuencia borrado : " + listEnfermedades.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listEnfermedades.get(index).getSecuencia());
-                contadorAusentimos = administrarEnfermedades.contadorAusentimos(listEnfermedades.get(index).getSecuencia());
-                contadorDetallesLicencias = administrarEnfermedades.contadorDetallesLicencias(listEnfermedades.get(index).getSecuencia());
-                contadorEnfermedadesPadecidas = administrarEnfermedades.contadorEnfermedadesPadecidas(listEnfermedades.get(index).getSecuencia());
-                contadorSoausentismos = administrarEnfermedades.contadorSoausentismos(listEnfermedades.get(index).getSecuencia());
-                contadorSorevisionessSistemas = administrarEnfermedades.contadorSorevisionessSistemas(listEnfermedades.get(index).getSecuencia());
+                contadorAusentimos = administrarEnfermedades.verificarAusentimos(listEnfermedades.get(index).getSecuencia());
+                contadorDetallesLicencias = administrarEnfermedades.verificarDetallesLicencias(listEnfermedades.get(index).getSecuencia());
+                contadorEnfermedadesPadecidas = administrarEnfermedades.verificarEnfermedadesPadecidas(listEnfermedades.get(index).getSecuencia());
+                contadorSoausentismos = administrarEnfermedades.verificarSoAusentismos(listEnfermedades.get(index).getSecuencia());
+                contadorSorevisionessSistemas = administrarEnfermedades.verificarSoRevisionesSistemas(listEnfermedades.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarEnfermedades.get(index).getSecuencia());
-                contadorAusentimos = administrarEnfermedades.contadorAusentimos(filtrarEnfermedades.get(index).getSecuencia());
-                contadorDetallesLicencias = administrarEnfermedades.contadorDetallesLicencias(filtrarEnfermedades.get(index).getSecuencia());
-                contadorEnfermedadesPadecidas = administrarEnfermedades.contadorEnfermedadesPadecidas(filtrarEnfermedades.get(index).getSecuencia());
-                contadorSoausentismos = administrarEnfermedades.contadorSoausentismos(filtrarEnfermedades.get(index).getSecuencia());
-                contadorSorevisionessSistemas = administrarEnfermedades.contadorSorevisionessSistemas(filtrarEnfermedades.get(index).getSecuencia());
+                contadorAusentimos = administrarEnfermedades.verificarAusentimos(filtrarEnfermedades.get(index).getSecuencia());
+                contadorDetallesLicencias = administrarEnfermedades.verificarDetallesLicencias(filtrarEnfermedades.get(index).getSecuencia());
+                contadorEnfermedadesPadecidas = administrarEnfermedades.verificarEnfermedadesPadecidas(filtrarEnfermedades.get(index).getSecuencia());
+                contadorSoausentismos = administrarEnfermedades.verificarSoAusentismos(filtrarEnfermedades.get(index).getSecuencia());
+                contadorSorevisionessSistemas = administrarEnfermedades.verificarSoRevisionesSistemas(filtrarEnfermedades.get(index).getSecuencia());
             }
             System.out.println("contadorSoAccidentes " + contadorAusentimos.toString());
             System.out.println("contadorDetallesLicencias " + contadorDetallesLicencias.toString());
@@ -406,10 +406,8 @@ public class ControlEnfermedades implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Enfermedades");
             if (!borrarEnfermedades.isEmpty()) {
-                for (int i = 0; i < borrarEnfermedades.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarEnfermedades.borrarEnfermedades(borrarEnfermedades.get(i));
-                }
+                administrarEnfermedades.borrarEnfermedades(borrarEnfermedades);
+
                 //mostrarBorrados
                 registrosBorrados = borrarEnfermedades.size();
                 context.update("form:mostrarBorrados");
@@ -417,12 +415,8 @@ public class ControlEnfermedades implements Serializable {
                 borrarEnfermedades.clear();
             }
             if (!crearEnfermedades.isEmpty()) {
-                for (int i = 0; i < crearEnfermedades.size(); i++) {
+                administrarEnfermedades.crearEnfermedades(crearEnfermedades);
 
-                    System.out.println("Creando...");
-                    administrarEnfermedades.crearEnfermedades(crearEnfermedades.get(i));
-
-                }
                 crearEnfermedades.clear();
             }
             if (!modificarEnfermedades.isEmpty()) {
@@ -714,7 +708,7 @@ public class ControlEnfermedades implements Serializable {
 
     public List<Enfermedades> getListEnfermedades() {
         if (listEnfermedades == null) {
-            listEnfermedades = administrarEnfermedades.mostrarEnfermedades();
+            listEnfermedades = administrarEnfermedades.consultarEnfermedades();
         }
         return listEnfermedades;
     }

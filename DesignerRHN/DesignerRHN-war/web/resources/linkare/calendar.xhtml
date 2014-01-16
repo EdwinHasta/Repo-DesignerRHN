@@ -32,7 +32,7 @@
     <cc:implementation>
         <!-- This component has been simplified but it could include any attribute of the inputMask 
          component that we wish our developer clients to be able to specify -->
-        <p:inputMask id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
+        <p:inputMask style="width: 99%;height: 99%" id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
                      value="#{cc.attrs.value}">
             <f:convertDateTime pattern="#{cc.attrs.pattern}" timeZone="America/Bogota" locale="es" />
         </p:inputMask>

@@ -29,7 +29,7 @@ public class AdministrarEmplAcumulados implements AdministrarEmplAcumuladosInter
     private List<VWAcumulados> listVWAcumulados;
 
     @Override
-    public List<VWAcumulados> mostrarVWAcumuladosPorEmpleado(BigInteger secEmpleado) {
+    public List<VWAcumulados> consultarVWAcumuladosPorEmpleado(BigInteger secEmpleado) {
         try {
             listVWAcumulados = persistenciaVWAcumulados.buscarAcumuladosPorEmpleado(secEmpleado);
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class AdministrarEmplAcumulados implements AdministrarEmplAcumuladosInter
         }
     }
     @Override
-    public Empleados mostrarEmpleado(BigInteger secEmplado) {
+    public Empleados consultarEmpleado(BigInteger secEmplado) {
         try {
             empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secEmplado);
         } catch (Exception e) {

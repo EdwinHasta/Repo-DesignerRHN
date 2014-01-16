@@ -14,7 +14,7 @@ public interface AdministarReportesInterface {
      * Método encargado de recuperar los datos de conexión del EntityManagerGlobal el cual tiene
      * el usuario asociado a un perfil del aplicativo.
      */
-    public void datosConexion();
+    public void consultarDatosConexion();
     /**
      * Método encargado de generar un comprobante (PDF) para un Empleado específico.
      * @param codigoEmpleado Código del empleado.

@@ -15,5 +15,5 @@ public interface AdministrarCargosInterface {
      * Método encargado de recuperar todos los Cargos.
      * @return Retorna una lista de Cargos.
      */
-    public List<Cargos> cargos();   
+    public List<Cargos> consultarCargos();   
 }

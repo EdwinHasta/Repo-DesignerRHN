@@ -40,9 +40,12 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+
 /**
  * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pantalla 'CargueArchivos'.
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'CargueArchivos'.
+ *
  * @author betelgeuse
  */
 @Stateful
@@ -52,115 +55,134 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     //--------------------------------------------------------------------------    
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaTempNovedades'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaTempNovedades'.
      */
     @EJB
     PersistenciaTempNovedadesInterface persistenciaTempNovedades;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaActualUsuario'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaActualUsuario'.
      */
     @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaConceptos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaConceptos'.
      */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaEmpleado'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaEmpleado'.
      */
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaPeriodicidades'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaPeriodicidades'.
      */
     @EJB
     PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaTerceros'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaTerceros'.
      */
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesTiposTrabajadores'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesTiposTrabajadores'.
      */
     @EJB
     PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesReformasLaborales'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesReformasLaborales'.
      */
     @EJB
     PersistenciaVWActualesReformasLaboralesInterface persistenciaVWActualesReformasLaborales;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesTiposContratos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesTiposContratos'.
      */
     @EJB
     PersistenciaVWActualesTiposContratosInterface persistenciaVWActualesTiposContratos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulasConceptos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaFormulasConceptos'.
      */
     @EJB
     PersistenciaFormulasConceptosInterface persistenciaFormulasConceptos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulasNovedades'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaFormulasNovedades'.
      */
     @EJB
     PersistenciaFormulasNovedadesInterface persistenciaFormulasNovedades;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosRL'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVigenciasConceptosRL'.
      */
     @EJB
     PersistenciaVigenciasConceptosRLInterface persistenciaVigenciasConceptosRL;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosTC'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVigenciasConceptosTC'.
      */
     @EJB
     PersistenciaVigenciasConceptosTCInterface persistenciaVigenciasConceptosTC;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasConceptosTT'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVigenciasConceptosTT'.
      */
     @EJB
     PersistenciaVigenciasConceptosTTInterface persistenciaVigenciasConceptosTT;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulas'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaFormulas'.
      */
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasGruposConceptos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVigenciasGruposConceptos'.
      */
     @EJB
     PersistenciaVigenciasGruposConceptosInterface persistenciaVigenciasGruposConceptos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaParametrosEstructuras'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaParametrosEstructuras'.
      */
     @EJB
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaSolucionesFormulas'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaSolucionesFormulas'.
      */
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaNovedades'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaNovedades'.
      */
     @EJB
     PersistenciaNovedadesInterface persistenciaNovedades;
@@ -169,13 +191,15 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public void crearTempNovedades(TempNovedades tnovedad) {
-        persistenciaTempNovedades.crear(tnovedad);
+    public void crearTempNovedades(List<TempNovedades> listaTempNovedades) {
+        for (int i = 0; i < listaTempNovedades.size(); i++) {
+            persistenciaTempNovedades.crear(listaTempNovedades.get(i));
+        }
     }
 
     @Override
-    public void modificarTempNovedades(TempNovedades tnovedad) {
-        persistenciaTempNovedades.editar(tnovedad);
+    public void modificarTempNovedades(TempNovedades tempNovedades) {
+        persistenciaTempNovedades.editar(tempNovedades);
     }
 
     @Override
@@ -189,67 +213,67 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     }
 
     @Override
-    public BigInteger empresaParametros(String usuarioBD) {
+    public BigInteger consultarParametrosEmpresa(String usuarioBD) {
         return persistenciaParametrosEstructuras.buscarEmpresaParametros(usuarioBD);
     }
 
     @Override
-    public List<TempNovedades> listaTempNovedades(String usuarioBD) {
+    public List<TempNovedades> consultarTempNovedades(String usuarioBD) {
         return persistenciaTempNovedades.obtenerTempNovedades(usuarioBD);
     }
 
     @Override
-    public boolean existenciaEmpleado(BigInteger codEmpleado, BigInteger secEmpresa) {
+    public boolean verificarEmpleadoEmpresa(BigInteger codEmpleado, BigInteger secEmpresa) {
         return persistenciaEmpleado.verificarCodigoEmpleado_Empresa(codEmpleado, secEmpresa);
     }
 
     @Override
-    public boolean existenciaConcepto(BigInteger codConcepto) {
+    public boolean verificarConcepto(BigInteger codConcepto) {
         return persistenciaConceptos.verificarCodigoConcepto(codConcepto);
     }
 
     @Override
-    public boolean existenciaPeriodicidad(BigInteger codPeriodicidad) {
+    public boolean verificarPeriodicidad(BigInteger codPeriodicidad) {
         return persistenciaPeriodicidades.verificarCodigoPeriodicidad(codPeriodicidad);
     }
 
     @Override
-    public boolean existenciaTercero(BigInteger nitTercero) {
+    public boolean verificarTercero(BigInteger nitTercero) {
         return persistenciaTerceros.verificarTerceroPorNit(nitTercero);
     }
-    
+
     @Override
-    public boolean validarTipoEmpleadoActivo(BigInteger codEmpleado, BigInteger secEmpresa) {
-        Empleados empleado = buscarEmpleadoCodigo(codEmpleado, secEmpresa);
+    public boolean verificarTipoEmpleadoActivo(BigInteger codEmpleado, BigInteger secEmpresa) {
+        Empleados empleado = consultarEmpleadoEmpresa(codEmpleado, secEmpresa);
         return persistenciaVWActualesTiposTrabajadores.verificarTipoTrabajador(empleado);
     }
 
     @Override
-    public Empleados buscarEmpleadoCodigo(BigInteger codEmpleado, BigInteger secEmpresa) {
+    public Empleados consultarEmpleadoEmpresa(BigInteger codEmpleado, BigInteger secEmpresa) {
         Empleados empleado = persistenciaEmpleado.buscarEmpleadoCodigo_Empresa(codEmpleado, secEmpresa);
         return empleado;
     }
 
     @Override
-    public VWActualesTiposTrabajadores buscarTipoTrabajador(BigInteger secuenciaEmpleado) {
+    public VWActualesTiposTrabajadores consultarActualTipoTrabajadorEmpleado(BigInteger secuenciaEmpleado) {
         return persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(secuenciaEmpleado);
     }
 
     @Override
-    public VWActualesReformasLaborales buscarActualReformaLaboral(BigInteger secuenciaEmpleado) {
+    public VWActualesReformasLaborales consultarActualReformaLaboralEmpleado(BigInteger secuenciaEmpleado) {
         return persistenciaVWActualesReformasLaborales.buscarReformaLaboral(secuenciaEmpleado);
     }
 
     @Override
-    public VWActualesTiposContratos buscarActualTipoContrato(BigInteger secuenciaEmpleado) {
+    public VWActualesTiposContratos consultarActualTipoContratoEmpleado(BigInteger secuenciaEmpleado) {
         return persistenciaVWActualesTiposContratos.buscarTiposContratosEmpleado(secuenciaEmpleado);
     }
-    
+
     @Override
-    public Conceptos validarConceptoEmpresa(BigInteger codigoConcepto, BigInteger codigoEmpresa) {
+    public Conceptos verificarConceptoEmpresa(BigInteger codigoConcepto, BigInteger codigoEmpresa) {
         return persistenciaConceptos.validarCodigoConcepto(codigoConcepto, codigoEmpresa);
     }
-    
+
     @Override
     public String determinarTipoConcepto(BigInteger secConcepto) {
         String tipo = "MANUAL";
@@ -291,32 +315,32 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     }
 
     @Override
-    public List<Formulas> formulasCargue() {
+    public List<Formulas> consultarFormulasCargue() {
         return persistenciaFormulas.buscarFormulasCarge();
     }
 
     @Override
-    public Formulas formulaCargueInicial() {
+    public Formulas consultarFormulaCargueInicial() {
         return persistenciaFormulas.buscarFormulaCargeInicial();
     }
 
     @Override
-    public boolean validarFormulaCargue_Concepto(BigInteger secConcepto, BigInteger secFormula) {
+    public boolean verificarFormulaCargueConcepto(BigInteger secConcepto, BigInteger secFormula) {
         return persistenciaFormulasConceptos.verificarFormulaCargue_Concepto(secConcepto, secFormula);
     }
 
     @Override
-    public boolean validarNecesidadTercero(BigInteger secConcepto) {
+    public boolean verificarNecesidadTercero(BigInteger secConcepto) {
         return persistenciaVigenciasGruposConceptos.verificacionGrupoUnoConcepto(secConcepto);
     }
 
     @Override
-    public boolean validarTerceroEmpresaEmpleado(BigInteger nit, BigInteger secEmpresa) {
+    public boolean verificarTerceroEmpresa(BigInteger nit, BigInteger secEmpresa) {
         return persistenciaTerceros.verificarTerceroParaEmpresaEmpleado(nit, secEmpresa);
     }
 
     @Override
-    public List<String> obtenerDocumentosSoporteCargados(String usuarioBD) {
+    public List<String> consultarDocumentosSoporteCargadosUsuario(String usuarioBD) {
         return persistenciaTempNovedades.obtenerDocumentosSoporteCargados(usuarioBD);
     }
 
@@ -328,7 +352,7 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     }
 
     @Override
-    public int reversar(ActualUsuario usuarioBD, String documentoSoporte) {
+    public int reversarNovedades(ActualUsuario usuarioBD, String documentoSoporte) {
         List<Novedades> listNovedades = persistenciaNovedades.novedadesParaReversar(usuarioBD.getSecuencia(), documentoSoporte);
         int validarNoLiquidadas = 0;
         for (int i = 0; i < listNovedades.size(); i++) {

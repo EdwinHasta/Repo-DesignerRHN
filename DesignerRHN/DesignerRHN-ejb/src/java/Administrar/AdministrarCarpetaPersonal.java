@@ -176,9 +176,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     //MÉTODOS
     //--------------------------------------------------------------------------    
     @Override
-    public VWActualesCargos ConsultarCargo(BigInteger secuenciaEmpleado) {
+    public VWActualesCargos consultarActualCargoEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesCargos vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(entityManagerGlobal.getEmf().createEntityManager(), secuenciaEmpleado);
+            VWActualesCargos vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(entityManagerGlobal.getEmf().createEntityManager(), secEmpleado);
             return vwActualesCargos;
         } catch (Exception e) {
             return null;
@@ -186,9 +186,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesTiposContratos ConsultarTipoContrato(BigInteger secuenciaEmpleado) {
+    public VWActualesTiposContratos consultarActualTipoContratoEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesTiposContratos vwActualesTiposContratos = persistenciaActualesTiposContratos.buscarTiposContratosEmpleado(secuenciaEmpleado);
+            VWActualesTiposContratos vwActualesTiposContratos = persistenciaActualesTiposContratos.buscarTiposContratosEmpleado(secEmpleado);
             return vwActualesTiposContratos;
         } catch (Exception e) {
             return null;
@@ -196,9 +196,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesNormasEmpleados ConsultarNormaLaboral(BigInteger secuenciaEmpleado) {
+    public VWActualesNormasEmpleados consultarActualNormaLaboralEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesNormasEmpleados vwActualesNormasEmpleados = persistenciaVWActualesNormasEmpleados.buscarNormaLaboral(secuenciaEmpleado);
+            VWActualesNormasEmpleados vwActualesNormasEmpleados = persistenciaVWActualesNormasEmpleados.buscarNormaLaboral(secEmpleado);
             return vwActualesNormasEmpleados;
         } catch (Exception e) {
             return null;
@@ -206,9 +206,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesAfiliacionesSalud ConsultarAfiliacionSalud(BigInteger secuenciaEmpleado) {
+    public VWActualesAfiliacionesSalud consultarActualAfiliacionSaludEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesAfiliacionesSalud vwActualesAfiliacionesSalud = persistenciaVWActualesAfiliacionesSalud.buscarAfiliacionSalud(secuenciaEmpleado);
+            VWActualesAfiliacionesSalud vwActualesAfiliacionesSalud = persistenciaVWActualesAfiliacionesSalud.buscarAfiliacionSalud(secEmpleado);
             return vwActualesAfiliacionesSalud;
         } catch (Exception e) {
             return null;
@@ -216,9 +216,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesAfiliacionesPension ConsultarAfiliacionPension(BigInteger secuenciaEmpleado) {
+    public VWActualesAfiliacionesPension consultarActualAfiliacionPensionEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesAfiliacionesPension vwActualesAfiliacionesPension = persistenciaVWActualesAfiliacionesPension.buscarAfiliacionPension(secuenciaEmpleado);
+            VWActualesAfiliacionesPension vwActualesAfiliacionesPension = persistenciaVWActualesAfiliacionesPension.buscarAfiliacionPension(secEmpleado);
             return vwActualesAfiliacionesPension;
         } catch (Exception e) {
             return null;
@@ -226,9 +226,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesLocalizaciones ConsultarLocalizacion(BigInteger secuenciaEmpleado) {
+    public VWActualesLocalizaciones consultarActualLocalizacionEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesLocalizaciones vwActualesLocalizaciones = persistenciaVWActualesLocalizaciones.buscarLocalizacion(secuenciaEmpleado);
+            VWActualesLocalizaciones vwActualesLocalizaciones = persistenciaVWActualesLocalizaciones.buscarLocalizacion(secEmpleado);
             return vwActualesLocalizaciones;
         } catch (Exception e) {
             return null;
@@ -236,9 +236,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesTiposTrabajadores ConsultarTipoTrabajador(BigInteger secuenciaEmpleado) {
+    public VWActualesTiposTrabajadores consultarActualTipoTrabajadorEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesTiposTrabajadores vwActualesTiposTrabajadores = persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(secuenciaEmpleado);
+            VWActualesTiposTrabajadores vwActualesTiposTrabajadores = persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(secEmpleado);
             return vwActualesTiposTrabajadores;
         } catch (Exception e) {
             return null;
@@ -246,9 +246,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesContratos ConsultarContrato(BigInteger secuenciaEmpleado) {
+    public VWActualesContratos consultarActualContratoEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesContratos vwActualesContratos = persistenciaVWActualesContratos.buscarContrato(secuenciaEmpleado);
+            VWActualesContratos vwActualesContratos = persistenciaVWActualesContratos.buscarContrato(secEmpleado);
             return vwActualesContratos;
         } catch (Exception e) {
             return null;
@@ -256,9 +256,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesJornadas ConsultarJornada(BigInteger secuenciaEmpleado) {
+    public VWActualesJornadas consultarActualJornadaEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesJornadas vwActualesJornadas = persistenciaVWActualesJornadas.buscarJornada(secuenciaEmpleado);
+            VWActualesJornadas vwActualesJornadas = persistenciaVWActualesJornadas.buscarJornada(secEmpleado);
             return vwActualesJornadas;
         } catch (Exception e) {
             return null;
@@ -266,16 +266,16 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public BigDecimal ConsultarSueldo(BigInteger secuenciaEmpleado) {
+    public BigDecimal consultarActualSueldoEmpleado(BigInteger secEmpleado) {
         BigDecimal valor = null;
         try {
-            VWActualesTiposTrabajadores vwActualesTiposTrabajadores = persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(secuenciaEmpleado);
+            VWActualesTiposTrabajadores vwActualesTiposTrabajadores = persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(secEmpleado);
             String tipo = vwActualesTiposTrabajadores.getTipoTrabajador().getTipo();
 
             if (tipo.equalsIgnoreCase("ACTIVO")) {
-                valor = persistenciaVWActualesSueldos.buscarSueldoActivo(secuenciaEmpleado);
+                valor = persistenciaVWActualesSueldos.buscarSueldoActivo(secEmpleado);
             } else if (tipo.equalsIgnoreCase("PENSIONADO")) {
-                valor = persistenciaVWActualesPensiones.buscarSueldoPensionado(secuenciaEmpleado);
+                valor = persistenciaVWActualesPensiones.buscarSueldoPensionado(secEmpleado);
             }
         } catch (Exception e) {
             valor = null;
@@ -284,9 +284,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesReformasLaborales ConsultarReformaLaboral(BigInteger secuenciaEmpleado) {
+    public VWActualesReformasLaborales consultarActualReformaLaboralEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesReformasLaborales vwActualesReformasLaborales = persistenciaVWActualesReformasLaborales.buscarReformaLaboral(secuenciaEmpleado);
+            VWActualesReformasLaborales vwActualesReformasLaborales = persistenciaVWActualesReformasLaborales.buscarReformaLaboral(secEmpleado);
             return vwActualesReformasLaborales;
         } catch (Exception e) {
             return null;
@@ -294,9 +294,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesUbicaciones ConsultarUbicacion(BigInteger secuenciaEmpleado) {
+    public VWActualesUbicaciones consultarActualUbicacionEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesUbicaciones vWActualesUbicaciones = persistenciaVWActualesUbicaciones.buscarUbicacion(secuenciaEmpleado);
+            VWActualesUbicaciones vWActualesUbicaciones = persistenciaVWActualesUbicaciones.buscarUbicacion(secEmpleado);
             return vWActualesUbicaciones;
         } catch (Exception e) {
             return null;
@@ -304,9 +304,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesFormasPagos ConsultarFormaPago(BigInteger secuenciaEmpleado) {
+    public VWActualesFormasPagos consultarActualFormaPagoEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesFormasPagos vwActualesFormasPagos = persistenciaVWActualesFormasPagos.buscarFormaPago(secuenciaEmpleado);
+            VWActualesFormasPagos vwActualesFormasPagos = persistenciaVWActualesFormasPagos.buscarFormaPago(secEmpleado);
             return vwActualesFormasPagos;
         } catch (Exception e) {
             return null;
@@ -314,9 +314,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public VWActualesVigenciasViajeros ConsultarTipoViajero(BigInteger secuenciaEmpleado) {
+    public VWActualesVigenciasViajeros consultarActualTipoViajeroEmpleado(BigInteger secEmpleado) {
         try {
-            VWActualesVigenciasViajeros vwActualesVigenciasViajeros = persistenciaVWActualesVigenciasViajeros.buscarTipoViajero(secuenciaEmpleado);
+            VWActualesVigenciasViajeros vwActualesVigenciasViajeros = persistenciaVWActualesVigenciasViajeros.buscarTipoViajero(secEmpleado);
             return vwActualesVigenciasViajeros;
         } catch (Exception e) {
             return null;
@@ -324,7 +324,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(String tipo) {
+    public List<VWActualesTiposTrabajadores> consultarEmpleadosTipoTrabajador(String tipo) {
         try {
             List<VWActualesTiposTrabajadores> tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(tipo);
             return tipoEmpleadoLista;
@@ -334,7 +334,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public DetallesEmpresas ConsultarEmpresa() {
+    public DetallesEmpresas consultarDetalleEmpresaUsuario() {
         try {
             Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa();
             DetallesEmpresas detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(codigoEmpresa);
@@ -345,7 +345,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public Usuarios ConsultarUsuario(String alias) {
+    public Usuarios consultarUsuario(String alias) {
         try {
             Usuarios usuarios = persistenciaUsuarios.buscarUsuario(alias);
             return usuarios;
@@ -355,9 +355,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public ParametrosEstructuras ConsultarParametros() {
+    public ParametrosEstructuras consultarParametrosUsuario() {
         try {
-            ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(actualUsuario());
+            ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(consultarAliasActualUsuario());
             return parametrosEstructuras;
         } catch (Exception e) {
             return null;
@@ -365,7 +365,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public List<VigenciasCargos> vigenciasEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasCargos> consultarVigenciasCargosEmpleado(BigInteger secEmpleado) {
         try {
             List<VigenciasCargos> vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargosEmpleado(secEmpleado);
             return vigenciasCargos;
@@ -375,7 +375,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public List<VWActualesTiposTrabajadores> busquedaRapidaEmpleados() {
+    public List<VWActualesTiposTrabajadores> consultarRapidaEmpleados() {
         try {
             List<VWActualesTiposTrabajadores> busquedaRapidaEmpleado = persistenciaVWActualesTiposTrabajadores.busquedaRapidaTrabajadores();
             return busquedaRapidaEmpleado;
@@ -385,7 +385,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public Personas buscarFotoPersona(BigInteger identificacion) {
+    public Personas consultarFotoPersona(BigInteger identificacion) {
         try {
             Personas persona = persistenciaPersonas.buscarFotoPersona(identificacion);
             return persona;
@@ -404,7 +404,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public Empleados buscarEmpleado(BigInteger secuencia) {
+    public Empleados consultarEmpleado(BigInteger secuencia) {
         try {
             Empleados empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
             return empleado;
@@ -426,7 +426,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public String actualUsuario() {
+    public String consultarAliasActualUsuario() {
         return persistenciaActualUsuario.actualAliasBD();
     }
 }

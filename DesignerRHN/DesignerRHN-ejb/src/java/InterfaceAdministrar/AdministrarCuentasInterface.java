@@ -34,15 +34,15 @@ public interface AdministrarCuentasInterface {
      * @param secEmpresa Secuencia de la empresa.
      * @return Retorna una lista de cuentas.
      */
-    public List<Cuentas> listaCuentasEmpresa(BigInteger secEmpresa);
+    public List<Cuentas> consultarCuentasEmpresa(BigInteger secEmpresa);
     /**
      * Método encargado de recuperar todas las Empresas.
      * @return Retorna una lista de Empresas.
      */
-    public List<Empresas> listaEmpresas();
+    public List<Empresas> consultarEmpresas();
     /**
      * Método encargado de recuperar los Rubrospresupuestales necesarios para la lista de valores.
      * @return Retorna una lista de Rubrospresupuestales.
      */
-    public List<Rubrospresupuestales> lovListaRubros();
+    public List<Rubrospresupuestales> consultarLOVRubros();
 }

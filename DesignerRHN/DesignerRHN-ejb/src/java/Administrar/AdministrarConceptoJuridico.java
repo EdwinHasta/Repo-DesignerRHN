@@ -39,7 +39,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<ConceptosJuridicos> listaConceptosJuridicosPorEmpresa(BigInteger secuencia) {
+    public List<ConceptosJuridicos> consultarConceptosJuridicosEmpresa(BigInteger secuencia) {
         try {
             List<ConceptosJuridicos> conceptos = persistenciaConceptosJuridicos.buscarConceptosJuridicosEmpresa(secuencia);
             return conceptos;
@@ -83,7 +83,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     }
 
     @Override
-    public List<Empresas> listaEmpresas() {
+    public List<Empresas> consultarEmpresas() {
         try {
             List<Empresas> empresas = persistenciaEmpresas.buscarEmpresas();
             return empresas;

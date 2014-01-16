@@ -17,7 +17,20 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarEmplAcumuladosInterface {
 
-    public List<VWAcumulados> mostrarVWAcumuladosPorEmpleado(BigInteger secEmpleado);
+    /**
+     * Metodo Encargado de traer las VWAcumulados de un Empleado Especifico.
+     *
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Lista de VWAcumulados.
+     */
+    public List<VWAcumulados> consultarVWAcumuladosPorEmpleado(BigInteger secEmpleado);
 
-    public Empleados mostrarEmpleado(BigInteger secEmplado);
+    /**
+     * *
+     * Metodo encargado de buscar un Empleado especifico
+     *
+     * @param secEmpleado Secuencia del Empleado
+     * @return Empleado .
+     */
+    public Empleados consultarEmpleado(BigInteger secEmpleado);
 }

@@ -344,9 +344,9 @@ public class ControlMonedas implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlMonedas ");
             if (tipoLista == 0) {
-                proyectos = administrarMonedas.verificarBorradoProyecto(listMonedas.get(index).getSecuencia());
+                proyectos = administrarMonedas.verificarMonedasProyecto(listMonedas.get(index).getSecuencia());
             } else {
-                proyectos = administrarMonedas.verificarBorradoProyecto(filtrarMonedas.get(index).getSecuencia());
+                proyectos = administrarMonedas.verificarMonedasProyecto(filtrarMonedas.get(index).getSecuencia());
             }
             if (proyectos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -691,7 +691,7 @@ public class ControlMonedas implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<Monedas> getListMonedas() {
         if (listMonedas == null) {
-            listMonedas = administrarMonedas.mostrarMonedas();
+            listMonedas = administrarMonedas.consultarMonedas();
         }
         return listMonedas;
     }

@@ -22,37 +22,40 @@ public class AdministrarEstadosCiviles implements AdministrarEstadosCivilesInter
 
     @EJB
     PersistenciaEstadosCivilesInterface persistenciaEstadosCiviles;
-    private EstadosCiviles estadoCivilSeleccionado;
-    private EstadosCiviles estadoCivil;
-    private List<EstadosCiviles> listEstadosCiviles;
 
-    public void modificarEstadosCiviles(List<EstadosCiviles> listDeportesModificadas) {
-        for (int i = 0; i < listDeportesModificadas.size(); i++) {
+    @Override
+    public void modificarEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles) {
+        for (int i = 0; i < listaEstadosCiviles.size(); i++) {
             System.out.println("Administrar Modificando...");
-            estadoCivilSeleccionado = listDeportesModificadas.get(i);
-            persistenciaEstadosCiviles.editar(estadoCivilSeleccionado);
+            persistenciaEstadosCiviles.editar(listaEstadosCiviles.get(i));
         }
     }
 
-    public void borrarEstadosCiviles(EstadosCiviles deportes) {
-        persistenciaEstadosCiviles.borrar(deportes);
+    @Override
+    public void borrarEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles) {
+        for (int i = 0; i < listaEstadosCiviles.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaEstadosCiviles.borrar(listaEstadosCiviles.get(i));
+        }
     }
 
-    public void crearEstadosCiviles(EstadosCiviles deportes) {
-        persistenciaEstadosCiviles.crear(deportes);
+    @Override
+    public void crearEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles) {
+        for (int i = 0; i < listaEstadosCiviles.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaEstadosCiviles.crear(listaEstadosCiviles.get(i));
+        }
     }
 
-    public List<EstadosCiviles> mostrarEstadosCiviles() {
+    @Override
+    public List<EstadosCiviles> consultarEstadosCiviles() {
+        List<EstadosCiviles> listEstadosCiviles;
         listEstadosCiviles = persistenciaEstadosCiviles.buscarEstadosCiviles();
         return listEstadosCiviles;
     }
 
-    public EstadosCiviles mostrarEstadoCivil(BigInteger secDeportes) {
-        estadoCivil = persistenciaEstadosCiviles.buscarEstadoCivil(secDeportes);
-        return estadoCivil;
-    }
-
-    public BigInteger verificarBorradoVigenciasEstadoCiviles(BigInteger secuenciaEstadosCiviles) {
+    @Override
+    public BigInteger verificarVigenciasEstadosCiviles(BigInteger secuenciaEstadosCiviles) {
         BigInteger verificadorVigenciasEstadosCiviles = null;
         try {
             System.err.println("Secuencia verificarBorradoVigenciasEstadoCiviles  " + secuenciaEstadosCiviles);

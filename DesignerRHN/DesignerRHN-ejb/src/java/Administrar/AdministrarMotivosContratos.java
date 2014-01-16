@@ -21,49 +21,53 @@ public class AdministrarMotivosContratos implements AdministrarMotivosContratosI
 
     @EJB
     PersistenciaMotivosContratosInterface persistenciaMotivosContratos;
-    private MotivosContratos motivoCambioCargoSeleccionado;
-    private MotivosContratos motivoCambioCargo;
-    private List<MotivosContratos> listMotivosCambiosCargos;
 
     @Override
-    public void modificarMotivosContratos(List<MotivosContratos> listMotivosCambiosCargosModificadas) {
-        for (int i = 0; i < listMotivosCambiosCargosModificadas.size(); i++) {
+    public void modificarMotivosContratos(List<MotivosContratos> listaMotivosContratos) {
+        for (int i = 0; i < listaMotivosContratos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivoCambioCargoSeleccionado = listMotivosCambiosCargosModificadas.get(i);
-            persistenciaMotivosContratos.editar(motivoCambioCargoSeleccionado);
+            persistenciaMotivosContratos.editar(listaMotivosContratos.get(i));
         }
     }
 
     @Override
-    public void borrarMotivosContratos(MotivosContratos motivosCambiosCargos) {
-        persistenciaMotivosContratos.borrar(motivosCambiosCargos);
+    public void borrarMotivosContratos(List<MotivosContratos> listaMotivosContratos) {
+        for (int i = 0; i < listaMotivosContratos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosContratos.borrar(listaMotivosContratos.get(i));
+        }
     }
 
     @Override
-    public void crearMotivosContratos(MotivosContratos motivosCambiosCargos) {
-        persistenciaMotivosContratos.crear(motivosCambiosCargos);
+    public void crearMotivosContratos(List<MotivosContratos> listaMotivosContratos) {
+        for (int i = 0; i < listaMotivosContratos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosContratos.crear(listaMotivosContratos.get(i));
+        }
     }
 
     @Override
-    public List<MotivosContratos> mostrarMotivosContratos() {
+    public List<MotivosContratos> consultarMotivosContratos() {
+        List<MotivosContratos> listMotivosCambiosCargos;
         listMotivosCambiosCargos = persistenciaMotivosContratos.buscarMotivosContratos();
         return listMotivosCambiosCargos;
     }
 
     @Override
-    public MotivosContratos mostrarMotivoContrato(BigInteger secMotivosCambiosCargos) {
+    public MotivosContratos consultarMotivoContrato(BigInteger secMotivosCambiosCargos) {
+        MotivosContratos motivoCambioCargo;
         motivoCambioCargo = persistenciaMotivosContratos.buscarMotivoContrato(secMotivosCambiosCargos);
         return motivoCambioCargo;
     }
 
     @Override
-    public BigInteger verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo) {
+    public BigInteger contarVigenciasTiposContratosMotivoContrato(BigInteger secuenciaMovitoCambioCargo) {
         BigInteger verificadorVTC = null;
 
         try {
             return verificadorVTC = persistenciaMotivosContratos.verificarBorradoVigenciasTiposContratos(secuenciaMovitoCambioCargo);
         } catch (Exception e) {
-            System.err.println("ERROR AdministrarMotivosContratos verificarBorradoVC ERROR :" + e);
+            System.err.println("ERROR AdministrarMotivosContratos contarVigenciasTiposContratosMotivoContrato ERROR :" + e);
             return null;
         }
     }

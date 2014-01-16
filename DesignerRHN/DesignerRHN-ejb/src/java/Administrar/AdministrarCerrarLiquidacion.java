@@ -73,27 +73,27 @@ public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacio
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public Integer empleadosParaLiquidar() {
-        return persistenciaParametrosEstados.empleadosParaLiquidar(usuarioBD());
+    public Integer contarEmpleadosParaLiquidar() {
+        return persistenciaParametrosEstados.empleadosParaLiquidar(consultarAliasUsuarioBD());
     }
 
     @Override
-    public boolean permisosLiquidar(String usuarioBD) {
+    public boolean verificarPermisosLiquidar(String usuarioBD) {
         return persistenciaCandados.permisoLiquidar(usuarioBD);
     }
 
     @Override
-    public String usuarioBD() {
+    public String consultarAliasUsuarioBD() {
         return persistenciaActualUsuario.actualAliasBD();
     }
 
     @Override
-    public ParametrosEstructuras parametrosLiquidacion() {
-        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD());
+    public ParametrosEstructuras consultarParametrosLiquidacion() {
+        return persistenciaParametrosEstructuras.buscarParametro(consultarAliasUsuarioBD());
     }
     
     @Override
-    public List<Parametros> empleadosCerrarLiquidacion(String usuarioBD){
+    public List<Parametros> consultarEmpleadosCerrarLiquidacion(String usuarioBD){
         return persistenciaParametros.parametrosComprobantes(usuarioBD);
     }
     
@@ -108,12 +108,12 @@ public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacio
     }
     
     @Override
-    public Integer conteoProcesoSN(BigInteger secProceso){
+    public Integer consultarConteoProcesoSN(BigInteger secProceso){
         return persistenciaSolucionesNodos.ContarProcesosSN(secProceso);
     }
     
     @Override
-    public Integer conteoLiquidacionesCerradas(BigInteger secProceso, String fechaDesde, String fechaHasta){
+    public Integer contarLiquidacionesCerradas(BigInteger secProceso, String fechaDesde, String fechaHasta){
         return persistenciaCortesProcesos.contarLiquidacionesCerradas(secProceso, fechaDesde, fechaHasta);
     }
     

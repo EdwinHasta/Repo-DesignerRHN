@@ -17,12 +17,12 @@ public interface AdministrarContratosInterface {
      * Método encargado de recuperar todos los Contratos.
      * @return Retorna una lista de Contratos.
      */
-    public List<Contratos> listaContratos();
+    public List<Contratos> consultarContratos();
     /**
      * Método encargado de recuperar los TiposCotizantes necesarios para la lista de valores.
      * @return Retorna una lista de TiposCotizantes.
      */
-    public List<TiposCotizantes> lovTiposCotizantes();
+    public List<TiposCotizantes> consultaLOVTiposCotizantes();
     /**
      * Método encargado de crear Contratos.
      * @param listaContratos Lista de los Contratos que se van a crear.

@@ -61,13 +61,13 @@ public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesI
     }
 
     @Override
-    public List<ClasesAccidentes> listaClasesAccidentes() {
+    public List<ClasesAccidentes> consultarClasesAccidentes() {
         List<ClasesAccidentes> listClasesAccidentes = persistenciaClasesAccidentes.buscarClasesAccidentes();
         return listClasesAccidentes;
     }
 
     @Override
-    public ClasesAccidentes mostrarClaseAccidente(BigInteger secClasesAccidentes) {
+    public ClasesAccidentes consultarClaseAccidente(BigInteger secClasesAccidentes) {
         ClasesAccidentes clasesAccidentes = persistenciaClasesAccidentes.buscarClaseAccidente(secClasesAccidentes);
         return clasesAccidentes;
     }

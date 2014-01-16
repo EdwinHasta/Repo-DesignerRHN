@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarTiposAuxiliosInterface;
@@ -20,46 +19,56 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarTiposAuxilios implements AdministrarTiposAuxiliosInterface {
- @EJB
-    PersistenciaTiposAuxiliosInterface persistenciaTiposAuxilios;
-    private TiposAuxilios tiposAuxiliosSeleccionado;
-    private TiposAuxilios tiposAuxilios;
-    private List<TiposAuxilios> listTiposAuxilios;
 
-    public void modificarTiposAuxilios(List<TiposAuxilios> listaMotivosPrestamosModificados) {
-        for (int i = 0; i < listaMotivosPrestamosModificados.size(); i++) {
+    @EJB
+    PersistenciaTiposAuxiliosInterface persistenciaTiposAuxilios;
+
+    @Override
+    public void modificarTiposAuxilios(List<TiposAuxilios> listaTiposAuxilios) {
+        for (int i = 0; i < listaTiposAuxilios.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposAuxiliosSeleccionado = listaMotivosPrestamosModificados.get(i);
-            persistenciaTiposAuxilios.editar(tiposAuxiliosSeleccionado);
+            persistenciaTiposAuxilios.editar(listaTiposAuxilios.get(i));
         }
     }
 
-    public void borrarTiposAuxilios(TiposAuxilios tiposAuxilios) {
-        persistenciaTiposAuxilios.borrar(tiposAuxilios);
+    @Override
+    public void borrarTiposAuxilios(List<TiposAuxilios> listaTiposAuxilios) {
+        for (int i = 0; i < listaTiposAuxilios.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposAuxilios.borrar(listaTiposAuxilios.get(i));
+        }
     }
 
-    public void crearTiposAuxilios(TiposAuxilios tiposAuxilios) {
-        persistenciaTiposAuxilios.crear(tiposAuxilios);
+    @Override
+    public void crearTiposAuxilios(List<TiposAuxilios> listaTiposAuxilios) {
+        for (int i = 0; i < listaTiposAuxilios.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposAuxilios.crear(listaTiposAuxilios.get(i));
+        }
     }
 
-    public List<TiposAuxilios> mostrarTiposAuxilios() {
+    @Override
+    public List<TiposAuxilios> consultarTiposAuxilios() {
+        List<TiposAuxilios> listTiposAuxilios;
         listTiposAuxilios = persistenciaTiposAuxilios.buscarTiposAuxilios();
         return listTiposAuxilios;
     }
 
-    public TiposAuxilios mostrarTipoAuxilio(BigInteger secTiposAuxilios) {
+    @Override
+    public TiposAuxilios consultarTipoAuxilio(BigInteger secTiposAuxilios) {
+        TiposAuxilios tiposAuxilios;
         tiposAuxilios = persistenciaTiposAuxilios.buscarTipoAuxilio(secTiposAuxilios);
         return tiposAuxilios;
     }
 
+    @Override
     public BigInteger verificarTablasAuxilios(BigInteger secuenciaTiposAuxilios) {
         BigInteger verificarTablasAuxilios = null;
         try {
-            verificarTablasAuxilios = persistenciaTiposAuxilios.contadorTablasAuxilios(secuenciaTiposAuxilios);
+            return verificarTablasAuxilios = persistenciaTiposAuxilios.contadorTablasAuxilios(secuenciaTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSAUXILIOS verificarTablasAuxilios ERROR :" + e);
-        } finally {
-            return verificarTablasAuxilios;
+            return null;
         }
     }
 }

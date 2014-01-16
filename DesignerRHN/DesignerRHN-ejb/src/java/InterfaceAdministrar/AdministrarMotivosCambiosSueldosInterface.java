@@ -16,15 +16,54 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosCambiosSueldosInterface {
 
-    public void modificarMotivosCambiosSueldos(List<MotivosCambiosSueldos> listMotivosCambiosSueldosModificadas);
+    /**
+     * Método encargado de modificar MotivosCambiosSueldos.
+     *
+     * @param listaMotivosCambiosSueldos Lista MotivosCambiosSueldos que se van
+     * a modificar.
+     */
+    public void modificarMotivosCambiosSueldos(List<MotivosCambiosSueldos> listaMotivosCambiosSueldos);
 
-    public void borrarMotivosCambiosSueldos(MotivosCambiosSueldos motivosCambiosSueldos);
+    /**
+     * Método encargado de borrar MotivosCambiosSueldos.
+     *
+     * @param listaMotivosCambiosSueldos Lista MotivosCambiosSueldos que se van
+     * a borrar.
+     */
+    public void borrarMotivosCambiosSueldos(List<MotivosCambiosSueldos> listaMotivosCambiosSueldos);
 
-    public void crearMotivosCambiosSueldos(MotivosCambiosSueldos motivosCambiosSueldos);
+    /**
+     * Método encargado de crear MotivosCambiosSueldos.
+     *
+     * @param listaMotivosCambiosSueldos Lista MotivosCambiosSueldos que se van
+     * a crear.
+     */
+    public void crearMotivosCambiosSueldos(List<MotivosCambiosSueldos> listaMotivosCambiosSueldos);
 
-    public List<MotivosCambiosSueldos> mostrarMotivosCambiosSueldos();
+    /**
+     * Método encargado de recuperar las MotivosCambiosSueldos para una tabla de
+     * la pantalla.
+     *
+     * @return Retorna una lista de MotivosCambiosSueldos.
+     */
+    public List<MotivosCambiosSueldos> consultarMotivosCambiosSueldos();
 
-    public MotivosCambiosSueldos mostrarMotivoCambioCargo(BigInteger secMotivosCambiosSueldos);
+    /**
+     * Método encargado de recuperar una MotivoCambioSueldo dada su secuencia.
+     *
+     * @param secMotivosCambiosSueldos Secuencia del MotivoCambioSueldo
+     * @return Retorna una MotivosCambiosSueldos.
+     */
+    public MotivosCambiosSueldos consultarMotivoCambioCargo(BigInteger secMotivosCambiosSueldos);
 
-    public BigInteger verificarBorradoVS(BigInteger secuenciaMovitoCambioSueldo);
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * MotivoCambioSueldos específica y algún VigenciasSueldos. Adémas de la
+     * revisión, establece cuantas relaciones existen.
+     *
+     * @param secMotivosCambiosSueldos Secuencia del MotivoCambioSueldos.
+     * @return Retorna el número de VigenciasSueldos relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contarVigenciasSueldosMotivoCambioSueldo(BigInteger secMotivosCambiosSueldos);
 }

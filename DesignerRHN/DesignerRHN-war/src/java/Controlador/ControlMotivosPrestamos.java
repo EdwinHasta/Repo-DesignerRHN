@@ -375,10 +375,10 @@ public class ControlMotivosPrestamos implements Serializable {
             System.out.println("secuencia borrado : " + listMotivosPrestamos.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listMotivosPrestamos.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosPrestamos.verificarEersPrestamos(listMotivosPrestamos.get(index).getSecuencia());
+                verificarEerPrestamos = administrarMotivosPrestamos.verificarEersPrestamosMotivoPrestamo(listMotivosPrestamos.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarMotivosPrestamos.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosPrestamos.verificarEersPrestamos(filtrarMotivosPrestamos.get(index).getSecuencia());
+                verificarEerPrestamos = administrarMotivosPrestamos.verificarEersPrestamosMotivoPrestamo(filtrarMotivosPrestamos.get(index).getSecuencia());
             }
             if (!verificarEerPrestamos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -415,10 +415,7 @@ public class ControlMotivosPrestamos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando MotivoPrestamo");
             if (!borrarMotivosPrestamos.isEmpty()) {
-                for (int i = 0; i < borrarMotivosPrestamos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosPrestamos.borrarMotivosPrestamos(borrarMotivosPrestamos.get(i));
-                }
+                administrarMotivosPrestamos.borrarMotivosPrestamos(borrarMotivosPrestamos);
                 //mostrarBorrados
                 registrosBorrados = borrarMotivosPrestamos.size();
                 context.update("form:mostrarBorrados");
@@ -426,12 +423,8 @@ public class ControlMotivosPrestamos implements Serializable {
                 borrarMotivosPrestamos.clear();
             }
             if (!crearMotivosPrestamos.isEmpty()) {
-                for (int i = 0; i < crearMotivosPrestamos.size(); i++) {
+                administrarMotivosPrestamos.crearMotivosPrestamos(crearMotivosPrestamos);
 
-                    System.out.println("Creando...");
-                    administrarMotivosPrestamos.crearMotivosPrestamos(crearMotivosPrestamos.get(i));
-
-                }
                 crearMotivosPrestamos.clear();
             }
             if (!modificarMotivosPrestamos.isEmpty()) {

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarSoActosInsegurosInterface;
@@ -21,47 +20,57 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarSoActosInseguros implements AdministrarSoActosInsegurosInterface {
 
-     @EJB
+    @EJB
     PersistenciaSoActosInsegurosInterface persistenciaSoActosInseguros;
-    private SoActosInseguros soActosInsegurosPSeleccionada;
-    private SoActosInseguros soActosInseguros;
-    private List<SoActosInseguros> listSoActosInseguros;
-    private BigInteger verificarSoAccidtenesMedicos;
 
-    public void modificarSoActosInseguros(List<SoActosInseguros> listSoActosInsegurosPModificada) {
-        for (int i = 0; i < listSoActosInsegurosPModificada.size(); i++) {
+    private List<SoActosInseguros> listSoActosInseguros;
+
+    @Override
+    public void modificarSoActosInseguros(List<SoActosInseguros> listSoActosInseguros) {
+        for (int i = 0; i < listSoActosInseguros.size(); i++) {
             System.out.println("Administrar Modificando...");
-            soActosInsegurosPSeleccionada = listSoActosInsegurosPModificada.get(i);
-            persistenciaSoActosInseguros.editar(soActosInsegurosPSeleccionada);
+            persistenciaSoActosInseguros.editar(listSoActosInseguros.get(i));
         }
     }
 
-    public void borrarSoActosInseguros(SoActosInseguros soActosInseguros) {
-        persistenciaSoActosInseguros.borrar(soActosInseguros);
+    @Override
+    public void borrarSoActosInseguros(List<SoActosInseguros> listSoActosInseguros) {
+        for (int i = 0; i < listSoActosInseguros.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaSoActosInseguros.borrar(listSoActosInseguros.get(i));
+        }
     }
 
-    public void crearSoActosInseguros(SoActosInseguros soActosInseguros) {
-        persistenciaSoActosInseguros.crear(soActosInseguros);
+    @Override
+    public void crearSoActosInseguros(List<SoActosInseguros> listSoActosInseguros) {
+        for (int i = 0; i < listSoActosInseguros.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaSoActosInseguros.crear(listSoActosInseguros.get(i));
+        }
     }
 
-    public List<SoActosInseguros> mostrarSoActosInseguros() {
+    @Override
+    public List<SoActosInseguros> consultarSoActosInseguros() {
         listSoActosInseguros = persistenciaSoActosInseguros.buscarSoActosInseguros();
         return listSoActosInseguros;
     }
 
-    public SoActosInseguros mostrarSoActoInseguro(BigInteger secSoCondicionesAmbientalesP) {
+    @Override
+    public SoActosInseguros consultarSoActoInseguro(BigInteger secSoCondicionesAmbientalesP) {
+        SoActosInseguros soActosInseguros;
         soActosInseguros = persistenciaSoActosInseguros.buscarSoActoInseguro(secSoCondicionesAmbientalesP);
         return soActosInseguros;
     }
 
+    @Override
     public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
+        BigInteger verificarSoAccidtenesMedicos;
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
-            verificarSoAccidtenesMedicos = persistenciaSoActosInseguros.contadorSoAccidentesMedicos(secuenciaElementos);
+            return verificarSoAccidtenesMedicos = persistenciaSoActosInseguros.contadorSoAccidentesMedicos(secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARSOACTOSINSEGUROS verificarSoAccidtenesMedicos ERROR :" + e);
-        } finally {
-            return verificarSoAccidtenesMedicos;
+            return null;
         }
     }
 }

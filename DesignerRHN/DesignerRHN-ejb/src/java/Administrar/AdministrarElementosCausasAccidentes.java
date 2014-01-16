@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarElementosCausasAccidentesInterface;
@@ -15,45 +12,67 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'ElementosCausasAccidentes'.
  *
- * @author user
+ * @author betelgeuse
  */
 @Stateful
 public class AdministrarElementosCausasAccidentes implements AdministrarElementosCausasAccidentesInterface {
-
-     @EJB
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaElementosCausasAccidentes'.
+     */
+    @EJB
     PersistenciaElementosCausasAccidentesInterface persistenciaElementosCausasAccidentes;
-    private ElementosCausasAccidentes elementosCausasAccidentesSeleccionada;
-    private ElementosCausasAccidentes elementosCausasAccidentes;
-    private List<ElementosCausasAccidentes> listElementosCausasAccidentes;
-  
 
-    public void modificarElementosCausasAccidentes(List<ElementosCausasAccidentes> listElementosCausasAccidentes) {
-        for (int i = 0; i < listElementosCausasAccidentes.size(); i++) {
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
+    @Override
+    public void modificarElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes) {
+        ElementosCausasAccidentes elementosCausasAccidentesSeleccionada;
+        for (int i = 0; i < listaElementosCausasAccidentes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            elementosCausasAccidentesSeleccionada = listElementosCausasAccidentes.get(i);
+            elementosCausasAccidentesSeleccionada = listaElementosCausasAccidentes.get(i);
             persistenciaElementosCausasAccidentes.editar(elementosCausasAccidentesSeleccionada);
         }
     }
 
-    public void borrarElementosCausasAccidentes(ElementosCausasAccidentes elementosCausasAccidentes) {
-        persistenciaElementosCausasAccidentes.borrar(elementosCausasAccidentes);
+    @Override
+    public void borrarElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes) {
+        for (int i = 0; i < listaElementosCausasAccidentes.size(); i++) {
+            System.out.println("Borrando...");
+            persistenciaElementosCausasAccidentes.borrar(listaElementosCausasAccidentes.get(i));
+        }
     }
 
-    public void crearElementosCausasAccidentes(ElementosCausasAccidentes elementosCausasAccidentes) {
-        persistenciaElementosCausasAccidentes.crear(elementosCausasAccidentes);
+    @Override
+    public void crearElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes) {
+        for (int i = 0; i < listaElementosCausasAccidentes.size(); i++) {
+            System.out.println("Creando...");
+            persistenciaElementosCausasAccidentes.crear(listaElementosCausasAccidentes.get(i));
+        }
     }
 
+    @Override
     public List<ElementosCausasAccidentes> mostrarElementosCausasAccidentes() {
-        listElementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementosCausasAccidentes();
+        List<ElementosCausasAccidentes> listElementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementosCausasAccidentes();
         return listElementosCausasAccidentes;
     }
 
+    @Override
     public ElementosCausasAccidentes mostrarElementoCausaAccidente(BigInteger secElementosCausasAccidentes) {
-        elementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementoCausaAccidente(secElementosCausasAccidentes);
+        ElementosCausasAccidentes elementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementoCausaAccidente(secElementosCausasAccidentes);
         return elementosCausasAccidentes;
     }
-    
+
+    @Override
     public BigInteger contadorSoAccidentes(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorSoAccidentes = null;
         try {
@@ -65,6 +84,7 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
         }
     }
 
+    @Override
     public BigInteger contadorSoAccidentesMedicos(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorSoAccidentesMedicos = null;
         try {
@@ -76,6 +96,7 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
         }
     }
 
+    @Override
     public BigInteger contadorSoIndicadoresFr(BigInteger secuenciaTiposAuxilios) {
         BigInteger contadorSoIndicadoresFr = null;
         try {

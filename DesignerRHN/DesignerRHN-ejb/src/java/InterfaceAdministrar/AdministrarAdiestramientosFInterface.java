@@ -15,5 +15,5 @@ public interface AdministrarAdiestramientosFInterface {
      * Método encargado de recuperar todos los AdiestramientosF.
      * @return Retorna una lista de AdiestramientosF.
      */
-    public List<AdiestramientosF> adiestramientosF();
+    public List<AdiestramientosF> consultarAdiestramientosF();
 }

@@ -337,7 +337,7 @@ public class ControlEstadosCiviles implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             System.err.println("Control Secuencia de EstadosCiviles a borrar");
-            vigenciasEstadosAficilaciones = administrarEstadosCiviles.verificarBorradoVigenciasEstadoCiviles(listEstadosCiviles.get(index).getSecuencia());
+            vigenciasEstadosAficilaciones = administrarEstadosCiviles.verificarVigenciasEstadosCiviles(listEstadosCiviles.get(index).getSecuencia());
 
             if (!vigenciasEstadosAficilaciones.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -374,10 +374,7 @@ public class ControlEstadosCiviles implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando EstadosCiviles");
             if (!borrarEstadosCiviles.isEmpty()) {
-                for (int i = 0; i < borrarEstadosCiviles.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarEstadosCiviles.borrarEstadosCiviles(borrarEstadosCiviles.get(i));
-                }
+                administrarEstadosCiviles.borrarEstadosCiviles(borrarEstadosCiviles);
                 //mostrarBorrados
                 registrosBorrados = borrarEstadosCiviles.size();
                 context.update("form:mostrarBorrados");
@@ -385,12 +382,7 @@ public class ControlEstadosCiviles implements Serializable {
                 borrarEstadosCiviles.clear();
             }
             if (!crearEstadosCiviles.isEmpty()) {
-                for (int i = 0; i < crearEstadosCiviles.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarEstadosCiviles.crearEstadosCiviles(crearEstadosCiviles.get(i));
-
-                }
+                administrarEstadosCiviles.crearEstadosCiviles(crearEstadosCiviles);
                 crearEstadosCiviles.clear();
             }
             if (!modificarEstadosCiviles.isEmpty()) {
@@ -682,7 +674,7 @@ public class ControlEstadosCiviles implements Serializable {
 
     public List<EstadosCiviles> getListEstadosCiviles() {
         if (listEstadosCiviles == null) {
-            listEstadosCiviles = administrarEstadosCiviles.mostrarEstadosCiviles();
+            listEstadosCiviles = administrarEstadosCiviles.consultarEstadosCiviles();
         }
         return listEstadosCiviles;
     }

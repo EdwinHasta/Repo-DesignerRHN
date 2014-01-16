@@ -320,12 +320,12 @@ public class ControlMotivosEmbargos implements Serializable {
             System.out.println("secuencia borrado : " + listMotivosEmbargos.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listMotivosEmbargos.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosEmbargos.verificarEersPrestamos(listMotivosEmbargos.get(index).getSecuencia());
-                verificarEmbargos = administrarMotivosEmbargos.verificarEmbargos(listMotivosEmbargos.get(index).getSecuencia());
+                verificarEerPrestamos = administrarMotivosEmbargos.contarEersPrestamosMotivoEmbargo(listMotivosEmbargos.get(index).getSecuencia());
+                verificarEmbargos = administrarMotivosEmbargos.contarEmbargosMotivoEmbargo(listMotivosEmbargos.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarMotivosEmbargos.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosEmbargos.verificarEersPrestamos(filtrarMotivosEmbargos.get(index).getSecuencia());
-                verificarEmbargos = administrarMotivosEmbargos.verificarEmbargos(filtrarMotivosEmbargos.get(index).getSecuencia());
+                verificarEerPrestamos = administrarMotivosEmbargos.contarEersPrestamosMotivoEmbargo(filtrarMotivosEmbargos.get(index).getSecuencia());
+                verificarEmbargos = administrarMotivosEmbargos.contarEmbargosMotivoEmbargo(filtrarMotivosEmbargos.get(index).getSecuencia());
             }
             if (!verificarEerPrestamos.equals(new BigInteger("0")) || !verificarEmbargos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -410,10 +410,9 @@ public class ControlMotivosEmbargos implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO MOTIVOEMBARGO");
             if (!borrarMotivosEmbargos.isEmpty()) {
-                for (int i = 0; i < borrarMotivosEmbargos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarMotivosEmbargos.borrarMotivosEmbargos(borrarMotivosEmbargos.get(i));
-                }
+
+                administrarMotivosEmbargos.borrarMotivosEmbargos(borrarMotivosEmbargos);
+
                 //mostrarBorrados
                 registrosBorrados = borrarMotivosEmbargos.size();
                 context.update("form:mostrarBorrados");
@@ -421,12 +420,8 @@ public class ControlMotivosEmbargos implements Serializable {
                 borrarMotivosEmbargos.clear();
             }
             if (!crearMotivosEmbargos.isEmpty()) {
-                for (int i = 0; i < crearMotivosEmbargos.size(); i++) {
+                administrarMotivosEmbargos.crearMotivosEmbargos(crearMotivosEmbargos);
 
-                    System.out.println("Creando...");
-                    administrarMotivosEmbargos.crearMotivosEmbargos(crearMotivosEmbargos.get(i));
-
-                }
                 crearMotivosEmbargos.clear();
             }
             if (!modificarMotivosEmbargos.isEmpty()) {
