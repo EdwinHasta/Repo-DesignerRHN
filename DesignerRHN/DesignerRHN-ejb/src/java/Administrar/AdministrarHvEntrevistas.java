@@ -72,7 +72,7 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     }
 
     @Override
-    public Empleados buscarEmpleado(BigInteger secuencia) {
+    public Empleados consultarEmpleado(BigInteger secuencia) {
         Empleados empleado;
         try {
             empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);

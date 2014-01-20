@@ -17,17 +17,60 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposChequeosInterface {
 
-    public void modificarTiposChequeos(List<TiposChequeos> listTiposChequeosModificadas);
+    /**
+     * Método encargado de modificar TiposChequeos.
+     *
+     * @param listaTiposChequeos Lista TiposChequeos que se van a modificar.
+     */
+    public void modificarTiposChequeos(List<TiposChequeos> listaTiposChequeos);
 
-    public void borrarTiposChequeos(TiposChequeos tiposChequeos);
+    /**
+     * Método encargado de borrar TiposChequeos.
+     *
+     * @param listaTiposChequeos Lista TiposChequeos que se van a borrar.
+     */
+    public void borrarTiposChequeos(List<TiposChequeos> listaTiposChequeos);
 
-    public void crearTiposChequeos(TiposChequeos tiposChequeos);
+    /**
+     * Método encargado de crear TiposChequeos.
+     *
+     * @param listaTiposChequeos Lista TiposChequeos que se van a crear.
+     */
+    public void crearTiposChequeos(List<TiposChequeos> listaTiposChequeos);
 
-    public List<TiposChequeos> mostrarTiposChequeos();
+    /**
+     * Método encargado de recuperar las TiposChequeos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposChequeos.
+     */
+    public List<TiposChequeos> consultarTiposChequeos();
 
-    public TiposChequeos mostrarTipoChequeo(BigInteger secTipoEmpresa);
+    /**
+     * Método encargado de recuperar una TiposChequeos dada su secuencia.
+     *
+     * @param secTiposChequeos Secuencia del TipoChequeo
+     * @return Retorna un TiposChequeos.
+     */
+    public TiposChequeos consultarTipoChequeo(BigInteger secTiposChequeos);
 
-    public BigInteger verificarChequeosMedicos(BigInteger secuenciaJuzgados);
+    /**
+     * Método encargado de contar la cantidad de ChequeosMedicos relacionadas
+     * con un TipoChequeo específico.
+     *
+     * @param secTiposChequeos Secuencia del TipoChequeo.
+     * @return Retorna un número indicando la cantidad de ChequeosMedicos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarChequeosMedicosTipoChequeo(BigInteger secTiposChequeos);
 
-    public BigInteger verificarTiposExamenesCargos(BigInteger secuenciaJuzgados);
+    /**
+     * Método encargado de contar la cantidad de TiposExamenesCargos
+     * relacionadas con un TipoChequeo específico.
+     *
+     * @param secTiposChequeos Secuencia del TipoChequeo.
+     * @return Retorna un número indicando la cantidad de TiposExamenesCargos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarTiposExamenesCargosTipoChequeo(BigInteger secTiposChequeos);
 }

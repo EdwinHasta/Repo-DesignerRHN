@@ -56,11 +56,11 @@ public interface AdministrarTiposAuxiliosInterface {
 
     /**
      * Método encargado de contar la cantidad de TablasAuxilios relacionadas con
-     * un TiposAuxilios específico.
+     * un TipoAuxilio específico.
      *
      * @param secTiposAuxilios Secuencia del TipoAuxilio.
      * @return Retorna un número indicando la cantidad de TablasAuxilios cuya
      * secuencia coincide con el valor del parámetro.
      */
-    public BigInteger verificarTablasAuxilios(BigInteger secTiposAuxilios);
+    public BigInteger contarTablasAuxiliosTiposAuxilios(BigInteger secTiposAuxilios);
 }

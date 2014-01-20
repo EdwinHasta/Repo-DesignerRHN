@@ -26,33 +26,41 @@ public class AdministrarPryPlataformas implements AdministrarPryPlataformasInter
     private PryPlataformas pryPlataformas;
     private List<PryPlataformas> listPryPlataformas;
 
-    public void modificarPryPlataformas(List<PryPlataformas> listPryClientesModificadas) {
-        for (int i = 0; i < listPryClientesModificadas.size(); i++) {
+    @Override
+    public void modificarPryPlataformas(List<PryPlataformas> listaPryClientes) {
+        for (int i = 0; i < listaPryClientes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            pryPlataformasSeleccionado = listPryClientesModificadas.get(i);
-            persistenciaPryPlataformas.editar(pryPlataformasSeleccionado);
+            persistenciaPryPlataformas.editar(listaPryClientes.get(i));
         }
     }
 
-    public void borrarPryPlataformas(PryPlataformas pryClientes) {
-        persistenciaPryPlataformas.borrar(pryClientes);
+    @Override
+    public void borrarPryPlataformas(List<PryPlataformas> listaPryClientes) {
+        for (int i = 0; i < listaPryClientes.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaPryPlataformas.borrar(listaPryClientes.get(i));
+        }
     }
 
-    public void crearPryPlataformas(PryPlataformas pryClientes) {
-        persistenciaPryPlataformas.crear(pryClientes);
+    @Override
+    public void crearPryPlataformas(List<PryPlataformas> listaPryClientes) {
+        for (int i = 0; i < listaPryClientes.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaPryPlataformas.crear(listaPryClientes.get(i));
+        }
     }
-
+    @Override
     public List<PryPlataformas> mostrarPryPlataformas() {
         listPryPlataformas = persistenciaPryPlataformas.buscarPryPlataformas();
         return listPryPlataformas;
     }
-
+    @Override
     public PryPlataformas mostrarPryPlataformas(BigInteger secPryClientes) {
         pryPlataformas = persistenciaPryPlataformas.buscarPryPlataformaSecuencia(secPryClientes);
         return pryPlataformas;
     }
-
-    public BigInteger verificarBorradoProyecto(BigInteger secuenciaProyectos) {
+    @Override
+    public BigInteger contarProyectosPryPlataformas(BigInteger secuenciaProyectos) {
         BigInteger verificadorProyectos;
         try {
             System.err.println("Secuencia Borrado Competencias Cargos" + secuenciaProyectos);

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Controlador;
 
 import Entidades.PartesCuerpo;
@@ -238,7 +237,7 @@ public class ControlPartesCuerpo implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                         for (int j = 0; j < listPartesCuerpo.size(); j++) {
+                        for (int j = 0; j < listPartesCuerpo.size(); j++) {
                             if (filtrarPartesCuerpo.get(indice).getCodigo() == listPartesCuerpo.get(j).getCodigo()) {
                                 contador++;
                             }
@@ -347,9 +346,9 @@ public class ControlPartesCuerpo implements Serializable {
     public void verificarBorrado() {
         System.out.println("verificarBorrado");
         try {
-            verificarBorradoDetallesExamenes = administrarPartesCuerpo.verificarBorradoDetallesExamenes(listPartesCuerpo.get(index).getSecuencia());
-            verificarBorradoSoDetallesRevisiones = administrarPartesCuerpo.verificarBorradoSoDetallesRevisiones(listPartesCuerpo.get(index).getSecuencia());
-            verificarSoAccidentesMedicos = administrarPartesCuerpo.verificarSoAccidentesMedicos(listPartesCuerpo.get(index).getSecuencia());
+            verificarBorradoDetallesExamenes = administrarPartesCuerpo.contarDetallesExamenesParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
+            verificarBorradoSoDetallesRevisiones = administrarPartesCuerpo.contarSoDetallesRevisionesParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
+            verificarSoAccidentesMedicos = administrarPartesCuerpo.contarSoAccidentesMedicosParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
             if (verificarBorradoDetallesExamenes.equals(0) && verificarBorradoSoDetallesRevisiones.equals(0) && verificarSoAccidentesMedicos.equals(0)) {
                 System.out.println("Borrado==0");
                 borrandoParteCuerpo();
@@ -385,10 +384,8 @@ public class ControlPartesCuerpo implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando PARTES CUERPO");
             if (!borrarPartesCuerpo.isEmpty()) {
-                for (int i = 0; i < borrarPartesCuerpo.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarPartesCuerpo.borrarPartesCuerpo(borrarPartesCuerpo.get(i));
-                }
+                administrarPartesCuerpo.borrarPartesCuerpo(borrarPartesCuerpo);
+
                 //mostrarBorrados
                 registrosBorrados = borrarPartesCuerpo.size();
                 context.update("form:mostrarBorrados");
@@ -396,12 +393,7 @@ public class ControlPartesCuerpo implements Serializable {
                 borrarPartesCuerpo.clear();
             }
             if (!crearPartesCuerpo.isEmpty()) {
-                for (int i = 0; i < crearPartesCuerpo.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarPartesCuerpo.crearPartesCuerpo(crearPartesCuerpo.get(i));
-
-                }
+                administrarPartesCuerpo.crearPartesCuerpo(crearPartesCuerpo);
                 crearPartesCuerpo.clear();
             }
             if (!modificarPartesCuerpo.isEmpty()) {
@@ -698,7 +690,7 @@ public class ControlPartesCuerpo implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<PartesCuerpo> getListPartesCuerpo() {
         if (listPartesCuerpo == null) {
-            listPartesCuerpo = administrarPartesCuerpo.mostrarPartesCuerpo();
+            listPartesCuerpo = administrarPartesCuerpo.consultarPartesCuerpo();
         }
         return listPartesCuerpo;
     }
@@ -779,5 +771,4 @@ public class ControlPartesCuerpo implements Serializable {
         this.filtrarPartesCuerpo = filtrarPartesCuerpo;
     }
 
-    
 }

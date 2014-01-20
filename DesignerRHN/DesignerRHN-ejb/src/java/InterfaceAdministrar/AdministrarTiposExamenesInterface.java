@@ -18,17 +18,60 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposExamenesInterface {
 
-    public void modificarTiposExamenes(List<TiposExamenes> listTiposEmpresasModificadas);
+    /**
+     * Método encargado de modificar TiposExamenes.
+     *
+     * @param listaTiposExamenes Lista TiposExamenes que se van a modificar.
+     */
+    public void modificarTiposExamenes(List<TiposExamenes> listaTiposExamenes);
 
-    public void borrarTiposExamenes(TiposExamenes tiposExamenes);
+    /**
+     * Método encargado de borrar TiposExamenes.
+     *
+     * @param listaTiposExamenes Lista TiposExamenes que se van a borrar.
+     */
+    public void borrarTiposExamenes(List<TiposExamenes> listaTiposExamenes);
 
-    public void crearTiposExamenes(TiposExamenes tiposExamenes);
+    /**
+     * Método encargado de crear TiposExamenes.
+     *
+     * @param listaTiposExamenes Lista TiposExamenes que se van a crear.
+     */
+    public void crearTiposExamenes(List<TiposExamenes> listaTiposExamenes);
 
-    public List<TiposExamenes> mostrarTiposExamenes();
+    /**
+     * Método encargado de recuperar las TiposExamenes para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposExamenes.
+     */
+    public List<TiposExamenes> consultarTiposExamenes();
 
-    public TiposExamenes mostrarTipoExamen(BigInteger secTipoEmpresa);
+    /**
+     * Método encargado de recuperar un TipoExamen dada su secuencia.
+     *
+     * @param secTiposExamenes Secuencia del TipoExamen
+     * @return Retorna un TiposExamenes.
+     */
+    public TiposExamenes consultarTipoExamen(BigInteger secTiposExamenes);
 
-    public BigInteger verificarBorradoTiposExamenesCargos(BigInteger secuenciaTiposExamenesCargos);
+    /**
+     * Método encargado de contar la cantidad de TiposExamenesCargos relacionadas con
+     * un TipoExamen específica.
+     *
+     * @param secTiposExamenes Secuencia del TipoExamen.
+     * @return Retorna un número indicando la cantidad de TiposExamenesCargos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarTiposExamenesCargosTipoExamen(BigInteger secTiposExamenes);
 
-    public BigInteger verificarBorradoVigenciasExamenesMedicos(BigInteger secuenciaVigenciasExamenesMedicos);
+    /**
+     * Método encargado de contar la cantidad de VigenciasExamenesMedicos relacionadas con
+     * un TipoExamen específica.
+     *
+     * @param secTiposExamenes Secuencia del TipoExamen.
+     * @return Retorna un número indicando la cantidad de VigenciasExamenesMedicos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarVigenciasExamenesMedicosTipoExamen(BigInteger secTiposExamenes);
 }

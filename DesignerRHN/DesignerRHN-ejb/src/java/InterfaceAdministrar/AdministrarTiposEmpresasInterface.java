@@ -17,15 +17,50 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposEmpresasInterface {
 
-    public void modificarTiposEmpresas(List<TiposEmpresas> listTiposEmpresasModificadas);
+    /**
+     * Método encargado de modificar TiposEmpresas.
+     *
+     * @param listaTiposEmpresas Lista TiposEmpresas que se van a modificar.
+     */
+    public void modificarTiposEmpresas(List<TiposEmpresas> listaTiposEmpresas);
 
-    public void borrarTiposEmpresas(TiposEmpresas tipoEmpresa);
+    /**
+     * Método encargado de borrar TiposEmpresas.
+     *
+     * @param listaTiposEmpresas Lista TiposEmpresas que se van a borrar.
+     */
+    public void borrarTiposEmpresas(List<TiposEmpresas> listaTiposEmpresas);
 
-    public void crearTiposEmpresas(TiposEmpresas tipoEmpresa);
+    /**
+     * Método encargado de crear TiposEmpresas.
+     *
+     * @param listaTiposEmpresas Lista TiposEmpresas que se van a crear.
+     */
+    public void crearTiposEmpresas(List<TiposEmpresas> listaTiposEmpresas);
 
-    public List<TiposEmpresas> mostrarTiposEmpresas();
+    /**
+     * Método encargado de recuperar las TiposEmpresas para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposEmpresas.
+     */
+    public List<TiposEmpresas> consultarTiposEmpresas();
 
-    public TiposEmpresas mostrarTipoEmpresa(BigInteger secTipoEmpresa);
+    /**
+     * Método encargado de recuperar un TipoEmpresa dada su secuencia.
+     *
+     * @param secTipoEmpresa Secuencia del TipoEmpresa
+     * @return Retorna un TiposEmpresas.
+     */
+    public TiposEmpresas consultarTipoEmpresa(BigInteger secTipoEmpresa);
 
-    public BigInteger verificarBorradoSueldosMercados(BigInteger secuenciaSueldosMercados);
+    /**
+     * Método encargado de contar la cantidad de SueldosMercados relacionadas con
+     * un TipoEmpresa específica.
+     *
+     * @param secTiposEmpresas Secuencia del TipoEmpresa.
+     * @return Retorna un número indicando la cantidad de SueldosMercados cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSueldosMercadosTipoEmpresa(BigInteger secTiposEmpresas);
 }

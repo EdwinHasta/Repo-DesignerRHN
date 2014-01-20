@@ -6,8 +6,7 @@ package Administrar;
 
 import Entidades.Grupostiposentidades;
 import Entidades.TiposEntidades;
-import Entidades.VigenciasAfiliaciones;
-import InterfaceAdministrar.AdministrarTipoEntidadInterface;
+import InterfaceAdministrar.AdministrarTiposEntidadesInterface;
 import InterfacePersistencia.PersistenciaGruposTiposEntidadesInterface;
 import InterfacePersistencia.PersistenciaTiposEntidadesInterface;
 import InterfacePersistencia.PersistenciaVigenciasAfiliacionesInterface;
@@ -21,7 +20,7 @@ import javax.ejb.Stateful;
  * @author user
  */
 @Stateful
-public class AdministrarTipoEntidad implements AdministrarTipoEntidadInterface {
+public class AdministrarTiposEntidades implements AdministrarTiposEntidadesInterface {
 
     @EJB
     PersistenciaTiposEntidadesInterface persistenciaTiposEntidades;
@@ -29,62 +28,54 @@ public class AdministrarTipoEntidad implements AdministrarTipoEntidadInterface {
     PersistenciaGruposTiposEntidadesInterface persistenciaGruposTiposEntidades;
     @EJB
     PersistenciaVigenciasAfiliacionesInterface persistenciaVigenciasAfiliaciones;
-    private TiposEntidades tipoEntidadSeleccionada;
-    private TiposEntidades tipoEntidad;
-    private List<TiposEntidades> listTiposEntidades;
-    private List<Grupostiposentidades> listGruposTiposEntidades;
-    private List<VigenciasAfiliaciones> listVigenciasAfiliaciones;
 
     @Override
     public void modificarTipoEntidad(List<TiposEntidades> listTiposEntidadesModificadas) {
         for (int i = 0; i < listTiposEntidadesModificadas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tipoEntidadSeleccionada = listTiposEntidadesModificadas.get(i);
-            persistenciaTiposEntidades.editar(tipoEntidadSeleccionada);
+            persistenciaTiposEntidades.editar(listTiposEntidadesModificadas.get(i));
         }
     }
 
     @Override
-    public void borrarTipoEntidad(TiposEntidades tipoEntidad) {
-        persistenciaTiposEntidades.borrar(tipoEntidad);
+    public void borrarTipoEntidad(List<TiposEntidades> listTiposEntidadesModificadas) {
+        for (int i = 0; i < listTiposEntidadesModificadas.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposEntidades.borrar(listTiposEntidadesModificadas.get(i));
+        }
     }
 
     @Override
-    public void crearTipoEntidad(TiposEntidades tiposEntidades) {
-        persistenciaTiposEntidades.crear(tiposEntidades);
+    public void crearTipoEntidad(List<TiposEntidades> listTiposEntidadesModificadas) {
+        for (int i = 0; i < listTiposEntidadesModificadas.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposEntidades.crear(listTiposEntidadesModificadas.get(i));
+        }
     }
 
     @Override
-    public void buscarTipoEntidad(TiposEntidades tiposEntidades) {
-        persistenciaTiposEntidades.crear(tiposEntidades);
-    }
-
-    @Override
-    public List<TiposEntidades> mostrarTiposEntidades() {
+    public List<TiposEntidades> consultarTiposEntidades() {
+        List<TiposEntidades> listTiposEntidades;
         listTiposEntidades = persistenciaTiposEntidades.buscarTiposEntidades();
         return listTiposEntidades;
     }
 
     @Override
-    public TiposEntidades mostrarTipoEntidad(BigInteger secTipoEntidad) {
+    public TiposEntidades consultarTipoEntidad(BigInteger secTipoEntidad) {
+        TiposEntidades tipoEntidad;
         tipoEntidad = persistenciaTiposEntidades.buscarTiposEntidadesSecuencia(secTipoEntidad);
         return tipoEntidad;
     }
 
     @Override
-    public List<Grupostiposentidades> mostrarGruposTiposEntidades() {
+    public List<Grupostiposentidades> consultarLOVGruposTiposEntidades() {
+        List<Grupostiposentidades> listGruposTiposEntidades;
         listGruposTiposEntidades = persistenciaGruposTiposEntidades.buscarGruposTiposEntidades();
         return listGruposTiposEntidades;
     }
 
     @Override
-    public List<VigenciasAfiliaciones> mostarVigenciasAfiliaciones() {
-        listVigenciasAfiliaciones = persistenciaVigenciasAfiliaciones.buscarVigenciasAfiliaciones();
-        return listVigenciasAfiliaciones;
-    }
-
-    @Override
-    public BigInteger verificarBorrado(BigInteger secuenciaTipoEntidad) {
+    public BigInteger contarVigenciasAfiliacionesTipoEntidad(BigInteger secuenciaTipoEntidad) {
         BigInteger verificador;
 
         try {
@@ -97,7 +88,7 @@ public class AdministrarTipoEntidad implements AdministrarTipoEntidadInterface {
     }
 
     @Override
-    public BigInteger verificarBorradoFCE(BigInteger secuenciaTipoEntidad) {
+    public BigInteger contarFormulasContratosEntidadesTipoEntidad(BigInteger secuenciaTipoEntidad) {
         BigInteger verificador;
 
         try {

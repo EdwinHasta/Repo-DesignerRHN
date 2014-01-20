@@ -17,15 +17,50 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarPryClientesInterface {
 
-    public void modificarPryClientes(List<PryClientes> listPryClientesModificadas);
+    /**
+     * Método encargado de modificar PryClientes.
+     *
+     * @param listaPryClientes Lista PryClientes que se van a modificar.
+     */
+    public void modificarPryClientes(List<PryClientes> listaPryClientes);
 
-    public void borrarPryClientes(PryClientes pryClientes);
+    /**
+     * Método encargado de borrar PryClientes.
+     *
+     * @param listaPryClientes Lista PryClientes que se van a borrar.
+     */
+    public void borrarPryClientes(List<PryClientes> listaPryClientes);
 
-    public void crearPryClientes(PryClientes pryClientes);
+    /**
+     * Método encargado de crear PryClientes.
+     *
+     * @param listaPryClientes Lista PryClientes que se van a crear.
+     */
+    public void crearPryClientes(List<PryClientes> listaPryClientes);
 
-    public List<PryClientes> mostrarPryClientes();
+    /**
+     * Método encargado de recuperar las PryClientes para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de PryClientes.
+     */
+    public List<PryClientes> consultarPryClientes();
 
-    public PryClientes mostrarPryCliente(BigInteger secPryClientes);
+    /**
+     * Método encargado de recuperar una PryClientes dada su secuencia.
+     *
+     * @param secPryClientes Secuencia del PryClientes
+     * @return Retorna una PryClientes.
+     */
+    public PryClientes consultarPryCliente(BigInteger secPryClientes);
 
-    public BigInteger verificarBorradoProyecto(BigInteger secuenciaProyectos);
+    /**
+     * Método encargado de contar la cantidad de Proyectos relacionadas con una
+     * PryCliente específico.
+     *
+     * @param secPryClientes Secuencia del PryCliente.
+     * @return Retorna un número indicando la cantidad de Proyectos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarProyectosPryCliente(BigInteger secPryClientes);
 }

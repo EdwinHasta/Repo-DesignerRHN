@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package InterfaceAdministrar;
 
 import Entidades.TiposEmbargos;
@@ -17,12 +16,61 @@ import javax.ejb.Local;
  */
 @Local
 public interface AdministrarTiposEmbargosInterface {
-    public void modificarTiposPrestamos(List<TiposEmbargos> listaTiposEmbargosModificados);
-    public void borrarTiposPrestamos(TiposEmbargos tiposEmbargos);
-    public void crearTiposPrestamos(TiposEmbargos tiposEmbargos);
-    public List<TiposEmbargos> mostrarTiposPrestamos();
-    public TiposEmbargos mostrarTipoPrestamo(BigInteger secMotivoPrestamo);
 
-    public BigInteger verificarDiasLaborales(BigInteger secuenciaTiposDias);
-    public BigInteger verificarExtrasRecargos(BigInteger secuenciaTiposDias);
+    /**
+     * Método encargado de modificar TiposEmbargos.
+     *
+     * @param listaTiposEmbargos Lista TiposEmbargos que se van a modificar.
+     */
+    public void modificarTiposPrestamos(List<TiposEmbargos> listaTiposEmbargos);
+
+    /**
+     * Método encargado de borrar TiposEmbargos.
+     *
+     * @param listaTiposEmbargos Lista TiposEmbargos que se van a borrar.
+     */
+    public void borrarTiposPrestamos(List<TiposEmbargos> listaTiposEmbargos);
+
+    /**
+     * Método encargado de crear TiposEmbargos.
+     *
+     * @param listaTiposEmbargos Lista TiposEmbargos que se van a crear.
+     */
+    public void crearTiposPrestamos(List<TiposEmbargos> listaTiposEmbargos);
+
+    /**
+     * Método encargado de recuperar las TiposEmbargos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposEmbargos.
+     */
+    public List<TiposEmbargos> consultarTiposPrestamos();
+
+    /**
+     * Método encargado de recuperar un TipoEmbargo dada su secuencia.
+     *
+     * @param secTiposEmbargos Secuencia del TipoEmbargo
+     * @return Retorna un TiposEmbargos.
+     */
+    public TiposEmbargos consultarTipoPrestamo(BigInteger secTiposEmbargos);
+
+    /**
+     * Método encargado de contar la cantidad de DiasLaborales relacionadas con
+     * un TipoEmbargo específico.
+     *
+     * @param secTiposEmbargos Secuencia del TipoEmbargo.
+     * @return Retorna un número indicando la cantidad de DiasLaborales cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarDiasLaboralesTipoEmbargo(BigInteger secTiposEmbargos);
+
+    /**
+     * Método encargado de contar la cantidad de ExtrasRecargos relacionadas con
+     * un TipoEmbargo específico.
+     *
+     * @param secTiposEmbargos Secuencia del TipoEmbargo.
+     * @return Retorna un número indicando la cantidad de ExtrasRecargos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarExtrasRecargosTipoEmbargo(BigInteger secTiposEmbargos);
 }

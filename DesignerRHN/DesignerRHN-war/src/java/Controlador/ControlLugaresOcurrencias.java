@@ -66,7 +66,7 @@ public class ControlLugaresOcurrencias implements Serializable {
         editarLugarOcurrencia = new LugaresOcurrencias();
         nuevoLugarOcurrencia = new LugaresOcurrencias();
         duplicarLugareOcurrencia = new LugaresOcurrencias();
-        guardado=true;
+        guardado = true;
     }
 
     public void eventoFiltrar() {
@@ -350,9 +350,9 @@ public class ControlLugaresOcurrencias implements Serializable {
 
         try {
             if (tipoLista == 1) {
-                soAccidentes = administrarLugaresOcurrencias.verificarSoAccidentes(listLugaresOcurrencias.get(index).getSecuencia());
+                soAccidentes = administrarLugaresOcurrencias.verificarSoAccidentesLugarOcurrencia(listLugaresOcurrencias.get(index).getSecuencia());
             } else {
-                soAccidentes = administrarLugaresOcurrencias.verificarSoAccidentes(filtrarLugaresOcurrencias.get(index).getSecuencia());
+                soAccidentes = administrarLugaresOcurrencias.verificarSoAccidentesLugarOcurrencia(filtrarLugaresOcurrencias.get(index).getSecuencia());
             }
             if (soAccidentes.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -387,10 +387,8 @@ public class ControlLugaresOcurrencias implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando LUGARES OCURRENCIAS");
             if (!borrarLugaresOcurrencias.isEmpty()) {
-                for (int i = 0; i < borrarLugaresOcurrencias.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarLugaresOcurrencias.borrarLugarOcurrencia(borrarLugaresOcurrencias.get(i));
-                }
+                administrarLugaresOcurrencias.borrarLugarOcurrencia(borrarLugaresOcurrencias);
+
                 //mostrarBorrados
                 registrosBorrados = borrarLugaresOcurrencias.size();
                 context.update("form:mostrarBorrados");
@@ -398,12 +396,8 @@ public class ControlLugaresOcurrencias implements Serializable {
                 borrarLugaresOcurrencias.clear();
             }
             if (!crearLugaresOcurrencias.isEmpty()) {
-                for (int i = 0; i < crearLugaresOcurrencias.size(); i++) {
+                administrarLugaresOcurrencias.crearLugarOcurrencia(crearLugaresOcurrencias);
 
-                    System.out.println("Creando...");
-                    administrarLugaresOcurrencias.crearLugarOcurrencia(crearLugaresOcurrencias.get(i));
-
-                }
                 crearLugaresOcurrencias.clear();
             }
             if (!modificarLugaresOcurrencias.isEmpty()) {
@@ -414,8 +408,8 @@ public class ControlLugaresOcurrencias implements Serializable {
             listLugaresOcurrencias = null;
             context.update("form:datosSitioOcurrencia");
             k = 0;
-                guardado = true;
-            
+            guardado = true;
+
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -699,7 +693,7 @@ public class ControlLugaresOcurrencias implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<LugaresOcurrencias> getListLugaresOcurrencias() {
         if (listLugaresOcurrencias == null) {
-            listLugaresOcurrencias = administrarLugaresOcurrencias.mostrarLugaresOcurrencias();
+            listLugaresOcurrencias = administrarLugaresOcurrencias.consultarLugaresOcurrencias();
         }
         return listLugaresOcurrencias;
     }

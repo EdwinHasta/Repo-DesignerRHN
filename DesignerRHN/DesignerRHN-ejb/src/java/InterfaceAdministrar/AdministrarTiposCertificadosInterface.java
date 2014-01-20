@@ -16,13 +16,40 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposCertificadosInterface {
 
-    public void modificarTiposCertificados(List<TiposCertificados> listNormasLaboralesModificadas);
+    /**
+     * Método encargado de modificar TiposCertificados.
+     *
+     * @param listaTiposCertificados Lista TiposCertificados que se van a modificar.
+     */
+    public void modificarTiposCertificados(List<TiposCertificados> listaTiposCertificados);
 
-    public void borrarTiposCertificados(TiposCertificados tiposCertificados);
+    /**
+     * Método encargado de borrar TiposCertificados.
+     *
+     * @param listaTiposCertificados Lista TiposCertificados que se van a borrar.
+     */
+    public void borrarTiposCertificados(List<TiposCertificados> listaTiposCertificados);
 
-    public void crearTiposCertificados(TiposCertificados tiposCertificados);
+    /**
+     * Método encargado de crear TiposCertificados.
+     *
+     * @param listaTiposCertificados Lista TiposCertificados que se van a crear.
+     */
+    public void crearTiposCertificados(List<TiposCertificados> listaTiposCertificados);
 
-    public List<TiposCertificados> mostrarTiposCertificados();
+    /**
+     * Método encargado de recuperar las TiposCertificados para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposCertificados.
+     */
+    public List<TiposCertificados> consultarTiposCertificados();
 
-    public TiposCertificados mostrarTipoCertificado(BigInteger secTipoCertificado);
+    /**
+     * Método encargado de recuperar un TipoCertificado dada su secuencia.
+     *
+     * @param secTiposCertificados Secuencia del TipoCertificado
+     * @return Retorna un TipoCertificado.
+     */
+    public TiposCertificados consultarTipoCertificado(BigInteger secTiposCertificados);
 }

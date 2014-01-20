@@ -773,7 +773,7 @@ public class ControlHvEntrevistas implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public Empleados getEmpleadoSeleccionado() {
         if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarHvEntrevistas.buscarEmpleado(secuenciaEmpleado);
+            empleadoSeleccionado = administrarHvEntrevistas.consultarEmpleado(secuenciaEmpleado);
         }
         return empleadoSeleccionado;
     }

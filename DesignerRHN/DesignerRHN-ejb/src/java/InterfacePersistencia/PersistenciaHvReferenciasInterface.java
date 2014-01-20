@@ -33,7 +33,7 @@ public interface PersistenciaHvReferenciasInterface {
      * @return Retorna una lista de HvReferencias con las referencias familiares
      * de una persona.
      */
-    public List<HvReferencias> referenciasFamiliaresPersona(BigInteger secuenciaHV);
+    public List<HvReferencias> contarReferenciasFamiliaresPersona(BigInteger secuenciaHV);
 
     /**
      * Método encargado de insertar una HvReferencia en la base de datos.
@@ -86,8 +86,18 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Lista de Referencias Por empleado
      */
-    public List<HvReferencias> buscarHvReferenciasPorEmpleado(BigInteger secEmpleado);
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(BigInteger secEmpleado);
 
+
+    /**
+     * *
+     * Metodo encargado de traer la lista de HvReferencias por empleado donde
+     * las referecias en su campo Tipo='FAMILIARES'
+     *
+     * @param secEmpleado Secuencia del empleado
+     * @return Lista de Referencias Por empleado
+     */
+    public List<HvReferencias> consultarHvReferenciasFamiliarPorEmpleado(BigInteger secEmpleado);
     /**
      * Metodo encargado de traer las hojas de vida del empleado relacionadas con
      * HvReferencias
@@ -95,5 +105,5 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Retorna una lista De HVHojasDeVida
      */
-    public List<HVHojasDeVida> buscarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado);
+    public List<HVHojasDeVida> consultarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado);
 }

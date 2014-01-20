@@ -28,38 +28,43 @@ public class AdministrarLugaresOcurrencias implements AdministrarLugaresOcurrenc
     private List<LugaresOcurrencias> listLugarOcurrencia;
 
   @Override
-    public void modificarLesiones(List<LugaresOcurrencias> listLugaresOcurrenciasModificadas) {
-        for (int i = 0; i < listLugaresOcurrenciasModificadas.size(); i++) {
+    public void modificarLesiones(List<LugaresOcurrencias> listaLugaresOcurrencias) {
+        for (int i = 0; i < listaLugaresOcurrencias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            lugarOcurrenciaSeleccionada = listLugaresOcurrenciasModificadas.get(i);
-            persistenciaLugaresOcurrencias.editar(lugarOcurrenciaSeleccionada);
+            persistenciaLugaresOcurrencias.editar(listaLugaresOcurrencias.get(i));
         }
     }
 
   @Override
-    public void borrarLugarOcurrencia(LugaresOcurrencias lugarOcurrencia) {
-        persistenciaLugaresOcurrencias.borrar(lugarOcurrencia);
+    public void borrarLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias) {
+        for (int i = 0; i < listaLugaresOcurrencias.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaLugaresOcurrencias.borrar(listaLugaresOcurrencias.get(i));
+        }
     }
 
   @Override
-    public void crearLugarOcurrencia(LugaresOcurrencias lugarOcurrencia) {
-        persistenciaLugaresOcurrencias.crear(lugarOcurrencia);
+    public void crearLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias) {
+        for (int i = 0; i < listaLugaresOcurrencias.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaLugaresOcurrencias.crear(listaLugaresOcurrencias.get(i));
+        }
     }
 
   @Override
-    public List<LugaresOcurrencias> mostrarLugaresOcurrencias() {
+    public List<LugaresOcurrencias> consultarLugaresOcurrencias() {
         listLugarOcurrencia = persistenciaLugaresOcurrencias.buscarLugaresOcurrencias();
         return listLugarOcurrencia;
     }
 
   @Override
-    public LugaresOcurrencias mostrarLugarOcurrencia(BigInteger secLugarOcurrencia) {
+    public LugaresOcurrencias consultarLugarOcurrencia(BigInteger secLugarOcurrencia) {
         lugarOcurrencia = persistenciaLugaresOcurrencias.buscarLugaresOcurrencias(secLugarOcurrencia);
         return lugarOcurrencia;
     }
 
   @Override
-    public BigInteger verificarSoAccidentes(BigInteger secuenciaLugaresOcurrencias) {
+    public BigInteger verificarSoAccidentesLugarOcurrencia(BigInteger secuenciaLugaresOcurrencias) {
         BigInteger verificarSoAccidentes;
         try {
             return verificarSoAccidentes = persistenciaLugaresOcurrencias.contadorSoAccidentes(secuenciaLugaresOcurrencias);

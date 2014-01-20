@@ -17,15 +17,54 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarLugaresOcurrenciasInterface {
 
-    public void modificarLesiones(List<LugaresOcurrencias> listLugaresOcurrenciasModificadas);
+    /**
+     * Método encargado de modificar LugaresOcurrencias.
+     *
+     * @param listaLugaresOcurrencias Lista LugaresOcurrencias que se van a
+     * modificar.
+     */
+    public void modificarLesiones(List<LugaresOcurrencias> listaLugaresOcurrencias);
 
-    public void borrarLugarOcurrencia(LugaresOcurrencias lugarOcurrencia);
+    /**
+     * Método encargado de borrar LugaresOcurrencias.
+     *
+     * @param listaLugaresOcurrencias Lista LugaresOcurrencias que se van a
+     * borrar.
+     */
+    public void borrarLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias);
 
-    public void crearLugarOcurrencia(LugaresOcurrencias lugarOcurrencia);
+    /**
+     * Método encargado de crear LugaresOcurrencias.
+     *
+     * @param listaLugaresOcurrencias Lista LugaresOcurrencias que se van a
+     * crear.
+     */
+    public void crearLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias);
 
-    public List<LugaresOcurrencias> mostrarLugaresOcurrencias();
+    /**
+     * Método encargado de recuperar las LugaresOcurrencias para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de LugaresOcurrencias.
+     */
+    public List<LugaresOcurrencias> consultarLugaresOcurrencias();
 
-    public LugaresOcurrencias mostrarLugarOcurrencia(BigInteger secLugarOcurrencia);
+    /**
+     * Método encargado de recuperar una LugaresOcurrencias dada su secuencia.
+     *
+     * @param secLugaresOcurrencias Secuencia del LugaresOcurrencias
+     * @return Retorna una LugaresOcurrencias.
+     */
+    public LugaresOcurrencias consultarLugarOcurrencia(BigInteger secLugaresOcurrencias);
 
-    public BigInteger verificarSoAccidentes(BigInteger secuenciaLugaresOcurrencias);
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * LugaresOcurrencias específica y algún SoAccidentes. Adémas de la
+     * revisión, establece cuantas relaciones existen.
+     *
+     * @param secLugaresOcurrencias Secuencia de la LugaresOcurrencias.
+     * @return Retorna el número de SoAccidentes relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger verificarSoAccidentesLugarOcurrencia(BigInteger secLugaresOcurrencias);
 }

@@ -22,66 +22,68 @@ public class AdministrarPartesCuerpo implements AdministrarPartesCuerpoInterface
 
     @EJB
     PersistenciaPartesCuerpoInterface persistenciaPartesCuerpo;
-    private PartesCuerpo partesCuerpoSeleccionada;
-    private PartesCuerpo partesCuerpo;
-    private List<PartesCuerpo> listPartesCuerpo;
-    private BigInteger verificarSoAccidentesMedicos;
-    private BigInteger verificarBorradoDetallesExamenes;
-    private BigInteger verificarBorradoSoDetallesRevisiones;
 
-    public void modificarPartesCuerpo(List<PartesCuerpo> listPartesCuerpoModificada) {
-        for (int i = 0; i < listPartesCuerpoModificada.size(); i++) {
+    public void modificarPartesCuerpo(List<PartesCuerpo> listPartesCuerpo) {
+        for (int i = 0; i < listPartesCuerpo.size(); i++) {
             System.out.println("Administrar Modificando...");
-            partesCuerpoSeleccionada = listPartesCuerpoModificada.get(i);
-            persistenciaPartesCuerpo.editar(partesCuerpoSeleccionada);
+            persistenciaPartesCuerpo.editar(listPartesCuerpo.get(i));
         }
     }
 
-    public void borrarPartesCuerpo(PartesCuerpo elementosCausasAccidentes) {
-        persistenciaPartesCuerpo.borrar(elementosCausasAccidentes);
+    public void borrarPartesCuerpo(List<PartesCuerpo> listPartesCuerpo) {
+        for (int i = 0; i < listPartesCuerpo.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaPartesCuerpo.borrar(listPartesCuerpo.get(i));
+        }
     }
 
-    public void crearPartesCuerpo(PartesCuerpo elementosCausasAccidentes) {
-        persistenciaPartesCuerpo.crear(elementosCausasAccidentes);
+    public void crearPartesCuerpo(List<PartesCuerpo> listPartesCuerpo) {
+        for (int i = 0; i < listPartesCuerpo.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaPartesCuerpo.crear(listPartesCuerpo.get(i));
+        }
     }
 
-    public List<PartesCuerpo> mostrarPartesCuerpo() {
+    public List<PartesCuerpo> consultarPartesCuerpo() {
+        List<PartesCuerpo> listPartesCuerpo;
         listPartesCuerpo = persistenciaPartesCuerpo.buscarPartesCuerpo();
         return listPartesCuerpo;
     }
 
-    public PartesCuerpo mostrarParteCuerpo(BigInteger secElementosCausasAccidentes) {
+    public PartesCuerpo consultarParteCuerpo(BigInteger secElementosCausasAccidentes) {
+        PartesCuerpo partesCuerpo;
         partesCuerpo = persistenciaPartesCuerpo.buscarParteCuerpo(secElementosCausasAccidentes);
         return partesCuerpo;
     }
 
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementosCausasAccidentes) {
+    public BigInteger contarSoAccidentesMedicosParteCuerpo(BigInteger secuenciaElementosCausasAccidentes) {
         try {
-            verificarSoAccidentesMedicos = persistenciaPartesCuerpo.contadorSoAccidentesMedicos(secuenciaElementosCausasAccidentes);
+            BigInteger verificarSoAccidentesMedicos;
+
+            return verificarSoAccidentesMedicos = persistenciaPartesCuerpo.contadorSoAccidentesMedicos(secuenciaElementosCausasAccidentes);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPARTESCUERPO verificarBorradoDetallesLicensias ERROR :" + e);
-        } finally {
-            return verificarSoAccidentesMedicos;
+            return null;
         }
     }
 
-    public BigInteger verificarBorradoDetallesExamenes(BigInteger secuenciaElementosCausasAccidentes) {
+    public BigInteger contarDetallesExamenesParteCuerpo(BigInteger secuenciaElementosCausasAccidentes) {
         try {
-            verificarBorradoDetallesExamenes = persistenciaPartesCuerpo.contadorDetallesExamenes(secuenciaElementosCausasAccidentes);
+            BigInteger verificarBorradoDetallesExamenes;
+            return verificarBorradoDetallesExamenes = persistenciaPartesCuerpo.contadorDetallesExamenes(secuenciaElementosCausasAccidentes);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPARTESCUERPO verificarBorradoSoAccidentesDomesticos ERROR :" + e);
-        } finally {
-            return verificarBorradoDetallesExamenes;
+            return null;
         }
     }
 
-    public BigInteger verificarBorradoSoDetallesRevisiones(BigInteger secuenciaElementosCausasAccidentes) {
+    public BigInteger contarSoDetallesRevisionesParteCuerpo(BigInteger secuenciaElementosCausasAccidentes) {
         try {
-            verificarBorradoSoDetallesRevisiones = persistenciaPartesCuerpo.contadorSoDetallesRevisiones(secuenciaElementosCausasAccidentes);
+            BigInteger verificarBorradoSoDetallesRevisiones;
+            return verificarBorradoSoDetallesRevisiones = persistenciaPartesCuerpo.contadorSoDetallesRevisiones(secuenciaElementosCausasAccidentes);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPARTESCUERPO verificarBorradoSoAccidentesDomesticos ERROR :" + e);
-        } finally {
-            return verificarBorradoSoDetallesRevisiones;
+            return null;
         }
     }
 }

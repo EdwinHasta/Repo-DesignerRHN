@@ -17,17 +17,60 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposTallasInterface {
 
-    public void modificarTiposTallas(List<TiposTallas> listTiposEmpresasModificadas);
+    /**
+     * Método encargado de modificar TiposTallas.
+     *
+     * @param listaTiposTallas Lista TiposTallas que se van a modificar.
+     */
+    public void modificarTiposTallas(List<TiposTallas> listaTiposTallas);
 
-    public void borrarTiposTallas(TiposTallas tiposTallas);
+    /**
+     * Método encargado de borrar TiposTallas.
+     *
+     * @param listaTiposTallas Lista TiposTallas que se van a borrar.
+     */
+    public void borrarTiposTallas(List<TiposTallas> listaTiposTallas);
 
-    public void crearTiposTallas(TiposTallas tiposTallas);
+    /**
+     * Método encargado de crear TiposTallas.
+     *
+     * @param listaTiposTallas Lista TiposTallas que se van a crear.
+     */
+    public void crearTiposTallas(List<TiposTallas> listaTiposTallas);
 
-    public List<TiposTallas> mostrarTiposTallas();
+    /**
+     * Método encargado de recuperar las TiposTallas para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposTallas.
+     */
+    public List<TiposTallas> consultarTiposTallas();
 
-    public TiposTallas mostrarTipoTalla(BigInteger secTipoEmpresa);
+    /**
+     * Método encargado de recuperar un TipoTalla dada su secuencia.
+     *
+     * @param secTiposTallas Secuencia del TipoTalla
+     * @return Retorna un TipoTalla.
+     */
+    public TiposTallas consultarTipoTalla(BigInteger secTiposTallas);
 
-    public BigInteger verificarBorradoElementos(BigInteger secuenciaElementos);
+    /**
+     * Método encargado de contar la cantidad de Elementos relacionadas con un
+     * TipoTalla específica.
+     *
+     * @param secTiposTallas Secuencia del TipoTalla.
+     * @return Retorna un número indicando la cantidad de Elementos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarElementosTipoTalla(BigInteger secTiposTallas);
 
-    public BigInteger verificarBorradoVigenciasTallas(BigInteger secuenciaVigenciasTallas);
+    /**
+     * Método encargado de contar la cantidad de VigenciasTallas relacionadas
+     * con un TipoTalla específica.
+     *
+     * @param secTiposTallas Secuencia del TipoTalla.
+     * @return Retorna un número indicando la cantidad de VigenciasTallas cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarVigenciasTallasTipoTalla(BigInteger secTiposTallas);
 }

@@ -21,43 +21,47 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
 
     @EJB
     PersistenciaTiposReemplazosInterface persistenciaTiposReemplazos;
-    private TiposReemplazos tiposReemplazoSeleccionado;
-    private TiposReemplazos tiposReemplazo;
-    private List<TiposReemplazos> listTiposReemplazos;
 
     @Override
-    public void modificarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazosModificados) {
-        for (int i = 0; i < listaTiposReemplazosModificados.size(); i++) {
+    public void modificarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos) {
+        for (int i = 0; i < listaTiposReemplazos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposReemplazoSeleccionado = listaTiposReemplazosModificados.get(i);
-            persistenciaTiposReemplazos.editar(tiposReemplazoSeleccionado);
+            persistenciaTiposReemplazos.editar(listaTiposReemplazos.get(i));
         }
     }
 
     @Override
-    public void borrarTiposReemplazos(TiposReemplazos tiposIndicadores) {
-        persistenciaTiposReemplazos.borrar(tiposIndicadores);
+    public void borrarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos) {
+        for (int i = 0; i < listaTiposReemplazos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposReemplazos.borrar(listaTiposReemplazos.get(i));
+        }
     }
 
     @Override
-    public void crearTiposReemplazos(TiposReemplazos tiposIndicadores) {
-        persistenciaTiposReemplazos.crear(tiposIndicadores);
+    public void crearTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos) {
+        for (int i = 0; i < listaTiposReemplazos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposReemplazos.crear(listaTiposReemplazos.get(i));
+        }
     }
 
     @Override
-    public List<TiposReemplazos> mostrarTiposReemplazos() {
+    public List<TiposReemplazos> consultarTiposReemplazos() {
+        List<TiposReemplazos> listTiposReemplazos;
         listTiposReemplazos = persistenciaTiposReemplazos.buscarTiposReemplazos();
         return listTiposReemplazos;
     }
 
     @Override
-    public TiposReemplazos mostrarTipoReemplazo(BigInteger secMotivoDemanda) {
+    public TiposReemplazos consultarTipoReemplazo(BigInteger secMotivoDemanda) {
+        TiposReemplazos tiposReemplazo;
         tiposReemplazo = persistenciaTiposReemplazos.buscarTipoReemplazo(secMotivoDemanda);
         return tiposReemplazo;
     }
 
     @Override
-    public BigInteger verificarBorradoEncargaturas(BigInteger secuenciaTiposReemplazos) {
+    public BigInteger contarEncargaturasTipoReemplazo(BigInteger secuenciaTiposReemplazos) {
         BigInteger verificarBorradoEncargaturas = null;
         try {
             System.out.println("Secuencia Vigencias Indicadores " + secuenciaTiposReemplazos);
@@ -70,7 +74,7 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
     }
 
     @Override
-    public BigInteger verificarBorradoProgramacionesTiempos(BigInteger secuenciaTiposReemplazos) {
+    public BigInteger contarProgramacionesTiemposTipoReemplazo(BigInteger secuenciaTiposReemplazos) {
         BigInteger verificarBorradoProgramacionesTiempos = null;
         try {
             System.out.println("Secuencia Vigencias Indicadores " + secuenciaTiposReemplazos);
@@ -83,7 +87,7 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
     }
 
     @Override
-    public BigInteger verificarBorradoReemplazos(BigInteger secuenciaTiposReemplazos) {
+    public BigInteger contarReemplazosTipoReemplazo(BigInteger secuenciaTiposReemplazos) {
         BigInteger verificarBorradoReemplazos = null;
         try {
             System.out.println("Secuencia Vigencias Indicadores " + secuenciaTiposReemplazos);
@@ -96,7 +100,7 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
     }
 
     @Override
-    public List<TiposReemplazos> lovTiposReemplazos() {
+    public List<TiposReemplazos> consultarLOVTiposReemplazos() {
         return persistenciaTiposReemplazos.buscarTiposReemplazos();
     }
 }

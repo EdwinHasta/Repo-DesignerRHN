@@ -17,17 +17,60 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposAccidentesInterface {
 
-    public void modificarTiposAccidentes(List<TiposAccidentes> listTiposAccidentesModificada);
+    /**
+     * Método encargado de modificar TiposAccidentes.
+     *
+     * @param listaTiposAccidentes Lista TiposAccidentes que se van a modificar.
+     */
+    public void modificarTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes);
 
-    public void borrarTiposAccidentes(TiposAccidentes tiposAccidentes);
+    /**
+     * Método encargado de borrar TiposAccidentes.
+     *
+     * @param listaTiposAccidentes Lista TiposAccidentes que se van a borrar.
+     */
+    public void borrarTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes);
 
-    public void crearTiposAccidentes(TiposAccidentes TiposAccidentes);
+    /**
+     * Método encargado de crear TiposAccidentes.
+     *
+     * @param listaTiposAccidentes Lista TiposAccidentes que se van a crear.
+     */
+    public void crearTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes);
 
-    public List<TiposAccidentes> mostrarTiposAccidentes();
+    /**
+     * Método encargado de recuperar las TiposAccidentes para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposAccidentes.
+     */
+    public List<TiposAccidentes> consultarTiposAccidentes();
 
-    public TiposAccidentes mostrarTiposAccidentes(BigInteger secTiposAccidentes);
+    /**
+     * Método encargado de recuperar una TiposAccidentes dada su secuencia.
+     *
+     * @param secTiposAccidentes Secuencia del TipoAccidente
+     * @return Retorna un TiposAccidentes.
+     */
+    public TiposAccidentes consultarTiposAccidentes(BigInteger secTiposAccidentes);
 
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaTiposAccidentes);
+    /**
+     * Método encargado de contar la cantidad de SoAccidentesMedicos
+     * relacionadas con un TipoAccidente específico.
+     *
+     * @param secTiposAccidentes Secuencia del TipoAccidente.
+     * @return Retorna un número indicando la cantidad de SoAccidentesDomesticos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSoAccidentesMedicosTipoAccidente(BigInteger secTiposAccidentes);
 
-    public BigInteger verificarBorradoAccidentes(BigInteger secuenciaTiposAccidentes);
+    /**
+     * Método encargado de contar la cantidad de SoAccidentesMedicos
+     * relacionadas con un TipoAccidente específico.
+     *
+     * @param secTiposAccidentes Secuencia del TipoAccidente.
+     * @return Retorna un número indicando la cantidad de Accidentes cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarAccidentesTipoAccidente(BigInteger secTiposAccidentes);
 }
