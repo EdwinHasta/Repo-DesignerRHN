@@ -22,37 +22,47 @@ public class AdministrarMotivosDemandas implements AdministrarMotivosDemandasInt
 
     @EJB
     PersistenciaMotivosDemandasInterface persistenciaMotivosDemandas;
-    private MotivosDemandas motivoDemandaSeleccionada;
-    private MotivosDemandas motivoDemanda;
-    private List<MotivosDemandas> listMotivoDemanda;
 
-    public void modificarMotivosDemandas(List<MotivosDemandas> listMotivosDemandasModificadas) {
-        for (int i = 0; i < listMotivosDemandasModificadas.size(); i++) {
+    @Override
+    public void modificarMotivosDemandas(List<MotivosDemandas> listMotivosDemandas) {
+        for (int i = 0; i < listMotivosDemandas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivoDemandaSeleccionada = listMotivosDemandasModificadas.get(i);
-            persistenciaMotivosDemandas.editar(motivoDemandaSeleccionada);
+            persistenciaMotivosDemandas.editar(listMotivosDemandas.get(i));
         }
     }
 
-    public void borrarMotivosDemandas(MotivosDemandas motivoDemanda) {
-        persistenciaMotivosDemandas.borrar(motivoDemanda);
+    @Override
+    public void borrarMotivosDemandas(List<MotivosDemandas> listMotivosDemandas) {
+        for (int i = 0; i < listMotivosDemandas.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosDemandas.borrar(listMotivosDemandas.get(i));
+        }
     }
 
-    public void crearMotivosDemandas(MotivosDemandas motivoDemanda) {
-        persistenciaMotivosDemandas.crear(motivoDemanda);
+    @Override
+    public void crearMotivosDemandas(List<MotivosDemandas> listMotivosDemandas) {
+        for (int i = 0; i < listMotivosDemandas.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosDemandas.crear(listMotivosDemandas.get(i));
+        }
     }
 
-    public List<MotivosDemandas> mostrarMotivosDemandas() {
+    @Override
+    public List<MotivosDemandas> consultarMotivosDemandas() {
+        List<MotivosDemandas> listMotivoDemanda;
         listMotivoDemanda = persistenciaMotivosDemandas.buscarMotivosDemandas();
         return listMotivoDemanda;
     }
 
-    public MotivosDemandas mostrarMotivoDemanda(BigInteger secMotivoDemanda) {
+    @Override
+    public MotivosDemandas consultarMotivoDemanda(BigInteger secMotivoDemanda) {
+        MotivosDemandas motivoDemanda;
         motivoDemanda = persistenciaMotivosDemandas.buscarMotivoDemanda(secMotivoDemanda);
         return motivoDemanda;
     }
 
-    public BigInteger verificarBorradoDemanda(BigInteger secuenciaEventos) {
+    @Override
+    public BigInteger contarDemandasMotivoDemanda(BigInteger secuenciaEventos) {
         BigInteger verificadorDemanda = null;
 
         try {

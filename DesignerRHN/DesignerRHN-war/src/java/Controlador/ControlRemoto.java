@@ -830,7 +830,7 @@ public class ControlRemoto implements Serializable {
 
     public Usuarios getUsuarios() {
         String alias = administrarCarpetaPersonal.consultarAliasActualUsuario();
-        usuarios = administrarCarpetaPersonal.ConsultarUsuario(alias);
+        usuarios = administrarCarpetaPersonal.consultarUsuario(alias);
         return usuarios;
     }
 
@@ -839,7 +839,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public String getFechaDesde() {
-        parametrosEstructuras = administrarCarpetaPersonal.ConsultarParametros();
+        parametrosEstructuras = administrarCarpetaPersonal.consultarParametrosUsuario();
         FechaDesde = formato.format(parametrosEstructuras.getFechadesdecausado());
         return FechaDesde;
     }
@@ -856,7 +856,7 @@ public class ControlRemoto implements Serializable {
 
     public List<VigenciasCargos> getVigenciasCargosEmpleados() {
         //BigInteger s = BigInteger.valueOf(10661039);
-        vigenciasCargosEmpleados = administrarCarpetaPersonal.vigenciasEmpleado(secuencia);
+        vigenciasCargosEmpleados = administrarCarpetaPersonal.consultarVigenciasCargosEmpleado(secuencia);
         return vigenciasCargosEmpleados;
     }
 
@@ -931,7 +931,7 @@ public class ControlRemoto implements Serializable {
     public List<VWActualesTiposTrabajadores> getBusquedaRapida() {
         try {
             if (busquedaRapida == null) {
-                busquedaRapida = administrarCarpetaPersonal.busquedaRapidaEmpleados();
+                busquedaRapida = administrarCarpetaPersonal.consultarRapidaEmpleados();
                 return busquedaRapida;
             }
             return busquedaRapida;

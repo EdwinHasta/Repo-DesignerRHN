@@ -64,7 +64,6 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     public void modificarVigenciasFormasPagos(List<VigenciasFormasPagos> listaVigenciasFormasPagos) {
         for (int i = 0; i < listaVigenciasFormasPagos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            listaVigenciasFormasPagos.get(i);
             if (vigenciaFormaPagoPorEmpleado.getSucursal().getSecuencia() == null) {
                 vigenciaFormaPagoPorEmpleado.setSucursal(null);
             }

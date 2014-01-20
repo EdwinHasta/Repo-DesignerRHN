@@ -596,15 +596,15 @@ public class ControlPerDirecciones implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Direcciones");
             if (!listaDireccionesBorrar.isEmpty()) {
-                administrarDirecciones.borrarDireccion(listaDireccionesBorrar);
+                administrarDirecciones.borrarDirecciones(listaDireccionesBorrar);
                 listaDireccionesBorrar.clear();
             }
             if (!listaDireccionesCrear.isEmpty()) {
-                administrarDirecciones.crearDireccion(listaDireccionesCrear);
+                administrarDirecciones.crearDirecciones(listaDireccionesCrear);
                 listaDireccionesCrear.clear();
             }
             if (!listaDireccionesModificar.isEmpty()) {
-                administrarDirecciones.modificarDireccion(listaDireccionesModificar);
+                administrarDirecciones.modificarDirecciones(listaDireccionesModificar);
                 listaDireccionesModificar.clear();
             }
             System.out.println("Se guardaron los datos con exito");
@@ -1230,7 +1230,7 @@ public class ControlPerDirecciones implements Serializable {
     public List<Direcciones> getListaDirecciones() {
 
         if (listaDirecciones == null) {
-            listaDirecciones = administrarDirecciones.direccionesPersona(secuenciaPersona);
+            listaDirecciones = administrarDirecciones.consultarDireccionesPersona(secuenciaPersona);
         }
         return listaDirecciones;
     }
@@ -1257,7 +1257,7 @@ public class ControlPerDirecciones implements Serializable {
 
     public Personas getPersona() {
         if (persona == null) {
-            persona = administrarDirecciones.mostrarPersona(secuenciaPersona);
+            persona = administrarDirecciones.consultarPersona(secuenciaPersona);
         }
         return persona;
     }
@@ -1268,7 +1268,7 @@ public class ControlPerDirecciones implements Serializable {
 
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
-            listaCiudades = administrarCiudades.listaCiudades();
+            listaCiudades = administrarCiudades.consultarCiudades();
         }
         return listaCiudades;
     }

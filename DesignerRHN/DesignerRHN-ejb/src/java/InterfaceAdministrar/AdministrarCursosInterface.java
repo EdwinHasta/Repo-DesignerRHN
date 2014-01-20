@@ -15,5 +15,5 @@ public interface AdministrarCursosInterface {
      * Método encargado de recuperar todos los Cursos.
      * @return Retorna una lista de Cursos.
      */
-    public List<Cursos> listaCursos();
+    public List<Cursos> consultarCursos();
 }

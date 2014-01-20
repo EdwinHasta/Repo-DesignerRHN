@@ -352,7 +352,7 @@ public class ControlComprobantes implements Serializable {
     //GETTER AND SETTER
 
     public List<Parametros> getListaParametros() {
-        listaParametros = administrarComprobantes.parametrosComprobantes();
+        listaParametros = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
         return listaParametros;
     }
 
@@ -376,7 +376,7 @@ public class ControlComprobantes implements Serializable {
 
     public ParametrosEstructuras getParametroEstructura() {
         if (parametroEstructura == null) {
-            parametroEstructura = administrarComprobantes.parametroEstructura();
+            parametroEstructura = administrarComprobantes.consultarParametroEstructuraActualUsuario();
         }
         return parametroEstructura;
     }
@@ -387,7 +387,7 @@ public class ControlComprobantes implements Serializable {
 
     public List<Parametros> getListaParametrosLOV() {
         if (listaParametrosLOV == null) {
-            listaParametrosLOV = administrarComprobantes.parametrosComprobantes();
+            listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
         }
         return listaParametrosLOV;
     }
@@ -422,7 +422,7 @@ public class ControlComprobantes implements Serializable {
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleado() {
         if (listaSolucionesNodosEmpleado == null && parametroActual != null) {
-            listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
+            listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleado != null) {
                 subtotalPago = new BigDecimal(0);
                 subtotalDescuento = new BigDecimal(0);
@@ -456,7 +456,7 @@ public class ControlComprobantes implements Serializable {
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
         if (listaSolucionesNodosEmpleador == null && parametroActual != null) {
-            listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
+            listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleador != null) {
                 subtotalPasivo = new BigDecimal(0);
                 subtotalGasto = new BigDecimal(0);
@@ -540,8 +540,8 @@ public class ControlComprobantes implements Serializable {
                 }
             }
             if (secFormula != null && fechaDesde != null) {
-                secHistoriaFormula = administrarComprobantes.obtenerHistoriaFormula(secFormula, fechaDesde);
-                listaDetallesFormulas = administrarComprobantes.detallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
+                secHistoriaFormula = administrarComprobantes.consultarHistoriaFormulaFormula(secFormula, fechaDesde);
+                listaDetallesFormulas = administrarComprobantes.consultarDetallesFormulasEmpleado(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
             }
         }
         return listaDetallesFormulas;

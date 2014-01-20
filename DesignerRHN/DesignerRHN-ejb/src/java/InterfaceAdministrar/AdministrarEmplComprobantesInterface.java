@@ -19,22 +19,53 @@ import java.util.List;
  * @author Administrator
  */
 public interface AdministrarEmplComprobantesInterface {
-    public Empleados buscarEmpleado(BigInteger secuencia);
-    public BigInteger maximoNumeroComprobante();
-    public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado);
-    public List<CortesProcesos> cortesProcesosComprobante(BigInteger secuenciaComprobante);
-    public List<SolucionesNodos> solucionesNodosCorteProcesoEmpleado(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado);
-    public List<SolucionesNodos> solucionesNodosCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado);
-    public List<Procesos> lovProcesos();
+    /**
+     * Método encargado de recuperar un Empleado dada su secuencia.
+     * @param secEmpleado Secuencia de la Empleado.
+     * @return Retorna el Empleado cuya secuencia coincida con el valor del parámetro. 
+     */
+    public Empleados consultarEmpleado(BigInteger secEmpleado);
+    /**
+     * Método encargado de recuperar el máximo número entre los comprobantes.
+     * @return Retorna el número mayor entre los números de los comprobantes.
+     */
+    public BigInteger consultarMaximoNumeroComprobante();
+    /**
+     * Método encargado de recuperar los Comprobantes de un Empleado.
+     * @param secEmpleado Secuencia de la Empleado.
+     * @return Retorna una lista de Comprobantes.
+     */
+    public List<Comprobantes> consultarComprobantesEmpleado(BigInteger secEmpleado);
+    /**
+     * Método encargado de recuperar los CortesProcesos según el Comprobante que tengan asociado.
+     * @param secComprobante Secuencia de la Comprobante por la cual se filtrara la búsqueda.
+     * @return Retorna una lista de CortesProcesos.
+     */
+    public List<CortesProcesos> consultarCortesProcesosComprobante(BigInteger secComprobante);
+    
+    public List<SolucionesNodos> consultarSolucionesNodosEmpleado(BigInteger secCorteProceso, BigInteger secEmpleado);
+    
+    public List<SolucionesNodos> consultarSolucionesNodosEmpleador(BigInteger secCorteProceso, BigInteger secEmpleado);
+    
+    public List<Procesos> consultarLOVProcesos();
+    
     public void modificarComprobantes(List<Comprobantes> listComprobantes);
+    
     public void borrarComprobantes(Comprobantes comprobante);
+    
     public void crearComprobante(Comprobantes comprobantes);
+    
     public void modificarCortesProcesos(List<CortesProcesos> listaCortesProcesos);
+    
     public void borrarCortesProcesos(CortesProcesos corteProceso);
+    
     public void crearCorteProceso(CortesProcesos corteProceso);
-    public List<Terceros> lovTerceros(BigInteger secEmpresa);
+    
+    public List<Terceros> consultarLOVTerceros(BigInteger secEmpresa);
+    
     public void modificarSolucionesNodosEmpleado(List<SolucionesNodos> listaSolucionesNodosEmpleado);
-    public void modificarSolucionesNodosEmpleador(List<SolucionesNodos> listaSolucionesNodosEmpleado);
-    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
-    public BigInteger obtenerHistoriaFormula(BigInteger secFormula, String fechaDesde);
+    
+    public List<DetallesFormulas> consultarDetallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
+    
+    public BigInteger consultarHistoriaFormula(BigInteger secFormula, String fechaDesde);
 }

@@ -639,7 +639,7 @@ public class ControlDetalleCuenta implements Serializable {
     public List<VigenciasCuentas> getListCuentasCredito() {
         try {
             if (listCuentasCredito == null) {
-                listCuentasCredito = administrarDetalleCuenta.listaVigenciasCuentasCredito(cuentaActual.getSecuencia());
+                listCuentasCredito = administrarDetalleCuenta.consultarListaVigenciasCuentasCredito(cuentaActual.getSecuencia());
             }
             return listCuentasCredito;
         } catch (Exception e) {
@@ -663,7 +663,7 @@ public class ControlDetalleCuenta implements Serializable {
     public List<VigenciasCuentas> getListCuentasDebito() {
         try {
             if (listCuentasDebito == null) {
-                listCuentasDebito = administrarDetalleCuenta.listaVigenciasCuentasDebito(cuentaActual.getSecuencia());
+                listCuentasDebito = administrarDetalleCuenta.consultarListaVigenciasCuentasDebito(cuentaActual.getSecuencia());
             }
             return listCuentasDebito;
         } catch (Exception e) {

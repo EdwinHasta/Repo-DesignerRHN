@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package InterfaceAdministrar;
 
@@ -11,26 +10,24 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
- * @author user
+ * Interface encargada de determinar las operaciones lógicas necesarias para la
+ * pantalla 'EmplAcumulados'.
+ * @author betelgeuse.
  */
 @Local
 public interface AdministrarEmplAcumuladosInterface {
 
     /**
-     * Metodo Encargado de traer las VWAcumulados de un Empleado Especifico.
-     *
+     * Metodo encargado de recuperar las VWAcumulados asociadas a un Empleado Específico.
      * @param secEmpleado Secuencia del Empleado.
      * @return Lista de VWAcumulados.
      */
-    public List<VWAcumulados> consultarVWAcumuladosPorEmpleado(BigInteger secEmpleado);
+    public List<VWAcumulados> consultarVWAcumuladosEmpleado(BigInteger secEmpleado);
 
     /**
-     * *
-     * Metodo encargado de buscar un Empleado especifico
-     *
+     * Metodo encargado de recuperar un Empleado dada su secuencia.
      * @param secEmpleado Secuencia del Empleado
-     * @return Empleado .
+     * @return Retorna el Empleado cuya secuencia coincida con el valor dado por parámetro.
      */
     public Empleados consultarEmpleado(BigInteger secEmpleado);
 }

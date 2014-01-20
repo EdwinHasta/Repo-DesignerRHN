@@ -16,13 +16,40 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosMvrsInterface {
 
-    public void modificarMotivosMvrs(List<Motivosmvrs> listNormasLaboralesModificadas);
+    /**
+     * Método encargado de modificar MotivosEmbargos.
+     *
+     * @param listaMotivosMvrs Lista MotivosEmbargos que se van a modificar.
+     */
+    public void modificarMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs);
 
-    public void borrarMotivosMvrs(Motivosmvrs motivosMvrs);
+    /**
+     * Método encargado de borrar MotivosEmbargos.
+     *
+     * @param listaMotivosMvrs Lista MotivosEmbargos que se van a borrar.
+     */
+    public void borrarMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs);
 
-    public void crearMotivosMvrs(Motivosmvrs notivosMvrs);
+    /**
+     * Método encargado de crear MotivosEmbargos.
+     *
+     * @param listaMotivosMvrs Lista MotivosEmbargos que se van a crear.
+     */
+    public void crearMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs);
 
-    public List<Motivosmvrs> mostrarMotivosMvrs();
+    /**
+     * Método encargado de recuperar las MotivosEmbargos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de MotivosEmbargos.
+     */
+    public List<Motivosmvrs> consultarMotivosMvrs();
 
-    public Motivosmvrs mostrarMotivosMvrs(BigInteger secMotivosMvrs);
+    /**
+     * Método encargado de recuperar una MotivosEmbargos dada su secuencia.
+     *
+     * @param secMotivosMvrs Secuencia del MotivosEmbargos
+     * @return Retorna una MotivosEmbargos.
+     */
+    public Motivosmvrs consultarMotivosMvrs(BigInteger secMotivosMvrs);
 }

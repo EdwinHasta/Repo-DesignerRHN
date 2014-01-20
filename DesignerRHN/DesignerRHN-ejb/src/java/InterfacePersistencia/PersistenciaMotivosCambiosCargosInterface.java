@@ -60,15 +60,6 @@ public interface PersistenciaMotivosCambiosCargosInterface {
     public List<MotivosCambiosCargos> buscarMotivosCambiosCargos();
 
     /**
-     * Método encargado de buscar todos los nombres de los MotivosCambiosCargos
-     * existentes en la base de datos.
-     *
-     * @return Retorna una lista con los nombres de los MotivosCambiosCargos
-     * existentes en la base de datos.
-     */
-    public List<String> buscarNombresMotivosCambiosCargos();
-
-    /**
      * Método encargado de verificar si hay al menos una VigenciaCargo asociada
      * a un MotivoCambioCargo.
      *

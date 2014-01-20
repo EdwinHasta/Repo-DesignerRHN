@@ -43,12 +43,12 @@ public class AdministrarContratos implements AdministrarContratosInterface {
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<Contratos> listaContratos() {
+    public List<Contratos> consultarContratos() {
         return persistenciaContratos.lovContratos();
     }
 
     @Override
-    public List<TiposCotizantes> lovTiposCotizantes() {
+    public List<TiposCotizantes> consultaLOVTiposCotizantes() {
         return persistenciaTiposCotizantes.lovTiposCotizantes();
     }
 

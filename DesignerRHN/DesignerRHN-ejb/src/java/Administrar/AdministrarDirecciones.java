@@ -53,7 +53,7 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<Direcciones> direccionesPersona(BigInteger secPersona) {
+    public List<Direcciones> consultarDireccionesPersona(BigInteger secPersona) {
         try {
             return persistenciaDirecciones.direccionesPersona(secPersona);
         } catch (Exception e) {
@@ -63,17 +63,17 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
     }
 
     @Override
-    public Personas mostrarPersona(BigInteger secPersona) {
+    public Personas consultarPersona(BigInteger secPersona) {
         return persistenciaPersonas.buscarPersonaSecuencia(secPersona);
     }
 
     @Override
-    public List<Ciudades> lovCiudades() {
+    public List<Ciudades> consultarLOVCiudades() {
         return PersistenciaCiudades.ciudades();
     }
 
     @Override
-    public void modificarDireccion(List<Direcciones> listaDirecciones) {
+    public void modificarDirecciones(List<Direcciones> listaDirecciones) {
         Direcciones d;
         for (int i = 0; i < listaDirecciones.size(); i++) {
             System.out.println("Modificando...");
@@ -88,7 +88,7 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
     }
 
     @Override
-    public void borrarDireccion(List<Direcciones> listaDirecciones) {
+    public void borrarDirecciones(List<Direcciones> listaDirecciones) {
         for (int i = 0; i < listaDirecciones.size(); i++) {
             System.out.println("Borrando...");
             if (listaDirecciones.get(i).getHipoteca() == null) {
@@ -99,7 +99,7 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
     }
 
     @Override
-    public void crearDireccion(List<Direcciones> listaDirecciones) {
+    public void crearDirecciones(List<Direcciones> listaDirecciones) {
         for (int i = 0; i < listaDirecciones.size(); i++) {
             System.out.println("Borrando...");
             if (listaDirecciones.get(i).getHipoteca() == null) {

@@ -350,9 +350,14 @@ public class ControlLesiones implements Serializable {
     public void verificarBorrado() {
         System.out.println("verificarBorrado");
         try {
-            detallesLicensias = administrarLesiones.verificarBorradoDetallesLicensias(listLesiones.get(index).getSecuencia());
-            soAccidentesDomesticos = administrarLesiones.verificarBorradoSoAccidentesDomesticos(listLesiones.get(index).getSecuencia());
-            if (detallesLicensias.equals(0) && soAccidentesDomesticos.equals(0)) {
+            if (tipoLista == 0) {
+                detallesLicensias = administrarLesiones.contarDetallesLicensiasLesion(listLesiones.get(index).getSecuencia());
+                soAccidentesDomesticos = administrarLesiones.contarSoAccidentesDomesticosLesion(listLesiones.get(index).getSecuencia());
+            } else {
+                detallesLicensias = administrarLesiones.contarDetallesLicensiasLesion(filtrarLesiones.get(index).getSecuencia());
+                soAccidentesDomesticos = administrarLesiones.contarSoAccidentesDomesticosLesion(filtrarLesiones.get(index).getSecuencia());
+            }
+            if (detallesLicensias.equals(new BigInteger("0")) && soAccidentesDomesticos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoLesiones();
             } else {
@@ -386,23 +391,14 @@ public class ControlLesiones implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando TipoCertificados");
             if (!borrarLesiones.isEmpty()) {
-                for (int i = 0; i < borrarLesiones.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarLesiones.borrarLesiones(borrarLesiones.get(i));
-                }
-                //mostrarBorrados
+                administrarLesiones.borrarLesiones(borrarLesiones);
                 registrosBorrados = borrarLesiones.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarLesiones.clear();
             }
             if (!crearLesiones.isEmpty()) {
-                for (int i = 0; i < crearLesiones.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarLesiones.crearLesiones(crearLesiones.get(i));
-
-                }
+                administrarLesiones.crearLesiones(crearLesiones);
                 crearLesiones.clear();
             }
             if (!modificarLesiones.isEmpty()) {
@@ -700,7 +696,7 @@ public class ControlLesiones implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<Lesiones> getListLesiones() {
         if (listLesiones == null) {
-            listLesiones = administrarLesiones.mostrarLesiones();
+            listLesiones = administrarLesiones.consultarLesiones();
         }
         return listLesiones;
     }

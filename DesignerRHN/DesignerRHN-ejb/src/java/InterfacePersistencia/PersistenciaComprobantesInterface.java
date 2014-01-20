@@ -44,12 +44,13 @@ public interface PersistenciaComprobantesInterface {
     /**
      * Método encargado de buscar todos los Comprobantes de un empleado especifico.
      * @param secuenciaEmpleado Secuencia del empleado al que se le quieren buscar los comprobantes.
-     * @return Retorna una lista de Comprobantes de un empleado
+     * @return Retorna una lista de Comprobantes de un empleado.
      */
     public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado);
     /**
-     * Método encargado de dar el numero de Comprobantes que hay en la base de datos.
-     * @return Retorna el numero mas grande del atributo numero en la tabla Comprobantes
+     * Método encargado de buscar el mayor número registrado en el atributo 'numero' de la tabla Comprobantes
+     * de la base de datos.
+     * @return Retorna el número mas grande del atributo número en la tabla Comprobantes.
      */
     public BigInteger numeroMaximoComprobante();
 }

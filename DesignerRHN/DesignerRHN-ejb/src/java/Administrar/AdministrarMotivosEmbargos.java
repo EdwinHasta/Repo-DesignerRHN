@@ -22,37 +22,41 @@ public class AdministrarMotivosEmbargos implements AdministrarMotivosEmbargosInt
 
     @EJB
     PersistenciaMotivosEmbargosInterface persistenciaMotivosEmbargos;
-    private MotivosEmbargos motivosEmbargosSeleccionado;
-    private MotivosEmbargos motivosEmbargos;
-    private List<MotivosEmbargos> listMotivosEmbargos;
 
-    public void modificarMotivosEmbargos(List<MotivosEmbargos> listaMotivosPrestamosModificados) {
-        for (int i = 0; i < listaMotivosPrestamosModificados.size(); i++) {
+    public void modificarMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos) {
+        for (int i = 0; i < listaMotivosEmbargos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            motivosEmbargosSeleccionado = listaMotivosPrestamosModificados.get(i);
-            persistenciaMotivosEmbargos.editar(motivosEmbargosSeleccionado);
+            persistenciaMotivosEmbargos.editar(listaMotivosEmbargos.get(i));
         }
     }
 
-    public void borrarMotivosEmbargos(MotivosEmbargos tiposDias) {
-        persistenciaMotivosEmbargos.borrar(tiposDias);
+    public void borrarMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos) {
+        for (int i = 0; i < listaMotivosEmbargos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosEmbargos.borrar(listaMotivosEmbargos.get(i));
+        }
     }
 
-    public void crearMotivosEmbargos(MotivosEmbargos tiposDias) {
-        persistenciaMotivosEmbargos.crear(tiposDias);
+    public void crearMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos) {
+        for (int i = 0; i < listaMotivosEmbargos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosEmbargos.crear(listaMotivosEmbargos.get(i));
+        }
     }
 
     public List<MotivosEmbargos> mostrarMotivosEmbargos() {
+        List<MotivosEmbargos> listMotivosEmbargos;
         listMotivosEmbargos = persistenciaMotivosEmbargos.buscarMotivosEmbargos();
         return listMotivosEmbargos;
     }
 
     public MotivosEmbargos mostrarMotivoEmbargo(BigInteger secMotivoPrestamo) {
+        MotivosEmbargos motivosEmbargos;
         motivosEmbargos = persistenciaMotivosEmbargos.buscarMotivoEmbargo(secMotivoPrestamo);
         return motivosEmbargos;
     }
 
-    public BigInteger verificarEersPrestamos(BigInteger secuenciaTiposDias) {
+    public BigInteger contarEersPrestamosMotivoEmbargo(BigInteger secuenciaTiposDias) {
         BigInteger verificarEersPrestamos = null;
         try {
             verificarEersPrestamos = persistenciaMotivosEmbargos.contadorEersPrestamos(secuenciaTiposDias);
@@ -63,7 +67,7 @@ public class AdministrarMotivosEmbargos implements AdministrarMotivosEmbargosInt
         }
     }
 
-    public BigInteger verificarEmbargos(BigInteger secuenciaTiposDias) {
+    public BigInteger contarEmbargosMotivoEmbargo(BigInteger secuenciaTiposDias) {
         BigInteger verificarEmbargos = null;
         try {
             verificarEmbargos = persistenciaMotivosEmbargos.contadorEmbargos(secuenciaTiposDias);

@@ -339,9 +339,9 @@ public class ControlNormasLaborales implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             if (tipoLista == 0) {
-                borradoVC = administrarNormasLaborales.verificarBorradoVNE(listNormasLaborales.get(index).getSecuencia());
+                borradoVC = administrarNormasLaborales.verificarVigenciasNormasEmpleadoNormaLaboral(listNormasLaborales.get(index).getSecuencia());
             } else {
-                borradoVC = administrarNormasLaborales.verificarBorradoVNE(filtrarNormasLaborales.get(index).getSecuencia());
+                borradoVC = administrarNormasLaborales.verificarVigenciasNormasEmpleadoNormaLaboral(filtrarNormasLaborales.get(index).getSecuencia());
             }
             if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -367,10 +367,7 @@ public class ControlNormasLaborales implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Normas Labolares");
             if (!borrarNormaLaboral.isEmpty()) {
-                for (int i = 0; i < borrarNormaLaboral.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarNormasLaborales.borrarNormasLaborales(borrarNormaLaboral.get(i));
-                }
+        administrarNormasLaborales.borrarNormasLaborales(borrarNormaLaboral);      
                 //mostrarBorrados
                 registrosBorrados = borrarNormaLaboral.size();
                 context.update("form:mostrarBorrados");
@@ -378,12 +375,7 @@ public class ControlNormasLaborales implements Serializable {
                 borrarNormaLaboral.clear();
             }
             if (!crearNormaLaboral.isEmpty()) {
-                for (int i = 0; i < crearNormaLaboral.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarNormasLaborales.crearNormasLaborales(crearNormaLaboral.get(i));
-
-                }
+                 administrarNormasLaborales.crearNormasLaborales(crearNormaLaboral);         
                 crearNormaLaboral.clear();
             }
             if (!modificarNormaLaboral.isEmpty()) {

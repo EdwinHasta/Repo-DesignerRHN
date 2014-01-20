@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Documentación a cargo de Hugo David Sin Gutiérrez
  */
 package Administrar;
 
@@ -15,39 +14,51 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
+ * Clase Stateful. <br>
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'EmplAcumulados'.
  *
- * @author user
+ * @author betelgeuse
  */
 @Stateful
 public class AdministrarEmplAcumulados implements AdministrarEmplAcumuladosInterface {
-
+    //--------------------------------------------------------------------------
+    //ATRIBUTOS
+    //--------------------------------------------------------------------------    
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWAcumulados'.
+     */
     @EJB
     PersistenciaVWAcumuladosInterface persistenciaVWAcumulados;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaEmpleados'.
+     */
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
-    private Empleados empleado;
-    private List<VWAcumulados> listVWAcumulados;
-
+    //--------------------------------------------------------------------------
+    //MÉTODOS
+    //--------------------------------------------------------------------------
     @Override
-    public List<VWAcumulados> consultarVWAcumuladosPorEmpleado(BigInteger secEmpleado) {
+    public List<VWAcumulados> consultarVWAcumuladosEmpleado(BigInteger secEmpleado) {
         try {
-            listVWAcumulados = persistenciaVWAcumulados.buscarAcumuladosPorEmpleado(secEmpleado);
+            return persistenciaVWAcumulados.buscarAcumuladosPorEmpleado(secEmpleado);
         } catch (Exception e) {
             System.err.println("ERROR EN ADMINISTRAR EMPLACUMULADOS ERROR " + e);
-            listVWAcumulados = null;
-        } finally {
-            return listVWAcumulados;
+            return null;
         }
     }
+    
     @Override
     public Empleados consultarEmpleado(BigInteger secEmplado) {
         try {
-            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secEmplado);
+            return persistenciaEmpleados.buscarEmpleadoSecuencia(secEmplado);
         } catch (Exception e) {
-            empleado = null;
             System.err.println("ERROR Administrar emplAcumulados ERROR : " + e);
-        } finally {
-            return empleado;
-        }
+            return null;
+        } 
     }
 }

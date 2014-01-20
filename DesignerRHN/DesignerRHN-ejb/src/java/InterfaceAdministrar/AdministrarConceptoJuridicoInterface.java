@@ -33,10 +33,10 @@ public interface AdministrarConceptoJuridicoInterface {
      * @param secEmpresa Seciencia de la empresa.
      * @return Retorna la lista de ConceptosJuridicos que estan asociados a una empresa.
      */
-    public List<ConceptosJuridicos> listaConceptosJuridicosPorEmpresa(BigInteger secEmpresa);
+    public List<ConceptosJuridicos> consultarConceptosJuridicosEmpresa(BigInteger secEmpresa);
     /**
      * Método encargado de recuperar todas las Empresas.
      * @return Retorna una lista de Empresas.
      */
-    public List<Empresas> listaEmpresas();
+    public List<Empresas> consultarEmpresas();
 }

@@ -38,54 +38,43 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     }
 
     @Override
-    public MotivosCambiosCargos consultarMotivosCambiosCargosPorSec(BigInteger secuenciaMCC) {
+    public MotivosCambiosCargos consultarMotivoCambioCargo(BigInteger secuenciaMCC) {
         MotivosCambiosCargos mcc = null;
         try {
             mcc = persistenciaMotivosCambiosCargos.buscarMotivoCambioCargo(secuenciaMCC);
         } catch (Exception e) {
             mcc = null;
-        } finally{
+        } finally {
             return mcc;
         }
     }
 
     @Override
-    public List<String> consultarNombresMotivosCambiosCargos() {
-        List<String> nombresMotivosCambiosCargos = null;
-        try {
-            nombresMotivosCambiosCargos = persistenciaMotivosCambiosCargos.buscarNombresMotivosCambiosCargos();
-        } catch (Exception e) {
-            System.out.println("AdministrarMotivosCambiosCargos.consultarNombresMotivosCambiosCargos.");
-            System.err.println("Excepcion.");
-            nombresMotivosCambiosCargos = null;
-        } finally {
-            return nombresMotivosCambiosCargos;
+    public void modificarMotivosCambiosCargos(List<MotivosCambiosCargos> listaMotivosCambiosCargos) {
+        for (int i = 0; i < listaMotivosCambiosCargos.size(); i++) {
+            System.out.println("Administrar Modificando");
+            persistenciaMotivosCambiosCargos.editar(listaMotivosCambiosCargos.get(i));
         }
     }
 
     @Override
-    public void modificarMotivosCambiosCargos(List<MotivosCambiosCargos> listMotivosCambiosCargosModificadas) {
-        MotivosCambiosCargos motivoCambioCargoSeleccionado;
-        System.out.println("AdmnistrarMotivosCambiosCargos.modificarMotivosCambiosCargos.");
-        System.out.println("Modificando...");
-        for (int i = 0; i < listMotivosCambiosCargosModificadas.size(); i++) {
-            motivoCambioCargoSeleccionado = listMotivosCambiosCargosModificadas.get(i);
-            persistenciaMotivosCambiosCargos.editar(motivoCambioCargoSeleccionado);
+    public void borrarMotivosCambiosCargos(List<MotivosCambiosCargos> listaMotivosCambiosCargos) {
+        for (int i = 0; i < listaMotivosCambiosCargos.size(); i++) {
+            System.out.println("Administrar Borrando");
+            persistenciaMotivosCambiosCargos.borrar(listaMotivosCambiosCargos.get(i));
         }
     }
 
     @Override
-    public void borrarMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos) {
-        persistenciaMotivosCambiosCargos.borrar(motivosCambiosCargos);
+    public void crearMotivosCambiosCargos(List<MotivosCambiosCargos> listaMotivosCambiosCargos) {
+        for (int i = 0; i < listaMotivosCambiosCargos.size(); i++) {
+            System.out.println("Administrar Creando");
+            persistenciaMotivosCambiosCargos.crear(listaMotivosCambiosCargos.get(i));
+        }
     }
 
     @Override
-    public void crearMotivosCambiosCargos(MotivosCambiosCargos motivosCambiosCargos) {
-        persistenciaMotivosCambiosCargos.crear(motivosCambiosCargos);
-    }
-
-    @Override
-    public BigInteger verificarBorradoVC(BigInteger secuenciaMovitoCambioCargo) {
+    public BigInteger contarVigenciasCargosMotivoCambioCargo(BigInteger secuenciaMovitoCambioCargo) {
         BigInteger verificadorVC = null;
         try {
             verificadorVC = persistenciaMotivosCambiosCargos.verificarBorradoVigenciasCargos(secuenciaMovitoCambioCargo);

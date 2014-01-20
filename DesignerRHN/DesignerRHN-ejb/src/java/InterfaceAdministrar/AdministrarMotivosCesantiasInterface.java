@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package InterfaceAdministrar;
 
 import Entidades.MotivosCesantias;
@@ -17,15 +16,53 @@ import javax.ejb.Local;
  */
 @Local
 public interface AdministrarMotivosCesantiasInterface {
-    public void modificarMotivosCesantias(List<MotivosCesantias> listaMotivosPrestamosModificados);
 
-    public void borrarMotivosCesantias(MotivosCesantias tiposDias);
+    /**
+     * Método encargado de modificar MotivosCesancias.
+     *
+     * @param listaMotivosCesancias Lista MotivosCesancias que se van a
+     * modificar.
+     */
+    public void modificarMotivosCesantias(List<MotivosCesantias> listaMotivosCesancias);
 
-    public void crearMotivosCesantias(MotivosCesantias tiposDias);
+    /**
+     * Método encargado de borrar MotivosCesancias.
+     *
+     * @param listaMotivosCesancias Lista MotivosCesancias que se van a borrar.
+     */
+    public void borrarMotivosCesantias(List<MotivosCesantias> listaMotivosCesancias);
 
-    public List<MotivosCesantias> mostrarMotivosCesantias();
+    /**
+     * Método encargado de crear MotivosCesancias.
+     *
+     * @param listaMotivosCesancias Lista MotivosCesancias que se van a crear.
+     */
+    public void crearMotivosCesantias(List<MotivosCesantias> listaMotivosCesancias);
 
-    public MotivosCesantias mostrarMotivoCesantia(BigInteger secMotivoPrestamo);
+    /**
+     * Método encargado de recuperar las MotivosCesancias para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de MotivosCesancias.
+     */
+    public List<MotivosCesantias> consultarMotivosCesantias();
 
-    public BigInteger verificarNovedadesSistema(BigInteger secuenciaMotivosCesantias);
+    /**
+     * Método encargado de recuperar una MotivoCesantia dada su secuencia.
+     *
+     * @param secMotivosCesantias Secuencia del MotivoCesantia
+     * @return Retorna una MotivosCesancias.
+     */
+    public MotivosCesantias consultarMotivoCesantia(BigInteger secMotivosCesantias);
+
+    /**
+     * Método encargado de consultar si existe una relacion entre una
+     * MotivoCesantia específica y algúna NovedadesSistemas. Adémas de la
+     * revisión, establece cuantas relaciones existen.
+     *
+     * @param secMotivosCesantias Secuencia del MotivoCesantia.
+     * @return Retorna el número de NovedadesSistemas relacionados con la
+     * MotivoCambioCargo cuya secuencia coincide con el parámetro.
+     */
+    public BigInteger contarNovedadesSistemasMotivoCesantia(BigInteger secMotivosCesantias);
 }
