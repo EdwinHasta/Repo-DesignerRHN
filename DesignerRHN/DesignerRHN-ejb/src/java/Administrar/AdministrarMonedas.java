@@ -47,13 +47,13 @@ public class AdministrarMonedas implements AdministrarMonedasInterface {
 
     @Override
     public List<Monedas> consultarMonedas() {
-        listMonedas = persistenciaMonedas.buscarMonedas();
+        listMonedas = persistenciaMonedas.consultarMonedas();
         return listMonedas;
     }
 
     @Override
     public Monedas consultarMoneda(BigInteger secMoneda) {
-        monedas = persistenciaMonedas.buscarMoneda(secMoneda);
+        monedas = persistenciaMonedas.consultarMoneda(secMoneda);
         return monedas;
     }
 
