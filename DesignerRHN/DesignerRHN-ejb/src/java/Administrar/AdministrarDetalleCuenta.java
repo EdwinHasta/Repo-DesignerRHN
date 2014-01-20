@@ -39,7 +39,7 @@ public class AdministrarDetalleCuenta implements AdministrarDetalleCuentaInterfa
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
-    public List<VigenciasCuentas> listaVigenciasCuentasCredito(BigInteger secuenciaC) {
+    public List<VigenciasCuentas> consultarListaVigenciasCuentasCredito(BigInteger secuenciaC) {
         try {
             List<VigenciasCuentas> listCCredito = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorCredito(secuenciaC);
             return listCCredito;
@@ -50,7 +50,7 @@ public class AdministrarDetalleCuenta implements AdministrarDetalleCuentaInterfa
     }
 
     @Override
-    public List<VigenciasCuentas> listaVigenciasCuentasDebito(BigInteger secuenciaC) {
+    public List<VigenciasCuentas> consultarListaVigenciasCuentasDebito(BigInteger secuenciaC) {
         try {
             List<VigenciasCuentas> listCDebito = persistenciaVigenciasCuentas.buscarVigenciasCuentasPorDebito(secuenciaC);
             return listCDebito;

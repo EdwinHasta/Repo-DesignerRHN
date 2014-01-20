@@ -73,7 +73,7 @@ public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesI
     }
 
     @Override
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos) {
+    public BigInteger verificarSoAccidentesMedicosClaseAccidente(BigInteger secuenciaElementos) {
         BigInteger verificarSoAccidtenesMedicos = null;
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);

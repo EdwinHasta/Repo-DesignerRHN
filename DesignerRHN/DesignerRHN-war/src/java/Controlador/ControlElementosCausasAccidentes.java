@@ -357,14 +357,14 @@ public class ControlElementosCausasAccidentes implements Serializable {
             System.out.println("secuencia borrado : " + listElementosCausasAccidentes.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listElementosCausasAccidentes.get(index).getSecuencia());
-                contadorSoAccidentes = administrarElementosCausasAccidentes.contadorSoAccidentes(listElementosCausasAccidentes.get(index).getSecuencia());
-                contadorSoAccidentesMedicos = administrarElementosCausasAccidentes.contadorSoAccidentesMedicos(listElementosCausasAccidentes.get(index).getSecuencia());
-                contadorSoIndicadoresFr = administrarElementosCausasAccidentes.contadorSoIndicadoresFr(listElementosCausasAccidentes.get(index).getSecuencia());
+                contadorSoAccidentes = administrarElementosCausasAccidentes.contarSoAccidentesCausa(listElementosCausasAccidentes.get(index).getSecuencia());
+                contadorSoAccidentesMedicos = administrarElementosCausasAccidentes.contarSoAccidentesMedicosElementoCausaAccidente(listElementosCausasAccidentes.get(index).getSecuencia());
+                contadorSoIndicadoresFr = administrarElementosCausasAccidentes.contarSoIndicadoresFrElementoCausaAccidente(listElementosCausasAccidentes.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarElementosCausasAccidentes.get(index).getSecuencia());
-                contadorSoAccidentes = administrarElementosCausasAccidentes.contadorSoAccidentes(filtrarElementosCausasAccidentes.get(index).getSecuencia());
-                contadorSoAccidentesMedicos = administrarElementosCausasAccidentes.contadorSoAccidentesMedicos(filtrarElementosCausasAccidentes.get(index).getSecuencia());
-                contadorSoIndicadoresFr = administrarElementosCausasAccidentes.contadorSoIndicadoresFr(filtrarElementosCausasAccidentes.get(index).getSecuencia());
+                contadorSoAccidentes = administrarElementosCausasAccidentes.contarSoAccidentesCausa(filtrarElementosCausasAccidentes.get(index).getSecuencia());
+                contadorSoAccidentesMedicos = administrarElementosCausasAccidentes.contarSoAccidentesMedicosElementoCausaAccidente(filtrarElementosCausasAccidentes.get(index).getSecuencia());
+                contadorSoIndicadoresFr = administrarElementosCausasAccidentes.contarSoIndicadoresFrElementoCausaAccidente(filtrarElementosCausasAccidentes.get(index).getSecuencia());
             }
             System.out.println("contadorSoAccidentes " + contadorSoAccidentes.toString());
             System.out.println("contadorSoAccidentesMedicos " + contadorSoAccidentesMedicos.toString());
@@ -707,7 +707,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<ElementosCausasAccidentes> getListElementosCausasAccidentes() {
         if (listElementosCausasAccidentes == null) {
-            listElementosCausasAccidentes = administrarElementosCausasAccidentes.mostrarElementosCausasAccidentes();
+            listElementosCausasAccidentes = administrarElementosCausasAccidentes.consultarElementosCausasAccidentes();
         }
         return listElementosCausasAccidentes;
     }

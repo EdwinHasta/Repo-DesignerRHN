@@ -31,7 +31,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasCuentas.
      */
-    public List<VigenciasCuentas> listaVigenciasCuentasConcepto(BigInteger secConcepto);
+    public List<VigenciasCuentas> consultarListaVigenciasCuentasConcepto(BigInteger secConcepto);
     /**
      * Método encargado de crear VigenciasCuentas.
      * @param listaVigenciasCuentas Lista de las VigenciasCuentas que se van a crear.
@@ -52,7 +52,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasGruposConceptos.
      */
-    public List<VigenciasGruposConceptos> listaVigenciasGruposConceptosConcepto(BigInteger secConcepto);
+    public List<VigenciasGruposConceptos> consultarListaVigenciasGruposConceptosConcepto(BigInteger secConcepto);
     /**
      * Método encargado de crear VigenciasGruposConceptos.
      * @param listaVigenGruposConceptos Lista de las VigenciasGruposConceptos que se van a crear.
@@ -73,7 +73,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasConceptosTT.
      */
-    public List<VigenciasConceptosTT> listaVigenciasConceptosTTConcepto(BigInteger secConcepto);
+    public List<VigenciasConceptosTT> consultarListaVigenciasConceptosTTConcepto(BigInteger secConcepto);
     /**
      * Método encargado de crear VigenciasConceptosTT.
      * @param listaVigenciasConceptosTT Lista de las VigenciasConceptosTT que se van a crear.
@@ -94,7 +94,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasConceptosTC.
      */
-    public List<VigenciasConceptosTC> listaVigenciasConceptosTCConcepto(BigInteger secConcepto);
+    public List<VigenciasConceptosTC> consultarListaVigenciasConceptosTCConcepto(BigInteger secConcepto);
     /**
      * Método encargado de crear VigenciasConceptosTC.
      * @param listaVigenciasConceptosTC Lista de las VigenciasConceptosTC que se van a crear.
@@ -115,7 +115,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de VigenciasConceptosRL.
      */
-    public List<VigenciasConceptosRL> listaVigenciasConceptosRLCConcepto(BigInteger secConcepto);
+    public List<VigenciasConceptosRL> consultarListaVigenciasConceptosRLCConcepto(BigInteger secConcepto);
     /**
      * Método encargado de crear VigenciasConceptosRL.
      * @param listaVigenciasConceptosRL Lista de las VigenciasConceptosRL que se van a crear.
@@ -136,7 +136,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de FormulasConceptos.
      */
-    public List<FormulasConceptos> listaFormulasConceptosConcepto(BigInteger secConcepto);
+    public List<FormulasConceptos> consultarListaFormulasConceptosConcepto(BigInteger secConcepto);
     /**
      * Método encargado de crear FormulasConceptos.
      * @param listaFormulasConceptos Lista de las FormulasConceptos que se van a crear.
@@ -157,52 +157,52 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del concepto.
      * @return Retorna el concepto cuya secuencia coincide con el valor del parámetro.
      */
-    public Conceptos conceptoActual(BigInteger secConcepto);
+    public Conceptos consultarConceptoActual(BigInteger secConcepto);
     /**
      * Método encargado de recuperar los TiposCentrosCostos necesarios para la lista de valores.
      * @return Retorna una lista de TiposCentrosCostos.
      */
-    public List<TiposCentrosCostos> lovTiposCentrosCostos();
+    public List<TiposCentrosCostos> consultarLOVTiposCentrosCostos();
     /**
      * Método encargado de recuperar los Cuentas necesarios para la lista de valores.
      * @return Retorna una lista de Cuentas.
      */
-    public List<Cuentas> lovCuentas();
+    public List<Cuentas> consultarLOVCuentas();
     /**
      * Método encargado de recuperar los CentrosCostos necesarios para la lista de valores.
      * @return Retorna una lista de CentrosCostos.
      */
-    public List<CentrosCostos> lovCentrosCostos();
+    public List<CentrosCostos> consultarLOVCentrosCostos();
     /**
      * Método encargado de recuperar los GruposConceptos necesarios para la lista de valores.
      * @return Retorna una lista de GruposConceptos.
      */
-    public List<GruposConceptos> lovGruposConceptos();
+    public List<GruposConceptos> consultarLOVGruposConceptos();
     /**
      * Método encargado de recuperar los TiposTrabajadores necesarios para la lista de valores.
      * @return Retorna una lista de TiposTrabajadores.
      */
-    public List<TiposTrabajadores> lovTiposTrabajadores();
+    public List<TiposTrabajadores> consultarLOVTiposTrabajadores();
     /**
      * Método encargado de recuperar los TiposContratos necesarios para la lista de valores.
      * @return Retorna una lista de TiposContratos.
      */
-    public List<TiposContratos> lovTiposContratos();
+    public List<TiposContratos> consultarLOVTiposContratos();
     /**
      * Método encargado de recuperar los ReformasLaborales necesarios para la lista de valores.
      * @return Retorna una lista de ReformasLaborales.
      */
-    public List<ReformasLaborales> lovReformasLaborales();
+    public List<ReformasLaborales> consultarLOVReformasLaborales();
     /**
      * Método encargado de recuperar los Formulas necesarios para la lista de valores.
      * @return Retorna una lista de Formulas.
      */
-    public List<Formulas> lovFormulas();
+    public List<Formulas> consultarLOVFormulas();
     /**
      * Método encargado de recuperar los FormulasConceptos necesarios para la lista de valores.
      * @return Retorna una lista de FormulasConceptos.
      */
-    public List<FormulasConceptos> lovFormulasConceptos();
+    public List<FormulasConceptos> consultarLOVFormulasConceptos();
     /**
      * Método encargado de recuperar el número de FormulasConceptos asociadas con un concepto específico. Esto
      * con el fin de determinar si se usa el comportamiento automatico o no.
@@ -210,7 +210,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @return Retorna el número de FormulasConceptos asociadas con el concepto cuya secuencia coincida con el 
      * valor dado por parámetro.
      */
-    public Long comportamientoAutomaticoConcepto(BigInteger secConcepto);
+    public Long contarFormulasConceptosConcepto(BigInteger secConcepto);
     /**
      * Método encargado de recuperar el número de FormulasConceptos que estan asociadas con un concepto específico y
      * cuya Formula esta asociada con una FormulaNovedad. Esto con el fin de determinar si se usa 
@@ -218,7 +218,7 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del concepto.
      * @return Retorna el número de FormulasConceptos que cumplen con las condiciones mencionadas.
      */
-    public Long comportamientoSemiAutomaticoConcepto(BigInteger secConcepto);
+    public Long contarFormulasNovedadesConcepto(BigInteger secConcepto);
     /**
      * Método encargado de eliminar un concepto y los datos referentes a este.
      * @param secConcepto Secuencia del Concepto.
@@ -230,5 +230,5 @@ public interface AdministrarDetalleConceptoInterface {
      * @param secConcepto Secuencia del Concepto por el cual se filtrara la búsqueda.
      * @return Retorna una lista de SolucionesNodos.
      */
-    public boolean verificarSolucionesNodosParaConcepto(BigInteger secConcepto);
+    public boolean verificarSolucionesNodosConcepto(BigInteger secConcepto);
 }
