@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -78,11 +79,10 @@ public class ControlNReporteBienestar implements Serializable {
     //
     private List<Inforeportes> listaInfoReportesModificados;
     //
-    private BigInteger auxCodigo;
-    private String auxNombre;
+     private Inforeportes actualInfoReporteTabla;
 
     public ControlNReporteBienestar() {
-
+        actualInfoReporteTabla = new Inforeportes();
         cambiosReporte = true;
         listaInfoReportesModificados = new ArrayList<Inforeportes>();
         altoTabla = "185";
@@ -104,16 +104,34 @@ public class ControlNReporteBienestar implements Serializable {
         listActividades = null;
         actividadSeleccionada = new Actividades();
     }
+    
+    
+    public void posicionInfoReporte() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String type = map.get("t"); // type attribute of node
+        int ind = Integer.parseInt(type);
+        cambiarIndexInforeporte(ind);
+    }
+
+    public void posicionParaResaltoParametros() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String type = map.get("t"); // type attribute of node
+        int ind = Integer.parseInt(type);
+        parametrosDeReporte(ind);
+    }
+
 
     public void cambiarIndexInforeporte(int i) {
         if (tipoLista == 0) {
-            auxCodigo = listaIR.get(i).getCodigo();
-            auxNombre = listaIR.get(i).getNombre();
+            setActualInfoReporteTabla(listaIR.get(i));
         }
         if (tipoLista == 1) {
-            auxCodigo = filtrarListInforeportesUsuario.get(i).getCodigo();
-            auxNombre = filtrarListInforeportesUsuario.get(i).getNombre();
+            setActualInfoReporteTabla(filtrarListInforeportesUsuario.get(i));
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:reportesBienestar");
         resaltoParametrosParaReporte(i);
     }
 
@@ -325,18 +343,6 @@ public class ControlNReporteBienestar implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:reportesBienestar");
-    }
-
-    public void reporteModificado(int i) {
-        if (tipoLista == 0) {
-            listaIR.get(i).setCodigo(auxCodigo);
-            listaIR.get(i).setNombre(auxNombre);
-        }
-        if (tipoLista == 1) {
-            filtrarListInforeportesUsuario.get(i).setCodigo(auxCodigo);
-            filtrarListInforeportesUsuario.get(i).setNombre(auxNombre);
-        }
-        RequestContext.getCurrentInstance().update("form:reportesBienestar");
     }
 
     public void modificacionTipoReporte(int i) {
@@ -872,5 +878,13 @@ public class ControlNReporteBienestar implements Serializable {
 
     public void setFile(StreamedContent file) {
         this.file = file;
+    }
+    
+     public Inforeportes getActualInfoReporteTabla() {
+        return actualInfoReporteTabla;
+    }
+
+    public void setActualInfoReporteTabla(Inforeportes actualInfoReporteTabla) {
+        this.actualInfoReporteTabla = actualInfoReporteTabla;
     }
 }

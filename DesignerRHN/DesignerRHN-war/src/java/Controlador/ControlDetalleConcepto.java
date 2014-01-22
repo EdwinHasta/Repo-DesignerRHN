@@ -348,8 +348,8 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaGrupoConcepto = -1;
         indexVigenciaConceptoTT = -1;
         indexVigenciaConceptoTC = -1;
-        indexAuxVigenciaConceptoRL = -1;
-        indexAuxFormulasConceptos = -1;
+        indexVigenciaConceptoRL = -1;
+        indexFormulasConceptos = -1;
 
         banderaVigenciaCuenta = 0;
         banderaVigenciaGrupoConcepto = 0;
