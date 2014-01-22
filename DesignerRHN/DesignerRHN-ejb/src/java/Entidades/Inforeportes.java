@@ -206,6 +206,9 @@ public class Inforeportes implements Serializable {
     }
 
     public String getFecdesde() {
+        if(fecdesde == null){
+            fecdesde = "NO";
+        }
         return fecdesde;
     }
 
@@ -214,6 +217,9 @@ public class Inforeportes implements Serializable {
     }
 
     public String getFechasta() {
+        if(fechasta == null){
+            fechasta = "NO";
+        }
         return fechasta;
     }
 
@@ -222,6 +228,9 @@ public class Inforeportes implements Serializable {
     }
 
     public String getEmdesde() {
+        if(emdesde == null){
+            emdesde = "NO";
+        }
         return emdesde;
     }
 
@@ -230,6 +239,9 @@ public class Inforeportes implements Serializable {
     }
 
     public String getEmhasta() {
+        if(emhasta == null){
+            emhasta = "NO";
+        }
         return emhasta;
     }
 
