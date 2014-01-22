@@ -103,53 +103,103 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     public void mostrarInfo(int indice, int celda) {
         int contador = 0;
         int fechas = 0;
+        mensajeValidacion = " ";
+        index = indice;
+        cualCelda = celda;
+        RequestContext context = RequestContext.getCurrentInstance();
         if (permitirIndex == true) {
-            RequestContext context = RequestContext.getCurrentInstance();
-
-            mensajeValidacion = " ";
-            index = indice;
-            cualCelda = celda;
-            secRegistro = listEmplVigenciaNormaLaboralPorEmpleado.get(index).getSecuencia();
-            System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia());
-            if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia() == null) {
-                mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                contador++;
-            } else {
-                for (int j = 0; j < listEmplVigenciaNormaLaboralPorEmpleado.size(); j++) {
-                    if (j != indice) {
-                        if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia().equals(listEmplVigenciaNormaLaboralPorEmpleado.get(j).getFechavigencia())) {
-                            fechas++;
+            if (tipoLista == 0) {
+                secRegistro = listEmplVigenciaNormaLaboralPorEmpleado.get(index).getSecuencia();
+                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia());
+                if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia() == null) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    contador++;
+                } else {
+                    for (int j = 0; j < listEmplVigenciaNormaLaboralPorEmpleado.size(); j++) {
+                        if (j != indice) {
+                            if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia().equals(listEmplVigenciaNormaLaboralPorEmpleado.get(j).getFechavigencia())) {
+                                fechas++;
+                            }
                         }
                     }
                 }
-            }
-            if (fechas > 0) {
-                mensajeValidacion = "FECHAS REPETIDAS";
-                contador++;
-            }
-            if (contador == 0) {
-                if (!crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
-                    if (modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
-                        modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
-                    } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
-                        modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
-                    context.update("form:datosHvEntrevista");
+                if (fechas > 0) {
+                    mensajeValidacion = "FECHAS REPETIDAS";
+                    contador++;
+                }
+                if (contador == 0) {
+                    if (!crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
+                        if (modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
+                            modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
+                        } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
+                            modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                        }
+                        context.update("form:datosHvEntrevista");
 
+                    }
+                } else {
+                    context.update("form:validacionModificar");
+                    context.execute("validacionModificar.show()");
+                    cancelarModificacion();
                 }
             } else {
-                context.update("form:validacionModificar");
-                context.execute("validacionModificar.show()");
-                cancelarModificacion();
+
+                secRegistro = filtrarEmplVigenciaNormaLaboralPorEmplado.get(index).getSecuencia();
+                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice).getFechavigencia());
+                if (filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice).getFechavigencia() == null) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    contador++;
+                } else {
+                    for (int j = 0; j < filtrarEmplVigenciaNormaLaboralPorEmplado.size(); j++) {
+                        if (j != indice) {
+                            if (filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice).getFechavigencia().equals(filtrarEmplVigenciaNormaLaboralPorEmplado.get(j).getFechavigencia())) {
+                                fechas++;
+                            }
+                        }
+                    }
+                    for (int j = 0; j < listEmplVigenciaNormaLaboralPorEmpleado.size(); j++) {
+                        if (j != indice) {
+                            if (filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice).getFechavigencia().equals(listEmplVigenciaNormaLaboralPorEmpleado.get(j).getFechavigencia())) {
+                                fechas++;
+                            }
+                        }
+                    }
+                }
+                if (fechas > 0) {
+                    mensajeValidacion = "FECHAS REPETIDAS";
+                    contador++;
+                }
+                if (contador == 0) {
+                    if (!crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
+                        if (modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
+                            modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
+                        } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
+                            modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                        }
+                        context.update("form:datosHvEntrevista");
+
+                    }
+                } else {
+                    context.update("form:validacionModificar");
+                    context.execute("validacionModificar.show()");
+                    cancelarModificacion();
+
+                }
+
+                index = -1;
+                secRegistro = null;
             }
-            index = -1;
-            secRegistro = null;
+            System.out.println("Indice: " + index + " Celda: " + cualCelda);
+
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
 
     }
 
