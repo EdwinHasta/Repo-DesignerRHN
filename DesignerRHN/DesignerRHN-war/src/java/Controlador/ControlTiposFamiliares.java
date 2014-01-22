@@ -348,9 +348,9 @@ public class ControlTiposFamiliares implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlTiposFamiliares ");
             if (tipoLista == 0) {
-                hvReferencias = administrarTiposFamiliares.verificarBorradoHvReferencias(listTiposFamiliares.get(index).getSecuencia());
+                hvReferencias = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(listTiposFamiliares.get(index).getSecuencia());
             } else {
-                hvReferencias = administrarTiposFamiliares.verificarBorradoHvReferencias(listTiposFamiliares.get(index).getSecuencia());
+                hvReferencias = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(listTiposFamiliares.get(index).getSecuencia());
             }
             if (hvReferencias.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -387,10 +387,8 @@ public class ControlTiposFamiliares implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando ControlTiposFamiliares");
             if (!borrarTiposFamiliares.isEmpty()) {
-                for (int i = 0; i < borrarTiposFamiliares.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposFamiliares.borrarTiposFamiliares(borrarTiposFamiliares.get(i));
-                }
+              administrarTiposFamiliares.borrarTiposFamiliares(borrarTiposFamiliares);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarTiposFamiliares.size();
                 context.update("form:mostrarBorrados");
@@ -398,12 +396,8 @@ public class ControlTiposFamiliares implements Serializable {
                 borrarTiposFamiliares.clear();
             }
             if (!crearTiposFamiliares.isEmpty()) {
-                for (int i = 0; i < crearTiposFamiliares.size(); i++) {
+                administrarTiposFamiliares.crearTiposFamiliares(crearTiposFamiliares);
 
-                    System.out.println("Creando...");
-                    administrarTiposFamiliares.crearTiposFamiliares(crearTiposFamiliares.get(i));
-
-                }
                 crearTiposFamiliares.clear();
             }
             if (!modificarTiposFamiliares.isEmpty()) {
@@ -710,7 +704,7 @@ public class ControlTiposFamiliares implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposFamiliares> getListTiposFamiliares() {
         if (listTiposFamiliares == null) {
-            listTiposFamiliares = administrarTiposFamiliares.mostrarTiposFamiliares();
+            listTiposFamiliares = administrarTiposFamiliares.consultarTiposFamiliares();
 
         }
         return listTiposFamiliares;

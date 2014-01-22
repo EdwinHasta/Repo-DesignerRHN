@@ -350,10 +350,10 @@ public class ControlSoCondicionesTrabajos implements Serializable {
     public void verificarBorrado() {
         System.out.println("verificarBorrado");
         try {
-            verificarInspecciones = administrarSoCondicionesTrabajos.verificarInspecciones(listSoCondicionesTrabajos.get(index).getSecuencia());
-            verificarSoDetallesPanoramas = administrarSoCondicionesTrabajos.verificarSoDetallesPanoramas(listSoCondicionesTrabajos.get(index).getSecuencia());
-            verificarSoExposicionesFr = administrarSoCondicionesTrabajos.verificarSoExposicionesFr(listSoCondicionesTrabajos.get(index).getSecuencia());
-            verificarSoAccidentesMedicos = administrarSoCondicionesTrabajos.verificarSoAccidentesMedicos(listSoCondicionesTrabajos.get(index).getSecuencia());
+            verificarInspecciones = administrarSoCondicionesTrabajos.contarInspeccionesSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
+            verificarSoDetallesPanoramas = administrarSoCondicionesTrabajos.contarSoDetallesPanoramasSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
+            verificarSoExposicionesFr = administrarSoCondicionesTrabajos.contarSoExposicionesFrSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
+            verificarSoAccidentesMedicos = administrarSoCondicionesTrabajos.contarSoAccidentesMedicosSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
             if (verificarSoAccidentesMedicos.equals(0) && verificarSoExposicionesFr.equals(0)
                     && verificarSoDetallesPanoramas.equals(0) && verificarInspecciones.equals(0)) {
                 System.out.println("Borrado==0");
@@ -390,10 +390,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
 
         if (guardado == false) {
             if (!borrarSoCondicionesTrabajos.isEmpty()) {
-                for (int i = 0; i < borrarSoCondicionesTrabajos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarSoCondicionesTrabajos.borrarSoCondicionesTrabajos(borrarSoCondicionesTrabajos.get(i));
-                }
+             administrarSoCondicionesTrabajos.borrarSoCondicionesTrabajos(borrarSoCondicionesTrabajos);
+              
                 //mostrarBorrados
                 registrosBorrados = borrarSoCondicionesTrabajos.size();
                 context.update("form:mostrarBorrados");
@@ -401,13 +399,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                 borrarSoCondicionesTrabajos.clear();
             }
             if (!crearSoCondicionesTrabajos.isEmpty()) {
-                for (int i = 0; i < crearSoCondicionesTrabajos.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarSoCondicionesTrabajos.crearSoCondicionesTrabajos(crearSoCondicionesTrabajos.get(i));
-
-                }
-                crearSoCondicionesTrabajos.clear();
+                administrarSoCondicionesTrabajos.crearSoCondicionesTrabajos(crearSoCondicionesTrabajos);
+   crearSoCondicionesTrabajos.clear();
             }
             if (!modificarSoCondicionesTrabajos.isEmpty()) {
                 administrarSoCondicionesTrabajos.modificarSoCondicionesTrabajos(modificarSoCondicionesTrabajos);
@@ -723,7 +716,7 @@ public class ControlSoCondicionesTrabajos implements Serializable {
 //*****
     public List<SoCondicionesTrabajos> getListSoCondicionesTrabajos() {
         if (listSoCondicionesTrabajos == null) {
-            listSoCondicionesTrabajos = administrarSoCondicionesTrabajos.mostrarSoCondicionesTrabajos();
+            listSoCondicionesTrabajos = administrarSoCondicionesTrabajos.consultarSoCondicionesTrabajos();
         }
         return listSoCondicionesTrabajos;
     }

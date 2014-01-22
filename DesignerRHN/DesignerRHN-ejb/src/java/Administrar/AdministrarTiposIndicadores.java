@@ -22,37 +22,47 @@ public class AdministrarTiposIndicadores implements AdministrarTiposIndicadoresI
 
     @EJB
     PersistenciaTiposIndicadoresInterface persistenciaTiposIndicadores;
-    private TiposIndicadores tiposIndicadorSeleccionado;
-    private TiposIndicadores tiposIndicadores;
-    private List<TiposIndicadores> listTiposIndicadores;
 
-    public void modificarTiposIndicadores(List<TiposIndicadores> listTiposIndicadoresModificadas) {
-        for (int i = 0; i < listTiposIndicadoresModificadas.size(); i++) {
+    @Override
+    public void modificarTiposIndicadores(List<TiposIndicadores> listTiposIndicadores) {
+        for (int i = 0; i < listTiposIndicadores.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposIndicadorSeleccionado = listTiposIndicadoresModificadas.get(i);
-            persistenciaTiposIndicadores.editar(tiposIndicadorSeleccionado);
+            persistenciaTiposIndicadores.editar(listTiposIndicadores.get(i));
         }
     }
 
-    public void borrarTiposIndicadores(TiposIndicadores tiposIndicadores) {
-        persistenciaTiposIndicadores.borrar(tiposIndicadores);
+    @Override
+    public void borrarTiposIndicadores(List<TiposIndicadores> listTiposIndicadores) {
+        for (int i = 0; i < listTiposIndicadores.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposIndicadores.borrar(listTiposIndicadores.get(i));
+        }
     }
 
-    public void crearTiposIndicadores(TiposIndicadores tiposIndicadores) {
-        persistenciaTiposIndicadores.crear(tiposIndicadores);
+    @Override
+    public void crearTiposIndicadores(List<TiposIndicadores> listTiposIndicadores) {
+        for (int i = 0; i < listTiposIndicadores.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposIndicadores.crear(listTiposIndicadores.get(i));
+        }
     }
 
-    public List<TiposIndicadores> mostrarTiposIndicadores() {
+    @Override
+    public List<TiposIndicadores> consultarTiposIndicadores() {
+        List<TiposIndicadores> listTiposIndicadores;
         listTiposIndicadores = persistenciaTiposIndicadores.buscarTiposIndicadores();
         return listTiposIndicadores;
     }
 
-    public TiposIndicadores mostrarTipoIndicador(BigInteger secMotivoDemanda) {
+    @Override
+    public TiposIndicadores consultarTipoIndicador(BigInteger secMotivoDemanda) {
+        TiposIndicadores tiposIndicadores;
         tiposIndicadores = persistenciaTiposIndicadores.buscarTiposIndicadoresSecuencia(secMotivoDemanda);
         return tiposIndicadores;
     }
 
-    public BigInteger verificarBorradoVigenciasIndicadores(BigInteger secuenciaVigenciasIndicadores) {
+    @Override
+    public BigInteger contarVigenciasIndicadoresTipoIndicador(BigInteger secuenciaVigenciasIndicadores) {
         BigInteger verificadorVigenciasIndicadores = null;
 
         try {

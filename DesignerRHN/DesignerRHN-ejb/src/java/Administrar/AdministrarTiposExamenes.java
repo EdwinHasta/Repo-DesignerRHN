@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarTiposExamenesInterface;
 import Entidades.TiposExamenes;
 import InterfacePersistencia.PersistenciaTiposExamenesInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -22,59 +20,61 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarTiposExamenes implements AdministrarTiposExamenesInterface {
 
-     @EJB
+    @EJB
     PersistenciaTiposExamenesInterface persistenciaTiposExamenes;
-    private TiposExamenes tiposTallaSeleccionada;
-    private TiposExamenes tiposTallas;
-    private List<TiposExamenes> listTiposTallas;
-    private BigInteger verificadorTiposExamenesCargos;
-    private BigInteger verificadorVigenciasExamenesMedicos;
 
-    public void modificarTiposExamenes(List<TiposExamenes> listTiposEmpresasModificadas) {
-        for (int i = 0; i < listTiposEmpresasModificadas.size(); i++) {
+    public void modificarTiposExamenes(List<TiposExamenes> listaTiposExamenes) {
+        for (int i = 0; i < listaTiposExamenes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposTallaSeleccionada = listTiposEmpresasModificadas.get(i);
-            persistenciaTiposExamenes.editar(tiposTallaSeleccionada);
+            persistenciaTiposExamenes.editar(listaTiposExamenes.get(i));
         }
     }
 
-    public void borrarTiposExamenes(TiposExamenes tiposExamenes) {
-        persistenciaTiposExamenes.borrar(tiposExamenes);
+    public void borrarTiposExamenes(List<TiposExamenes> listaTiposExamenes) {
+        for (int i = 0; i < listaTiposExamenes.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposExamenes.borrar(listaTiposExamenes.get(i));
+        }
     }
 
-    public void crearTiposExamenes(TiposExamenes tiposExamenes) {
-        persistenciaTiposExamenes.crear(tiposExamenes);
+    public void crearTiposExamenes(List<TiposExamenes> listaTiposExamenes) {
+        for (int i = 0; i < listaTiposExamenes.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposExamenes.borrar(listaTiposExamenes.get(i));
+        }
     }
 
-    public List<TiposExamenes> mostrarTiposExamenes() {
+    public List<TiposExamenes> consultarTiposExamenes() {
+        List<TiposExamenes> listTiposTallas;
         listTiposTallas = persistenciaTiposExamenes.buscarTiposExamenes();
         return listTiposTallas;
     }
 
-    public TiposExamenes mostrarTipoExamen(BigInteger secTipoEmpresa) {
+    public TiposExamenes consultarTipoExamen(BigInteger secTipoEmpresa) {
+        TiposExamenes tiposTallas;
         tiposTallas = persistenciaTiposExamenes.buscarTipoExamen(secTipoEmpresa);
         return tiposTallas;
     }
 
-    public BigInteger verificarBorradoTiposExamenesCargos(BigInteger secuenciaTiposExamenesCargos) {
+    public BigInteger contarTiposExamenesCargosTipoExamen(BigInteger secuenciaTiposExamenesCargos) {
+        BigInteger verificadorTiposExamenesCargos;
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaTiposExamenesCargos);
-            verificadorTiposExamenesCargos = persistenciaTiposExamenes.contadorTiposExamenesCargos(secuenciaTiposExamenesCargos);
+            return verificadorTiposExamenesCargos = persistenciaTiposExamenes.contadorTiposExamenesCargos(secuenciaTiposExamenesCargos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposExamenes verificarBorradoTiposExamenesCargos ERROR :" + e);
-        } finally {
-            return verificadorTiposExamenesCargos;
+            return null;
         }
     }
 
-    public BigInteger verificarBorradoVigenciasExamenesMedicos(BigInteger secuenciaVigenciasExamenesMedicos) {
+    public BigInteger contarVigenciasExamenesMedicosTipoExamen(BigInteger secuenciaVigenciasExamenesMedicos) {
         try {
+            BigInteger verificadorVigenciasExamenesMedicos;
             System.err.println("Secuencia Borrado Vigencias Tallas" + secuenciaVigenciasExamenesMedicos);
-            verificadorVigenciasExamenesMedicos = persistenciaTiposExamenes.contadorVigenciasExamenesMedicos(secuenciaVigenciasExamenesMedicos);
+            return verificadorVigenciasExamenesMedicos = persistenciaTiposExamenes.contadorVigenciasExamenesMedicos(secuenciaVigenciasExamenesMedicos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposExamenes verificarBorradoVigenciasExamenesMedicos ERROR :" + e);
-        } finally {
-            return verificadorVigenciasExamenesMedicos;
+            return null;
         }
     }
 }

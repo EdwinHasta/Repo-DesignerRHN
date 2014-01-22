@@ -48,7 +48,7 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
     }
 
     @Override
-    public NormasLaborales buscarNormaLaboral(BigInteger secuenciaNL) {
+    public NormasLaborales consultarNormaLaboral(BigInteger secuenciaNL) {
         try {
             return em.find(NormasLaborales.class, secuenciaNL);
         } catch (Exception e) {
@@ -57,14 +57,14 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
     }
 
     @Override
-    public List<NormasLaborales> buscarNormasLaborales() {
+    public List<NormasLaborales> consultarNormasLaborales() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(NormasLaborales.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public BigInteger verificarBorradoNormasLaborales(BigInteger secuencia) {
+    public BigInteger contarVigenciasNormasEmpleadosNormaLaboral(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vn) FROM VigenciasNormasEmpleados vn WHERE vn.normalaboral.secuencia =:secNormaLaboral ");

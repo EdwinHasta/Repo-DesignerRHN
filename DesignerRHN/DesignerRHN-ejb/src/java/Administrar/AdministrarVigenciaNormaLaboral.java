@@ -88,7 +88,7 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
             List<NormasLaborales> normasLaborales;
 
         try {
-            normasLaborales = persistenciaNormasLaborales.buscarNormasLaborales();
+            normasLaborales = persistenciaNormasLaborales.consultarNormasLaborales();
             return normasLaborales;
         } catch (Exception e) {
             System.err.println("ERROR EN AdministrarVigencianormaLaboral en NormasLabolares ERROR " + e);

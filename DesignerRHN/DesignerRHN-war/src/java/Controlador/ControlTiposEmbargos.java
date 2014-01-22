@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Controlador;
 
 import Entidades.TiposEmbargos;
@@ -31,8 +30,9 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlTiposEmbargos implements  Serializable{
-@EJB
+public class ControlTiposEmbargos implements Serializable {
+
+    @EJB
     AdministrarTiposEmbargosInterface administrarTiposEmbargos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
@@ -346,8 +346,8 @@ public class ControlTiposEmbargos implements  Serializable{
     public void verificarBorrado() {
         System.out.println("ESTOY EN VERIFICAR BORRADO");
         try {
-            verificarDiasLaborales = administrarTiposEmbargos.verificarDiasLaborales(listTiposEmbargos.get(index).getSecuencia());
-            verificarExtrasRecargos = administrarTiposEmbargos.verificarExtrasRecargos(listTiposEmbargos.get(index).getSecuencia());
+            verificarDiasLaborales = administrarTiposEmbargos.contarDiasLaboralesTipoEmbargo(listTiposEmbargos.get(index).getSecuencia());
+            verificarExtrasRecargos = administrarTiposEmbargos.contarExtrasRecargosTipoEmbargo(listTiposEmbargos.get(index).getSecuencia());
 
             if (!verificarDiasLaborales.equals(new BigInteger("0")) || !verificarExtrasRecargos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -676,10 +676,7 @@ public class ControlTiposEmbargos implements  Serializable{
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarTiposEmbargos.isEmpty()) {
-                for (int i = 0; i < borrarTiposEmbargos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposEmbargos.borrarTiposPrestamos(borrarTiposEmbargos.get(i));
-                }
+                administrarTiposEmbargos.borrarTiposPrestamos(borrarTiposEmbargos);
                 //mostrarBorrados
                 registrosBorrados = borrarTiposEmbargos.size();
                 context.update("form:mostrarBorrados");
@@ -687,12 +684,7 @@ public class ControlTiposEmbargos implements  Serializable{
                 borrarTiposEmbargos.clear();
             }
             if (!crearTiposEmbargos.isEmpty()) {
-                for (int i = 0; i < crearTiposEmbargos.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposEmbargos.crearTiposPrestamos(crearTiposEmbargos.get(i));
-
-                }
+                administrarTiposEmbargos.crearTiposPrestamos(crearTiposEmbargos);
                 crearTiposEmbargos.clear();
             }
             if (!modificarTiposEmbargos.isEmpty()) {
@@ -770,7 +762,7 @@ public class ControlTiposEmbargos implements  Serializable{
 //---------//----------------//------------//----------------//-----------//--------------------------//-----
     public List<TiposEmbargos> getListTiposEmbargos() {
         if (listTiposEmbargos == null) {
-            listTiposEmbargos = administrarTiposEmbargos.mostrarTiposPrestamos();
+            listTiposEmbargos = administrarTiposEmbargos.consultarTiposPrestamos();
         }
         return listTiposEmbargos;
     }

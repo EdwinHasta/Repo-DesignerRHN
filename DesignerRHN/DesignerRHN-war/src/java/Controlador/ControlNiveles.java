@@ -4,10 +4,10 @@
  */
 package Controlador;
 
-import Entidades.TiposEmpresas;
+import Entidades.Niveles;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarTiposEmpresasInterface;
+import InterfaceAdministrar.AdministrarNivelesInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -29,20 +29,20 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlTiposEmpresas implements Serializable {
+public class ControlNiveles implements Serializable {
 
     @EJB
-    AdministrarTiposEmpresasInterface administrarTiposEmpresas;
+    AdministrarNivelesInterface administrarNiveles;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    private List<TiposEmpresas> listTiposEmpresas;
-    private List<TiposEmpresas> filtrarTiposEmpresas;
-    private List<TiposEmpresas> crearTiposEmpresas;
-    private List<TiposEmpresas> modificarTiposEmpresas;
-    private List<TiposEmpresas> borrarTiposEmpresas;
-    private TiposEmpresas nuevoTipoEmpresa;
-    private TiposEmpresas duplicarTipoEmpresa;
-    private TiposEmpresas editarTipoEmpresa;
+    private List<Niveles> listNiveles;
+    private List<Niveles> filtrarNiveles;
+    private List<Niveles> crearNiveles;
+    private List<Niveles> modificarNiveles;
+    private List<Niveles> borrarNiveles;
+    private Niveles nuevoNivel;
+    private Niveles duplicarNivel;
+    private Niveles editarNivel;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -56,26 +56,26 @@ public class ControlTiposEmpresas implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
 
-    public ControlTiposEmpresas() {
-        listTiposEmpresas = null;
-        crearTiposEmpresas = new ArrayList<TiposEmpresas>();
-        modificarTiposEmpresas = new ArrayList<TiposEmpresas>();
-        borrarTiposEmpresas = new ArrayList<TiposEmpresas>();
+    public ControlNiveles() {
+        listNiveles = null;
+        crearNiveles = new ArrayList<Niveles>();
+        modificarNiveles = new ArrayList<Niveles>();
+        borrarNiveles = new ArrayList<Niveles>();
         permitirIndex = true;
-        editarTipoEmpresa = new TiposEmpresas();
-        nuevoTipoEmpresa = new TiposEmpresas();
-        duplicarTipoEmpresa = new TiposEmpresas();
+        editarNivel = new Niveles();
+        nuevoNivel = new Niveles();
+        duplicarNivel = new Niveles();
         guardado = true;
     }
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A ControlTiposEmpresas.eventoFiltrar \n");
+            System.out.println("\n ENTRE A ControlNiveles.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR ControlTiposEmpresas eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlNiveles eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ public class ControlTiposEmpresas implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listTiposEmpresas.get(index).getSecuencia();
+            secRegistro = listNiveles.get(index).getSecuencia();
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -93,7 +93,7 @@ public class ControlTiposEmpresas implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE A ControlTiposEmpresas.asignarIndex \n");
+            System.out.println("\n ENTRE A ControlNiveles.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -105,7 +105,7 @@ public class ControlTiposEmpresas implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR ControlTiposEmpresas.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlNiveles.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -119,54 +119,54 @@ public class ControlTiposEmpresas implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTipoEmpresa");
+            RequestContext.getCurrentInstance().update("form:datosNivel");
             bandera = 0;
-            filtrarTiposEmpresas = null;
+            filtrarNiveles = null;
             tipoLista = 0;
         }
 
-        borrarTiposEmpresas.clear();
-        crearTiposEmpresas.clear();
-        modificarTiposEmpresas.clear();
+        borrarNiveles.clear();
+        crearNiveles.clear();
+        modificarNiveles.clear();
         index = -1;
         secRegistro = null;
         k = 0;
-        listTiposEmpresas = null;
+        listNiveles = null;
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTipoEmpresa");
+        context.update("form:datosNivel");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
 
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
             codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
             descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosTipoEmpresa");
+            RequestContext.getCurrentInstance().update("form:datosNivel");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTipoEmpresa");
+            RequestContext.getCurrentInstance().update("form:datosNivel");
             bandera = 0;
-            filtrarTiposEmpresas = null;
+            filtrarNiveles = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarTipoEmpresa(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificarNivel(int indice, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR TIPO EMPRESA");
         index = indice;
 
@@ -179,14 +179,14 @@ public class ControlTiposEmpresas implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearTiposEmpresas.contains(listTiposEmpresas.get(indice))) {
-                    if (listTiposEmpresas.get(indice).getCodigo() == a) {
+                if (!crearNiveles.contains(listNiveles.get(indice))) {
+                    if (listNiveles.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listTiposEmpresas.size(); j++) {
+                        for (int j = 0; j < listNiveles.size(); j++) {
                             if (j != indice) {
-                                if (listTiposEmpresas.get(indice).getCodigo() == listTiposEmpresas.get(j).getCodigo()) {
+                                if (listNiveles.get(indice).getCodigo() == listNiveles.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -199,20 +199,20 @@ public class ControlTiposEmpresas implements Serializable {
                         }
 
                     }
-                    if (listTiposEmpresas.get(indice).getDescripcion().isEmpty()) {
+                    if (listNiveles.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listTiposEmpresas.get(indice).getDescripcion().equals(" ")) {
+                    if (listNiveles.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
-                        if (modificarTiposEmpresas.isEmpty()) {
-                            modificarTiposEmpresas.add(listTiposEmpresas.get(indice));
-                        } else if (!modificarTiposEmpresas.contains(listTiposEmpresas.get(indice))) {
-                            modificarTiposEmpresas.add(listTiposEmpresas.get(indice));
+                        if (modificarNiveles.isEmpty()) {
+                            modificarNiveles.add(listNiveles.get(indice));
+                        } else if (!modificarNiveles.contains(listNiveles.get(indice))) {
+                            modificarNiveles.add(listNiveles.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -228,21 +228,21 @@ public class ControlTiposEmpresas implements Serializable {
                 }
             } else {
 
-                if (!crearTiposEmpresas.contains(filtrarTiposEmpresas.get(indice))) {
-                    if (filtrarTiposEmpresas.get(indice).getCodigo() == a) {
+                if (!crearNiveles.contains(filtrarNiveles.get(indice))) {
+                    if (filtrarNiveles.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < filtrarTiposEmpresas.size(); j++) {
+                        for (int j = 0; j < filtrarNiveles.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposEmpresas.get(indice).getCodigo() == listTiposEmpresas.get(j).getCodigo()) {
+                                if (filtrarNiveles.get(indice).getCodigo() == listNiveles.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listTiposEmpresas.size(); j++) {
+                        for (int j = 0; j < listNiveles.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposEmpresas.get(indice).getCodigo() == listTiposEmpresas.get(j).getCodigo()) {
+                                if (filtrarNiveles.get(indice).getCodigo() == listNiveles.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -256,20 +256,20 @@ public class ControlTiposEmpresas implements Serializable {
 
                     }
 
-                    if (filtrarTiposEmpresas.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarNiveles.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (filtrarTiposEmpresas.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarNiveles.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
-                        if (modificarTiposEmpresas.isEmpty()) {
-                            modificarTiposEmpresas.add(filtrarTiposEmpresas.get(indice));
-                        } else if (!modificarTiposEmpresas.contains(filtrarTiposEmpresas.get(indice))) {
-                            modificarTiposEmpresas.add(filtrarTiposEmpresas.get(indice));
+                        if (modificarNiveles.isEmpty()) {
+                            modificarNiveles.add(filtrarNiveles.get(indice));
+                        } else if (!modificarNiveles.contains(filtrarNiveles.get(indice))) {
+                            modificarNiveles.add(filtrarNiveles.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -285,48 +285,48 @@ public class ControlTiposEmpresas implements Serializable {
                 }
 
             }
-            context.update("form:datosTipoEmpresa");
+            context.update("form:datosNivel");
             context.update("form:ACEPTAR");
         }
 
     }
 
-    public void borrandoTiposEmpresas() {
+    public void borrandoNiveles() {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                System.out.println("Entro a borrandoTiposEmpresas");
-                if (!modificarTiposEmpresas.isEmpty() && modificarTiposEmpresas.contains(listTiposEmpresas.get(index))) {
-                    int modIndex = modificarTiposEmpresas.indexOf(listTiposEmpresas.get(index));
-                    modificarTiposEmpresas.remove(modIndex);
-                    borrarTiposEmpresas.add(listTiposEmpresas.get(index));
-                } else if (!crearTiposEmpresas.isEmpty() && crearTiposEmpresas.contains(listTiposEmpresas.get(index))) {
-                    int crearIndex = crearTiposEmpresas.indexOf(listTiposEmpresas.get(index));
-                    crearTiposEmpresas.remove(crearIndex);
+                System.out.println("Entro a borrandoNiveles");
+                if (!modificarNiveles.isEmpty() && modificarNiveles.contains(listNiveles.get(index))) {
+                    int modIndex = modificarNiveles.indexOf(listNiveles.get(index));
+                    modificarNiveles.remove(modIndex);
+                    borrarNiveles.add(listNiveles.get(index));
+                } else if (!crearNiveles.isEmpty() && crearNiveles.contains(listNiveles.get(index))) {
+                    int crearIndex = crearNiveles.indexOf(listNiveles.get(index));
+                    crearNiveles.remove(crearIndex);
                 } else {
-                    borrarTiposEmpresas.add(listTiposEmpresas.get(index));
+                    borrarNiveles.add(listNiveles.get(index));
                 }
-                listTiposEmpresas.remove(index);
+                listNiveles.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoTiposEmpresas ");
-                if (!modificarTiposEmpresas.isEmpty() && modificarTiposEmpresas.contains(filtrarTiposEmpresas.get(index))) {
-                    int modIndex = modificarTiposEmpresas.indexOf(filtrarTiposEmpresas.get(index));
-                    modificarTiposEmpresas.remove(modIndex);
-                    borrarTiposEmpresas.add(filtrarTiposEmpresas.get(index));
-                } else if (!crearTiposEmpresas.isEmpty() && crearTiposEmpresas.contains(filtrarTiposEmpresas.get(index))) {
-                    int crearIndex = crearTiposEmpresas.indexOf(filtrarTiposEmpresas.get(index));
-                    crearTiposEmpresas.remove(crearIndex);
+                System.out.println("borrandoNiveles ");
+                if (!modificarNiveles.isEmpty() && modificarNiveles.contains(filtrarNiveles.get(index))) {
+                    int modIndex = modificarNiveles.indexOf(filtrarNiveles.get(index));
+                    modificarNiveles.remove(modIndex);
+                    borrarNiveles.add(filtrarNiveles.get(index));
+                } else if (!crearNiveles.isEmpty() && crearNiveles.contains(filtrarNiveles.get(index))) {
+                    int crearIndex = crearNiveles.indexOf(filtrarNiveles.get(index));
+                    crearNiveles.remove(crearIndex);
                 } else {
-                    borrarTiposEmpresas.add(filtrarTiposEmpresas.get(index));
+                    borrarNiveles.add(filtrarNiveles.get(index));
                 }
-                int VCIndex = listTiposEmpresas.indexOf(filtrarTiposEmpresas.get(index));
-                listTiposEmpresas.remove(VCIndex);
-                filtrarTiposEmpresas.remove(index);
+                int VCIndex = listNiveles.indexOf(filtrarNiveles.get(index));
+                listNiveles.remove(VCIndex);
+                filtrarNiveles.remove(index);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTipoEmpresa");
+            context.update("form:datosNivel");
             index = -1;
             secRegistro = null;
 
@@ -340,18 +340,24 @@ public class ControlTiposEmpresas implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger sueldosMercados;
+        BigInteger contaEvalConvocatoriasNivel;
+        BigInteger contarPlantasNivel;
+        BigInteger contarPlantasPersonalesNivel;
 
         try {
-            System.err.println("Control Secuencia de ControlTiposEmpresas ");
+            System.err.println("Control Secuencia de ControlNiveles ");
             if (tipoLista == 0) {
-                sueldosMercados = administrarTiposEmpresas.contarSueldosMercadosTipoEmpresa(listTiposEmpresas.get(index).getSecuencia());
+                contaEvalConvocatoriasNivel = administrarNiveles.contarEvalConvocatoriasNivel(listNiveles.get(index).getSecuencia());
+                contarPlantasNivel = administrarNiveles.contarPlantasNivel(listNiveles.get(index).getSecuencia());
+                contarPlantasPersonalesNivel = administrarNiveles.contarPlantasPersonalesNivel(listNiveles.get(index).getSecuencia());
             } else {
-                sueldosMercados = administrarTiposEmpresas.contarSueldosMercadosTipoEmpresa(filtrarTiposEmpresas.get(index).getSecuencia());
+                contaEvalConvocatoriasNivel = administrarNiveles.contarEvalConvocatoriasNivel(filtrarNiveles.get(index).getSecuencia());
+                contarPlantasNivel = administrarNiveles.contarPlantasNivel(filtrarNiveles.get(index).getSecuencia());
+                contarPlantasPersonalesNivel = administrarNiveles.contarPlantasPersonalesNivel(filtrarNiveles.get(index).getSecuencia());
             }
-            if (sueldosMercados.equals(new BigInteger("0"))) {
+            if (contaEvalConvocatoriasNivel.equals(new BigInteger("0")) && contarPlantasNivel.equals(new BigInteger("0")) && contarPlantasPersonalesNivel.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
-                borrandoTiposEmpresas();
+                borrandoNiveles();
             } else {
                 System.out.println("Borrado>0");
 
@@ -359,18 +365,19 @@ public class ControlTiposEmpresas implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-
-                sueldosMercados = new BigInteger("-1");
+                contaEvalConvocatoriasNivel = new BigInteger("-1");
+                contarPlantasNivel = new BigInteger("-1");
+                contarPlantasPersonalesNivel = new BigInteger("-1");
 
             }
         } catch (Exception e) {
-            System.err.println("ERROR ControlTiposEmpresas verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlNiveles verificarBorrado ERROR " + e);
         }
     }
 
     public void revisarDialogoGuardar() {
 
-        if (!borrarTiposEmpresas.isEmpty() || !crearTiposEmpresas.isEmpty() || !modificarTiposEmpresas.isEmpty()) {
+        if (!borrarNiveles.isEmpty() || !crearNiveles.isEmpty() || !modificarNiveles.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
@@ -378,31 +385,31 @@ public class ControlTiposEmpresas implements Serializable {
 
     }
 
-    public void guardarTiposEmpresas() {
+    public void guardarNiveles() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando guardarTiposEmpresas");
-            if (!borrarTiposEmpresas.isEmpty()) {
-         administrarTiposEmpresas.borrarTiposEmpresas(borrarTiposEmpresas);
-                
+            System.out.println("Realizando guardarNiveles");
+            if (!borrarNiveles.isEmpty()) {
+                administrarNiveles.borrarNiveles(borrarNiveles);
+
                 //mostrarBorrados
-                registrosBorrados = borrarTiposEmpresas.size();
+                registrosBorrados = borrarNiveles.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-                borrarTiposEmpresas.clear();
+                borrarNiveles.clear();
             }
-            if (!crearTiposEmpresas.isEmpty()) {
-               administrarTiposEmpresas.crearTiposEmpresas(crearTiposEmpresas);
-                crearTiposEmpresas.clear();
+            if (!crearNiveles.isEmpty()) {
+                administrarNiveles.crearNiveles(crearNiveles);
+                crearNiveles.clear();
             }
-            if (!modificarTiposEmpresas.isEmpty()) {
-                administrarTiposEmpresas.modificarTiposEmpresas(modificarTiposEmpresas);
-                modificarTiposEmpresas.clear();
+            if (!modificarNiveles.isEmpty()) {
+                administrarNiveles.modificarNiveles(modificarNiveles);
+                modificarNiveles.clear();
             }
             System.out.println("Se guardaron los datos con exito");
-            listTiposEmpresas = null;
-            context.update("form:datosTipoEmpresa");
+            listNiveles = null;
+            context.update("form:datosNivel");
             k = 0;
             guardado = true;
         }
@@ -414,10 +421,10 @@ public class ControlTiposEmpresas implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarTipoEmpresa = listTiposEmpresas.get(index);
+                editarNivel = listNiveles.get(index);
             }
             if (tipoLista == 1) {
-                editarTipoEmpresa = filtrarTiposEmpresas.get(index);
+                editarNivel = filtrarNiveles.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -437,8 +444,8 @@ public class ControlTiposEmpresas implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevoTiposEmpresas() {
-        System.out.println("agregarNuevoTiposEmpresas");
+    public void agregarNuevoNiveles() {
+        System.out.println("agregarNuevoNiveles");
         int contador = 0;
         int duplicados = 0;
 
@@ -446,14 +453,14 @@ public class ControlTiposEmpresas implements Serializable {
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoTipoEmpresa.getCodigo() == a) {
+        if (nuevoNivel.getCodigo() == a) {
             mensajeValidacion = " *Debe Tener Un Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTipoEmpresa.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoNivel.getCodigo());
 
-            for (int x = 0; x < listTiposEmpresas.size(); x++) {
-                if (listTiposEmpresas.get(x).getCodigo() == nuevoTipoEmpresa.getCodigo()) {
+            for (int x = 0; x < listNiveles.size(); x++) {
+                if (listNiveles.get(x).getCodigo() == nuevoNivel.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -467,7 +474,7 @@ public class ControlTiposEmpresas implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTipoEmpresa.getDescripcion() == (null)) {
+        if (nuevoNivel.getDescripcion() == (null)) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -483,32 +490,32 @@ public class ControlTiposEmpresas implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoEmpresa");
+                RequestContext.getCurrentInstance().update("form:datosNivel");
                 bandera = 0;
-                filtrarTiposEmpresas = null;
+                filtrarNiveles = null;
                 tipoLista = 0;
             }
             System.out.println("Despues de la bandera");
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoTipoEmpresa.setSecuencia(l);
+            nuevoNivel.setSecuencia(l);
 
-            crearTiposEmpresas.add(nuevoTipoEmpresa);
+            crearNiveles.add(nuevoNivel);
 
-            listTiposEmpresas.add(nuevoTipoEmpresa);
-            nuevoTipoEmpresa = new TiposEmpresas();
-            context.update("form:datosTipoEmpresa");
+            listNiveles.add(nuevoNivel);
+            nuevoNivel = new Niveles();
+            context.update("form:datosNivel");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
-            context.execute("nuevoRegistroTiposEmpresas.hide()");
+            context.execute("nuevoRegistroNiveles.hide()");
             index = -1;
             secRegistro = null;
 
@@ -519,36 +526,36 @@ public class ControlTiposEmpresas implements Serializable {
         }
     }
 
-    public void limpiarNuevoTiposEmpresas() {
-        System.out.println("limpiarNuevoTiposEmpresas");
-        nuevoTipoEmpresa = new TiposEmpresas();
+    public void limpiarNuevoNiveles() {
+        System.out.println("limpiarNuevoNiveles");
+        nuevoNivel = new Niveles();
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoTiposEmpresas() {
-        System.out.println("duplicandoTiposEmpresas");
+    public void duplicandoNiveles() {
+        System.out.println("duplicandoNiveles");
         if (index >= 0) {
-            duplicarTipoEmpresa = new TiposEmpresas();
+            duplicarNivel = new Niveles();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarTipoEmpresa.setSecuencia(l);
-                duplicarTipoEmpresa.setCodigo(listTiposEmpresas.get(index).getCodigo());
-                duplicarTipoEmpresa.setDescripcion(listTiposEmpresas.get(index).getDescripcion());
+                duplicarNivel.setSecuencia(l);
+                duplicarNivel.setCodigo(listNiveles.get(index).getCodigo());
+                duplicarNivel.setDescripcion(listNiveles.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarTipoEmpresa.setSecuencia(l);
-                duplicarTipoEmpresa.setCodigo(filtrarTiposEmpresas.get(index).getCodigo());
-                duplicarTipoEmpresa.setDescripcion(filtrarTiposEmpresas.get(index).getDescripcion());
+                duplicarNivel.setSecuencia(l);
+                duplicarNivel.setCodigo(filtrarNiveles.get(index).getCodigo());
+                duplicarNivel.setDescripcion(filtrarNiveles.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
-            context.execute("duplicarRegistroTiposEmpresas.show()");
+            context.execute("duplicarRegistroNiveles.show()");
             index = -1;
             secRegistro = null;
         }
@@ -562,15 +569,15 @@ public class ControlTiposEmpresas implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarTipoEmpresa.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarTipoEmpresa.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarNivel.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarNivel.getDescripcion());
 
-        if (duplicarTipoEmpresa.getCodigo() == a) {
+        if (duplicarNivel.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            for (int x = 0; x < listTiposEmpresas.size(); x++) {
-                if (listTiposEmpresas.get(x).getCodigo() == duplicarTipoEmpresa.getCodigo()) {
+            for (int x = 0; x < listNiveles.size(); x++) {
+                if (listNiveles.get(x).getCodigo() == duplicarNivel.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -583,7 +590,7 @@ public class ControlTiposEmpresas implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTipoEmpresa.getDescripcion().isEmpty()) {
+        if (duplicarNivel.getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -594,13 +601,13 @@ public class ControlTiposEmpresas implements Serializable {
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarTipoEmpresa.getSecuencia() + "  " + duplicarTipoEmpresa.getCodigo());
-            if (crearTiposEmpresas.contains(duplicarTipoEmpresa)) {
+            System.out.println("Datos Duplicando: " + duplicarNivel.getSecuencia() + "  " + duplicarNivel.getCodigo());
+            if (crearNiveles.contains(duplicarNivel)) {
                 System.out.println("Ya lo contengo.");
             }
-            listTiposEmpresas.add(duplicarTipoEmpresa);
-            crearTiposEmpresas.add(duplicarTipoEmpresa);
-            context.update("form:datosTipoEmpresa");
+            listNiveles.add(duplicarNivel);
+            crearNiveles.add(duplicarNivel);
+            context.update("form:datosNivel");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -609,17 +616,17 @@ public class ControlTiposEmpresas implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEmpresa:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoEmpresa");
+                RequestContext.getCurrentInstance().update("form:datosNivel");
                 bandera = 0;
-                filtrarTiposEmpresas = null;
+                filtrarNiveles = null;
                 tipoLista = 0;
             }
-            duplicarTipoEmpresa = new TiposEmpresas();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroTiposEmpresas.hide()");
+            duplicarNivel = new Niveles();
+            RequestContext.getCurrentInstance().execute("duplicarRegistroNiveles.hide()");
 
         } else {
             contador = 0;
@@ -628,25 +635,25 @@ public class ControlTiposEmpresas implements Serializable {
         }
     }
 
-    public void limpiarDuplicarTiposEmpresas() {
-        duplicarTipoEmpresa = new TiposEmpresas();
+    public void limpiarDuplicarNiveles() {
+        duplicarNivel = new Niveles();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoEmpresaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNivelExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "TIPOSEMPRESAS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "NIVELES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoEmpresaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNivelExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "TIPOSEMPRESAS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "NIVELES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -655,10 +662,10 @@ public class ControlTiposEmpresas implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listTiposEmpresas.isEmpty()) {
+        if (!listNiveles.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSEMPRESAS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "NIVELES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -675,7 +682,7 @@ public class ControlTiposEmpresas implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("TIPOSEMPRESAS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("NIVELES")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
@@ -686,47 +693,47 @@ public class ControlTiposEmpresas implements Serializable {
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
-    public List<TiposEmpresas> getListTiposEmpresas() {
-        if (listTiposEmpresas == null) {
-            listTiposEmpresas = administrarTiposEmpresas.consultarTiposEmpresas();
+    public List<Niveles> getListNiveles() {
+        if (listNiveles == null) {
+            listNiveles = administrarNiveles.consultarNiveles();
         }
-        return listTiposEmpresas;
+        return listNiveles;
     }
 
-    public void setListTiposEmpresas(List<TiposEmpresas> listTiposEmpresas) {
-        this.listTiposEmpresas = listTiposEmpresas;
+    public void setListNiveles(List<Niveles> listNiveles) {
+        this.listNiveles = listNiveles;
     }
 
-    public List<TiposEmpresas> getFiltrarTiposEmpresas() {
-        return filtrarTiposEmpresas;
+    public List<Niveles> getFiltrarNiveles() {
+        return filtrarNiveles;
     }
 
-    public void setFiltrarTiposEmpresas(List<TiposEmpresas> filtrarTiposEmpresas) {
-        this.filtrarTiposEmpresas = filtrarTiposEmpresas;
+    public void setFiltrarNiveles(List<Niveles> filtrarNiveles) {
+        this.filtrarNiveles = filtrarNiveles;
     }
 
-    public TiposEmpresas getNuevoTipoEmpresa() {
-        return nuevoTipoEmpresa;
+    public Niveles getNuevoNivel() {
+        return nuevoNivel;
     }
 
-    public void setNuevoTipoEmpresa(TiposEmpresas nuevoTipoEmpresa) {
-        this.nuevoTipoEmpresa = nuevoTipoEmpresa;
+    public void setNuevoNivel(Niveles nuevoNivel) {
+        this.nuevoNivel = nuevoNivel;
     }
 
-    public TiposEmpresas getDuplicarTipoEmpresa() {
-        return duplicarTipoEmpresa;
+    public Niveles getDuplicarNivel() {
+        return duplicarNivel;
     }
 
-    public void setDuplicarTipoEmpresa(TiposEmpresas duplicarTipoEmpresa) {
-        this.duplicarTipoEmpresa = duplicarTipoEmpresa;
+    public void setDuplicarNivel(Niveles duplicarNivel) {
+        this.duplicarNivel = duplicarNivel;
     }
 
-    public TiposEmpresas getEditarTipoEmpresa() {
-        return editarTipoEmpresa;
+    public Niveles getEditarNivel() {
+        return editarNivel;
     }
 
-    public void setEditarTipoEmpresa(TiposEmpresas editarTipoEmpresa) {
-        this.editarTipoEmpresa = editarTipoEmpresa;
+    public void setEditarNivel(Niveles editarNivel) {
+        this.editarNivel = editarNivel;
     }
 
     public BigInteger getSecRegistro() {

@@ -342,11 +342,11 @@ public class ControlTiposChequeos implements Serializable {
         try {
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listTiposChequeos.get(index).getSecuencia());
-                verificarChequeosMedicos = administrarTiposChequeos.verificarChequeosMedicos(listTiposChequeos.get(index).getSecuencia());
-                verificarTiposExamenesCargos = administrarTiposChequeos.verificarTiposExamenesCargos(listTiposChequeos.get(index).getSecuencia());
+                verificarChequeosMedicos = administrarTiposChequeos.contarChequeosMedicosTipoChequeo(listTiposChequeos.get(index).getSecuencia());
+                verificarTiposExamenesCargos = administrarTiposChequeos.contarTiposExamenesCargosTipoChequeo(listTiposChequeos.get(index).getSecuencia());
             } else {
-                verificarChequeosMedicos = administrarTiposChequeos.verificarChequeosMedicos(filtrarTiposChequeos.get(index).getSecuencia());
-                verificarTiposExamenesCargos = administrarTiposChequeos.verificarTiposExamenesCargos(filtrarTiposChequeos.get(index).getSecuencia());
+                verificarChequeosMedicos = administrarTiposChequeos.contarChequeosMedicosTipoChequeo(filtrarTiposChequeos.get(index).getSecuencia());
+                verificarTiposExamenesCargos = administrarTiposChequeos.contarTiposExamenesCargosTipoChequeo(filtrarTiposChequeos.get(index).getSecuencia());
             }
             if (!verificarChequeosMedicos.equals(new BigInteger("0")) || !verificarTiposExamenesCargos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -384,10 +384,8 @@ public class ControlTiposChequeos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarTiposchequeos");
             if (!borrarTiposChequeos.isEmpty()) {
-                for (int i = 0; i < borrarTiposChequeos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposChequeos.borrarTiposChequeos(borrarTiposChequeos.get(i));
-                }
+                administrarTiposChequeos.borrarTiposChequeos(borrarTiposChequeos);
+
                 //mostrarBorrados
                 registrosBorrados = borrarTiposChequeos.size();
                 context.update("form:mostrarBorrados");
@@ -395,12 +393,7 @@ public class ControlTiposChequeos implements Serializable {
                 borrarTiposChequeos.clear();
             }
             if (!crearTiposChequeos.isEmpty()) {
-                for (int i = 0; i < crearTiposChequeos.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposChequeos.crearTiposChequeos(crearTiposChequeos.get(i));
-
-                }
+                administrarTiposChequeos.crearTiposChequeos(crearTiposChequeos);
                 crearTiposChequeos.clear();
             }
             if (!modificarTiposChequeos.isEmpty()) {
@@ -695,7 +688,7 @@ public class ControlTiposChequeos implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposChequeos> getListTiposChequeos() {
         if (listTiposChequeos == null) {
-            listTiposChequeos = administrarTiposChequeos.mostrarTiposChequeos();
+            listTiposChequeos = administrarTiposChequeos.consultarTiposChequeos();
         }
         return listTiposChequeos;
     }

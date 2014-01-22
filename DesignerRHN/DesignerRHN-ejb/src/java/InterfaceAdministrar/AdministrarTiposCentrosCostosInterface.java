@@ -17,23 +17,81 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposCentrosCostosInterface {
 
-    public void modificarTipoCentrosCostos(List<TiposCentrosCostos> listTiposEntidadesModificadas);
+    /**
+     * Método encargado de modificar TiposCentrosCostos.
+     *
+     * @param listaTiposCentrosCostos Lista TiposCentrosCostos que se van a
+     * modificar.
+     */
+    public void modificarTipoCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos);
 
-    public void borrarTiposCentrosCostos(TiposCentrosCostos tipoCentroCosto);
+    /**
+     * Método encargado de borrar TiposCentrosCostos.
+     *
+     * @param listaTiposCentrosCostos Lista TiposCentrosCostos que se van a
+     * borrar.
+     */
+    public void borrarTiposCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos);
 
-    public void crearTiposCentrosCostos(TiposCentrosCostos tiposCentrosCostos);
+    /**
+     * Método encargado de crear TiposCentrosCostos.
+     *
+     * @param listaTiposCentrosCostos Lista TiposCentrosCostos que se van a
+     * crear.
+     */
+    public void crearTiposCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos);
 
-    public void buscarTiposCentrosCostos(TiposCentrosCostos tiposCentrosCostos);
+    /**
+     * Método encargado de recuperar las TiposCentrosCostos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposCentrosCostos.
+     */
+    public List<TiposCentrosCostos> consultarTiposCentrosCostos();
 
-    public List<TiposCentrosCostos> mostrarTiposCentrosCostos();
+    /**
+     * Método encargado de recuperar un TipoCentroCosto dada su secuencia.
+     *
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto
+     * @return Retorna un TipoCentroCosto.
+     */
+    public TiposCentrosCostos consultarTipoCentroCosto(BigInteger secTiposCentrosCostos);
 
-    public TiposCentrosCostos mostrarTipoEntidad(BigInteger secTipoCentrosCostos);
+    /**
+     * Método encargado de contar la cantidad de CentrosCostos relacionadas con
+     * un TipoCentroCosto específica.
+     *
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto.
+     * @return Retorna un número indicando la cantidad de CentrosCostos cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarCentrosCostosTipoCentroCosto(BigInteger secTiposCentrosCostos);
 
-    public List<GruposTiposCC> mostrarGruposTiposCC();
+    /**
+     * Método encargado de contar la cantidad de VigenciasCuentas relacionadas
+     * con un TipoCentroCosto específica.
+     *
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto.
+     * @return Retorna un número indicando la cantidad de VigenciasCuentas cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarVigenciasCuentasTipoCentroCosto(BigInteger secTiposCentrosCostos);
 
-    public BigInteger verificarBorradoCC(BigInteger secuenciaTipoEntidad);
+    /**
+     * Método encargado de contar la cantidad de RiesgosProfesionales
+     * relacionadas con un TipoCentroCosto específica.
+     *
+     * @param secTiposCentrosCostos Secuencia del TipoCentroCosto.
+     * @return Retorna un número indicando la cantidad de RiesgosProfesionales
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarRiesgosProfesionalesTipoCentroCosto(BigInteger secTiposCentrosCostos);
 
-    public BigInteger verificarBorradoVC(BigInteger secuenciaTipoEntidad);
-
-    public BigInteger verificarBorradoRP(BigInteger secuenciaTipoEntidad);
+    /**
+     * Método encargado de recuperar las GruposTiposCC necesarias para la lista
+     * de valores.
+     *
+     * @return Retorna una lista de GruposTiposCC.
+     */
+    public List<GruposTiposCC> consultarLOVGruposTiposCentrosCostos();
 }

@@ -397,10 +397,8 @@ public class ControlHvReferencias implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarHvReferencia");
             if (!borrarHvReferencias.isEmpty()) {
-                for (int i = 0; i < borrarHvReferencias.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarHvReferencias.borrarHvReferencias(borrarHvReferencias.get(i));
-                }
+                administrarHvReferencias.borrarHvReferencias(borrarHvReferencias);
+
                 //mostrarBorrados
                 registrosBorrados = borrarHvReferencias.size();
                 context.update("form:mostrarBorrados");
@@ -408,12 +406,8 @@ public class ControlHvReferencias implements Serializable {
                 borrarHvReferencias.clear();
             }
             if (!crearHvReferencias.isEmpty()) {
-                for (int i = 0; i < crearHvReferencias.size(); i++) {
+                administrarHvReferencias.crearHvReferencias(crearHvReferencias);
 
-                    System.out.println("Creando...");
-                    administrarHvReferencias.crearHvReferencias(crearHvReferencias.get(i));
-
-                }
                 crearHvReferencias.clear();
             }
             if (!modificarHvReferencias.isEmpty()) {
@@ -492,7 +486,7 @@ public class ControlHvReferencias implements Serializable {
          contador++;
          }*/
 
-        listHVHojasDeVida = administrarHvReferencias.buscarHvHojasDeVida(secuenciaEmpleado);
+        listHVHojasDeVida = administrarHvReferencias.consultarHvHojasDeVida(secuenciaEmpleado);
         if (listHVHojasDeVida == null) {
             System.err.println("ERROR NULO HVHOJASDEVIDA");
         } else {
@@ -723,7 +717,7 @@ public class ControlHvReferencias implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<HvReferencias> getListHvReferencias() {
         if (listHvReferencias == null) {
-            listHvReferencias = administrarHvReferencias.MostrarHvReferenciasPorEmpleado(secuenciaEmpleado);
+            listHvReferencias = administrarHvReferencias.consultarHvReferenciasPersonalesPorEmpleado(secuenciaEmpleado);
         }
         return listHvReferencias;
     }
@@ -806,7 +800,7 @@ public class ControlHvReferencias implements Serializable {
 
     public Empleados getEmpleadoSeleccionado() {
         if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarHvReferencias.buscarEmpleado(secuenciaEmpleado);
+            empleadoSeleccionado = administrarHvReferencias.consultarEmpleado(secuenciaEmpleado);
         }
         return empleadoSeleccionado;
     }

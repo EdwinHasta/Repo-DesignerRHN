@@ -347,11 +347,11 @@ public class ControlTiposTallas implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlTiposTallas ");
             if (tipoLista == 0) {
-                elementos = administrarTiposTallas.verificarBorradoElementos(listTiposTallas.get(index).getSecuencia());
-                vigenciasTallas = administrarTiposTallas.verificarBorradoVigenciasTallas(listTiposTallas.get(index).getSecuencia());
+                elementos = administrarTiposTallas.contarElementosTipoTalla(listTiposTallas.get(index).getSecuencia());
+                vigenciasTallas = administrarTiposTallas.contarVigenciasTallasTipoTalla(listTiposTallas.get(index).getSecuencia());
             } else {
-                elementos = administrarTiposTallas.verificarBorradoElementos(filtrarTiposTallas.get(index).getSecuencia());
-                vigenciasTallas = administrarTiposTallas.verificarBorradoVigenciasTallas(filtrarTiposTallas.get(index).getSecuencia());
+                elementos = administrarTiposTallas.contarElementosTipoTalla(filtrarTiposTallas.get(index).getSecuencia());
+                vigenciasTallas = administrarTiposTallas.contarVigenciasTallasTipoTalla(filtrarTiposTallas.get(index).getSecuencia());
             }
             if (elementos.equals(0) && vigenciasTallas.equals(0)) {
                 System.out.println("Borrado==0");
@@ -388,10 +388,8 @@ public class ControlTiposTallas implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarTiposTallas");
             if (!borrarTiposTalas.isEmpty()) {
-                for (int i = 0; i < borrarTiposTalas.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposTallas.borrarTiposTallas(borrarTiposTalas.get(i));
-                }
+                 administrarTiposTallas.borrarTiposTallas(borrarTiposTalas);
+               
                 //mostrarBorrados
                 registrosBorrados = borrarTiposTalas.size();
                 context.update("form:mostrarBorrados");
@@ -399,12 +397,8 @@ public class ControlTiposTallas implements Serializable {
                 borrarTiposTalas.clear();
             }
             if (!crearTiposTallas.isEmpty()) {
-                for (int i = 0; i < crearTiposTallas.size(); i++) {
+             administrarTiposTallas.crearTiposTallas(crearTiposTallas);
 
-                    System.out.println("Creando...");
-                    administrarTiposTallas.crearTiposTallas(crearTiposTallas.get(i));
-
-                }
                 crearTiposTallas.clear();
             }
             if (!modificarTiposTallas.isEmpty()) {
@@ -699,7 +693,7 @@ public class ControlTiposTallas implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposTallas> getListTiposTallas() {
         if (listTiposTallas == null) {
-            listTiposTallas = administrarTiposTallas.mostrarTiposTallas();
+            listTiposTallas = administrarTiposTallas.consultarTiposTallas();
         }
 
         return listTiposTallas;

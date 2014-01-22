@@ -22,23 +22,23 @@ public interface AdministrarHvEntrevistasInterface {
     /**
      * Método encargado de modificar HvEntrevistas.
      *
-     * @param listHvEntrevistas Lista HvEntrevistas que se van a modificar.
+     * @param listaHvEntrevistas Lista HvEntrevistas que se van a modificar.
      */
-    public void modificarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas);
+    public void modificarHvEntrevistas(List<HvEntrevistas> listaHvEntrevistas);
 
     /**
      * Método encargado de borrar HvEntrevistas.
      *
-     * @param listHvEntrevistas Lista HvEntrevistas que se van a borrar.
+     * @param listaHvEntrevistas Lista HvEntrevistas que se van a borrar.
      */
-    public void borrarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas);
+    public void borrarHvEntrevistas(List<HvEntrevistas> listaHvEntrevistas);
 
     /**
      * Método encargado de crear HvEntrevistas.
      *
-     * @param listHvEntrevistas Lista HvEntrevistas que se van a crear.
+     * @param listaHvEntrevistas Lista HvEntrevistas que se van a crear.
      */
-    public void crearHvEntrevistas(List<HvEntrevistas> listHvEntrevistas);
+    public void crearHvEntrevistas(List<HvEntrevistas> listaHvEntrevistas);
 
     /**
      * Metodo Encargado de traer las HvEntrevistas de un Empleado Especifico.
@@ -64,7 +64,7 @@ public interface AdministrarHvEntrevistasInterface {
      * @param secEmpleado Secuencia del Empleado
      * @return Empleado.
      */
-    public Empleados buscarEmpleado(BigInteger secEmpleado);
+    public Empleados consultarEmpleado(BigInteger secEmpleado);
 
     /**
      * Metodo encargado de traer las HVHojasDeVida de un empleado especifico

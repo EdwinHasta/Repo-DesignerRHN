@@ -318,9 +318,9 @@ public class ControlPryClientes implements Serializable {
             BigInteger proyectos = new BigInteger("-1");
             System.err.println("Control Secuencia de ControlPryClientes ");
             if (tipoLista == 0) {
-                proyectos = administrarPryClientes.verificarBorradoProyecto(listPryClientes.get(index).getSecuencia());
+                proyectos = administrarPryClientes.contarProyectosPryCliente(listPryClientes.get(index).getSecuencia());
             } else {
-                proyectos = administrarPryClientes.verificarBorradoProyecto(filtrarPryClientes.get(index).getSecuencia());
+                proyectos = administrarPryClientes.contarProyectosPryCliente(filtrarPryClientes.get(index).getSecuencia());
             }
             if (proyectos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -357,10 +357,8 @@ public class ControlPryClientes implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarPryCliente");
             if (!borrarPryClientes.isEmpty()) {
-                for (int i = 0; i < borrarPryClientes.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarPryClientes.borrarPryClientes(borrarPryClientes.get(i));
-                }
+            administrarPryClientes.borrarPryClientes(borrarPryClientes);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarPryClientes.size();
                 context.update("form:mostrarBorrados");
@@ -368,12 +366,9 @@ public class ControlPryClientes implements Serializable {
                 borrarPryClientes.clear();
             }
             if (!crearPryClientes.isEmpty()) {
-                for (int i = 0; i < crearPryClientes.size(); i++) {
+             administrarPryClientes.crearPryClientes(crearPryClientes);
 
-                    System.out.println("Creando...");
-                    administrarPryClientes.crearPryClientes(crearPryClientes.get(i));
-
-                }
+                
                 crearPryClientes.clear();
             }
             if (!modificarPryClientes.isEmpty()) {
@@ -651,7 +646,7 @@ public class ControlPryClientes implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<PryClientes> getListPryClientes() {
         if (listPryClientes == null) {
-            listPryClientes = administrarPryClientes.mostrarPryClientes();
+            listPryClientes = administrarPryClientes.consultarPryClientes();
         }
         return listPryClientes;
     }

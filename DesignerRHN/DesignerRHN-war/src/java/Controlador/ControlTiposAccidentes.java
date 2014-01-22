@@ -361,11 +361,11 @@ public class ControlTiposAccidentes implements Serializable {
         System.out.println("verificarBorrado");
         try {
             if (tipoLista == 0) {
-                verificarBorradoAccidentes = administrarTiposAccidentes.verificarBorradoAccidentes(listTiposAccidentes.get(index).getSecuencia());
-                verificarSoAccidentesMedicos = administrarTiposAccidentes.verificarSoAccidentesMedicos(listTiposAccidentes.get(index).getSecuencia());
+                verificarBorradoAccidentes = administrarTiposAccidentes.contarAccidentesTipoAccidente(listTiposAccidentes.get(index).getSecuencia());
+                verificarSoAccidentesMedicos = administrarTiposAccidentes.contarSoAccidentesMedicosTipoAccidente(listTiposAccidentes.get(index).getSecuencia());
             } else {
-                verificarBorradoAccidentes = administrarTiposAccidentes.verificarBorradoAccidentes(filtrarTiposAccidentes.get(index).getSecuencia());
-                verificarSoAccidentesMedicos = administrarTiposAccidentes.verificarSoAccidentesMedicos(filtrarTiposAccidentes.get(index).getSecuencia());
+                verificarBorradoAccidentes = administrarTiposAccidentes.contarAccidentesTipoAccidente(filtrarTiposAccidentes.get(index).getSecuencia());
+                verificarSoAccidentesMedicos = administrarTiposAccidentes.contarSoAccidentesMedicosTipoAccidente(filtrarTiposAccidentes.get(index).getSecuencia());
             }
             if (verificarBorradoAccidentes.equals(new BigInteger("0")) && verificarSoAccidentesMedicos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -401,10 +401,8 @@ public class ControlTiposAccidentes implements Serializable {
         if (guardado == false) {
             System.out.println("REALIZANDO TIPOS ACCIDENTES");
             if (!borrarTiposAccidentes.isEmpty()) {
-                for (int i = 0; i < borrarTiposAccidentes.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposAccidentes.borrarTiposAccidentes(borrarTiposAccidentes.get(i));
-                }
+             administrarTiposAccidentes.borrarTiposAccidentes(borrarTiposAccidentes);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarTiposAccidentes.size();
                 context.update("form:mostrarBorrados");
@@ -412,13 +410,8 @@ public class ControlTiposAccidentes implements Serializable {
                 borrarTiposAccidentes.clear();
             }
             if (!crearTiposAccidentes.isEmpty()) {
-                for (int i = 0; i < crearTiposAccidentes.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposAccidentes.crearTiposAccidentes(crearTiposAccidentes.get(i));
-
-                }
-                crearTiposAccidentes.clear();
+              administrarTiposAccidentes.crearTiposAccidentes(crearTiposAccidentes);
+crearTiposAccidentes.clear();
             }
             if (!modificarTiposAccidentes.isEmpty()) {
                 administrarTiposAccidentes.modificarTiposAccidentes(modificarTiposAccidentes);
@@ -715,7 +708,7 @@ public class ControlTiposAccidentes implements Serializable {
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
     public List<TiposAccidentes> getListTiposAccidentes() {
         if (listTiposAccidentes == null) {
-            listTiposAccidentes = administrarTiposAccidentes.mostrarTiposAccidentes();
+            listTiposAccidentes = administrarTiposAccidentes.consultarTiposAccidentes();
         }
         return listTiposAccidentes;
     }

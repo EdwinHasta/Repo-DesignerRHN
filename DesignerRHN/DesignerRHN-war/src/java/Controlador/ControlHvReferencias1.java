@@ -11,7 +11,7 @@ import Entidades.HvReferencias;
 import Entidades.TiposFamiliares;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarHvReferencias1Interface;
+import InterfaceAdministrar.AdministrarHvReferenciasInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -36,7 +36,7 @@ import org.primefaces.context.RequestContext;
 public class ControlHvReferencias1 implements Serializable {
 
     @EJB
-    AdministrarHvReferencias1Interface administrarHvReferencias1;
+    AdministrarHvReferenciasInterface administrarHvReferencias1;
     @EJB
     AdministrarRastrosInterface administrarRastros;
     private List<HvReferencias> listHvReferencias1;
@@ -286,7 +286,7 @@ public class ControlHvReferencias1 implements Serializable {
      if (confirmarCambio.equalsIgnoreCase("N")) {
      System.err.println("ENTRE A MODIFICAR HvReferencia, CONFIRMAR CAMBIO ES N");
      if (tipoLista == 0) {
-     if (!crearHvReferencias1.contains(listHvReferencias1.get(indice))) {
+     if (!crearHvReferenciasFamiliares.contains(listHvReferencias1.get(indice))) {
 
      if (listHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
      mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -299,10 +299,10 @@ public class ControlHvReferencias1 implements Serializable {
      }
 
      if (banderita == true) {
-     if (modificarHvReferencias1.isEmpty()) {
-     modificarHvReferencias1.add(listHvReferencias1.get(indice));
-     } else if (!modificarHvReferencias1.contains(listHvReferencias1.get(indice))) {
-     modificarHvReferencias1.add(listHvReferencias1.get(indice));
+     if (modificarHvReferenciasFamiliares.isEmpty()) {
+     modificarHvReferenciasFamiliares.add(listHvReferencias1.get(indice));
+     } else if (!modificarHvReferenciasFamiliares.contains(listHvReferencias1.get(indice))) {
+     modificarHvReferenciasFamiliares.add(listHvReferencias1.get(indice));
      }
      if (guardado == true) {
      guardado = false;
@@ -318,7 +318,7 @@ public class ControlHvReferencias1 implements Serializable {
      }
      } else {
 
-     if (!crearHvReferencias1.contains(filtrarHvReferencias1.get(indice))) {
+     if (!crearHvReferenciasFamiliares.contains(filtrarHvReferencias1.get(indice))) {
      if (filtrarHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
      mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
      banderita = false;
@@ -329,10 +329,10 @@ public class ControlHvReferencias1 implements Serializable {
      }
 
      if (banderita == true) {
-     if (modificarHvReferencias1.isEmpty()) {
-     modificarHvReferencias1.add(filtrarHvReferencias1.get(indice));
-     } else if (!modificarHvReferencias1.contains(filtrarHvReferencias1.get(indice))) {
-     modificarHvReferencias1.add(filtrarHvReferencias1.get(indice));
+     if (modificarHvReferenciasFamiliares.isEmpty()) {
+     modificarHvReferenciasFamiliares.add(filtrarHvReferencias1.get(indice));
+     } else if (!modificarHvReferenciasFamiliares.contains(filtrarHvReferencias1.get(indice))) {
+     modificarHvReferenciasFamiliares.add(filtrarHvReferencias1.get(indice));
      }
      if (guardado == true) {
      guardado = false;
@@ -664,8 +664,8 @@ public class ControlHvReferencias1 implements Serializable {
                     if (borrarHvReferencias1.get(i).getParentesco().getSecuencia() == null) {
                         borrarHvReferencias1.get(i).setParentesco(null);
                     }
-                    administrarHvReferencias1.borrarHvReferencias1(borrarHvReferencias1.get(i));
                 }
+                administrarHvReferencias1.borrarHvReferencias(borrarHvReferencias1);
                 //mostrarBorrados
                 registrosBorrados = borrarHvReferencias1.size();
                 context.update("form:mostrarBorrados");
@@ -678,20 +678,18 @@ public class ControlHvReferencias1 implements Serializable {
                     if (crearHvReferencias1.get(i).getParentesco().getSecuencia() == null) {
                         crearHvReferencias1.get(i).setParentesco(null);
                     }
-                    System.out.println("Creando...");
-                    administrarHvReferencias1.crearHvReferencias1(crearHvReferencias1.get(i));
-
                 }
+                System.out.println("Creando...");
+                administrarHvReferencias1.crearHvReferencias(crearHvReferencias1);
                 crearHvReferencias1.clear();
             }
             if (!modificarHvReferencias1.isEmpty()) {
                 for (int i = 0; i < modificarHvReferencias1.size(); i++) {
-
                     if (modificarHvReferencias1.get(i).getParentesco().getSecuencia() == null) {
                         modificarHvReferencias1.get(i).setParentesco(null);
                     }
                 }
-                administrarHvReferencias1.modificarHvReferencias1(modificarHvReferencias1);
+                administrarHvReferencias1.modificarHvReferencias(modificarHvReferencias1);
                 modificarHvReferencias1.clear();
             }
             System.out.println("Se guardaron los datos con exito");
@@ -891,7 +889,7 @@ public class ControlHvReferencias1 implements Serializable {
          contador++;
          }*/
 
-        listHvHojasDeVida = administrarHvReferencias1.buscarHvHojasDeVida(secuenciaEmpleado);
+        listHvHojasDeVida = administrarHvReferencias1.consultarHvHojasDeVida(secuenciaEmpleado);
         if (listHvHojasDeVida == null) {
             System.err.println("ERROR NULO HVHOJASDEVIDA");
         } else {
@@ -1129,7 +1127,7 @@ public class ControlHvReferencias1 implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<HvReferencias> getListHvReferencias1() {
         if (listHvReferencias1 == null) {
-            listHvReferencias1 = administrarHvReferencias1.MostrarHvReferenciasPorEmpleado1(secuenciaEmpleado);
+            listHvReferencias1 = administrarHvReferencias1.consultarHvReferenciasFamiliaresPorEmpleado(secuenciaEmpleado);
         }
         return listHvReferencias1;
     }
@@ -1188,7 +1186,7 @@ public class ControlHvReferencias1 implements Serializable {
 
     public Empleados getEmpleadoSeleccionado() {
         if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarHvReferencias1.buscarEmpleado(secuenciaEmpleado);
+            empleadoSeleccionado = administrarHvReferencias1.consultarEmpleado(secuenciaEmpleado);
         }
         return empleadoSeleccionado;
     }
@@ -1199,7 +1197,7 @@ public class ControlHvReferencias1 implements Serializable {
 
     public List<TiposFamiliares> getListaTiposFamiliares() {
         if (listaTiposFamiliares == null) {
-            listaTiposFamiliares = administrarHvReferencias1.buscarTiposFamiliares();
+            listaTiposFamiliares = administrarHvReferencias1.consultarLOVTiposFamiliares();
         }
         return listaTiposFamiliares;
     }

@@ -317,10 +317,10 @@ public class ControlTiposAuxilios implements Serializable {
             System.out.println("secuencia borrado : " + listTiposAuxilios.get(index).getSecuencia());
             if (tipoLista == 0) {
                 System.out.println("secuencia borrado : " + listTiposAuxilios.get(index).getSecuencia());
-                verificarTablasAuxilios = administrarTiposAuxilios.verificarTablasAuxilios(listTiposAuxilios.get(index).getSecuencia());
+                verificarTablasAuxilios = administrarTiposAuxilios.contarTablasAuxiliosTiposAuxilios(listTiposAuxilios.get(index).getSecuencia());
             } else {
                 System.out.println("secuencia borrado : " + filtrarTiposAuxilios.get(index).getSecuencia());
-                verificarTablasAuxilios = administrarTiposAuxilios.verificarTablasAuxilios(filtrarTiposAuxilios.get(index).getSecuencia());
+                verificarTablasAuxilios = administrarTiposAuxilios.contarTablasAuxiliosTiposAuxilios(filtrarTiposAuxilios.get(index).getSecuencia());
             }
             if (!verificarTablasAuxilios.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");

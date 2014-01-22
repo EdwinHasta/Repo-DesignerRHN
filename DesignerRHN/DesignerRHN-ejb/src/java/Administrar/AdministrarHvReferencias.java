@@ -9,8 +9,10 @@ import InterfaceAdministrar.AdministrarHvReferenciasInterface;
 import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
+import Entidades.TiposFamiliares;
 import InterfacePersistencia.PersistenciaHvReferenciasInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaTiposFamiliaresInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,31 +28,42 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
     @EJB
     PersistenciaHvReferenciasInterface persistenciaHvReferencias;
     @EJB
+    PersistenciaTiposFamiliaresInterface persistenciaTiposFamiliares;
+    @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
     List<HvReferencias> listHvReferencias;
     HvReferencias hvReferencias;
     Empleados empleado;
     List<HVHojasDeVida> hvHojasDeVida;
 
-    public void borrarHvReferencias(HvReferencias hvEntrevistas) {
-        persistenciaHvReferencias.borrar(hvEntrevistas);
-    }
-
-    public void crearHvReferencias(HvReferencias hvEntrevistas) {
-        persistenciaHvReferencias.crear(hvEntrevistas);
-    }
-
-    public void modificarHvReferencias(List<HvReferencias> listHvReferenciasModificadas) {
-        for (int i = 0; i < listHvReferenciasModificadas.size(); i++) {
-            System.out.println("Modificando...");
-            hvReferencias = listHvReferenciasModificadas.get(i);
-            persistenciaHvReferencias.editar(hvReferencias);
+    @Override
+    public void borrarHvReferencias(List<HvReferencias> listaHvReferencias) {
+        for (int i = 0; i < listaHvReferencias.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaHvReferencias.borrar(listaHvReferencias.get(i));
         }
     }
 
-    public List<HvReferencias> MostrarHvReferenciasPorEmpleado(BigInteger secEmpleado) {
+    @Override
+    public void crearHvReferencias(List<HvReferencias> listaHvReferencias) {
+        for (int i = 0; i < listaHvReferencias.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaHvReferencias.crear(listaHvReferencias.get(i));
+        }
+    }
+
+    @Override
+    public void modificarHvReferencias(List<HvReferencias> listaHvReferencias) {
+        for (int i = 0; i < listaHvReferencias.size(); i++) {
+            System.out.println("Administrar Modificando...");
+            persistenciaHvReferencias.editar(listaHvReferencias.get(i));
+        }
+    }
+
+    @Override
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(BigInteger secEmpleado) {
         try {
-            listHvReferencias = persistenciaHvReferencias.buscarHvReferenciasPorEmpleado(secEmpleado);
+            listHvReferencias = persistenciaHvReferencias.consultarHvReferenciasPersonalesPorEmpleado(secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en AdministrarHvReferencias hvEntrevistasPorEmplado");
             listHvReferencias = null;
@@ -58,12 +71,25 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
         return listHvReferencias;
     }
 
-    public HvReferencias mostrarHvReferencia(BigInteger secHvEntrevista) {
+    @Override
+    public List<HvReferencias> consultarHvReferenciasFamiliaresPorEmpleado(BigInteger secEmpleado) {
+        try {
+            listHvReferencias = persistenciaHvReferencias.consultarHvReferenciasFamiliarPorEmpleado(secEmpleado);
+        } catch (Exception e) {
+            System.out.println("Error en AdministrarHvReferencias hvEntrevistasPorEmplado");
+            listHvReferencias = null;
+        }
+        return listHvReferencias;
+    }
+
+    @Override
+    public HvReferencias consultarHvReferencia(BigInteger secHvEntrevista) {
         persistenciaHvReferencias.buscarHvReferencia(secHvEntrevista);
         return hvReferencias;
     }
 
-    public Empleados buscarEmpleado(BigInteger secuencia) {
+    @Override
+    public Empleados consultarEmpleado(BigInteger secuencia) {
         try {
             empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);
             return empleado;
@@ -74,9 +100,10 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
         }
     }
 
-    public List<HVHojasDeVida> buscarHvHojasDeVida(BigInteger secuencia) {
+    @Override
+    public List<HVHojasDeVida> consultarHvHojasDeVida(BigInteger secuencia) {
         try {
-            hvHojasDeVida = persistenciaHvReferencias.buscarHvHojaDeVidaPorEmpleado(secuencia);
+            hvHojasDeVida = persistenciaHvReferencias.consultarHvHojaDeVidaPorEmpleado(secuencia);
             return hvHojasDeVida;
         } catch (Exception e) {
             hvHojasDeVida = null;
@@ -84,4 +111,17 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
             return hvHojasDeVida;
         }
     }
+
+    @Override
+    public List<TiposFamiliares> consultarLOVTiposFamiliares() {
+        try {
+            List<TiposFamiliares> listTiposFamiliares;
+            listTiposFamiliares = persistenciaTiposFamiliares.buscarTiposFamiliares();
+            return listTiposFamiliares;
+        } catch (Exception e) {
+            System.err.println("ERROR EN ADMINISTRAR HV REFERENCIAS 1 ERROR " + e);
+            return null;
+        }
+    }
+
 }

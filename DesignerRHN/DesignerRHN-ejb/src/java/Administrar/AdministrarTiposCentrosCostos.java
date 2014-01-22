@@ -25,55 +25,54 @@ public class AdministrarTiposCentrosCostos implements AdministrarTiposCentrosCos
     PersistenciaTiposCentrosCostosInterface persistenciaTiposCentrosCostos;
     @EJB
     PersistenciaGruposTiposCCInterface persistenciaGruposTiposCC;
-    private TiposCentrosCostos tipoCentroCostoSeleccionado;
-    private TiposCentrosCostos tipoEntidad;
-    private List<TiposCentrosCostos> listTiposEntidades;
-    private List<GruposTiposCC> listGruposTiposEntidades;
 
     @Override
-    public void modificarTipoCentrosCostos(List<TiposCentrosCostos> listTiposEntidadesModificadas) {
-        for (int i = 0; i < listTiposEntidadesModificadas.size(); i++) {
+    public void modificarTipoCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos) {
+        for (int i = 0; i < listaTiposCentrosCostos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tipoCentroCostoSeleccionado = listTiposEntidadesModificadas.get(i);
-            persistenciaTiposCentrosCostos.editar(tipoCentroCostoSeleccionado);
+            persistenciaTiposCentrosCostos.editar(listaTiposCentrosCostos.get(i));
         }
     }
 
     @Override
-    public void borrarTiposCentrosCostos(TiposCentrosCostos tipoCentroCosto) {
-        persistenciaTiposCentrosCostos.borrar(tipoCentroCosto);
+    public void borrarTiposCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos) {
+        for (int i = 0; i < listaTiposCentrosCostos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposCentrosCostos.borrar(listaTiposCentrosCostos.get(i));
+        }
     }
 
     @Override
-    public void crearTiposCentrosCostos(TiposCentrosCostos tiposCentrosCostos) {
-        persistenciaTiposCentrosCostos.crear(tiposCentrosCostos);
+    public void crearTiposCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos) {
+        for (int i = 0; i < listaTiposCentrosCostos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposCentrosCostos.borrar(listaTiposCentrosCostos.get(i));
+        }
     }
 
     @Override
-    public void buscarTiposCentrosCostos(TiposCentrosCostos tiposCentrosCostos) {
-        persistenciaTiposCentrosCostos.crear(tiposCentrosCostos);
-    }
-
-    @Override
-    public List<TiposCentrosCostos> mostrarTiposCentrosCostos() {
+    public List<TiposCentrosCostos> consultarTiposCentrosCostos() {
+        List<TiposCentrosCostos> listTiposEntidades;
         listTiposEntidades = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
         return listTiposEntidades;
     }
 
     @Override
-    public TiposCentrosCostos mostrarTipoEntidad(BigInteger secTipoCentrosCostos) {
-        tipoEntidad = persistenciaTiposCentrosCostos.buscarTipoCentrosCostos(secTipoCentrosCostos);
-        return tipoEntidad;
+    public TiposCentrosCostos consultarTipoCentroCosto(BigInteger secTipoCentrosCostos) {
+        TiposCentrosCostos tipoCentrosCostos;
+        tipoCentrosCostos = persistenciaTiposCentrosCostos.buscarTipoCentrosCostos(secTipoCentrosCostos);
+        return tipoCentrosCostos;
     }
 
     @Override
-    public List<GruposTiposCC> mostrarGruposTiposCC() {
+    public List<GruposTiposCC> consultarLOVGruposTiposCentrosCostos() {
+        List<GruposTiposCC> listGruposTiposEntidades;
         listGruposTiposEntidades = persistenciaGruposTiposCC.buscarGruposTiposCC();
         return listGruposTiposEntidades;
     }
 
     @Override
-    public BigInteger verificarBorradoCC(BigInteger secuenciaTipoEntidad) {
+    public BigInteger contarCentrosCostosTipoCentroCosto(BigInteger secuenciaTipoEntidad) {
         BigInteger verificadorCC;
         try {
             return verificadorCC = persistenciaTiposCentrosCostos.verificarBorradoCentrosCostos(secuenciaTipoEntidad);
@@ -84,7 +83,7 @@ public class AdministrarTiposCentrosCostos implements AdministrarTiposCentrosCos
     }
 
     @Override
-    public BigInteger verificarBorradoVC(BigInteger secuenciaTipoEntidad) {
+    public BigInteger contarVigenciasCuentasTipoCentroCosto(BigInteger secuenciaTipoEntidad) {
         BigInteger verificadorVC;
         try {
             return verificadorVC = persistenciaTiposCentrosCostos.verificarBorradoVigenciasCuentas(secuenciaTipoEntidad);
@@ -95,7 +94,7 @@ public class AdministrarTiposCentrosCostos implements AdministrarTiposCentrosCos
     }
 
     @Override
-    public BigInteger verificarBorradoRP(BigInteger secuenciaTipoEntidad) {
+    public BigInteger contarRiesgosProfesionalesTipoCentroCosto(BigInteger secuenciaTipoEntidad) {
         BigInteger verificadorRP;
         try {
             return verificadorRP = persistenciaTiposCentrosCostos.verificarBorradoRiesgosProfesionales(secuenciaTipoEntidad);

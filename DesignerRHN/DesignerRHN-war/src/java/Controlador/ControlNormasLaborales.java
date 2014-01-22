@@ -339,9 +339,9 @@ public class ControlNormasLaborales implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             if (tipoLista == 0) {
-                borradoVC = administrarNormasLaborales.verificarVigenciasNormasEmpleadoNormaLaboral(listNormasLaborales.get(index).getSecuencia());
+                borradoVC = administrarNormasLaborales.contarVigenciasNormasEmpleadoNormaLaboral(listNormasLaborales.get(index).getSecuencia());
             } else {
-                borradoVC = administrarNormasLaborales.verificarVigenciasNormasEmpleadoNormaLaboral(filtrarNormasLaborales.get(index).getSecuencia());
+                borradoVC = administrarNormasLaborales.contarVigenciasNormasEmpleadoNormaLaboral(filtrarNormasLaborales.get(index).getSecuencia());
             }
             if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -671,7 +671,7 @@ public class ControlNormasLaborales implements Serializable {
     //-------------------------------------------------------------------------- 
     public List<NormasLaborales> getListNormasLaborales() {
         if (listNormasLaborales == null) {
-            listNormasLaborales = administrarNormasLaborales.mostrarNormasLaborales();
+            listNormasLaborales = administrarNormasLaborales.consultarNormasLaborales();
         }
         return listNormasLaborales;
     }

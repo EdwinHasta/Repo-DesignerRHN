@@ -8,7 +8,6 @@ package Administrar;
 import Entidades.TiposAccidentes;
 import InterfaceAdministrar.AdministrarTiposAccidentesInterface;
 import InterfacePersistencia.PersistenciaTiposAccidentesInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -23,37 +22,42 @@ public class AdministrarTiposAccidentes implements AdministrarTiposAccidentesInt
 
     @EJB
     PersistenciaTiposAccidentesInterface persistenciaTiposAccidentes;
-    private TiposAccidentes TipoAccidenteSeleccionada;
-    private TiposAccidentes tiposAccidentes;
-    private List<TiposAccidentes> listTiposAccidentes;
 
-    public void modificarTiposAccidentes(List<TiposAccidentes> listTiposAccidentesModificada) {
-        for (int i = 0; i < listTiposAccidentesModificada.size(); i++) {
+    @Override
+    public void modificarTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes) {
+        for (int i = 0; i < listaTiposAccidentes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            TipoAccidenteSeleccionada = listTiposAccidentesModificada.get(i);
-            persistenciaTiposAccidentes.editar(TipoAccidenteSeleccionada);
+            persistenciaTiposAccidentes.editar(listaTiposAccidentes.get(i));
         }
     }
-
-    public void borrarTiposAccidentes(TiposAccidentes tiposAccidentes) {
-        persistenciaTiposAccidentes.borrar(tiposAccidentes);
+    @Override
+    public void borrarTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes) {
+        for (int i = 0; i < listaTiposAccidentes.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposAccidentes.borrar(listaTiposAccidentes.get(i));
+        }
     }
-
-    public void crearTiposAccidentes(TiposAccidentes TiposAccidentes) {
-        persistenciaTiposAccidentes.crear(TiposAccidentes);
+    @Override
+    public void crearTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes) {
+        for (int i = 0; i < listaTiposAccidentes.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposAccidentes.crear(listaTiposAccidentes.get(i));
+        }
     }
-
-    public List<TiposAccidentes> mostrarTiposAccidentes() {
+    @Override
+    public List<TiposAccidentes> consultarTiposAccidentes() {
+        List<TiposAccidentes> listTiposAccidentes;
         listTiposAccidentes = persistenciaTiposAccidentes.buscarTiposAccidentes();
         return listTiposAccidentes;
     }
-
-    public TiposAccidentes mostrarTiposAccidentes(BigInteger secTiposAccidentes) {
+    @Override
+    public TiposAccidentes consultarTiposAccidentes(BigInteger secTiposAccidentes) {
+        TiposAccidentes tiposAccidentes;
         tiposAccidentes = persistenciaTiposAccidentes.buscarTipoAccidente(secTiposAccidentes);
         return tiposAccidentes;
     }
-
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaTiposAccidentes) {
+    @Override
+    public BigInteger contarSoAccidentesMedicosTipoAccidente(BigInteger secuenciaTiposAccidentes) {
         BigInteger verificarSoAccidentesMedicos;
 
         try {
@@ -64,8 +68,8 @@ public class AdministrarTiposAccidentes implements AdministrarTiposAccidentesInt
         } finally {
         }
     }
-
-    public BigInteger verificarBorradoAccidentes(BigInteger secuenciaTiposAccidentes) {
+    @Override
+    public BigInteger contarAccidentesTipoAccidente(BigInteger secuenciaTiposAccidentes) {
         BigInteger verificarBorradoAccidentes;
         try {
             return verificarBorradoAccidentes = persistenciaTiposAccidentes.contadorAccidentes(secuenciaTiposAccidentes);

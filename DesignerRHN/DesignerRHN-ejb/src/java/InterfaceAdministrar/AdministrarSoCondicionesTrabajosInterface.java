@@ -17,23 +17,84 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarSoCondicionesTrabajosInterface {
 
-    public void modificarSoCondicionesTrabajos(List<SoCondicionesTrabajos> listTiposEntidadesModificadas);
+    /**
+     * Método encargado de modificar SoCondicionesTrabajos.
+     *
+     * @param listaSoCondicionesTrabajos Lista SoCondicionesTrabajos que se van
+     * a modificar.
+     */
+    public void modificarSoCondicionesTrabajos(List<SoCondicionesTrabajos> listaSoCondicionesTrabajos);
 
-    public void borrarSoCondicionesTrabajos(SoCondicionesTrabajos tipoCentroCosto);
+    /**
+     * Método encargado de borrar SoCondicionesTrabajos.
+     *
+     * @param listaSoCondicionesTrabajos Lista SoCondicionesTrabajos que se van
+     * a borrar.
+     */
+    public void borrarSoCondicionesTrabajos(List<SoCondicionesTrabajos> listaSoCondicionesTrabajos);
 
-    public void crearSoCondicionesTrabajos(SoCondicionesTrabajos tiposCentrosCostos);
+    /**
+     * Método encargado de crear SoCondicionesTrabajos.
+     *
+     * @param listaSoCondicionesTrabajos Lista SoCondicionesTrabajos que se van
+     * a crear.
+     */
+    public void crearSoCondicionesTrabajos(List<SoCondicionesTrabajos> listaSoCondicionesTrabajos);
 
-    public void buscarSoCondicionesTrabajos(SoCondicionesTrabajos tiposCentrosCostos);
+    /**
+     * Método encargado de recuperar las SoCondicionesTrabajos para una tabla de
+     * la pantalla.
+     *
+     * @return Retorna una lista de SoCondicionesTrabajos.
+     */
+    public List<SoCondicionesTrabajos> consultarSoCondicionesTrabajos();
 
-    public List<SoCondicionesTrabajos> mostrarSoCondicionesTrabajos();
+    /**
+     * Método encargado de recuperar una SoCondicionesTrabajos dada su
+     * secuencia.
+     *
+     * @param secSoCondicionesTrabajos Secuencia del SoCondicionTrabajo
+     * @return Retorna un SoCondicionesTrabajos.
+     */
+    public SoCondicionesTrabajos consultarSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos);
 
-    public SoCondicionesTrabajos mostrarSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos);
+    /**
+     * Método encargado de contar la cantidad de Inpescciones relacionadas con
+     * una SoCondicionTrabajo específico.
+     *
+     * @param secSoCondicionesTrabajos Secuencia del SoCondicionTrabajo.
+     * @return Retorna un número indicando la cantidad de SoAccidentesMedicos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarInspeccionesSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos);
 
-    public BigInteger verificarInspecciones(BigInteger secuenciaElementos);
+    /**
+     * Método encargado de contar la cantidad de SoAccidentesMedicos
+     * relacionadas con una SoCondicionTrabajo específico.
+     *
+     * @param secSoCondicionesTrabajos Secuencia del SoCondicionTrabajo.
+     * @return Retorna un número indicando la cantidad de SoAccidentesMedicos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSoAccidentesMedicosSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos);
 
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementos);
+    /**
+     * Método encargado de contar la cantidad de SoDetallesPanoramas
+     * relacionadas con una SoCondicionTrabajo específico.
+     *
+     * @param secSoCondicionesTrabajos Secuencia del SoCondicionTrabajo.
+     * @return Retorna un número indicando la cantidad de SoDetallesPanoramas
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSoDetallesPanoramasSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos);
 
-    public BigInteger verificarSoDetallesPanoramas(BigInteger secuenciaElementos);
-
-    public BigInteger verificarSoExposicionesFr(BigInteger secuenciaElementos);
+    /**
+     * Método encargado de contar la cantidad de SoExposicionesFr relacionadas
+     * con una SoCondicionTrabajo específico.
+     *
+     * @param secSoCondicionesTrabajos Secuencia del SoCondicionTrabajo.
+     * @return Retorna un número indicando la cantidad de SoExposicionesFr cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSoExposicionesFrSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos);
 }

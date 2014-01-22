@@ -21,37 +21,41 @@ public class AdministrarTiposCertificados implements AdministrarTiposCertificado
 
     @EJB
     PersistenciaTiposCertificadosInterface persistenciaTiposCertificados;
-    private TiposCertificados tipoCertificadoSeleccionado;
-    private TiposCertificados tipoCertificado;
-    private List<TiposCertificados> listTipoCertificado;
 
     @Override
-    public void modificarTiposCertificados(List<TiposCertificados> listNormasLaboralesModificadas) {
-        for (int i = 0; i < listNormasLaboralesModificadas.size(); i++) {
+    public void modificarTiposCertificados(List<TiposCertificados> listaTiposCertificados) {
+        for (int i = 0; i < listaTiposCertificados.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tipoCertificadoSeleccionado = listNormasLaboralesModificadas.get(i);
-            persistenciaTiposCertificados.editar(tipoCertificadoSeleccionado);
+            persistenciaTiposCertificados.editar(listaTiposCertificados.get(i));
         }
     }
 
     @Override
-    public void borrarTiposCertificados(TiposCertificados tiposCertificados) {
-        persistenciaTiposCertificados.borrar(tiposCertificados);
+    public void borrarTiposCertificados(List<TiposCertificados> listaTiposCertificados) {
+        for (int i = 0; i < listaTiposCertificados.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposCertificados.borrar(listaTiposCertificados.get(i));
+        }
     }
 
     @Override
-    public void crearTiposCertificados(TiposCertificados tiposCertificados) {
-        persistenciaTiposCertificados.crear(tiposCertificados);
+    public void crearTiposCertificados(List<TiposCertificados> listaTiposCertificados) {
+        for (int i = 0; i < listaTiposCertificados.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposCertificados.crear(listaTiposCertificados.get(i));
+        }
     }
 
     @Override
-    public List<TiposCertificados> mostrarTiposCertificados() {
+    public List<TiposCertificados> consultarTiposCertificados() {
+        List<TiposCertificados> listTipoCertificado;
         listTipoCertificado = persistenciaTiposCertificados.buscarTiposCertificados();
         return listTipoCertificado;
     }
 
     @Override
-    public TiposCertificados mostrarTipoCertificado(BigInteger secTipoCertificado) {
+    public TiposCertificados consultarTipoCertificado(BigInteger secTipoCertificado) {
+        TiposCertificados tipoCertificado;
         tipoCertificado = persistenciaTiposCertificados.buscarTipoCertificado(secTipoCertificado);
         return tipoCertificado;
     }

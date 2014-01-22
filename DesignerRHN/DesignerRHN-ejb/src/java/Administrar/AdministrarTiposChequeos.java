@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import Entidades.TiposChequeos;
@@ -21,39 +20,44 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarTiposChequeos implements AdministrarTiposChequeosInterface {
 
-  @EJB
+    @EJB
     PersistenciaTiposChequeosInterface persistenciaTiposChequeos;
-    private TiposChequeos tiposChequeosSeleccionada;
-    private TiposChequeos tiposChequeos;
-    private List<TiposChequeos> listTiposChequeos;
 
-    public void modificarTiposChequeos(List<TiposChequeos> listTiposChequeosModificadas) {
-        for (int i = 0; i < listTiposChequeosModificadas.size(); i++) {
+    @Override
+    public void modificarTiposChequeos(List<TiposChequeos> listaTiposChequeos) {
+        for (int i = 0; i < listaTiposChequeos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposChequeosSeleccionada = listTiposChequeosModificadas.get(i);
-            persistenciaTiposChequeos.editar(tiposChequeosSeleccionada);
+            persistenciaTiposChequeos.editar(listaTiposChequeos.get(i));
         }
     }
-
-    public void borrarTiposChequeos(TiposChequeos tiposChequeos) {
-        persistenciaTiposChequeos.borrar(tiposChequeos);
+    @Override
+    public void borrarTiposChequeos(List<TiposChequeos> listaTiposChequeos) {
+        for (int i = 0; i < listaTiposChequeos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposChequeos.borrar(listaTiposChequeos.get(i));
+        }
     }
-
-    public void crearTiposChequeos(TiposChequeos tiposChequeos) {
-        persistenciaTiposChequeos.crear(tiposChequeos);
+    @Override
+    public void crearTiposChequeos(List<TiposChequeos> listaTiposChequeos) {
+        for (int i = 0; i < listaTiposChequeos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposChequeos.crear(listaTiposChequeos.get(i));
+        }
     }
-
-    public List<TiposChequeos> mostrarTiposChequeos() {
+    @Override
+    public List<TiposChequeos> consultarTiposChequeos() {
+        List<TiposChequeos> listTiposChequeos;
         listTiposChequeos = persistenciaTiposChequeos.buscarTiposChequeos();
         return listTiposChequeos;
     }
 
-    public TiposChequeos mostrarTipoChequeo(BigInteger secTipoEmpresa) {
+    public TiposChequeos consultarTipoChequeo(BigInteger secTipoEmpresa) {
+        TiposChequeos tiposChequeos;
         tiposChequeos = persistenciaTiposChequeos.buscarTipoChequeo(secTipoEmpresa);
         return tiposChequeos;
     }
-    
-         public BigInteger verificarChequeosMedicos(BigInteger secuenciaJuzgados) {
+    @Override
+    public BigInteger contarChequeosMedicosTipoChequeo(BigInteger secuenciaJuzgados) {
         BigInteger verificarChequeosMedicos = null;
         try {
             System.out.println("Administrar SecuenciaBorrar " + secuenciaJuzgados);
@@ -64,7 +68,8 @@ public class AdministrarTiposChequeos implements AdministrarTiposChequeosInterfa
             return verificarChequeosMedicos;
         }
     }
-         public BigInteger verificarTiposExamenesCargos(BigInteger secuenciaJuzgados) {
+    @Override
+    public BigInteger contarTiposExamenesCargosTipoChequeo(BigInteger secuenciaJuzgados) {
         BigInteger verificarTiposExamenesCargos = null;
         try {
             System.out.println("Administrar SecuenciaBorrar " + secuenciaJuzgados);

@@ -22,37 +22,41 @@ public class AdministrarTiposEmbargos implements AdministrarTiposEmbargosInterfa
 
     @EJB
     PersistenciaTiposEmbargosInterface persistenciaTiposEmbargos;
-    private TiposEmbargos tiposEmbargosSeleccionado;
-    private TiposEmbargos tiposEmbargos;
-    private List<TiposEmbargos> listTiposEmbargos;
 
-    public void modificarTiposPrestamos(List<TiposEmbargos> listaTiposEmbargosModificados) {
-        for (int i = 0; i < listaTiposEmbargosModificados.size(); i++) {
+    public void modificarTiposPrestamos(List<TiposEmbargos> listaTiposEmbargos) {
+        for (int i = 0; i < listaTiposEmbargos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposEmbargosSeleccionado = listaTiposEmbargosModificados.get(i);
-            persistenciaTiposEmbargos.editar(tiposEmbargosSeleccionado);
+            persistenciaTiposEmbargos.editar(listaTiposEmbargos.get(i));
         }
     }
 
-    public void borrarTiposPrestamos(TiposEmbargos tiposEmbargos) {
-        persistenciaTiposEmbargos.borrar(tiposEmbargos);
+    public void borrarTiposPrestamos(List<TiposEmbargos> listaTiposEmbargos) {
+        for (int i = 0; i < listaTiposEmbargos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposEmbargos.borrar(listaTiposEmbargos.get(i));
+        }
     }
 
-    public void crearTiposPrestamos(TiposEmbargos tiposEmbargos) {
-        persistenciaTiposEmbargos.crear(tiposEmbargos);
+    public void crearTiposPrestamos(List<TiposEmbargos> listaTiposEmbargos) {
+        for (int i = 0; i < listaTiposEmbargos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposEmbargos.crear(listaTiposEmbargos.get(i));
+        }
     }
 
-    public List<TiposEmbargos> mostrarTiposPrestamos() {
+    public List<TiposEmbargos> consultarTiposPrestamos() {
+        List<TiposEmbargos> listTiposEmbargos;
         listTiposEmbargos = persistenciaTiposEmbargos.buscarTiposEmbargos();
         return listTiposEmbargos;
     }
 
-    public TiposEmbargos mostrarTipoPrestamo(BigInteger secMotivoPrestamo) {
+    public TiposEmbargos consultarTipoPrestamo(BigInteger secMotivoPrestamo) {
+        TiposEmbargos tiposEmbargos;
         tiposEmbargos = persistenciaTiposEmbargos.buscarTipoEmbargo(secMotivoPrestamo);
         return tiposEmbargos;
     }
 
-    public BigInteger verificarDiasLaborales(BigInteger secuenciaTiposDias) {
+    public BigInteger contarDiasLaboralesTipoEmbargo(BigInteger secuenciaTiposDias) {
         BigInteger verificarBorradoEerPrestamos = null;
         try {
             verificarBorradoEerPrestamos = persistenciaTiposEmbargos.contadorEerPrestamos(secuenciaTiposDias);
@@ -63,7 +67,7 @@ public class AdministrarTiposEmbargos implements AdministrarTiposEmbargosInterfa
         }
     }
 
-    public BigInteger verificarExtrasRecargos(BigInteger secuenciaTiposDias) {
+    public BigInteger contarExtrasRecargosTipoEmbargo(BigInteger secuenciaTiposDias) {
         BigInteger verificarBorradoFormasDtos = null;
         try {
             verificarBorradoFormasDtos = persistenciaTiposEmbargos.contadorFormasDtos(secuenciaTiposDias);
