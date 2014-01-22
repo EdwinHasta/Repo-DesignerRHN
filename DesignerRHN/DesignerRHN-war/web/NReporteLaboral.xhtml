@@ -28,7 +28,7 @@
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" action="nomina" actionListener="#{controlNReporteLaboral.cancelarYSalir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
-                        
+
                         <p:dialog id="confirmarGuardarSinSalida" header="" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
@@ -46,36 +46,16 @@
                             <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['reportes']}</strong></legend>
 
                             <p:dataTable id="reportesLaboral" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;"                           
-                                         value="#{controlNReporteLaboral.listaIR}" scrollable="true" scrollHeight="#{controlNReporteLaboral.altoTabla}" scrollWidth="690"
+                                         value="#{controlNReporteLaboral.listaIR}" scrollable="true" selectionMode="single" scrollHeight="#{controlNReporteLaboral.altoTabla}" scrollWidth="690"
                                          filteredValue="#{controlNReporteLaboral.filtrarListInforeportesUsuario}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10" selection="#{controlNReporteLaboral.actualInfoReporteTabla}">
 
                                 <p:column style="padding: 0px; text-align: center; width: 50px;" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:cellEditor >  
-                                        <f:facet name="output"> 
-                                            <h:outputText value="#{info.codigo}"/>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigoIR" style="border-radius: 0px; width: 99%;" >
-                                                <p:ajax event="dblclick" listener="#{controlNReporteLaboral.parametrosDeReporte(indice)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlNReporteLaboral.reporteModificado(indice)}" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlNReporteLaboral.cambiarIndexInforeporte(indice)}" process="@this"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
+                                    <p:outputLabel onclick="posicionReporte([{name: 't', value: '#{indice}'}]);"  value="#{info.codigo}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
                                 </p:column>
 
                                 <p:column  id="reporteIR" headerText="#{msg['reporte']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:cellEditor >  
-                                        <f:facet name="output"><h:outputText style="width:260px" value="#{info.nombre}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.nombre}" id="editarReporteIR" style="width:260px; border-radius: 0px; width: 99%;" >
-                                                <p:ajax event="dblclick" listener="#{controlNReporteLaboral.parametrosDeReporte(indice)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlNReporteLaboral.reporteModificado(indice)}" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlNReporteLaboral.cambiarIndexInforeporte(indice)}" process="@this"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
+                                    <p:outputLabel onclick="posicionReporte([{name: 't', value: '#{indice}'}]);"  value="#{info.nombre}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
                                 </p:column>
 
                                 <p:column id="tipoIR" headerText="#{msg['tipo']}" width="110" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px; width: 110px" >                                  
@@ -98,6 +78,10 @@
                             <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
 
                         </fieldset>
+                        
+                        <p:remoteCommand name="posicionReporte" actionListener="#{controlNReporteLaboral.posicionInfoReporte()}" process="@this"/>
+                        <p:remoteCommand name="parametrosReporte" actionListener="#{controlNReporteLaboral.posicionParaResaltoParametros()}" process="@this"/>
+
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 

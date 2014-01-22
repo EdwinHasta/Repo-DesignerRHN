@@ -20,6 +20,7 @@
                       shortDescription="The date pattern for the component. It should match the mask pattern. 
                       The default value is dd/MM/yyyy" />
         <cc:attribute name="validator"/>
+        <cc:attribute name="styleClass"/>
         <cc:clientBehavior name="dateSelect" targets="calendar" event="dateSelect" />
         <cc:clientBehavior name="select" targets="calendar" event="select" />
         <cc:clientBehavior name="change" targets="calendar" event="change" />
@@ -32,8 +33,8 @@
     <cc:implementation>
         <!-- This component has been simplified but it could include any attribute of the inputMask 
          component that we wish our developer clients to be able to specify -->
-        <p:inputMask style="width: 99%;height: 99%" id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
-                     value="#{cc.attrs.value}">
+        <p:inputMask style="#{cc.attrs.styleClass}" id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
+                     value="#{cc.attrs.value}" >
             <f:convertDateTime pattern="#{cc.attrs.pattern}" timeZone="America/Bogota" locale="es" />
         </p:inputMask>
  

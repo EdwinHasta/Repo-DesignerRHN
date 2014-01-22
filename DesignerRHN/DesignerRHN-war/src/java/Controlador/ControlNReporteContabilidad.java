@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -78,11 +79,10 @@ public class ControlNReporteContabilidad implements Serializable {
     //
     private List<Inforeportes> listaInfoReportesModificados;
     //
-    private BigInteger auxCodigo;
-    private String auxNombre;
+     private Inforeportes actualInfoReporteTabla;
 
     public ControlNReporteContabilidad() {
-
+        actualInfoReporteTabla = new Inforeportes();
         cambiosReporte = true;
         listaInfoReportesModificados = new ArrayList<Inforeportes>();
         altoTabla = "185";
@@ -103,16 +103,32 @@ public class ControlNReporteContabilidad implements Serializable {
         listProcesos = null;
         procesoSeleccionado = new Procesos();
     }
+    
+     public void posicionInfoReporte() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String type = map.get("t"); // type attribute of node
+        int ind = Integer.parseInt(type);
+        cambiarIndexInforeporte(ind);
+    }
+
+    public void posicionParaResaltoParametros() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String type = map.get("t"); // type attribute of node
+        int ind = Integer.parseInt(type);
+        parametrosDeReporte(ind);
+    }
 
     public void cambiarIndexInforeporte(int i) {
         if (tipoLista == 0) {
-            auxCodigo = listaIR.get(i).getCodigo();
-            auxNombre = listaIR.get(i).getNombre();
+            setActualInfoReporteTabla(listaIR.get(i));
         }
         if (tipoLista == 1) {
-            auxCodigo = filtrarListInforeportesUsuario.get(i).getCodigo();
-            auxNombre = filtrarListInforeportesUsuario.get(i).getNombre();
+            setActualInfoReporteTabla(filtrarListInforeportesUsuario.get(i));
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:reportesContabilidad");
         resaltoParametrosParaReporte(i);
     }
 
@@ -306,17 +322,6 @@ public class ControlNReporteContabilidad implements Serializable {
         context.update("form:reportesContabilidad");
     }
 
-    public void reporteModificado(int i) {
-        if (tipoLista == 0) {
-            listaIR.get(i).setCodigo(auxCodigo);
-            listaIR.get(i).setNombre(auxNombre);
-        }
-        if (tipoLista == 1) {
-            filtrarListInforeportesUsuario.get(i).setCodigo(auxCodigo);
-            filtrarListInforeportesUsuario.get(i).setNombre(auxNombre);
-        }
-        RequestContext.getCurrentInstance().update("form:reportesContabilidad");
-    }
 
     public void modificacionTipoReporte(int i) {
         System.out.println("Modificacion Reporte A Generar");
@@ -545,27 +550,27 @@ public class ControlNReporteContabilidad implements Serializable {
             reporteS = filtrarListInforeportesUsuario.get(i);
         }
         defaultPropiedadesParametrosReporte();
-        if (reporteS.getFecdesde().equals("SI")) {
+        if (reporteS.getFecdesde().equalsIgnoreCase("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Desde -";
             fechaDesdeParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametroL");
             fechaDesdeParametroL.setStyleClass("ui-datepicker, myClass3");
             RequestContext.getCurrentInstance().update("form:fechaDesdeParametroL");
 
         }
-        if (reporteS.getFechasta().equals("SI")) {
+        if (reporteS.getFechasta().equalsIgnoreCase("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Hasta -";
             fechaHastaParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametroL");
             fechaHastaParametroL.setStyleClass("ui-datepicker, myClass3");
             RequestContext.getCurrentInstance().update("form:fechaHastaParametroL");
 
         }
-        if (reporteS.getEmdesde().equals("SI")) {
+        if (reporteS.getEmdesde().equalsIgnoreCase("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Desde -";
             empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametroL");
             empleadoDesdeParametroL.setStyle("position: absolute; top: 40px; left: 260px;height: 15px;width: 90px;text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("form:empleadoDesdeParametroL");
         }
-        if (reporteS.getEmhasta().equals("SI")) {
+        if (reporteS.getEmhasta().equalsIgnoreCase("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Hasta -";
             empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametroL");
             empleadoHastaParametroL.setStyle("position: absolute; top: 40px; left: 400px;height: 15px;width: 90px; text-decoration: underline; color: red;");
@@ -841,5 +846,11 @@ public class ControlNReporteContabilidad implements Serializable {
     public void setFile(StreamedContent file) {
         this.file = file;
     }
+     public Inforeportes getActualInfoReporteTabla() {
+        return actualInfoReporteTabla;
+    }
 
+    public void setActualInfoReporteTabla(Inforeportes actualInfoReporteTabla) {
+        this.actualInfoReporteTabla = actualInfoReporteTabla;
+    }
 }

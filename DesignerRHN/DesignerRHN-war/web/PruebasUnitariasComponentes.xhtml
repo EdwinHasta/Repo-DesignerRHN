@@ -14,12 +14,8 @@
         <h:form id="form">
             <p:panel id="PanelTotal" header="PRUEBAS" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" >
                 <h:form id="form">
-                    <p:commandButton value="PDF" actionListener="#{controlPruebasUnitarias.crearReportePDF()}"/>
-                    <p:commandButton value="XLSX" actionListener="#{controlPruebasUnitarias.crearReporteXLSX()}"/>
-                    <p:commandButton value="XLS Solo datos" actionListener="#{controlPruebasUnitarias.crearReporteXLS()}"/>
-                    <p:commandButton value="CVS" actionListener="#{controlPruebasUnitarias.crearReporteCSV()}"/>
-                    <p:commandButton value="HTML" actionListener="#{controlPruebasUnitarias.crearReporteHTML()}"/>
-                    <p:commandButton value="EXCEPTION" actionListener="#{controlPruebasUnitarias.espichoelboton()}"/>
+                    <lnk:calendar id="fechaPrueba" value="#{controlPruebasUnitarias.fechaPrueba}" /> 
+                    <p:commandButton actionListener="#{controlPruebasUnitarias.eventBtn()}" process="@this"/>    
                 </h:form>
             </p:panel>
         </h:form>
