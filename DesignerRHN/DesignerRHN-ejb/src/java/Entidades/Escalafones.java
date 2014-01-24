@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,10 +39,7 @@ public class Escalafones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private String codigo;
     @JoinColumn(name = "SUBCATEGORIA", referencedColumnName = "SECUENCIA")
@@ -56,20 +54,20 @@ public class Escalafones implements Serializable {
     public Escalafones() {
     }
 
-    public Escalafones(BigDecimal secuencia) {
+    public Escalafones(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Escalafones(BigDecimal secuencia, String codigo) {
+    public Escalafones(BigInteger secuencia, String codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

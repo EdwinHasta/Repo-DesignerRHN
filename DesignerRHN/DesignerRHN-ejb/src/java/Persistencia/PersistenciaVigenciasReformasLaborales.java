@@ -23,13 +23,16 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigenciasReformasLaboralesInterface{
     
+   /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos
+     */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
     @Override
     public void crear(VigenciasReformasLaborales vigenciaRefLab) {
         try {
-            em.merge(vigenciaRefLab);
+            em.persist(vigenciaRefLab);
         } catch (Exception e) {
             System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasReformaLaboral)");
         }
