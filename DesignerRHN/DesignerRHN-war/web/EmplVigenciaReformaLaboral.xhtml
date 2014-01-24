@@ -109,7 +109,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 11px; border: none; color: blue" id="fooReformaLaboral" value="#{msg['reformalaboral']}"/>
+                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooReformaLaboral" value="#{msg['reformalaboral']}"/>
                                     </f:facet>
                                 </p:column>  
                             </p:dataTable>  
@@ -120,7 +120,7 @@
                                   showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovReformasLaborales" style="font-size: 11px; width: 430px" var="reformasLaborales" value="#{controlVigenciasReformasLaborales.listaReformasLaborales}" rowKey="#{reformasLaborales.secuencia}"
                                          selection="#{controlVigenciasReformasLaborales.reformaLaboralSelecionada}" selectionMode="single" widgetVar="lovReformasLaborales" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                         filteredValue="#{controlVigenciasReformasLaborales.filtradoReformasLaborales}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                         filteredValue="#{controlVigenciasReformasLaborales.filtradoReformasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasReformasLaborales.activarAceptar()}" update=":form:aceptarRL"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarRL']}" style="position: absolute; left: 27px; top: 14px"/>  
