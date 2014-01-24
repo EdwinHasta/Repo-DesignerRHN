@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -61,7 +62,6 @@ public class ControlNReporteBienestar implements Serializable {
     //
     private String actividad;
     private boolean permitirIndex, cambiosReporte;
-    private Calendar fechaDesdeParametroL, fechaHastaParametroL;
     private InputText empleadoDesdeParametroL, empleadoHastaParametroL;
     //
     private List<Empleados> listEmpleados;
@@ -79,9 +79,22 @@ public class ControlNReporteBienestar implements Serializable {
     //
     private List<Inforeportes> listaInfoReportesModificados;
     //
-     private Inforeportes actualInfoReporteTabla;
+    private Inforeportes actualInfoReporteTabla;
+    //
+    private String color, decoracion;
+    private String color2, decoracion2;
+    //
+    private int casillaInforReporte;
+    //
+    private Date fechaDesde, fechaHasta;
+    private BigInteger emplDesde, emplHasta;
 
     public ControlNReporteBienestar() {
+        color = "black";
+        decoracion = "none";
+        color2 = "black";
+        decoracion2 = "none";
+        casillaInforReporte = -1;
         actualInfoReporteTabla = new Inforeportes();
         cambiosReporte = true;
         listaInfoReportesModificados = new ArrayList<Inforeportes>();
@@ -104,14 +117,15 @@ public class ControlNReporteBienestar implements Serializable {
         listActividades = null;
         actividadSeleccionada = new Actividades();
     }
-    
-    
+
     public void posicionInfoReporte() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
         String type = map.get("t"); // type attribute of node
+        String cass = map.get("n"); // type attribute of node
         int ind = Integer.parseInt(type);
-        cambiarIndexInforeporte(ind);
+        int cassi = Integer.parseInt(cass);
+        cambiarIndexInforeporte(ind, cassi);
     }
 
     public void posicionParaResaltoParametros() {
@@ -122,8 +136,22 @@ public class ControlNReporteBienestar implements Serializable {
         parametrosDeReporte(ind);
     }
 
+    public void seleccionRegistro() {
+        int indiceSeleccion = 0;
+        if (tipoLista == 0) {
+            indiceSeleccion = listaIR.indexOf(actualInfoReporteTabla);
+        }
+        if (tipoLista == 1) {
+            indiceSeleccion = filtrarListInforeportesUsuario.indexOf(actualInfoReporteTabla);
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:reportesBienestar");
+        resaltoParametrosParaReporte(indiceSeleccion);
+    }
 
-    public void cambiarIndexInforeporte(int i) {
+    public void cambiarIndexInforeporte(int i, int c) {
+        casillaInforReporte = c;
+        casilla = -1;
         if (tipoLista == 0) {
             setActualInfoReporteTabla(listaIR.get(i));
         }
@@ -175,6 +203,11 @@ public class ControlNReporteBienestar implements Serializable {
     public void posicionCelda(int i) {
         if (permitirIndex) {
             casilla = i;
+            casillaInforReporte = -1;
+            emplDesde = parametroDeInforme.getCodigoempleadodesde();
+            fechaDesde = parametroDeInforme.getFechadesde();
+            emplHasta = parametroDeInforme.getCodigoempleadohasta();
+            fechaHasta = parametroDeInforme.getFechahasta();
             if (casilla == 5) {
                 actividad = parametroDeInforme.getActividadbienestar().getDescripcion();
             }
@@ -183,28 +216,43 @@ public class ControlNReporteBienestar implements Serializable {
 
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (casilla == 1) {
-            context.update("formularioDialogos:editarFechaDesde");
-            context.execute("editarFechaDesde.show()");
-        }
-        if (casilla == 2) {
-            context.update("formularioDialogos:empleadoDesde");
-            context.execute("empleadoDesde.show()");
-        }
+        if (casilla >= 1) {
+            if (casilla == 1) {
+                context.update("formularioDialogos:editarFechaDesde");
+                context.execute("editarFechaDesde.show()");
+            }
+            if (casilla == 2) {
+                context.update("formularioDialogos:empleadoDesde");
+                context.execute("empleadoDesde.show()");
+            }
 
-        if (casilla == 3) {
-            context.update("formularioDialogos:editarFechaHasta");
-            context.execute("editarFechaHasta.show()");
+            if (casilla == 3) {
+                context.update("formularioDialogos:editarFechaHasta");
+                context.execute("editarFechaHasta.show()");
+            }
+            if (casilla == 4) {
+                context.update("formularioDialogos:empleadoHasta");
+                context.execute("empleadoHasta.show()");
+            }
+            if (casilla == 5) {
+                context.update("formularioDialogos:actividad");
+                context.execute("actividad.show()");
+            }
+            casilla = -1;
         }
-        if (casilla == 4) {
-            context.update("formularioDialogos:empleadoHasta");
-            context.execute("empleadoHasta.show()");
+        if (casillaInforReporte >= 1) {
+            System.out.println("actualinforeporte : " + actualInfoReporteTabla.getCodigo());
+            System.out.println("actualinforeporte : " + actualInfoReporteTabla.getNombre());
+            if (casillaInforReporte == 1) {
+                context.update("formParametros:infoReporteCodigoD");
+                context.execute("infoReporteCodigoD.show()");
+            }
+            if (casillaInforReporte == 2) {
+                context.update("formParametros:infoReporteNombreD");
+                context.execute("infoReporteNombreD.show()");
+            }
+            casillaInforReporte = -1;
         }
-        if (casilla == 5) {
-            context.update("formularioDialogos:actividad");
-            context.execute("actividad.show()");
-        }
-        casilla = -1;
     }
 
     public void activarAceptar() {
@@ -253,15 +301,15 @@ public class ControlNReporteBienestar implements Serializable {
 
     public void mostrarDialogoBuscarReporte() {
         try {
-            if(cambiosReporte == true){
-            listaIR = administrarNReporteBienestar.listInforeportesUsuario();
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:ReportesDialogo");
-            context.execute("ReportesDialogo.show()");
+            if (cambiosReporte == true) {
+                listaIR = administrarNReporteBienestar.listInforeportesUsuario();
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:ReportesDialogo");
+                context.execute("ReportesDialogo.show()");
             } else {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("confirmarGuardarSinSalida.show()");
-        }
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("confirmarGuardarSinSalida.show()");
+            }
         } catch (Exception e) {
             System.out.println("Error mostrarDialogoBuscarReporte : " + e.toString());
         }
@@ -405,7 +453,7 @@ public class ControlNReporteBienestar implements Serializable {
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
-        context.update("form:actividadParametroL");
+        context.update("formParametros:actividadParametroL");
     }
 
     public void cancelarCambioActividad() {
@@ -425,7 +473,7 @@ public class ControlNReporteBienestar implements Serializable {
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
-        context.update("form:empleadoDesdeParametroL");
+        context.update("formParametros:empleadoDesdeParametroL");
     }
 
     public void cancelarCambioEmplDesde() {
@@ -445,7 +493,7 @@ public class ControlNReporteBienestar implements Serializable {
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
-        context.update("form:empleadoHastaParametroL");
+        context.update("formParametros:empleadoHastaParametroL");
     }
 
     public void cancelarCambioEmplHasta() {
@@ -495,18 +543,17 @@ public class ControlNReporteBienestar implements Serializable {
             parametroDeInforme.setActividadbienestar(new Actividades());
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:fechaDesdeParametroL");
-        context.update("form:empleadoDesdeParametroL");
-        context.update("form:fechaHastaParametroL");
-        context.update("form:empleadoHastaParametroL");
-        context.update("form:estadoParametroL");
-        context.update("form:actividadParametroL");
+        context.update("formParametros:fechaDesdeParametroL");
+        context.update("formParametros:empleadoDesdeParametroL");
+        context.update("formParametros:fechaHastaParametroL");
+        context.update("formParametros:empleadoHastaParametroL");
+        context.update("formParametros:estadoParametroL");
+        context.update("formParametros:actividadParametroL");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
             altoTabla = "163";
-
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBienestar:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBienestar:reporteIR");
@@ -539,26 +586,46 @@ public class ControlNReporteBienestar implements Serializable {
 
     public void defaultPropiedadesParametrosReporte() {
 
-        fechaDesdeParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametroL");
-        fechaDesdeParametroL.setStyleClass("ui-datepicker, calendarioReportes");
-        RequestContext.getCurrentInstance().update("form:fechaDesdeParametroL");
+        color = "black";
+        decoracion = "none";
+        color2 = "black";
+        decoracion2 = "none";
+        RequestContext.getCurrentInstance().update("formParametros");
 
-        fechaHastaParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametroL");
-        fechaHastaParametroL.setStyleClass("ui-datepicker, calendarioReportes");
-        RequestContext.getCurrentInstance().update("form:fechaHastaParametroL");
-
-        empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametroL");
+        empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametroL");
         empleadoDesdeParametroL.setStyle("position: absolute; top: 40px; left: 260px;height: 15px;width: 90px;");
-        RequestContext.getCurrentInstance().update("form:empleadoDesdeParametroL");
+        RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametroL");
 
-        empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametroL");
+        empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametroL");
         empleadoHastaParametroL.setStyle("position: absolute; top: 40px; left: 400px;height: 15px;width: 90px;");
-        RequestContext.getCurrentInstance().update("form:empleadoHastaParametroL");
+        RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametroL");
 
     }
 
     public void modificarParametroInforme() {
-        parametroModificacion = parametroDeInforme;
+        if (parametroDeInforme.getCodigoempleadodesde() != null && parametroDeInforme.getCodigoempleadohasta() != null
+                && parametroDeInforme.getFechadesde() != null && parametroDeInforme.getFechahasta() != null) {
+            if (parametroDeInforme.getFechadesde().before(parametroDeInforme.getFechahasta())) {
+                parametroModificacion = parametroDeInforme;
+                cambiosReporte = false;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:ACEPTAR");
+            } else {
+                parametroDeInforme.setFechadesde(fechaDesde);
+                parametroDeInforme.setFechahasta(fechaHasta);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("formParametros");
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            parametroDeInforme.setCodigoempleadodesde(emplDesde);
+            parametroDeInforme.setCodigoempleadohasta(emplHasta);
+            parametroDeInforme.setFechadesde(fechaDesde);
+            parametroDeInforme.setFechahasta(fechaHasta);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formParametros");
+            context.execute("errorRegNew.show()");
+        }
     }
 
     public void resaltoParametrosParaReporte(int i) {
@@ -572,39 +639,37 @@ public class ControlNReporteBienestar implements Serializable {
         defaultPropiedadesParametrosReporte();
         if (reporteS.getFecdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Desde -";
-            fechaDesdeParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametroL");
-            fechaDesdeParametroL.setStyleClass("ui-datepicker, myClass3");
-            RequestContext.getCurrentInstance().update("form:fechaDesdeParametroL");
-
+            color = "red";
+            decoracion = "underline";
+            RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteS.getFechasta().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Hasta -";
-            fechaHastaParametroL = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametroL");
-            fechaHastaParametroL.setStyleClass("ui-datepicker, myClass3");
-            RequestContext.getCurrentInstance().update("form:fechaHastaParametroL");
-
+            color2 = "red";
+            decoracion2 = "underline";
+            RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteS.getEmdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Desde -";
-            empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametroL");
+            empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametroL");
             empleadoDesdeParametroL.setStyle("position: absolute; top: 40px; left: 260px;height: 10px;width: 100px;text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:empleadoDesdeParametroL");
+            RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametroL");
         }
         if (reporteS.getEmhasta().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Hasta -";
-            empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametroL");
+            empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametroL");
             empleadoHastaParametroL.setStyle("position: absolute; top: 40px; left: 400px;height: 10px;width: 100px; text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:empleadoHastaParametroL");
+            RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametroL");
         }
     }
 
     public void mostrarTodos() {
-        if(cambiosReporte == true){
-        defaultPropiedadesParametrosReporte();
-        listaIR = null;
-        getListaIR();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:reportesBienestar");
+        if (cambiosReporte == true) {
+            defaultPropiedadesParametrosReporte();
+            listaIR = null;
+            getListaIR();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:reportesBienestar");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardarSinSalida.show()");
@@ -879,12 +944,44 @@ public class ControlNReporteBienestar implements Serializable {
     public void setFile(StreamedContent file) {
         this.file = file;
     }
-    
-     public Inforeportes getActualInfoReporteTabla() {
+
+    public Inforeportes getActualInfoReporteTabla() {
         return actualInfoReporteTabla;
     }
 
     public void setActualInfoReporteTabla(Inforeportes actualInfoReporteTabla) {
         this.actualInfoReporteTabla = actualInfoReporteTabla;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getDecoracion() {
+        return decoracion;
+    }
+
+    public void setDecoracion(String decoracion) {
+        this.decoracion = decoracion;
+    }
+
+    public String getColor2() {
+        return color2;
+    }
+
+    public void setColor2(String color) {
+        this.color2 = color;
+    }
+
+    public String getDecoracion2() {
+        return decoracion2;
+    }
+
+    public void setDecoracion2(String decoracion) {
+        this.decoracion2 = decoracion;
     }
 }

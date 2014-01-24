@@ -303,11 +303,11 @@ public class ControlNReporteLaboral implements Serializable {
             System.out.println("actualinforeporte : " + actualInfoReporteTabla.getCodigo());
             System.out.println("actualinforeporte : " + actualInfoReporteTabla.getNombre());
             if (casillaInforReporte == 1) {
-                context.update("formularioDialogos:infoReporteCodigoD");
+                context.update("formParametros:infoReporteCodigoD");
                 context.execute("infoReporteCodigoD.show()");
             }
             if (casillaInforReporte == 2) {
-                context.update("formularioDialogos:infoReporteNombreD");
+                context.update("formParametros:infoReporteNombreD");
                 context.execute("infoReporteNombreD.show()");
             }
             casillaInforReporte = -1;
