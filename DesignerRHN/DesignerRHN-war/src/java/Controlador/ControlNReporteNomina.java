@@ -100,7 +100,7 @@ public class ControlNReporteNomina implements Serializable {
     private List<Terceros> filtrarListTerceros;
     private List<Procesos> filtrarListProcesos;
     private List<Asociaciones> filtrarListAsociaciones;
-    private String grupo, ubiGeo, tipoAso, estructura, empresa, tipoTrabajador, tercero, proceso, asociacion;
+    private String grupo, ubiGeo, tipoAso, estructura, empresa, tipoTrabajador, tercero, proceso, asociacion,estado;
     private boolean permitirIndex, cambiosReporte;
     //ALTO SCROLL TABLA
     private String altoTabla;
@@ -270,10 +270,34 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void modificarParametroInforme() {
-        parametroModificacion = parametroDeInforme;
-        cambiosReporte = false;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ACEPTAR");
+        if (parametroDeInforme.getCodigoempleadodesde() != null && parametroDeInforme.getCodigoempleadohasta() != null
+                && parametroDeInforme.getFechadesde() != null && parametroDeInforme.getFechahasta() != null) {
+            if (parametroDeInforme.getFechadesde().before(parametroDeInforme.getFechahasta())) {
+                parametroModificacion = parametroDeInforme;
+                cambiosReporte = false;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:ACEPTAR");
+            } else {
+                parametroDeInforme.setFechadesde(fechaDesde);
+                parametroDeInforme.setFechahasta(fechaHasta);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("formParametros");
+                context.execute("errorFechas.show()");
+            }
+        } else {
+            parametroDeInforme.setCodigoempleadodesde(emplDesde);
+            parametroDeInforme.setCodigoempleadohasta(emplHasta);
+            parametroDeInforme.setFechadesde(fechaDesde);
+            parametroDeInforme.setFechahasta(fechaHasta);
+            parametroDeInforme.getGrupo().setDescripcion(grupo);
+            parametroDeInforme.getLocalizacion().setNombre(estructura);
+            parametroDeInforme.getTipotrabajador().setNombre(tipoTrabajador);
+            parametroDeInforme.getTercero().setNombre(tercero);
+            parametroDeInforme.setEstadosolucionnodo(estado);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formParametros");
+            context.execute("errorRegNew.show()");
+        }
     }
 
     public void posicionCelda(int i) {
@@ -284,15 +308,16 @@ public class ControlNReporteNomina implements Serializable {
             fechaDesde = parametroDeInforme.getFechadesde();
             emplHasta = parametroDeInforme.getCodigoempleadohasta();
             fechaHasta = parametroDeInforme.getFechahasta();
-            grupo = parametroDeInforme.getGrupo().getDescripcion();
             ubiGeo = parametroDeInforme.getUbicaciongeografica().getDescripcion();
             tipoAso = parametroDeInforme.getTipoasociacion().getDescripcion();
             empresa = parametroDeInforme.getEmpresa().getNombre();
+            proceso = parametroDeInforme.getProceso().getDescripcion();
+            asociacion = parametroDeInforme.getAsociacion().getDescripcion();
+            grupo = parametroDeInforme.getGrupo().getDescripcion();
             estructura = parametroDeInforme.getLocalizacion().getNombre();
             tipoTrabajador = parametroDeInforme.getTipotrabajador().getNombre();
             tercero = parametroDeInforme.getTercero().getNombre();
-            proceso = parametroDeInforme.getProceso().getDescripcion();
-            asociacion = parametroDeInforme.getAsociacion().getDescripcion();
+            estado = parametroDeInforme.getEstadosolucionnodo();
         }
     }
 
@@ -361,11 +386,11 @@ public class ControlNReporteNomina implements Serializable {
             System.out.println("actualinforeporte : " + actualInfoReporteTabla.getCodigo());
             System.out.println("actualinforeporte : " + actualInfoReporteTabla.getNombre());
             if (casillaInforReporte == 1) {
-                context.update("formularioDialogos:infoReporteCodigoD");
+                context.update("formParametros:infoReporteCodigoD");
                 context.execute("infoReporteCodigoD.show()");
             }
             if (casillaInforReporte == 2) {
-                context.update("formularioDialogos:infoReporteNombreD");
+                context.update("formParametros:infoReporteNombreD");
                 context.execute("infoReporteNombreD.show()");
             }
             casillaInforReporte = -1;
@@ -1123,41 +1148,39 @@ public class ControlNReporteNomina implements Serializable {
 
     public void defaultPropiedadesParametrosReporte() {
 
-        fechaDesdeParametro = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametro");
-        fechaDesdeParametro.setStyleClass("ui-datepicker, calendarioReportes");
-        RequestContext.getCurrentInstance().update("form:fechaDesdeParametro");
+        color = "black";
+        decoracion = "none";
+        color2 = "black";
+        decoracion2 = "none";
+        RequestContext.getCurrentInstance().update("formParametros");
 
-        fechaHastaParametro = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametro");
-        fechaHastaParametro.setStyleClass("ui-datepicker, calendarioReportes");
-        RequestContext.getCurrentInstance().update("form:fechaHastaParametro");
+        empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
+        empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 130px;height: 10px;width: 90px;");
+        RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
 
-        empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametro");
-        empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 130px;font-size: 11px;height: 10px;width: 90px;");
-        RequestContext.getCurrentInstance().update("form:empleadoDesdeParametro");
+        empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametro");
+        empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 350px;height: 10px;width: 90px;");
+        RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
 
-        empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametro");
-        empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 350px;font-size: 11px;height: 10px;width: 90px;");
-        RequestContext.getCurrentInstance().update("form:empleadoHastaParametro");
+        grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:grupoParametro");
+        grupoParametro.setStyle("position: absolute; top: 85px; left: 130px;height: 10px;width: 90px;");
+        RequestContext.getCurrentInstance().update("formParametros:grupoParametro");
 
-        grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:grupoParametro");
-        grupoParametro.setStyle("position: absolute; top: 85px; left: 130px;font-size: 11px;height: 10px;width: 90px;");
-        RequestContext.getCurrentInstance().update("form:grupoParametro");
+        estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estructuraParametro");
+        estructuraParametro.setStyle("position: absolute; top: 10px; left: 580px;height: 10px;width: 180px;");
+        RequestContext.getCurrentInstance().update("formParametros:estructuraParametro");
 
-        estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estructuraParametro");
-        estructuraParametro.setStyle("position: absolute; top: 10px; left: 580px;font-size: 11px;height: 10px;width: 180px;");
-        RequestContext.getCurrentInstance().update("form:estructuraParametro");
+        tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:tipoTrabajadorParametro");
+        tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 580px;height: 10px;width: 180px;");
+        RequestContext.getCurrentInstance().update("formParametros:tipoTrabajadorParametro");
 
-        tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tipoTrabajadorParametro");
-        tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 580px;font-size: 11px;height: 10px;width: 180px;");
-        RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
+        terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:terceroParametro");
+        terceroParametro.setStyle("position: absolute; top: 58px; left: 580px;height: 10px;width: 180px;");
+        RequestContext.getCurrentInstance().update("formParametros:terceroParametro");
 
-        terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:terceroParametro");
-        terceroParametro.setStyle("position: absolute; top: 58px; left: 580px;font-size: 11px;height: 10px;width: 180px;");
-        RequestContext.getCurrentInstance().update("form:terceroParametro");
-
-        estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estadoParametro");
-        estadoParametro.setStyleClass("position: absolute; top: 65px; left: 30px;font-size: 11px;");
-        RequestContext.getCurrentInstance().update("form:estadoParametro");
+        estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estadoParametro");
+        estadoParametro.setStyleClass("position: absolute; top: 65px; left: 30px;");
+        RequestContext.getCurrentInstance().update("formParametros:estadoParametro");
     }
 
     public void resaltoParametrosParaReporte(int i) {
@@ -1172,57 +1195,57 @@ public class ControlNReporteNomina implements Serializable {
         defaultPropiedadesParametrosReporte();
         if (reporteS.getFecdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Desde -";
-            fechaDesdeParametro = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaDesdeParametro");
-            fechaDesdeParametro.setStyleClass("ui-datepicker, calendarioReportes");
-
+            color = "red";
+            decoracion = "underline";
+            RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteS.getFechasta().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Fecha Hasta -";
-            fechaHastaParametro = (Calendar) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:fechaHastaParametro");
-            fechaHastaParametro.setStyleClass("ui-datepicker, calendarioReportes");
-
+            color2 = "red";
+            decoracion2 = "underline";
+            RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteS.getEmdesde().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Desde -";
-            empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoDesdeParametro");
-            empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 130px;font-size: 11px;height: 10px;width: 90px;text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:empleadoDesdeParametro");
+            empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
+            empleadoDesdeParametro.setStyle("position: absolute; top: 35px; left: 130px;height: 10px;width: 90px;text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
         }
         if (reporteS.getEmhasta().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Empleado Hasta -";
-            empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadoHastaParametro");
-            empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 350px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:empleadoHastaParametro");
+            empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametro");
+            empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 350px;height: 10px;width: 90px; text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
         }
         if (reporteS.getGrupo().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Grupo -";
-            grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:grupoParametro");
-            grupoParametro.setStyle("position: absolute; top: 85px; left: 130px;font-size: 11px;height: 10px;width: 90px; text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:grupoParametro");
+            grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:grupoParametro");
+            grupoParametro.setStyle("position: absolute; top: 85px; left: 130px;height: 10px;width: 90px; text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("formParametros:grupoParametro");
         }
         if (reporteS.getLocalizacion().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Estructura -";
-            estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estructuraParametro");
-            estructuraParametro.setStyle("position: absolute; top: 10px; left: 580px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:estructuraParametro");
+            estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estructuraParametro");
+            estructuraParametro.setStyle("position: absolute; top: 10px; left: 580px;height: 10px;width: 180px; text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("formParametros:estructuraParametro");
         }
         if (reporteS.getTipotrabajador().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Tipo Trabajador -";
-            tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tipoTrabajadorParametro");
-            tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 580px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:tipoTrabajadorParametro");
+            tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:tipoTrabajadorParametro");
+            tipoTrabajadorParametro.setStyle("position: absolute; top: 35px; left: 580px;height: 10px;width: 180px; text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("formParametros:tipoTrabajadorParametro");
         }
         if (reporteS.getTercero().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Tercero -";
-            terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:terceroParametro");
-            terceroParametro.setStyle("position: absolute; top: 58px; left: 580px;font-size: 11px;height: 10px;width: 180px; text-decoration: underline; color: red;");
-            RequestContext.getCurrentInstance().update("form:terceroParametro");
+            terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:terceroParametro");
+            terceroParametro.setStyle("position: absolute; top: 58px; left: 580px;height: 10px;width: 180px; text-decoration: underline; color: red;");
+            RequestContext.getCurrentInstance().update("formParametros:terceroParametro");
         }
         if (reporteS.getEstado().equals("SI")) {
             requisitosReporte = requisitosReporte + "- Estado -";
-            estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:estadoParametro");
+            estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estadoParametro");
             estadoParametro.setStyleClass("selectOneMenuNReporteN");
-            RequestContext.getCurrentInstance().update("form:estadoParametro");
+            RequestContext.getCurrentInstance().update("formParametros:estadoParametro");
         }
     }
 
@@ -1797,4 +1820,35 @@ public class ControlNReporteNomina implements Serializable {
         this.actualInfoReporteTabla = actualInfoReporteTabla;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getDecoracion() {
+        return decoracion;
+    }
+
+    public void setDecoracion(String decoracion) {
+        this.decoracion = decoracion;
+    }
+
+    public String getColor2() {
+        return color2;
+    }
+
+    public void setColor2(String color) {
+        this.color2 = color;
+    }
+
+    public String getDecoracion2() {
+        return decoracion2;
+    }
+
+    public void setDecoracion2(String decoracion) {
+        this.decoracion2 = decoracion;
+    }
 }

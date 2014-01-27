@@ -45,7 +45,7 @@
 
                         <fieldset style="position: absolute; left: 120px; top: 180px; width: 690px; height: 270px; border-radius: 10px; ">
                             <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['reportes']}</strong></legend>
-
+                            <p:ajax event="rowSelect" listener="#{controlNReporteLaboral.seleccionRegistro()}" process="@this" />
                             <p:dataTable id="reportesLaboral" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;"                           
                                          value="#{controlNReporteLaboral.listaIR}" scrollable="true" selectionMode="single" scrollHeight="#{controlNReporteLaboral.altoTabla}" scrollWidth="690"
                                          filteredValue="#{controlNReporteLaboral.filtrarListInforeportesUsuario}" emptyMessage="#{msg['vacio']}"
@@ -393,6 +393,16 @@
                         </p:inputText>
 
                     </fieldset> 
+                    
+                       <p:dialog id="infoReporteCodigoD" header="#{msg['infoReporteCodigoD']}" widgetVar="infoReporteCodigoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReporteLaboral.actualInfoReporteTabla.codigo}" style="overflow: auto; width: 200px; height: 50px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="infoReporteNombreD" header="#{msg['infoReporteNombreD']}" widgetVar="infoReporteNombreD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReporteLaboral.actualInfoReporteTabla.nombre}" style="overflow: auto; width: 200px; height: 50px" readonly="true"/>
+                    </p:dialog>
+
+                    
                 </h:form>
 
 
@@ -442,14 +452,7 @@
                         <p:commandButton id="cancelarRequisitoReporte" value="#{msg['atras']}" onclick="requisitosReporte.hide();" actionListener="#{controlNReporteLaboral.cancelarRequisitosReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
                     
-                    <p:dialog id="infoReporteCodigoD" header="#{msg['infoReporteCodigoD']}" widgetVar="infoReporteCodigoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlNReporteLaboral.actualInfoReporteTabla.codigo}" style="overflow: auto; width: 200px; height: 50px" readonly="true"/>
-                    </p:dialog>
-                    
-                    <p:dialog id="infoReporteNombreD" header="#{msg['infoReporteNombreD']}" widgetVar="infoReporteNombreD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlNReporteLaboral.actualInfoReporteTabla.nombre}" style="overflow: auto; width: 200px; height: 50px" readonly="true"/>
-                    </p:dialog>
-
+                 
                 </h:form>
             </ui:define>
         </ui:composition>

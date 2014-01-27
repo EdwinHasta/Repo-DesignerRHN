@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposSueldos.findAll", query = "SELECT t FROM TiposSueldos t")})
 public class TiposSueldos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -80,6 +81,9 @@ public class TiposSueldos implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -161,5 +165,5 @@ public class TiposSueldos implements Serializable {
     public String toString() {
         return "Entidades.Tipossueldos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

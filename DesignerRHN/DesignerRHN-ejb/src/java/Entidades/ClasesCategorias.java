@@ -32,13 +32,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ClasesCategorias.findAll", query = "SELECT c FROM ClasesCategorias c")})
 public class ClasesCategorias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -54,21 +55,21 @@ public class ClasesCategorias implements Serializable {
     public ClasesCategorias() {
     }
 
-    public ClasesCategorias(BigDecimal secuencia) {
+    public ClasesCategorias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public ClasesCategorias(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public ClasesCategorias(BigInteger secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -81,6 +82,9 @@ public class ClasesCategorias implements Serializable {
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -121,5 +125,5 @@ public class ClasesCategorias implements Serializable {
     public String toString() {
         return "Entidades.Clasescategorias[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

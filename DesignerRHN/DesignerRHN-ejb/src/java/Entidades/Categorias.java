@@ -40,14 +40,9 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private BigInteger codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @JoinColumn(name = "TIPOSUELDO", referencedColumnName = "SECUENCIA")
@@ -65,21 +60,21 @@ public class Categorias implements Serializable {
     public Categorias() {
     }
 
-    public Categorias(BigDecimal secuencia) {
+    public Categorias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Categorias(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public Categorias(BigInteger secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -92,6 +87,9 @@ public class Categorias implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 

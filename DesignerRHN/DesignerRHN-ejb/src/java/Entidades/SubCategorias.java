@@ -38,7 +38,7 @@ public class SubCategorias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -54,21 +54,21 @@ public class SubCategorias implements Serializable {
     public SubCategorias() {
     }
 
-    public SubCategorias(BigDecimal secuencia) {
+    public SubCategorias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public SubCategorias(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public SubCategorias(BigInteger secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -81,6 +81,9 @@ public class SubCategorias implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 
