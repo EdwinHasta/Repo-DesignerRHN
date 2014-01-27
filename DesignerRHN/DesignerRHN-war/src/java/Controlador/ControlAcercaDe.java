@@ -8,7 +8,6 @@ package Controlador;
 import Entidades.Empresas;
 import InterfaceAdministrar.AdministrarPapelesInterface;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -27,16 +26,12 @@ public class ControlAcercaDe implements Serializable {
     AdministrarPapelesInterface administrarPapeles;
 
     private boolean aceptar;
-    //AutoCompletar
-    private boolean permitirIndex;
 
 //EMPRESA
     private List<Empresas> listaEmpresas;
     private List<Empresas> filtradoListaEmpresas;
 
     private Empresas empresaSeleccionada;
-    private int banderaModificacionEmpresa;
-    private int indiceEmpresaMostrada;
     private String correo;
     private String version;
     private String grh;
@@ -50,10 +45,8 @@ public class ControlAcercaDe implements Serializable {
      * Creates a new instance of ControlAcercaDe
      */
     public ControlAcercaDe() {
-        permitirIndex = true;
         listaEmpresas = null;
         empresaSeleccionada = null;
-        indiceEmpresaMostrada = 0;
         aceptar = true;
         filtradoListaEmpresas = null;
         correo = "www.nomina.com.co";
@@ -79,7 +72,7 @@ public class ControlAcercaDe implements Serializable {
                 + "Java JEE 6";
         correo1 = "gerencia@nomina.com.co";
         correo2 = "gerenciadesigner@hotmail.com";
-        derechos="1998 - 2014 Todos los Derechos Reservados";
+        derechos = "1998 - 2014 Todos los Derechos Reservados";
     }
 
     public void lovEmpresas() {
@@ -101,12 +94,10 @@ public class ControlAcercaDe implements Serializable {
         context.reset("formularioDialogos:lovEmpresas:globalFilter");
         context.update("formularioDialogos:lovEmpresas");
         context.update("form:PanelTotal");
-        banderaModificacionEmpresa = 0;
     }
 
     public void cancelarCambioEmpresa() {
         filtradoListaEmpresas = null;
-        banderaModificacionEmpresa = 0;
     }
 
     public List<Empresas> getListaEmpresas() {
