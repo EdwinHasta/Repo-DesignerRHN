@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -52,7 +53,7 @@ public class ControlCategoriaEsca implements Serializable {
     private int tipoActualizacion;
     //Activo/Desactivo Crtl + F11
     private int bandera;
-    private Column escalafonCodigo, escalafonCategoria, escalafonSubCategoria;
+    private Column categoriaCodigo, categoriaDescripcion, categoriaClase, categoriaTipo, categoriaConcepto;
     //Otros
     private boolean aceptar;
     private int index;
@@ -116,6 +117,7 @@ public class ControlCategoriaEsca implements Serializable {
                 listaCategorias.get(indice).setCodigo(auxCodigo);
                 listaCategorias.get(indice).setDescripcion(auxDescripcion);
                 RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosCategoria");
                 context.execute("errorRegNew.show()");
             } else {
                 cambiosPagina = false;
@@ -140,6 +142,7 @@ public class ControlCategoriaEsca implements Serializable {
                 filtrarListaCategorias.get(indice).setCodigo(auxCodigo);
                 filtrarListaCategorias.get(indice).setDescripcion(auxDescripcion);
                 RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosCategoria");
                 context.execute("errorRegNew.show()");
             } else {
                 cambiosPagina = false;
@@ -167,35 +170,58 @@ public class ControlCategoriaEsca implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CLASE")) {
-            if (tipoLista == 0) {
-                listaCategorias.get(indice).getClasecategoria().setDescripcion(claseCategoria);
-            } else {
-                filtrarListaCategorias.get(indice).getClasecategoria().setDescripcion(claseCategoria);
-            }
-            for (int i = 0; i < lovClasesCategorias.size(); i++) {
-                if (lovClasesCategorias.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaCategorias.get(indice).setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
+                    listaCategorias.get(indice).getClasecategoria().setDescripcion(claseCategoria);
                 } else {
-                    filtrarListaCategorias.get(indice).setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
+                    filtrarListaCategorias.get(indice).getClasecategoria().setDescripcion(claseCategoria);
                 }
-                lovClasesCategorias.clear();
-                getLovClasesCategorias();
-                cambiosPagina = false;
-                context.update("form:ACEPTAR");
-            } else {
                 permitirIndex = false;
                 context.update("form:ClaseCategoriaDialogo");
                 context.execute("ClaseCategoriaDialogo.show()");
                 tipoActualizacion = 0;
+            } else {
+                if (tipoLista == 0) {
+                    listaCategorias.get(indice).getClasecategoria().setDescripcion(claseCategoria);
+                } else {
+                    filtrarListaCategorias.get(indice).getClasecategoria().setDescripcion(claseCategoria);
+                }
+                for (int i = 0; i < lovClasesCategorias.size(); i++) {
+                    if (lovClasesCategorias.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaCategorias.get(indice).setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaCategorias.get(indice).setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
+                    }
+                    lovClasesCategorias.clear();
+                    getLovClasesCategorias();
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("form:ClaseCategoriaDialogo");
+                    context.execute("ClaseCategoriaDialogo.show()");
+                    tipoActualizacion = 0;
+                }
             }
         }
         if (confirmarCambio.equalsIgnoreCase("TIPO")) {
+            if (valorConfirmar.isEmpty()) {
+                if (tipoLista == 0) {
+                    listaCategorias.get(indice).getTiposueldo().setDescripcion(tipoSueldo);
+                } else {
+                    filtrarListaCategorias.get(indice).getTiposueldo().setDescripcion(tipoSueldo);
+                }
+                permitirIndex = false;
+                context.update("form:TipoSueldoDialogo");
+                context.execute("TipoSueldoDialogo.show()");
+                tipoActualizacion = 0;
+            }
             if (tipoLista == 0) {
                 listaCategorias.get(indice).getTiposueldo().setDescripcion(tipoSueldo);
             } else {
@@ -225,32 +251,37 @@ public class ControlCategoriaEsca implements Serializable {
             }
         }
         if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
-            if (tipoLista == 0) {
-                listaCategorias.get(indice).getConcepto().setDescripcion(concepto);
+            if (valorConfirmar.isEmpty()) {
+                listaCategorias.get(indice).setConcepto(new Conceptos());
+                coincidencias = 1;
             } else {
-                filtrarListaCategorias.get(indice).getConcepto().setDescripcion(concepto);
-            }
-            for (int i = 0; i < lovConceptos.size(); i++) {
-                if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaCategorias.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    listaCategorias.get(indice).getConcepto().setDescripcion(concepto);
                 } else {
-                    filtrarListaCategorias.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    filtrarListaCategorias.get(indice).getConcepto().setDescripcion(concepto);
                 }
-                lovConceptos.clear();
-                getLovConceptos();
-                cambiosPagina = false;
-                context.update("form:ACEPTAR");
-            } else {
-                permitirIndex = false;
-                context.update("form:ConceptoDialogo");
-                context.execute("ConceptoDialogo.show()");
-                tipoActualizacion = 0;
+                for (int i = 0; i < lovConceptos.size(); i++) {
+                    if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaCategorias.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaCategorias.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    }
+                    lovConceptos.clear();
+                    getLovConceptos();
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("form:ConceptoDialogo");
+                    context.execute("ConceptoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
             }
         }
         if (coincidencias == 1) {
@@ -314,101 +345,139 @@ public class ControlCategoriaEsca implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CLASE")) {
-            if (tipoNuevo == 1) {
-                nuevaCategoria.getClasecategoria().setDescripcion(claseCategoria);
-            } else if (tipoNuevo == 2) {
-                duplicarCategoria.getClasecategoria().setDescripcion(claseCategoria);
-            }
-            for (int i = 0; i < lovClasesCategorias.size(); i++) {
-                if (lovClasesCategorias.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaCategoria.setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaClaseCategoria");
+                    nuevaCategoria.getClasecategoria().setDescripcion(claseCategoria);
+                     context.update("formularioDialogos:nuevaClaseCategoria");
                 } else if (tipoNuevo == 2) {
-                    duplicarCategoria.setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
+                    duplicarCategoria.getClasecategoria().setDescripcion(claseCategoria);
                     context.update("formularioDialogos:duplicarClaseCategoria");
                 }
-                lovClasesCategorias.clear();
-                getLovClasesCategorias();
-            } else {
+                tipoActualizacion = tipoNuevo;
                 context.update("form:ClaseCategoriaDialogo");
                 context.execute("ClaseCategoriaDialogo.show()");
-                tipoActualizacion = tipoNuevo;
+            } else {
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaClaseCategoria");
+                    nuevaCategoria.getClasecategoria().setDescripcion(claseCategoria);
                 } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarClaseCategoria");
+                    duplicarCategoria.getClasecategoria().setDescripcion(claseCategoria);
+                }
+                for (int i = 0; i < lovClasesCategorias.size(); i++) {
+                    if (lovClasesCategorias.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaCategoria.setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaClaseCategoria");
+                    } else if (tipoNuevo == 2) {
+                        duplicarCategoria.setClasecategoria(lovClasesCategorias.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarClaseCategoria");
+                    }
+                    lovClasesCategorias.clear();
+                    getLovClasesCategorias();
+                } else {
+                    context.update("form:ClaseCategoriaDialogo");
+                    context.execute("ClaseCategoriaDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaClaseCategoria");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarClaseCategoria");
+                    }
                 }
             }
         }
         if (confirmarCambio.equalsIgnoreCase("TIPO")) {
-            if (tipoNuevo == 1) {
-                nuevaCategoria.getTiposueldo().setDescripcion(tipoSueldo);
-            } else if (tipoNuevo == 2) {
-                duplicarCategoria.getTiposueldo().setDescripcion(tipoSueldo);
-            }
-            for (int i = 0; i < lovTiposSueldos.size(); i++) {
-                if (lovTiposSueldos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaCategoria.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
+                    nuevaCategoria.getTiposueldo().setDescripcion(tipoSueldo);
                     context.update("formularioDialogos:nuevaTipoSueldo");
                 } else if (tipoNuevo == 2) {
-                    duplicarCategoria.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
+                    duplicarCategoria.getTiposueldo().setDescripcion(tipoSueldo);
                     context.update("formularioDialogos:duplicarTipoSueldo");
                 }
-                lovTiposSueldos.clear();
-                getLovTiposSueldos();
-            } else {
                 context.update("form:TipoSueldoDialogo");
                 context.execute("TipoSueldoDialogo.show()");
                 tipoActualizacion = tipoNuevo;
+            } else {
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaTipoSueldo");
+                    nuevaCategoria.getTiposueldo().setDescripcion(tipoSueldo);
                 } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarTipoSueldo");
+                    duplicarCategoria.getTiposueldo().setDescripcion(tipoSueldo);
+                }
+                for (int i = 0; i < lovTiposSueldos.size(); i++) {
+                    if (lovTiposSueldos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaCategoria.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaTipoSueldo");
+                    } else if (tipoNuevo == 2) {
+                        duplicarCategoria.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarTipoSueldo");
+                    }
+                    lovTiposSueldos.clear();
+                    getLovTiposSueldos();
+                } else {
+                    context.update("form:TipoSueldoDialogo");
+                    context.execute("TipoSueldoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaTipoSueldo");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarTipoSueldo");
+                    }
                 }
             }
         }
         if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
-            if (tipoNuevo == 1) {
-                nuevaCategoria.getConcepto().setDescripcion(tipoSueldo);
-            } else if (tipoNuevo == 2) {
-                duplicarCategoria.getConcepto().setDescripcion(tipoSueldo);
-            }
-            for (int i = 0; i < lovConceptos.size(); i++) {
-                if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaCategoria.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    nuevaCategoria.setConcepto(new Conceptos());
                     context.update("formularioDialogos:nuevaConcepto");
                 } else if (tipoNuevo == 2) {
-                    duplicarCategoria.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    duplicarCategoria.setConcepto(new Conceptos());
                     context.update("formularioDialogos:duplicarConcepto");
                 }
-                lovConceptos.clear();
+                lovConceptos = null;
                 getLovConceptos();
             } else {
-                context.update("form:ConceptoDialogo");
-                context.execute("ConceptoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaConcepto");
+                    nuevaCategoria.getConcepto().setDescripcion(tipoSueldo);
                 } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarConcepto");
+                    duplicarCategoria.getConcepto().setDescripcion(tipoSueldo);
+                }
+                for (int i = 0; i < lovConceptos.size(); i++) {
+                    if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaCategoria.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaConcepto");
+                    } else if (tipoNuevo == 2) {
+                        duplicarCategoria.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarConcepto");
+                    }
+                    lovConceptos.clear();
+                    getLovConceptos();
+                } else {
+                    context.update("form:ConceptoDialogo");
+                    context.execute("ConceptoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaConcepto");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarConcepto");
+                    }
                 }
             }
         }
@@ -488,7 +557,10 @@ public class ControlCategoriaEsca implements Serializable {
             cambiosPagina = true;
             listaCategorias = null;
             getListaCategorias();
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:growl");
             context.update("form:ACEPTAR");
             context.update("form:datosCategoria");
             guardado = true;
@@ -507,12 +579,16 @@ public class ControlCategoriaEsca implements Serializable {
         if (bandera == 1) {
             //CERRAR FILTRADO
             algoTabla = "200";
-            escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCodigo");
-            escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
-            escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonSubCategoria");
-            escalafonSubCategoria.setFilterStyle("display: none; visibility: hidden;");
-            escalafonCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCategoria");
-            escalafonCategoria.setFilterStyle("display: none; visibility: hidden;");
+            categoriaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaCodigo");
+            categoriaCodigo.setFilterStyle("display: none; visibility: hidden;");
+            categoriaClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaClase");
+            categoriaClase.setFilterStyle("display: none; visibility: hidden;");
+            categoriaDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaDescripcion");
+            categoriaDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            categoriaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaTipo");
+            categoriaTipo.setFilterStyle("display: none; visibility: hidden;");
+            categoriaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaConcepto");
+            categoriaConcepto.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosCategoria");
             bandera = 0;
             filtrarListaCategorias = null;
@@ -581,12 +657,16 @@ public class ControlCategoriaEsca implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 algoTabla = "200";
-                escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCodigo");
-                escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
-                escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonSubCategoria");
-                escalafonSubCategoria.setFilterStyle("display: none; visibility: hidden;");
-                escalafonCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCategoria");
-                escalafonCategoria.setFilterStyle("display: none; visibility: hidden;");
+                categoriaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaCodigo");
+                categoriaCodigo.setFilterStyle("display: none; visibility: hidden;");
+                categoriaClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaClase");
+                categoriaClase.setFilterStyle("display: none; visibility: hidden;");
+                categoriaDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaDescripcion");
+                categoriaDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                categoriaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaTipo");
+                categoriaTipo.setFilterStyle("display: none; visibility: hidden;");
+                categoriaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaConcepto");
+                categoriaConcepto.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosCategoria");
                 bandera = 0;
                 filtrarListaCategorias = null;
@@ -688,12 +768,16 @@ public class ControlCategoriaEsca implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 algoTabla = "200";
-                escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCodigo");
-                escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
-                escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonSubCategoria");
-                escalafonSubCategoria.setFilterStyle("display: none; visibility: hidden;");
-                escalafonCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCategoria");
-                escalafonCategoria.setFilterStyle("display: none; visibility: hidden;");
+                categoriaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaCodigo");
+                categoriaCodigo.setFilterStyle("display: none; visibility: hidden;");
+                categoriaClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaClase");
+                categoriaClase.setFilterStyle("display: none; visibility: hidden;");
+                categoriaDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaDescripcion");
+                categoriaDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                categoriaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaTipo");
+                categoriaTipo.setFilterStyle("display: none; visibility: hidden;");
+                categoriaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaConcepto");
+                categoriaConcepto.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosCategoria");
                 bandera = 0;
                 filtrarListaCategorias = null;
@@ -753,8 +837,8 @@ public class ControlCategoriaEsca implements Serializable {
                 } else {
                     listaCategoriasBorrar.add(filtrarListaCategorias.get(index));
                 }
-                int VCIndex = listaCategorias.indexOf(filtrarListaCategorias.get(index));
-                listaCategorias.remove(VCIndex);
+                int catIndex = listaCategorias.indexOf(filtrarListaCategorias.get(index));
+                listaCategorias.remove(catIndex);
                 filtrarListaCategorias.remove(index);
             }
             RequestContext context = RequestContext.getCurrentInstance();
@@ -775,25 +859,34 @@ public class ControlCategoriaEsca implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
+
         if (bandera == 0) {
             algoTabla = "178";
-            escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCodigo");
-            escalafonCodigo.setFilterStyle("width: 100px");
-            escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonSubCategoria");
-            escalafonSubCategoria.setFilterStyle("width: 100px");
-            escalafonCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCategoria");
-            escalafonCategoria.setFilterStyle("width: 100px");
+            categoriaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaCodigo");
+            categoriaCodigo.setFilterStyle("width: 30px");
+            categoriaClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaClase");
+            categoriaClase.setFilterStyle("width: 100px");
+            categoriaDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaDescripcion");
+            categoriaDescripcion.setFilterStyle("width: 100px");
+            categoriaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaTipo");
+            categoriaTipo.setFilterStyle("width: 100px");
+            categoriaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaConcepto");
+            categoriaConcepto.setFilterStyle("width: 100px");
             RequestContext.getCurrentInstance().update("form:datosCategoria");
             bandera = 1;
         } else if (bandera == 1) {
             //CERRAR FILTRADO
             algoTabla = "200";
-            escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCodigo");
-            escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
-            escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonSubCategoria");
-            escalafonSubCategoria.setFilterStyle("display: none; visibility: hidden;");
-            escalafonCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCategoria");
-            escalafonCategoria.setFilterStyle("display: none; visibility: hidden;");
+            categoriaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaCodigo");
+            categoriaCodigo.setFilterStyle("display: none; visibility: hidden;");
+            categoriaClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaClase");
+            categoriaClase.setFilterStyle("display: none; visibility: hidden;");
+            categoriaDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaDescripcion");
+            categoriaDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            categoriaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaTipo");
+            categoriaTipo.setFilterStyle("display: none; visibility: hidden;");
+            categoriaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:categoriaConcepto");
+            categoriaConcepto.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosCategoria");
             bandera = 0;
             filtrarListaCategorias = null;
@@ -809,12 +902,12 @@ public class ControlCategoriaEsca implements Serializable {
         if (bandera == 1) {
             //CERRAR FILTRADO
             algoTabla = "200";
-            escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCodigo");
-            escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
-            escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonSubCategoria");
-            escalafonSubCategoria.setFilterStyle("display: none; visibility: hidden;");
-            escalafonCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCategoria");
-            escalafonCategoria.setFilterStyle("display: none; visibility: hidden;");
+            categoriaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCodigo");
+            categoriaCodigo.setFilterStyle("display: none; visibility: hidden;");
+            categoriaClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonSubCategoria");
+            categoriaClase.setFilterStyle("display: none; visibility: hidden;");
+            categoriaDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCategoria:escalafonCategoria");
+            categoriaDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosCategoria");
             bandera = 0;
             filtrarListaCategorias = null;
@@ -1148,9 +1241,15 @@ public class ControlCategoriaEsca implements Serializable {
         try {
             if (listaCategorias == null) {
                 return listaCategorias = administrarCategorias.listaCategorias();
-            } else {
-                return listaCategorias;
             }
+            if (!listaCategorias.isEmpty()) {
+                for (int i = 0; i < listaCategorias.size(); i++) {
+                    if (listaCategorias.get(i).getConcepto() == null) {
+                        listaCategorias.get(i).setConcepto(new Conceptos());
+                    }
+                }
+            }
+            return listaCategorias;
         } catch (Exception e) {
             System.out.println("Error...!! getListaCategorias ");
             return null;
