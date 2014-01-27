@@ -16,42 +16,49 @@ import java.util.List;
  * @author betelgeuse
  */
 public interface AdministrarCategoriasInterface {
+
     /**
-     * Método encargado de recuperar todos las Categorias.
+     * Método encargado de recuperar todas las Categorias.
      *
      * @return Retorna una lista de Categorias.
      */
     public List<Categorias> listaCategorias();
+
     /**
      * Método encargado de crear Categorias.
      *
      * @param listaC Lista de las Categorias que se van a crear.
      */
     public void crearCategorias(List<Categorias> listaC);
+
     /**
      * Método encargado de editar Categorias.
      *
      * @param listaC Lista de las Categorias que se van a modificar.
      */
     public void editarCategorias(List<Categorias> listaC);
+
     /**
      * Método encargado de borrar Categorias.
      *
      * @param listaC Lista de las Categorias que se van a eliminar.
      */
     public void borrarCategorias(List<Categorias> listaC);
+
     /**
      * Método encargado de recuperar todos las ClasesCategorias.
      *
      * @return Retorna una lista de ClasesCategorias.
      */
     public List<ClasesCategorias> lovClasesCategorias();
+
     /**
      * Método encargado de recuperar todos las ClasesCategorias.
      *
      * @return Retorna una lista de ClasesCategorias.
      */
     public List<TiposSueldos> lovTiposSueldos();
+
     /**
      * Método encargado de recuperar todos las ClasesCategorias.
      *
