@@ -13,13 +13,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposPensionados'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposPensionados' de
+ * la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTiposPensionados implements PersistenciaTiposPensionadosInterface{
+public class PersistenciaTiposPensionados implements PersistenciaTiposPensionadosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -54,7 +56,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     }
 
     @Override
-    public List<TiposPensionados> buscarTiposPensionados() {
+    public List<TiposPensionados> consultarTiposPensionados() {
         try {
             List<TiposPensionados> tiposPensionadosLista = (List<TiposPensionados>) em.createNamedQuery("TiposPensionados.findAll").getResultList();
             return tiposPensionadosLista;
@@ -63,9 +65,9 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
             return null;
         }
     }
-    
+
     @Override
-    public TiposPensionados buscarTipoPensionSecuencia(BigInteger secuencia) {
+    public TiposPensionados consultarTipoPensionado(BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT tp FROM TiposPensionados tp WHERE tp.secuencia = :secuencia");
@@ -76,6 +78,22 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
             System.out.println("Error buscarTipoPensionSecuencia PersistenciaTiposPensionados");
             TiposPensionados tipoP = null;
             return tipoP;
+        }
+    }
+
+    @Override
+    public BigInteger contarPensionadosTipoPension(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM pensionados WHERE tipopensionado=?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador PersistenciaMotivosRetiros  contarRetiradosClasePension  " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosRetiros   contarRetiradosClasePension. " + e);
+            return retorno;
         }
     }
 }

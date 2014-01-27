@@ -5,6 +5,7 @@ package Persistencia;
 
 import Entidades.TiposDocumentos;
 import InterfacePersistencia.PersistenciaTiposDocumentosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,12 +14,14 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosInterface{
+public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -26,7 +29,34 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     private EntityManager em;
 
     @Override
-    public List<TiposDocumentos> tiposDocumentos() {
+    public void crear(TiposDocumentos tiposDocumentos) {
+        try {
+            em.persist(tiposDocumentos);
+        } catch (Exception e) {
+            System.out.println("Error crear PersistenciaTiposDocumentos");
+        }
+    }
+
+    @Override
+    public void editar(TiposDocumentos tiposDocumentos) {
+        try {
+            em.merge(tiposDocumentos);
+        } catch (Exception e) {
+            System.out.println("Error editar PersistenciaTiposDocumentos");
+        }
+    }
+
+    @Override
+    public void borrar(TiposDocumentos tiposDocumentos) {
+        try {
+            em.remove(em.merge(tiposDocumentos));
+        } catch (Exception e) {
+            System.out.println("Error borrar PersistenciaTiposDocumentos");
+        }
+    }
+
+    @Override
+    public List<TiposDocumentos> consultarTiposDocumentos() {
         try {
             Query query = em.createQuery("SELECT td FROM TiposDocumentos td ORDER BY td.nombrecorto");
             List<TiposDocumentos> listaTiposDocumentos = query.getResultList();
@@ -34,6 +64,52 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposDocumentos.ciudades " + e);
             return null;
+        }
+    }
+
+    @Override
+    public TiposDocumentos consultarTipoDocumento(BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT tp FROM TiposDocumentos tp WHERE tp.secuencia = :secuencia");
+            query.setParameter("secuencia", secuencia);
+            TiposDocumentos tiposDescansos = (TiposDocumentos) query.getSingleResult();
+            return tiposDescansos;
+        } catch (Exception e) {
+            System.out.println("Error buscarTiposDocumentosSecuencia PersistenciaTiposDocumentos");
+            TiposDocumentos tiposDescansos = null;
+            return tiposDescansos;
+        }
+    }
+
+    @Override
+    public BigInteger contarCodeudoresTipoDocumento(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM codeudores WHERE tipodocumento=?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaTiposDocumentos contarCodeudoresTipoDocumento persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaTiposDocumentos contarCodeudoresTipoDocumento. " + e);
+            return retorno;
+        }
+    }
+    
+    @Override
+    public BigInteger contarPersonasTipoDocumento(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM personas WHERE tipodocumento=?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaTiposDocumentos contarCodeudoresTipoDocumento persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaTiposDocumentos contarCodeudoresTipoDocumento. " + e);
+            return retorno;
         }
     }
 }

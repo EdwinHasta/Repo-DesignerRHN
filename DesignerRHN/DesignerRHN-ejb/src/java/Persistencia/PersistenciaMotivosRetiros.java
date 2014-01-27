@@ -6,6 +6,7 @@ package Persistencia;
 import Entidades.MotivosRetiros;
 import InterfacePersistencia.PersistenciaMotivosRetirosInterface;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,12 +15,14 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosRetiros'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosRetiros' de la
+ * base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -39,17 +42,23 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     @Override
     public void borrar(MotivosRetiros motivosRetiros) {
         em.remove(em.merge(motivosRetiros));
-    }  
-
-    @Override
-    public List<MotivosRetiros> buscarMotivosRetiros() {
-
-        List<MotivosRetiros> reformaLista = (List<MotivosRetiros>) em.createNamedQuery("MotivosRetiros.findAll").getResultList();
-        return reformaLista;
     }
 
     @Override
-    public MotivosRetiros buscarMotivoRetiroSecuencia(BigDecimal secuencia) {
+    public List<MotivosRetiros> consultarMotivosRetiros() {
+        try {
+            Query query = em.createQuery("SELECT l FROM MotivosRetiros  l ORDER BY l.codigo ASC ");
+            List<MotivosRetiros> listTiposViajeros = query.getResultList();
+            return listTiposViajeros;
+        } catch (Exception e) {
+            System.err.println("ERROR PersistenciaTiposViajeros ConsultarTiposViajeros ERROR :" + e);
+            return null;
+        }
+
+    }
+
+    @Override
+    public MotivosRetiros consultarMotivoRetiro(BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT mr FROM MotivosRetiros mr WHERE mr.secuencia = :secuencia");
@@ -62,4 +71,65 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
         }
 
     }
+
+    public BigInteger contarHVExperienciasLaboralesMotivoRetiro(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM hvexperienciaslaborales WHERE motivoretiro = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador PersistenciaMotivosRetiros  contarHVExperienciasLaboralesMotivoRetiro  " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosRetiros   contarHVExperienciasLaboralesMotivoRetiro. " + e);
+            return retorno;
+        }
+    }
+
+    public BigInteger contarNovedadesSistemasMotivoRetiro(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM novedadessistema WHERE motivoretiro = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador PersistenciaMotivosRetiros  contarNovedadesSistemasMotivoRetiro  " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosRetiros   contarNovedadesSistemasMotivoRetiro. " + e);
+            return retorno;
+        }
+    }
+
+    public BigInteger contarRetiMotivosRetirosMotivoRetiro(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM parametroscambiosmasivos WHERE retimotivoretiro = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador PersistenciaMotivosRetiros  contarRetiMotivosRetirosMotivoRetiro  " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosRetiros   contarRetiMotivosRetirosMotivoRetiro. " + e);
+            return retorno;
+        }
+    }
+
+    public BigInteger contarRetiradosMotivoRetiro(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM retirados WHERE motivoretiro = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador PersistenciaMotivosRetiros  contarRetiRetiradosMotivoRetiro  " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosRetiros   contarRetiRetiradosMotivoRetiro. " + e);
+            return retorno;
+        }
+    }
+
 }

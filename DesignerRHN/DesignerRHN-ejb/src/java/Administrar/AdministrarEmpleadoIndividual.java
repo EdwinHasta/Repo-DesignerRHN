@@ -339,7 +339,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public List<TiposDocumentos> tiposDocumentos() {
         List<TiposDocumentos> listaTiposDocumentos;
-        listaTiposDocumentos = persistenciaTiposDocumentos.tiposDocumentos();
+        listaTiposDocumentos = persistenciaTiposDocumentos.consultarTiposDocumentos();
         return listaTiposDocumentos;
     }
 

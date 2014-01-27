@@ -51,7 +51,7 @@ public class ControlAcercaDe implements Serializable {
         filtradoListaEmpresas = null;
         correo = "www.nomina.com.co";
         version = "Version 2014";
-        grh = "Gerencia Integral de Recuersos Humanos       y Administración de Nómina";
+        grh = "Gerencia Integral de Recursos Humanos       y Administración de Nómina";
         licensiaDeUso = "Acme Corp";
         textoCopyRight = "ADVERTENCIA:\n"
                 + "Este programa está protegido por leyes y tratados nacionales e internacionales. La reproducción o distribución no autorizada de este programa o de parte del mismo dará lugar a graves penalizaciones tanto civiles como penales y será objeto de cuantas acciones judiciales correspondan en derecho.\n"
@@ -71,7 +71,7 @@ public class ControlAcercaDe implements Serializable {
                 + "JPA 2 implementación EclipseLink Versión 2.5.0 \n"
                 + "Java JEE 6";
         correo1 = "gerencia@nomina.com.co";
-        correo2 = "gerenciadesigner@hotmail.com";
+        correo2 = "www.nomina.com.co/wiki";
         derechos = "1998 - 2014 Todos los Derechos Reservados";
     }
 
@@ -102,11 +102,13 @@ public class ControlAcercaDe implements Serializable {
 
     public List<Empresas> getListaEmpresas() {
         try {
+            RequestContext context = RequestContext.getCurrentInstance();
             if (listaEmpresas == null) {
                 listaEmpresas = administrarPapeles.consultarEmpresas();
                 if (!listaEmpresas.isEmpty()) {
                     empresaSeleccionada = listaEmpresas.get(0);
                 }
+                context.update("form:PanelTotal");
             }
             return listaEmpresas;
         } catch (Exception e) {
@@ -136,6 +138,12 @@ public class ControlAcercaDe implements Serializable {
     }
 
     public Empresas getEmpresaSeleccionada() {
+        if (empresaSeleccionada == null) {
+            getListaEmpresas();
+            RequestContext context = RequestContext.getCurrentInstance();
+            System.out.println("EMPRESA SELECCIONADA  : " + empresaSeleccionada.getNombre());
+            context.update("form:PanelTotal");
+        }
         return empresaSeleccionada;
     }
 

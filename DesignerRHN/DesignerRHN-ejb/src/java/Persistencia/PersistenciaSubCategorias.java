@@ -11,7 +11,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless.<br>
@@ -21,9 +20,9 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author Andres Pineda
  */
 @Stateless
-public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInterface{
+public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInterface {
 
-      /**
+    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
@@ -57,14 +56,20 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     }
 
     @Override
-    public List<SubCategorias> buscarSubCategorias() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(SubCategorias.class));
-        return em.createQuery(cq).getResultList();
+    public List<SubCategorias> consultarSubCategorias() {
+        try {
+            Query query = em.createQuery("SELECT l FROM SubCategorias  l ORDER BY l.codigo ASC ");
+            List<SubCategorias> listSubCategorias = query.getResultList();
+            return listSubCategorias;
+        } catch (Exception e) {
+            System.err.println("ERROR PersistenciaSubCategorias ConsultarSubCategorias ERROR :" + e);
+            return null;
+        }
+
     }
 
     @Override
-    public SubCategorias buscarSubCategoriaSecuencia(BigInteger secSubCategoria) {
+    public SubCategorias consultarSubCategoria(BigInteger secSubCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT sc FROM SubCategorias sc WHERE sc.secuencia=:secuencia");
             query.setParameter("secuencia", secSubCategoria);
@@ -72,6 +77,22 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
             return subCategorias;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    @Override
+    public BigInteger contarEscalafones(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM escalafones WHERE subcategoria = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaSubCategorias contarEscalafones persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaSubCategorias contarEscalafones. " + e);
+            return retorno;
         }
     }
 }
