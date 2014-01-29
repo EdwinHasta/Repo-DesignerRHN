@@ -8,6 +8,7 @@ import Entidades.Empleados;
 import Entidades.MotivosRetiros;
 import Entidades.MotivosDefinitivas;
 import Entidades.NovedadesSistema;
+import Entidades.Vacaciones;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -32,5 +33,9 @@ public interface AdministrarNovedadesSistemaInterface {
     public List<MotivosDefinitivas> lovMotivos();
      
     public List<MotivosRetiros> lovRetiros();
+    
+    public List<NovedadesSistema> vacacionesEmpleado(BigInteger secuenciaEmpleado);
+    
+    public List<Vacaciones> periodosEmpleado(BigInteger secuenciaEmpleado);
     
 }

@@ -37,4 +37,7 @@ public interface PersistenciaNovedadesSistemaInterface {
      * @return Retorna una lista de NovedadesSistema.
      */
     public List<NovedadesSistema> novedadesEmpleado(BigInteger secuenciaEmpleado);
+    
+    public List<NovedadesSistema> novedadesEmpleadoVacaciones(BigInteger secuenciaEmpleado);
+    
     }
