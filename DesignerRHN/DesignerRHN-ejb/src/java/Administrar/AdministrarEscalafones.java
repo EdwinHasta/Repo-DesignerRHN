@@ -110,7 +110,7 @@ public class AdministrarEscalafones implements AdministrarEscalafonesInterface{
     @Override
     public List<SubCategorias> lovSubCategorias() {
         try {
-            List<SubCategorias> lista = persistenciaSubCategorias.buscarSubCategorias();
+            List<SubCategorias> lista = persistenciaSubCategorias.consultarSubCategorias();
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovSubCategorias Admi : " + e.toString());

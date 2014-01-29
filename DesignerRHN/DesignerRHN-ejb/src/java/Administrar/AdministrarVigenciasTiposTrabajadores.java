@@ -181,7 +181,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<MotivosRetiros> motivosRetiros() {
         try {
-            motivosRetiros = persistenciaMotivosRetiros.buscarMotivosRetiros();
+            motivosRetiros = persistenciaMotivosRetiros.consultarMotivosRetiros();
             return motivosRetiros;
         } catch (Exception e) {
             return null;
@@ -189,9 +189,9 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     }
 
     @Override
-    public MotivosRetiros motivoRetiroCodigo(BigDecimal codMotivoRetiro) {
+    public MotivosRetiros motivoRetiroCodigo(BigInteger codMotivoRetiro) {
         try {
-            motivoRetiroCodigo = persistenciaMotivosRetiros.buscarMotivoRetiroSecuencia(codMotivoRetiro);
+            motivoRetiroCodigo = persistenciaMotivosRetiros.consultarMotivoRetiro(codMotivoRetiro);
             return motivoRetiroCodigo;
         } catch (Exception e) {
             return null;
@@ -204,7 +204,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<TiposPensionados> tiposPensionados() {
         try {
-            tiposPensionados = persistenciaTiposPensionados.buscarTiposPensionados();
+            tiposPensionados = persistenciaTiposPensionados.consultarTiposPensionados();
             return tiposPensionados;
         } catch (Exception e) {
             System.out.println("error tipospensionado administrarvigenciastipostrabajadores");
@@ -215,7 +215,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<ClasesPensiones> clasesPensiones() {
         try {
-            clasesPensiones = persistenciaClasesPensiones.buscarClasesPensiones();
+            clasesPensiones = persistenciaClasesPensiones.consultarClasesPensiones();
             return clasesPensiones;
         } catch (Exception e) {
             System.out.println("error clasesPensiones administrarvigenciastipostrabajadores");
@@ -226,7 +226,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public ClasesPensiones clasePensionCodigo(BigInteger codClasePension) {
         try {
-            clasePension = persistenciaClasesPensiones.buscarClasePensionSecuencia(codClasePension);
+            clasePension = persistenciaClasesPensiones.consultarClasePension(codClasePension);
             return clasePension;
         } catch (Exception e) {
             System.out.println("Error AdministrarVigenciaTipoTrabajador clasePensionCodigo");
