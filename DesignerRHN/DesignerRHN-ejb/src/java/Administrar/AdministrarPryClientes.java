@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import Entidades.PryClientes;
@@ -21,47 +20,52 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarPryClientes implements AdministrarPryClientesInterface {
 
-  @EJB
+    @EJB
     PersistenciaPryClientesInterface persistenciaPryClientes;
-    private PryClientes pryClientesSeleccionado;
-    private PryClientes pryClientes;
-    private List<PryClientes> listPryClientes;
 
-    public void modificarPryClientes(List<PryClientes> listPryClientesModificadas) {
-        for (int i = 0; i < listPryClientesModificadas.size(); i++) {
+    @Override
+    public void modificarPryClientes(List<PryClientes> listaPryClientes) {
+        for (int i = 0; i < listaPryClientes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            pryClientesSeleccionado = listPryClientesModificadas.get(i);
-            persistenciaPryClientes.editar(pryClientesSeleccionado);
+            persistenciaPryClientes.editar(listaPryClientes.get(i));
         }
     }
-
-    public void borrarPryClientes(PryClientes pryClientes) {
-        persistenciaPryClientes.borrar(pryClientes);
+    @Override
+    public void borrarPryClientes(List<PryClientes> listaPryClientes) {
+        for (int i = 0; i < listaPryClientes.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaPryClientes.borrar(listaPryClientes.get(i));
+        }
     }
-
-    public void crearPryClientes(PryClientes pryClientes) {
-        persistenciaPryClientes.crear(pryClientes);
+    @Override
+    public void crearPryClientes(List<PryClientes> listaPryClientes) {
+        for (int i = 0; i < listaPryClientes.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaPryClientes.crear(listaPryClientes.get(i));
+        }
     }
-
-    public List<PryClientes> mostrarPryClientes() {
+    @Override
+    public List<PryClientes> consultarPryClientes() {
+        List<PryClientes> listPryClientes;
         listPryClientes = persistenciaPryClientes.buscarPryClientes();
         return listPryClientes;
     }
-
-    public PryClientes mostrarPryCliente(BigInteger secPryClientes) {
+    @Override
+    public PryClientes consultarPryCliente(BigInteger secPryClientes) {
+        PryClientes pryClientes;
         pryClientes = persistenciaPryClientes.buscarPryCliente(secPryClientes);
         return pryClientes;
     }
-
-    public BigInteger verificarBorradoProyecto(BigInteger secuenciaProyectos) {
-            BigInteger verificadorProyectos;
+    @Override
+    public BigInteger contarProyectosPryCliente(BigInteger secuenciaProyectos) {
+        BigInteger verificadorProyectos;
 
         try {
             System.err.println("Secuencia Borrado Competencias Cargos" + secuenciaProyectos);
             return verificadorProyectos = persistenciaPryClientes.contadorProyectos(secuenciaProyectos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarPryClientes verificarBorradoProyecto ERROR :" + e);
-        return null;
-        } 
+            return null;
+        }
     }
 }

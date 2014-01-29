@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -33,20 +33,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Niveles.findByCodigo", query = "SELECT n FROM Niveles n WHERE n.codigo = :codigo"),
     @NamedQuery(name = "Niveles.findByDescripcion", query = "SELECT n FROM Niveles n WHERE n.descripcion = :descripcion")})
 public class Niveles implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "nivel")
@@ -55,29 +51,29 @@ public class Niveles implements Serializable {
     public Niveles() {
     }
 
-    public Niveles(BigDecimal secuencia) {
+    public Niveles(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Niveles(BigDecimal secuencia, short codigo, String descripcion) {
+    public Niveles(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -86,7 +82,7 @@ public class Niveles implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @XmlTransient
@@ -122,5 +118,5 @@ public class Niveles implements Serializable {
     public String toString() {
         return "Entidades.Niveles[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

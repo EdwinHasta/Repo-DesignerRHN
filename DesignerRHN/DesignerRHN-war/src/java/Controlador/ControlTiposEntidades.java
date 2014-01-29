@@ -9,7 +9,7 @@ import Entidades.TiposEntidades;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
-import InterfaceAdministrar.AdministrarTipoEntidadInterface;
+import InterfaceAdministrar.AdministrarTiposEntidadesInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -33,7 +33,7 @@ import org.primefaces.context.RequestContext;
 public class ControlTiposEntidades implements Serializable {
 
     @EJB
-    AdministrarTipoEntidadInterface administrarTipoEntidad;
+    AdministrarTiposEntidadesInterface administrarTipoEntidad;
     @EJB
     AdministrarRastrosInterface administrarRastros;
     private List<TiposEntidades> listTiposEntidades;
@@ -649,11 +649,11 @@ public class ControlTiposEntidades implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             if (tipoLista == 0) {
-                borrado = administrarTipoEntidad.verificarBorrado(listTiposEntidades.get(index).getSecuencia());
-                borradoFCE = administrarTipoEntidad.verificarBorradoFCE(listTiposEntidades.get(index).getSecuencia());
+                borrado = administrarTipoEntidad.contarVigenciasAfiliacionesTipoEntidad(listTiposEntidades.get(index).getSecuencia());
+                borradoFCE = administrarTipoEntidad.contarFormulasContratosEntidadesTipoEntidad(listTiposEntidades.get(index).getSecuencia());
             } else {
-                borrado = administrarTipoEntidad.verificarBorrado(filtrarTiposEntidades.get(index).getSecuencia());
-                borradoFCE = administrarTipoEntidad.verificarBorradoFCE(filtrarTiposEntidades.get(index).getSecuencia());
+                borrado = administrarTipoEntidad.contarVigenciasAfiliacionesTipoEntidad(filtrarTiposEntidades.get(index).getSecuencia());
+                borradoFCE = administrarTipoEntidad.contarFormulasContratosEntidadesTipoEntidad(filtrarTiposEntidades.get(index).getSecuencia());
             }
 
             if (borrado.equals(new BigInteger("0")) && borradoFCE.equals(new BigInteger("0"))) {
@@ -841,10 +841,8 @@ public class ControlTiposEntidades implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarTiposEntidades.isEmpty()) {
-                for (int i = 0; i < borrarTiposEntidades.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTipoEntidad.borrarTipoEntidad(borrarTiposEntidades.get(i));
-                }
+administrarTipoEntidad.borrarTipoEntidad(borrarTiposEntidades);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarTiposEntidades.size();
                 context.update("form:mostrarBorrados");
@@ -852,12 +850,8 @@ public class ControlTiposEntidades implements Serializable {
                 borrarTiposEntidades.clear();
             }
             if (!crearTiposEntidades.isEmpty()) {
-                for (int i = 0; i < crearTiposEntidades.size(); i++) {
+                administrarTipoEntidad.crearTipoEntidad(crearTiposEntidades);
 
-                    System.out.println("Creando...");
-                    administrarTipoEntidad.crearTipoEntidad(crearTiposEntidades.get(i));
-
-                }
                 crearTiposEntidades.clear();
             }
             if (!modificarTiposEntidades.isEmpty()) {
@@ -931,7 +925,7 @@ public class ControlTiposEntidades implements Serializable {
 
     public List<TiposEntidades> getListTiposEntidades() {
         if (listTiposEntidades == null) {
-            listTiposEntidades = administrarTipoEntidad.mostrarTiposEntidades();
+            listTiposEntidades = administrarTipoEntidad.consultarTiposEntidades();
         }
         return listTiposEntidades;
     }
@@ -958,7 +952,7 @@ public class ControlTiposEntidades implements Serializable {
 
     public List<Grupostiposentidades> getListaGruposTiposEntidades() {
         if (listaGruposTiposEntidades == null) {
-            listaGruposTiposEntidades = administrarTipoEntidad.mostrarGruposTiposEntidades();
+            listaGruposTiposEntidades = administrarTipoEntidad.consultarLOVGruposTiposEntidades();
         }
         return listaGruposTiposEntidades;
     }

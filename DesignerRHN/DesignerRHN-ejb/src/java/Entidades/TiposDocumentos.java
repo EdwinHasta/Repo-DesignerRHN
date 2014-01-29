@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,7 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,19 +30,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposDocumentos.findAll", query = "SELECT t FROM TiposDocumentos t")})
 public class TiposDocumentos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private BigInteger secuencia;
     @Column(name = "NOMBRELARGO")
     private String nombrelargo;
-    @Size(max = 3)
     @Column(name = "NOMBRECORTO")
     private String nombrecorto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodocumento")
@@ -52,20 +48,20 @@ public class TiposDocumentos implements Serializable {
     public TiposDocumentos() {
     }
 
-    public TiposDocumentos(BigDecimal secuencia) {
+    public TiposDocumentos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposDocumentos(BigDecimal secuencia, String nombrelargo) {
+    public TiposDocumentos(BigInteger secuencia, String nombrelargo) {
         this.secuencia = secuencia;
         this.nombrelargo = nombrelargo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -74,7 +70,7 @@ public class TiposDocumentos implements Serializable {
     }
 
     public void setNombrelargo(String nombrelargo) {
-        this.nombrelargo = nombrelargo;
+        this.nombrelargo = nombrelargo.toUpperCase();
     }
 
     public String getNombrecorto() {
@@ -82,7 +78,7 @@ public class TiposDocumentos implements Serializable {
     }
 
     public void setNombrecorto(String nombrecorto) {
-        this.nombrecorto = nombrecorto;
+        this.nombrecorto = nombrecorto.toUpperCase();
     }
 
     @XmlTransient
@@ -118,5 +114,5 @@ public class TiposDocumentos implements Serializable {
     public String toString() {
         return "Entidades.Tiposdocumentos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

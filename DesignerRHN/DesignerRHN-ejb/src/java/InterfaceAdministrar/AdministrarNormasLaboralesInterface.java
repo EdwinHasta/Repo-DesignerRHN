@@ -43,7 +43,7 @@ public interface AdministrarNormasLaboralesInterface {
      *
      * @return Retorna una lista de NormasLaborales.
      */
-    public List<NormasLaborales> mostrarNormasLaborales();
+    public List<NormasLaborales> consultarNormasLaborales();
 
     /**
      * Método encargado de recuperar una NormasLaborales dada su secuencia.
@@ -51,7 +51,7 @@ public interface AdministrarNormasLaboralesInterface {
      * @param secNormasLaborales Secuencia del NormasLaborales
      * @return Retorna una NormasLaborales.
      */
-    public NormasLaborales mostrarMotivoContrato(BigInteger secNormasLaborales);
+    public NormasLaborales consultarMotivoContrato(BigInteger secNormasLaborales);
 
     /**
      * Método encargado de consultar si existe una relacion entre una
@@ -62,5 +62,5 @@ public interface AdministrarNormasLaboralesInterface {
      * @return Retorna el número de VigenciasNormasEmpleado relacionados con la
      * MotivoCambioCargo cuya secuencia coincide con el parámetro.
      */
-    public BigInteger verificarVigenciasNormasEmpleadoNormaLaboral(BigInteger secNormasLaborales);
+    public BigInteger contarVigenciasNormasEmpleadoNormaLaboral(BigInteger secNormasLaborales);
 }

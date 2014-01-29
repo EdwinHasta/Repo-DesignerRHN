@@ -17,15 +17,51 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarTiposIndicadoresInterface {
 
-    public void modificarTiposIndicadores(List<TiposIndicadores> listTiposIndicadoresModificadas);
+    /**
+     * Método encargado de modificar TiposIndicadores.
+     *
+     * @param listaTiposIndicadores Lista TiposIndicadores que se van a
+     * modificar.
+     */
+    public void modificarTiposIndicadores(List<TiposIndicadores> listaTiposIndicadores);
 
-    public void borrarTiposIndicadores(TiposIndicadores tiposIndicadores);
+    /**
+     * Método encargado de borrar TiposIndicadores.
+     *
+     * @param listaTiposIndicadores Lista TiposIndicadores que se van a borrar.
+     */
+    public void borrarTiposIndicadores(List<TiposIndicadores> listaTiposIndicadores);
 
-    public void crearTiposIndicadores(TiposIndicadores tiposIndicadores);
+    /**
+     * Método encargado de crear TiposIndicadores.
+     *
+     * @param listaTiposIndicadores Lista TiposIndicadores que se van a crear.
+     */
+    public void crearTiposIndicadores(List<TiposIndicadores> listaTiposIndicadores);
 
-    public List<TiposIndicadores> mostrarTiposIndicadores();
+    /**
+     * Método encargado de recuperar las TiposIndicadores para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposIndicadores.
+     */
+    public List<TiposIndicadores> consultarTiposIndicadores();
 
-    public TiposIndicadores mostrarTipoIndicador(BigInteger secMotivoDemanda);
+    /**
+     * Método encargado de recuperar un TipoIndicador dada su secuencia.
+     *
+     * @param secTiposIndicadores Secuencia del TipoIndicador
+     * @return Retorna un TipoIndicador.
+     */
+    public TiposIndicadores consultarTipoIndicador(BigInteger secTiposIndicadores);
 
-    public BigInteger verificarBorradoVigenciasIndicadores(BigInteger secuenciaVigenciasIndicadores);
+    /**
+     * Método encargado de contar la cantidad de VigenciasIndicadores
+     * relacionadas con un TipoIndicador específica.
+     *
+     * @param secTiposIndicadores Secuencia del TipoIndicador.
+     * @return Retorna un número indicando la cantidad de VigenciasIndicadores
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarVigenciasIndicadoresTipoIndicador(BigInteger secTiposIndicadores);
 }

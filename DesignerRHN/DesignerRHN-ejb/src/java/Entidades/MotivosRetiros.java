@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MotivosRetiros.findByCodigo", query = "SELECT m FROM MotivosRetiros m WHERE m.codigo = :codigo"),
     @NamedQuery(name = "MotivosRetiros.findByNombre", query = "SELECT m FROM MotivosRetiros m WHERE m.nombre = :nombre")})
 public class MotivosRetiros implements Serializable {
+
     @OneToMany(mappedBy = "motivoretiro")
     private List<HvExperienciasLaborales> hvExperienciasLaboralesList;
 
@@ -45,14 +46,9 @@ public class MotivosRetiros implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(mappedBy = "motivoretiro")
@@ -64,29 +60,29 @@ public class MotivosRetiros implements Serializable {
     public MotivosRetiros() {
     }
 
-    public MotivosRetiros(BigDecimal secuencia) {
+    public MotivosRetiros(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public MotivosRetiros(BigDecimal secuencia, short codigo, String nombre) {
+    public MotivosRetiros(BigInteger secuencia, Integer codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -99,7 +95,7 @@ public class MotivosRetiros implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     @XmlTransient

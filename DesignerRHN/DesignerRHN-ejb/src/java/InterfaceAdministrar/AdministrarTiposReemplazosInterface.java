@@ -10,22 +10,80 @@ import java.util.List;
 
 public interface AdministrarTiposReemplazosInterface {
 
-    public void modificarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazosModificados);
+    /**
+     * Método encargado de modificar TiposReemplazos.
+     *
+     * @param listaTiposReemplazos Lista TiposReemplazos que se van a
+     * modificar.
+     */
+    public void modificarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos);
 
-    public void borrarTiposReemplazos(TiposReemplazos tiposIndicadores);
+    /**
+     * Método encargado de borrar TiposReemplazos.
+     *
+     * @param listaTiposReemplazos Lista TiposReemplazos que se van a borrar.
+     */
+    public void borrarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos);
 
-    public void crearTiposReemplazos(TiposReemplazos tiposIndicadores);
+    /**
+     * Método encargado de crear TiposReemplazos.
+     *
+     * @param listaTiposReemplazos Lista TiposReemplazos que se van a crear.
+     */
+    public void crearTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos);
 
-    public List<TiposReemplazos> mostrarTiposReemplazos();
+    /**
+     * Método encargado de recuperar las TiposReemplazos para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de TiposReemplazos.
+     */
+    public List<TiposReemplazos> consultarTiposReemplazos();
 
-    public TiposReemplazos mostrarTipoReemplazo(BigInteger secMotivoDemanda);
+    /**
+     * Método encargado de recuperar un TipoReemplazo dada su secuencia.
+     *
+     * @param secTiposReemplazos Secuencia del TipoReemplazo
+     * @return Retorna un TipoReemplazo.
+     */
+    public TiposReemplazos consultarTipoReemplazo(BigInteger secTiposReemplazos);
 
-    public BigInteger verificarBorradoEncargaturas(BigInteger secuenciaTiposReemplazos);
+    /**
+     * Método encargado de contar la cantidad de Encargaturas
+     * relacionadas con un TipoReemplazo específica.
+     *
+     * @param secTiposReemplazos Secuencia del TipoReemplazo.
+     * @return Retorna un número indicando la cantidad de Encargaturas
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarEncargaturasTipoReemplazo(BigInteger secTiposReemplazos);
 
-    public BigInteger verificarBorradoProgramacionesTiempos(BigInteger secuenciaTiposReemplazos);
+    /**
+     * Método encargado de contar la cantidad de ProgramacionesTiempos
+     * relacionadas con un TipoReemplazo específica.
+     *
+     * @param secTiposReemplazos Secuencia del TipoReemplazo.
+     * @return Retorna un número indicando la cantidad de ProgramacionesTiempos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarProgramacionesTiemposTipoReemplazo(BigInteger secTiposReemplazos);
 
-    public BigInteger verificarBorradoReemplazos(BigInteger secuenciaTiposReemplazos);
+    /**
+     * Método encargado de contar la cantidad de Reemplazos
+     * relacionadas con un TipoReemplazo específica.
+     *
+     * @param secTiposReemplazos Secuencia del TipoReemplazo.
+     * @return Retorna un número indicando la cantidad de Reemplazos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarReemplazosTipoReemplazo(BigInteger secTiposReemplazos);
 
-    public List<TiposReemplazos> lovTiposReemplazos();
+    /**
+     * Método encargado de recuperar las NormasLaborales necesarias para la
+     * lista de valores.
+     *
+     * @return Retorna una lista de NormasLaborales.
+     */
+    public List<TiposReemplazos> consultarLOVTiposReemplazos();
 
 }

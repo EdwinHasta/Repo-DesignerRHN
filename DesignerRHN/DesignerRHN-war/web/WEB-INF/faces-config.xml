@@ -355,6 +355,40 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/escalafon.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>categoriasEsca</from-outcome>
+            <to-view-id>/categoriaesca.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/categoriaesca.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>escalaInfo</from-outcome>
+            <to-view-id>/escalafon.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/escalafon.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroEscalafon</from-outcome>
+            <to-view-id>/escalafon.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/historiaformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -1370,6 +1404,44 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/solucionformula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroSolucionesFormulas</from-outcome>
+            <to-view-id>/solucionformula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>acomuladoPorNovedad</from-outcome>
+            <to-view-id>/solucionformula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/solucionformula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadEmpl</from-outcome>
+            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
     
     <navigation-rule>
         <from-view-id>/NovedadConcepto.xhtml</from-view-id>

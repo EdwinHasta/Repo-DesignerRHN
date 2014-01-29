@@ -15,14 +15,6 @@ import java.util.List;
  */
 public interface PersistenciaMonedasInterface {
 
-    /**
-     * Método encargado de buscar la Moneda con la secuencia dada por parámetro.
-     *
-     * @param secuencia Secuencia de la Moneda que se quiere encontrar.
-     * @return Retorna la Moneda identificada con la secuencia dada por
-     * parámetro.
-     */
-    public Monedas buscarMonedaSecuencia(BigInteger secuencia);
 
     /**
      * Método encargado de buscar todas las Monedas existentes en la base de
@@ -30,7 +22,7 @@ public interface PersistenciaMonedasInterface {
      *
      * @return Retorna una lista de Monedas.
      */
-    public List<Monedas> buscarMonedas();
+    public List<Monedas> consultarMonedas();
 
     /**
      * Método encargado de insertar una Moneda en la base de datos.
@@ -57,14 +49,14 @@ public interface PersistenciaMonedasInterface {
     public void borrar(Monedas monedas);
 
     /**
-     * Método encargado de buscar el TipoDia con la secuencia dada por
+     * Método encargado de buscar una Moneda con la secuencia dada por
      * parámetro.
      *
      * @param secuencia Secuencia del Moneda que se quiere encontrar.
      * @return Retorna la Moneda identificado con la secuencia dada por
      * parámetro.
      */
-    public Monedas buscarMoneda(BigInteger secuencia);
+    public Monedas consultarMoneda(BigInteger secuencia);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Moneda

@@ -18,7 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,20 +31,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "SubCategorias.findAll", query = "SELECT s FROM SubCategorias s")})
 public class SubCategorias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private BigInteger codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 80)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subcategoria")
@@ -54,38 +49,41 @@ public class SubCategorias implements Serializable {
     public SubCategorias() {
     }
 
-    public SubCategorias(BigDecimal secuencia) {
+    public SubCategorias(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public SubCategorias(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public SubCategorias(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @XmlTransient
@@ -121,5 +119,5 @@ public class SubCategorias implements Serializable {
     public String toString() {
         return "Entidades.Subcategorias[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

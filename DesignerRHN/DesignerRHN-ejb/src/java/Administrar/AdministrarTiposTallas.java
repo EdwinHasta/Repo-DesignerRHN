@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import InterfaceAdministrar.AdministrarTiposTallasInterface;
@@ -21,58 +20,68 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
 
-  @EJB
+    @EJB
     PersistenciaTiposTallasInterface persistenciaTiposTallas;
-    private TiposTallas tiposTallaSeleccionada;
-    private TiposTallas tiposTallas;
-    private List<TiposTallas> listTiposTallas;
-    private BigInteger verificadorElementos;
-    private BigInteger verificadorVigenciasTallas;
 
-    public void modificarTiposTallas(List<TiposTallas> listTiposEmpresasModificadas) {
-        for (int i = 0; i < listTiposEmpresasModificadas.size(); i++) {
+    @Override
+    public void modificarTiposTallas(List<TiposTallas> listTiposTallas) {
+        for (int i = 0; i < listTiposTallas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposTallaSeleccionada = listTiposEmpresasModificadas.get(i);
-            persistenciaTiposTallas.editar(tiposTallaSeleccionada);
+            persistenciaTiposTallas.editar(listTiposTallas.get(i));
         }
     }
 
-    public void borrarTiposTallas(TiposTallas tiposTallas) {
-        persistenciaTiposTallas.borrar(tiposTallas);
+    @Override
+    public void borrarTiposTallas(List<TiposTallas> listTiposTallas) {
+        for (int i = 0; i < listTiposTallas.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposTallas.borrar(listTiposTallas.get(i));
+        }
     }
 
-    public void crearTiposTallas(TiposTallas tiposTallas) {
-        persistenciaTiposTallas.crear(tiposTallas);
+    @Override
+    public void crearTiposTallas(List<TiposTallas> listTiposTallas) {
+        for (int i = 0; i < listTiposTallas.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposTallas.crear(listTiposTallas.get(i));
+        }
     }
 
-    public List<TiposTallas> mostrarTiposTallas() {
+    @Override
+    public List<TiposTallas> consultarTiposTallas() {
+        List<TiposTallas> listTiposTallas;
         listTiposTallas = persistenciaTiposTallas.buscarTiposTallas();
         return listTiposTallas;
     }
 
-    public TiposTallas mostrarTipoTalla(BigInteger secTipoEmpresa) {
+    @Override
+    public TiposTallas consultarTipoTalla(BigInteger secTipoEmpresa) {
+        TiposTallas tiposTallas;
         tiposTallas = persistenciaTiposTallas.buscarTipoTalla(secTipoEmpresa);
         return tiposTallas;
     }
 
-    public BigInteger verificarBorradoElementos(BigInteger secuenciaElementos) {
+    @Override
+    public BigInteger contarElementosTipoTalla(BigInteger secuenciaElementos) {
         try {
+            BigInteger verificadorElementos;
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
-            verificadorElementos = persistenciaTiposTallas.contadorElementos(secuenciaElementos);
+            return verificadorElementos = persistenciaTiposTallas.contadorElementos(secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposTallas verificarBorradoElementos ERROR :" + e);
-        } finally {
-            return verificadorElementos;
+            return null;
         }
     }
-    public BigInteger verificarBorradoVigenciasTallas(BigInteger secuenciaVigenciasTallas) {
+
+    @Override
+    public BigInteger contarVigenciasTallasTipoTalla(BigInteger secuenciaVigenciasTallas) {
         try {
+            BigInteger verificadorVigenciasTallas;
             System.err.println("Secuencia Borrado Vigencias Tallas" + secuenciaVigenciasTallas);
-            verificadorVigenciasTallas = persistenciaTiposTallas.contadorVigenciasTallas(secuenciaVigenciasTallas);
+            return verificadorVigenciasTallas = persistenciaTiposTallas.contadorVigenciasTallas(secuenciaVigenciasTallas);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposTallas verificarBorradoVigenciasTallas ERROR :" + e);
-        } finally {
-            return verificadorVigenciasTallas;
+            return null;
         }
     }
 }

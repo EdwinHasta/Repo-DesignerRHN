@@ -63,7 +63,7 @@ public class AdministrarPerExperienciaLaboral implements AdministrarPerExperienc
     @Override
     public List<MotivosRetiros> listMotivosRetiros() {
         try {
-            List<MotivosRetiros> retorno = persistenciaMotivosRetiros.buscarMotivosRetiros();
+            List<MotivosRetiros> retorno = persistenciaMotivosRetiros.consultarMotivosRetiros();
             return retorno;
         } catch (Exception e) {
             System.out.println("Error listMotivosRetiros Admi : " + e.toString());

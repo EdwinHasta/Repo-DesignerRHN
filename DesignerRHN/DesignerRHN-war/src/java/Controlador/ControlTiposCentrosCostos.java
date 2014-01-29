@@ -642,10 +642,8 @@ public class ControlTiposCentrosCostos implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarTiposCentrosCostos.isEmpty()) {
-                for (int i = 0; i < borrarTiposCentrosCostos.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposCentrosCostos.borrarTiposCentrosCostos(borrarTiposCentrosCostos.get(i));
-                }
+                administrarTiposCentrosCostos.borrarTiposCentrosCostos(borrarTiposCentrosCostos);
+
                 //mostrarBorrados
                 registrosBorrados = borrarTiposCentrosCostos.size();
                 context.update("form:mostrarBorrados");
@@ -653,12 +651,8 @@ public class ControlTiposCentrosCostos implements Serializable {
                 borrarTiposCentrosCostos.clear();
             }
             if (!crearTiposCentrosCostos.isEmpty()) {
-                for (int i = 0; i < crearTiposCentrosCostos.size(); i++) {
+                administrarTiposCentrosCostos.crearTiposCentrosCostos(crearTiposCentrosCostos);
 
-                    System.out.println("Creando...");
-                    administrarTiposCentrosCostos.crearTiposCentrosCostos(crearTiposCentrosCostos.get(i));
-
-                }
                 crearTiposCentrosCostos.clear();
             }
             if (!modificarTiposCentrosCostos.isEmpty()) {
@@ -852,13 +846,13 @@ public class ControlTiposCentrosCostos implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             if (tipoLista == 0) {
-                borradoCC = administrarTiposCentrosCostos.verificarBorradoCC(listTiposCentrosCostos.get(index).getSecuencia());
-                borradoVC = administrarTiposCentrosCostos.verificarBorradoVC(listTiposCentrosCostos.get(index).getSecuencia());
-                borradoRP = administrarTiposCentrosCostos.verificarBorradoRP(listTiposCentrosCostos.get(index).getSecuencia());
+                borradoCC = administrarTiposCentrosCostos.contarCentrosCostosTipoCentroCosto(listTiposCentrosCostos.get(index).getSecuencia());
+                borradoVC = administrarTiposCentrosCostos.contarVigenciasCuentasTipoCentroCosto(listTiposCentrosCostos.get(index).getSecuencia());
+                borradoRP = administrarTiposCentrosCostos.contarRiesgosProfesionalesTipoCentroCosto(listTiposCentrosCostos.get(index).getSecuencia());
             } else {
-                borradoCC = administrarTiposCentrosCostos.verificarBorradoCC(filtrarTiposCentrosCostos.get(index).getSecuencia());
-                borradoVC = administrarTiposCentrosCostos.verificarBorradoVC(filtrarTiposCentrosCostos.get(index).getSecuencia());
-                borradoRP = administrarTiposCentrosCostos.verificarBorradoRP(filtrarTiposCentrosCostos.get(index).getSecuencia());
+                borradoCC = administrarTiposCentrosCostos.contarCentrosCostosTipoCentroCosto(filtrarTiposCentrosCostos.get(index).getSecuencia());
+                borradoVC = administrarTiposCentrosCostos.contarVigenciasCuentasTipoCentroCosto(filtrarTiposCentrosCostos.get(index).getSecuencia());
+                borradoRP = administrarTiposCentrosCostos.contarRiesgosProfesionalesTipoCentroCosto(filtrarTiposCentrosCostos.get(index).getSecuencia());
             }
             if (borradoCC.equals(new BigInteger("0")) && borradoVC.equals(new BigInteger("0")) && borradoRP.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -964,7 +958,7 @@ public class ControlTiposCentrosCostos implements Serializable {
 //------------------------------------------------------------------------------
     public List<TiposCentrosCostos> getListTiposCentrosCostos() {
         if (listTiposCentrosCostos == null) {
-            listTiposCentrosCostos = administrarTiposCentrosCostos.mostrarTiposCentrosCostos();
+            listTiposCentrosCostos = administrarTiposCentrosCostos.consultarTiposCentrosCostos();
         }
         return listTiposCentrosCostos;
     }
@@ -991,7 +985,7 @@ public class ControlTiposCentrosCostos implements Serializable {
 
     public List<GruposTiposCC> getListaGruposTiposCC() {
         if (listaGruposTiposCC == null) {
-            listaGruposTiposCC = administrarTiposCentrosCostos.mostrarGruposTiposCC();
+            listaGruposTiposCC = administrarTiposCentrosCostos.consultarLOVGruposTiposCentrosCostos();
         }
         return listaGruposTiposCC;
     }

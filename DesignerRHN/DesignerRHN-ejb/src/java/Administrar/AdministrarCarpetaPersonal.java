@@ -323,7 +323,6 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
-    @Override
     public List<VWActualesTiposTrabajadores> consultarEmpleadosTipoTrabajador(String tipo) {
         try {
             List<VWActualesTiposTrabajadores> tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(tipo);
@@ -354,7 +353,6 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
-    @Override
     public ParametrosEstructuras consultarParametrosUsuario() {
         try {
             ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(consultarAliasActualUsuario());

@@ -37,16 +37,16 @@ public interface PersistenciaNormasLaboralesInterface {
      * @param secNormasLaborales Secuencia de la NormaLaboral que se quiere encontrar.
      * @return Retorna la NormaLaboral identificada con la secNormasLaborales dada por parámetro.
      */
-    public NormasLaborales buscarNormaLaboral(BigInteger secNormasLaborales);
+    public NormasLaborales consultarNormaLaboral(BigInteger secNormasLaborales);
     /**
      * Método encargado de buscar todas las NormasLaborales existentes en la base de datos.
      * @return Retorna una lista de NormasLaborales.
      */
-    public List<NormasLaborales> buscarNormasLaborales();
+    public List<NormasLaborales> consultarNormasLaborales();
     /**
      * Método encargado de verificar si hay al menos una VigenciaTipoContrato asociada a una NormaLaboral.
      * @param secNormasLaborales Secuencia de la NormaLaboral
      * @return Retorna un valor mayor a cero si existe alguna VigenciaNormaEmpleado asociada a una NormaLaboral.
      */
-    public BigInteger verificarBorradoNormasLaborales(BigInteger secNormasLaborales);
+    public BigInteger contarVigenciasNormasEmpleadosNormaLaboral(BigInteger secNormasLaborales);
 }

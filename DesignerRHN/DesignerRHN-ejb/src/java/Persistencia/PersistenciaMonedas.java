@@ -45,20 +45,6 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     }
 
     @Override
-    public Monedas buscarMonedaSecuencia(BigInteger secuencia) {
-        try {
-            Query query = em.createQuery("SELECT m.nombre FROM Monedas m WHERE m.secuencia = :secuencia");
-            query.setParameter("secuencia", secuencia);
-            Monedas monedas = (Monedas) query.getSingleResult();
-            return monedas;
-        } catch (Exception e) {
-            System.out.println("Error buscarMonedaSecuencia PersistenciaMonedas");
-            Monedas monedas = null;
-            return monedas;
-        }
-    }
-
-    @Override
     public BigInteger contadorProyectos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -75,7 +61,7 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     }
 
     @Override
-    public Monedas buscarMoneda(BigInteger secuenciaTI) {
+    public Monedas consultarMoneda(BigInteger secuenciaTI) {
         try {
             return em.find(Monedas.class, secuenciaTI);
         } catch (Exception e) {
@@ -84,7 +70,7 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     }
 
     @Override
-    public List<Monedas> buscarMonedas() {
+    public List<Monedas> consultarMonedas() {
         Query query = em.createQuery("SELECT m FROM Monedas m ORDER BY m.codigo ASC ");
         List<Monedas> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;

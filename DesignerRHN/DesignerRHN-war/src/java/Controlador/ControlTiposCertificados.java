@@ -104,7 +104,6 @@ public class ControlTiposCertificados implements Serializable {
                 tipoActualizacion = 2;
             }
 
-
         } catch (Exception e) {
             System.out.println("ERROR ControlNormasLaborales.asignarIndex ERROR======" + e.getMessage());
         }
@@ -228,7 +227,6 @@ public class ControlTiposCertificados implements Serializable {
                 }
             } else {
 
-
                 if (!crearTiposCertificados.contains(filtrarTiposCertificados.get(indice))) {
                     if (filtrarTiposCertificados.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -250,7 +248,6 @@ public class ControlTiposCertificados implements Serializable {
 
                     }
 
-
                     if (filtrarTiposCertificados.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -259,7 +256,6 @@ public class ControlTiposCertificados implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-
 
                     if (banderita == true) {
                         if (modificarTiposCertificados.isEmpty()) {
@@ -362,10 +358,8 @@ public class ControlTiposCertificados implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Motivos Mvrs");
             if (!borrarTiposCertificados.isEmpty()) {
-                for (int i = 0; i < borrarTiposCertificados.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposCertificados.borrarTiposCertificados(borrarTiposCertificados.get(i));
-                }
+                administrarTiposCertificados.borrarTiposCertificados(borrarTiposCertificados);
+
                 //mostrarBorrados
                 registrosBorrados = borrarTiposCertificados.size();
                 context.update("form:mostrarBorrados");
@@ -373,12 +367,7 @@ public class ControlTiposCertificados implements Serializable {
                 borrarTiposCertificados.clear();
             }
             if (!crearTiposCertificados.isEmpty()) {
-                for (int i = 0; i < crearTiposCertificados.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposCertificados.crearTiposCertificados(crearTiposCertificados.get(i));
-
-                }
+                administrarTiposCertificados.crearTiposCertificados(crearTiposCertificados);
                 crearTiposCertificados.clear();
             }
             if (!modificarTiposCertificados.isEmpty()) {
@@ -577,7 +566,6 @@ public class ControlTiposCertificados implements Serializable {
             contador++;
         }
 
-
         if (contador == 2) {
 
             System.out.println("Datos Duplicando: " + duplicarTipoCertificado.getSecuencia() + "  " + duplicarTipoCertificado.getCodigo());
@@ -673,7 +661,7 @@ public class ControlTiposCertificados implements Serializable {
 //------------------------------------------------------------------------------
     public List<TiposCertificados> getListTiposCertificados() {
         if (listTiposCertificados == null) {
-            listTiposCertificados = administrarTiposCertificados.mostrarTiposCertificados();
+            listTiposCertificados = administrarTiposCertificados.consultarTiposCertificados();
         }
         return listTiposCertificados;
     }
@@ -737,5 +725,5 @@ public class ControlTiposCertificados implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
+
 }

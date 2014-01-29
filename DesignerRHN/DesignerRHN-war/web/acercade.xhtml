@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:panel  id="PanelTotal" header="Acerca de Designer Software" style=" font-size: 13px; position: absolute; width: 874px; height: 450px;" > 
+                        <fieldset style="position: absolute; left: 5px; top: 70px; font-size: 11px; width: 430px; height: 170px; border-radius: 11px; ">
+                            <img src="Imagenes\logoDesigner2014face.jpg" style="border-radius: 11px" width="430" height="100" alt="Foto Usuario" />
+                            <h:outputText value="#{controlAcercaDe.version}" style="font-size: 11px; position: absolute; left: 200px; top: 110px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:separator style="position: relative; border-color: darkblue; direction: ltr; top: 15px;"/>
+                            <div>
+                                <center>
+                                                                    <h:outputText value="#{controlAcercaDe.grh}" style="font-size: 19px; position: absolute; left: 20px; top: 130px; width:400px ;height:50px; color: darkblue;font-weight: bold " />
+                                </center>
+                            </div> 
+                        </fieldset>                       
+                        <fieldset style="position: absolute; left: 460px; top: 70px; font-size: 11px; width: 383px; height: 170px; border-radius: 11px; ">
+                            <h:outputText value="Licensia de uso a:" style="font-size: 11px; position: absolute; left: 15px; top: 6px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <h:outputText value="#{controlAcercaDe.empresaSeleccionada.nombre}" style="font-size: 11px; position: absolute; left: 120px; top: 7px; width:300px ;height:50px; color: darkblue;font-weight: bold " />
+                            <h:inputTextarea readonly="true" value="#{controlAcercaDe.textoCopyRight}" style="font-size: 11px; position: absolute;top: 30px ;width: 378px; height: 80px"/>
+                            <p:separator style="position: relative; border-color: darkblue; direction: ltr; top: 150px;"/>
+                            <h:outputText value="Correo Electronico:" style="font-size: 11px; position: absolute; left: 20px; top: 128px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <h:outputText value="#{controlAcercaDe.correo1}" style="font-size: 11px; position: absolute; left: 150px; top: 128px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <h:outputText value="Wiki:" style="font-size: 11px; position: absolute; left: 20px; top: 143px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <h:outputText value="#{controlAcercaDe.correo2}" style="font-size: 11px; position: absolute; left: 150px; top: 143px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:separator style="position: relative; border-color: darkblue; direction: ltr; top: 105px;"/>
+                            <h:outputText value="#{controlAcercaDe.derechos}" style="font-size: 11px; position: absolute; left: 70px; top: 163px; width:300px ;height:50px; color: darkblue;font-weight: bold " />
+
+                        </fieldset>                       
+                        <fieldset style="position: absolute; left: 5px; top: 260px; font-size: 11px; width: 840px; height: 143px; border-radius: 11px; ">
+                            <h:outputText value="Cantidad de Usúarios:" style="font-size: 11px; position: absolute; left: 20px; top: 11px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText readonly="true" id="cantUsuarios" value="#{controlAcercaDe.empresaSeleccionada.cantidadusuario}" style="font-size: 11px; width: 122px; position: absolute; left: 200px; top: 5px;"/>
+                            <h:outputText value="Empleados Licensiados:" style="font-size: 11px; position: absolute; left: 20px; top: 40px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText id="empLicensiados" readonly="true" value="#{controlAcercaDe.empresaSeleccionada.controlempleados}" style="font-size: 11px; width: 122px; position: absolute; left: 200px; top: 35px;"/>
+                            <h:outputText value="Fecha Instalación:" style="font-size: 11px; position: absolute; left: 20px; top: 70px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText value="#{controlAcercaDe.empresaSeleccionada.fechainstalacion}" readonly="true" style="font-size: 11px; width: 122px; position: absolute; left: 200px;top: 65px; " >  
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:inputText>
+                            <h:outputText value="Salida en Producción:" style="font-size: 11px; position: absolute; left: 20px; top: 100px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText value="#{controlAcercaDe.empresaSeleccionada.fechasalidaproduccion}" readonly="true" style="font-size: 11px; width: 122px; position: absolute; left: 200px;top: 95px; " >  
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:inputText>
+                            <h:outputText value="Vencimiento Soporte:" style="font-size: 11px; position: absolute; left: 20px; top: 130px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText value="#{controlAcercaDe.empresaSeleccionada.fecharenovarsoporte}" readonly="true" style="font-size: 11px; width: 122px; position: absolute; left: 200px;top: 125px; " >  
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:inputText>
+                            <a href="http://www.nomina.com.co" target="_blank">
+                                <h:outputText value="#{controlAcercaDe.correo}" style="font-size: 11px; position: absolute; left: 530px; top: 11px; width:180px ;height:50px; font-size: 30px; color: darkblue;font-weight: bold " />
+                            </a> 
+                            <h:outputText value="Codigo:" style="font-size: 11px; position: absolute; left: 350px; top: 11px; width:130px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText readonly="true" id="codigo" value="#{controlAcercaDe.empresaSeleccionada.codigo}" style="font-size: 11px; width: 80px; position: absolute; left: 430px; top: 5px;"/>
+                            <h:outputText value="Nit:" style="font-size: 11px; position: absolute; left: 350px; top: 40px; width:130px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText readonly="true" id="nit" value="#{controlAcercaDe.empresaSeleccionada.nit}" style="font-size: 11px; width: 80px; position: absolute; left: 430px; top: 35px;"/>
+                            <h:outputText value="Nombre:" style="font-size: 11px; position: absolute; left: 350px; top: 70px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText readonly="true" id="nombre" value="#{controlAcercaDe.empresaSeleccionada.nombre}" style="font-size: 11px; width: 400px; position: absolute; left: 430px; top: 65px;"/>
+                            <h:outputText value="Producto:" style="font-size: 11px; position: absolute; left: 350px; top: 100px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText readonly="true" id="producto" value="#{controlAcercaDe.empresaSeleccionada.producto}" style="font-size: 11px; width: 400px; position: absolute; left: 430px; top: 95px;"/>
+                            <h:outputText value="Logo:" style="font-size: 11px; position: absolute; left: 350px; top: 130px; width:180px ;height:50px; color: darkblue;font-weight: bold " />
+                            <p:inputText readonly="true" id="logo" value="#{controlAcercaDe.empresaSeleccionada.logo}" style="font-size: 11px; width: 400px; position: absolute; left: 430px; top: 125px;"/>
+
+                        </fieldset>
+                        <p:toolbar style="font-size: 11px; position: absolute; top: 35px; left: 11px; height: 23px">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "/>
+                                <p:tooltip style="font-size: 11px" for="guardarRapido" value="Guardado Rapido" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:tooltip style="font-size: 11px" for="editar" value="Editar" />
+
+                                <p:separator style="position: relative; top: -11px;"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:tooltip style="font-size: 11px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:tooltip style="font-size: 11px" for="filtrar" value="Filtrar" />
+
+                                <p:separator style="position: relative; top: -11px;"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:tooltip style="font-size: 11px" for="exportarXLS" value="Exportar XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:tooltip style="font-size: 11px" for="exportarXML" value="Exportar XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:tooltip style="font-size: 11px" for="exportarPDF" value="Exportar PDF" />
+
+                                <p:separator style="position: relative; top: -11px;"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/> 
+                                <p:tooltip style="font-size: 11px" for="insertar" value="Nuevo" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
+                                <p:tooltip style="font-size: 11px" for="eliminar" value="Eliminar" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
+                                <p:tooltip style="font-size: 11px" for="duplicar" value="Duplicar" />
+
+                                <p:separator style="position: relative; top: -11px;"/> 
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
+                                <p:tooltip style="font-size: 11px" for="rastro" value="Rastro"/>
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+                        <p:commandButton style="position: absolute; left: 780px; top: 420px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="ACEPTAR" onclick="confirmarGuardar.show();" process="@this" />
+                    </p:panel>
+
+                    <p:hotkey bind="alt+p" actionListener="#{controlAcercaDe.lovEmpresas()}"/> 
+                </h:form>
+
+                <h:form id="formularioDialogos" >
+
+                    <!-- LOV EMPRESAS -->
+                    <p:dialog header="Empresas" widgetVar="EmpresasDialogo" draggable="false" resizable="false" closable="false" id="EmpresasDialogo"  
+                              showEffect="fade" hideEffect="fade" width="350" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEmpresas" style="font-size: 11px; width: 311px" var="empresa" value="#{controlAcercaDe.listaEmpresas}" rowKey="#{empresa.secuencia}"
+                                     selection="#{controlAcercaDe.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="330" scrollHeight="250"
+                                     filteredValue="#{controlAcercaDe.filtradoListaEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlAcercaDe.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAcercaDe.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Empresa"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 11px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{empresa.nit}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                                <f:facet name="header">
+                                    <h:outputText value="Nit" />
+                                </f:facet>
+                                <h:outputText  value="#{empresa.nit}" />
+                            </p:column>
+                            <p:column filterBy="#{empresa.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText  value="#{empresa.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 180px" value="Aceptar" disabled="#{controlAcercaDe.aceptar}" actionListener="#{controlAcercaDe.cambiarEmpresa()}" update="aceptarE" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasE" style="position: relative; left: 180px" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlAcercaDe.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

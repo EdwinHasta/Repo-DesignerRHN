@@ -17,15 +17,50 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarPryPlataformasInterface {
 
-    public void modificarPryPlataformas(List<PryPlataformas> listPryClientesModificadas);
+    /**
+     * Método encargado de modificar PryPlataformas.
+     *
+     * @param listaPryPlataformas Lista PryPlataformas que se van a modificar.
+     */
+    public void modificarPryPlataformas(List<PryPlataformas> listaPryPlataformas);
 
-    public void borrarPryPlataformas(PryPlataformas pryClientes);
+    /**
+     * Método encargado de borrar PryPlataformas.
+     *
+     * @param listaPryPlataformas Lista PryPlataformas que se van a borrar.
+     */
+    public void borrarPryPlataformas(List<PryPlataformas> listaPryPlataformas);
 
-    public void crearPryPlataformas(PryPlataformas pryClientes);
+    /**
+     * Método encargado de crear PryPlataformas.
+     *
+     * @param listaPryPlataformas Lista PryPlataformas que se van a crear.
+     */
+    public void crearPryPlataformas(List<PryPlataformas> listaPryPlataformas);
 
+    /**
+     * Método encargado de recuperar las PryPlataformas para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de PryPlataformas.
+     */
     public List<PryPlataformas> mostrarPryPlataformas();
 
-    public PryPlataformas mostrarPryPlataformas(BigInteger secPryClientes);
+    /**
+     * Método encargado de recuperar una PryPlataformas dada su secuencia.
+     *
+     * @param secPryPlataformas Secuencia del PryPlataformas
+     * @return Retorna una PryPlataformas.
+     */
+    public PryPlataformas mostrarPryPlataformas(BigInteger secPryPlataformas);
 
-    public BigInteger verificarBorradoProyecto(BigInteger secuenciaProyectos);
+  /**
+     * Método encargado de contar la cantidad de Proyectos
+     * relacionadas con una PryPlataforma específico.
+     *
+     * @param secPryPlataformas Secuencia de la PryPlataforma.
+     * @return Retorna un número indicando la cantidad de Proyectos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarProyectosPryPlataformas(BigInteger secPryPlataformas);
 }

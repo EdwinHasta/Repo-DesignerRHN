@@ -8,6 +8,7 @@ package InterfaceAdministrar;
 import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
+import Entidades.TiposFamiliares;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
@@ -19,17 +20,76 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarHvReferenciasInterface {
 
-    public void borrarHvReferencias(HvReferencias hvEntrevistas);
+    /**
+     * Método encargado de modificar HvReferencias.
+     *
+     * @param listaHvReferencias Lista HvReferencias que se van a modificar.
+     */
+    public void modificarHvReferencias(List<HvReferencias> listaHvReferencias);
 
-    public void crearHvReferencias(HvReferencias hvEntrevistas);
+    /**
+     * Método encargado de borrar HvReferencias.
+     *
+     * @param listaHvReferencias Lista HvReferencias que se van a borrar.
+     */
+    public void borrarHvReferencias(List<HvReferencias> listaHvReferencias);
 
-    public void modificarHvReferencias(List<HvReferencias> listHvReferenciasModificadas);
+    /**
+     * Método encargado de crear HvReferencias.
+     *
+     * @param listaHvReferencias Lista HvReferencias que se van a crear.
+     */
+    public void crearHvReferencias(List<HvReferencias> listaHvReferencias);
 
-    public List<HvReferencias> MostrarHvReferenciasPorEmpleado(BigInteger secEmpleado);
+    /**
+     * Metodo Encargado de traer las HvReferencias de un Empleado Especifico.
+     * donde el campo tipo es igual a ='PERSONALES'
+     *
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Lista de HvReferencias.
+     */
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(BigInteger secEmpleado);
 
-    public HvReferencias mostrarHvReferencia(BigInteger secHvEntrevista);
+    /**
+     * Método encargado de recuperar un HvEntrevista dada su secuencia.
+     *
+     * @param secHvReferencias Secuencia del HvEntrevista.
+     * @return Retorna un HvReferencias cuya secuencia coincida con el valor del
+     * parámetro.
+     */
+    public HvReferencias consultarHvReferencia(BigInteger secHvReferencias);
 
-    public Empleados buscarEmpleado(BigInteger secuencia);
+    /**
+     * Metodo Encargado de traer las HvReferencias de un Empleado Especifico.
+     * donde el campo tipo es igual a ='FAMILIARES'
+     *
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Lista de HvReferencias.
+     */
+    public List<HvReferencias> consultarHvReferenciasFamiliaresPorEmpleado(BigInteger secEmpleado);
 
-    public List<HVHojasDeVida> buscarHvHojasDeVida(BigInteger secuencia);
+    /**
+     * Metodo encargado de traer las HVHojasDeVida de un empleado especifico
+     *
+     * @param secEmpleado
+     * @return lista HVHojasDeVida
+     */
+    public List<HVHojasDeVida> consultarHvHojasDeVida(BigInteger secEmpleado);
+
+    /**
+     * Método encargado de recuperar los TiposFamiliares necesarias para la
+     * lista de valores.
+     *
+     * @return Retorna una lista de TiposFamiliares.
+     */
+    public List<TiposFamiliares> consultarLOVTiposFamiliares();
+
+    /**
+     * *
+     * Metodo encargado de buscar un Empleado especifico
+     *
+     * @param secEmpleado Secuencia del Empleado
+     * @return Empleado.
+     */
+    public Empleados consultarEmpleado(BigInteger secEmpleado);
 }

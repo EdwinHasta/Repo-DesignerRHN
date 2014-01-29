@@ -100,7 +100,7 @@ public interface AdministrarVigenciasTiposTrabajadoresInterface {
      * @param codMotivoRetiro Codigo del Motivo Retiro
      * @return motR Motivo Retiro que cumple con el codigo dado
      */
-    public MotivosRetiros motivoRetiroCodigo(BigDecimal codMotivoRetiro);
+    public MotivosRetiros motivoRetiroCodigo(BigInteger codMotivoRetiro);
     /**
      * Metodo que obtiene el total de Tipos Pensionados
      * @return listTP Lista de Tipos Pensionados

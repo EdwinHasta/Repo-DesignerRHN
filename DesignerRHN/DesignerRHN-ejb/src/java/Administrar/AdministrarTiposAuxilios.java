@@ -62,7 +62,7 @@ public class AdministrarTiposAuxilios implements AdministrarTiposAuxiliosInterfa
     }
 
     @Override
-    public BigInteger verificarTablasAuxilios(BigInteger secuenciaTiposAuxilios) {
+    public BigInteger contarTablasAuxiliosTiposAuxilios(BigInteger secuenciaTiposAuxilios) {
         BigInteger verificarTablasAuxilios = null;
         try {
             return verificarTablasAuxilios = persistenciaTiposAuxilios.contadorTablasAuxilios(secuenciaTiposAuxilios);

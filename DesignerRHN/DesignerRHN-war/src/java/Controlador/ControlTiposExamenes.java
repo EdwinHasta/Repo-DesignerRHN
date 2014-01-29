@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Controlador;
 
 import Entidades.TiposExamenes;
@@ -13,7 +12,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTiposExamenesInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +106,6 @@ public class ControlTiposExamenes implements Serializable {
             } else if (LND == 2) {
                 tipoActualizacion = 2;
             }
-
 
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposExamenes.asignarIndex ERROR======" + e.getMessage());
@@ -252,13 +249,12 @@ public class ControlTiposExamenes implements Serializable {
                 }
             } else {
 
-
                 if (!crearTiposExamenes.contains(filtrarTiposExamenes.get(indice))) {
                     if (filtrarTiposExamenes.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                       for (int j = 0; j < listTiposExamenes.size(); j++) {
+                        for (int j = 0; j < listTiposExamenes.size(); j++) {
                             if (j == indice) {
                                 if (listTiposExamenes.get(indice).getCodigo() == listTiposExamenes.get(j).getCodigo()) {
                                     contador++;
@@ -281,7 +277,6 @@ public class ControlTiposExamenes implements Serializable {
 
                     }
 
-
                     if (filtrarTiposExamenes.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -290,7 +285,6 @@ public class ControlTiposExamenes implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-
 
                     if (banderita == true) {
                         if (modificarTiposExamenes.isEmpty()) {
@@ -369,10 +363,14 @@ public class ControlTiposExamenes implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             System.err.println("Control Secuencia de ControlTiposExamenes ");
-            tiposExamenesCargos = administrarTiposExamenes.verificarBorradoTiposExamenesCargos(listTiposExamenes.get(index).getSecuencia());
-            vigenciasExamenesMedicos = administrarTiposExamenes.verificarBorradoVigenciasExamenesMedicos(listTiposExamenes.get(index).getSecuencia());
-
-            if (tiposExamenesCargos.equals(0) && vigenciasExamenesMedicos.equals(0)) {
+            if (tipoLista == 0) {
+                tiposExamenesCargos = administrarTiposExamenes.contarTiposExamenesCargosTipoExamen(listTiposExamenes.get(index).getSecuencia());
+                vigenciasExamenesMedicos = administrarTiposExamenes.contarVigenciasExamenesMedicosTipoExamen(listTiposExamenes.get(index).getSecuencia());
+            } else {
+                tiposExamenesCargos = administrarTiposExamenes.contarTiposExamenesCargosTipoExamen(filtrarTiposExamenes.get(index).getSecuencia());
+                vigenciasExamenesMedicos = administrarTiposExamenes.contarVigenciasExamenesMedicosTipoExamen(filtrarTiposExamenes.get(index).getSecuencia());
+            }
+            if (tiposExamenesCargos.equals(new BigInteger("0")) && vigenciasExamenesMedicos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoTiposExamenes();
             } else {
@@ -407,10 +405,8 @@ public class ControlTiposExamenes implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando ControlTiposExamenes");
             if (!borrarTiposExamenes.isEmpty()) {
-                for (int i = 0; i < borrarTiposExamenes.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposExamenes.borrarTiposExamenes(borrarTiposExamenes.get(i));
-                }
+                administrarTiposExamenes.borrarTiposExamenes(borrarTiposExamenes);
+
                 //mostrarBorrados
                 registrosBorrados = borrarTiposExamenes.size();
                 context.update("form:mostrarBorrados");
@@ -418,12 +414,7 @@ public class ControlTiposExamenes implements Serializable {
                 borrarTiposExamenes.clear();
             }
             if (!crearTiposExamenes.isEmpty()) {
-                for (int i = 0; i < crearTiposExamenes.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposExamenes.crearTiposExamenes(crearTiposExamenes.get(i));
-
-                }
+                administrarTiposExamenes.crearTiposExamenes(crearTiposExamenes);
                 crearTiposExamenes.clear();
             }
             if (!modificarTiposExamenes.isEmpty()) {
@@ -460,16 +451,16 @@ public class ControlTiposExamenes implements Serializable {
                 context.update("formularioDialogos:editDescripcion");
                 context.execute("editDescripcion.show()");
                 cualCelda = -1;
-            
+
             } else if (cualCelda == 2) {
                 context.update("formularioDialogos:editMinimoNormal");
                 context.execute("editMinimoNormal.show()");
                 cualCelda = -1;
-            }else if (cualCelda == 3) {
+            } else if (cualCelda == 3) {
                 context.update("formularioDialogos:editMaximoNormal");
                 context.execute("editMaximoNormal.show()");
                 cualCelda = -1;
-            }else if (cualCelda == 4) {
+            } else if (cualCelda == 4) {
                 context.update("formularioDialogos:editDiasRecurrencia");
                 context.execute("editDiasRecurrencia.show()");
                 cualCelda = -1;
@@ -641,7 +632,6 @@ public class ControlTiposExamenes implements Serializable {
             contador++;
         }
 
-
         if (contador == 2) {
 
             System.out.println("Datos Duplicando: " + duplicarTipoExamen.getSecuencia() + "  " + duplicarTipoExamen.getCodigo());
@@ -744,7 +734,7 @@ public class ControlTiposExamenes implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposExamenes> getListTiposExamenes() {
         if (listTiposExamenes == null) {
-            listTiposExamenes = administrarTiposExamenes.mostrarTiposExamenes();
+            listTiposExamenes = administrarTiposExamenes.consultarTiposExamenes();
         }
         return listTiposExamenes;
     }
@@ -816,6 +806,5 @@ public class ControlTiposExamenes implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-    
-    
+
 }

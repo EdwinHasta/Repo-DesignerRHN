@@ -76,7 +76,7 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
     }
     
     public List<MotivosRetiros> lovRetiros(){
-        return persistenciaRetiros.buscarMotivosRetiros();
+        return persistenciaRetiros.consultarMotivosRetiros();
     }
     
     public List<NovedadesSistema> vacacionesEmpleado(BigInteger secuenciaEmpleado){

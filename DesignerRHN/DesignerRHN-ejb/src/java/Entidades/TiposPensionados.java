@@ -42,13 +42,8 @@ public class TiposPensionados implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private BigInteger codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "tipopensionado")
@@ -61,7 +56,7 @@ public class TiposPensionados implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public TiposPensionados(BigInteger secuencia, BigInteger codigo, String descripcion) {
+    public TiposPensionados(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -75,11 +70,11 @@ public class TiposPensionados implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -91,7 +86,7 @@ public class TiposPensionados implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @XmlTransient

@@ -217,7 +217,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public HvReferencias referenciasFamiliaresPersona(BigInteger secHv) {
         List<HvReferencias> listaReferenciasPersonales;
-        listaReferenciasPersonales = persistenciaHvReferencias.referenciasFamiliaresPersona(secHv);
+        listaReferenciasPersonales = persistenciaHvReferencias.contarReferenciasFamiliaresPersona(secHv);
         if (listaReferenciasPersonales != null) {
             return listaReferenciasPersonales.get(0);
         } else {
@@ -339,7 +339,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public List<TiposDocumentos> tiposDocumentos() {
         List<TiposDocumentos> listaTiposDocumentos;
-        listaTiposDocumentos = persistenciaTiposDocumentos.tiposDocumentos();
+        listaTiposDocumentos = persistenciaTiposDocumentos.consultarTiposDocumentos();
         return listaTiposDocumentos;
     }
 

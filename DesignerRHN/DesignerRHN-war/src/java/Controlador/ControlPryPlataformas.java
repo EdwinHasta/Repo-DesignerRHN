@@ -351,9 +351,9 @@ public class ControlPryPlataformas implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlEvalCompetencias ");
             if (tipoLista == 0) {
-                proyectos = administrarPryPlataformas.verificarBorradoProyecto(listPryPlataformas.get(index).getSecuencia());
+                proyectos = administrarPryPlataformas.contarProyectosPryPlataformas(listPryPlataformas.get(index).getSecuencia());
             } else {
-                proyectos = administrarPryPlataformas.verificarBorradoProyecto(filtrarPryPlataformas.get(index).getSecuencia());
+                proyectos = administrarPryPlataformas.contarProyectosPryPlataformas(filtrarPryPlataformas.get(index).getSecuencia());
             }
             if (proyectos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -388,10 +388,8 @@ public class ControlPryPlataformas implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarPryPlataformas");
             if (!borrarPryPlataformas.isEmpty()) {
-                for (int i = 0; i < borrarPryPlataformas.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarPryPlataformas.borrarPryPlataformas(borrarPryPlataformas.get(i));
-                }
+              administrarPryPlataformas.borrarPryPlataformas(borrarPryPlataformas);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarPryPlataformas.size();
                 context.update("form:mostrarBorrados");
@@ -399,12 +397,7 @@ public class ControlPryPlataformas implements Serializable {
                 borrarPryPlataformas.clear();
             }
             if (!crearPryPlataformas.isEmpty()) {
-                for (int i = 0; i < crearPryPlataformas.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarPryPlataformas.crearPryPlataformas(crearPryPlataformas.get(i));
-
-                }
+                administrarPryPlataformas.crearPryPlataformas(crearPryPlataformas);              
                 crearPryPlataformas.clear();
             }
             if (!modificarPryPlataformas.isEmpty()) {

@@ -17,19 +17,70 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarPartesCuerpoInterface {
 
-    public void modificarPartesCuerpo(List<PartesCuerpo> listPartesCuerpoModificada);
+    /**
+     * Método encargado de modificar PartesCuerpo.
+     *
+     * @param listaPartesCuerpos Lista PartesCuerpo que se van a modificar.
+     */
+    public void modificarPartesCuerpo(List<PartesCuerpo> listaPartesCuerpos);
 
-    public void borrarPartesCuerpo(PartesCuerpo elementosCausasAccidentes);
+    /**
+     * Método encargado de borrar PartesCuerpo.
+     *
+     * @param listaPartesCuerpos Lista PartesCuerpo que se van a borrar.
+     */
+    public void borrarPartesCuerpo(List<PartesCuerpo> listaPartesCuerpos);
 
-    public void crearPartesCuerpo(PartesCuerpo elementosCausasAccidentes);
+    /**
+     * Método encargado de crear PartesCuerpo.
+     *
+     * @param listaPartesCuerpos Lista PartesCuerpo que se van a crear.
+     */
+    public void crearPartesCuerpo(List<PartesCuerpo> listaPartesCuerpos);
 
-    public List<PartesCuerpo> mostrarPartesCuerpo();
+    /**
+     * Método encargado de recuperar las PartesCuerpo para una tabla de la
+     * pantalla.
+     *
+     * @return Retorna una lista de PartesCuerpo.
+     */
+    public List<PartesCuerpo> consultarPartesCuerpo();
 
-    public PartesCuerpo mostrarParteCuerpo(BigInteger secElementosCausasAccidentes);
+    /**
+     * Método encargado de recuperar una PartesCuerpo dada su secuencia.
+     *
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo
+     * @return Retorna una PartesCuerpo.
+     */
+    public PartesCuerpo consultarParteCuerpo(BigInteger secPartesCuerpo);
 
-    public BigInteger verificarSoAccidentesMedicos(BigInteger secuenciaElementosCausasAccidentes);
+    /**
+     * Método encargado de contar la cantidad de SoAccidentesMedicos
+     * relacionadas con una ParteCuerpo específica.
+     *
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo.
+     * @return Retorna un número indicando la cantidad de SoAccidentesMedicos
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSoAccidentesMedicosParteCuerpo(BigInteger secPartesCuerpo);
 
-    public BigInteger verificarBorradoDetallesExamenes(BigInteger secuenciaElementosCausasAccidentes);
+    /**
+     * Método encargado de contar la cantidad de DetallesExamenes relacionadas
+     * con una ParteCuerpo específica.
+     *
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo.
+     * @return Retorna un número indicando la cantidad de DetallesExamenes cuya
+     * secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarDetallesExamenesParteCuerpo(BigInteger secPartesCuerpo);
 
-    public BigInteger verificarBorradoSoDetallesRevisiones(BigInteger secuenciaElementosCausasAccidentes);
+    /**
+     * Método encargado de contar la cantidad de SoDetallesRevisiones
+     * relacionadas con una ParteCuerpo específica.
+     *
+     * @param secPartesCuerpo Secuencia de la ParteCuerpo.
+     * @return Retorna un número indicando la cantidad de SoDetallesRevisiones
+     * cuya secuencia coincide con el valor del parámetro.
+     */
+    public BigInteger contarSoDetallesRevisionesParteCuerpo(BigInteger secPartesCuerpo);
 }

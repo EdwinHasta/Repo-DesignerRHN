@@ -11,7 +11,6 @@ import InterfaceAdministrar.AdministrarTiposEmpresasInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -346,9 +345,9 @@ public class ControlTiposEmpresas implements Serializable {
         try {
             System.err.println("Control Secuencia de ControlTiposEmpresas ");
             if (tipoLista == 0) {
-                sueldosMercados = administrarTiposEmpresas.verificarBorradoSueldosMercados(listTiposEmpresas.get(index).getSecuencia());
+                sueldosMercados = administrarTiposEmpresas.contarSueldosMercadosTipoEmpresa(listTiposEmpresas.get(index).getSecuencia());
             } else {
-                sueldosMercados = administrarTiposEmpresas.verificarBorradoSueldosMercados(filtrarTiposEmpresas.get(index).getSecuencia());
+                sueldosMercados = administrarTiposEmpresas.contarSueldosMercadosTipoEmpresa(filtrarTiposEmpresas.get(index).getSecuencia());
             }
             if (sueldosMercados.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -385,10 +384,8 @@ public class ControlTiposEmpresas implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarTiposEmpresas");
             if (!borrarTiposEmpresas.isEmpty()) {
-                for (int i = 0; i < borrarTiposEmpresas.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposEmpresas.borrarTiposEmpresas(borrarTiposEmpresas.get(i));
-                }
+         administrarTiposEmpresas.borrarTiposEmpresas(borrarTiposEmpresas);
+                
                 //mostrarBorrados
                 registrosBorrados = borrarTiposEmpresas.size();
                 context.update("form:mostrarBorrados");
@@ -396,12 +393,7 @@ public class ControlTiposEmpresas implements Serializable {
                 borrarTiposEmpresas.clear();
             }
             if (!crearTiposEmpresas.isEmpty()) {
-                for (int i = 0; i < crearTiposEmpresas.size(); i++) {
-
-                    System.out.println("Creando...");
-                    administrarTiposEmpresas.crearTiposEmpresas(crearTiposEmpresas.get(i));
-
-                }
+               administrarTiposEmpresas.crearTiposEmpresas(crearTiposEmpresas);
                 crearTiposEmpresas.clear();
             }
             if (!modificarTiposEmpresas.isEmpty()) {
@@ -696,7 +688,7 @@ public class ControlTiposEmpresas implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposEmpresas> getListTiposEmpresas() {
         if (listTiposEmpresas == null) {
-            listTiposEmpresas = administrarTiposEmpresas.mostrarTiposEmpresas();
+            listTiposEmpresas = administrarTiposEmpresas.consultarTiposEmpresas();
         }
         return listTiposEmpresas;
     }

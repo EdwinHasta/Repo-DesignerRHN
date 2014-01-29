@@ -26,33 +26,39 @@ public class AdministrarTiposFamiliares implements AdministrarTiposFamiliaresInt
     private TiposFamiliares tiposFamiliares;
     private List<TiposFamiliares> listTiposFamiliares;
 
-    public void modificarTiposFamiliares(List<TiposFamiliares> listTiposFamiliaresModificadas) {
-        for (int i = 0; i < listTiposFamiliaresModificadas.size(); i++) {
+    @Override
+    public void modificarTiposFamiliares(List<TiposFamiliares> listTiposFamiliares) {
+        for (int i = 0; i < listTiposFamiliares.size(); i++) {
             System.out.println("Administrar Modificando...");
-            tiposFamiliaresSeleccionada = listTiposFamiliaresModificadas.get(i);
-            persistenciaTiposFamiliares.editar(tiposFamiliaresSeleccionada);
+            persistenciaTiposFamiliares.editar(listTiposFamiliares.get(i));
+        }
+    }
+   @Override
+    public void borrarTiposFamiliares(List<TiposFamiliares> listTiposFamiliares) {
+        for (int i = 0; i < listTiposFamiliares.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaTiposFamiliares.borrar(listTiposFamiliares.get(i));
+        }
+    }
+   @Override
+    public void crearTiposFamiliares(List<TiposFamiliares> listTiposFamiliares) {
+        for (int i = 0; i < listTiposFamiliares.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaTiposFamiliares.crear(listTiposFamiliares.get(i));
         }
     }
 
-    public void borrarTiposFamiliares(TiposFamiliares tiposExamenes) {
-        persistenciaTiposFamiliares.borrar(tiposExamenes);
-    }
-
-    public void crearTiposFamiliares(TiposFamiliares tiposExamenes) {
-        persistenciaTiposFamiliares.crear(tiposExamenes);
-    }
-
-    public List<TiposFamiliares> mostrarTiposFamiliares() {
+    public List<TiposFamiliares> consultarTiposFamiliares() {
         listTiposFamiliares = persistenciaTiposFamiliares.buscarTiposFamiliares();
         return listTiposFamiliares;
     }
-
-    public TiposFamiliares mostrarTipoExamen(BigInteger secTipoEmpresa) {
+   @Override
+    public TiposFamiliares consultarTipoExamen(BigInteger secTipoEmpresa) {
         tiposFamiliares = persistenciaTiposFamiliares.buscarTiposFamiliares(secTipoEmpresa);
         return tiposFamiliares;
     }
-
-    public BigInteger verificarBorradoHvReferencias(BigInteger secuenciaTiposFamiliares) {
+   @Override
+    public BigInteger contarHvReferenciasTipoFamiliar(BigInteger secuenciaTiposFamiliares) {
         BigInteger verificadorHvReferencias = null;
 
         try {

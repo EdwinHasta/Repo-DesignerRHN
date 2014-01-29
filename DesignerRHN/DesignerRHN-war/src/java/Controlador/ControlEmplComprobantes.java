@@ -181,15 +181,15 @@ public class ControlEmplComprobantes implements Serializable {
         subtotalPasivo = new BigDecimal(0);
         subtotalGasto = new BigDecimal(0);
         secuenciaEmpleado = sec;
-        empleado = administrarComprobantes.buscarEmpleado(secuenciaEmpleado);
+        empleado = administrarComprobantes.consultarEmpleado(secuenciaEmpleado);
         if (empleado != null) {
-            listaComprobantes = administrarComprobantes.comprobantesEmpleado(empleado.getSecuencia());
+            listaComprobantes = administrarComprobantes.consultarComprobantesEmpleado(empleado.getSecuencia());
             if (!listaComprobantes.isEmpty()) {
                 seleccionComprobante = listaComprobantes.get(0);
-                listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(seleccionComprobante.getSecuencia());
+                listaCortesProcesos = administrarComprobantes.consultarCortesProcesosComprobante(seleccionComprobante.getSecuencia());
                 if (!listaCortesProcesos.isEmpty()) {
-                    listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
-                    listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
+                    listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
+                    listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(listaCortesProcesos.get(0).getSecuencia(), empleado.getSecuencia());
                     for (int i = 0; i < listaSolucionesNodosEmpleado.size(); i++) {
                         if (listaSolucionesNodosEmpleado.get(i).getTipo().equals("PAGO")) {
                             subtotalPago = subtotalPago.add(listaSolucionesNodosEmpleado.get(i).getValor());
@@ -227,20 +227,20 @@ public class ControlEmplComprobantes implements Serializable {
                     seleccionComprobante = listaComprobantes.get(indexComprobante);
                     if (tipoListaComprobantes == 0) {
                         secRegistro = listaComprobantes.get(indexComprobante).getSecuencia();
-                        listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(listaComprobantes.get(indexComprobante).getSecuencia());
+                        listaCortesProcesos = administrarComprobantes.consultarCortesProcesosComprobante(listaComprobantes.get(indexComprobante).getSecuencia());
                         if (!listaCortesProcesos.isEmpty()) {
-                            listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
-                            listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                            listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                            listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
                         } else {
                             listaSolucionesNodosEmpleado = null;
                             listaSolucionesNodosEmpleador = null;
                         }
                     } else {
                         secRegistro = filtradolistaComprobantes.get(indexComprobante).getSecuencia();
-                        listaCortesProcesos = administrarComprobantes.cortesProcesosComprobante(filtradolistaComprobantes.get(indexComprobante).getSecuencia());
+                        listaCortesProcesos = administrarComprobantes.consultarCortesProcesosComprobante(filtradolistaComprobantes.get(indexComprobante).getSecuencia());
                         if (!listaCortesProcesos.isEmpty()) {
-                            listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
-                            listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                            listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
+                            listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
                         } else {
                             listaSolucionesNodosEmpleado = null;
                             listaSolucionesNodosEmpleador = null;
@@ -315,15 +315,15 @@ public class ControlEmplComprobantes implements Serializable {
                     if (cualCelda == 1) {
                         Proceso = listaCortesProcesos.get(indexCortesProcesos).getProceso().getDescripcion();
                     }
-                    listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
-                    listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                    listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                    listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
                 } else {
                     secRegistro = filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia();
                     if (cualCelda == 1) {
                         Proceso = filtradolistaCortesProcesos.get(indexCortesProcesos).getProceso().getDescripcion();
                     }
-                    listaSolucionesNodosEmpleado = administrarComprobantes.solucionesNodosCorteProcesoEmpleado(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
-                    listaSolucionesNodosEmpleador = administrarComprobantes.solucionesNodosCorteProcesoEmpleador(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                    listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
+                    listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado);
                 }
             }
             if (banderaComprobantes == 1) {
@@ -826,7 +826,7 @@ public class ControlEmplComprobantes implements Serializable {
         if (tipoTabla == 0) {
             if (indexComprobante >= 0) {
                 if (tipoListaComprobantes == 0) {
-                    if (administrarComprobantes.cortesProcesosComprobante(listaComprobantes.get(indexComprobante).getSecuencia()).isEmpty()) {
+                    if (administrarComprobantes.consultarCortesProcesosComprobante(listaComprobantes.get(indexComprobante).getSecuencia()).isEmpty()) {
                         if (!listaComprobantesModificar.isEmpty() && listaComprobantesModificar.contains(listaComprobantes.get(indexComprobante))) {
                             int modIndex = listaComprobantesModificar.indexOf(listaComprobantes.get(indexComprobante));
                             listaComprobantesModificar.remove(modIndex);
@@ -851,7 +851,7 @@ public class ControlEmplComprobantes implements Serializable {
                     }
                 }
                 if (tipoListaComprobantes == 1) {
-                    if (administrarComprobantes.cortesProcesosComprobante(filtradolistaComprobantes.get(indexComprobante).getSecuencia()).isEmpty()) {
+                    if (administrarComprobantes.consultarCortesProcesosComprobante(filtradolistaComprobantes.get(indexComprobante).getSecuencia()).isEmpty()) {
                         if (!listaComprobantesModificar.isEmpty() && listaComprobantesModificar.contains(filtradolistaComprobantes.get(indexComprobante))) {
                             int modIndex = listaComprobantesModificar.indexOf(filtradolistaComprobantes.get(indexComprobante));
                             listaComprobantesModificar.remove(modIndex);
@@ -881,7 +881,7 @@ public class ControlEmplComprobantes implements Serializable {
         } else if (tipoTabla == 1) {
             if (indexCortesProcesos >= 0) {
                 if (tipoListaCortesProcesos == 0) {
-                    if (administrarComprobantes.solucionesNodosCorteProcesoEmpleado(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado).isEmpty() && administrarComprobantes.solucionesNodosCorteProcesoEmpleador(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado).isEmpty()) {
+                    if (administrarComprobantes.consultarSolucionesNodosEmpleado(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado).isEmpty() && administrarComprobantes.consultarSolucionesNodosEmpleador(listaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado).isEmpty()) {
                         if (!listaCortesProcesosModificar.isEmpty() && listaCortesProcesosModificar.contains(listaCortesProcesos.get(indexCortesProcesos))) {
                             int modIndex = listaCortesProcesosModificar.indexOf(listaCortesProcesos.get(indexCortesProcesos));
                             listaCortesProcesosModificar.remove(modIndex);
@@ -903,7 +903,7 @@ public class ControlEmplComprobantes implements Serializable {
                     }
                 }
                 if (tipoListaCortesProcesos == 1) {
-                    if (administrarComprobantes.solucionesNodosCorteProcesoEmpleado(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado) == null && administrarComprobantes.solucionesNodosCorteProcesoEmpleador(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado) == null) {
+                    if (administrarComprobantes.consultarSolucionesNodosEmpleado(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado) == null && administrarComprobantes.consultarSolucionesNodosEmpleador(filtradolistaCortesProcesos.get(indexCortesProcesos).getSecuencia(), secuenciaEmpleado) == null) {
                         if (!listaCortesProcesosModificar.isEmpty() && listaCortesProcesosModificar.contains(filtradolistaCortesProcesos.get(indexCortesProcesos))) {
                             int modIndex = listaCortesProcesosModificar.indexOf(filtradolistaCortesProcesos.get(indexCortesProcesos));
                             listaCortesProcesosModificar.remove(modIndex);
@@ -946,7 +946,7 @@ public class ControlEmplComprobantes implements Serializable {
                 }
             } else {
                 if (tipoTabla == 0) {
-                    BigInteger sugerenciaNumero = administrarComprobantes.maximoNumeroComprobante().add(new BigInteger("1"));
+                    BigInteger sugerenciaNumero = administrarComprobantes.consultarMaximoNumeroComprobante().add(new BigInteger("1"));
                     nuevoComprobante.setNumero(sugerenciaNumero);
                     context.update("formularioDialogos:nuevoComprobante");
                     context.execute("NuevoRegistroComprobantes.show()");
@@ -956,7 +956,7 @@ public class ControlEmplComprobantes implements Serializable {
                 }
             }
         } else {
-            BigInteger sugerenciaNumero = administrarComprobantes.maximoNumeroComprobante().add(new BigInteger("1"));
+            BigInteger sugerenciaNumero = administrarComprobantes.consultarMaximoNumeroComprobante().add(new BigInteger("1"));
             nuevoComprobante.setNumero(sugerenciaNumero);
             context.update("formularioDialogos:nuevoComprobante");
             context.execute("NuevoRegistroComprobantes.show()");
@@ -1568,7 +1568,7 @@ public class ControlEmplComprobantes implements Serializable {
 
         if (modificacionesSolucionesNodosEmpleador = true) {
             if (!listaSolucionesNodosEmpleadorModificar.isEmpty()) {
-                administrarComprobantes.modificarSolucionesNodosEmpleador(listaSolucionesNodosEmpleadorModificar);
+                administrarComprobantes.modificarSolucionesNodosEmpleado(listaSolucionesNodosEmpleadorModificar);
                 listaSolucionesNodosEmpleadorModificar.clear();
             }
             System.out.println("Se guardaron los datos con exito - Soluciones Nodo Empleador");
@@ -1785,7 +1785,7 @@ public class ControlEmplComprobantes implements Serializable {
 
     public List<Procesos> getListaProcesos() {
         if (listaProcesos.isEmpty()) {
-            listaProcesos = administrarComprobantes.lovProcesos();
+            listaProcesos = administrarComprobantes.consultarLOVProcesos();
         }
         return listaProcesos;
     }
@@ -1841,7 +1841,7 @@ public class ControlEmplComprobantes implements Serializable {
     public List<Terceros> getListaTerceros() {
         if (listaTerceros.isEmpty()) {
             if (empleado != null) {
-                listaTerceros = administrarComprobantes.lovTerceros(empleado.getEmpresa().getSecuencia());
+                listaTerceros = administrarComprobantes.consultarLOVTerceros(empleado.getEmpresa().getSecuencia());
             }
         }
         return listaTerceros;
@@ -1909,8 +1909,8 @@ public class ControlEmplComprobantes implements Serializable {
                 }
             }
             if (secFormula != null && fechaDesde != null) {
-                secHistoriaFormula = administrarComprobantes.obtenerHistoriaFormula(secFormula, fechaDesde);
-                listaDetallesFormulas = administrarComprobantes.detallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
+                secHistoriaFormula = administrarComprobantes.consultarHistoriaFormula(secFormula, fechaDesde);
+                listaDetallesFormulas = administrarComprobantes.consultarDetallesFormula(secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
             }
         }
         return listaDetallesFormulas;
