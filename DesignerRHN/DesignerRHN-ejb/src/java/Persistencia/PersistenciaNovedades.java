@@ -12,14 +12,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'Novedades'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Novedades' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -29,7 +32,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public void crear(Novedades novedades) {
         try {
-            em.merge(novedades);
+            em.persist(novedades);
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaNovedades.crear");
         }
@@ -43,6 +46,23 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public void borrar(Novedades novedades) {
         em.remove(em.merge(novedades));
+    }
+
+    @Override
+    public Novedades buscarNovedad(BigInteger secNovedad) {
+        try {
+            if (secNovedad != null) {
+                Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.secuencia = :secNovedad");
+                query.setParameter("secNovedad", secNovedad);
+                Novedades novedad = (Novedades) query.getSingleResult();
+                return novedad;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Error buscarNovedad PersistenciaNovedades : " + e.toString());
+            return null;
+        }
     }
 
     @Override
