@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -17,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposContratos.findAll", query = "SELECT t FROM TiposContratos t")})
 public class TiposContratos implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocontrato")
+    private Collection<DiasLaborables> diasLaborablesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocontrato")
     private Collection<VigenciasConceptosTC> vigenciasconceptostcCollection;
 
@@ -63,6 +66,12 @@ public class TiposContratos implements Serializable {
     @Size(max = 1)
     @Column(name = "FORZACOTIZACIONPILA30DIAS")
     private String forzacotizacionpila30dias;
+    @Transient
+    private String strForza;
+    @Transient
+    private boolean checkForza;
+    @Transient
+    private String strVinculacion;
 
     public TiposContratos() {
     }
@@ -122,12 +131,61 @@ public class TiposContratos implements Serializable {
         this.vinculacionempresa = vinculacionempresa;
     }
 
+    public String getStrVinculacion() {
+        if (vinculacionempresa == null || vinculacionempresa.equalsIgnoreCase("N")) {
+            strVinculacion = "NO";
+        } else {
+            strVinculacion = "SI";
+        }
+        return strVinculacion;
+    }
+
+    public void setStrVinculacion(String strVinculacion) {
+        this.strVinculacion = strVinculacion;
+    }
+
     public String getForzacotizacionpila30dias() {
+        if (forzacotizacionpila30dias == null) {
+            forzacotizacionpila30dias = "N";
+        }
         return forzacotizacionpila30dias;
     }
 
     public void setForzacotizacionpila30dias(String forzacotizacionpila30dias) {
         this.forzacotizacionpila30dias = forzacotizacionpila30dias;
+    }
+
+    public String getStrForza() {
+        getForzacotizacionpila30dias();
+        if (forzacotizacionpila30dias == null || forzacotizacionpila30dias.equalsIgnoreCase("N")) {
+            strForza = "NO";
+        } else {
+            strForza = "SI";
+        }
+        return strForza;
+    }
+
+    public void setStrForza(String strForza) {
+        this.strForza = strForza;
+    }
+
+    public boolean isCheckForza() {
+        getStrForza();
+        if (strForza.equalsIgnoreCase("NO")) {
+            checkForza = false;
+        } else {
+            checkForza = true;
+        }
+        return checkForza;
+    }
+
+    public void setCheckForza(boolean checkForza) {
+        if (checkForza == true) {
+            forzacotizacionpila30dias = "S";
+        } else {
+            forzacotizacionpila30dias = "N";
+        }
+        this.checkForza = checkForza;
     }
 
     @Override
@@ -178,5 +236,14 @@ public class TiposContratos implements Serializable {
 
     public void setVigenciasconceptostcCollection(Collection<VigenciasConceptosTC> vigenciasconceptostcCollection) {
         this.vigenciasconceptostcCollection = vigenciasconceptostcCollection;
+    }
+
+    @XmlTransient
+    public Collection<DiasLaborables> getDiasLaborablesCollection() {
+        return diasLaborablesCollection;
+    }
+
+    public void setDiasLaborablesCollection(Collection<DiasLaborables> diasLaborablesCollection) {
+        this.diasLaborablesCollection = diasLaborablesCollection;
     }
 }

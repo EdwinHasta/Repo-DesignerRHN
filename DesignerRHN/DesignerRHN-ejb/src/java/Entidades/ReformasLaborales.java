@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ReformasLaborales.findByNombre", query = "SELECT r FROM ReformasLaborales r WHERE r.nombre = :nombre"),
     @NamedQuery(name = "ReformasLaborales.findByIntegral", query = "SELECT r FROM ReformasLaborales r WHERE r.integral = :integral")})
 public class ReformasLaborales implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reformalaboral")
+    private Collection<DetallesReformasLaborales> detallesReformasLaboralesCollection;
     @OneToMany(mappedBy = "reformalaboral")
     private Collection<SolucionesNodos> solucionesNodosCollection;
     private static final long serialVersionUID = 1L;
@@ -147,6 +149,15 @@ public class ReformasLaborales implements Serializable {
 
     public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
         this.solucionesNodosCollection = solucionesNodosCollection;
+    }
+
+    @XmlTransient
+    public Collection<DetallesReformasLaborales> getDetallesReformasLaboralesCollection() {
+        return detallesReformasLaboralesCollection;
+    }
+
+    public void setDetallesReformasLaboralesCollection(Collection<DetallesReformasLaborales> detallesReformasLaboralesCollection) {
+        this.detallesReformasLaboralesCollection = detallesReformasLaboralesCollection;
     }
     
 }

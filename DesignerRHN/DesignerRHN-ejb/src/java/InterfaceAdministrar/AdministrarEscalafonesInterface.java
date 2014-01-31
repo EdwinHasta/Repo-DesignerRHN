@@ -12,7 +12,7 @@ import java.util.List;
  * Interface encargada de determinar las operaciones lógicas necesarias para la
  * pantalla 'Escalafon'.
  *
- * @author betelgeuse
+ * @author AndresPineda
  */
 public interface AdministrarEscalafonesInterface {
 

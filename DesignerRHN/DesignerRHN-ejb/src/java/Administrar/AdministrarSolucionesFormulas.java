@@ -20,7 +20,7 @@ import javax.ejb.Stateful;
  * Clase encargada de realizar las operaciones lógicas para la pantalla
  * 'SolucionFormula'.
  *
- * @author betelgeuse
+ * @author AndresPineda
  */
 @Stateful
 public class AdministrarSolucionesFormulas implements AdministrarSolucionesFormulasInterface {

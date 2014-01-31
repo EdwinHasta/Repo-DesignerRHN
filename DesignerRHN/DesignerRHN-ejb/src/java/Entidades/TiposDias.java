@@ -7,6 +7,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -36,6 +37,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposDias.findByTipo", query = "SELECT t FROM TiposDias t WHERE t.tipo = :tipo")})
 public class TiposDias implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Integer codigo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodia")
+    private Collection<DiasLaborables> diasLaborablesCollection;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -43,8 +51,6 @@ public class TiposDias implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "TIPO")
@@ -71,14 +77,6 @@ public class TiposDias implements Serializable {
 
     public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
     }
 
     public String getDescripcion() {
@@ -132,6 +130,23 @@ public class TiposDias implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Tiposdias[ secuencia=" + secuencia + " ]";
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    @XmlTransient
+    public Collection<DiasLaborables> getDiasLaborablesCollection() {
+        return diasLaborablesCollection;
+    }
+
+    public void setDiasLaborablesCollection(Collection<DiasLaborables> diasLaborablesCollection) {
+        this.diasLaborablesCollection = diasLaborablesCollection;
     }
 
 }
