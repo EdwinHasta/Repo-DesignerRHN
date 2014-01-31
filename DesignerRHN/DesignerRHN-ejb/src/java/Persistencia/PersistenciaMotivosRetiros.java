@@ -5,7 +5,6 @@ package Persistencia;
 
 import Entidades.MotivosRetiros;
 import InterfacePersistencia.PersistenciaMotivosRetirosInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;

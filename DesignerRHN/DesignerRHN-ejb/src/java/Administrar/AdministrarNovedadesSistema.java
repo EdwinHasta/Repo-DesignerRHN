@@ -8,12 +8,13 @@ import Entidades.Empleados;
 import Entidades.MotivosRetiros;
 import Entidades.MotivosDefinitivas;
 import Entidades.NovedadesSistema;
+import Entidades.Vacaciones;
 import InterfaceAdministrar.AdministrarNovedadesSistemaInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaMotivosDefinitivasInterface;
 import InterfacePersistencia.PersistenciaMotivosRetirosInterface;
 import InterfacePersistencia.PersistenciaNovedadesSistemaInterface;
-import Persistencia.PersistenciaMotivosRetiros;
+import InterfacePersistencia.PersistenciaVacacionesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -30,6 +31,8 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
     PersistenciaMotivosRetirosInterface persistenciaRetiros;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
+    @EJB
+    PersistenciaVacacionesInterface persistenciaVacaciones;
     
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
     @Override
@@ -76,4 +79,11 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
         return persistenciaRetiros.consultarMotivosRetiros();
     }
     
+    public List<NovedadesSistema> vacacionesEmpleado(BigInteger secuenciaEmpleado){
+        return persistenciaNovedades.novedadesEmpleadoVacaciones(secuenciaEmpleado);
+    }
+        
+    public List<Vacaciones> periodosEmpleado(BigInteger secuenciaEmpleado){
+        return persistenciaVacaciones.periodoVacaciones(secuenciaEmpleado);
+    }
 }

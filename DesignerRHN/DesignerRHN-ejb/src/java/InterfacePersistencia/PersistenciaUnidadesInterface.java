@@ -33,5 +33,5 @@ public interface PersistenciaUnidadesInterface {
      * Método encargado de buscar todas las Unidades existentes en la base de datos, ordenadas por código.
      * @return Retorna una lista de Unidades ordenadas por código.
      */
-    public List<Unidades> lovUnidades();
+    public List<Unidades> consultarUnidades();
 }

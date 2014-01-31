@@ -210,7 +210,7 @@
 
                         <p:panel id="nuevaFormula" style="border: none; position: relative; top: -50px">
                             <strong><h:outputText value="#{msg['nombrecortoN']}" style="font-size: 12px; position: absolute; top: 85px" /></strong>
-                            <p:inputText value="#{controlFormula.nuevaFormula.nombrecorto}" maxlength="6" style="font-size: 12px; width: 50px;position: absolute; top: 80px; left: 120px; text-transform: uppercase">
+                            <p:inputText value="#{controlFormula.nuevaFormula.nombrecorto}" maxlength="6" style="font-size: 12px; width: 50px;position: absolute; top: 80px; left: 120px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                             </p:inputText>
 
@@ -239,7 +239,9 @@
                             </p:selectOneMenu>
 
                             <strong><h:outputText value="#{msg['periodicidadN']}" style="font-size: 12px; position: absolute; top: 253px" /></strong>
-                            <p:selectBooleanCheckbox value="#{controlFormula.nuevaFormula.periodicidadFormula}" style="position: absolute; top: 253px; left: 120px"/>
+                            <p:selectBooleanCheckbox value="#{controlFormula.nuevaFormula.periodicidadFormula}" style="position: absolute; top: 253px; left: 120px">
+                                <p:ajax update="@this"/>
+                            </p:selectBooleanCheckbox>
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 280px;" actionListener="#{controlFormula.limpiarNuevaFormula()}" update="nuevaFormula" process="@this"/>
                             <p:commandButton id="agregar" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 120px; top: 280px;"  process="@this" actionListener="#{controlFormula.agregarNuevaFormula()}" />
@@ -407,7 +409,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarOperandoFormula" header="#{msg['atencion']}" widgetVar="confirmarOperandoFormula"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarOperandoFormula']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />

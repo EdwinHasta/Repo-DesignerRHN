@@ -101,7 +101,7 @@ public class AdministrarFormulaContrato implements AdministrarFormulaContratoInt
     @Override
     public List<Periodicidades> listPeriodicidades() {
         try {
-            List<Periodicidades> lista = persistenciaPeriodicidades.buscarPeriodicidades();
+            List<Periodicidades> lista = persistenciaPeriodicidades.consultarPeriodicidades();
             return lista;
         } catch (Exception e) {
             System.out.println("Error listPeriodicidades Admi : " + e.toString());

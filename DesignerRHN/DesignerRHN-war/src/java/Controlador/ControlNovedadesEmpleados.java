@@ -137,7 +137,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         actuales = true;
         listaPeriodicidades = null;
         listaEmpleadosNovedad = null;
-        permitirIndex = true;
         aceptar = true;
         secRegistro = null;
         guardado = true;

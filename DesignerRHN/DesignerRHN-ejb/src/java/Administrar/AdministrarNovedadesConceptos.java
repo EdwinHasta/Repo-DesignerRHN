@@ -85,7 +85,7 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
 
     @Override
     public List<Periodicidades> lovPeriodicidades() {
-        return persistenciaPeriodicidades.buscarPeriodicidades();
+        return persistenciaPeriodicidades.consultarPeriodicidades();
     }
 
     @Override

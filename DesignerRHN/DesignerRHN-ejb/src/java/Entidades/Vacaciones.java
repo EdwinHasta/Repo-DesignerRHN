@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Vacaciones.findAll", query = "SELECT v FROM Vacaciones v")})
 public class Vacaciones implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -66,6 +69,8 @@ public class Vacaciones implements Serializable {
     @JoinColumn(name = "NOVEDAD", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Novedades novedad;
+    @Transient
+    private String periodo;
 
     public Vacaciones() {
     }
@@ -114,6 +119,9 @@ public class Vacaciones implements Serializable {
     }
 
     public BigDecimal getDiaspendientes() {
+        if (diaspendientes == null){
+            diaspendientes = BigDecimal.valueOf(0);
+        }
         return diaspendientes;
     }
 
@@ -146,6 +154,24 @@ public class Vacaciones implements Serializable {
         this.novedad = novedad;
     }
 
+    public String getPeriodo() {
+        if (periodo == null) {
+            periodo = " ";
+
+            if (inicialcausacion != null && finalcausacion != null) {
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                periodo = formato.format(inicialcausacion) + " -> " + formato.format(finalcausacion);
+            } else {
+                periodo = null;
+            }
+        }
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -170,5 +196,5 @@ public class Vacaciones implements Serializable {
     public String toString() {
         return "Entidades.Vacaciones[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

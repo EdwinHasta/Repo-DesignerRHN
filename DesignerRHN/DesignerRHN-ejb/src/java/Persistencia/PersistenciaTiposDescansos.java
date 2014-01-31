@@ -52,7 +52,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     }
 
     @Override
-    public List<TiposDescansos> buscarTiposDescansos() {
+    public List<TiposDescansos> consultarTiposDescansos() {
         try {
             List<TiposDescansos> tiposDescansos = (List<TiposDescansos>) em.createNamedQuery("TiposDescansos.findAll").getResultList();
             return tiposDescansos;
@@ -63,7 +63,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     }
 
     @Override
-    public TiposDescansos buscarTiposDescansosSecuencia(BigInteger secuencia) {
+    public TiposDescansos consultarTipoDescanso(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT tp FROM TiposDescansos tp WHERE tp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -73,6 +73,21 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
             System.out.println("Error buscarTiposDescansosSecuencia PersistenciaTiposDescansos");
             TiposDescansos tiposDescansos = null;
             return tiposDescansos;
+        }
+    }
+    
+    public BigInteger contarVigenciasJornadasTipoDescanso(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM vigenciasjornadas WHERE tipodescanso=?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("PersistenciaTiposDescansos contarVigenciasJornadasTipoDescanso contador" + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaTiposDescansos contarVigenciasJornadasTipoDescanso ERROR :  " + e);
+            return retorno;
         }
     }
 }

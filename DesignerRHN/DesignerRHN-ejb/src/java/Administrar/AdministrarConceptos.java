@@ -83,7 +83,7 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
 
     @Override
     public List<Unidades> consultarLOVUnidades() {
-        return persistenciaUnidades.lovUnidades();
+        return persistenciaUnidades.consultarUnidades();
     }
 
     @Override

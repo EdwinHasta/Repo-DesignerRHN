@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -40,9 +40,8 @@ public class Unidades implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
@@ -64,20 +63,20 @@ public class Unidades implements Serializable {
     public Unidades() {
     }
 
-    public Unidades(BigDecimal secuencia) {
+    public Unidades(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Unidades(BigDecimal secuencia, String nombre) {
+    public Unidades(BigInteger secuencia, String nombre) {
         this.secuencia = secuencia;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

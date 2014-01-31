@@ -151,7 +151,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
     @Override
     public List<TiposDescansos> tiposDescansos() {
         try {
-            listTiposDescansos = persistenciaTiposDescansos.buscarTiposDescansos();
+            listTiposDescansos = persistenciaTiposDescansos.consultarTiposDescansos();
             return listTiposDescansos;
         } catch (Exception e) {
             System.out.println("Error tiposDescansos Admi");
