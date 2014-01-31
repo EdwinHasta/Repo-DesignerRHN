@@ -120,8 +120,14 @@ public class ControlNovedadesEmpleados implements Serializable {
     private int resultado;
     private boolean todas;
     private boolean actuales;
+    //
+    private boolean activoBtnAcumulado;
+    //
+    private Novedades actualNovedadTabla;
 
     public ControlNovedadesEmpleados() {
+        actualNovedadTabla = new Novedades();
+        activoBtnAcumulado = true;
         permitirIndex = true;
         listaNovedades = null;
         listaEmpleados = null;
@@ -131,7 +137,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         actuales = true;
         listaPeriodicidades = null;
         listaEmpleadosNovedad = null;
-        permitirIndex = true;
         aceptar = true;
         secRegistro = null;
         guardado = true;
@@ -199,6 +204,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         permitirIndex = true;
         resultado = 0;
         RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         context.update("form:datosNovedadesEmpleado");
 
     }
@@ -249,6 +256,9 @@ public class ControlNovedadesEmpleados implements Serializable {
         resultado = 0;
         guardado = true;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
     }
     //Ubicacion Celda Arriba 
 
@@ -259,6 +269,8 @@ public class ControlNovedadesEmpleados implements Serializable {
             secuenciaEmpleado = seleccionMostrar.getId();
             listaNovedades = null;
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
             //}
         } else {
@@ -338,6 +350,9 @@ public class ControlNovedadesEmpleados implements Serializable {
         if (guardado == true) {
             guardado = false;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         RequestContext.getCurrentInstance().update("form:datosNovedadesEmpleado");
     }
 
@@ -416,6 +431,8 @@ public class ControlNovedadesEmpleados implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listaNovedades = null;
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
             guardado = true;
             permitirIndex = true;
@@ -436,7 +453,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         Empleados emp2 = new Empleados();
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
-
 
         if (nuevaNovedad.getFechainicial() == null) {
             System.out.println("Entro a Fecha Inicial");
@@ -579,7 +595,8 @@ public class ControlNovedadesEmpleados implements Serializable {
             nuevaNovedad.setTipo("FIJA");
 
             System.out.println("nuevaNovedad : " + nuevaNovedad.getFechareporte());
-
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
             if (guardado == true) {
                 guardado = false;
@@ -699,6 +716,8 @@ public class ControlNovedadesEmpleados implements Serializable {
             duplicarNovedad.setTerminal(localMachine.getHostName());
 
             duplicarNovedad = new Novedades();
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("formularioDialogos:DuplicarRegistroNovedad");
             context.execute("DuplicarRegistroNovedad.hide()");
         }
@@ -708,6 +727,8 @@ public class ControlNovedadesEmpleados implements Serializable {
 
         index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         if (LND == 0) {
             tipoActualizacion = 0;
         } else if (LND == 1) {
@@ -757,6 +778,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
                 if (!listaNovedadesCrear.contains(listaNovedades.get(indice))) {
@@ -937,6 +960,9 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     public void activarCtrlF11() {
         System.out.println("TipoLista= " + tipoLista);
+        RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         if (bandera == 0) {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
@@ -1013,6 +1039,8 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void listaValoresBoton() {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             if (cualCelda == 0) {
                 context.update("formularioDialogos:conceptosDialogo");
                 context.execute("conceptosDialogo.show()");
@@ -1035,10 +1063,14 @@ public class ControlNovedadesEmpleados implements Serializable {
     //Ubicacion Celda Indice Abajo. //Van los que no son NOT NULL.
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            activoBtnAcumulado = false;
+            context.update("form:ACUMULADOS");
             index = indice;
             cualCelda = celda;
             if (tipoLista == 0) {
                 secRegistro = listaNovedades.get(index).getSecuencia();
+                actualNovedadTabla = listaNovedades.get(index);
                 if (cualCelda == 0) {
                     CodigoConcepto = listaNovedades.get(index).getConcepto().getCodigoSTR();
                 } else if (cualCelda == 1) {
@@ -1062,6 +1094,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 }
             } else {
                 secRegistro = filtradosListaNovedades.get(index).getSecuencia();
+                actualNovedadTabla = filtradosListaNovedades.get(index);
                 if (cualCelda == 0) {
                     CodigoConcepto = filtradosListaNovedades.get(index).getConcepto().getCodigoSTR();
                 } else if (cualCelda == 1) {
@@ -1099,6 +1132,8 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarConceptosCodigos");
@@ -1340,6 +1375,8 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     public void actualizarEmpleadosNovedad() {
         RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         PruebaEmpleados pe = administrarNovedadesEmpleados.novedadEmpleado(seleccionEmpleados.getSecuencia());
 
         if (pe != null) {
@@ -1402,6 +1439,8 @@ public class ControlNovedadesEmpleados implements Serializable {
                 guardado = false;
             }
             permitirIndex = true;
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setFormula(seleccionFormulas);
@@ -1449,6 +1488,8 @@ public class ControlNovedadesEmpleados implements Serializable {
                 guardado = false;
             }
             permitirIndex = true;
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setConcepto(seleccionConceptos);
@@ -1496,6 +1537,8 @@ public class ControlNovedadesEmpleados implements Serializable {
                 guardado = false;
             }
             permitirIndex = true;
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setPeriodicidad(seleccionPeriodicidades);
@@ -1542,6 +1585,8 @@ public class ControlNovedadesEmpleados implements Serializable {
                 guardado = false;
             }
             permitirIndex = true;
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setTercero(seleccionTerceros);
@@ -1576,6 +1621,8 @@ public class ControlNovedadesEmpleados implements Serializable {
             getListaEmpleadosNovedad();
         }
         listaNovedades = null;
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         context.update("form:datosEmpleados");
         context.update("form:datosNovedadesEmpleado");
         filtradosListaEmpleadosNovedad = null;
@@ -1636,6 +1683,8 @@ public class ControlNovedadesEmpleados implements Serializable {
                 duplicarNovedad.setUsuarioreporta(filtradosListaNovedades.get(index).getUsuarioreporta());
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             context.update("formularioDialogos:duplicarNovedad");
             context.execute("DuplicarRegistroNovedad.show()");
             index = -1;
@@ -1702,6 +1751,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedades.clear();
         listaNovedades = administrarNovedadesEmpleados.todasNovedades(seleccionMostrar.getId());
         RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         todas = true;
         actuales = false;
         context.update("form:datosNovedadesEmpleado");
@@ -1714,6 +1765,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedades.clear();
         listaNovedades = administrarNovedadesEmpleados.novedadesEmpleado(seleccionMostrar.getId());
         RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         todas = false;
         actuales = true;
         context.update("form:datosNovedadesEmpleado");
@@ -1730,6 +1783,9 @@ public class ControlNovedadesEmpleados implements Serializable {
         context.responseComplete();
         index = -1;
         secRegistro = null;
+        RequestContext contexto = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        contexto.update("form:ACUMULADOS");
     }
 
     public void exportXLS() throws IOException {
@@ -1740,6 +1796,9 @@ public class ControlNovedadesEmpleados implements Serializable {
         context.responseComplete();
         index = -1;
         secRegistro = null;
+        RequestContext contexto = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        contexto.update("form:ACUMULADOS");
     }
 
     //LIMPIAR NUEVO REGISTRO NOVEDAD
@@ -1782,6 +1841,8 @@ public class ControlNovedadesEmpleados implements Serializable {
     //RASTROS 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
         System.out.println("lol");
         if (!listaNovedades.isEmpty()) {
             if (secRegistro != null) {
@@ -1816,6 +1877,9 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void borrarNovedades() {
 
         if (index >= 0) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
             if (tipoLista == 0) {
                 if (!listaNovedadesModificar.isEmpty() && listaNovedadesModificar.contains(listaNovedades.get(index))) {
                     int modIndex = listaNovedadesModificar.indexOf(listaNovedades.get(index));
@@ -1846,7 +1910,6 @@ public class ControlNovedadesEmpleados implements Serializable {
                 System.out.println("Realizado");
             }
 
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNovedadesEmpleado");
             index = -1;
             secRegistro = null;
@@ -2139,4 +2202,21 @@ public class ControlNovedadesEmpleados implements Serializable {
     public boolean isActuales() {
         return actuales;
     }
+
+    public boolean isActivoBtnAcumulado() {
+        return activoBtnAcumulado;
+    }
+
+    public void setActivoBtnAcumulado(boolean activoBtnAcumulado) {
+        this.activoBtnAcumulado = activoBtnAcumulado;
+    }
+
+    public Novedades getActualNovedadTabla() {
+        return actualNovedadTabla;
+    }
+
+    public void setActualNovedadTabla(Novedades actualNovedadTabla) {
+        this.actualNovedadTabla = actualNovedadTabla;
+    }
+
 }

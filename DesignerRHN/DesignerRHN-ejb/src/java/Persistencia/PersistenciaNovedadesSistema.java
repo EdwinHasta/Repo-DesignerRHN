@@ -58,4 +58,17 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
             return null;
         }
     }
+    
+    
+    public List<NovedadesSistema> novedadesEmpleadoVacaciones(BigInteger secuenciaEmpleado) {
+        try {
+            Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC");
+            query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            List<NovedadesSistema> novedadesSistema = query.getResultList();
+            return novedadesSistema;
+        } catch (Exception e) {
+            System.out.println("Error: (novedadesEmpleado)" + e);
+            return null;
+        }
+    }
 }

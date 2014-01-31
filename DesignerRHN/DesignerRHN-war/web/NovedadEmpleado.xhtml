@@ -46,7 +46,7 @@
                         </fieldset>
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
-                            <f:loadBundle basename="Recursos.novedadempleado" var="msg"/>
+                            
                             <p:toolbarGroup align="left"> 
                                 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNovedadesEmpleados.guardarCambiosNovedades()}" process="@this" />
@@ -91,11 +91,14 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="TODAS" value="#{msg['todas']}" actionListener="#{controlNovedadesEmpleados.todasNovedades()}" disabled="#{controlNovedadesEmpleados.todas}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 150px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesEmpleados.actualesNovedades()}" disabled="#{controlNovedadesEmpleados.actuales}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 285px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACUMULADOS" value="#{msg['btnAcumuladoNovedad']}" disabled="#{controlNovedadesEmpleados.activoBtnAcumulado}" action="acomuladoPorNovedad" actionListener="#{controlSolucionFormula.recibirParametros(controlNovedadesEmpleados.seleccionMostrar.codigo, controlNovedadesEmpleados.actualNovedadTabla.secuencia)}" process="@this" />
+                        <p:separator style="position: absolute; left: 450px; top: 524px;width: 3px; height: 25px"/> 
+                        <p:commandButton style="position: absolute; left: 460px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this" />
+                        
                         <p:commandButton style="position: absolute; left: 783px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesEmpleados.salir()}" action="individual" />
-                        <p:commandButton style="position: absolute; left: 200px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="TODAS" value="#{msg['todas']}" actionListener="#{controlNovedadesEmpleados.todasNovedades()}" disabled="#{controlNovedadesEmpleados.todas}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 400px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesEmpleados.actualesNovedades()}" disabled="#{controlNovedadesEmpleados.actuales}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 270px; border-radius: 10px; ">
@@ -113,7 +116,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.concepto.codigoSTR}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{novedades.concepto.codigoSTR}" id="editarConceptoCodigo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                     <p:inputText value="#{novedades.concepto.codigoSTR}" id="editarConceptoCodigo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CODIGO', novedades.concepto.codigoSTR)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadesEmpleados.cambiarIndice(indice, 0)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlNovedadesEmpleados.asignarIndex(indice, 1, 0)}"/>
@@ -348,10 +351,6 @@
                                     <f:facet name="footer">
                                         <h:outputText value="#{msg['tipo']}" />
                                     </f:facet>
-                                </p:column>
-
-                                <p:column width="20" style="padding: 0px"> 
-                                    <p:commandButton value="" style="width: 20px; height: 20px;" action="rastro"/>
                                 </p:column>
 
                             </p:dataTable>

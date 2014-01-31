@@ -68,4 +68,11 @@ public interface PersistenciaNovedadesInterface {
      */
     public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado);
     
+    /**
+     * Método encargado de obtener una Novedad identificado con la secuencia enviada por parametro
+     * @param secNovedad Secuencia de la Novedad a buscar
+     * @return Retorna una Novedad identificada con la secuencia
+     */
+    public Novedades buscarNovedad(BigInteger secNovedad);
+    
 }

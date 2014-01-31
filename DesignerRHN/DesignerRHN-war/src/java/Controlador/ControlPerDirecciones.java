@@ -96,7 +96,6 @@ public class ControlPerDirecciones implements Serializable {
         nuevaDireccion.setTiposecundario("K");
         nuevaDireccion.setTipovivienda("CASA");
         nuevaDireccion.setHipoteca("N");
-
     }
 
     public void recibirPersona(BigInteger secPersona) {

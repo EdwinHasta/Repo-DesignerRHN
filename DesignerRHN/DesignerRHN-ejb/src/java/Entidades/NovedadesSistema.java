@@ -190,9 +190,6 @@ public class NovedadesSistema implements Serializable {
     }
 
     public BigInteger getDias() {
-        if (dias == null) {
-            dias = BigInteger.valueOf(0);
-        }
         return dias;
     }
 
@@ -213,7 +210,7 @@ public class NovedadesSistema implements Serializable {
 
     public String getSubtipo() {
         if (subtipo == null) {
-            subtipo = (" ");
+            subtipo = ("TIEMPO");
         }
         return subtipo;
     }
@@ -399,6 +396,9 @@ public class NovedadesSistema implements Serializable {
     }
 
     public Short getVacadiasaplazados() {
+        if(vacadiasaplazados == null){
+            vacadiasaplazados = 0;
+        }
         return vacadiasaplazados;
     }
 
@@ -458,6 +458,9 @@ public class NovedadesSistema implements Serializable {
     }
 
     public Vacaciones getVacacion() {
+        if (vacacion == null) {
+            vacacion = new Vacaciones();
+        }
         return vacacion;
     }
 

@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +34,7 @@ public class SolucionesFormulas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @JoinColumn(name = "SOLUCIONNODO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private SolucionesNodos solucionnodo;
@@ -54,15 +54,15 @@ public class SolucionesFormulas implements Serializable {
     public SolucionesFormulas() {
     }
 
-    public SolucionesFormulas(BigDecimal secuencia) {
+    public SolucionesFormulas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
