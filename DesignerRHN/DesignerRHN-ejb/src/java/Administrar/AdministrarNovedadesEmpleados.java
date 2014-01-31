@@ -138,7 +138,7 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
 
     @Override
     public List<Periodicidades> lovPeriodicidades() {
-        return persistenciaPeriodicidades.buscarPeriodicidades();
+        return persistenciaPeriodicidades.consultarPeriodicidades();
     }
 
     @Override

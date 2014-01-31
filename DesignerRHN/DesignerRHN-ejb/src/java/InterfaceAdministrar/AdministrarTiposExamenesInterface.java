@@ -6,7 +6,6 @@
 package InterfaceAdministrar;
 
 import Entidades.TiposExamenes;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;

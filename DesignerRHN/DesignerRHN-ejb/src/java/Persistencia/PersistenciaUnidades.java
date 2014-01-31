@@ -52,7 +52,7 @@ public class PersistenciaUnidades implements PersistenciaUnidadesInterface{
     }
 
     @Override
-    public List<Unidades> lovUnidades() {
+    public List<Unidades> consultarUnidades() {
         try {
             Query query = em.createQuery("SELECT u FROM Unidades u ORDER BY u.codigo ASC");
             List<Unidades> listaUnidades = query.getResultList();

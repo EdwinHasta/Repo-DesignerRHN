@@ -135,7 +135,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     @Override
     public List<Periodicidades> consultarLOVPerdiocidades() {
         try {
-            listPeriodicidades = persistenciaPeriodicidades.buscarPeriodicidades();
+            listPeriodicidades = persistenciaPeriodicidades.consultarPeriodicidades();
             return listPeriodicidades;
         } catch (Exception e) {
             System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Periodicidades " + e);
