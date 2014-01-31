@@ -14,11 +14,11 @@
         <Node id="Concepto.xhtml" x="150" y="150" zoom="true"/>
         <Node id="centrocosto.xhtml" x="733" y="1351" zoom="true"/>
         <Node id="prueba2.xhtml" x="1900" y="300" zoom="true"/>
-        <Node id="NReporteLaboral.xhtml" x="150" y="1350" zoom="true"/>
         <Node id="Comprobante.xhtml" x="1650" y="450" zoom="true"/>
+        <Node id="NReporteLaboral.xhtml" x="150" y="1350" zoom="true"/>
         <Node id="PersonaEducacion.xhtml" x="150" y="750" zoom="true"/>
-        <Node id="NReporteBienestar.xhtml" x="900" y="750" zoom="true"/>
         <Node id="Formula.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="NReporteBienestar.xhtml" x="900" y="750" zoom="true"/>
         <Node id="cerrarliquidacion.xhtml" x="400" y="300" zoom="true"/>
         <Node id="PruebasUnitariasComponentes.xhtml" x="2150" y="450" zoom="true"/>
         <Node id="Parametro.xhtml" x="1900" y="150" zoom="true"/>
@@ -49,8 +49,8 @@
         <Node id="OLDindex.xhtml" x="1400" y="450" zoom="true"/>
         <Node id="Rastro.xhtml" x="650" y="300" zoom="true"/>
         <Node id="Tercero.xhtml" x="900" y="1050" zoom="true"/>
-        <Node id="page1.xhtml" x="1400" y="900" zoom="true"/>
         <Node id="PaginaNoEncontrada.xhtml" x="1900" y="600" zoom="true"/>
+        <Node id="page1.xhtml" x="1400" y="900" zoom="true"/>
         <Node id="EmplSets.xhtml" x="400" y="450" zoom="true"/>
         <Node id="Template.xhtml" x="400" y="900" zoom="true"/>
         <Node id="ListaValores.xhtml" x="2400" y="150" zoom="true"/>

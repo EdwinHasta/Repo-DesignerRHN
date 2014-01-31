@@ -684,7 +684,22 @@
         </navigation-case>
     </navigation-rule>
     
-    
+        <navigation-rule>
+        <from-view-id>/tipocontrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplVigContrato</from-outcome>
+            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposContratos</from-outcome>
+            <to-view-id>/tipocontrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
     <navigation-rule>
         <from-view-id>/Concepto.xhtml</from-view-id>
@@ -886,6 +901,21 @@
         <navigation-case>
             <from-outcome>ciudades</from-outcome>
             <to-view-id>/Ciudades.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tipocontrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroTipoContra</from-outcome>
+            <to-view-id>/tipocontrato.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
