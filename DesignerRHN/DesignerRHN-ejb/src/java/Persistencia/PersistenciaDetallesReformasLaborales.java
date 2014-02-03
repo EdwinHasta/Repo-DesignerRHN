@@ -67,7 +67,7 @@ public class PersistenciaDetallesReformasLaborales implements PersistenciaDetall
     @Override 
     public List<DetallesReformasLaborales> buscarDetalleReformasParaReformaSecuencia(BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT d FROM DetallesReformasLaborales d WHERE d.reformalaboral.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT d FROM DetallesReformasLaborales d WHERE d.reformalaboral.secuencia=:secuencia ORDER BY d.factor ASC");
             query.setParameter("secuencia", secuencia);
             List<DetallesReformasLaborales> detallesReformasLaborales = (List<DetallesReformasLaborales>) query.getResultList();
             return detallesReformasLaborales;

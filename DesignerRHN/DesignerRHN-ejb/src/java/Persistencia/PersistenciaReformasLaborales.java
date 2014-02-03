@@ -42,7 +42,7 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
 
     @Override
     public List<ReformasLaborales> buscarReformasLaborales() {
-        Query query = em.createQuery("SELECT e FROM ReformasLaborales e");
+        Query query = em.createQuery("SELECT e FROM ReformasLaborales e ORDER BY e.codigo ASC");
         List<ReformasLaborales> reformaLista = (List<ReformasLaborales>) query.getResultList();
         return reformaLista;
     }

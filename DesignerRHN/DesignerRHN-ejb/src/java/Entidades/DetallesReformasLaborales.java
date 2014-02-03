@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -35,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DetallesReformasLaborales.findByTipopago", query = "SELECT d FROM DetallesReformasLaborales d WHERE d.tipopago = :tipopago"),
     @NamedQuery(name = "DetallesReformasLaborales.findByFactor", query = "SELECT d FROM DetallesReformasLaborales d WHERE d.factor = :factor")})
 public class DetallesReformasLaborales implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -42,15 +42,15 @@ public class DetallesReformasLaborales implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 10)
     @Column(name = "TIPOPAGO")
     private String tipopago;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "FACTOR")
-    private BigInteger factor;
+    private BigDecimal factor;
     @JoinColumn(name = "REFORMALABORAL", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private ReformasLaborales reformalaboral;
@@ -62,7 +62,7 @@ public class DetallesReformasLaborales implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public DetallesReformasLaborales(BigInteger secuencia, String tipopago, BigInteger factor) {
+    public DetallesReformasLaborales(BigInteger secuencia, String tipopago, BigDecimal factor) {
         this.secuencia = secuencia;
         this.tipopago = tipopago;
         this.factor = factor;
@@ -84,11 +84,11 @@ public class DetallesReformasLaborales implements Serializable {
         this.tipopago = tipopago;
     }
 
-    public BigInteger getFactor() {
+    public BigDecimal getFactor() {
         return factor;
     }
 
-    public void setFactor(BigInteger factor) {
+    public void setFactor(BigDecimal factor) {
         this.factor = factor;
     }
 
@@ -124,5 +124,5 @@ public class DetallesReformasLaborales implements Serializable {
     public String toString() {
         return "Entidades.DetallesReformasLaborales[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
