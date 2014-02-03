@@ -187,17 +187,17 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarNovedadPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarNovedadesPeriodicidad(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT COUNT(*)FROM novedad WHERE periodicidad = ?";
+            String sqlQuery = "SELECT COUNT(*)FROM novedades WHERE periodicidad = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
-            System.out.println("Contador PERSISTENCIAPERIODICIDADES contarNovedadPeriodicidad  " + retorno);
+            System.out.println("Contador PERSISTENCIAPERIODICIDADES contarNovedadesPeriodicidad  " + retorno);
             return retorno;
         } catch (Exception e) {
-            System.err.println("Error PERSISTENCIAPERIODICIDADES  contarNovedadPeriodicidad " + e);
+            System.err.println("Error PERSISTENCIAPERIODICIDADES  contarNovedadesPeriodicidad " + e);
             return retorno;
         }
     }

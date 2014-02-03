@@ -55,13 +55,13 @@ public class ControlPeriodicidades implements Serializable {
     private List<Periodicidades> crearPeriodicidades;
     private List<Periodicidades> modificarPeriodicidades;
     private List<Periodicidades> borrarPeriodicidades;
-    private Periodicidades nuevoUnidad;
-    private Periodicidades duplicarUnidad;
+    private Periodicidades nuevaPeriodicidad;
+    private Periodicidades duplicarPeriodicidad;
     private Periodicidades editarUnidad;
 
     private Column codigoCC, nombreUnidad,
-            tipoUnidad, manoDeObra, codigoAT,
-            obsoleto, codigoCTT, dimensiones;
+            tipoUnidad, codigoUnidad, codigoUnidadbase,
+            unidadBase;
 
     //AUTOCOMPLETAR
     private String unidadCodigo, unidadNombre, unidadBaseCodigo, unidadBaseDescripcion;
@@ -69,10 +69,11 @@ public class ControlPeriodicidades implements Serializable {
     private List<Unidades> filtradoUnidades;
     private Unidades unidadSeleccionada;
     private List<Periodicidades> filterPericiodidades;
-    private String nuevoTipoCCAutoCompletar;
+    private String nuevaUnidad;
 
     private Periodicidades PericiodidadesSeleccionado;
     private boolean banderaSeleccionPericiodidades;
+    private int tamano;
 
     public ControlPeriodicidades() {
         permitirIndex = true;
@@ -82,24 +83,26 @@ public class ControlPeriodicidades implements Serializable {
         modificarPeriodicidades = new ArrayList<Periodicidades>();
         borrarPeriodicidades = new ArrayList<Periodicidades>();
         editarUnidad = new Periodicidades();
-        nuevoUnidad = new Periodicidades();
-        duplicarUnidad = new Periodicidades();
+        nuevaPeriodicidad = new Periodicidades();
+        nuevaPeriodicidad.setUnidad(new Unidades());
+        nuevaPeriodicidad.setUnidadbase(new Unidades());
+        duplicarPeriodicidad = new Periodicidades();
         listaUnidades = null;
         aceptar = true;
         guardado = true;
         banderaSeleccionPericiodidades = false;
-
+        tamano = 307;
     }
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.eventoFiltrar \n");
+            System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -474,7 +477,7 @@ public class ControlPeriodicidades implements Serializable {
 
     public void cancelarModificacion() {
         try {
-            System.out.println("entre a CONTROLBETACENTROSCOSTOS.cancelarModificacion");
+            System.out.println("entre a CONTROLBETAPERIODICIDADES.cancelarModificacion");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 //0
@@ -487,20 +490,14 @@ public class ControlPeriodicidades implements Serializable {
                 tipoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:tipoUnidad");
                 tipoUnidad.setFilterStyle("display: none; visibility: hidden;");
                 //3 
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:manoDeObra");
-                manoDeObra.setFilterStyle("display: none; visibility: hidden;");
+                codigoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidad");
+                codigoUnidad.setFilterStyle("display: none; visibility: hidden;");
                 //4
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoAT");
-                codigoAT.setFilterStyle("display: none; visibility: hidden;");
+                codigoUnidadbase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidadbase");
+                codigoUnidadbase.setFilterStyle("display: none; visibility: hidden;");
                 //5 
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:obsoleto");
-                obsoleto.setFilterStyle("display: none; visibility: hidden;");
-                //6
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCTT");
-                codigoCTT.setFilterStyle("display: none; visibility: hidden;");
-                //7 
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:dimensiones");
-                dimensiones.setFilterStyle("display: none; visibility: hidden;");
+                unidadBase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:unidadBase");
+                unidadBase.setFilterStyle("display: none; visibility: hidden;");
 
                 bandera = 0;
                 filtrarPeriodicidades = null;
@@ -520,13 +517,13 @@ public class ControlPeriodicidades implements Serializable {
             context.update("form:datosPeriodicidades");
             context.update("form:ACEPTAR");
         } catch (Exception E) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.ModificarModificacion ERROR====================" + E.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.ModificarModificacion ERROR====================" + E.getMessage());
         }
     }
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.asignarIndex \n");
+            System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.asignarIndex \n");
             index = indice;
             RequestContext context = RequestContext.getCurrentInstance();
 
@@ -560,7 +557,7 @@ public class ControlPeriodicidades implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -569,10 +566,10 @@ public class ControlPeriodicidades implements Serializable {
     }
 
     public void actualizarUnidad() {
-        System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.actualizarUnidad \n");
+        System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.actualizarUnidad \n");
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.actualizarUnidad TIPOACTUALIZACION====" + tipoActualizacion);
+            System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.actualizarUnidad TIPOACTUALIZACION====" + tipoActualizacion);
             if (tipoActualizacion == 0) {
                 listPeriodicidades.get(index).setUnidad(unidadSeleccionada);
                 if (!crearPeriodicidades.contains(listPeriodicidades.get(index))) {
@@ -590,14 +587,19 @@ public class ControlPeriodicidades implements Serializable {
                 context.update("form:datosPeriodicidades");
                 context.execute("tiposPeriodicidadesDialogo.hide()");
             } else if (tipoActualizacion == 1) {
-                // context.reset("formularioDialogos:nuevaTipoPeriodicidades");
-                System.out.println("Entro actualizar centro costo nuevo rgistro");
-                nuevoUnidad.setUnidad(unidadSeleccionada);
-                System.out.println("Centro Costo Seleccionado: " + nuevoUnidad.getUnidad().getNombre());
-                context.update("formularioDialogos:nuevaTipoPeriodicidades");
+                System.out.println("ENTRO A ACTUALIZAR EL NOMBRE DE UNIDAD ");
+                nuevaPeriodicidad.setUnidad(unidadSeleccionada);
+                System.out.println("UNIDAD SELECCIONADA  : " + nuevaPeriodicidad.getUnidad().getNombre());
+                context.update("formularioDialogos:nuevaTipoUnidads");
+                context.update("formularioDialogos:nuevaTipoUnidadsCodigo");
+                context.update("form:datosPeriodicidades");
+                context.execute("tiposPeriodicidadesDialogo.hide()");
             } else if (tipoActualizacion == 2) {
-                duplicarUnidad.setUnidad(unidadSeleccionada);
-                context.update("formularioDialogos:duplicarTipoPeriodicidades");
+                duplicarPeriodicidad.setUnidad(unidadSeleccionada);
+                context.update("formularioDialogos:duplicarCodigoUnidades");
+                context.update("formularioDialogos:duplicarTipoUnidads");
+                context.update("form:datosPeriodicidades");
+                context.execute("tiposPeriodicidadesDialogo.hide()");
             }
             filtradoUnidades = null;
             unidadSeleccionada = null;
@@ -611,10 +613,10 @@ public class ControlPeriodicidades implements Serializable {
     }
 
     public void actualizarUnidadBase() {
-        System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.actualizarUnidad \n");
+        System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.actualizarUnidad \n");
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.actualizarUnidad TIPOACTUALIZACION====" + tipoActualizacion);
+            System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.actualizarUnidad TIPOACTUALIZACION====" + tipoActualizacion);
             if (tipoActualizacion == 0) {
                 listPeriodicidades.get(index).setUnidadbase(unidadSeleccionada);
                 if (!crearPeriodicidades.contains(listPeriodicidades.get(index))) {
@@ -634,12 +636,16 @@ public class ControlPeriodicidades implements Serializable {
             } else if (tipoActualizacion == 1) {
                 // context.reset("formularioDialogos:nuevaTipoPeriodicidades");
                 System.out.println("Entro actualizar centro costo nuevo rgistro");
-                nuevoUnidad.setUnidadbase(unidadSeleccionada);
-                System.out.println("Centro Costo Seleccionado: " + nuevoUnidad.getUnidadbase().getNombre());
-                context.update("formularioDialogos:nuevaTipoPeriodicidades");
+                nuevaPeriodicidad.setUnidadbase(unidadSeleccionada);
+                System.out.println("Nuevo Unidad Base Seleccionado: " + nuevaPeriodicidad.getUnidadbase().getNombre());
+                context.update("formularioDialogos:nuevaCodigoBase");
+                context.update("formularioDialogos:nuevaNombreBase");
+                context.execute("unidadesBaseDialogo.hide()");
             } else if (tipoActualizacion == 2) {
-                duplicarUnidad.setUnidadbase(unidadSeleccionada);
-                context.update("formularioDialogos:duplicarTipoPeriodicidades");
+                duplicarPeriodicidad.setUnidadbase(unidadSeleccionada);
+                context.update("formularioDialogos:duplicarCodigoUnidadesBase");
+                context.update("formularioDialogos:duplicarDescripcionUnidadesBase");
+                context.execute("unidadesBaseDialogo.hide()");
             }
             filtradoUnidades = null;
             unidadSeleccionada = null;
@@ -661,7 +667,7 @@ public class ControlPeriodicidades implements Serializable {
             tipoActualizacion = -1;
             permitirIndex = true;
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarCambioUnidad ERROR=====" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.cancelarCambioUnidad ERROR=====" + e.getMessage());
         }
     }
 
@@ -677,6 +683,7 @@ public class ControlPeriodicidades implements Serializable {
                 getListPericiodidadesBoton();
                 index = -1;
                 context.update("formularioDialogos:lovPeriodicidades");
+                context.update("formularioDialogos:buscarPeriodicidadesDialogo");
                 context.execute("buscarPeriodicidadesDialogo.show()");
 
             }
@@ -720,7 +727,7 @@ public class ControlPeriodicidades implements Serializable {
 
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.seleccionaVigencia ERROR====" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.seleccionaVigencia ERROR====" + e.getMessage());
         }
     }
 
@@ -735,17 +742,41 @@ public class ControlPeriodicidades implements Serializable {
             context.update("form:aceptarNCC");
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarSeleccionVigencia ERROR====" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.cancelarSeleccionVigencia ERROR====" + e.getMessage());
         }
     }
+    private String nuevoUnidadCodigo;
+    private String nuevoUnidadBaseCodigo;
+    private String nuevoUnidadBaseNombre;
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
         System.out.println("1...");
-        if (Campo.equals("TIPOSCENTROSCOSTOS")) {
+        if (Campo.equals("UNIDADNOMBRE")) {
             if (tipoNuevo == 1) {
-                nuevoTipoCCAutoCompletar = nuevoUnidad.getUnidad().getNombre();
+                nuevaUnidad = nuevaPeriodicidad.getUnidad().getNombre();
             } else if (tipoNuevo == 2) {
-                nuevoTipoCCAutoCompletar = duplicarUnidad.getUnidad().getNombre();
+                nuevaUnidad = duplicarPeriodicidad.getUnidad().getNombre();
+            }
+
+        } else if (Campo.equals("UNIDADCODIGO")) {
+            if (tipoNuevo == 1) {
+                nuevoUnidadCodigo = nuevaPeriodicidad.getUnidad().getCodigo();
+            } else if (tipoNuevo == 2) {
+                nuevoUnidadCodigo = duplicarPeriodicidad.getUnidad().getCodigo();
+            }
+
+        } else if (Campo.equals("UNIDADBASECODIGO")) {
+            if (tipoNuevo == 1) {
+                nuevoUnidadBaseCodigo = nuevaPeriodicidad.getUnidadbase().getCodigo();
+            } else if (tipoNuevo == 2) {
+                nuevoUnidadBaseCodigo = duplicarPeriodicidad.getUnidadbase().getCodigo();
+            }
+
+        } else if (Campo.equals("UNIDADBASENOMBRE")) {
+            if (tipoNuevo == 1) {
+                nuevoUnidadBaseNombre = nuevaPeriodicidad.getUnidadbase().getCodigo();
+            } else if (tipoNuevo == 2) {
+                nuevoUnidadBaseNombre = duplicarPeriodicidad.getUnidadbase().getCodigo();
             }
 
         }
@@ -756,42 +787,114 @@ public class ControlPeriodicidades implements Serializable {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (confirmarCambio.equalsIgnoreCase("TIPOSCENTROSCOSTOS")) {
-            System.out.println(" nuevoTipoUnidad    Entro al if 'Centro costo'");
-            System.out.println("NOMBRE CENTRO COSTO: " + nuevoUnidad.getUnidad().getNombre());
+        if (confirmarCambio.equalsIgnoreCase("UNIDADNOMBRE")) {
 
-            if (!nuevoUnidad.getUnidad().getNombre().equals("")) {
-                System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
-                System.out.println("valorConfirmar: " + valorConfirmar);
-                System.out.println("nuevoTipoCCAutoCompletar: " + nuevoTipoCCAutoCompletar);
-                nuevoUnidad.getUnidad().setNombre(nuevoTipoCCAutoCompletar);
-                getListaUnidades();
-                for (int i = 0; i < listaUnidades.size(); i++) {
-                    if (listaUnidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
-                    }
+            System.out.println(" NUEVA PERIODICIDAD ");
+            System.out.println("NOMBRE UNIDAD : " + nuevaPeriodicidad.getUnidad().getNombre());
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO VALORCONFIRMAR : " + valorConfirmar);
+            System.out.println("NOMBRE NUEVA UNIDAD : " + nuevaUnidad);
+            nuevaPeriodicidad.getUnidad().setNombre(nuevaUnidad);
+            getListaUnidades();
+            for (int i = 0; i < listaUnidades.size(); i++) {
+                if (listaUnidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
                 }
-                System.out.println("Coincidencias: " + coincidencias);
-                if (coincidencias == 1) {
-                    nuevoUnidad.setUnidad(listaUnidades.get(indiceUnicoElemento));
-                    listaUnidades = null;
-                    getListaUnidades();
-                } else {
-                    context.update("form:tiposPeriodicidadesDialogo");
-                    context.execute("tiposPeriodicidadesDialogo.show()");
-                    tipoActualizacion = tipoNuevo;
-                }
-            } else {
-                nuevoUnidad.getUnidad().setNombre(nuevoTipoCCAutoCompletar);
-                System.out.println("valorConfirmar cuando es vacio: " + valorConfirmar);
-                nuevoUnidad.setUnidad(new Unidades());
-                nuevoUnidad.getUnidad().setNombre(" ");
-                System.out.println("NUEVO Valor nombre tcc: " + nuevoUnidad.getUnidad().getNombre());
             }
-            context.update("formularioDialogos:nuevoGrupoTipoCC");
-        }
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO COINCIDENCIAS : " + coincidencias);
+            if (coincidencias == 1) {
+                nuevaPeriodicidad.setUnidad(listaUnidades.get(indiceUnicoElemento));
+                listaUnidades = null;
+                getListaUnidades();
+            } else {
+                context.update("form:tiposPeriodicidadesDialogo");
+                context.execute("tiposPeriodicidadesDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+            }
 
+            context.update("formularioDialogos:nuevaTipoUnidads");
+        }
+        if (confirmarCambio.equalsIgnoreCase("UNIDADCODIGO")) {
+
+            System.out.println(" NUEVA PERIODICIDAD ");
+            System.out.println("CODIGO UNIDAD : " + nuevaPeriodicidad.getUnidad().getCodigo());
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO CODIGO VALORCONFIRMAR : " + valorConfirmar);
+            System.out.println("NOMBRE NUEVA UNIDAD : " + nuevoUnidadCodigo);
+            nuevaPeriodicidad.getUnidad().setNombre(nuevoUnidadCodigo);
+            getListaUnidades();
+            for (int i = 0; i < listaUnidades.size(); i++) {
+                if (listaUnidades.get(i).getCodigo().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO CODIGO COINCIDENCIAS : " + coincidencias);
+            if (coincidencias == 1) {
+                nuevaPeriodicidad.setUnidad(listaUnidades.get(indiceUnicoElemento));
+                listaUnidades = null;
+                getListaUnidades();
+            } else {
+                context.update("form:tiposPeriodicidadesDialogo");
+                context.execute("tiposPeriodicidadesDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+            }
+
+            context.update("formularioDialogos:nuevaTipoUnidadsCodigo");
+        }
+        if (confirmarCambio.equalsIgnoreCase("UNIDADBASECODIGO")) {
+
+            System.out.println(" NUEVA PERIODICIDAD ");
+            System.out.println("CODIGO BASE UNIDAD : " + nuevaPeriodicidad.getUnidadbase().getCodigo());
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO CODIGO VALORCONFIRMAR : " + valorConfirmar);
+            System.out.println("NOMBRE NUEVA UNIDAD : " + nuevoUnidadBaseCodigo);
+            nuevaPeriodicidad.getUnidadbase().setCodigo(nuevoUnidadBaseCodigo);
+            getListaUnidades();
+            for (int i = 0; i < listaUnidades.size(); i++) {
+                if (listaUnidades.get(i).getCodigo().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO BASE CODIGO COINCIDENCIAS : " + coincidencias);
+            if (coincidencias == 1) {
+                nuevaPeriodicidad.setUnidadbase(listaUnidades.get(indiceUnicoElemento));
+                listaUnidades = null;
+                getListaUnidades();
+            } else {
+                context.update("form:unidadesBaseDialogo");
+                context.execute("unidadesBaseDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+            }
+
+            context.update("formularioDialogos:nuevaCodigoBase");
+        }
+        if (confirmarCambio.equalsIgnoreCase("UNIDADBASENOMBRE")) {
+
+            System.out.println(" NUEVA PERIODICIDAD ");
+            System.out.println("NOMBRE BASE UNIDAD : " + nuevaPeriodicidad.getUnidadbase().getNombre());
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO NOMBRE VALORCONFIRMAR : " + valorConfirmar);
+            System.out.println("NOMBRE NUEVA UNIDAD : " + nuevoUnidadBaseNombre);
+            nuevaPeriodicidad.getUnidadbase().setNombre(nuevoUnidadBaseNombre);
+            getListaUnidades();
+            for (int i = 0; i < listaUnidades.size(); i++) {
+                if (listaUnidades.get(i).getCodigo().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETARNUEVO BASE NOMBRE COINCIDENCIAS : " + coincidencias);
+            if (coincidencias == 1) {
+                nuevaPeriodicidad.setUnidadbase(listaUnidades.get(indiceUnicoElemento));
+                listaUnidades = null;
+                getListaUnidades();
+            } else {
+                context.update("form:unidadesBaseDialogo");
+                context.execute("unidadesBaseDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+            }
+
+            context.update("formularioDialogos:nuevaNombreBase");
+        }
     }
 
     public void autocompletarDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
@@ -799,43 +902,84 @@ public class ControlPeriodicidades implements Serializable {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (confirmarCambio.equalsIgnoreCase("TIPOSCENTROSCOSTOS")) {
-            System.out.println("Entro al if 'Centro costo'");
-            System.out.println("NOMBRE CENTRO COSTO: " + duplicarUnidad.getUnidad().getNombre());
+        if (confirmarCambio.equalsIgnoreCase("UNIDADCODIGO")) {
 
-            if (!duplicarUnidad.getUnidad().getNombre().equals("")) {
-                System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
-                System.out.println("valorConfirmar: " + valorConfirmar);
-                System.out.println("nuevoTipoCCAutoCompletar: " + nuevoTipoCCAutoCompletar);
-                duplicarUnidad.getUnidad().setNombre(nuevoTipoCCAutoCompletar);
-                for (int i = 0; i < listaUnidades.size(); i++) {
-                    if (listaUnidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
-                    }
+            System.out.println("CONTROLPERIODICIDADES DUPLICAR CODIGO UNIDAD: " + duplicarPeriodicidad.getUnidad().getCodigo());
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETLARDUPLICADO VALORCONFIRMAR: " + valorConfirmar);
+            System.out.println("CODIGO DUPLICAR: " + nuevoUnidadCodigo);
+            duplicarPeriodicidad.getUnidad().setCodigo(nuevoUnidadCodigo);
+            for (int i = 0; i < listaUnidades.size(); i++) {
+                if (listaUnidades.get(i).getCodigo().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
                 }
-                System.out.println("Coincidencias: " + coincidencias);
-                if (coincidencias == 1) {
-                    duplicarUnidad.setUnidad(listaUnidades.get(indiceUnicoElemento));
-                    listaUnidades = null;
-                    getListaUnidades();
-                } else {
-                    context.update("form:tiposPeriodicidadesDialogo");
-                    context.execute("tiposPeriodicidadesDialogo.show()");
-                    tipoActualizacion = tipoNuevo;
-                }
-            } else {
-                duplicarUnidad.getUnidad().setNombre(nuevoTipoCCAutoCompletar);
-                System.out.println("valorConfirmar cuando es vacio: " + valorConfirmar);
-                duplicarUnidad.setUnidad(new Unidades());
-                duplicarUnidad.getUnidad().setNombre(" ");
-                System.out.println("Valor nombre tcc: " + duplicarUnidad.getUnidad().getNombre());
             }
+            System.out.println("Coincidencias: " + coincidencias);
+            if (coincidencias == 1) {
+                duplicarPeriodicidad.setUnidad(listaUnidades.get(indiceUnicoElemento));
+                listaUnidades = null;
+                getListaUnidades();
+            } else {
+                context.update("form:tiposPeriodicidadesDialogo");
+                context.execute("tiposPeriodicidadesDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+            }
+
+            context.update("formularioDialogos:duplicarTipoPeriodicidades");
+        }
+        if (confirmarCambio.equalsIgnoreCase("UNIDADNOMBRE")) {
+
+            System.out.println("CONTROLPERIODICIDADES DUPLICAR NOMBRE UNIDAD: " + duplicarPeriodicidad.getUnidad().getNombre());
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETLARDUPLICADO VALORCONFIRMAR: " + valorConfirmar);
+            System.out.println("NOMBRE DUPLICAR: " + nuevaUnidad);
+            duplicarPeriodicidad.getUnidad().setNombre(nuevaUnidad);
+            for (int i = 0; i < listaUnidades.size(); i++) {
+                if (listaUnidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            System.out.println("Coincidencias: " + coincidencias);
+            if (coincidencias == 1) {
+                duplicarPeriodicidad.setUnidad(listaUnidades.get(indiceUnicoElemento));
+                listaUnidades = null;
+                getListaUnidades();
+            } else {
+                context.update("form:tiposPeriodicidadesDialogo");
+                context.execute("tiposPeriodicidadesDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+            }
+
+            context.update("formularioDialogos:duplicarTipoPeriodicidades");
+        }
+        if (confirmarCambio.equalsIgnoreCase("UNIDADBASECODIGO")) {
+
+            System.out.println("CONTROLPERIODICIDADES DUPLICAR CODIGO  UNIDADBASE : " + duplicarPeriodicidad.getUnidadbase().getCodigo());
+            System.out.println("CONTROLPERIODICIDADES AUTOCOMPLETLARDUPLICADO VALORCONFIRMAR: " + valorConfirmar);
+            System.out.println("NOMBRE BASE DUPLICAR: " + nuevaUnidad);
+            duplicarPeriodicidad.getUnidadbase().setCodigo(nuevoUnidadBaseCodigo);
+            for (int i = 0; i < listaUnidades.size(); i++) {
+                if (listaUnidades.get(i).getCodigo().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            System.out.println("Coincidencias: " + coincidencias);
+            if (coincidencias == 1) {
+                duplicarPeriodicidad.setUnidadbase(listaUnidades.get(indiceUnicoElemento));
+                listaUnidades = null;
+                getListaUnidades();
+            } else {
+                context.update("form:unidadesBaseDialogo");
+                context.execute("unidadesBaseDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+            }
+
             context.update("formularioDialogos:duplicarTipoPeriodicidades");
         }
     }
 
-    public void asignarVariableTiposCC(int tipoNuevo) {
+    public void asignarVariableUnidad(int tipoNuevo) {
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
         }
@@ -847,36 +991,50 @@ public class ControlPeriodicidades implements Serializable {
         context.execute("tiposPeriodicidadesDialogo.show()");
     }
 
+    public void asignarVariableUnidadBase(int tipoNuevo) {
+        if (tipoNuevo == 0) {
+            tipoActualizacion = 1;
+        }
+        if (tipoNuevo == 1) {
+            tipoActualizacion = 2;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:unidadesBaseDialogo");
+        context.execute("unidadesBaseDialogo.show()");
+    }
+
     public void limpiarNuevoPeriodicidades() {
-        System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.limpiarNuevoPeriodicidades \n");
+        System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.limpiarNuevoPeriodicidades \n");
         try {
-            nuevoUnidad = new Periodicidades();
+            nuevaPeriodicidad = new Periodicidades();
+            nuevaPeriodicidad.setUnidad(new Unidades());
+            nuevaPeriodicidad.setUnidadbase(new Unidades());
             index = -1;
         } catch (Exception e) {
-            System.out.println("Error CONTROLBETACENTROSCOSTOS.LimpiarNuevoPeriodicidades ERROR=============================" + e.getMessage());
+            System.out.println("Error CONTROLBETAPERIODICIDADES.LimpiarNuevoPeriodicidades ERROR=============================" + e.getMessage());
         }
     }
 
     public void agregarNuevoPeriodicidades() {
-        System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.agregarNuevoPeriodicidades \n");
+        System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.agregarNuevoPeriodicidades \n");
         try {
             int contador = 0;
             mensajeValidacion = " ";
             int duplicados = 0;
             RequestContext context = RequestContext.getCurrentInstance();
 
-            if (nuevoUnidad.getCodigo() == null) {
+            if (nuevaPeriodicidad.getCodigo() == null) {
                 mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-            } else if (nuevoUnidad.getCodigo() == null) {
+            } else if (nuevaPeriodicidad.getCodigo() == null) {
                 mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
-                System.out.println("codigo en Motivo Cambio Cargo: " + nuevoUnidad.getCodigo());
+                System.out.println("codigo en Motivo Cambio Cargo: " + nuevaPeriodicidad.getCodigo());
 
                 for (int x = 0; x < listPeriodicidades.size(); x++) {
-                    if (listPeriodicidades.get(x).getCodigo().equals(nuevoUnidad.getCodigo())) {
+                    if (listPeriodicidades.get(x).getCodigo().equals(nuevaPeriodicidad.getCodigo())) {
                         duplicados++;
                     }
                 }
@@ -890,39 +1048,40 @@ public class ControlPeriodicidades implements Serializable {
                     contador++;
                 }
             }
-            if (nuevoUnidad.getNombre() == null) {
-                mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
-                System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-            } else if (nuevoUnidad.getNombre().isEmpty()) {
-                mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
-                System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-            } else if (nuevoUnidad.getNombre().equals(" ")) {
+            if (nuevaPeriodicidad.getNombre().equals(" ")) {
                 mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
 
             } else {
                 System.out.println("Bandera : ");
                 contador++;
             }
-            if (nuevoUnidad.getUnidad().getSecuencia() == null) {
-                mensajeValidacion = mensajeValidacion + "   *Un tipo de centro costo \n";
+            if (nuevaPeriodicidad.getUnidad().getCodigo().equals(" ") && nuevaPeriodicidad.getUnidad().getCodigo().equals(" ")) {
+                mensajeValidacion = mensajeValidacion + "   *una Unidad\n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
 
             } else {
                 System.out.println("Bandera : ");
                 contador++;
             }
-            if (contador == 3) {
-                if (crearPeriodicidades.contains(nuevoUnidad)) {
+            if (nuevaPeriodicidad.getUnidad().getCodigo().equals(" ") && nuevaPeriodicidad.getUnidad().getCodigo().equals(" ")) {
+                mensajeValidacion = mensajeValidacion + "   *una Unidad Base\n";
+                System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+            } else {
+                System.out.println("Bandera : ");
+                contador++;
+            }
+            System.out.println("CONTADOR AGREGAR : " + contador);
+            if (contador == 4) {
+                if (crearPeriodicidades.contains(nuevaPeriodicidad)) {
                     System.out.println("Ya lo contengo.");
                 } else {
-                    crearPeriodicidades.add(nuevoUnidad);
+                    crearPeriodicidades.add(nuevaPeriodicidad);
 
                 }
-                listPeriodicidades.add(nuevoUnidad);
+                listPeriodicidades.add(nuevaPeriodicidad);
                 context.update("form:datosPeriodicidades");
-                nuevoUnidad = new Periodicidades();
+                nuevaPeriodicidad = new Periodicidades();
                 // index = -1;
                 secRegistro = null;
                 if (guardado == true) {
@@ -936,16 +1095,12 @@ public class ControlPeriodicidades implements Serializable {
                     nombreUnidad.setFilterStyle("display: none; visibility: hidden;");
                     tipoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:tipoUnidad");
                     tipoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                    manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:manoDeObra");
-                    manoDeObra.setFilterStyle("display: none; visibility: hidden;");
-                    codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoAT");
-                    codigoAT.setFilterStyle("display: none; visibility: hidden;");
-                    obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:obsoleto");
-                    obsoleto.setFilterStyle("display: none; visibility: hidden;");
-                    codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCTT");
-                    codigoCTT.setFilterStyle("display: none; visibility: hidden;");
-                    dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:dimensiones");
-                    dimensiones.setFilterStyle("display: none; visibility: hidden;");
+                    codigoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidad");
+                    codigoUnidad.setFilterStyle("display: none; visibility: hidden;");
+                    codigoUnidadbase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidadbase");
+                    codigoUnidadbase.setFilterStyle("display: none; visibility: hidden;");
+                    unidadBase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:unidadBase");
+                    unidadBase.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosPeriodicidades");
 
                     bandera = 0;
@@ -953,7 +1108,7 @@ public class ControlPeriodicidades implements Serializable {
                     tipoLista = 0;
                 }
                 mensajeValidacion = " ";
-                RequestContext.getCurrentInstance().execute("NuevoRegistroPeriodicidades.hide()");
+                RequestContext.getCurrentInstance().execute("nuevoRegistroPeriodicidades.hide()");
 
             } else {
                 contador = 0;
@@ -962,7 +1117,7 @@ public class ControlPeriodicidades implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.agregarNuevoPeriodicidades ERROR===========================" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.agregarNuevoPeriodicidades ERROR===========================" + e.getMessage());
         }
     }
 
@@ -980,13 +1135,28 @@ public class ControlPeriodicidades implements Serializable {
         }
     }
 
+    public void cargarUnidadesBaseNuevoRegistro(int tipoNuevo) {
+        if (tipoNuevo == 0) {
+            tipoActualizacion = 1;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:unidadesBaseDialogo");
+            context.execute("unidadesBaseDialogo.show()");
+        } else if (tipoNuevo == 1) {
+            tipoActualizacion = 2;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:unidadesBaseDialogo");
+            context.execute("unidadesBaseDialogo.show()");
+        }
+    }
+
     public void mostrarDialogoPeriodicidades() {
         RequestContext context = RequestContext.getCurrentInstance();
-        nuevoUnidad = new Periodicidades();
-        nuevoUnidad.setUnidad(new Unidades());
+        nuevaPeriodicidad = new Periodicidades();
+        nuevaPeriodicidad.setUnidad(new Unidades());
+        nuevaPeriodicidad.setUnidadbase(new Unidades());
         index = -1;
-        context.update("formularioDialogos:nuevoPeriodicidades");
-        context.execute("NuevoRegistroPeriodicidades.show()");
+        context.update("formularioDialogos:nuevoRegistroPeriodicidades");
+        context.execute("nuevoRegistroPeriodicidades.show()");
     }
 
     public void mostrarDialogoListaEmpresas() {
@@ -997,54 +1167,62 @@ public class ControlPeriodicidades implements Serializable {
 
     public void duplicandoPeriodicidades() {
         try {
-            System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.duplicarPeriodicidades INDEX===" + index);
+            System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.duplicarPeriodicidades INDEX===" + index);
 
             if (index >= 0) {
-                System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.duplicarPeriodicidades TIPOLISTA===" + tipoLista);
+                System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.duplicarPeriodicidades TIPOLISTA===" + tipoLista);
 
-                duplicarUnidad = new Periodicidades();
+                duplicarPeriodicidad = new Periodicidades();
+                duplicarPeriodicidad.setUnidad(new Unidades());
+                duplicarPeriodicidad.setUnidadbase(new Unidades());
                 k++;
                 l = BigInteger.valueOf(k);
                 if (tipoLista == 0) {
-                    duplicarUnidad.setSecuencia(l);
-                    duplicarUnidad.setCodigo(listPeriodicidades.get(index).getCodigo());
-                    duplicarUnidad.setNombre(listPeriodicidades.get(index).getNombre());
-                    duplicarUnidad.setUnidad(listPeriodicidades.get(index).getUnidad());
-                    duplicarUnidad.setUnidadbase(listPeriodicidades.get(index).getUnidadbase());
+                    duplicarPeriodicidad.setSecuencia(l);
+                    duplicarPeriodicidad.setCodigo(listPeriodicidades.get(index).getCodigo());
+                    duplicarPeriodicidad.setNombre(listPeriodicidades.get(index).getNombre());
+                    duplicarPeriodicidad.getUnidad().setCodigo(listPeriodicidades.get(index).getUnidad().getCodigo());
+                    duplicarPeriodicidad.getUnidad().setNombre(listPeriodicidades.get(index).getUnidad().getNombre());
+                    duplicarPeriodicidad.getUnidadbase().setCodigo(listPeriodicidades.get(index).getUnidadbase().getCodigo());
+                    duplicarPeriodicidad.getUnidadbase().setNombre(listPeriodicidades.get(index).getUnidadbase().getNombre());
 
                 }
                 if (tipoLista == 1) {
 
-                    duplicarUnidad.setSecuencia(l);
-                    duplicarUnidad.setCodigo(filtrarPeriodicidades.get(index).getCodigo());
-                    duplicarUnidad.setNombre(filtrarPeriodicidades.get(index).getNombre());
-                    duplicarUnidad.setUnidad(filtrarPeriodicidades.get(index).getUnidad());
-                    duplicarUnidad.setUnidadbase(filtrarPeriodicidades.get(index).getUnidadbase());
+                    duplicarPeriodicidad.setSecuencia(l);
+                    duplicarPeriodicidad.setCodigo(filtrarPeriodicidades.get(index).getCodigo());
+                    duplicarPeriodicidad.setNombre(filtrarPeriodicidades.get(index).getNombre());
+                    duplicarPeriodicidad.getUnidad().setCodigo(filtrarPeriodicidades.get(index).getUnidad().getCodigo());
+                    duplicarPeriodicidad.getUnidad().setNombre(filtrarPeriodicidades.get(index).getUnidad().getNombre());
+                    duplicarPeriodicidad.getUnidadbase().setCodigo(filtrarPeriodicidades.get(index).getUnidadbase().getCodigo());
+                    duplicarPeriodicidad.getUnidadbase().setNombre(filtrarPeriodicidades.get(index).getUnidadbase().getNombre());
 
                 }
 
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.update("formularioDialogos:duplicarPeriodicidades");
+                context.update("formularioDialogos:duplicarUnidads");
                 context.execute("DuplicarRegistroPeriodicidades.show()");
                 index = -1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.DuplicarPeriodicidades ERROR===============" + e.getMessage());
+            System.out.println("ERROR CONTROLPERIODICIDADES DUPLICANDOPERIODICIDADESERROR" + e);
         }
     }
 
     public void limpiarDuplicarPeriodicidades() {
-        System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.limpiarDuplicarPeriodicidades \n");
+        System.out.println("\n ENTRE A CONTROLPERIODICIDADES LIMPIARDUPLICARPERIODICIDADES \n");
         try {
-            duplicarUnidad = new Periodicidades();
+            duplicarPeriodicidad = new Periodicidades();
+            duplicarPeriodicidad.setUnidad(new Unidades());
+            duplicarPeriodicidad.setUnidadbase(new Unidades());
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.limpiarDuplicarPeriodicidades ERROR========" + e.getMessage());
+            System.out.println("ERROR  CONTROLPERIODICIDADES LIMPIARDUPLICARPERIODICIDADES ERROR : " + e);
         }
 
     }
 
     public void confirmarDuplicar() {
-        System.err.println("ESTOY EN CONFIRMAR DUPLICAR CONTROLTIPOSCENTROSCOSTOS");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR CONTROLTIPOSPERIODICIDADES");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
@@ -1052,14 +1230,14 @@ public class ControlPeriodicidades implements Serializable {
         Short a = 0;
         a = null;
 
-        if (duplicarUnidad.getCodigo() == null) {
+        if (duplicarPeriodicidad.getCodigo() == null) {
             mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + duplicarUnidad.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + duplicarPeriodicidad.getCodigo());
 
             for (int x = 0; x < listPeriodicidades.size(); x++) {
-                if (listPeriodicidades.get(x).getCodigo().equals(duplicarUnidad.getCodigo())) {
+                if (listPeriodicidades.get(x).getCodigo().equals(duplicarPeriodicidad.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -1074,39 +1252,47 @@ public class ControlPeriodicidades implements Serializable {
             }
 
         }
-        if (duplicarUnidad.getNombre().isEmpty()) {
+        if (duplicarPeriodicidad.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (duplicarUnidad.getNombre().equals(" ")) {
+        } else if (duplicarPeriodicidad.getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarUnidad.getUnidad().getSecuencia() == null) {
-            mensajeValidacion = mensajeValidacion + "   *Un tipo de centro costo \n";
+        if (duplicarPeriodicidad.getUnidad().getCodigo().equals(" ") && duplicarPeriodicidad.getUnidad().getNombre().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + "   *Una unidad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (contador == 3) {
-            if (crearPeriodicidades.contains(duplicarUnidad)) {
+        if (duplicarPeriodicidad.getUnidadbase().getCodigo().equals(" ") && duplicarPeriodicidad.getUnidadbase().getNombre().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + "   *Una unidad Base \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else {
+            System.out.println("Bandera : ");
+            contador++;
+        }
+        if (contador == 4) {
+            if (crearPeriodicidades.contains(duplicarPeriodicidad)) {
                 System.out.println("Ya lo contengo.");
             } else {
-                listPeriodicidades.add(duplicarUnidad);
+                listPeriodicidades.add(duplicarPeriodicidad);
             }
-            crearPeriodicidades.add(duplicarUnidad);
+            crearPeriodicidades.add(duplicarPeriodicidad);
             context.update("form:datosPeriodicidades");
 
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -1119,29 +1305,23 @@ public class ControlPeriodicidades implements Serializable {
                 tipoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:tipoUnidad");
                 tipoUnidad.setFilterStyle("display: none; visibility: hidden;");
                 //3 COMBO BOX
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:manoDeObra");
-                manoDeObra.setFilterStyle("display: none; visibility: hidden;");
+                codigoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidad");
+                codigoUnidad.setFilterStyle("display: none; visibility: hidden;");
                 //4
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoAT");
-                codigoAT.setFilterStyle("display: none; visibility: hidden;");
+                codigoUnidadbase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidadbase");
+                codigoUnidadbase.setFilterStyle("display: none; visibility: hidden;");
                 //5 COMBO BOX
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:obsoleto");
-                obsoleto.setFilterStyle("display: none; visibility: hidden;");
+                unidadBase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:unidadBase");
+                unidadBase.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosPeriodicidades");
                 //6
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCTT");
-                tipoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                //7 COMBO BOX
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:dimensiones");
-                dimensiones.setFilterStyle("display: none; visibility: hidden;");
-
                 RequestContext.getCurrentInstance().update("form:datosPeriodicidades");
                 bandera = 0;
                 filtrarPeriodicidades = null;
                 tipoLista = 0;
             }
-            duplicarUnidad = new Periodicidades();
-            duplicarUnidad.setUnidad(new Unidades());
+            duplicarPeriodicidad = new Periodicidades();
+            duplicarPeriodicidad.setUnidad(new Unidades());
             RequestContext.getCurrentInstance().execute("DuplicarRegistroPeriodicidades.hide()");
             mensajeValidacion = " ";
 
@@ -1184,7 +1364,7 @@ public class ControlPeriodicidades implements Serializable {
                 // System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
                 contarGruposProvisionesPeriodicidad = administrarPeriodicidades.contarGruposProvisionesPeriodicidad(listPeriodicidades.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
-                contarNovedadPeriodicidad = administrarPeriodicidades.contarNovedadPeriodicidad(listPeriodicidades.get(index).getSecuencia());
+                contarNovedadPeriodicidad = administrarPeriodicidades.contarNovedadesPeriodicidad(listPeriodicidades.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
                 contadorInterconHelisa = administrarPeriodicidades.contarParametrosCambiosMasivosPeriodicidad(listPeriodicidades.get(index).getSecuencia());
                 //            System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
@@ -1206,7 +1386,7 @@ public class ControlPeriodicidades implements Serializable {
                 // System.out.println("ControlBetaCC: contadorInterconCondor" + contadorInterconCondor);
                 contarGruposProvisionesPeriodicidad = administrarPeriodicidades.contarGruposProvisionesPeriodicidad(filtrarPeriodicidades.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC:contadorInterconDynamics " + contadorInterconDynamics);
-                contarNovedadPeriodicidad = administrarPeriodicidades.contarNovedadPeriodicidad(filtrarPeriodicidades.get(index).getSecuencia());
+                contarNovedadPeriodicidad = administrarPeriodicidades.contarNovedadesPeriodicidad(filtrarPeriodicidades.get(index).getSecuencia());
                 // System.out.println("ControlBetaCC: contadorInterconGeneral" + contadorInterconGeneral);
                 contadorInterconHelisa = administrarPeriodicidades.contarParametrosCambiosMasivosPeriodicidad(filtrarPeriodicidades.get(index).getSecuencia());
                 //            System.out.println("ControlBetaCC: contadorInterconHelisa" + contadorInterconHelisa);
@@ -1269,17 +1449,17 @@ public class ControlPeriodicidades implements Serializable {
                 }
                 if (tipoLista == 1) {
                     if (!modificarPeriodicidades.isEmpty() && modificarPeriodicidades.contains(filtrarPeriodicidades.get(index))) {
-                        System.out.println("\n 6 ENTRE A CONTROLBETACENTROSCOSTOS.borrarUnidad tipolista==1 try if if if filtrarPeriodicidades.get(index).getCodigo()" + filtrarPeriodicidades.get(index).getCodigo());
+                        System.out.println("\n 6 ENTRE A CONTROLBETAPERIODICIDADES.borrarUnidad tipolista==1 try if if if filtrarPeriodicidades.get(index).getCodigo()" + filtrarPeriodicidades.get(index).getCodigo());
 
                         int modIndex = modificarPeriodicidades.indexOf(filtrarPeriodicidades.get(index));
                         modificarPeriodicidades.remove(modIndex);
                         borrarPeriodicidades.add(filtrarPeriodicidades.get(index));
                     } else if (!crearPeriodicidades.isEmpty() && crearPeriodicidades.contains(filtrarPeriodicidades.get(index))) {
-                        System.out.println("\n 7 ENTRE A CONTROLBETACENTROSCOSTOS.borrarUnidad tipolista==1 try if if if filtrarPeriodicidades.get(index).getCodigo()" + filtrarPeriodicidades.get(index).getCodigo());
+                        System.out.println("\n 7 ENTRE A CONTROLBETAPERIODICIDADES.borrarUnidad tipolista==1 try if if if filtrarPeriodicidades.get(index).getCodigo()" + filtrarPeriodicidades.get(index).getCodigo());
                         int crearIndex = crearPeriodicidades.indexOf(filtrarPeriodicidades.get(index));
                         crearPeriodicidades.remove(crearIndex);
                     } else {
-                        System.out.println("\n 8 ENTRE A CONTROLBETACENTROSCOSTOS.borrarUnidad tipolista==1 try if if if filtrarPeriodicidades.get(index).getCodigo()" + filtrarPeriodicidades.get(index).getCodigo());
+                        System.out.println("\n 8 ENTRE A CONTROLBETAPERIODICIDADES.borrarUnidad tipolista==1 try if if if filtrarPeriodicidades.get(index).getCodigo()" + filtrarPeriodicidades.get(index).getCodigo());
                         borrarPeriodicidades.add(filtrarPeriodicidades.get(index));
                     }
                     int VCIndex = listPeriodicidades.indexOf(filtrarPeriodicidades.get(index));
@@ -1297,7 +1477,7 @@ public class ControlPeriodicidades implements Serializable {
                 context.update("form:datosPeriodicidades");
             }
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.BorrarUnidad ERROR=====================" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.BorrarUnidad ERROR=====================" + e.getMessage());
         }
     }
 
@@ -1314,13 +1494,13 @@ public class ControlPeriodicidades implements Serializable {
                 context.execute("mostrarBorrados.show()");
                 borrarPeriodicidades.clear();
             }
-            if (!crearPeriodicidades.isEmpty()) {
-                administrarPeriodicidades.crearPeriodicidades(crearPeriodicidades);
-                crearPeriodicidades.clear();
-            }
             if (!modificarPeriodicidades.isEmpty()) {
                 administrarPeriodicidades.modificarPeriodicidades(modificarPeriodicidades);
                 modificarPeriodicidades.clear();
+            }
+            if (!crearPeriodicidades.isEmpty()) {
+                administrarPeriodicidades.crearPeriodicidades(crearPeriodicidades);
+                crearPeriodicidades.clear();
             }
             System.out.println("Se guardaron los datos con exito");
             listPeriodicidades = null;
@@ -1342,11 +1522,12 @@ public class ControlPeriodicidades implements Serializable {
     }
 
     public void activarCtrlF11() {
-        System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.activarCtrlF11 \n");
+        System.out.println("\n ENTRE A CONTROLBETAPERIODICIDADES.activarCtrlF11 \n");
 
         try {
 
             if (bandera == 0) {
+                tamano = 285;
                 System.out.println("Activar");
                 codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCC");
                 codigoCC.setFilterStyle("width: 80px");
@@ -1354,37 +1535,30 @@ public class ControlPeriodicidades implements Serializable {
                 nombreUnidad.setFilterStyle("width: 105px");
                 tipoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:tipoUnidad");
                 tipoUnidad.setFilterStyle("width: 100px");
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:manoDeObra");
-                manoDeObra.setFilterStyle("width: 90px");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoAT");
-                codigoAT.setFilterStyle("width: 60px");
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:obsoleto");
-                obsoleto.setFilterStyle("width: 35px");
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCTT");
-                codigoCTT.setFilterStyle("width: 90px");
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:dimensiones");
-                dimensiones.setFilterStyle("width: 15px");
+                codigoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidad");
+                codigoUnidad.setFilterStyle("width: 90px");
+                codigoUnidadbase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidadbase");
+                codigoUnidadbase.setFilterStyle("width: 90px");
+                unidadBase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:unidadBase");
+                unidadBase.setFilterStyle("width: 90px");
                 RequestContext.getCurrentInstance().update("form:datosPeriodicidades");
                 bandera = 1;
             } else if (bandera == 1) {
                 System.out.println("Desactivar");
                 //0
+                tamano = 307;
                 codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 nombreUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:nombreUnidad");
                 nombreUnidad.setFilterStyle("display: none; visibility: hidden;");
                 tipoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:tipoUnidad");
                 tipoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:manoDeObra");
-                manoDeObra.setFilterStyle("display: none; visibility: hidden;");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoAT");
-                codigoAT.setFilterStyle("display: none; visibility: hidden;");
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:obsoleto");
-                obsoleto.setFilterStyle("display: none; visibility: hidden;");
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCTT");
-                codigoCTT.setFilterStyle("display: none; visibility: hidden;");
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:dimensiones");
-                dimensiones.setFilterStyle("display: none; visibility: hidden;");
+                codigoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidad");
+                codigoUnidad.setFilterStyle("display: none; visibility: hidden;");
+                codigoUnidadbase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidadbase");
+                codigoUnidadbase.setFilterStyle("display: none; visibility: hidden;");
+                unidadBase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:unidadBase");
+                unidadBase.setFilterStyle("display: none; visibility: hidden;");
 
                 RequestContext.getCurrentInstance().update("form:datosPeriodicidades");
                 bandera = 0;
@@ -1393,13 +1567,16 @@ public class ControlPeriodicidades implements Serializable {
             }
         } catch (Exception e) {
 
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.activarCtrlF11 ERROR====================" + e.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.activarCtrlF11 ERROR====================" + e.getMessage());
         }
     }
 
     public void editarCelda() {
         try {
             System.out.println("\n ENTRE A editarCelda INDEX  " + index);
+            editarUnidad = new Periodicidades();
+            editarUnidad.setUnidad(new Unidades());
+            editarUnidad.setUnidadbase(new Unidades());
             if (index >= 0) {
                 System.out.println("\n ENTRE AeditarCelda TIPOLISTA " + tipoLista);
                 if (tipoLista == 0) {
@@ -1409,7 +1586,7 @@ public class ControlPeriodicidades implements Serializable {
                     editarUnidad = filtrarPeriodicidades.get(index);
                 }
                 RequestContext context = RequestContext.getCurrentInstance();
-                System.out.println("CONTROLBETACENTROSCOSTOS: Entro a editar... valor celda: " + cualCelda);
+                System.out.println("CONTROLBETAPERIODICIDADES: Entro a editar... valor celda: " + cualCelda);
                 if (cualCelda == 0) {
                     context.update("formularioDialogos:editarCCC");
                     context.execute("editarCCC.show()");
@@ -1434,19 +1611,11 @@ public class ControlPeriodicidades implements Serializable {
                     context.update("formularioDialogos:editarO");
                     context.execute("editarO.show()");
                     cualCelda = -1;
-                } else if (cualCelda == 6) {
-                    context.update("formularioDialogos:editarCCTT");
-                    context.execute("editarCCTT.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 7) {
-                    context.update("formularioDialogos:editarD");
-                    context.execute("editarD.show()");
-                    cualCelda = -1;
                 }
             }
             index = -1;
         } catch (Exception E) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.editarCelDa ERROR=====================" + E.getMessage());
+            System.out.println("ERROR CONTROLBETAPERIODICIDADES.editarCelDa ERROR " + E);
         }
     }
 
@@ -1455,15 +1624,30 @@ public class ControlPeriodicidades implements Serializable {
         try {
             if (index >= 0) {
                 RequestContext context = RequestContext.getCurrentInstance();
+                System.out.println("\n ListaValoresBoton \n");
                 if (cualCelda == 2) {
-                    System.out.println("\n ListaValoresBoton \n");
                     context.update("formularioDialogos:tiposPeriodicidadesDialogo");
                     context.execute("tiposPeriodicidadesDialogo.show()");
                     tipoActualizacion = 0;
                 }
+                if (cualCelda == 3) {
+                    context.update("formularioDialogos:tiposPeriodicidadesDialogo");
+                    context.execute("tiposPeriodicidadesDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+                if (cualCelda == 4) {
+                    context.update("formularioDialogos:unidadesBaseDialogo");
+                    context.execute("unidadesBaseDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+                if (cualCelda == 5) {
+                    context.update("formularioDialogos:unidadesBaseDialogo");
+                    context.execute("unidadesBaseDialogo.show()");
+                    tipoActualizacion = 0;
+                }
             }
         } catch (Exception e) {
-            System.out.println("\n ERROR CONTROLBETACENTROSCOSTOS.listaValoresBoton ERROR====================" + e.getMessage());
+            System.out.println("\n ERROR CONTROLBETAPERIODICIDADES.listaValoresBoton ERROR " + e);
 
         }
     }
@@ -1496,7 +1680,7 @@ public class ControlPeriodicidades implements Serializable {
         if (!listPeriodicidades.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "CENTROSCOSTOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "PERIODICIDADES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -1513,7 +1697,7 @@ public class ControlPeriodicidades implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("CENTROSCOSTOS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("PERIODICIDADES")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
@@ -1562,8 +1746,8 @@ public class ControlPeriodicidades implements Serializable {
     public List<Periodicidades> getListPericiodidadesBoton() {
         try {
             if (listPeriodicidadesBoton == null) {
-                //listPeriodicidadesBoton = administrarPeriodicidades.consultarPericiodidades(empresaSeleccionada.getSecuencia());
-                listPeriodicidadesBoton = listPeriodicidades;
+                listPeriodicidadesBoton = administrarPeriodicidades.consultarPeriodicidades();
+                //listPeriodicidadesBoton = listPeriodicidades;
             }
             return listPeriodicidadesBoton;
         } catch (Exception e) {
@@ -1588,23 +1772,23 @@ public class ControlPeriodicidades implements Serializable {
         this.filtrarPeriodicidades = filtrarPeriodicidades;
     }
 
-    public Periodicidades getNuevoUnidad() {
-        if (nuevoUnidad == null) {
-            nuevoUnidad = new Periodicidades();
+    public Periodicidades getNuevaPeriodicidad() {
+        if (nuevaPeriodicidad == null) {
+            nuevaPeriodicidad = new Periodicidades();
         }
-        return nuevoUnidad;
+        return nuevaPeriodicidad;
     }
 
-    public void setNuevoUnidad(Periodicidades nuevoUnidad) {
-        this.nuevoUnidad = nuevoUnidad;
+    public void setNuevaPeriodicidad(Periodicidades nuevaPeriodicidad) {
+        this.nuevaPeriodicidad = nuevaPeriodicidad;
     }
 
-    public Periodicidades getDuplicarUnidad() {
-        return duplicarUnidad;
+    public Periodicidades getDuplicarPeriodicidad() {
+        return duplicarPeriodicidad;
     }
 
-    public void setDuplicarUnidad(Periodicidades duplicarUnidad) {
-        this.duplicarUnidad = duplicarUnidad;
+    public void setDuplicarPeriodicidad(Periodicidades duplicarPeriodicidad) {
+        this.duplicarPeriodicidad = duplicarPeriodicidad;
     }
 
     public List<Unidades> getListaUnidades() {
@@ -1672,6 +1856,14 @@ public class ControlPeriodicidades implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

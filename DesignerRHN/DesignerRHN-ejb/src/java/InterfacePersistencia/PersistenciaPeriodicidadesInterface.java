@@ -145,7 +145,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @param secPeriodicidades Secuencia de la Periodicidad
      * @return Cuantas Novedad tienen relacion con la secPeriodicidades recibida
      */
-    public BigInteger contarNovedadPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarNovedadesPeriodicidad(BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas ParametrosCambiosMasivos estan
