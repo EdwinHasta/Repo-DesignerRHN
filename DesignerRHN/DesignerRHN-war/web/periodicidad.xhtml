@@ -170,7 +170,7 @@
                         </p:toolbar> 
                         <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
                         <p:dialog header="Buscar Unidades" widgetVar="tiposPeriodicidadesDialogo" draggable="false" resizable="false" closable="false" id="tiposPeriodicidadesDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovTipoPeriodicidades" style="font-size: 11px; width: 430px" var="unidads" value="#{controlPeriodicidades.listaUnidades}" rowKey="#{unidads.secuencia}"
                                          selection="#{controlPeriodicidades.unidadSeleccionada}" selectionMode="single" widgetVar="lovTipoPeriodicidades" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlPeriodicidades.filtradoUnidades}" emptyMessage="No se encuentran valores en esta tabla">              
@@ -203,7 +203,7 @@
                         </p:dialog> 
 
                         <p:dialog header="Unidades Base" widgetVar="unidadesBaseDialogo" draggable="false" resizable="false" closable="false" id="unidadesBaseDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovUnidadesBase" style="font-size: 11px; width: 430px" var="unidads" value="#{controlPeriodicidades.listaUnidades}" rowKey="#{unidads.secuencia}"
                                          selection="#{controlPeriodicidades.unidadSeleccionada}" selectionMode="single" widgetVar="lovUnidadesBase" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlPeriodicidades.filtradoUnidades}" emptyMessage="No se encuentran valores en esta tabla">              
@@ -264,6 +264,11 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
                         <h:outputText value="se han borrado #{controlPeriodicidades.registrosBorrados} Registros" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="mostrarguardados" header="ATENCIÓN...!" widgetVar="mostrarguardados"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
+                        <h:outputText value="se a guardado correctamente" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarguardados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionNuevaUnidad" header="ATENCIÓN...!" widgetVar="validacionNuevaUnidad"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
@@ -490,8 +495,8 @@
                             <p:watermark for="duplicarDescripcionUnidadesBase" value="Descripcion Unidad Base" />
                             <!--3-->
 
-                            <p:commandButton id="limpiarDuplicadoCC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlPeriodicidades.limpiarDuplicarPeriodicidades()}" update="duplicarUnidads" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoCC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  process="@this" actionListener="#{controlPeriodicidades.confirmarDuplicar()}"/>
+                            <p:commandButton id="limpiarDuplicadoCC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlPeriodicidades.limpiarDuplicarPeriodicidades()}" update="duplicarUnidads" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoCC" value="Aceptar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  process="@this" actionListener="#{controlPeriodicidades.confirmarDuplicar()}"/>
                             <p:commandButton id="cancelarDuplicadoCC" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlPeriodicidades.limpiarDuplicarPeriodicidades()}" update="duplicarUnidads" onclick="DuplicarRegistroPeriodicidades.hide();" process="@this"/>
                         </p:panel>
                     </p:dialog>

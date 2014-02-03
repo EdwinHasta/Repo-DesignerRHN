@@ -141,6 +141,11 @@
                         <h:outputText value="Se han borrado #{controlTiposDocumentos.registrosBorrados}  Registros" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
                     </p:dialog>
+                    <p:dialog id="mostrarGuardar" header="ATENCIÓN...!" widgetVar="mostrarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
+                        <h:outputText value="Se ha guardado los cambios con exito" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
+                    </p:dialog>
                     <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="450px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="Para agregar es necesario adicionar: #{controlTiposDocumentos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />

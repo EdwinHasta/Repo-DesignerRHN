@@ -1506,6 +1506,8 @@ public class ControlPeriodicidades implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listPeriodicidades = null;
             context.update("form:datosTipoUnidad");
+            context.execute("mostrarguardados.show()");
+
             k = 0;
             guardado = true;
 

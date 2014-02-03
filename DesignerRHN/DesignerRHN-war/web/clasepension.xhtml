@@ -37,11 +37,11 @@
                                         <h:outputText value="Código"/>
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="160" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style=" font-size: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style=" font-size: 10px; border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlClasesPensiones.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlClasesPensiones.modificarClasesPensiones(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>

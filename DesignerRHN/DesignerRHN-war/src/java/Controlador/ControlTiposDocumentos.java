@@ -412,6 +412,7 @@ public class ControlTiposDocumentos implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listTiposDocumentos = null;
             context.update("form:datosTiposDocumentos");
+                context.execute("mostrarGuardar.show()");
             k = 0;
             guardado = true;
         }

@@ -68,7 +68,7 @@ public class ControlClasesPensiones implements Serializable {
         nuevoClasesPensiones = new ClasesPensiones();
         duplicarClasesPensiones = new ClasesPensiones();
         guardado = true;
-        tamano = 300;
+        tamano = 307;
     }
 
     public void eventoFiltrar() {
@@ -148,7 +148,7 @@ public class ControlClasesPensiones implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 280;
+            tamano = 285;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:codigo");
             codigo.setFilterStyle("width: 220px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
@@ -158,7 +158,7 @@ public class ControlClasesPensiones implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 300;
+            tamano = 307;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
