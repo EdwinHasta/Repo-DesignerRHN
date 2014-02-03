@@ -19,7 +19,7 @@ import javax.ejb.Stateless;
  * Clase encargada de realizar las operaciones lógicas para la pantalla
  * 'Escalafon'.
  *
- * @author betelgeuse
+ * @author AndresPineda
  */
 @Stateless
 public class AdministrarEscalafones implements AdministrarEscalafonesInterface{
