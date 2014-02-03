@@ -109,7 +109,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooReformaLaboral" value="#{msg['reformalaboral']}"/>
+                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooReformaLaboral" action="reformasLaborales" actionListener="#{controlReformaLaboral.inicializarPagina()}" value="#{msg['reformalaboral']}"/>
                                     </f:facet>
                                 </p:column>  
                             </p:dataTable>  

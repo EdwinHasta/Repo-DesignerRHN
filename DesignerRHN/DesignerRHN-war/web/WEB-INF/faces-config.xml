@@ -649,7 +649,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -666,7 +665,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -683,8 +681,23 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
-        <navigation-rule>
+    <navigation-rule>
+        <from-view-id>/reformalaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplRefLab</from-outcome>
+            <to-view-id>/EmplVigenciaReformaLaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaReformaLaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reformasLaborales</from-outcome>
+            <to-view-id>/reformalaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/tipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplVigContrato</from-outcome>
@@ -700,7 +713,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/Concepto.xhtml</from-view-id>
         <navigation-case>
@@ -716,10 +728,7 @@
             <to-view-id>/Concepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>
-    
-    
-    
+    </navigation-rule>    
     <navigation-rule>
         <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
         <navigation-case>
@@ -736,8 +745,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
-    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -754,7 +761,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -771,7 +777,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -788,7 +793,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -805,7 +809,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -822,7 +825,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -839,7 +841,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -888,7 +889,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/Ciudades.xhtml</from-view-id>
         <navigation-case>
@@ -903,7 +903,20 @@
             <to-view-id>/Ciudades.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
+    <navigation-rule>
+        <from-view-id>/reformalaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroReformaLab</from-outcome>
+            <to-view-id>/reformalaboral.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule> 
     <navigation-rule>
         <from-view-id>/tipocontrato.xhtml</from-view-id>
         <navigation-case>

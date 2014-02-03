@@ -199,7 +199,7 @@ public class ControlTipoContrato implements Serializable {
             }
         }
         if (i == 2) {
-            if (nuevoDiaLaborable.getDia() == null || nuevoDiaLaborable.getTipodia().getSecuencia() == null) {
+            if (duplicarDiaLaborable.getDia() == null || duplicarDiaLaborable.getTipodia().getSecuencia() == null) {
                 retorno = false;
             }
         }
@@ -1025,7 +1025,7 @@ public class ControlTipoContrato implements Serializable {
             }
         }
         if (indexDias >= 0) {
-            borrarDetalleExtraRecargo();
+            borrarDiasLaborables();
         }
     }
 
@@ -1074,7 +1074,7 @@ public class ControlTipoContrato implements Serializable {
         }
     }
 
-    public void borrarDetalleExtraRecargo() {
+    public void borrarDiasLaborables() {
         if (indexDias >= 0) {
             if (tipoListaDias == 0) {
                 if (!listDiasLaborablesModificar.isEmpty() && listDiasLaborablesModificar.contains(listaDiasLaborables.get(indexDias))) {
@@ -1593,7 +1593,7 @@ public class ControlTipoContrato implements Serializable {
     }
 
     public void clonarTipoContrato() {
-        if ((nombreTipoCColnar.isEmpty()) || (codigoTipoCClonar == 0) || (tipoContratoAClonar.getSecuencia() == null)) {
+        if ((nombreTipoCColnar.isEmpty()) || (codigoTipoCClonar <= 0) || (tipoContratoAClonar.getSecuencia() == null)) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:errorClonadoTipoC");
             context.execute("errorClonadoTipoC.show()");
