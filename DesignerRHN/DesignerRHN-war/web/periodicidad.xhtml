@@ -17,7 +17,7 @@
                             <legend style="font-size: 14px; color: blue"><strong>Periodicidades</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
 
-                            <p:dataTable id="datosPeriodicidades" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 820px ;font-size: 10px; border: 1px;"                      
+                            <p:dataTable id="datosPeriodicidades" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 815px ;font-size: 10px; border: 1px;"                      
                                          value="#{controlPeriodicidades.listPeriodicidades}" scrollable="true" scrollHeight="#{controlPeriodicidades.tamano}"  scrollWidth="835"
                                          filteredValue="#{controlPeriodicidades.filtrarPeriodicidades}" emptyMessage="No se encuentran valores en esta tabla"
                                          editable="true" editMode="cell" paginator="false" 
@@ -26,7 +26,7 @@
                                 <p:ajax event="filter" listener="#{controlPeriodicidades.eventoFiltrar()}"/>
 
 
-                                <p:column headerText="Codigo" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigoCC" width="85" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Codigo" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigoCC" width="40" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
@@ -46,8 +46,8 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.nombre}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText id="editarNombreCentroCoso" value="#{info.nombre}" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase">
-                                                <p:ajax event="change" listener="#{controlPeriodicidades.modificandoUnidad(indice, 'N', info.codigo)}" update="@this" />
+                                            <p:inputText id="editarNombreCentroCoso" value="#{info.nombre}" style="font-size: 10px; border-radius: 0px; width: 99.5%; text-transform: uppercase">
+                                                <p:ajax event="change" listener="#{controlPeriodicidades.modificandoUnidad(indice, 'N', info.nombre)}" update="@this" />
                                                 <p:ajax event="select" listener="#{controlPeriodicidades.cambiarIndice(indice, 1)}" />
                                             </p:inputText>
                                         </f:facet>  
@@ -57,7 +57,7 @@
                                     </f:facet>
                                 </p:column>
                                 
-                                <p:column headerText="Codigo Unidad" sortBy="#{info.unidad.codigo}" filterBy="#{info.unidad.codigo}" filterMatchMode="contains" id="codigoUnidad" width="113" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Codigo Unidad" sortBy="#{info.unidad.codigo}" filterBy="#{info.unidad.codigo}" filterMatchMode="contains" id="codigoUnidad" width="55" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.unidad.codigo}" /></f:facet>  
                                         <f:facet name="input">
@@ -72,7 +72,7 @@
                                         <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCodigoUnidad"  action="cambioTipoUnidad" value="Codigo Unidad"/>
                                     </f:facet>
                                 </p:column> 
-                                <p:column headerText="Unidad" sortBy="#{info.unidad.nombre}" filterBy="#{info.unidad.nombre}" filterMatchMode="contains" id="tipoUnidad" width="113" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Unidad" sortBy="#{info.unidad.nombre}" filterBy="#{info.unidad.nombre}" filterMatchMode="contains" id="tipoUnidad" width="40" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.unidad.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -87,7 +87,7 @@
                                         <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTipoUnidad"  action="cambioTipoUnidad" value="Unidad"/>
                                     </f:facet>
                                 </p:column>  
-                                <p:column headerText="Codigo Unidad Base" sortBy="#{info.unidadbase.codigo}" filterBy="#{info.unidadbase.codigo}" filterMatchMode="contains" id="codigoUnidadbase" width="113" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Codigo Unidad Base" sortBy="#{info.unidadbase.codigo}" filterBy="#{info.unidadbase.codigo}" filterMatchMode="contains" id="codigoUnidadbase" width="65" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.unidadbase.codigo}" /></f:facet>  
                                         <f:facet name="input">
@@ -102,7 +102,7 @@
                                         <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCodigoUnidadBase"  action="cambioTipoUnidad" value="Codigo Unidad"/>
                                     </f:facet>
                                 </p:column> 
-                                <p:column headerText="Descripcion Base" sortBy="#{info.unidadbase.nombre}" filterBy="#{info.unidadbase.nombre}" filterMatchMode="contains" id="unidadBase" width="113" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripcion Base" sortBy="#{info.unidadbase.nombre}" filterBy="#{info.unidadbase.nombre}" filterMatchMode="contains" id="unidadBase" width="70" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.unidadbase.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -246,7 +246,7 @@
 
                     <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['validacionDuplicarVigencia']} #{controlPeriodicidades.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <h:outputText value="Necesita: #{controlPeriodicidades.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
@@ -553,7 +553,7 @@
                         <!--2-->
                         <p:column headerText="CodigoUnidad">      
                             <f:facet name="header"><h:outputText value="CodigoUnidad"/></f:facet>
-                            <h:outputText value="#{info.unidad.nombre}" />
+                            <h:outputText value="#{info.unidad.codigo}" />
                         </p:column>
 
                         <p:column headerText="Unidad">      

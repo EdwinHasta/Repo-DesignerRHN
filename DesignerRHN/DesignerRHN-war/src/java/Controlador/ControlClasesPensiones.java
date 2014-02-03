@@ -404,6 +404,7 @@ public class ControlClasesPensiones implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listClasesPensiones = null;
+                context.execute("mostrarGuardar.show()");
             context.update("form:datosClasesPensiones");
             k = 0;
             guardado = true;

@@ -11,9 +11,9 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Motivos Retiros" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Tipos Documentos" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
                         <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 835px; height: 375px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue"><strong>Motivo de Retiro</strong></legend>
+                            <legend style="font-size: 14px; color: blue"><strong>Tipo de Documento</strong></legend>
 
                             <p:dataTable id="datosTiposDocumentos" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;font-size: 10px; border: 1px;"                           
                                          value="#{controlTiposDocumentos.listTiposDocumentos}" scrollable="true" scrollHeight="#{controlTiposDocumentos.tamano}"  scrollWidth="830"
