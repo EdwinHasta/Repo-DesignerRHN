@@ -73,7 +73,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciasTiposContratos.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="72" id="vtcFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="72" id="vtcFecha" filterStyle="display: none; visibility: hidden;"  >  
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['fecha']}" />
                                     </f:facet>
@@ -99,7 +99,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Motivo_Contrato" sortBy="#{info.motivocontrato.nombre}" filterBy="#{info.motivocontrato.nombre}" filterMatchMode="contains" id="vtcContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['motivo']}" sortBy="#{info.motivocontrato.nombre}" filterBy="#{info.motivocontrato.nombre}" filterMatchMode="contains" id="vtcContrato" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header"><h:outputText value="#{msg['motivo']}"/> </f:facet> 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.motivocontrato.nombre}" /></f:facet>  
@@ -117,7 +117,7 @@
                                     </f:facet>
                                 </p:column>  
 
-                                <p:column headerText="Tipo_Contrato" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains"  id="vtcTipoContrato" width="133" filterStyle="display: none; visibility: hidden;" >      
+                                <p:column headerText="#{msg['tipo']}" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains"  id="vtcTipoContrato" width="133" filterStyle="display: none; visibility: hidden;" >      
                                     <f:facet name="header"><h:outputText value="#{msg['tipo']}"/></f:facet>
 
                                     <p:cellEditor>  
@@ -137,7 +137,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Ciudad" sortBy="#{info.ciudad.nombre}" filterBy="#{info.ciudad.nombre}" filterMatchMode="contains" id="vtcCiudad" width="80" filterStyle="display: none; visibility: hidden;" >                                                              
+                                <p:column headerText="#{msg['ciudad']}" sortBy="#{info.ciudad.nombre}" filterBy="#{info.ciudad.nombre}" filterMatchMode="contains" id="vtcCiudad" width="80" filterStyle="display: none; visibility: hidden;" >                                                              
                                     <f:facet name="header"> <h:outputText value="#{msg['ciudad']}" /></f:facet>
 
                                     <p:cellEditor>  
@@ -156,7 +156,7 @@
                                     </f:facet>
                                 </p:column>  
 
-                                <p:column headerText="Fecha_Inicio_Sustitucion_Patronal" sortBy="#{info.iniciosustitucion}" filterBy="#{info.iniciosustitucion}" filterMatchMode="contains" id="vtcFechaSP" width="160" filterStyle="display: none; visibility: hidden;" >                                                                                              
+                                <p:column headerText="#{msg['fisp']}" sortBy="#{info.iniciosustitucion}" filterBy="#{info.iniciosustitucion}" filterMatchMode="contains" id="vtcFechaSP" width="160" filterStyle="display: none; visibility: hidden;" >                                                                                              
                                     <f:facet name="header"><h:outputText value="#{msg['fisp']}"/></f:facet>
 
                                     <p:cellEditor>  
@@ -178,7 +178,7 @@
                                     <f:facet name="footer"><h:outputText value="#{msg['fisp']}" /></f:facet>
                                 </p:column>  
 
-                                <p:column headerText="Fecha_Flexibilizacion" sortBy="#{info.inicioflexibiliza}" filterBy="#{info.inicioflexibiliza}" filterMatchMode="contains" id="vtcInicioFlexibilizacion" width="130" filterStyle="display: none; visibility: hidden;" >                                                              
+                                <p:column headerText="#{msg['fif']}" sortBy="#{info.inicioflexibiliza}" filterBy="#{info.inicioflexibiliza}" filterMatchMode="contains" id="vtcInicioFlexibilizacion" width="130" filterStyle="display: none; visibility: hidden;" >                                                              
                                     <f:facet name="header"><h:outputText value="#{msg['fif']}"/></f:facet>
 
                                     <p:cellEditor>  
@@ -200,7 +200,7 @@
                                     <f:facet name="footer"><h:outputText value="#{msg['fif']}" /></f:facet>
                                 </p:column>
 
-                                <p:column headerText="Observaciones" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="vtcObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                                              
+                                <p:column headerText="#{msg['observaciones']}" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="vtcObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                                              
                                     <f:facet name="header"> <h:outputText value="#{msg['observaciones']}" /></f:facet>
 
                                     <p:cellEditor>  
