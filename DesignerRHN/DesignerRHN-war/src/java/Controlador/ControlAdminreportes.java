@@ -61,12 +61,10 @@ public class ControlAdminreportes implements Serializable {
     private boolean guardado, guardarOk;
     //Crear Novedades
     private List<Inforeportes> listaInforeportesCrear;
-
     public Inforeportes nuevoInforeporte;
     public Inforeportes duplicarInforeporte;
     private int k;
     private BigInteger l;
-    private String mensajeValidacion;
     //Modificar Novedades
     private List<Inforeportes> listaInforeportesModificar;
     //Borrar Novedades
@@ -81,8 +79,10 @@ public class ControlAdminreportes implements Serializable {
     private Column inforeportesCodigos, inforeportesNombres, inforeportesContadores, inforeportesNombresReportes, inforeportesTipos, inforeportesModulos;
     //ALTO SCROLL TABLA
     private String altoTabla;
+    private boolean cambiosPagina;
 
     public ControlAdminreportes() {
+        cambiosPagina = true;
         nuevoInforeporte = new Inforeportes();
         nuevoInforeporte.setModulo(new Modulos());
         lovListaModulos = null;
@@ -178,6 +178,8 @@ public class ControlAdminreportes implements Serializable {
                 }
                 lovListaModulos.clear();
                 getLovListaModulos();
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
                 context.update("formularioDialogos:modulosDialogo");
@@ -361,10 +363,11 @@ public class ControlAdminreportes implements Serializable {
     public void confirmarDuplicar() {
 
         RequestContext context = RequestContext.getCurrentInstance();
+        cambiosPagina = false;
+        context.update("form:ACEPTAR");
         listaInforeportes.add(duplicarInforeporte);
         listaInforeportesCrear.add(duplicarInforeporte);
 
-        
         index = -1;
         if (guardado == true) {
             guardado = false;
@@ -412,6 +415,8 @@ public class ControlAdminreportes implements Serializable {
         } else {
             listaInforeportes.add(i);
         }
+        cambiosPagina = false;
+        context.update("form:ACEPTAR");
         context.execute("inforeportesDialogo.hide()");
         context.reset("formularioDialogos:LOVInforeportes:globalFilter");
         context.update("formularioDialogos:LOVInforeportes");
@@ -450,6 +455,8 @@ public class ControlAdminreportes implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            cambiosPagina = false;
+            context.update("form:ACEPTAR");
             permitirIndex = true;
             context.update("form:datosInforeportes");
         } else if (tipoActualizacion == 1) {
@@ -609,7 +616,10 @@ public class ControlAdminreportes implements Serializable {
         listaInforeportes = null;
         guardado = true;
         permitirIndex = true;
+        cambiosPagina = false;
+        
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosInforeportes");
     }
 
@@ -873,7 +883,8 @@ public class ControlAdminreportes implements Serializable {
         System.out.println("Empleado Desde: " + nuevoInforeporte.getEmdesde());
         System.out.println("Empleado Hasta: " + nuevoInforeporte.getEmhasta());
         System.out.println("Localización: " + nuevoInforeporte.getLocalizacion());
-
+        cambiosPagina = false;
+        context.update("form:ACEPTAR");
         listaInforeportesCrear.add(nuevoInforeporte);
         listaInforeportes.add(nuevoInforeporte);
         nuevoInforeporte = new Inforeportes();
@@ -1123,7 +1134,10 @@ public class ControlAdminreportes implements Serializable {
 
             System.out.println("Se guardaron los datos con exito");
             listaInforeportes = null;
+
             RequestContext context = RequestContext.getCurrentInstance();
+            cambiosPagina = true;
+            context.update("form:ACEPTAR");
             context.update("form:datosInforeportes");
             guardado = true;
             permitirIndex = true;
@@ -1208,7 +1222,7 @@ public class ControlAdminreportes implements Serializable {
             secRegistro = null;
         }
     }
-    
+
     //RASTROS 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1241,7 +1255,7 @@ public class ControlAdminreportes implements Serializable {
         }
         index = -1;
     }
-    
+
     public void salir() {
         if (bandera == 1) {
             altoTabla = "250";
@@ -1389,6 +1403,14 @@ public class ControlAdminreportes implements Serializable {
 
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
+    }
+
+    public boolean isCambiosPagina() {
+        return cambiosPagina;
+    }
+
+    public void setCambiosPagina(boolean cambiosPagina) {
+        this.cambiosPagina = cambiosPagina;
     }
     
     
