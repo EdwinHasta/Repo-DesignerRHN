@@ -36,4 +36,11 @@ public interface PersistenciaRecordatoriosInterface {
      * @return Retorna una lista de recordatorios de tipo 'CONSULTA' que cumplen las condiciones.
      */
     public List<Recordatorios> consultasInicio(EntityManager entity);
+    
+    public List<Recordatorios> proverbiosRecordatorios();
+    
+    public List<Recordatorios> mensajesRecordatorios();
+    public void crear(Recordatorios recordatorios);
+    public void borrar(Recordatorios recordatorios);
+    public void editar(Recordatorios recordatorios);
 }

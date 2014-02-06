@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposEntidades.findAll", query = "SELECT t FROM TiposEntidades t")})
 public class TiposEntidades implements Serializable {
     @OneToMany(mappedBy = "tipoentidad")
+    private Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection;
+    @OneToMany(mappedBy = "tipoentidad")
     private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection;
     @OneToMany(mappedBy = "tipoentidad")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
@@ -152,6 +154,15 @@ public class TiposEntidades implements Serializable {
 
     public void setIbcsAutoliquidacionesCollection(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection) {
         this.ibcsAutoliquidacionesCollection = ibcsAutoliquidacionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<DetallesTiposCotizantes> getDetallesTiposCotizantesCollection() {
+        return detallesTiposCotizantesCollection;
+    }
+
+    public void setDetallesTiposCotizantesCollection(Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection) {
+        this.detallesTiposCotizantesCollection = detallesTiposCotizantesCollection;
     }
     
 }

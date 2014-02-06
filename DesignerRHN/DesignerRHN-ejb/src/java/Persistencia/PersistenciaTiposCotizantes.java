@@ -24,6 +24,34 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
+    
+    @Override
+    public void crear(TiposCotizantes tiposCotizantes) {
+        try {
+            em.persist(tiposCotizantes);
+        } catch (Exception e) {
+            System.out.println("Error crear PersistenciaTiposCotizantes");
+        }
+    }
+
+    @Override
+    public void editar(TiposCotizantes tiposCotizantes) {
+        try {
+            em.merge(tiposCotizantes);
+        } catch (Exception e) {
+            System.out.println("Error editar PersistenciaTiposCotizantes");
+        }
+    }
+
+    @Override
+    public void borrar(TiposCotizantes tiposCotizantes) {
+        try {
+            em.remove(em.merge(tiposCotizantes));
+        } catch (Exception e) {
+            System.out.println("Error borrar PersistenciaTiposCotizantes");
+        }
+    }
+    
     @Override
     public List<TiposCotizantes> lovTiposCotizantes() {
         try {
