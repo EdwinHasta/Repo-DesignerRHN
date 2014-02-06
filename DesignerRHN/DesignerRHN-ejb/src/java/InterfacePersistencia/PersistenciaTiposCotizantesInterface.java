@@ -17,4 +17,28 @@ public interface PersistenciaTiposCotizantesInterface {
      * @return Retorna una lista de TiposCotizantes ordenados por código.
      */
     public List<TiposCotizantes> lovTiposCotizantes();
+    /**
+     * Método encargado de insertar un TipoCotizante en la base de datos.
+     *
+     * @param tiposCotizantes TiposCotizantes que se quiere crear.
+     */
+    public void crear(TiposCotizantes tiposCotizantes);
+     /**
+     * Método encargado de modificar un TiposCotizantes de la base de datos. Este
+     * método recibe la información del parámetro para hacer un 'merge' con la
+     * información de la base de datos.
+     *
+     * @param tiposCotizantes TipoCotizante con los cambios que se van a realizar.
+     */
+    public void editar(TiposCotizantes tiposCotizantes);
+
+    /**
+     * Método encargado de eliminar de la base de datos el TipoCotizante que entra
+     * por parámetro.
+     *
+     * @param tiposCotizantes tipoCotizante que se quiere eliminar.
+     */
+    public void borrar(TiposCotizantes tiposCotizantes);
+
+        
 }

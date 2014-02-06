@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaRecordatoriosInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
  * Clase Stateless. <br> 
@@ -18,6 +19,10 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInterface {
 
+    
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+    
     @Override
     public Recordatorios recordatorioRandom(EntityManager entity) {
         try {
@@ -70,4 +75,57 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             return null;
         }
     }
+    
+    @Override
+    public List<Recordatorios> proverbiosRecordatorios() {
+        try {
+            Query query = em.createQuery("SELECT r FROM Recordatorios r WHERE r.tipo = 'PROVERBIO'");
+            List<Recordatorios> recordatorios = query.getResultList();
+            return recordatorios;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Recordatorios> mensajesRecordatorios() {
+        try {
+            String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO'and usuario =(SELECT U.SECUENCIA FROM USUARIOS U "
+                    + "WHERE U.ALIAS=USER)";
+            Query query = em.createNativeQuery(consulta, Recordatorios.class);
+            List<Recordatorios> listaConsultas = query.getResultList();
+            return listaConsultas;
+        } catch (Exception e) {
+            System.out.println("Error: PersistenciaRecordatorios.mensajesRecordatorios");
+            return null;
+        }
+    }
+    
+     @Override
+    public void crear(Recordatorios recordatorios) {
+        try {
+            em.persist(recordatorios);
+        } catch (Exception e) {
+            System.out.println("Error crear PersistenciaRecordatorios");
+        }
+    }
+
+    @Override
+    public void editar(Recordatorios recordatorios) {
+        try {
+            em.merge(recordatorios);
+        } catch (Exception e) {
+            System.out.println("Error editar PersistenciaRecordatorios");
+        }
+    }
+
+    @Override
+    public void borrar(Recordatorios recordatorios) {
+        try {
+            em.remove(em.merge(recordatorios));
+        } catch (Exception e) {
+            System.out.println("Error borrar PersistenciaRecordatorios");
+        }
+    }
+    
 }

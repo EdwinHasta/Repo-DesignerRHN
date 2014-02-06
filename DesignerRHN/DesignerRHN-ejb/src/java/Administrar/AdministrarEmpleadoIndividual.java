@@ -343,18 +343,21 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         return listaTiposDocumentos;
     }
 
+    @Override
     public List<Ciudades> ciudades() {
         List<Ciudades> listaCiudades;
         listaCiudades = persistenciaCiudades.ciudades();
         return listaCiudades;
     }
 
+    @Override
     public List<Cargos> cargos() {
         List<Cargos> listaCargos;
         listaCargos = persistenciaCargos.buscarCargos();
         return listaCargos;
     }
 
+    @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
         Empleados empleado;
         try {
@@ -366,6 +369,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         }
     }
 
+    @Override
     public void modificarEmpleado(Empleados empleado) {
         try {
             persistenciaEmpleado.editar(empleado);
@@ -374,6 +378,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         }
     }
 
+    @Override
     public void modificarHojaDeVida(HVHojasDeVida hojaVida) {
         try {
             persistenciaHVHojasDeVida.editar(hojaVida);
@@ -382,6 +387,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         }
     }
 
+    @Override
     public void modificarPersona(Personas personas) {
         try {
             if (personas.getFactorrh().equals("")) {
@@ -399,6 +405,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         }
     }
 
+    @Override
     public void actualizarFotoPersona(BigInteger identificacion) {
         try {
             persistenciaPersonas.actualizarFotoPersona(identificacion);

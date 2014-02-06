@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -16,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TiposCotizantes implements Serializable {
 
     @OneToMany(mappedBy = "tipocotizante")
+    private Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection;
+
+    @OneToMany(mappedBy = "tipocotizante")
     private Collection<Contratos> contratosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -40,7 +43,7 @@ public class TiposCotizantes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -77,29 +80,50 @@ public class TiposCotizantes implements Serializable {
     private String extranjero;
     @OneToMany(mappedBy = "tipocotizante")
     private Collection<TiposTrabajadores> tipostrabajadoresCollection;
+    @Transient
+    private boolean cotizapensionBool;
+    @Transient
+    private boolean cotizasaludBool;
+    @Transient
+    private boolean cotizariesgoBool;
+    @Transient
+    private boolean cotizaparafiscalBool;
+    @Transient
+    private boolean cotizaesapBool;
+    @Transient
+    private boolean cotizamenBool;
+    @Transient
+    private boolean codigoalternativoBool;
+    @Transient
+    private boolean extranjeroBool;
+    @Transient
+    private String estadoSubTipoCotizante;
 
     public TiposCotizantes() {
     }
 
-    public TiposCotizantes(BigDecimal secuencia) {
+    public TiposCotizantes(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposCotizantes(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public TiposCotizantes(BigInteger secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
     public BigInteger getCodigo() {
+        if(codigo == null){
+            codigo = BigInteger.valueOf(0);
+        }
         return codigo;
     }
 
@@ -111,7 +135,7 @@ public class TiposCotizantes implements Serializable {
         if (descripcion == null) {
             descripcion = " ";
         }
-        return descripcion;
+        return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {
@@ -119,6 +143,9 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getCotizapension() {
+        if (cotizapension == null) {
+            cotizapension = "N";
+        }
         return cotizapension;
     }
 
@@ -127,6 +154,9 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getCotizasalud() {
+        if (cotizasalud == null) {
+            cotizasalud = "N";
+        }
         return cotizasalud;
     }
 
@@ -135,6 +165,9 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getCotizariesgo() {
+        if (cotizariesgo == null) {
+            cotizariesgo = "N";
+        }
         return cotizariesgo;
     }
 
@@ -143,6 +176,9 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getCotizaparafiscal() {
+        if (cotizaparafiscal == null) {
+            cotizaparafiscal = "N";
+        }
         return cotizaparafiscal;
     }
 
@@ -151,6 +187,9 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getCotizaesap() {
+        if (cotizaesap == null) {
+            cotizaesap = "N";
+        }
         return cotizaesap;
     }
 
@@ -159,6 +198,9 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getCotizamen() {
+        if (cotizamen == null) {
+            cotizamen = "N";
+        }
         return cotizamen;
     }
 
@@ -188,6 +230,208 @@ public class TiposCotizantes implements Serializable {
 
     public void setExtranjero(String extranjero) {
         this.extranjero = extranjero;
+    }
+
+    public boolean isCotizapensionBool() {
+        getCotizapension();
+        if(cotizapension== null || cotizapension.equalsIgnoreCase("N")){
+            cotizapensionBool = false;
+        }
+        else {
+            cotizapensionBool = true;
+        }
+        return cotizapensionBool;
+    }
+
+    public void setCotizapensionBool(boolean cotizapensionBool) {
+        if (cotizapensionBool == true) {
+            cotizapension = "S";
+        } else {
+            cotizapension = "N";
+        }
+        this.cotizapensionBool = cotizapensionBool;
+    }
+
+    public boolean isCotizasaludBool() {
+        getCotizasalud();
+        if (cotizasalud != null) {
+            if (cotizasalud.equals("S")) {
+                cotizasaludBool = true;
+            } else {
+                cotizasaludBool = false;
+            }
+        } else {
+            cotizasaludBool = false;
+        }
+        return cotizasaludBool;
+    }
+
+    public void setCotizasaludBool(boolean cotizasaludBool) {
+        if (cotizasaludBool == true) {
+            cotizasalud = "S";
+        } else {
+            cotizasalud = "N";
+        }
+        this.cotizasaludBool = cotizasaludBool;
+    }
+
+    public boolean isCotizariesgoBool() {
+        getCotizariesgo();
+        if (cotizariesgo != null) {
+            if (cotizariesgo.equals("S")) {
+                cotizariesgoBool = true;
+            } else {
+                cotizariesgoBool = false;
+            }
+        } else {
+            cotizariesgoBool = false;
+        }
+
+        return cotizariesgoBool;
+    }
+
+    public void setCotizariesgoBool(boolean cotizariesgoBool) {
+        if (cotizariesgoBool == true) {
+            cotizariesgo = "S";
+        } else {
+            cotizariesgo = "N";
+        }
+        this.cotizariesgoBool = cotizariesgoBool;
+    }
+
+    public boolean isCotizaparafiscalBool() {
+        getCotizaparafiscal();
+        if (cotizaparafiscal != null) {
+            if (cotizaparafiscal.equals("S")) {
+                cotizaparafiscalBool = true;
+            } else {
+                cotizaparafiscalBool = false;
+            }
+        } else {
+            cotizaparafiscalBool = false;
+        }
+        return cotizaparafiscalBool;
+    }
+
+    public void setCotizaparafiscalBool(boolean cotizaparafiscalBool) {
+        if (cotizaparafiscalBool == true) {
+            cotizaparafiscal = "S";
+        } else {
+            cotizaparafiscal = "N";
+        }
+        this.cotizaparafiscalBool = cotizaparafiscalBool;
+    }
+
+    public boolean isCotizaesapBool() {
+        getCotizaesap();
+        if (cotizaesap != null) {
+            if (cotizaesap.equals("S")) {
+                cotizaesapBool = true;
+            } else {
+                cotizaesapBool = false;
+            }
+        } else {
+            cotizaesapBool = false;
+        }
+        return cotizaesapBool;
+    }
+
+    public void setCotizaesapBool(boolean cotizaesapBool) {
+        if (cotizaesapBool == true) {
+            cotizaesap = "S";
+        } else {
+            cotizaesap = "N";
+        }
+        this.cotizaesapBool = cotizaesapBool;
+    }
+
+    public boolean isCotizamenBool() {
+        getCotizamen();
+        if (cotizamen != null) {
+            if (cotizamen.equals("S")) {
+                cotizamenBool = true;
+            } else {
+                cotizamenBool = false;
+            }
+        } else {
+            cotizamenBool = false;
+        }
+        return cotizamenBool;
+    }
+
+    public void setCotizamenBool(boolean cotizamenBool) {
+        if (cotizamenBool == true) {
+            cotizamen = "S";
+        } else {
+            cotizamen = "N";
+        }
+        this.cotizamenBool = cotizamenBool;
+    }
+
+    public boolean isExtranjeroBool() {
+        getExtranjero();
+        if (extranjero != null) {
+            if (extranjero.equals("S")) {
+                extranjeroBool = true;
+            } else {
+                extranjeroBool = false;
+            }
+        } else {
+            extranjeroBool = false;
+        }
+        return extranjeroBool;
+    }
+
+    public String getEstadoSubTipoCotizante() {
+        
+        getSubtipocotizante();
+        if (subtipocotizante == null) {
+            estadoSubTipoCotizante = "";
+        } else {
+            
+            int value = subtipocotizante.intValue();
+            if (value == 1) {
+                estadoSubTipoCotizante = "1";
+            } else if (value == 2) {
+                estadoSubTipoCotizante = "2";
+            } else if (value == 3) {
+                estadoSubTipoCotizante = "3";
+            } else if (value == 4) {
+                estadoSubTipoCotizante = "4";
+            } else if (value == 5) {
+                estadoSubTipoCotizante = "5";
+            } else if (value == 6) {
+                estadoSubTipoCotizante = "6";
+            }
+        }
+        return estadoSubTipoCotizante;
+    }
+
+    public void setEstadoSubTipoCotizante(String estadoSubTipoCotizante) {
+        
+        if (estadoSubTipoCotizante.equals("1")) {
+            setSubtipocotizante(new Short("1"));
+        } else if (estadoSubTipoCotizante.equals("2")) {
+            setSubtipocotizante(new Short("2"));
+        } else if (estadoSubTipoCotizante.equals("3")) {
+            setSubtipocotizante(new Short("3"));
+        } else if (estadoSubTipoCotizante.equals("4")) {
+            setSubtipocotizante(new Short("4"));
+        } else if (estadoSubTipoCotizante.equals("5")) {
+            setSubtipocotizante(new Short("5"));
+        } else if (estadoSubTipoCotizante.equals("6")) {
+            setSubtipocotizante(new Short("6"));
+        }
+        this.estadoSubTipoCotizante = estadoSubTipoCotizante;
+    }
+
+    public void setExtranjeroBool(boolean extranjeroBool) {
+        if (extranjeroBool == true) {
+            extranjero = "S";
+        } else {
+            extranjero = "N";
+        }
+        this.extranjeroBool = extranjeroBool;
     }
 
     @XmlTransient
@@ -231,5 +475,14 @@ public class TiposCotizantes implements Serializable {
 
     public void setContratosCollection(Collection<Contratos> contratosCollection) {
         this.contratosCollection = contratosCollection;
+    }
+
+    @XmlTransient
+    public Collection<DetallesTiposCotizantes> getDetallesTiposCotizantesCollection() {
+        return detallesTiposCotizantesCollection;
+    }
+
+    public void setDetallesTiposCotizantesCollection(Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection) {
+        this.detallesTiposCotizantesCollection = detallesTiposCotizantesCollection;
     }
 }
