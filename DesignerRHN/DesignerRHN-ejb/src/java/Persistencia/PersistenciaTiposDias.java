@@ -65,6 +65,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
         }
     }
 
+    @Override
     public BigInteger contadorDiasLaborales(BigInteger secuencia) {
         BigInteger retorno;
         try {
@@ -81,6 +82,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
         }
     }
 
+    @Override
     public BigInteger contadorExtrasRecargos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {

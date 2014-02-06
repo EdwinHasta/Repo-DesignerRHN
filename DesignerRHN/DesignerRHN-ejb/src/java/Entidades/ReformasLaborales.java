@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,6 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ReformasLaborales.findByNombre", query = "SELECT r FROM ReformasLaborales r WHERE r.nombre = :nombre"),
     @NamedQuery(name = "ReformasLaborales.findByIntegral", query = "SELECT r FROM ReformasLaborales r WHERE r.integral = :integral")})
 public class ReformasLaborales implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reformalaboral")
+    private Collection<DetallesReformasLaborales> detallesReformasLaboralesCollection;
     @OneToMany(mappedBy = "reformalaboral")
     private Collection<SolucionesNodos> solucionesNodosCollection;
     private static final long serialVersionUID = 1L;
@@ -44,13 +48,13 @@ public class ReformasLaborales implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 1)
@@ -58,6 +62,8 @@ public class ReformasLaborales implements Serializable {
     private String integral;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reformalaboral")
     private Collection<VigenciasReformasLaborales> vigenciasreformaslaboralesCollection;
+    @Transient
+    private String strIntegral;
 
     public ReformasLaborales() {
     }
@@ -89,7 +95,7 @@ public class ReformasLaborales implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
+        if (nombre == null) {
             nombre = " ";
         }
         return nombre;
@@ -100,11 +106,28 @@ public class ReformasLaborales implements Serializable {
     }
 
     public String getIntegral() {
+        if (integral == null) {
+            integral = "N";
+        }
         return integral;
     }
 
     public void setIntegral(String integral) {
         this.integral = integral;
+    }
+
+    public String getStrIntegral() {
+        getIntegral();
+        if (integral == null || integral.equalsIgnoreCase("N")) {
+            strIntegral = "NO";
+        } else {
+            strIntegral = "SI";
+        }
+        return strIntegral;
+    }
+
+    public void setStrIntegral(String strIntegral) {
+        this.strIntegral = strIntegral;
     }
 
     @XmlTransient
@@ -148,5 +171,14 @@ public class ReformasLaborales implements Serializable {
     public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
         this.solucionesNodosCollection = solucionesNodosCollection;
     }
-    
+
+    @XmlTransient
+    public Collection<DetallesReformasLaborales> getDetallesReformasLaboralesCollection() {
+        return detallesReformasLaboralesCollection;
+    }
+
+    public void setDetallesReformasLaboralesCollection(Collection<DetallesReformasLaborales> detallesReformasLaboralesCollection) {
+        this.detallesReformasLaboralesCollection = detallesReformasLaboralesCollection;
+    }
+
 }

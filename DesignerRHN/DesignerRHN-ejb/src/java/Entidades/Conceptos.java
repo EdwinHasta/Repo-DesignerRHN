@@ -169,6 +169,8 @@ public class Conceptos implements Serializable {
     private String codigoSTR;
     @Transient
     private String infoDetalleConcepto;
+    @Transient
+    private String strNaturalezaDescripcion;
 
     public Conceptos() {
     }
@@ -275,7 +277,7 @@ public class Conceptos implements Serializable {
     }
 
     public void setIndependiente(String independiente) {
-        
+
         this.independiente = independiente;
     }
 
@@ -416,6 +418,31 @@ public class Conceptos implements Serializable {
 
     public void setClavecontablecredito(ClavesSap clavecontablecredito) {
         this.clavecontablecredito = clavecontablecredito;
+    }
+
+    public String getStrNaturalezaDescripcion() {
+        getNaturaleza();
+        getDescripcion();
+        if (descripcion != null) {
+            if (naturaleza.equalsIgnoreCase("P")) {
+                strNaturalezaDescripcion = "PAGO POR> " + descripcion;
+            } else if (naturaleza.equalsIgnoreCase("D")) {
+                strNaturalezaDescripcion = "DESCUENTO POR> " + descripcion;
+            } else if (naturaleza.equalsIgnoreCase("G")) {
+                strNaturalezaDescripcion = "PAGO POR> " + descripcion;
+            } else if (naturaleza.equalsIgnoreCase("L")) {
+                strNaturalezaDescripcion = "PASIVO POR> " + descripcion;
+            } else {
+                strNaturalezaDescripcion = "OTROS POR> " + descripcion;
+            }
+        } else {
+            strNaturalezaDescripcion = "OTROS POR> " + "";
+        }
+        return strNaturalezaDescripcion;
+    }
+
+    public void setStrNaturalezaDescripcion(String strNaturalezaDescripcion) {
+        this.strNaturalezaDescripcion = strNaturalezaDescripcion;
     }
 
     @XmlTransient

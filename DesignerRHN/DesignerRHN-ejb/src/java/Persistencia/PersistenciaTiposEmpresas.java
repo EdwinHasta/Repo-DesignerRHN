@@ -54,6 +54,7 @@ public class PersistenciaTiposEmpresas implements PersistenciaTiposEmpresasInter
 
     }
 
+    @Override
     public BigInteger contadorSueldosMercados(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {

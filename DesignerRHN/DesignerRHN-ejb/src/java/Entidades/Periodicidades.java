@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,9 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Periodicidades implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @OneToMany(mappedBy = "periodicidadcorte")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(mappedBy = "periodicidad")
@@ -49,10 +47,8 @@ public class Periodicidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 1)
     @Column(name = "INDEPENDIENTEADELANTO")
     private String independienteadelanto;
     @JoinColumn(name = "UNIDAD", referencedColumnName = "SECUENCIA")
@@ -73,7 +69,7 @@ public class Periodicidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Periodicidades(BigInteger secuencia, short codigo) {
+    public Periodicidades(BigInteger secuencia, Integer codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
@@ -94,7 +90,7 @@ public class Periodicidades implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getIndependienteadelanto() {
@@ -184,15 +180,15 @@ public class Periodicidades implements Serializable {
     }
 
     public void setCodigoStr(String codigoStr) {
-        codigo = Short.parseShort(codigoStr);
+        codigo = Integer.parseInt(codigoStr);
         this.codigoStr = codigoStr;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 }

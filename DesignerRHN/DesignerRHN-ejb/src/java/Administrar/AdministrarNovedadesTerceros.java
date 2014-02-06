@@ -74,7 +74,7 @@ public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercero
 
     @Override
     public List<Periodicidades> lovPeriodicidades() {
-        return persistenciaPeriodicidades.buscarPeriodicidades();
+        return persistenciaPeriodicidades.consultarPeriodicidades();
     }
 
     @Override
