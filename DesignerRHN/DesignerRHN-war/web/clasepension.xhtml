@@ -11,9 +11,9 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Motivos Retiros" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
+                    <p:panel  id="PanelTotal" header="Clase de Pensión" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
                         <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 835px; height: 375px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue"><strong>Motivo de Retiro</strong></legend>
+                            <legend style="font-size: 14px; color: blue"><strong>Clase Pensión</strong></legend>
 
                             <p:dataTable id="datosClasesPensiones" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;font-size: 10px; border: 1px;"                           
                                          value="#{controlClasesPensiones.listClasesPensiones}" scrollable="true" scrollHeight="#{controlClasesPensiones.tamano}"  scrollWidth="830"
@@ -37,11 +37,11 @@
                                         <h:outputText value="Código"/>
                                     </f:facet>
                                 </p:column>
-                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="160" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style=" font-size: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style=" font-size: 10px; border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlClasesPensiones.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlClasesPensiones.modificarClasesPensiones(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -140,6 +140,11 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
                         <h:outputText value="Se han borrado #{controlClasesPensiones.registrosBorrados}  Registros" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="mostrarGuardar" header="ATENCIÓN...!" widgetVar="mostrarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
+                        <h:outputText value="Datos guardados Correctamente" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="450px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />

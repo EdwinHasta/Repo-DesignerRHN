@@ -4,10 +4,10 @@
  */
 package Controlador;
 
-import Entidades.ClasesPensiones;
+import Entidades.ClasesCategorias;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarClasesPensionesInterface;
+import InterfaceAdministrar.AdministrarClasesCategoriasInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -29,20 +29,20 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlClasesPensiones implements Serializable {
+public class ControlClasesCategorias implements Serializable {
 
     @EJB
-    AdministrarClasesPensionesInterface administrarClasesPensiones;
+    AdministrarClasesCategoriasInterface administrarClasesCategorias;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    private List<ClasesPensiones> listClasesPensiones;
-    private List<ClasesPensiones> filtrarClasesPensiones;
-    private List<ClasesPensiones> crearClasesPensiones;
-    private List<ClasesPensiones> modificarClasesPensiones;
-    private List<ClasesPensiones> borrarClasesPensiones;
-    private ClasesPensiones nuevoClasesPensiones;
-    private ClasesPensiones duplicarClasesPensiones;
-    private ClasesPensiones editarClasesPensiones;
+    private List<ClasesCategorias> listClasesCategorias;
+    private List<ClasesCategorias> filtrarClasesCategorias;
+    private List<ClasesCategorias> crearClasesCategorias;
+    private List<ClasesCategorias> modificarClasesCategorias;
+    private List<ClasesCategorias> borrarClasesCategorias;
+    private ClasesCategorias nuevoClasesCategorias;
+    private ClasesCategorias duplicarClasesCategorias;
+    private ClasesCategorias editarClasesCategorias;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -58,27 +58,27 @@ public class ControlClasesPensiones implements Serializable {
     //filtrado table
     private int tamano;
 
-    public ControlClasesPensiones() {
-        listClasesPensiones = null;
-        crearClasesPensiones = new ArrayList<ClasesPensiones>();
-        modificarClasesPensiones = new ArrayList<ClasesPensiones>();
-        borrarClasesPensiones = new ArrayList<ClasesPensiones>();
+    public ControlClasesCategorias() {
+        listClasesCategorias = null;
+        crearClasesCategorias = new ArrayList<ClasesCategorias>();
+        modificarClasesCategorias = new ArrayList<ClasesCategorias>();
+        borrarClasesCategorias = new ArrayList<ClasesCategorias>();
         permitirIndex = true;
-        editarClasesPensiones = new ClasesPensiones();
-        nuevoClasesPensiones = new ClasesPensiones();
-        duplicarClasesPensiones = new ClasesPensiones();
+        editarClasesCategorias = new ClasesCategorias();
+        nuevoClasesCategorias = new ClasesCategorias();
+        duplicarClasesCategorias = new ClasesCategorias();
         guardado = true;
-        tamano = 307;
+        tamano = 300;
     }
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A ControlClasesPensiones.eventoFiltrar \n");
+            System.out.println("\n ENTRE A ControlClasesCategorias.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR ControlClasesPensiones eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlClasesCategorias eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class ControlClasesPensiones implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listClasesPensiones.get(index).getSecuencia();
+            secRegistro = listClasesCategorias.get(index).getSecuencia();
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -96,7 +96,7 @@ public class ControlClasesPensiones implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE A ControlClasesPensiones.asignarIndex \n");
+            System.out.println("\n ENTRE A ControlClasesCategorias.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -108,7 +108,7 @@ public class ControlClasesPensiones implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR ControlClasesPensiones.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlClasesCategorias.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -122,55 +122,55 @@ public class ControlClasesPensiones implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosClasesPensiones");
+            RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
             bandera = 0;
-            filtrarClasesPensiones = null;
+            filtrarClasesCategorias = null;
             tipoLista = 0;
         }
 
-        borrarClasesPensiones.clear();
-        crearClasesPensiones.clear();
-        modificarClasesPensiones.clear();
+        borrarClasesCategorias.clear();
+        crearClasesCategorias.clear();
+        modificarClasesCategorias.clear();
         index = -1;
         secRegistro = null;
         k = 0;
-        listClasesPensiones = null;
+        listClasesCategorias = null;
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosClasesPensiones");
+        context.update("form:datosClasesCategorias");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 285;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:codigo");
+            tamano = 280;
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
             descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosClasesPensiones");
+            RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 307;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:codigo");
+            tamano = 300;
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosClasesPensiones");
+            RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
             bandera = 0;
-            filtrarClasesPensiones = null;
+            filtrarClasesCategorias = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarClasesPensiones(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificarClasesCategorias(int indice, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
@@ -183,14 +183,14 @@ public class ControlClasesPensiones implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearClasesPensiones.contains(listClasesPensiones.get(indice))) {
-                    if (listClasesPensiones.get(indice).getCodigo() == a) {
+                if (!crearClasesCategorias.contains(listClasesCategorias.get(indice))) {
+                    if (listClasesCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listClasesPensiones.size(); j++) {
+                        for (int j = 0; j < listClasesCategorias.size(); j++) {
                             if (j != indice) {
-                                if (listClasesPensiones.get(indice).getCodigo() == listClasesPensiones.get(j).getCodigo()) {
+                                if (listClasesCategorias.get(indice).getCodigo() == listClasesCategorias.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -203,20 +203,20 @@ public class ControlClasesPensiones implements Serializable {
                         }
 
                     }
-                    if (listClasesPensiones.get(indice).getDescripcion().isEmpty()) {
+                    if (listClasesCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listClasesPensiones.get(indice).getDescripcion().equals(" ")) {
+                    if (listClasesCategorias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
-                        if (modificarClasesPensiones.isEmpty()) {
-                            modificarClasesPensiones.add(listClasesPensiones.get(indice));
-                        } else if (!modificarClasesPensiones.contains(listClasesPensiones.get(indice))) {
-                            modificarClasesPensiones.add(listClasesPensiones.get(indice));
+                        if (modificarClasesCategorias.isEmpty()) {
+                            modificarClasesCategorias.add(listClasesCategorias.get(indice));
+                        } else if (!modificarClasesCategorias.contains(listClasesCategorias.get(indice))) {
+                            modificarClasesCategorias.add(listClasesCategorias.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -232,21 +232,21 @@ public class ControlClasesPensiones implements Serializable {
                 }
             } else {
 
-                if (!crearClasesPensiones.contains(filtrarClasesPensiones.get(indice))) {
-                    if (filtrarClasesPensiones.get(indice).getCodigo() == a) {
+                if (!crearClasesCategorias.contains(filtrarClasesCategorias.get(indice))) {
+                    if (filtrarClasesCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < filtrarClasesPensiones.size(); j++) {
+                        for (int j = 0; j < filtrarClasesCategorias.size(); j++) {
                             if (j != indice) {
-                                if (filtrarClasesPensiones.get(indice).getCodigo() == listClasesPensiones.get(j).getCodigo()) {
+                                if (filtrarClasesCategorias.get(indice).getCodigo() == listClasesCategorias.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listClasesPensiones.size(); j++) {
+                        for (int j = 0; j < listClasesCategorias.size(); j++) {
                             if (j != indice) {
-                                if (filtrarClasesPensiones.get(indice).getCodigo() == listClasesPensiones.get(j).getCodigo()) {
+                                if (filtrarClasesCategorias.get(indice).getCodigo() == listClasesCategorias.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -260,20 +260,20 @@ public class ControlClasesPensiones implements Serializable {
 
                     }
 
-                    if (filtrarClasesPensiones.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarClasesCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (filtrarClasesPensiones.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarClasesCategorias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
-                        if (modificarClasesPensiones.isEmpty()) {
-                            modificarClasesPensiones.add(filtrarClasesPensiones.get(indice));
-                        } else if (!modificarClasesPensiones.contains(filtrarClasesPensiones.get(indice))) {
-                            modificarClasesPensiones.add(filtrarClasesPensiones.get(indice));
+                        if (modificarClasesCategorias.isEmpty()) {
+                            modificarClasesCategorias.add(filtrarClasesCategorias.get(indice));
+                        } else if (!modificarClasesCategorias.contains(filtrarClasesCategorias.get(indice))) {
+                            modificarClasesCategorias.add(filtrarClasesCategorias.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -289,48 +289,48 @@ public class ControlClasesPensiones implements Serializable {
                 }
 
             }
-            context.update("form:datosClasesPensiones");
+            context.update("form:datosClasesCategorias");
             context.update("form:ACEPTAR");
         }
 
     }
 
-    public void borrandoClasesPensiones() {
+    public void borrandoClasesCategorias() {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                System.out.println("Entro a borrandoClasesPensiones");
-                if (!modificarClasesPensiones.isEmpty() && modificarClasesPensiones.contains(listClasesPensiones.get(index))) {
-                    int modIndex = modificarClasesPensiones.indexOf(listClasesPensiones.get(index));
-                    modificarClasesPensiones.remove(modIndex);
-                    borrarClasesPensiones.add(listClasesPensiones.get(index));
-                } else if (!crearClasesPensiones.isEmpty() && crearClasesPensiones.contains(listClasesPensiones.get(index))) {
-                    int crearIndex = crearClasesPensiones.indexOf(listClasesPensiones.get(index));
-                    crearClasesPensiones.remove(crearIndex);
+                System.out.println("Entro a borrandoClasesCategorias");
+                if (!modificarClasesCategorias.isEmpty() && modificarClasesCategorias.contains(listClasesCategorias.get(index))) {
+                    int modIndex = modificarClasesCategorias.indexOf(listClasesCategorias.get(index));
+                    modificarClasesCategorias.remove(modIndex);
+                    borrarClasesCategorias.add(listClasesCategorias.get(index));
+                } else if (!crearClasesCategorias.isEmpty() && crearClasesCategorias.contains(listClasesCategorias.get(index))) {
+                    int crearIndex = crearClasesCategorias.indexOf(listClasesCategorias.get(index));
+                    crearClasesCategorias.remove(crearIndex);
                 } else {
-                    borrarClasesPensiones.add(listClasesPensiones.get(index));
+                    borrarClasesCategorias.add(listClasesCategorias.get(index));
                 }
-                listClasesPensiones.remove(index);
+                listClasesCategorias.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoClasesPensiones ");
-                if (!modificarClasesPensiones.isEmpty() && modificarClasesPensiones.contains(filtrarClasesPensiones.get(index))) {
-                    int modIndex = modificarClasesPensiones.indexOf(filtrarClasesPensiones.get(index));
-                    modificarClasesPensiones.remove(modIndex);
-                    borrarClasesPensiones.add(filtrarClasesPensiones.get(index));
-                } else if (!crearClasesPensiones.isEmpty() && crearClasesPensiones.contains(filtrarClasesPensiones.get(index))) {
-                    int crearIndex = crearClasesPensiones.indexOf(filtrarClasesPensiones.get(index));
-                    crearClasesPensiones.remove(crearIndex);
+                System.out.println("borrandoClasesCategorias ");
+                if (!modificarClasesCategorias.isEmpty() && modificarClasesCategorias.contains(filtrarClasesCategorias.get(index))) {
+                    int modIndex = modificarClasesCategorias.indexOf(filtrarClasesCategorias.get(index));
+                    modificarClasesCategorias.remove(modIndex);
+                    borrarClasesCategorias.add(filtrarClasesCategorias.get(index));
+                } else if (!crearClasesCategorias.isEmpty() && crearClasesCategorias.contains(filtrarClasesCategorias.get(index))) {
+                    int crearIndex = crearClasesCategorias.indexOf(filtrarClasesCategorias.get(index));
+                    crearClasesCategorias.remove(crearIndex);
                 } else {
-                    borrarClasesPensiones.add(filtrarClasesPensiones.get(index));
+                    borrarClasesCategorias.add(filtrarClasesCategorias.get(index));
                 }
-                int VCIndex = listClasesPensiones.indexOf(filtrarClasesPensiones.get(index));
-                listClasesPensiones.remove(VCIndex);
-                filtrarClasesPensiones.remove(index);
+                int VCIndex = listClasesCategorias.indexOf(filtrarClasesCategorias.get(index));
+                listClasesCategorias.remove(VCIndex);
+                filtrarClasesCategorias.remove(index);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosClasesPensiones");
+            context.update("form:datosClasesCategorias");
             index = -1;
             secRegistro = null;
 
@@ -344,18 +344,18 @@ public class ControlClasesPensiones implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger contarRetiradosClasePension;
+        BigInteger contarCategoriaClaseCategoria;
 
         try {
-            System.err.println("Control Secuencia de ControlClasesPensiones ");
+            System.err.println("Control Secuencia de ControlClasesCategorias ");
             if (tipoLista == 0) {
-                contarRetiradosClasePension = administrarClasesPensiones.contarRetiradosClasePension(listClasesPensiones.get(index).getSecuencia());
+                contarCategoriaClaseCategoria = administrarClasesCategorias.contarCategoriaClaseCategoria(listClasesCategorias.get(index).getSecuencia());
             } else {
-                contarRetiradosClasePension = administrarClasesPensiones.contarRetiradosClasePension(filtrarClasesPensiones.get(index).getSecuencia());
+                contarCategoriaClaseCategoria = administrarClasesCategorias.contarCategoriaClaseCategoria(filtrarClasesCategorias.get(index).getSecuencia());
             }
-            if (contarRetiradosClasePension.equals(new BigInteger("0"))) {
+            if (contarCategoriaClaseCategoria.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
-                borrandoClasesPensiones();
+                borrandoClasesCategorias();
             } else {
                 System.out.println("Borrado>0");
 
@@ -363,17 +363,17 @@ public class ControlClasesPensiones implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                contarRetiradosClasePension = new BigInteger("-1");
+                contarCategoriaClaseCategoria = new BigInteger("-1");
 
             }
         } catch (Exception e) {
-            System.err.println("ERROR ControlClasesPensiones verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlClasesCategorias verificarBorrado ERROR " + e);
         }
     }
 
     public void revisarDialogoGuardar() {
 
-        if (!borrarClasesPensiones.isEmpty() || !crearClasesPensiones.isEmpty() || !modificarClasesPensiones.isEmpty()) {
+        if (!borrarClasesCategorias.isEmpty() || !crearClasesCategorias.isEmpty() || !modificarClasesCategorias.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
@@ -381,31 +381,31 @@ public class ControlClasesPensiones implements Serializable {
 
     }
 
-    public void guardarClasesPensiones() {
+    public void guardarClasesCategorias() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando guardarClasesPensiones");
-            if (!borrarClasesPensiones.isEmpty()) {
-                administrarClasesPensiones.borrarClasesPensiones(borrarClasesPensiones);
+            System.out.println("Realizando guardarClasesCategorias");
+            if (!borrarClasesCategorias.isEmpty()) {
+                administrarClasesCategorias.borrarClasesCategorias(borrarClasesCategorias);
                 //mostrarBorrados
-                registrosBorrados = borrarClasesPensiones.size();
+                registrosBorrados = borrarClasesCategorias.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-                borrarClasesPensiones.clear();
+                borrarClasesCategorias.clear();
             }
-            if (!modificarClasesPensiones.isEmpty()) {
-                administrarClasesPensiones.modificarClasesPensiones(modificarClasesPensiones);
-                modificarClasesPensiones.clear();
+            if (!modificarClasesCategorias.isEmpty()) {
+                administrarClasesCategorias.modificarClasesCategorias(modificarClasesCategorias);
+                modificarClasesCategorias.clear();
             }
-            if (!crearClasesPensiones.isEmpty()) {
-                administrarClasesPensiones.crearClasesPensiones(crearClasesPensiones);
-                crearClasesPensiones.clear();
+            if (!crearClasesCategorias.isEmpty()) {
+                administrarClasesCategorias.crearClasesCategorias(crearClasesCategorias);
+                crearClasesCategorias.clear();
             }
             System.out.println("Se guardaron los datos con exito");
-            listClasesPensiones = null;
-                context.execute("mostrarGuardar.show()");
-            context.update("form:datosClasesPensiones");
+            listClasesCategorias = null;
+            context.execute("mostrarGuardar.show()");
+            context.update("form:datosClasesCategorias");
             k = 0;
             guardado = true;
         }
@@ -417,10 +417,10 @@ public class ControlClasesPensiones implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarClasesPensiones = listClasesPensiones.get(index);
+                editarClasesCategorias = listClasesCategorias.get(index);
             }
             if (tipoLista == 1) {
-                editarClasesPensiones = filtrarClasesPensiones.get(index);
+                editarClasesCategorias = filtrarClasesCategorias.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -440,8 +440,8 @@ public class ControlClasesPensiones implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevoClasesPensiones() {
-        System.out.println("agregarNuevoClasesPensiones");
+    public void agregarNuevoClasesCategorias() {
+        System.out.println("agregarNuevoClasesCategorias");
         int contador = 0;
         int duplicados = 0;
 
@@ -449,14 +449,14 @@ public class ControlClasesPensiones implements Serializable {
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoClasesPensiones.getCodigo() == a) {
+        if (nuevoClasesCategorias.getCodigo() == a) {
             mensajeValidacion = " *Debe Tener Un Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoClasesPensiones.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoClasesCategorias.getCodigo());
 
-            for (int x = 0; x < listClasesPensiones.size(); x++) {
-                if (listClasesPensiones.get(x).getCodigo() == nuevoClasesPensiones.getCodigo()) {
+            for (int x = 0; x < listClasesCategorias.size(); x++) {
+                if (listClasesCategorias.get(x).getCodigo() == nuevoClasesCategorias.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -470,7 +470,7 @@ public class ControlClasesPensiones implements Serializable {
                 contador++;
             }
         }
-        if (nuevoClasesPensiones.getDescripcion().equals(" ")) {
+        if (nuevoClasesCategorias.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -486,32 +486,32 @@ public class ControlClasesPensiones implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosClasesPensiones");
+                RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
                 bandera = 0;
-                filtrarClasesPensiones = null;
+                filtrarClasesCategorias = null;
                 tipoLista = 0;
             }
             System.out.println("Despues de la bandera");
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoClasesPensiones.setSecuencia(l);
+            nuevoClasesCategorias.setSecuencia(l);
 
-            crearClasesPensiones.add(nuevoClasesPensiones);
+            crearClasesCategorias.add(nuevoClasesCategorias);
 
-            listClasesPensiones.add(nuevoClasesPensiones);
-            nuevoClasesPensiones = new ClasesPensiones();
-            context.update("form:datosClasesPensiones");
+            listClasesCategorias.add(nuevoClasesCategorias);
+            nuevoClasesCategorias = new ClasesCategorias();
+            context.update("form:datosClasesCategorias");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
-            context.execute("nuevoRegistroClasesPensiones.hide()");
+            context.execute("nuevoRegistroClasesCategorias.hide()");
             index = -1;
             secRegistro = null;
 
@@ -522,36 +522,36 @@ public class ControlClasesPensiones implements Serializable {
         }
     }
 
-    public void limpiarNuevoClasesPensiones() {
-        System.out.println("limpiarNuevoClasesPensiones");
-        nuevoClasesPensiones = new ClasesPensiones();
+    public void limpiarNuevoClasesCategorias() {
+        System.out.println("limpiarNuevoClasesCategorias");
+        nuevoClasesCategorias = new ClasesCategorias();
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoClasesPensiones() {
-        System.out.println("duplicandoClasesPensiones");
+    public void duplicandoClasesCategorias() {
+        System.out.println("duplicandoClasesCategorias");
         if (index >= 0) {
-            duplicarClasesPensiones = new ClasesPensiones();
+            duplicarClasesCategorias = new ClasesCategorias();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarClasesPensiones.setSecuencia(l);
-                duplicarClasesPensiones.setCodigo(listClasesPensiones.get(index).getCodigo());
-                duplicarClasesPensiones.setDescripcion(listClasesPensiones.get(index).getDescripcion());
+                duplicarClasesCategorias.setSecuencia(l);
+                duplicarClasesCategorias.setCodigo(listClasesCategorias.get(index).getCodigo());
+                duplicarClasesCategorias.setDescripcion(listClasesCategorias.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarClasesPensiones.setSecuencia(l);
-                duplicarClasesPensiones.setCodigo(filtrarClasesPensiones.get(index).getCodigo());
-                duplicarClasesPensiones.setDescripcion(filtrarClasesPensiones.get(index).getDescripcion());
+                duplicarClasesCategorias.setSecuencia(l);
+                duplicarClasesCategorias.setCodigo(filtrarClasesCategorias.get(index).getCodigo());
+                duplicarClasesCategorias.setDescripcion(filtrarClasesCategorias.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
-            context.execute("duplicarRegistroClasesPensiones.show()");
+            context.execute("duplicarRegistroClasesCategorias.show()");
             index = -1;
             secRegistro = null;
         }
@@ -565,15 +565,15 @@ public class ControlClasesPensiones implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarClasesPensiones.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarClasesPensiones.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarClasesCategorias.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarClasesCategorias.getDescripcion());
 
-        if (duplicarClasesPensiones.getCodigo() == a) {
+        if (duplicarClasesCategorias.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            for (int x = 0; x < listClasesPensiones.size(); x++) {
-                if (listClasesPensiones.get(x).getCodigo() == duplicarClasesPensiones.getCodigo()) {
+            for (int x = 0; x < listClasesCategorias.size(); x++) {
+                if (listClasesCategorias.get(x).getCodigo() == duplicarClasesCategorias.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -586,7 +586,7 @@ public class ControlClasesPensiones implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarClasesPensiones.getDescripcion().equals(" ")) {
+        if (duplicarClasesCategorias.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -597,13 +597,13 @@ public class ControlClasesPensiones implements Serializable {
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarClasesPensiones.getSecuencia() + "  " + duplicarClasesPensiones.getCodigo());
-            if (crearClasesPensiones.contains(duplicarClasesPensiones)) {
+            System.out.println("Datos Duplicando: " + duplicarClasesCategorias.getSecuencia() + "  " + duplicarClasesCategorias.getCodigo());
+            if (crearClasesCategorias.contains(duplicarClasesCategorias)) {
                 System.out.println("Ya lo contengo.");
             }
-            listClasesPensiones.add(duplicarClasesPensiones);
-            crearClasesPensiones.add(duplicarClasesPensiones);
-            context.update("form:datosClasesPensiones");
+            listClasesCategorias.add(duplicarClasesCategorias);
+            crearClasesCategorias.add(duplicarClasesCategorias);
+            context.update("form:datosClasesCategorias");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -612,17 +612,17 @@ public class ControlClasesPensiones implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosClasesPensiones");
+                RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
                 bandera = 0;
-                filtrarClasesPensiones = null;
+                filtrarClasesCategorias = null;
                 tipoLista = 0;
             }
-            duplicarClasesPensiones = new ClasesPensiones();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroClasesPensiones.hide()");
+            duplicarClasesCategorias = new ClasesCategorias();
+            RequestContext.getCurrentInstance().execute("duplicarRegistroClasesCategorias.hide()");
 
         } else {
             contador = 0;
@@ -631,25 +631,25 @@ public class ControlClasesPensiones implements Serializable {
         }
     }
 
-    public void limpiarDuplicarClasesPensiones() {
-        duplicarClasesPensiones = new ClasesPensiones();
+    public void limpiarDuplicarClasesCategorias() {
+        duplicarClasesCategorias = new ClasesCategorias();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosClasesPensionesExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosClasesCategoriasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "MOTIVOSRETIROS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "CLASESCATEGORIAS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosClasesPensionesExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosClasesCategoriasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "MOTIVOSRETIROS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "CLASESCATEGORIAS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -658,10 +658,10 @@ public class ControlClasesPensiones implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listClasesPensiones.isEmpty()) {
+        if (!listClasesCategorias.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "MOTIVOSRETIROS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "CLASESCATEGORIAS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -678,7 +678,7 @@ public class ControlClasesPensiones implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("MOTIVOSRETIROS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("CLASESCATEGORIAS")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
@@ -689,47 +689,47 @@ public class ControlClasesPensiones implements Serializable {
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
-    public List<ClasesPensiones> getListClasesPensiones() {
-        if (listClasesPensiones == null) {
-            listClasesPensiones = administrarClasesPensiones.consultarClasesPensiones();
+    public List<ClasesCategorias> getListClasesCategorias() {
+        if (listClasesCategorias == null) {
+            listClasesCategorias = administrarClasesCategorias.consultarClasesCategorias();
         }
-        return listClasesPensiones;
+        return listClasesCategorias;
     }
 
-    public void setListClasesPensiones(List<ClasesPensiones> listClasesPensiones) {
-        this.listClasesPensiones = listClasesPensiones;
+    public void setListClasesCategorias(List<ClasesCategorias> listClasesCategorias) {
+        this.listClasesCategorias = listClasesCategorias;
     }
 
-    public List<ClasesPensiones> getFiltrarClasesPensiones() {
-        return filtrarClasesPensiones;
+    public List<ClasesCategorias> getFiltrarClasesCategorias() {
+        return filtrarClasesCategorias;
     }
 
-    public void setFiltrarClasesPensiones(List<ClasesPensiones> filtrarClasesPensiones) {
-        this.filtrarClasesPensiones = filtrarClasesPensiones;
+    public void setFiltrarClasesCategorias(List<ClasesCategorias> filtrarClasesCategorias) {
+        this.filtrarClasesCategorias = filtrarClasesCategorias;
     }
 
-    public ClasesPensiones getNuevoClasesPensiones() {
-        return nuevoClasesPensiones;
+    public ClasesCategorias getNuevoClasesCategorias() {
+        return nuevoClasesCategorias;
     }
 
-    public void setNuevoClasesPensiones(ClasesPensiones nuevoClasesPensiones) {
-        this.nuevoClasesPensiones = nuevoClasesPensiones;
+    public void setNuevoClasesCategorias(ClasesCategorias nuevoClasesCategorias) {
+        this.nuevoClasesCategorias = nuevoClasesCategorias;
     }
 
-    public ClasesPensiones getDuplicarClasesPensiones() {
-        return duplicarClasesPensiones;
+    public ClasesCategorias getDuplicarClasesCategorias() {
+        return duplicarClasesCategorias;
     }
 
-    public void setDuplicarClasesPensiones(ClasesPensiones duplicarClasesPensiones) {
-        this.duplicarClasesPensiones = duplicarClasesPensiones;
+    public void setDuplicarClasesCategorias(ClasesCategorias duplicarClasesCategorias) {
+        this.duplicarClasesCategorias = duplicarClasesCategorias;
     }
 
-    public ClasesPensiones getEditarClasesPensiones() {
-        return editarClasesPensiones;
+    public ClasesCategorias getEditarClasesCategorias() {
+        return editarClasesCategorias;
     }
 
-    public void setEditarClasesPensiones(ClasesPensiones editarClasesPensiones) {
-        this.editarClasesPensiones = editarClasesPensiones;
+    public void setEditarClasesCategorias(ClasesCategorias editarClasesCategorias) {
+        this.editarClasesCategorias = editarClasesCategorias;
     }
 
     public BigInteger getSecRegistro() {

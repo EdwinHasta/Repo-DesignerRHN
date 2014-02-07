@@ -973,8 +973,6 @@ public class ControlPersonaEducacion implements Serializable {
         nuevaVigenciaFormal.setAdiestramientof(new AdiestramientosF());
         index = -1;
         secRegistro = null;
-
-
     }
 
     public void limpiarNuevaVigenciaNoFormal() {
@@ -1181,10 +1179,6 @@ public class ControlPersonaEducacion implements Serializable {
             pasa++;
         }
         
-            
-
-
-
         if (pasa == 0) {
             if (bandera == 1) {
 
@@ -2084,7 +2078,7 @@ public class ControlPersonaEducacion implements Serializable {
             if (tipoListaNF == 0) {
                 secRegistro = listaVigenciasNoFormales.get(indexNF).getSecuencia();
                 if (cualCelda == 1) {
-                    Curso = listaVigenciasNoFormales.get(indexNF).getCurso().getNombre();
+                    TipoEducacion = listaVigenciasNoFormales.get(indexNF).getCurso().getNombre();
                 } else if (cualCelda == 3) {
                     Institucion = listaVigenciasNoFormales.get(indexNF).getInstitucion().getDescripcion();
                 } else if (cualCelda == 4) {

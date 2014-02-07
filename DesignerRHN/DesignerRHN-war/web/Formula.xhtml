@@ -18,7 +18,8 @@
                         <fieldset style="position: absolute; left: 5px; top: 70px; font-size: 11px; width: 835px; height: 245px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['formulas']}</strong></legend>
 
-                            <p:dataTable id="datosFormulas" var="formula" rowKey="#{formula.secuencia}" rowIndexVar="indice" style="font-size: 11px; width: 817px; position: relative"                           
+                            <p:dataTable id="datosFormulas" var="formula" rowKey="#{formula.secuencia}" 
+                                         rowIndexVar="indice" style="font-size: 11px; width: 817px; position: relative"                           
                                          value="#{controlFormula.listaFormulas}" scrollable="true" scrollWidth="832" scrollHeight="#{controlFormula.altoTabla}" liveScroll="true" scrollRows="20"
                                          filteredValue="#{controlFormula.filtradoListaFormulas}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell"  >

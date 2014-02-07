@@ -93,7 +93,7 @@
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  oncomplete="nuevoRegistroSectoresEvaluaciones.show()" update=":formularioDialogos:nuevaTipoempresa" process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Sector Evaluacion" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlSectoresEvaluaciones.verificarBorrado()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlSectoresEvaluaciones.borrandoSectoresEvaluaciones()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Sector Evaluacion" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSectoresEvaluaciones.duplicandoSectoresEvaluaciones()}" process="@this"/>  

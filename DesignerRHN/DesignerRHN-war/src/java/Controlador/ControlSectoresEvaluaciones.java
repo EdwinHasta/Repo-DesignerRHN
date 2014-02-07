@@ -68,7 +68,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         nuevoSectoresEvaluaciones = new SectoresEvaluaciones();
         duplicarSectoresEvaluaciones = new SectoresEvaluaciones();
         guardado = true;
-        tamano = 300;
+        tamano = 307;
     }
 
     public void eventoFiltrar() {
@@ -148,7 +148,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 280;
+            tamano = 285;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("width: 220px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
@@ -158,7 +158,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 300;
+            tamano = 307;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
@@ -175,7 +175,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         index = indice;
 
         int contador = 0;
-        boolean banderita = false;
+        boolean banderita;
         Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -414,8 +414,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         System.out.println("agregarNuevoSectoresEvaluaciones");
         int contador = 0;
         int duplicados = 0;
-
-        Integer a = 0;
+        Integer a;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
@@ -440,7 +439,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
                 contador++;
             }
         }
-        if (nuevoSectoresEvaluaciones.getDescripcion()==null) {
+        if (nuevoSectoresEvaluaciones.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -488,7 +487,6 @@ public class ControlSectoresEvaluaciones implements Serializable {
         } else {
             context.update("form:validacionNuevaCentroCosto");
             context.execute("validacionNuevaCentroCosto.show()");
-            contador = 0;
         }
     }
 
@@ -533,7 +531,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Integer a = 0;
+        Integer a;
         a = null;
         System.err.println("ConfirmarDuplicar codigo " + duplicarSectoresEvaluaciones.getCodigo());
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarSectoresEvaluaciones.getDescripcion());
@@ -553,10 +551,9 @@ public class ControlSectoresEvaluaciones implements Serializable {
             } else {
                 System.out.println("bandera");
                 contador++;
-                duplicados = 0;
             }
         }
-        if (duplicarSectoresEvaluaciones.getDescripcion()==null) {
+        if (duplicarSectoresEvaluaciones.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -595,7 +592,6 @@ public class ControlSectoresEvaluaciones implements Serializable {
             RequestContext.getCurrentInstance().execute("duplicarRegistroSectoresEvaluaciones.hide()");
 
         } else {
-            contador = 0;
             context.update("form:validacionDuplicarVigencia");
             context.execute("validacionDuplicarVigencia.show()");
         }
