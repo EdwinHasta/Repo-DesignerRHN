@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -34,8 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposEntidades.findAll", query = "SELECT t FROM TiposEntidades t")})
 public class TiposEntidades implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoentidad")
-    private Collection<TEFormulasConceptos> tEFormulasConceptosCollection;
     @OneToMany(mappedBy = "tipoentidad")
     private Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection;
     @OneToMany(mappedBy = "tipoentidad")
@@ -160,12 +157,12 @@ public class TiposEntidades implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TEFormulasConceptos> getTEFormulasConceptosCollection() {
-        return tEFormulasConceptosCollection;
+    public Collection<DetallesTiposCotizantes> getDetallesTiposCotizantesCollection() {
+        return detallesTiposCotizantesCollection;
     }
 
-    public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
-        this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
+    public void setDetallesTiposCotizantesCollection(Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection) {
+        this.detallesTiposCotizantesCollection = detallesTiposCotizantesCollection;
     }
     
 }
