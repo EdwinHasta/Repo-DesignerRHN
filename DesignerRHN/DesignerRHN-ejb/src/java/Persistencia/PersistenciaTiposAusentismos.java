@@ -5,6 +5,7 @@ package Persistencia;
 
 import Entidades.Tiposausentismos;
 import InterfacePersistencia.PersistenciaTiposAusentismosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -46,7 +47,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     }
 
     @Override
-    public List<Tiposausentismos> buscarTiposAusentismos() {
+    public List<Tiposausentismos> consultarTiposAusentismos() {
         try {
             Query query = em.createQuery("SELECT ta FROM Tiposausentismos ta ORDER BY ta.codigo");
             List<Tiposausentismos> todosTiposAusentismos = query.getResultList();
@@ -56,4 +57,46 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
             return null;
         }
     }
+    
+     public Tiposausentismos consultarTipoAusentismo(BigInteger secClaseCategoria) {
+        try {
+            Query query = em.createNamedQuery("SELECT cc FROM Tiposausentismos cc WHERE cc.secuencia=:secuencia");
+            query.setParameter("secuencia", secClaseCategoria);
+            Tiposausentismos clasesCategorias = (Tiposausentismos) query.getSingleResult();
+            return clasesCategorias;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+     
+     public BigInteger contarClasesAusentimosTipoAusentismo(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM clasesausentismos WHERE tipo = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaTiposAusentismos contarClasesAusentimosTipoAusentismo Retorno " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaTiposAusentismos contarClasesAusentimosTipoAusentismo ERROR : " + e);
+            return retorno;
+        }
+    }
+     public BigInteger contarSOAusentimosTipoAusentismo(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM soausentismos WHERE tipo = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaTiposAusentismos contarSOAusentimosTipoAusentismo Retorno " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaTiposAusentismos contarSOAusentimosTipoAusentismo ERROR : " + e);
+            return retorno;
+        }
+    }
+
+  
 }

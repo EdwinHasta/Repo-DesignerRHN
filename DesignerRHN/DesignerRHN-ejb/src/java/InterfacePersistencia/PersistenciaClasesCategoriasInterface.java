@@ -23,38 +23,48 @@ public interface PersistenciaClasesCategoriasInterface {
     public void crear(ClasesCategorias clasesCategorias);
 
     /**
-     * Método encargado de modificar una ClaseCategoria de la base de datos. Este
-     * método recibe la información del parámetro para hacer un 'merge' con la
-     * información de la base de datos.
+     * Método encargado de modificar una ClaseCategoria de la base de datos.
+     * Este método recibe la información del parámetro para hacer un 'merge' con
+     * la información de la base de datos.
      *
      * @param clasesCategorias Categoria con los cambios que se van a realizar.
      */
     public void editar(ClasesCategorias clasesCategorias);
 
     /**
-     * Método encargado de eliminar de la base de datos la ClaseCategoria que entra
-     * por parámetro.
+     * Método encargado de eliminar de la base de datos la ClaseCategoria que
+     * entra por parámetro.
      *
      * @param clasesCategorias Categoria que se quiere eliminar.
      */
     public void borrar(ClasesCategorias clasesCategorias);
 
     /**
-     * Método encargado de buscar todos las ClasesCategorias existentes en la base de
-     * datos.
+     * Método encargado de buscar todos las ClasesCategorias existentes en la
+     * base de datos.
      *
      * @return Retorna una lista de ClasesCategorias
      */
-    public List<ClasesCategorias> buscarClasesCategorias();
+    public List<ClasesCategorias> consultarClasesCategorias();
 
     /**
-     * Método encargado de buscar una ClaseCategoria con la secClaseCategoria dada por
-     * parámetro.
+     * Método encargado de buscar una ClaseCategoria con la secClaseCategoria
+     * dada por parámetro.
      *
-     * @param secClaseCategoria secCategoria de la ClaseCategoria que se quiere encontrar.
-     * @return Retorna el secClaseCategoria identificada con la secCategoria dada por
-     * parámetro.
+     * @param secClaseCategoria secCategoria de la ClaseCategoria que se quiere
+     * encontrar.
+     * @return Retorna el secClaseCategoria identificada con la secCategoria
+     * dada por parámetro.
      */
-    public ClasesCategorias buscarClaseCategoriaSecuencia(BigInteger secClaseCategoria);
+    public ClasesCategorias consultarClaseCategoria(BigInteger secClaseCategoria);
+
+    /**
+     * Metodo encargado de contar cuantas Categorias estar relacionadas con la
+     * secClaseCategoria de la ClaseCategoria
+     *
+     * @param secClaseCategoria Secuencia de la ClaseCategoria
+     * @return el numero de relaciones que tiene esa secuencia
+     */
+    public BigInteger contarCategoriasClaseCategoria(BigInteger secClaseCategoria);
 
 }

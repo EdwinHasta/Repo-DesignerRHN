@@ -41,8 +41,6 @@ public class Unidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 4)

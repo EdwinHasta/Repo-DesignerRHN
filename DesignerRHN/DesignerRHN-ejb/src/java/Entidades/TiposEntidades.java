@@ -37,6 +37,8 @@ public class TiposEntidades implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoentidad")
     private Collection<TEFormulasConceptos> tEFormulasConceptosCollection;
     @OneToMany(mappedBy = "tipoentidad")
+    private Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection;
+    @OneToMany(mappedBy = "tipoentidad")
     private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection;
     @OneToMany(mappedBy = "tipoentidad")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;

@@ -35,7 +35,7 @@ public class AdministrarPeriodicidades implements AdministrarPeriodicidadesInter
                 persistenciaPeriodicidades.editar(listaPeriodicidades.get(i));
             }
         } catch (Exception e) {
-            System.err.println("SE JODIDO ESTO ADMINISTRARPERIODICIDADES ERROR : " + e);
+            System.err.println("SE JODIDO ESTO ADMINISTRARPERIODICIDADES MODIFICARPERIODICIDADES ERROR : " + e);
         }
     }
 
@@ -50,7 +50,7 @@ public class AdministrarPeriodicidades implements AdministrarPeriodicidadesInter
     @Override
     public void crearPeriodicidades(List<Periodicidades> listaPeriodicidades) {
         for (int i = 0; i < listaPeriodicidades.size(); i++) {
-            System.out.println("Administrar Borrando...");
+            System.out.println("Administrar Creando...");
             persistenciaPeriodicidades.crear(listaPeriodicidades.get(i));
         }
     }
@@ -152,11 +152,11 @@ public class AdministrarPeriodicidades implements AdministrarPeriodicidadesInter
         }
     }
 
-    public BigInteger contarNovedadPeriodicidad(BigInteger secuenciaPeriodicidades) {
+    public BigInteger contarNovedadesPeriodicidad(BigInteger secuenciaPeriodicidades) {
         BigInteger contarNovedadPeriodicidad;
         try {
             System.out.println("Secuencia Periodicidades : " + secuenciaPeriodicidades);
-            return contarNovedadPeriodicidad = persistenciaPeriodicidades.contarNovedadPeriodicidad(secuenciaPeriodicidades);
+            return contarNovedadPeriodicidad = persistenciaPeriodicidades.contarNovedadesPeriodicidad(secuenciaPeriodicidades);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarPeriodicidades contarNovedadPeriodicidad ERROR :" + e);
             return null;

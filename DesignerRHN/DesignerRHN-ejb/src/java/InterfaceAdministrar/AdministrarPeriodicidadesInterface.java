@@ -133,7 +133,7 @@ public interface AdministrarPeriodicidadesInterface {
      * @return Retorna un número indicando la cantidad de Novedad cuya secuencia
      * coincide con el valor del parámetro.
      */
-    public BigInteger contarNovedadPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarNovedadesPeriodicidad(BigInteger secPeriodicidades);
 
     /**
      * Método encargado de contar la cantidad de ParametrosCambiosMasivos

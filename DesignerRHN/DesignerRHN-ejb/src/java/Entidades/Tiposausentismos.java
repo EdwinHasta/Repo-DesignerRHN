@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -37,12 +37,9 @@ public class Tiposausentismos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
-    @Size(max = 50)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipo")
@@ -53,28 +50,28 @@ public class Tiposausentismos implements Serializable {
     public Tiposausentismos() {
     }
 
-    public Tiposausentismos(BigDecimal secuencia) {
+    public Tiposausentismos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Tiposausentismos(BigDecimal secuencia, short codigo) {
+    public Tiposausentismos(BigInteger secuencia, Integer codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -86,7 +83,7 @@ public class Tiposausentismos implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @XmlTransient
