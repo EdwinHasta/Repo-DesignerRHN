@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposEntidades.findAll", query = "SELECT t FROM TiposEntidades t")})
 public class TiposEntidades implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoentidad")
+    private Collection<TEFormulasConceptos> tEFormulasConceptosCollection;
     @OneToMany(mappedBy = "tipoentidad")
     private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection;
     @OneToMany(mappedBy = "tipoentidad")
@@ -152,6 +155,15 @@ public class TiposEntidades implements Serializable {
 
     public void setIbcsAutoliquidacionesCollection(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection) {
         this.ibcsAutoliquidacionesCollection = ibcsAutoliquidacionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<TEFormulasConceptos> getTEFormulasConceptosCollection() {
+        return tEFormulasConceptosCollection;
+    }
+
+    public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
+        this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
     }
     
 }

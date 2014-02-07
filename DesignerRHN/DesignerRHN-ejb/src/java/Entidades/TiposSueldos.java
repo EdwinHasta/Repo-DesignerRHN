@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,16 +34,21 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposSueldos.findAll", query = "SELECT t FROM TiposSueldos t")})
 public class TiposSueldos implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposueldo")
+    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposueldo")
+    private Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private BigInteger secuencia;
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "CODIGO")
@@ -59,24 +66,30 @@ public class TiposSueldos implements Serializable {
     private Collection<VigenciasSueldos> vigenciassueldosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposueldo")
     private Collection<Categorias> categoriasCollection;
+    @Transient
+    private String strCapacidad;
+    @Transient
+    private String strBasico;
+    @Transient
+    private String strAdicional;
 
     public TiposSueldos() {
     }
 
-    public TiposSueldos(BigDecimal secuencia) {
+    public TiposSueldos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposSueldos(BigDecimal secuencia, String descripcion) {
+    public TiposSueldos(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -100,6 +113,9 @@ public class TiposSueldos implements Serializable {
     }
 
     public String getCapacidadendeudamiento() {
+        if (capacidadendeudamiento == null) {
+            capacidadendeudamiento = "N";
+        }
         return capacidadendeudamiento;
     }
 
@@ -108,6 +124,9 @@ public class TiposSueldos implements Serializable {
     }
 
     public String getBasico() {
+        if (basico == null) {
+            basico = "N";
+        }
         return basico;
     }
 
@@ -116,11 +135,56 @@ public class TiposSueldos implements Serializable {
     }
 
     public String getAdicionalbasico() {
+        if (adicionalbasico == null) {
+            adicionalbasico = "N";
+        }
         return adicionalbasico;
     }
 
     public void setAdicionalbasico(String adicionalbasico) {
         this.adicionalbasico = adicionalbasico;
+    }
+
+    public String getStrCapacidad() {
+        getCapacidadendeudamiento();
+        if (capacidadendeudamiento.equalsIgnoreCase("N")) {
+            strCapacidad = "SI";
+        } else {
+            strCapacidad = "NO";
+        }
+        return strCapacidad;
+    }
+
+    public void setStrCapacidad(String strCapacidad) {
+        this.strCapacidad = strCapacidad;
+    }
+
+    public String getStrBasico() {
+        getBasico();
+        if (basico.equalsIgnoreCase("N")) {
+            strBasico = "SI";
+        } else {
+            strBasico = "NO";
+        }
+        return strBasico;
+    }
+
+    public void setStrBasico(String strBasico) {
+        this.strBasico = strBasico;
+    }
+
+    public String getStrAdicional() {
+        getAdicionalbasico();
+        if (adicionalbasico.equalsIgnoreCase("N")) {
+            strAdicional = "SI";
+        } else {
+            strAdicional = "NO";
+        }
+        return strAdicional;
+    }
+
+    public void setStrAdicional(String strAdicional) {
+        this.strAdicional = strAdicional;
     }
 
     @XmlTransient
@@ -164,6 +228,24 @@ public class TiposSueldos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Tipossueldos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
+        return tSFormulasConceptosCollection;
+    }
+
+    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
+        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TSGruposTiposEntidades> getTSGruposTiposEntidadesCollection() {
+        return tSGruposTiposEntidadesCollection;
+    }
+
+    public void setTSGruposTiposEntidadesCollection(Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection) {
+        this.tSGruposTiposEntidadesCollection = tSGruposTiposEntidadesCollection;
     }
 
 }

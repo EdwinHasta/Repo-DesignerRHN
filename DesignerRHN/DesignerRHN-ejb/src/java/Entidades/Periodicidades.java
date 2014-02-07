@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Periodicidades implements Serializable {
 
     @Basic(optional = false)
+    @NotNull()
     @Column(name = "CODIGO")
     private Integer codigo;
     @OneToMany(mappedBy = "periodicidadcorte")

@@ -34,6 +34,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Formulas.findAll", query = "SELECT f FROM Formulas f")})
 public class Formulas implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
+    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
+    private Collection<TEFormulasConceptos> tEFormulasConceptosCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
     private List<FormulasProcesos> formulasProcesosList;
@@ -331,5 +335,23 @@ public class Formulas implements Serializable {
 
     public void setFormulasProcesosList(List<FormulasProcesos> formulasProcesosList) {
         this.formulasProcesosList = formulasProcesosList;
+    }
+
+    @XmlTransient
+    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
+        return tSFormulasConceptosCollection;
+    }
+
+    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
+        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TEFormulasConceptos> getTEFormulasConceptosCollection() {
+        return tEFormulasConceptosCollection;
+    }
+
+    public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
+        this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
     }
 }

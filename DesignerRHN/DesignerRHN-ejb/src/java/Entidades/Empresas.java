@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
+    @OneToMany(mappedBy = "empresa")
+    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
+    @OneToMany(mappedBy = "empresa")
+    private Collection<TEFormulasConceptos> tEFormulasConceptosCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private Collection<ConceptosJuridicos> conceptosJuridicosCollection;
@@ -1193,6 +1197,24 @@ public class Empresas implements Serializable {
 
     public void setConceptosJuridicosCollection(Collection<ConceptosJuridicos> conceptosJuridicosCollection) {
         this.conceptosJuridicosCollection = conceptosJuridicosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
+        return tSFormulasConceptosCollection;
+    }
+
+    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
+        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TEFormulasConceptos> getTEFormulasConceptosCollection() {
+        return tEFormulasConceptosCollection;
+    }
+
+    public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
+        this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
     }
 
 }
