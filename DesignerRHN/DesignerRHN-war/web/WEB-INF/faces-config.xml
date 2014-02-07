@@ -355,6 +355,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroTipoSueldo</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/escalafon.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>categoriasEsca</from-outcome>
@@ -1870,6 +1887,22 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplVigSueldo</from-outcome>
+            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipossueldos</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
     
     
