@@ -261,9 +261,9 @@ public class AdministrarTiposSueldos implements AdministrarTiposSueldosInterface
     public void crearTEFormulasConceptos(List<TEFormulasConceptos> listaTE) {
         try {
             for (int i = 0; i < listaTE.size(); i++) {
-                if (listaTE.get(i).getEmpresa() == null) {
-                    listaTE.get(i).setEmpresa(listaTE.get(i).getEmpresa());
-                }
+                listaTE.get(i).setEmpresa(listaTE.get(i).getConcepto().getEmpresa());
+                System.out.println("listaTE.get(i).setEmpresa(listaTE.get(i).getConcepto().getEmpresa() : " + listaTE.get(i).getConcepto().getEmpresa().getNombre());
+                System.out.println("listaTE.get(i) : " + listaTE.get(i).getTipoentidad().getNombre());
                 persistenciaTEFormulasConceptos.crear(listaTE.get(i));
             }
         } catch (Exception e) {
@@ -275,9 +275,7 @@ public class AdministrarTiposSueldos implements AdministrarTiposSueldosInterface
     public void editarTEFormulasConceptos(List<TEFormulasConceptos> listaTE) {
         try {
             for (int i = 0; i < listaTE.size(); i++) {
-                if (listaTE.get(i).getEmpresa() == null) {
-                    listaTE.get(i).setEmpresa(listaTE.get(i).getEmpresa());
-                }
+                listaTE.get(i).setEmpresa(listaTE.get(i).getConcepto().getEmpresa());
                 persistenciaTEFormulasConceptos.editar(listaTE.get(i));
             }
         } catch (Exception e) {
@@ -289,13 +287,21 @@ public class AdministrarTiposSueldos implements AdministrarTiposSueldosInterface
     public void borrarTEFormulasConceptos(List<TEFormulasConceptos> listaTE) {
         try {
             for (int i = 0; i < listaTE.size(); i++) {
-                if (listaTE.get(i).getEmpresa() == null) {
-                    listaTE.get(i).setEmpresa(listaTE.get(i).getEmpresa());
-                }
+                listaTE.get(i).setEmpresa(listaTE.get(i).getConcepto().getEmpresa());
                 persistenciaTEFormulasConceptos.borrar(listaTE.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarTEFormulasConceptos Admi : " + e.toString());
+        }
+    }
+    
+    @Override
+    public List<TEFormulasConceptos> listaTEFormulasConceptos() {
+        try {
+            List<TEFormulasConceptos> lista = persistenciaTEFormulasConceptos.buscarTEFormulasConceptos();
+            return lista;
+        } catch (Exception e) {
+            return null;
         }
     }
     ////TEFormulasConceptos

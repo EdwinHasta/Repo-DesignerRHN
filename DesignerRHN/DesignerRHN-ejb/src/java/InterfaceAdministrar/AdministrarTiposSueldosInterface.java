@@ -171,4 +171,10 @@ public interface AdministrarTiposSueldosInterface {
      * @return Retorna una lista de TiposEntidades.
      */
     public List<TiposEntidades> lovTiposEntidades(BigInteger secGrupo);
+    /**
+     * Método encargado de recuperar todos los TEFormulasConceptos.
+     *
+     * @return Retorna una lista de TEFormulasConceptos.
+     */
+    public List<TEFormulasConceptos> listaTEFormulasConceptos();
 }
