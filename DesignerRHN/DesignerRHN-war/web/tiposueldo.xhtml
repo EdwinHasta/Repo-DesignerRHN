@@ -19,7 +19,7 @@
                         <p:commandButton style="position: absolute; left: 20px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlTipoSueldo.cancelarModificacionGeneral()}"  process="@this" />
 
                         <p:commandButton style="position: absolute; left: 710px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoSueldo.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlTipoSueldo.salir()}" action="emplVigSueldo" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlTipoSueldo.salir()}" action="#{controlTipoSueldo.valorPaginaAnterior()}" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 10px; width: 830px; height: 180px; border-radius: 10px; ">
@@ -373,8 +373,8 @@
                     <p:dialog id="confirmarGuardarSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTipoSueldo.guardarYSalir()}" action="emplVigContrato" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTipoSueldo.cancelarYSalir()}" action="emplVigContrato" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTipoSueldo.guardarYSalir()}" action="#{controlTipoSueldo.paginaAnterior}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTipoSueldo.cancelarYSalir()}" action="#{controlTipoSueldo.paginaAnterior}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
@@ -462,7 +462,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorNuevoRegistroTEFormula']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog header="#{msg['formulaD']}" widgetVar="FormulaDialogo" draggable="false" resizable="false" closable="false" id="FormulaDialogo"  
                               showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovFormula" style="font-size: 11px; width: 410px" var="formula" value="#{controlTipoSueldo.lovFormulas}" rowKey="#{formula.secuencia}"
@@ -672,9 +672,9 @@
                     <p:dialog id="verificarNuevoRegistro" widgetVar="verificarNuevoRegistro" header="#{msg['nuevoregistropagina']}" resizable="false" draggable="false" modal="true" height="110" width="430px" style="font-size: 12px" >
                         <h:outputText value="#{msg['verificarNuevoRegistro']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
                         <p:commandButton value="#{msg['tipoSueldo']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 10px; top: 50px;" oncomplete="NuevoRegistroTipoSueldo.show()" update=":formularioDialogos:nuevoTipoSueldo"  process="@this" />
-                        <p:commandButton value="#{msg['tsFormula']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 220px; top: 50px;" oncomplete="NuevoRegistroTSFormula.show()" update=":formularioDialogos:nuevoTSFormulaConcepto"  process="@this"/>
-                        <p:commandButton value="#{msg['tsGrupo']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 10px; top: 90px;" oncomplete="NuevoRegistroTSGrupo.show()" update=":formularioDialogos:nuevoTSGrupoTipoEntidad"  process="@this"/>
-                        <p:commandButton value="#{msg['teFormula']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 220px; top: 90px;" oncomplete="NuevoRegistroTEFormula.show()" update=":formularioDialogos:nuevoTEFormulaConcepto"  process="@this"/>
+                        <p:commandButton value="#{msg['tsFormula']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 10px; top: 90px;" oncomplete="NuevoRegistroTSFormula.show()" update=":formularioDialogos:nuevoTSFormulaConcepto" disabled="#{controlTipoSueldo.activoFormulaConcepto}" process="@this"/>
+                        <p:commandButton value="#{msg['tsGrupo']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 220px; top: 50px;" oncomplete="NuevoRegistroTSGrupo.show()" update=":formularioDialogos:nuevoTSGrupoTipoEntidad" disabled="#{controlTipoSueldo.activoGrupoDistribucion}" process="@this"/>
+                        <p:commandButton value="#{msg['teFormula']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 220px; top: 90px;" oncomplete="NuevoRegistroTEFormula.show()" update=":formularioDialogos:nuevoTEFormulaConcepto" disabled="#{controlTipoSueldo.activoTipoEntidad}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroTipoSueldo" header="#{msg['nuevoregistroTS']}" widgetVar="NuevoRegistroTipoSueldo" closable="false" resizable="false"  draggable="false" modal="true" height="310" width="400" style="font-size: 12px; padding: 0px">  

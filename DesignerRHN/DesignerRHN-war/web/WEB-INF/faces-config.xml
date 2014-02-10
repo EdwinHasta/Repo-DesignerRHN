@@ -389,6 +389,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>categoriaesca</from-outcome>
+            <to-view-id>/categoriaesca.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/categoriaesca.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipossueldo</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/escalafon.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
