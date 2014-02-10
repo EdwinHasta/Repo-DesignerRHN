@@ -1334,6 +1334,8 @@ public class ControlReformaLaboral implements Serializable {
 
     public void verificarRastro() {
         if (listaDetallesReformasLaborales == null || listaReformasLaborales == null) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("verificarRastrosTablas.show()");
         } else {
             if (index >= 0) {
                 verificarRastroReformaLaboral();

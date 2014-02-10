@@ -991,7 +991,12 @@ public class ControlATExtraRecargo implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevoDetalleExtraRecargo.setSecuencia(l);
-            nuevoDetalleExtraRecargo.setExtrarecargo(listExtrasRecargos.get(indexAux));
+            if (tipoLista == 0) {
+                nuevoDetalleExtraRecargo.setExtrarecargo(listExtrasRecargos.get(indexAux));
+            }
+            if (tipoLista == 1) {
+                nuevoDetalleExtraRecargo.setExtrarecargo(filtrarListExtrasRecargos.get(indexAux));
+            }
             listDetalleExtraRecargoCrear.add(nuevoDetalleExtraRecargo);
             listDetallesExtrasRecargos.add(nuevoDetalleExtraRecargo);
             nuevoDetalleExtraRecargo = new DetallesExtrasRecargos();
@@ -1170,7 +1175,12 @@ public class ControlATExtraRecargo implements Serializable {
     public void confirmarDuplicarDetalleExtraCargo() {
         boolean respueta = validarCamposNulosDetalleExtraRecargo(2);
         if (respueta == true) {
-            duplicarDetalleExtraRecargo.setExtrarecargo(listExtrasRecargos.get(indexAux));
+            if (tipoLista == 0) {
+                duplicarDetalleExtraRecargo.setExtrarecargo(listExtrasRecargos.get(indexAux));
+            }
+            if (tipoLista == 1) {
+                duplicarDetalleExtraRecargo.setExtrarecargo(filtrarListExtrasRecargos.get(indexAux));
+            }
             listDetallesExtrasRecargos.add(duplicarDetalleExtraRecargo);
             listDetalleExtraRecargoCrear.add(duplicarDetalleExtraRecargo);
             RequestContext context = RequestContext.getCurrentInstance();

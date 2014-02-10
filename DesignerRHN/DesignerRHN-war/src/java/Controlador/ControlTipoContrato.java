@@ -491,15 +491,13 @@ public class ControlTipoContrato implements Serializable {
     public void guardarCambiosTipoContrato() {
 
         if (!listTiposContratosBorrar.isEmpty()) {
-            for (int i = 0; i < listTiposContratosBorrar.size(); i++) {
                 administrarTipoContrato.borrarTiposContratos(listTiposContratosBorrar);
-            }
+            
             listTiposContratosBorrar.clear();
         }
         if (!listTiposContratosCrear.isEmpty()) {
-            for (int i = 0; i < listTiposContratosCrear.size(); i++) {
                 administrarTipoContrato.crearTiposContratos(listTiposContratosCrear);
-            }
+            
             listTiposContratosCrear.clear();
         }
         if (!listTiposContratosModificar.isEmpty()) {
@@ -520,15 +518,13 @@ public class ControlTipoContrato implements Serializable {
 
     public void guardarCambiosDiasLaborables() {
         if (!listDiasLaborablesBorrar.isEmpty()) {
-            for (int i = 0; i < listDiasLaborablesBorrar.size(); i++) {
                 administrarTipoContrato.borrarDiasLaborables(listDiasLaborablesBorrar);
-            }
+            
             listDiasLaborablesBorrar.clear();
         }
         if (!listDiasLaborablesCrear.isEmpty()) {
-            for (int i = 0; i < listDiasLaborablesCrear.size(); i++) {
                 administrarTipoContrato.crearDiasLaborables(listDiasLaborablesCrear);
-            }
+            
             listDiasLaborablesCrear.clear();
         }
         if (!listDiasLaborablesModificar.isEmpty()) {
