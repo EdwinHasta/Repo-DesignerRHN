@@ -11,7 +11,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless.<br>
@@ -57,14 +56,18 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     }
 
     @Override
-    public List<ClasesCategorias> buscarClasesCategorias() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(ClasesCategorias.class));
-        return em.createQuery(cq).getResultList();
+     public List<ClasesCategorias> consultarClasesCategorias() {
+        try {
+            Query query = em.createQuery("SELECT td FROM ClasesCategorias td ORDER BY td.codigo DESC");
+            List<ClasesCategorias> clasesCategorias = query.getResultList();
+            return clasesCategorias;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposDias buscarTiposDias : " + e.toString());
+            return null;
+        }
     }
-
     @Override
-    public ClasesCategorias buscarClaseCategoriaSecuencia(BigInteger secClaseCategoria) {
+    public ClasesCategorias consultarClaseCategoria(BigInteger secClaseCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT cc FROM ClasesCategorias cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
@@ -72,6 +75,22 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
             return clasesCategorias;
         } catch (Exception e) {
             return null;
+        }
+    }
+    
+     @Override
+    public BigInteger contarCategoriasClaseCategoria(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM categorias WHERE clasecategoria = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaClasesCategorias contarCategoriasClaseCategoria Retorno " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaClasesCategorias contarCategoriasClaseCategoria ERROR : " + e);
+            return retorno;
         }
     }
 }

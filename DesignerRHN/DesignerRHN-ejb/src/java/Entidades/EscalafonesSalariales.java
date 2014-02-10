@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,12 +39,12 @@ public class EscalafonesSalariales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @JoinColumn(name = "TIPOTRABAJADOR", referencedColumnName = "SECUENCIA")
@@ -55,20 +56,20 @@ public class EscalafonesSalariales implements Serializable {
     public EscalafonesSalariales() {
     }
 
-    public EscalafonesSalariales(BigDecimal secuencia) {
+    public EscalafonesSalariales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public EscalafonesSalariales(BigDecimal secuencia, String descripcion) {
+    public EscalafonesSalariales(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -85,7 +86,7 @@ public class EscalafonesSalariales implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public TiposTrabajadores getTipotrabajador() {

@@ -44,10 +44,8 @@ public class Conceptos implements Serializable {
     @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
-    @OneToMany(mappedBy = "conceptotercero")
-    private Collection<TablasAuxilios> tablasAuxiliosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<TablasAuxilios> tablasAuxiliosCollection1;
+    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
     @OneToMany(mappedBy = "concepto")
     private List<DetallesExtrasRecargos> detallesExtrasRecargosList;
     @Column(name = "CONJUNTO")
@@ -730,20 +728,13 @@ public class Conceptos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TablasAuxilios> getTablasAuxiliosCollection() {
-        return tablasAuxiliosCollection;
+    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
+        return tSFormulasConceptosCollection;
     }
 
-    public void setTablasAuxiliosCollection(Collection<TablasAuxilios> tablasAuxiliosCollection) {
-        this.tablasAuxiliosCollection = tablasAuxiliosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TablasAuxilios> getTablasAuxiliosCollection1() {
-        return tablasAuxiliosCollection1;
-    }
-
-    public void setTablasAuxiliosCollection1(Collection<TablasAuxilios> tablasAuxiliosCollection1) {
-        this.tablasAuxiliosCollection1 = tablasAuxiliosCollection1;
+    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
+        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
     }
 }
+
+

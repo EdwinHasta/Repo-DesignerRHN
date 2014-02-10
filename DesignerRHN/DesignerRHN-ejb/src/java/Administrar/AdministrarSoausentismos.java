@@ -153,7 +153,7 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     }
 
     public List<Tiposausentismos> lovTiposAusentismos() {
-        return persistenciaTiposAusentismos.buscarTiposAusentismos();
+        return persistenciaTiposAusentismos.consultarTiposAusentismos();
     }
 
     public List<Clasesausentismos> lovClasesAusentismos() {

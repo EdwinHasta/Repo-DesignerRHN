@@ -80,4 +80,16 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
         }
 
     }
+        @Override
+    public List<GruposSalariales> buscarGruposSalarialesParaEscalafonSalarial(BigInteger secEscalafon) {
+        try {
+            Query query = em.createQuery("SELECT gs FROM GruposSalariales gs WHERE gs.escalafonsalarial.secuencia=:secEscalafon");
+            query.setParameter("secEscalafon", secEscalafon);
+            List<GruposSalariales> gruposSalariales = query.getResultList();
+            return gruposSalariales;
+        } catch (Exception e) {
+            System.out.println("Error buscarGruposSalarialesParaEscalafonSalarial PersistenciaGruposSalariales : " + e.toString());
+            return null;
+        }
+    }
 }

@@ -57,21 +57,21 @@ public interface AdministrarTiposContratosInterface {
     /**
      * Método encargado de crear un DiaLaborable.
      *
-     * @param listaDL Lista de los Escalafones que se van a crear.
+     * @param listaDL Lista de los DiasLaborables que se van a crear.
      */
     public void crearDiasLaborables(List<DiasLaborables> listaDL);
 
     /**
      * Método encargado de editar un DiaLaborable..
      *
-     * @param listaDL Lista de los Escalafones que se van a modificar.
+     * @param listaDL Lista de los DiasLaborables que se van a modificar.
      */
     public void editarDiasLaborables(List<DiasLaborables> listaDL);
 
     /**
      * Método encargado de borrar un DiaLaborable..
      *
-     * @param listaDL Lista de los Escalafones que se van a eliminar.
+     * @param listaDL Lista de los DiasLaborables que se van a eliminar.
      */
     public void borrarDiasLaborables(List<DiasLaborables> listaDL);
 

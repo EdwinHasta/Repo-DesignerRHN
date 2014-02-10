@@ -114,7 +114,7 @@ public class AdministrarCategorias implements AdministrarCategoriasInterface {
     @Override
     public List<ClasesCategorias> lovClasesCategorias() {
         try {
-            List<ClasesCategorias> lista = persistenciaClasesCategorias.buscarClasesCategorias();
+            List<ClasesCategorias> lista = persistenciaClasesCategorias.consultarClasesCategorias();
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovClasesCategorias Admi : " + e.toString());
