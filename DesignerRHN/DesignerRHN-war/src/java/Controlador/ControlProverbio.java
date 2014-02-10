@@ -120,7 +120,6 @@ public class ControlProverbio implements Serializable {
         nuevoRegistroMensajesUsuarios = new Recordatorios();
         nuevoRegistroMensajesUsuarios.setTipo("RECORDATORIO");
         duplicarRegistroMensajesUsuarios = new Recordatorios();
-
         //secuenciaPersona = BigInteger.valueOf(10668967);
         aceptar = true;
         listaMensajesUsuariosBorrar = new ArrayList<Recordatorios>();

@@ -945,10 +945,7 @@ public class ControlNovedadesConceptos implements Serializable {
             }
         }
 
-        if (pasa != 0) {
-            context.update("formularioDialogos:validacionNuevaNovedadConcepto");
-            context.execute("validacionNuevaNovedadConcepto.show()");
-        }
+        
 
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {

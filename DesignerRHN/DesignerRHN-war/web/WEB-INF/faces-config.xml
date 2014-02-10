@@ -2018,6 +2018,7 @@
         <navigation-case>
             <from-outcome>inforeportes</from-outcome>
             <to-view-id>/adminreportes.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -2025,6 +2026,7 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -2033,6 +2035,7 @@
         <navigation-case>
             <from-outcome>tiposcotizantes</from-outcome>
             <to-view-id>/tipocotizante.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -2040,6 +2043,7 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -2048,6 +2052,7 @@
         <navigation-case>
             <from-outcome>detallestiposcotizantes</from-outcome>
             <to-view-id>/tipocotizante.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -2055,6 +2060,51 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>recordatorios</from-outcome>
+            <to-view-id>/proverbio.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/proverbio.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/proverbio.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>operandos</from-outcome>
+            <to-view-id>/operando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+ 
 </faces-config>
