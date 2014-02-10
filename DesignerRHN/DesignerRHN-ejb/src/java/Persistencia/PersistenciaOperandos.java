@@ -36,4 +36,31 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface{
             return null;
         }
     }
+    
+    @Override
+    public void crear(Operandos operandos) {
+        try {
+            em.merge(operandos);
+        } catch (Exception e) {
+            System.out.println("El Operandos no exite o esta reservada por lo cual no puede ser modificada (Operandos)");
+        }
+    }
+
+    @Override
+    public void editar(Operandos operandos) {
+        try {
+            em.merge(operandos);
+        } catch (Exception e) {
+            System.out.println("No se pudo modificar el Operandos");
+        }
+    }
+
+    @Override
+    public void borrar(Operandos operandos) {
+        try {
+            em.remove(em.merge(operandos));
+        } catch (Exception e) {
+            System.out.println("El Operandos no se ha podido eliminar");
+        }
+    }
 }

@@ -44,6 +44,10 @@ public class Conceptos implements Serializable {
     @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
+    @OneToMany(mappedBy = "conceptotercero")
+    private Collection<TablasAuxilios> tablasAuxiliosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+    private Collection<TablasAuxilios> tablasAuxiliosCollection1;
     @OneToMany(mappedBy = "concepto")
     private List<DetallesExtrasRecargos> detallesExtrasRecargosList;
     @Column(name = "CONJUNTO")
@@ -723,5 +727,23 @@ public class Conceptos implements Serializable {
 
     public void setCodigo(BigInteger codigo) {
         this.codigo = codigo;
+    }
+
+    @XmlTransient
+    public Collection<TablasAuxilios> getTablasAuxiliosCollection() {
+        return tablasAuxiliosCollection;
+    }
+
+    public void setTablasAuxiliosCollection(Collection<TablasAuxilios> tablasAuxiliosCollection) {
+        this.tablasAuxiliosCollection = tablasAuxiliosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TablasAuxilios> getTablasAuxiliosCollection1() {
+        return tablasAuxiliosCollection1;
+    }
+
+    public void setTablasAuxiliosCollection1(Collection<TablasAuxilios> tablasAuxiliosCollection1) {
+        this.tablasAuxiliosCollection1 = tablasAuxiliosCollection1;
     }
 }

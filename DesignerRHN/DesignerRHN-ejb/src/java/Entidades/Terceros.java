@@ -48,6 +48,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
     @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
+    @OneToMany(mappedBy = "tercero")
+    private Collection<EersAuxilios> eersAuxiliosCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "terceros")
     private Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection;
@@ -400,5 +402,14 @@ public class Terceros implements Serializable {
 
     public void setRelacionesIncapacidadesCollection(Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection) {
         this.relacionesIncapacidadesCollection = relacionesIncapacidadesCollection;
+    }
+
+    @XmlTransient
+    public Collection<EersAuxilios> getEersAuxiliosCollection() {
+        return eersAuxiliosCollection;
+    }
+
+    public void setEersAuxiliosCollection(Collection<EersAuxilios> eersAuxiliosCollection) {
+        this.eersAuxiliosCollection = eersAuxiliosCollection;
     }
 }

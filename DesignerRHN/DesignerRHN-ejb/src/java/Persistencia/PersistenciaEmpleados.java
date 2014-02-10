@@ -11,10 +11,12 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Empleados'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Empleados' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
@@ -22,7 +24,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-    
 
     @Override
     public void crear(Empleados empleados) {
@@ -41,7 +42,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
-        try {            
+        try {
             return em.find(Empleados.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -179,7 +180,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
-    
+
     public List<Empleados> lovEmpleadosParametros() {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE EXISTS (SELECT vtt FROM VWActualesTiposTrabajadores vtt WHERE vtt.empleado.secuencia = e.secuencia AND vtt.tipoTrabajador.tipo IN ('ACTIVO','PENSIONADO')) ORDER BY e.persona.primerapellido");
@@ -187,6 +188,23 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return listaEmpleados;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.lovEmpleadosParametros" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empleados> empleadosAuxilios() {
+        try {
+            String sqlQuery = "select * from empleados v where EXISTS (SELECT 'X'\n"
+                    + "       from   VWACTUALESTIPOSTRABAJADORES        vtt, tipostrabajadores  tt\n"
+                    + "       where tt.secuencia = vtt.tipotrabajador\n"
+                    + "       and   vtt.empleado = v.secuencia\n"
+                    + "              and tt.tipo='ACTIVO')";
+            Query query = em.createNativeQuery(sqlQuery, Empleados.class);
+            List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosAuxilios" + e);
             return null;
         }
     }

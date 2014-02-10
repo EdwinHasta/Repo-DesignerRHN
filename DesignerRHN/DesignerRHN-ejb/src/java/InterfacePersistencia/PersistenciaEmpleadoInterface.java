@@ -97,4 +97,6 @@ public interface PersistenciaEmpleadoInterface {
      * @return 
      */
     public List<Empleados> lovEmpleadosParametros();
+    
+    public List<Empleados> empleadosAuxilios();
 }

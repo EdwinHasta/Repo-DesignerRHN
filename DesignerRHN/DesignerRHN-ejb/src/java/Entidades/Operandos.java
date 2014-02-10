@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -19,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Operandos.findAll", query = "SELECT o FROM Operandos o")})
 public class Operandos implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
     @OneToMany(mappedBy = "operandobaseliquidacion")
@@ -44,7 +47,7 @@ public class Operandos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -80,15 +83,21 @@ public class Operandos implements Serializable {
     private String actualizable;
     @OneToMany(mappedBy = "operando")
     private Collection<Nodos> nodosCollection;
+    @Transient
+    private String estadoTipo;
+    @Transient
+    private boolean estadoCambio;
+    @Transient
+    private boolean estadoActualizable;
 
     public Operandos() {
     }
 
-    public Operandos(BigDecimal secuencia) {
+    public Operandos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Operandos(BigDecimal secuencia, int codigo, String descripcion, String nombre, String tipo) {
+    public Operandos(BigInteger secuencia, int codigo, String descripcion, String nombre, String tipo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -96,11 +105,11 @@ public class Operandos implements Serializable {
         this.tipo = tipo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -113,7 +122,10 @@ public class Operandos implements Serializable {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if (descripcion == null) {
+            descripcion = " ";
+        }
+        return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {
@@ -129,11 +141,58 @@ public class Operandos implements Serializable {
     }
 
     public String getTipo() {
+        if (tipo == null) {
+            tipo = "CONSTANTE";
+        }
         return tipo;
     }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public String getEstadoTipo() {
+        if (estadoTipo == null) {
+            if (tipo == null) {
+                estadoTipo = "CONSTANTE";
+
+            } else {
+
+                if (tipo.equalsIgnoreCase("FORMULA")) {
+                    estadoTipo = "FORMULA";
+                } else if (tipo.equalsIgnoreCase("BLOQUE PL/SQL")) {
+                    estadoTipo = "BLOQUE PL/SQL";
+                } else if (tipo.equalsIgnoreCase("CONSTANTE")) {
+                    estadoTipo = "CONSTANTE";
+                } else if (tipo.equalsIgnoreCase("FUNCION")) {
+                    estadoTipo = "FUNCION";
+                } else if (tipo.equalsIgnoreCase("RELACIONAL")) {
+                    estadoTipo = "RELACIONAL";
+                } else if (tipo.equalsIgnoreCase("CONSTANTE")) {
+                    estadoTipo = "CONSTANTE";
+                }
+            }
+        }
+        return estadoTipo;
+    }
+
+    public void setEstadoTipo(String estadoTipo) {
+
+        if (estadoTipo.equals("")) {
+            setTipo("CONSTANTE");
+        } else if (estadoTipo.equalsIgnoreCase("BLOQUE PL/SQL")) {
+            setTipo("BLOQUE PL/SQL");
+        } else if (estadoTipo.equals("CONSTANTE")) {
+            setTipo("CONSTANTE");
+        } else if (estadoTipo.equals("FUNCION")) {
+            setTipo("FUNCION");
+        } else if (estadoTipo.equals("RELACIONAL")) {
+            setTipo("RELACIONAL");
+        } else if (estadoTipo.equals("FORMULA")) {
+            setTipo("FORMULA");
+        }
+
+        this.estadoTipo = estadoTipo;
     }
 
     public BigDecimal getValorreal() {
@@ -174,6 +233,50 @@ public class Operandos implements Serializable {
 
     public void setActualizable(String actualizable) {
         this.actualizable = actualizable;
+    }
+
+    public boolean isEstadoCambio() {
+        if (cambioanual != null) {
+            if (cambioanual.equals("S")) {
+                estadoCambio = true;
+            } else {
+                estadoCambio = false;
+            }
+        } else {
+            estadoCambio = false;
+        }
+        return estadoCambio;
+    }
+
+    public void setEstadoCambio(boolean estadoCambio) {
+        if (estadoCambio == true) {
+            cambioanual = "S";
+        } else {
+            cambioanual = "N";
+        }
+        this.estadoCambio = estadoCambio;
+    }
+
+    public boolean isEstadoActualizable() {
+        if (actualizable != null) {
+            if (actualizable.equals("S")) {
+                estadoActualizable = true;
+            } else {
+                estadoActualizable = false;
+            }
+        } else {
+            estadoActualizable = false;
+        }
+        return estadoActualizable;
+    }
+
+    public void setEstadoActualizable(boolean estadoActualizable) {
+        if (estadoActualizable == true) {
+            actualizable = "S";
+        } else {
+            actualizable = "N";
+        }
+        this.estadoActualizable = estadoActualizable;
     }
 
     @XmlTransient
@@ -227,5 +330,5 @@ public class Operandos implements Serializable {
     public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
         this.conceptosSoportesCollection = conceptosSoportesCollection;
     }
-    
+
 }
