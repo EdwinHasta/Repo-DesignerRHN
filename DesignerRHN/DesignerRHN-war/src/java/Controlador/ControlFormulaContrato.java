@@ -521,8 +521,7 @@ public class ControlFormulaContrato implements Serializable {
     }
 
     public void guardarCambiosFormula() {
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+
         if (!listFormulasContratosBorrar.isEmpty()) {
             administrarFormulaContrato.borrarFormulasContratos(listFormulasContratosBorrar);
             listFormulasContratosBorrar.clear();
@@ -536,6 +535,8 @@ public class ControlFormulaContrato implements Serializable {
             listFormulasContratosModificar.clear();
         }
         listFormulasContratos = null;
+        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosFormulaContrato");
         context.update("form:growl");

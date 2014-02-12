@@ -485,6 +485,7 @@ public class ControlEscalafonSalarial implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+            context.update("form:growl");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
