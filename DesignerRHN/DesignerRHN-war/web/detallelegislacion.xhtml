@@ -12,6 +12,7 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.detallelegislacion" var="msg" />
+                    <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 525px; text-align: left;" >  
                         <h:outputText value="#{msg['contrato']}: " style="position: absolute;left: 380px; top: 45px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreContrato" value="#{controlDetalleLegislacion.contratoActual.descripcion}" style="font-weight: bold; color: #BF1A1A; position: absolute; left: 450px; top: 45px"/>

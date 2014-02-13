@@ -57,7 +57,8 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
     @Override
     public List<TiposSueldos> buscarTiposSueldos() {
         try{
-        List<TiposSueldos> tiposSueldos = (List<TiposSueldos>) em.createNamedQuery("TiposSueldos.findAll").getResultList();
+        Query query = em.createQuery("SELECT t FROM TiposSueldos t ORDER BY t.codigo ASC");
+        List<TiposSueldos> tiposSueldos = (List<TiposSueldos>) query.getResultList();
         return tiposSueldos;
         } catch(Exception e){
             System.out.println("Error buscar lista tipos sueldos");

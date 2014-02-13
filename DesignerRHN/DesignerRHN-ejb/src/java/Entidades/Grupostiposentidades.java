@@ -32,6 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Grupostiposentidades.findAll", query = "SELECT g FROM Grupostiposentidades g")})
 public class Grupostiposentidades implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupotipoentidad")
+    private Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -84,6 +87,9 @@ public class Grupostiposentidades implements Serializable {
     }
 
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -132,5 +138,14 @@ public class Grupostiposentidades implements Serializable {
     public String toString() {
         return "Entidades.Grupostiposentidades[ secuencia=" + secuencia + " ]";
     }
-    
+
+    @XmlTransient
+    public Collection<TSGruposTiposEntidades> getTSGruposTiposEntidadesCollection() {
+        return tSGruposTiposEntidadesCollection;
+    }
+
+    public void setTSGruposTiposEntidadesCollection(Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection) {
+        this.tSGruposTiposEntidadesCollection = tSGruposTiposEntidadesCollection;
+    }
+
 }

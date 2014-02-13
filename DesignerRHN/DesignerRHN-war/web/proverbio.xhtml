@@ -50,7 +50,7 @@
                             <p:dataTable id="datosMensajesUsuarios" var="m" value="#{controlProverbio.listaMensajesUsuario}"
                                          rowKey="#{m.secuencia}" rowIndexVar="indiceNF" style="position: relative; font-size: 10px; border: 1px; text-align: left;width: 845px"                           
                                          scrollable="true" scrollHeight="#{controlProverbio.altoTablaNF}" liveScroll="true" scrollRows="10" filteredValue="#{controlProverbio.filtradosListaMensajesUsuario}" 
-                                         emptyMessage="Vacio" 
+                                         emptyMessage="Vacio" scrollWidth="845px"
                                          editable="true" editMode="cell">
 
                                 <p:ajax event="filter" listener="#{controlProverbio.eventoFiltrarNF()}"/>
@@ -89,7 +89,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="padding: 0px"  width="20%" headerText="#{msg['mes']}" sortBy="#{m.mes}" filterBy="#{m.mes}" filterMatchMode="contains" id="mMes" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="padding: 0px"  width="20%" headerText="#{msg['mes']}" sortBy="#{m.estadoMes}" filterBy="#{m.estadoMes}" filterMatchMode="contains" id="mMes" filterStyle="display: none; visibility: hidden;" >                                  
 
                                     <p:selectOneMenu  id="editarMes" value="#{m.mes}" style="width: 167px">  
                                         <f:selectItem itemLabel="" itemValue="null" />  
@@ -479,7 +479,6 @@
                         <h:outputText value="#{msg['elegirTabla']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['proverbioET']}" onclick="elegirTabla.hide();" actionListener="#{controlProverbio.dialogoProverbios()}" style="position: absolute; top: 60px; left: 20px" process="@this" />
                         <p:commandButton value="#{msg['mensajeusuarioET']}" onclick="elegirTabla.hide();" actionListener="#{controlProverbio.dialogoMensajesUsuarios()}" style="position: absolute; top: 50px; left: 220px" process="@this" />
-
                     </p:dialog>
 
                     <!-- DIALOGOS EDITAR -->
@@ -556,6 +555,10 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 8px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                    
+                    <!--HotKey-->
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlProverbio.activarCtrlF11()}" process="@this"/> 
+
 
                 </h:form>
 

@@ -92,7 +92,7 @@ public class GruposSalariales implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public BigDecimal getSalario() {

@@ -137,7 +137,10 @@ public class ControlAdminreportes implements Serializable {
                     if (guardado == true) {
                         guardado = false;
                     }
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
                 }
+
                 index = -1;
                 secRegistro = null;
 
@@ -152,6 +155,8 @@ public class ControlAdminreportes implements Serializable {
                     if (guardado == true) {
                         guardado = false;
                     }
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
                 }
                 index = -1;
                 secRegistro = null;
@@ -617,7 +622,7 @@ public class ControlAdminreportes implements Serializable {
         guardado = true;
         permitirIndex = true;
         cambiosPagina = false;
-        
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosInforeportes");
@@ -1412,7 +1417,5 @@ public class ControlAdminreportes implements Serializable {
     public void setCambiosPagina(boolean cambiosPagina) {
         this.cambiosPagina = cambiosPagina;
     }
-    
-    
 
 }

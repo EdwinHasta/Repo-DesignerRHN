@@ -64,5 +64,11 @@ public interface PersistenciaTiposEntidadesInterface {
      * retorna null.
      */
     public List<TiposEntidades> buscarTiposEntidadesIBCS();
+    /**
+     * Método encargado de buscar los TiposEntidades con la secuencia del GrupoTipoEntidad.
+     * @param secuencia Secuencia del GrupoTipoEntidad.
+     * @return Retorna los TiposEntidades identificado con la secuencia del GrupoTipoEntidad.
+     */
+    public List<TiposEntidades> buscarTiposEntidadesPorSecuenciaGrupo(BigInteger secuencia);
     
 }

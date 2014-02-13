@@ -58,7 +58,8 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public List<TiposEntidades> buscarTiposEntidades() {
         try {
-            List<TiposEntidades> tiposEntidades = (List<TiposEntidades>) em.createNamedQuery("TiposEntidades.findAll").getResultList();
+            Query query = em.createQuery("SELECT te FROM TiposEntidades te");
+            List<TiposEntidades> tiposEntidades = query.getResultList();
             return tiposEntidades;
         } catch (Exception e) {
             System.out.println("Error buscarTiposEntidades");
@@ -68,7 +69,6 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
 
     @Override
     public TiposEntidades buscarTiposEntidadesSecuencia(BigInteger secuencia) {
-
         try {
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -117,6 +117,20 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
             return tiposEntidades;
         } catch (Exception e) {
             System.out.println("Error buscarTiposEntidadesIBCS PersistenciaTiposEntidades : " + e.toString());
+            List<TiposEntidades> tiposEntidades = null;
+            return tiposEntidades;
+        }
+    }
+
+    @Override
+    public List<TiposEntidades> buscarTiposEntidadesPorSecuenciaGrupo(BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.grupo.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
+            List<TiposEntidades> tiposEntidades = (List<TiposEntidades>) query.getResultList();
+            return tiposEntidades;
+        } catch (Exception e) {
+            System.out.println("Error buscarTiposEntidadesPorSecuenciaGrupo PersistenciaTiposEntidades : " + e.toString());
             List<TiposEntidades> tiposEntidades = null;
             return tiposEntidades;
         }

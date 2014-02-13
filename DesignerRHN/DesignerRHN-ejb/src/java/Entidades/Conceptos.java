@@ -44,6 +44,8 @@ public class Conceptos implements Serializable {
     @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
     @OneToMany(mappedBy = "concepto")
     private List<DetallesExtrasRecargos> detallesExtrasRecargosList;
     @Column(name = "CONJUNTO")
@@ -724,4 +726,15 @@ public class Conceptos implements Serializable {
     public void setCodigo(BigInteger codigo) {
         this.codigo = codigo;
     }
+
+    @XmlTransient
+    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
+        return tSFormulasConceptosCollection;
+    }
+
+    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
+        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
+    }
 }
+
+

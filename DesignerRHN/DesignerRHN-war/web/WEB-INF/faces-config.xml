@@ -355,6 +355,40 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/escalafonsalarial.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroEscalafonSalarial</from-outcome>
+            <to-view-id>/escalafonsalarial.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroTipoSueldo</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/escalafon.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>categoriasEsca</from-outcome>
@@ -367,6 +401,23 @@
         <navigation-case>
             <from-outcome>escalaInfo</from-outcome>
             <to-view-id>/escalafon.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>categoriaesca</from-outcome>
+            <to-view-id>/categoriaesca.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/categoriaesca.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipossueldo</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1913,6 +1964,22 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplVigSueldo</from-outcome>
+            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipossueldos</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
     
     
@@ -2018,6 +2085,7 @@
         <navigation-case>
             <from-outcome>inforeportes</from-outcome>
             <to-view-id>/adminreportes.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -2025,6 +2093,7 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -2033,6 +2102,7 @@
         <navigation-case>
             <from-outcome>tiposcotizantes</from-outcome>
             <to-view-id>/tipocotizante.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -2040,6 +2110,7 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -2048,6 +2119,7 @@
         <navigation-case>
             <from-outcome>detallestiposcotizantes</from-outcome>
             <to-view-id>/tipocotizante.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -2055,6 +2127,51 @@
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>recordatorios</from-outcome>
+            <to-view-id>/proverbio.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/proverbio.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/proverbio.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>operandos</from-outcome>
+            <to-view-id>/operando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+ 
 </faces-config>

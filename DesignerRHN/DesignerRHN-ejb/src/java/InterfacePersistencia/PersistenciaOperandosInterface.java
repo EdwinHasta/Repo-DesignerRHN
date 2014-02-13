@@ -7,14 +7,24 @@ import Entidades.Operandos;
 import java.util.List;
 
 /**
- * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Operandos' 
- * de la base de datos.
+ * Interface encargada de determinar las operaciones que se realizan sobre la
+ * tabla 'Operandos' de la base de datos.
+ *
  * @author Andres Pineda.
  */
 public interface PersistenciaOperandosInterface {
+
     /**
-     * Método encargado de buscar todos los Operandos existentes en la base de datos.
+     * Método encargado de buscar todos los Operandos existentes en la base de
+     * datos.
+     *
      * @return Retorna una lista de Operandos.
      */
     public List<Operandos> buscarOperandos();
+
+    public void crear(Operandos operandos);
+
+    public void editar(Operandos operandos);
+    
+    public void borrar(Operandos operandos);
 }
