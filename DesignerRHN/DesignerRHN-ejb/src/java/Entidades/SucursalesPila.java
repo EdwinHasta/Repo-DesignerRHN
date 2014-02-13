@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "SucursalesPila.findAll", query = "SELECT s FROM SucursalesPila s")})
 public class SucursalesPila implements Serializable {
+
     @OneToMany(mappedBy = "sucursalPila")
     private Collection<ParametrosInformes> parametrosInformesCollection;
     private static final long serialVersionUID = 1L;
@@ -40,7 +41,7 @@ public class SucursalesPila implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 4)
     @Column(name = "CODIGO")
     private String codigo;
@@ -56,15 +57,15 @@ public class SucursalesPila implements Serializable {
     public SucursalesPila() {
     }
 
-    public SucursalesPila(BigDecimal secuencia) {
+    public SucursalesPila(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -77,7 +78,10 @@ public class SucursalesPila implements Serializable {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if (descripcion == null) {
+            descripcion = " ";
+        }
+        return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {
@@ -134,5 +138,5 @@ public class SucursalesPila implements Serializable {
     public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
         this.parametrosInformesCollection = parametrosInformesCollection;
     }
-    
+
 }

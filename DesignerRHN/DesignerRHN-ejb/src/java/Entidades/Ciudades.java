@@ -45,7 +45,6 @@ public class Ciudades implements Serializable {
     private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 4)

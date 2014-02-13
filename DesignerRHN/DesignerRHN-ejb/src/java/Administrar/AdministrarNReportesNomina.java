@@ -152,7 +152,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     @Override
     public List<UbicacionesGeograficas> listUbicacionesGeograficas() {
         try {
-            listUbicacionesGeograficas = persistenciaUbicacionesGeograficas.buscarUbicacionesGeograficas();
+            listUbicacionesGeograficas = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficas();
             return listUbicacionesGeograficas;
         } catch (Exception e) {
             System.out.println("Error listUbicacionesGeograficas : " + e.toString());
