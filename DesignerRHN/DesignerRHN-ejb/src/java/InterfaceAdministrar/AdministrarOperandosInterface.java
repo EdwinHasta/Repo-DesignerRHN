@@ -6,6 +6,7 @@
 package InterfaceAdministrar;
 
 import Entidades.Operandos;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -19,5 +20,6 @@ public interface AdministrarOperandosInterface {
     public void borrarOperando(Operandos operandos);
     public void crearOperando(Operandos operandos);
     public void modificarOperando(List<Operandos> listaOperandosModificar);
+    public String buscarValores(BigInteger secuenciaOperando);
     
 }

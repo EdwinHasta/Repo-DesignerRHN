@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import Entidades.TiposFormulas;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Formulas.findAll", query = "SELECT f FROM Formulas f")})
 public class Formulas implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
+    private Collection<TiposFormulas> tiposFormulasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
     private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
@@ -354,4 +357,14 @@ public class Formulas implements Serializable {
     public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
         this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
     }
+
+    @XmlTransient
+    public Collection<TiposFormulas> getTiposFormulasCollection() {
+        return tiposFormulasCollection;
+    }
+
+    public void setTiposFormulasCollection(Collection<TiposFormulas> tiposFormulasCollection) {
+        this.tiposFormulasCollection = tiposFormulasCollection;
+    }
+
 }
