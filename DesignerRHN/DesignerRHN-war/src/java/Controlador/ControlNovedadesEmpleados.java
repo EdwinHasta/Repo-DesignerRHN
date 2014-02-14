@@ -1214,7 +1214,7 @@ public class ControlNovedadesEmpleados implements Serializable {
             } else if (tipoNuevo == 2) {
                 NitTercero = duplicarNovedad.getTercero().getNitalternativo();
             }
-        } else if (Campo.equals("FORMULAS")) {
+        } else if (Campo.equals("FORMULA")) {
             if (tipoNuevo == 1) {
                 Formula = nuevaNovedad.getFormula().getNombrelargo();
             } else if (tipoNuevo == 2) {

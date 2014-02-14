@@ -2156,5 +2156,32 @@
             <redirect />
         </navigation-case>
     </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>funcion</from-outcome>
+            <to-view-id>/tipofuncion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formula</from-outcome>
+            <to-view-id>/tipoformula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/tipofuncion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>operando</from-outcome>
+            <to-view-id>/operando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
  
 </faces-config>
