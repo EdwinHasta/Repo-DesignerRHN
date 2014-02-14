@@ -36,4 +36,10 @@ public interface PersistenciaFormulasProcesosInterface {
      * @return Retorna una lista de FormulasProcesos cuya fórmula tiene como secuencia el valor dado por parámetro.
      */
     public List<FormulasProcesos> formulasProcesosParaFormulaSecuencia(BigInteger secuencia);
+    /**
+     * Método encargado de buscar las FormulasProcesos asociadas a una Fórmula específica.
+     * @param secuencia Secuencia del proceso.
+     * @return Retorna una lista de FormulasProcesos cuya proceso tiene como secuencia el valor dado por parámetro.
+     */
+     public List<FormulasProcesos> formulasProcesosParaProcesoSecuencia(BigInteger secuencia);
 }

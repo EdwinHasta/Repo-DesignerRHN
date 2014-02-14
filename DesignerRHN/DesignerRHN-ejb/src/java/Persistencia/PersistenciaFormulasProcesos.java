@@ -65,4 +65,18 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
             return null;
         }
     }
+    
+    
+    @Override 
+    public List<FormulasProcesos> formulasProcesosParaProcesoSecuencia(BigInteger secuencia) {
+        try {
+            Query queryFinal = em.createQuery("SELECT fp FROM FormulasProcesos fp WHERE fp.proceso.secuencia=:secuencia");
+            queryFinal.setParameter("secuencia", secuencia);
+            List<FormulasProcesos> formulasProcesos = queryFinal.getResultList();
+            return formulasProcesos;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaFormulasProcesos.formulasProcesosParaProcesoSecuencia : " + e.toString());
+            return null;
+        }
+    }
 }

@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Operandos.findAll", query = "SELECT o FROM Operandos o")})
 public class Operandos implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<OperandosLogs> operandosLogsCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
@@ -329,6 +331,15 @@ public class Operandos implements Serializable {
 
     public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
         this.conceptosSoportesCollection = conceptosSoportesCollection;
+    }
+
+    @XmlTransient
+    public Collection<OperandosLogs> getOperandosLogsCollection() {
+        return operandosLogsCollection;
+    }
+
+    public void setOperandosLogsCollection(Collection<OperandosLogs> operandosLogsCollection) {
+        this.operandosLogsCollection = operandosLogsCollection;
     }
 
 }
