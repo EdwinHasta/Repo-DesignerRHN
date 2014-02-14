@@ -272,7 +272,7 @@ public class ControlTipoSueldo implements Serializable {
             if (tipoLista == 1) {
                 aux = filtrarListaTiposSueldos.get(index);
             }
-            if (aux.getCodigo() >= 0 || aux.getDescripcion().isEmpty()) {
+            if (aux.getCodigo() <= 0 || aux.getDescripcion().isEmpty()) {
                 retorno = false;
             }
             if (aux.getCodigo() != null) {

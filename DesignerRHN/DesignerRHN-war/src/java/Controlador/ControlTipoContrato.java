@@ -1683,8 +1683,8 @@ public class ControlTipoContrato implements Serializable {
                 tipoContratoAClonar.setNombre(auxNombreClonar);
                 context.update("form:nombreTipoCClonarBase");
                 context.update("form:codigoTipoCClonarBase");
-                context.update("form:TipoDiaDialogo");
-                context.execute("TipoDiaDialogo.show()");
+                context.update("form:TipoContratoDialogo");
+                context.execute("TipoContratoDialogo.show()");
             }
         }
     }
