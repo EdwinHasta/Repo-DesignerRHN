@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -34,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "UbicacionesGeograficas.findAll", query = "SELECT u FROM UbicacionesGeograficas u")})
 public class UbicacionesGeograficas implements Serializable {
+
     @OneToMany(mappedBy = "ubicaciongeografica")
     private Collection<ParametrosInformes> parametrosInformesCollection;
 
@@ -45,14 +45,11 @@ public class UbicacionesGeograficas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private BigInteger codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 60)
@@ -91,41 +88,42 @@ public class UbicacionesGeograficas implements Serializable {
     public UbicacionesGeograficas() {
     }
 
-    public UbicacionesGeograficas(BigDecimal secuencia) {
+    public UbicacionesGeograficas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public UbicacionesGeograficas(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public UbicacionesGeograficas(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     public String getDireccion() {
@@ -133,7 +131,11 @@ public class UbicacionesGeograficas implements Serializable {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        if (direccion != null) {
+            this.direccion = direccion.toUpperCase();
+        } else {
+            this.direccion = direccion;
+        }
     }
 
     public Long getTelefono() {
@@ -173,7 +175,11 @@ public class UbicacionesGeograficas implements Serializable {
     }
 
     public void setObservacion(String observacion) {
-        this.observacion = observacion;
+        if (observacion != null) {
+            this.observacion = observacion.toUpperCase();
+        } else {
+            this.observacion = observacion;
+        }
     }
 
     public String getCodigoalternativo() {
@@ -181,7 +187,11 @@ public class UbicacionesGeograficas implements Serializable {
     }
 
     public void setCodigoalternativo(String codigoalternativo) {
-        this.codigoalternativo = codigoalternativo;
+        if (codigoalternativo != null) {
+            this.codigoalternativo = codigoalternativo.toUpperCase();
+        } else {
+            this.codigoalternativo = codigoalternativo;
+        }
     }
 
     public BigInteger getSitioactividad() {
@@ -201,6 +211,9 @@ public class UbicacionesGeograficas implements Serializable {
     }
 
     public SucursalesPila getSucursalPila() {
+        if (sucursalPila == null) {
+            sucursalPila = new SucursalesPila();
+        }
         return sucursalPila;
     }
 
@@ -217,6 +230,9 @@ public class UbicacionesGeograficas implements Serializable {
     }
 
     public Ciudades getCiudad() {
+        if (ciudad == null) {
+            ciudad = new Ciudades();
+        }
         return ciudad;
     }
 

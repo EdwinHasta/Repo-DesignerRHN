@@ -64,7 +64,7 @@ public class AdministrarVigenciasUbicaciones implements AdministrarVigenciasUbic
 
     public List<UbicacionesGeograficas> ubicacionesGeograficas() {
         try {
-            ubicacionesGeograficas = persistenciaUbicacionesGeograficas.buscarUbicacionesGeograficas();
+            ubicacionesGeograficas = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficas();
             return ubicacionesGeograficas;
         } catch (Exception e) {
             return null;
