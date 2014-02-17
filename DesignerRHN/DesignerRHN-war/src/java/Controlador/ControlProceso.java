@@ -1275,6 +1275,8 @@ public class ControlProceso implements Serializable {
             duplicarProceso.setEliminarliqsolucionnodo(listaProcesos.get(index).getEliminarliqsolucionnodo());
             duplicarProceso.setControlsobregiro(listaProcesos.get(index).getControlsobregiro());
             duplicarProceso.setAutomatico(listaProcesos.get(index).getAutomatico());
+            duplicarProceso.setComentarios(listaProcesos.get(index).getComentarios());
+            duplicarProceso.setNumerocierrerequerido(listaProcesos.get(index).getNumerocierrerequerido());
         }
         if (tipoLista == 1) {
             duplicarProceso.setSecuencia(l);
@@ -1286,6 +1288,8 @@ public class ControlProceso implements Serializable {
             duplicarProceso.setEliminarliqsolucionnodo(filtrarListaProcesos.get(index).getEliminarliqsolucionnodo());
             duplicarProceso.setControlsobregiro(filtrarListaProcesos.get(index).getControlsobregiro());
             duplicarProceso.setAutomatico(filtrarListaProcesos.get(index).getAutomatico());
+            duplicarProceso.setComentarios(filtrarListaProcesos.get(index).getComentarios());
+            duplicarProceso.setNumerocierrerequerido(filtrarListaProcesos.get(index).getNumerocierrerequerido());
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:DuplicarRegistroProceso");
@@ -2609,6 +2613,7 @@ public class ControlProceso implements Serializable {
     }
 
     public boolean validarNuevoProcesoClon() {
+        System.out.println("Valido el clonado");
         boolean retorno = true;
         int conteo = 0;
         for (int i = 0; i < lovProcesos.size(); i++) {
@@ -2619,18 +2624,20 @@ public class ControlProceso implements Serializable {
         if (conteo > 0) {
             retorno = false;
         }
+        System.out.println("Retorno : "+retorno);
         return retorno;
     }
 
     public void clonarProceso() {
+        System.out.println("Entro Al Metodo de Clonado");
          RequestContext context = RequestContext.getCurrentInstance();
         if (!procesoNuevoClonado.getDescripcion().isEmpty() && procesoNuevoClonado.getCodigo() >= 1 && procesoBaseClonado.getSecuencia() != null) {
             if (validarNuevoProcesoClon() == true) {
             } else {
-                context.execute("errorCodigoClon.hide()");
+                context.execute("errorCodigoClon.show()");
             }
         } else {
-            context.execute("errorDatosClonado.hide()");
+            context.execute("errorDatosClonado.show()");
         }
     }
 
