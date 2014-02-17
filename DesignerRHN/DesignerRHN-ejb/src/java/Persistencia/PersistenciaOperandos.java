@@ -44,7 +44,7 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     @Override
     public void crear(Operandos operandos) {
         try {
-            em.merge(operandos);
+            em.persist(operandos);
         } catch (Exception e) {
             System.out.println("El Operandos no exite o esta reservada por lo cual no puede ser modificada (Operandos)");
         }

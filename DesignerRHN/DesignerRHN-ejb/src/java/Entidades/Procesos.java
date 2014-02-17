@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Procesos.findAll", query = "SELECT p FROM Procesos p")})
 public class Procesos implements Serializable {
+
+    @OneToMany(mappedBy = "proceso")
+    private Collection<OperandosLogs> operandosLogsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
     private List<FormulasProcesos> formulasProcesosList;
     @OneToMany(mappedBy = "proceso")
@@ -60,13 +63,13 @@ public class Procesos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 15)
@@ -105,6 +108,26 @@ public class Procesos implements Serializable {
     private Cuentas cuentaneto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
     private Collection<ParametrosEstructuras> parametrosestructurasCollection;
+    @Transient
+    private String strContabilizacion;
+    @Transient
+    private String strEliminarSNodo;
+    @Transient
+    private String strEliminarAdelanto;
+    @Transient
+    private String strEliminarCSobregiro;
+    @Transient
+    private String strAutomatico;
+    @Transient
+    private boolean checkContabilizacion;
+    @Transient
+    private boolean checkEliminarSNodo;
+    @Transient
+    private boolean checkEliminarAdelanto;
+    @Transient
+    private boolean checkEliminarCSobregiro;
+    @Transient
+    private boolean checkAutomatico;
 
     public Procesos() {
     }
@@ -136,7 +159,7 @@ public class Procesos implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
+        if (descripcion == null) {
             descripcion = " ";
         }
         return descripcion;
@@ -155,6 +178,9 @@ public class Procesos implements Serializable {
     }
 
     public String getContabilizacion() {
+        if (contabilizacion == null) {
+            contabilizacion = "N";
+        }
         return contabilizacion;
     }
 
@@ -171,6 +197,9 @@ public class Procesos implements Serializable {
     }
 
     public String getEliminarliqsolucionnodo() {
+        if (eliminarliqsolucionnodo == null) {
+            eliminarliqsolucionnodo = "N";
+        }
         return eliminarliqsolucionnodo;
     }
 
@@ -179,6 +208,9 @@ public class Procesos implements Serializable {
     }
 
     public String getEliminarliqadelanto() {
+        if (eliminarliqadelanto == null) {
+            eliminarliqadelanto = "N";
+        }
         return eliminarliqadelanto;
     }
 
@@ -203,6 +235,9 @@ public class Procesos implements Serializable {
     }
 
     public String getControlsobregiro() {
+        if (controlsobregiro == null) {
+            controlsobregiro = "N";
+        }
         return controlsobregiro;
     }
 
@@ -219,6 +254,9 @@ public class Procesos implements Serializable {
     }
 
     public String getAutomatico() {
+        if (automatico == null) {
+            automatico = "N";
+        }
         return automatico;
     }
 
@@ -240,6 +278,171 @@ public class Procesos implements Serializable {
 
     public void setCuentaneto(Cuentas cuentaneto) {
         this.cuentaneto = cuentaneto;
+    }
+
+    public String getStrContabilizacion() {
+        getContabilizacion();
+        if (contabilizacion == null || contabilizacion.equalsIgnoreCase("N")) {
+            strContabilizacion = "NO";
+        } else {
+            strContabilizacion = "SI";
+        }
+        return strContabilizacion;
+    }
+
+    public void setStrContabilizacion(String strContabilizacion) {
+        this.strContabilizacion = strContabilizacion;
+    }
+
+    public String getStrEliminarAdelanto() {
+        getEliminarliqadelanto();
+        if (eliminarliqadelanto == null || eliminarliqadelanto.equalsIgnoreCase("N")) {
+            strEliminarAdelanto = "NO";
+        } else {
+            strEliminarAdelanto = "SI";
+        }
+        return strEliminarAdelanto;
+    }
+
+    public void setStrEliminarAdelanto(String strEliminarAdelanto) {
+        this.strEliminarAdelanto = strEliminarAdelanto;
+    }
+
+    public String getStrEliminarCSobregiro() {
+        getControlsobregiro();
+        if (controlsobregiro == null || controlsobregiro.equalsIgnoreCase("N")) {
+            strEliminarCSobregiro = "NO";
+        } else {
+            strEliminarCSobregiro = "SI";
+        }
+        return strEliminarCSobregiro;
+    }
+
+    public void setStrEliminarCSobregiro(String strEliminarCSobregiro) {
+        this.strEliminarCSobregiro = strEliminarCSobregiro;
+    }
+
+    public String getStrAutomatico() {
+        getAutomatico();
+        if (automatico == null || automatico.equalsIgnoreCase("N")) {
+            strAutomatico = "NO";
+        } else {
+            strAutomatico = "SI";
+        }
+        return strAutomatico;
+    }
+
+    public void setStrAutomatico(String strAutomatico) {
+        this.strAutomatico = strAutomatico;
+    }
+
+    public String getStrEliminarSNodo() {
+        getEliminarliqsolucionnodo();
+        if (eliminarliqsolucionnodo == null || eliminarliqsolucionnodo.equalsIgnoreCase("N")) {
+            strEliminarSNodo = "NO";
+        } else {
+            strEliminarSNodo = "SI";
+        }
+        return strEliminarSNodo;
+    }
+
+    public void setStrEliminarSNodo(String strEliminarSNodo) {
+        this.strEliminarSNodo = strEliminarSNodo;
+    }
+
+    public boolean isCheckContabilizacion() {
+        getContabilizacion();
+        if (contabilizacion.equalsIgnoreCase("N")) {
+            checkContabilizacion = false;
+        } else {
+            checkContabilizacion = true;
+        }
+        return checkContabilizacion;
+    }
+
+    public void setCheckContabilizacion(boolean checkContabilizacion) {
+        if (checkContabilizacion == false) {
+            contabilizacion = "N";
+        } else {
+            contabilizacion = "S";
+        }
+        this.checkContabilizacion = checkContabilizacion;
+    }
+
+    public boolean isCheckEliminarSNodo() {
+        getEliminarliqsolucionnodo();
+        if (eliminarliqsolucionnodo.equalsIgnoreCase("N")) {
+            checkEliminarSNodo = false;
+        } else {
+            checkEliminarSNodo = true;
+        }
+        return checkEliminarSNodo;
+    }
+
+    public void setCheckEliminarSNodo(boolean checkEliminarSNodo) {
+        if (checkEliminarSNodo == false) {
+            eliminarliqsolucionnodo = "N";
+        } else {
+            eliminarliqsolucionnodo = "S";
+        }
+        this.checkEliminarSNodo = checkEliminarSNodo;
+    }
+
+    public boolean isCheckEliminarAdelanto() {
+        getEliminarliqadelanto();
+        if (eliminarliqadelanto.equalsIgnoreCase("N")) {
+            checkEliminarAdelanto = false;
+        } else {
+            checkEliminarAdelanto = true;
+        }
+        return checkEliminarAdelanto;
+    }
+
+    public void setCheckEliminarAdelanto(boolean checkEliminarAdelanto) {
+        if (checkEliminarAdelanto == false) {
+            eliminarliqadelanto = "N";
+        } else {
+            eliminarliqadelanto = "S";
+        }
+        this.checkEliminarAdelanto = checkEliminarAdelanto;
+    }
+
+    public boolean isCheckEliminarCSobregiro() {
+        getControlsobregiro();
+        if (controlsobregiro.equalsIgnoreCase("N")) {
+            checkEliminarCSobregiro = false;
+        } else {
+            checkEliminarCSobregiro = true;
+        }
+        return checkEliminarCSobregiro;
+    }
+
+    public void setCheckEliminarCSobregiro(boolean checkEliminarCSobregiro) {
+        if (checkEliminarCSobregiro == false) {
+            controlsobregiro = "N";
+        } else {
+            controlsobregiro = "S";
+        }
+        this.checkEliminarCSobregiro = checkEliminarCSobregiro;
+    }
+
+    public boolean isCheckAutomatico() {
+        getAutomatico();
+        if (automatico.equalsIgnoreCase("N")) {
+            checkAutomatico = false;
+        } else {
+            checkAutomatico = true;
+        }
+        return checkAutomatico;
+    }
+
+    public void setCheckAutomatico(boolean checkAutomatico) {
+        if (checkAutomatico == false) {
+            automatico = "N";
+        } else {
+            automatico = "S";
+        }
+        this.checkAutomatico = checkAutomatico;
     }
 
     @XmlTransient
@@ -356,5 +559,14 @@ public class Procesos implements Serializable {
     public void setFormulasProcesosList(List<FormulasProcesos> formulasProcesosList) {
         this.formulasProcesosList = formulasProcesosList;
     }
-    
+
+    @XmlTransient
+    public Collection<OperandosLogs> getOperandosLogsCollection() {
+        return operandosLogsCollection;
+    }
+
+    public void setOperandosLogsCollection(Collection<OperandosLogs> operandosLogsCollection) {
+        this.operandosLogsCollection = operandosLogsCollection;
+    }
+
 }

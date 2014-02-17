@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -610,6 +611,8 @@ public class ControlDetalleLegislacion implements Serializable {
             listFormulasContratosDetalle = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosFormulaContrato");
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+            context.update("form:growl");
             k = 0;
         }
         index = -1;

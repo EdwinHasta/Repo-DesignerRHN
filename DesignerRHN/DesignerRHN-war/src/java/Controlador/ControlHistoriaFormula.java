@@ -484,11 +484,12 @@ public class ControlHistoriaFormula implements Serializable {
     //GUARDAR
     /**
      */
-    
-    public void guardarYSalir(){
+
+    public void guardarYSalir() {
         guardadoGeneral();
         salir();
     }
+
     public void guardadoGeneral() {
         if (cambiosHistoriaFormula == true) {
             guardarCambiosHistoriaFormula();
@@ -502,7 +503,9 @@ public class ControlHistoriaFormula implements Serializable {
 
     public void guardarCambiosHistoriaFormula() {
         FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+        RequestContext context = RequestContext.getCurrentInstance();
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
         if (!listHistoriasFormulasBorrar.isEmpty()) {
             administrarHistoriaFormula.borrarHistoriasFormulas(listHistoriasFormulasBorrar);
             listHistoriasFormulasBorrar.clear();
@@ -520,7 +523,7 @@ public class ControlHistoriaFormula implements Serializable {
         indexHistoriasFormulas = -1;
         secRegistroHistoriaFormula = null;
         cambiosHistoriaFormula = false;
-        RequestContext context = RequestContext.getCurrentInstance();
+
         context.update("form:datosHistoriaFormula");
         context.update("form:growl");
 
@@ -528,7 +531,9 @@ public class ControlHistoriaFormula implements Serializable {
 
     public void guardarCambiosNodos() {
         FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+        RequestContext context = RequestContext.getCurrentInstance();
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
         if (!listNodosBorrar.isEmpty()) {
             administrarHistoriaFormula.borrarNodos(listNodosBorrar);
             listNodosBorrar.clear();
@@ -545,7 +550,6 @@ public class ControlHistoriaFormula implements Serializable {
         listNodosHistoriaFormula = null;
         listNodosParaExportar = null;
         cargarDatosParaNodos();
-        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:growl");
         k = 0;
         indexNodoSeleecionado = -1;
@@ -1034,12 +1038,12 @@ public class ControlHistoriaFormula implements Serializable {
         aceptar = false;
     }
 
-    public void dispararDialogoGuardarCambios(){
-        if(cambiosHistoriaFormula == true || cambiosNodos == true){
-        RequestContext.getCurrentInstance().execute("confirmarGuardar.show();");
+    public void dispararDialogoGuardarCambios() {
+        if (cambiosHistoriaFormula == true || cambiosNodos == true) {
+            RequestContext.getCurrentInstance().execute("confirmarGuardar.show();");
         }
     }
-    
+
     /**
      *
      * @return Nombre del dialogo a exportar en XML
@@ -1313,7 +1317,7 @@ public class ControlHistoriaFormula implements Serializable {
         nodo13_1 = " ";
         nodo13_1RO = true;
         nodo14_1 = " ";
-        nodo14_1RO =  true;
+        nodo14_1RO = true;
         nodo15_1 = " ";
         nodo15_1RO = true;
         nodo16_1 = " ";

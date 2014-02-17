@@ -40,13 +40,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Operandos.findAll", query = "SELECT o FROM Operandos o")})
 public class Operandos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<TiposConstantes> tiposConstantesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<TiposFormulas> tiposFormulasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<TiposFunciones> tiposFuncionesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<TiposBloques> tiposBloquesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<TiposConstantes> tiposConstantesCollection;
+    private Collection<OperandosLogs> operandosLogsCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
@@ -299,8 +301,6 @@ public class Operandos implements Serializable {
     public void setValor(String valor) {
         this.valor = valor;
     }
-    
-    
 
     @XmlTransient
     public Collection<Nodos> getNodosCollection() {
@@ -390,6 +390,13 @@ public class Operandos implements Serializable {
         this.tiposBloquesCollection = tiposBloquesCollection;
     }
 
-    
+    @XmlTransient
+    public Collection<OperandosLogs> getOperandosLogsCollection() {
+        return operandosLogsCollection;
+    }
+
+    public void setOperandosLogsCollection(Collection<OperandosLogs> operandosLogsCollection) {
+        this.operandosLogsCollection = operandosLogsCollection;
+    }
 
 }

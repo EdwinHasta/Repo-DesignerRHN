@@ -1,0 +1,743 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:panel  id="PanelTotal" header="Ubicaciones Geograficas" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
+                        <h:outputText id="outEmpresaNombre" value="Empresa: " style="position: absolute; left: 20px; top: 90px; width:50px ;height:50px; color: darkblue;font-weight: bold "/> 
+                        <h:outputText id="nombreEmpresa" value="#{controlUbicacionesGeograficas.empresaSeleccionada.nombre}" style="position: absolute; left: 90px; top: 90px; width:300px ;height:50px; color: red;font-weight: bold " />
+                        <h:outputText id="outEmpresaNit" value="Nit: " style="position: absolute; left: 400px; top: 90px; width:50px ;height:50px; color: darkblue;font-weight: bold "/> 
+                        <h:outputText id="nitEmpresa" value="#{controlUbicacionesGeograficas.empresaSeleccionada.nit}" style="position: absolute; left: 228px; top: 90px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; "/>
+
+                        <fieldset style="position: absolute; left: 10px; top: 120px; font-size: 10px; width: 835px; height: 358px; border-radius: 10px; ">
+                            <legend style="font-size: 14px; color: blue"><strong>Ubicaciones Geograficas</strong></legend>
+                            <!-- TABLA EMPLVIGENCIACARGO -->
+
+                            <p:dataTable id="datosUbicacionesGeograficas" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;font-size: 10px; border: 1px;"                      
+                                         value="#{controlUbicacionesGeograficas.listUbicacionesGeograficasPorEmpresa}" scrollable="true" scrollHeight="#{controlUbicacionesGeograficas.tamano}"  scrollWidth="830"
+                                         filteredValue="#{controlUbicacionesGeograficas.filtrarUbicacionesGeograficas}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true" editMode="cell" paginator="false" >
+
+                                <p:ajax event="filter" listener="#{controlUbicacionesGeograficas.eventoFiltrar()}"/>
+
+
+                                <p:column headerText="Codigo" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigoCC" width="50" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.codigo}" id="editarCodigoCC" style="font-size: 10px; border-radius: 0px; width: 99%; text-transform: uppercase" > 
+                                                <p:ajax  event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.codigo)}" update="@this"/>
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice,0)}" /> 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " value="Codigo"/>
+                                    </f:facet>
+                                </p:column>  
+                                <p:tooltip style="font-size: 12px" for="fooCodigoCC" value="Descripcion" />
+
+                                <p:column headerText="Descripcipn" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains"  id="nombreCentroCosto" width="180" filterStyle="display: none; visibility: hidden;" >      
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.descripcion}" style="text-transform: uppercase" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText id="editarNombreCentroCoso" value="#{info.descripcion}" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase">
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.descripcion)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 1)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none;" value="Descripcipn" />
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Ciudad" sortBy="#{info.ciudad.nombre}" filterBy="#{info.ciudad.nombre}" filterMatchMode="contains" id="tipoCentroCosto" width="130" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.ciudad.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.ciudad.nombre}" id="editarTipoCentroCosto" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'CIUDADES', info.ciudad.nombre)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlUbicacionesGeograficas.asignarIndex(indice, 0, 2)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTipoCentroCosto"  action="cambioTipoCentroCosto" value="ciudad"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Dirección" sortBy="#{info.direccion}" filterBy="#{info.direccion}" filterMatchMode="contains" id="codigoCTT" width="90" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.direccion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.direccion}" id="editarCodigoCTT" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.direccion )}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 3)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " id="fooDireccion" value="Dirección"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Telefono" sortBy="#{info.telefono}" filterBy="#{info.telefono}" filterMatchMode="contains" id="telefono" width="70" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.telefono}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.telefono}" id="editarTelefono" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.telefono )}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 4)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " id="fooTelefono" value="Telefono"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Fax" sortBy="#{info.fax}" filterBy="#{info.fax}" filterMatchMode="contains" id="fax" width="70" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.fax}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.fax}" id="editarFax" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.fax)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 5)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " id="fooFax" value="Fax"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Observacion" sortBy="#{info.observacion}" filterBy="#{info.observacion}" filterMatchMode="contains" id="observacion" width="113" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.observacion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.observacion}" id="editarObservacion" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.observacion)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 6)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " id="fooObservacion" value="Observacion"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Zona" sortBy="#{info.zona}" filterBy="#{info.zona}" filterMatchMode="contains" id="manoDeObra" width="110" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
+                                    <p:cellEditor>
+
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.zona}" /></f:facet> 
+                                        <f:facet name="input">
+                                            <p:selectOneMenu  effect="fold"  value="#{info.zona}" style="height: 20px; width: 110px;" >  
+                                                <f:selectItem  itemLabel="URBANA" itemValue="URBANA" />  
+                                                <f:selectItem  itemLabel="RURAL" itemValue="RURAL" />   
+                                                <f:selectItem  itemLabel=" " itemValue="" />   
+                                                <h:outputText value="#{info.zona}" />
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.mostrarInfo(indice, 7)}" update="manoDeObra"/>
+                                            </p:selectOneMenu>   
+                                        </f:facet>
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " id="fooManoObra" value="Zona" />
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Act Economica" sortBy="#{info.actividadeconomica}" filterBy="#{info.actividadeconomica}" filterMatchMode="contains" id="actividadEconomica" width="70" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.actividadeconomica}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.actividadeconomica}" id="editarActividadEconomica" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.actividadeconomica)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 8)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " id="fooActividadEconomica" value="Act Economica"/>
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Sucursal" sortBy="#{info.sucursalPila.descripcion}" filterBy="#{info.sucursalPila.descripcion}" filterMatchMode="contains" id="sucursalPila" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.sucursalPila.descripcion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.sucursalPila.descripcion}" id="editarSucursalPila" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'SUCURSALESPILA', info.sucursalPila.descripcion)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 9)}" />
+                                                <p:ajax event="dblclick" listener="#{controlUbicacionesGeograficas.asignarIndex(indice, 0, 9)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooSucursalPila"  action="cambioTipoCentroCosto" value="Sucursal"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Cod. Alternativo" sortBy="#{info.codigoalternativo}" filterBy="#{info.codigoalternativo}" filterMatchMode="contains" id="codigoAT" width="80" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.codigoalternativo}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.codigoalternativo}" id="editarCodigoAT" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.modificandoCentroCosto(indice, 'N', info.codigoalternativo )}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlUbicacionesGeograficas.cambiarIndice(indice, 10)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " id="fooCodigoAT" value="Codigo Alternativo"/>
+                                    </f:facet>
+                                </p:column>
+
+
+
+                            </p:dataTable> 
+                        </fieldset>
+
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
+                            <p:toolbarGroup align="left">
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlUbicacionesGeograficas.guardarCambiosCentroCosto()}" process="@this" />
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Listas de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Filtrar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlUbicacionesGeograficas.exportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.limpiarNuevoCentroCostos()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosUbicacionesGeograficasExportar" fileName="UBICACIONESGEOGRAFICAS" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.mostrarDialogoNuevoCiudades()}" process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Ubicacion Grafica" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.verificarBorrado()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Ubicacion Grafica" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.duplicandoCentroCostos()}"  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Ubicacion Grafica" />
+                                <p:separator /> 
+
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUbicacionesGeograficas.verificarRastro()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+                        <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
+                        <p:dialog header="Ciudades" widgetVar="tiposCentrosCostosDialogo" draggable="false" resizable="false" closable="false" id="tiposCentrosCostosDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovTipoUbicacionesGeograficas" style="font-size: 11px; width: 430px" var="ciudades" value="#{controlUbicacionesGeograficas.listaCiudades}" rowKey="#{ciudades.secuencia}"
+                                         selection="#{controlUbicacionesGeograficas.ciudadSeleccionada}" selectionMode="single" widgetVar="lovTipoUbicacionesGeograficas" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlUbicacionesGeograficas.filtradoCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlUbicacionesGeograficas.activarAceptar()}" update=":form:aceptarTCC"/>
+                                <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.actualizarCiudad()}" process="@this" onstart="lovTipoUbicacionesGeograficas.clearFilters()" update="lovTipoUbicacionesGeograficas, :form:datosUbicacionesGeograficas"/>
+
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Ciudad"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovTipoUbicacionesGeograficas.filter();" style="width:150px; position: relative; left: 50px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{ciudades.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{ciudades.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{ciudades.nombre}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre" />
+                                    </f:facet>
+                                    <h:outputText value="#{ciudades.nombre}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoUbicacionesGeograficas.clearFilters();" actionListener="#{controlUbicacionesGeograficas.actualizarCiudad()}" update="lovTipoUbicacionesGeograficas, aceptarTCC, datosUbicacionesGeograficas" process="@this">
+                                <p:resetInput target=":form:lovTipoUbicacionesGeograficas:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 303px" value="Atras" onclick="tiposCentrosCostosDialogo.hide(), lovTipoUbicacionesGeograficas.clearFilters();" actionListener="#{controlUbicacionesGeograficas.cancelarCambioCiudad()}" update="lovTipoUbicacionesGeograficas" process="@this">
+                                <p:resetInput target=":form:lovTipoUbicacionesGeograficas:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog> 
+
+                        <p:dialog header="Sucursales Pila" widgetVar="sucursalesPilaDialogo" draggable="false" resizable="false" closable="false" id="sucursalesPilaDialogo"  
+                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                            <p:dataTable id="lovSucursalesPila" style="font-size: 11px; width: 430px" var="tipocentrocostos" value="#{controlUbicacionesGeograficas.listaSucursalesPilas}" rowKey="#{tipocentrocostos.secuencia}"
+                                         selection="#{controlUbicacionesGeograficas.sucursalesPilasSeleccionada}" selectionMode="single" widgetVar="lovSucursalesPila" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                         filteredValue="#{controlUbicacionesGeograficas.filtradoSucursalesPilas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                <p:ajax event="rowSelect" listener="#{controlUbicacionesGeograficas.activarAceptar()}" update=":form:aceptarSP"/>
+                                <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.actualizarSucursalPila()}" process="@this" onstart="lovSucursalesPila.clearFilters()" update="lovSucursalesPila, :form:datosUbicacionesGeograficas"/>
+
+                                <f:facet name="header">  
+                                    <h:outputText value="Buscar Ciudad"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovSucursalesPila.filter();" style="width:150px; position: relative; left: 50px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{tipocentrocostos.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="Codigo" />
+                                    </f:facet>
+                                    <h:outputText  value="#{tipocentrocostos.codigo}" />
+                                </p:column>
+                                <p:column filterBy="#{tipocentrocostos.descripcion}" width="200"  filterMatchMode="contains">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre" />
+                                    </f:facet>
+                                    <h:outputText value="#{tipocentrocostos.descripcion}" />
+                                </p:column>
+                            </p:dataTable>
+                            <p:commandButton id="aceptarSP" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" onclick="sucursalesPilaDialogo.hide(), lovSucursalesPila.clearFilters();" actionListener="#{controlUbicacionesGeograficas.actualizarSucursalPila()}" update="lovSucursalesPila, aceptarSP, datosUbicacionesGeograficas" process="@this">
+                                <p:resetInput target="lovSucursalesPila"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasSP" style="position: relative; left: 303px" value="Atras" onclick="sucursalesPilaDialogo.hide(), lovSucursalesPila.clearFilters();" actionListener="#{controlUbicacionesGeograficas.cancelarCambioSucursalPila()}" update="lovSucursalesPila" process="@this">
+                                <p:resetInput target="lovSucursalesPila"/>
+                            </p:commandButton>
+                        </p:dialog> 
+
+
+                        <p:commandButton style=" position: absolute; left: 10px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlUbicacionesGeograficas.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 730px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlUbicacionesGeograficas.guardado}" onclick="confirmarGuardar.show();" update=":form:datosUbicacionesGeograficas" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 808px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras" actionListener="#{controlCentroCosto.salir()}" action="nomina" process="@this" />
+
+                    </p:panel>
+
+                    <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Necesita: #{controlUbicacionesGeograficas.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 30px; top: 20px;"  />
+                        <h:outputText value=" #{controlUbicacionesGeograficas.mensajeValidacion}" style="position: absolute; left: 100px; top: 25px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionModificar.hide();" style="position: absolute; top: 60px; left: 250px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="validacionBorrar" header="ATENCIÓN...!" widgetVar="validacionBorrar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 25px; top: 10px;"  />
+                        <h:outputText value="NO se puede eliminar este registro porque esta relacionado con una o mas tablas" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionBorrar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="mostrarBorrados" header="ATENCIÓN...!" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
+                        <h:outputText value="Se han borrado #{controlUbicacionesGeograficas.registrosBorrados} Registros" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="mostrarGuardar" header="ATENCIÓN...!" widgetVar="mostrarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
+                        <h:outputText value="Los datos se han guardado correctamente" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar es necesario adicionar: #{controlUbicacionesGeograficas.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+
+                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="si" onclick="confirmarGuardar.hide();" actionListener="#{controlUbicacionesGeograficas.guardarCambiosCentroCosto()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="no" onclick="confirmarGuardar.hide();" actionListener="#{controlUbicacionesGeograficas.cancelarModificacion()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+
+                    <p:dialog id="confirmarCambioEmpresa" header="ATENCIÓN...!" widgetVar="confirmarCambioEmpresa"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="¿Desea guardar los cambios realizados en Ubicaciones Geograficas de la empresa" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="confirmarCambioEmpresa.hide();" actionListener="#{controlUbicacionesGeograficas.guardarCambiosCentroCosto()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="cancelar" onclick="confirmarCambioEmpresa.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlUbicacionesGeograficas.activarCtrlF11()}"/> 
+                    <p:hotkey bind="alt+p" actionListener="#{controlUbicacionesGeograficas.lovEmpresas()}"/> 
+                </h:form>
+
+                <h:form id="formularioDialogos" >
+
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN...!" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'UBICACIONESGEOGRAFICAS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlUbicacionesGeograficas.secRegistro, 'UbicacionesGeograficas', 'ubicaciongeografica')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="no" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN...!" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla UBICACIONESGEOGRAFICAS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('UbicacionesGeograficas', 'ubicaciongeografica')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="no" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN...!" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN...!" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN...!" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlUbicacionesGeograficas.secRegistro, 'UbicacionesGeograficas', 'ubicaciongeografica')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="no" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN...!" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN...!" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN...!" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="La tabla 'UBICACIONESGEOGRAFICAS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog> 
+
+
+                    <p:dialog id="NuevoRegistroCentroCostos" header="Nuego Registro" widgetVar="NuevoRegistroCentroCostos" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="720" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar Nueva Ubicacion Geografica" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevoCentroCostos" style="border: none;">
+
+                            <!--0-->
+                            <strong><h:outputText value="Codigo : " style="font-size: 12px; position: absolute; top: 50px; " /></strong>
+                            <p:inputText id="nuevaCodigoCC" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.codigo}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 45px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaCodigoCC" value="Codigo" />
+
+                            <strong><h:outputText value="Descripcion : " style="font-size: 12px; position: absolute; top: 95px; " /></strong>
+                            <p:inputText id="nuevaDescripcion" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.descripcion}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 90px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaDescripcion" value="Descripcion" />
+
+                            <strong><h:outputText value="Ciudad:" style="font-size: 12px; position: absolute; top: 140px" /></strong>
+                            <p:inputText id="nuevaTipoCentroCostos" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.ciudad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 135px;">
+                                <p:ajax event="click" listener="#{controlUbicacionesGeograficas.valoresBackupAutocompletar(1, 'CIUDADES')}" />
+                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.autocompletarNuevo('CIUDADES', controlUbicacionesGeograficas.nuevaUbicacionGeografica.ciudad.nombre , 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlUbicacionesGeograficas.asignarVariableTiposCC(0)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 332px; top: 135px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlUbicacionesGeograficas.cargarCiudadesNuevoRegistro(0)}"/>   
+                            <p:watermark for="nuevaTipoCentroCostos" value="Ciudad" />
+
+                            <strong><h:outputText value="Direccion: : " style="font-size: 12px; position: absolute; top: 180px; " /></strong>
+                            <p:inputText id="nuevaDireccion" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.direccion}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 175px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaDireccion" value="Direccion" />
+
+
+                            <strong><h:outputText value="Telefono : " style="font-size: 12px; position: absolute; top: 225px; " /></strong>
+                            <p:inputText id="nuevaTelefono" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.telefono}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 220px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaTelefono" value="Telefono" />
+                            <strong><h:outputText value="Fax : " style="font-size: 12px; position: absolute; top: 270px;" /></strong>
+                            <p:inputText id="nuevaFax" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.fax}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 265px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaFax" value="Fax" />
+
+                            <strong><h:outputText value="Observacion : " style="font-size: 12px; position: absolute; left:400px ;top: 50px; " /></strong>
+                            <p:inputText id="nuevaObservacion" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.observacion}" style="font-size: 12px; width: 135px; position: absolute; left: 550px; top: 45px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaObservacion" value="Observacion" />
+
+                            <strong><h:outputText value="Zona" style="font-size: 12px; position: absolute;left:400px ; top: 95px" /></strong>
+                            <p:selectOneMenu id="nuevaZona" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.zona}" style="font-size: 12px; width: 135px; position: absolute;left: 550px; top: 90px">  
+                                <f:selectItem itemLabel=" " itemValue="" />                
+                                <f:selectItem itemLabel="URBANA" itemValue="URBANA"/>  
+                                <f:selectItem itemLabel="RURAL" itemValue="RURAL" />  
+                                <p:ajax update="@this"/>
+                            </p:selectOneMenu>   
+                            <p:watermark for="nuevaZona" value="Zona" />
+
+                            <strong><h:outputText value="Actividad Economica : " style="font-size: 12px; position: absolute;left:400px ; top: 140px; " /></strong>
+                            <p:inputText id="nuevaAC" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.actividadeconomica}" style="font-size: 12px; width: 135px; position: absolute; left: 550px; top: 135px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaAC" value="Actividad Economica" />
+
+                            <strong><h:outputText value="Sucursal:" style="font-size: 12px; position: absolute;left:400px ; top: 185px" /></strong>
+                            <p:inputText id="nuevaSucursal" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.sucursalPila.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 550px; top: 180px;">
+                                <p:ajax event="click" listener="#{controlUbicacionesGeograficas.valoresBackupAutocompletar(1, 'SUCURSALESPILA')}" />
+                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.autocompletarNuevo('SUCURSALESPILA', controlUbicacionesGeograficas.nuevaUbicacionGeografica.sucursalPila.descripcion , 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlUbicacionesGeograficas.asignarVariableSucursalesPila(0)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 681px; top: 180px;  " id="btnnuevoNombreSucursalPila" icon="ui-icon-search" process="@this"  actionListener="#{controlUbicacionesGeograficas.cargarSucursalesPilaNuevoRegistro(0)}"/>   
+                            <p:watermark for="nuevaSucursal" value="Sucursal" />
+
+                            <strong><h:outputText value="Codigo Alternativo : " style="font-size: 12px; position: absolute;left:400px ; top: 230px; " /></strong>
+                            <p:inputText id="nuevaCA" value="#{controlUbicacionesGeograficas.nuevaUbicacionGeografica.codigoalternativo}" style="font-size: 12px; width: 135px; position: absolute; left: 550px; top: 225px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaCA" value="Codigo Alternativo" />
+
+                            <p:commandButton id="limpiar" value="limpiar" style=" font-size: 11px ;position: absolute; left: 400px; top: 280px;" actionListener="#{controlUbicacionesGeograficas.limpiarNuevaUbicacionGeografica()}" update="nuevoCentroCostos" process="@this"/>
+                            <p:commandButton id="agregarCC" value="agregar" style="font-size: 11px; position: absolute; left: 550px; top: 280px;"  process="@this" actionListener="#{controlUbicacionesGeograficas.agregarNuevaUbicacionGeografica()}"  />
+                            <p:commandButton id="cancelarCC" value="cancelar" style="font-size: 11px; position: absolute; left:620px; top: 280px;" actionListener="#{controlUbicacionesGeograficas.limpiarNuevaUbicacionGeografica()}" update="nuevoCentroCostos" onclick="NuevoRegistroCentroCostos.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                    <!-- muestra el dialogo del boton de buscar centros costos-->
+                    <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
+
+
+
+
+
+                    <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->                    
+                    <p:dialog id="DuplicarRegistroCentroCostos" header="Duplicar Registro" widgetVar="DuplicarRegistroCentroCostos" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="720" style="font-size: 12px; padding: 0px">  
+
+                        <center><strong><h:outputText value="Duplicar Ubicacion Geografica" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarUbicacionGeograficas" style="border: none;">
+                            <!--0-->
+                            <strong><h:outputText value="Codigo : " style="font-size: 12px; position: absolute; top: 50px; " /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.codigo}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 45px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarCodigo" value="Codigo" />
+
+                            <strong><h:outputText value="Descripcion : " style="font-size: 12px; position: absolute; top: 95px; " /></strong>
+                            <p:inputText id="duplicarDescripcion" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.descripcion}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 90px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarDescripcion" value="Descripcion" />
+
+                            <strong><h:outputText value="Ciudad" style="font-size: 12px; position: absolute; top: 140px" /></strong>
+                            <p:inputText id="duplicarTipoCentroCostos" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.ciudad.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 135px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlUbicacionesGeograficas.valoresBackupAutocompletar(2, 'CIUDADES')}" />
+                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.autocompletarDuplicado('CIUDADES', controlBetaCentrosCostos.duplicarCentroCosto.tipocentrocosto.nombre , 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlUbicacionesGeograficas.asignarVariableTiposCC(1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 332px; top: 135px;  "  id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlUbicacionesGeograficas.cargarCiudadesNuevoRegistro(1)}"/>   
+                            <p:watermark for="duplicarTipoCentroCostos" value="Ciudades" />
+
+
+                            <strong><h:outputText value="Direccion: : " style="font-size: 12px; position: absolute; top: 180px; " /></strong>
+                            <p:inputText id="duplicarDireccion" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.direccion}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 175px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarDireccion" value="Direccion" />
+
+
+                            <strong><h:outputText value="Telefono : " style="font-size: 12px; position: absolute; top: 225px; " /></strong>
+                            <p:inputText id="duplicarTelefono" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.telefono}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 220px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarTelefono" value="Telefono" />
+
+                            <strong><h:outputText value="Fax : " style="font-size: 12px; position: absolute; top: 270px;" /></strong>
+                            <p:inputText id="duplicarFax" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.fax}" style="font-size: 12px; width: 135px; position: absolute; left: 200px; top: 265px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarFax" value="Fax" />
+
+                            <strong><h:outputText value="Observacion : " style="font-size: 12px; position: absolute; left: 400px;top: 50px; " /></strong>
+                            <p:inputText id="duplicarObservacion" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.observacion}" style="font-size: 12px; width: 135px; position: absolute; left: 550px; top: 45px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarObservacion" value="Observacion" />
+
+                            <strong><h:outputText value="Zona" style="font-size: 12px; position: absolute;left: 400px; top: 95px" /></strong>
+                            <p:selectOneMenu id="duplicarZona" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.zona}" style="font-size: 12px; width: 135px; position: absolute;left: 550px; top: 85px">  
+                                <f:selectItem itemLabel=" " itemValue="" />                
+                                <f:selectItem itemLabel="URBANA" itemValue="URBANA"/>  
+                                <f:selectItem itemLabel="RURAL" itemValue="RURAL" />  
+                                <p:ajax update="@this"/>
+                            </p:selectOneMenu>   
+                            <p:watermark for="duplicarZona" value="Zona" />
+
+                            <strong><h:outputText value="Sucural :" style="font-size: 12px; position: absolute;left: 400px; top: 140px" /></strong>
+                            <p:inputText id="duplicarSucursalPila" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.sucursalPila.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 550px; top: 135px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlUbicacionesGeograficas.valoresBackupAutocompletar(2, 'SUCURSALESPILA')}" />
+                                <p:ajax event="change" listener="#{controlUbicacionesGeograficas.autocompletarDuplicado('SUCURSALESPILA', controlUbicacionesGeograficas.duplicarUbicacionGeografica.sucursalPila.descripcion , 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlUbicacionesGeograficas.asignarVariableSucursalesPila(1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 681px; top: 135px;  "  id="botonDuplicarSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlUbicacionesGeograficas.cargarSucursalesPilaNuevoRegistro(1)}"/>   
+                            <p:watermark for="duplicarSucursalPila" value="Sucursal Pila" />
+
+                            <strong><h:outputText value="Codigo Alternativo : " style="font-size: 12px; position: absolute;left: 400px; top: 195px; " /></strong>
+                            <p:inputText id="duplicarCA" value="#{controlUbicacionesGeograficas.duplicarUbicacionGeografica.codigoalternativo}" style="font-size: 12px; width: 135px; position: absolute; left: 550px; top: 190px;">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarCA" value="Codigo Alternativo" />
+
+
+                            <p:commandButton id="limpiarDuplicadoCC" value="limpiar" style=" font-size: 11px ;position: absolute; left: 400px; top: 280px;" actionListener="#{controlUbicacionesGeograficas.limpiarDuplicarCentroCostos()}" update="duplicarUbicacionGeograficas" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoCC" value="agregar" style="font-size: 11px; position: absolute; left: 550px; top: 280px;"  process="@this" actionListener="#{controlUbicacionesGeograficas.confirmarDuplicar()}"/>
+                            <p:commandButton id="cancelarDuplicadoCC" value="cancelar" style="font-size: 11px; position: absolute; left: 620px; top: 280px;" actionListener="#{controlUbicacionesGeograficas.limpiarDuplicarCentroCostos()}" update="duplicarUbicacionGeograficas" onclick="DuplicarRegistroCentroCostos.hide();" process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+
+                    <!-- LOV EMPRESAS -->
+                    <p:dialog header="Empresas" widgetVar="EmpresasDialogo" draggable="false" resizable="false" closable="false" id="EmpresasDialogo"  
+                              showEffect="fade" hideEffect="fade" width="350" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEmpresas" style="font-size: 11px; width: 310px" var="empresa" value="#{controlUbicacionesGeograficas.listaEmpresas}" rowKey="#{empresa.secuencia}"
+                                     selection="#{controlUbicacionesGeograficas.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="330" scrollHeight="250"
+                                     filteredValue="#{controlUbicacionesGeograficas.filtradoListaEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowSelect" listener="#{controlUbicacionesGeograficas.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="buscar empresa"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{empresa.nit}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                                <f:facet name="header">
+                                    <h:outputText value="nit" />
+                                </f:facet>
+                                <h:outputText  value="#{empresa.nit}" />
+                            </p:column>
+                            <p:column filterBy="#{empresa.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="nombre" />
+                                </f:facet>
+                                <h:outputText  value="#{empresa.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 180px" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" actionListener="#{controlUbicacionesGeograficas.cambiarEmpresa()}" update="aceptarE" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasE" style="position: relative; left: 180px" value="cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlUbicacionesGeograficas.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                    <!--0-->
+                    <p:dialog id="editarCodigo" header="Editar Codigo" widgetVar="editarCodigo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCCC" value="Atras" onclick="editarCodigo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarDescripcion" header="Editar Descripcion" widgetVar="editarDescripcion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarDescripcion" value="Atras" onclick="editarDescripcion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarCiudad" header="Editar Ciudad" widgetVar="editarCiudad" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.ciudad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCiudad" value="Atras" onclick="editarCiudad.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarDireccion" header="Editar Direccion" widgetVar="editarDireccion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.direccion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarDireccion" value="Atras" onclick="editarDireccion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarTelefono" header="Editar Telefono" widgetVar="editarTelefono" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.telefono}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTelefono" value="Atras" onclick="editarTelefono.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarFax" header="Editar Fax" widgetVar="editarFax" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.fax}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarFax" value="Atras" onclick="editarFax.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarObservacion" header="Editar Observacion" widgetVar="editarObservacion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarObservacion" value="Atras" onclick="editarObservacion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarActividadEconomica" header="Editar Actividad Economica" widgetVar="editarActividadEconomica" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.actividadeconomica}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarActividadEconomica" value="Atras" onclick="editarActividadEconomica.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarSucursalPilla" header="Editar Sucursal" widgetVar="editarSucursalPilla" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.sucursalPila.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarSucursalPila" value="Atras" onclick="editarSucursalPilla.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="editarCodigoAlt" header="Editar Actividad Economica" widgetVar="editarCodigoAlt" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlUbicacionesGeograficas.editarCentroCosto.codigoalternativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCodigoALT" value="Atras" onclick="editarCodigoAlt.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                </h:form>
+
+
+
+                <h:form id="formExportar">
+                    <p:dataTable id="datosUbicacionesGeograficasExportar" var="info" style="visibility: hidden; display: none;"                           
+                                 value="#{controlUbicacionesGeograficas.listUbicacionesGeograficasPorEmpresa}"> 
+                        <!--COLUMNAS TABLA DATOS VIGENCIAS TIPOS CONTRATOS DE UN EMPLEADO --> 
+
+                        <!--0-->
+                        <p:column headerText="CodigoUbicacionGeografica">      
+                            <f:facet name="header"><h:outputText value="CodigoUbicacionGeografica"/></f:facet>
+                            <h:outputText value="#{info.codigo}" />
+                        </p:column>
+                        <p:column headerText="Descripcion">      
+                            <f:facet name="header"><h:outputText value="Descripcion"/></f:facet>
+                            <h:outputText value="#{info.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Ciudad">      
+                            <f:facet name="header"><h:outputText value="Ciudad"/></f:facet>
+                            <h:outputText value="#{info.ciudad.nombre}" />
+                        </p:column>
+                        <p:column headerText="Direccion">      
+                            <f:facet name="header"><h:outputText value="Direccion"/></f:facet>
+                            <h:outputText value="#{info.direccion}" />
+                        </p:column>
+                        <p:column headerText="Telefono">      
+                            <f:facet name="header"><h:outputText value="Telefono"/></f:facet>
+                            <h:outputText value="#{info.telefono}" />
+                        </p:column>
+                        <p:column headerText="Fax">      
+                            <f:facet name="header"><h:outputText value="Fax"/></f:facet>
+                            <h:outputText value="#{info.fax}" />
+                        </p:column>
+                        <p:column headerText="Zona">      
+                            <f:facet name="header"><h:outputText value="Zona"/></f:facet>
+                            <h:outputText value="#{info.zona}" />
+                        </p:column>
+                        <p:column headerText="ActividadEconomica">      
+                            <f:facet name="header"><h:outputText value="ActividadEconomica"/></f:facet>
+                            <h:outputText value="#{info.actividadeconomica}" />
+                        </p:column>
+                        <p:column headerText="Sucursal">      
+                            <f:facet name="header"><h:outputText value="Sucursal"/></f:facet>
+                            <h:outputText value="#{info.sucursalPila.descripcion}" />
+                        </p:column>
+                        <p:column headerText="CodigoAlternativo">      
+                            <f:facet name="header"><h:outputText value="CodigoAlternativo"/></f:facet>
+                            <h:outputText value="#{info.codigoalternativo}" />
+                        </p:column>
+                        <!--1-->
+
+                    </p:dataTable>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
