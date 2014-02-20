@@ -70,7 +70,7 @@ public class AdministrarTiposEntidades implements AdministrarTiposEntidadesInter
     @Override
     public List<Grupostiposentidades> consultarLOVGruposTiposEntidades() {
         List<Grupostiposentidades> listGruposTiposEntidades;
-        listGruposTiposEntidades = persistenciaGruposTiposEntidades.buscarGruposTiposEntidades();
+        listGruposTiposEntidades = persistenciaGruposTiposEntidades.consultarGruposTiposEntidades();
         return listGruposTiposEntidades;
     }
 

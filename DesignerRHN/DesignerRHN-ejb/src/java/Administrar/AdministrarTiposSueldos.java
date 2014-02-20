@@ -332,7 +332,7 @@ public class AdministrarTiposSueldos implements AdministrarTiposSueldosInterface
     @Override
     public List<Grupostiposentidades> lovGruposTiposEntidades() {
         try {
-            List<Grupostiposentidades> lista = persistenciaGruposTiposEntidades.buscarGruposTiposEntidades();
+            List<Grupostiposentidades> lista = persistenciaGruposTiposEntidades.consultarGruposTiposEntidades();
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovGruposTiposEntidades Admi : " + e.toString());

@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -42,13 +41,8 @@ public class Grupostiposentidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 1)
@@ -64,7 +58,7 @@ public class Grupostiposentidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Grupostiposentidades(BigInteger secuencia, short codigo, String nombre) {
+    public Grupostiposentidades(BigInteger secuencia, Integer codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -78,11 +72,11 @@ public class Grupostiposentidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -94,7 +88,7 @@ public class Grupostiposentidades implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getRequeridopila() {
