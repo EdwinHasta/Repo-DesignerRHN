@@ -13,7 +13,7 @@
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.operando" var="msg" />
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 520px;" >
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 500px;" >
                         <p:commandButton style="position: absolute; left: 25px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlOperando.cancelarModificacion()}" process="@this" />
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 330px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>#{msg['operandos']}</strong></legend>
@@ -63,7 +63,7 @@
                                         <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
                                         <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
                                         <f:selectItem itemLabel="#{msg['funcion']}" itemValue="FUNCION" />  
-                                        <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACION" />    
+                                        <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACIONAL" />    
                                         <p:ajax listener="#{controlOperando.seleccionarTipo(op.estadoTipo, indice, celda)}" event="change" update="editarTipos" />
                                     </p:selectOneMenu>
 
@@ -212,6 +212,8 @@
                         </p:toolbar>
                         <p:remoteCommand name="dirigirTipoFuncion" actionListener="#{controlTipoFuncion.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="funcion" process="@this"/>
                         <p:remoteCommand name="dirigirTipoFormula" actionListener="#{controlTipoFormula.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="formula" process="@this"/>
+                        <p:remoteCommand name="dirigirTipoConstante" actionListener="#{controlTipoConstante.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="constante" process="@this"/>
+                        <p:remoteCommand name="dirigirTipoBloque" actionListener="#{controlTipoBloque.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="bloque" process="@this"/>
                         <p:commandButton style="position: absolute; left: 700px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlOperando.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosOperandos" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlOperando.salir()}" action="nomina" process="@this" />
 
@@ -272,7 +274,7 @@
                                 <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
                                 <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
                                 <f:selectItem itemLabel="#{msg['funcion']}" itemValue="FUNCION" />  
-                                <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACION" />    
+                                <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACIONAL" />    
                                 <p:ajax listener="#{controlOperando.seleccionarTipoNuevoOperando(controlOperando.nuevoOperando.estadoTipo, 1)}" event="change" update="nuevoTipo" />
                             </p:selectOneMenu>
 
@@ -316,7 +318,7 @@
                                 <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
                                 <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
                                 <f:selectItem itemLabel="#{msg['funcion']}" itemValue="FUNCION" />  
-                                <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACION" />    
+                                <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACIONAL" />    
                                 <p:ajax listener="#{controlOperando.seleccionarTipoNuevoOperando(controlOperando.duplicarOperando.estadoTipo, 2)}" event="change" update="duplicarTipo" />
                             </p:selectOneMenu>
 
