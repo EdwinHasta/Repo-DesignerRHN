@@ -2206,8 +2206,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule> 
-    
+    </navigation-rule>   
     <navigation-rule>
         <from-view-id>/operando.xhtml</from-view-id>
         <navigation-case>
@@ -2215,8 +2214,7 @@
             <to-view-id>/tipofuncion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule> 
-    
+    </navigation-rule>   
     <navigation-rule>
         <from-view-id>/operando.xhtml</from-view-id>
         <navigation-case>
@@ -2225,7 +2223,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule> 
-    
     <navigation-rule>
         <from-view-id>/tipofuncion.xhtml</from-view-id>
         <navigation-case>
@@ -2261,5 +2258,22 @@
             <redirect />
         </navigation-case>
     </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciaviajero</from-outcome>
+            <to-view-id>/emplviajero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emplviajero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciaviajeroatras</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
  
 </faces-config>
