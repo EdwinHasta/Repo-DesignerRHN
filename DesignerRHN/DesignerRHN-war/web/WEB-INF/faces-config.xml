@@ -2231,6 +2231,34 @@
             <redirect />
         </navigation-case>
     </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>constante</from-outcome>
+            <to-view-id>/tipoconstante.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/tipoconstante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>operando</from-outcome>
+            <to-view-id>/operando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>bloque</from-outcome>
+            <to-view-id>/tipobloque.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
@@ -2247,4 +2275,5 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+ 
 </faces-config>

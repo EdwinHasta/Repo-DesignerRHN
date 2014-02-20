@@ -435,8 +435,12 @@ public class ControlTipoFormula implements Serializable {
                 context.execute("editarFechasFinales.show()");
                 cualCelda = -1;
             } else if (cualCelda == 2) {
-                context.update("formularioDialogos:editarObjetos");
-                context.execute("editarDescripciones.show()");
+                context.update("formularioDialogos:editarFormulas");
+                context.execute("editarFormulas.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 3) {
+                context.update("formularioDialogos:editarEstados");
+                context.execute("editarEstados.show()");
                 cualCelda = -1;
             }
         }

@@ -236,7 +236,22 @@ public class ControlOperando implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("dirigirTipoFormula()");
         }
-
+        if (listaOperandos.get(index).getTipo().equals("CONSTANTE")) {
+            action = "constante";
+            secuenciaOperando = listaOperandos.get(index).getSecuencia();
+            tipoOperando = listaOperandos.get(index).getTipo();
+            operandoSeleccionado = listaOperandos.get(index);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dirigirTipoConstante()");
+        }
+        if (listaOperandos.get(index).getTipo().equals("BLOQUE PL/SQL")) {
+            action = "bloque";
+            secuenciaOperando = listaOperandos.get(index).getSecuencia();
+            tipoOperando = listaOperandos.get(index).getTipo();
+            operandoSeleccionado = listaOperandos.get(index);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dirigirTipoBloque()");
+        }
     }
 
     public void seleccionarTipoNuevoOperando(String estadoTipo, int tipoNuevo) {
