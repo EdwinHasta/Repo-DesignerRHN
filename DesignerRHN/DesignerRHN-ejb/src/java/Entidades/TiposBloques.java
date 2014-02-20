@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -21,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TiposBloques.findByFechafinal", query = "SELECT t FROM TiposBloques t WHERE t.fechafinal = :fechafinal"),
     @NamedQuery(name = "TiposBloques.findByTipo", query = "SELECT t FROM TiposBloques t WHERE t.tipo = :tipo")})
 public class TiposBloques implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -52,7 +53,6 @@ public class TiposBloques implements Serializable {
     @Column(name = "CODIGO")
     private int codigo;
     @Lob
-    @Size(max = 0)
     @Column(name = "BLOQUEPLSQL")
     private String bloqueplsql;
     @Basic(optional = false)
@@ -71,6 +71,8 @@ public class TiposBloques implements Serializable {
     @JoinColumn(name = "OPERANDO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Operandos operando;
+    @Transient
+    private String estadoTipo;
 
     public TiposBloques() {
     }
@@ -103,7 +105,10 @@ public class TiposBloques implements Serializable {
     }
 
     public String getBloqueplsql() {
-        return bloqueplsql;
+        if(bloqueplsql == null){
+            bloqueplsql = " ";
+        }
+        return bloqueplsql.toUpperCase();
     }
 
     public void setBloqueplsql(String bloqueplsql) {
@@ -127,11 +132,45 @@ public class TiposBloques implements Serializable {
     }
 
     public String getTipo() {
+        if (tipo == null) {
+            tipo = "NUMBER";
+        }
         return tipo;
     }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public String getEstadoTipo() {
+        if (estadoTipo == null) {
+            if (tipo == null) {
+                estadoTipo = "NUMBER";
+
+            } else {
+
+                if (tipo.equalsIgnoreCase("NUMBER")) {
+                    estadoTipo = "NUMERICO";
+                } else if (tipo.equalsIgnoreCase("VARCHAR")) {
+                    estadoTipo = "CARACTER";
+                } else if (tipo.equalsIgnoreCase("DATE")) {
+                    estadoTipo = "FECHA";
+                }
+            }
+        }
+        return estadoTipo;
+    }
+
+    public void setEstadoTipo(String estadoTipo) {
+
+        if (estadoTipo.equalsIgnoreCase("NUMERICO")) {
+            setTipo("NUMBER");
+        } else if (estadoTipo.equals("CARACTER")) {
+            setTipo("VARCHAR");
+        } else if (estadoTipo.equals("FECHA")) {
+            setTipo("DATE");
+        }
+        this.estadoTipo = estadoTipo;
     }
 
     public Operandos getOperando() {
@@ -166,5 +205,5 @@ public class TiposBloques implements Serializable {
     public String toString() {
         return "Entidades.TiposBloques[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
