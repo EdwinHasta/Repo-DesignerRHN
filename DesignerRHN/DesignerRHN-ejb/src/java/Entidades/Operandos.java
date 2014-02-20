@@ -4,6 +4,9 @@
  */
 package Entidades;
 
+import Entidades.TiposBloques;
+import Entidades.TiposFormulas;
+import Entidades.TiposFunciones;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -36,6 +39,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Operandos.findAll", query = "SELECT o FROM Operandos o")})
 public class Operandos implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<TiposConstantes> tiposConstantesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<TiposFormulas> tiposFormulasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<TiposFunciones> tiposFuncionesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<TiposBloques> tiposBloquesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<OperandosLogs> operandosLogsCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<ConceptosSoportes> conceptosSoportesCollection;
@@ -89,6 +102,8 @@ public class Operandos implements Serializable {
     private boolean estadoCambio;
     @Transient
     private boolean estadoActualizable;
+    @Transient
+    private String valor;
 
     public Operandos() {
     }
@@ -279,6 +294,14 @@ public class Operandos implements Serializable {
         this.estadoActualizable = estadoActualizable;
     }
 
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
     @XmlTransient
     public Collection<Nodos> getNodosCollection() {
         return nodosCollection;
@@ -329,6 +352,51 @@ public class Operandos implements Serializable {
 
     public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
         this.conceptosSoportesCollection = conceptosSoportesCollection;
+    }
+
+    @XmlTransient
+    public Collection<TiposConstantes> getTiposConstantesCollection() {
+        return tiposConstantesCollection;
+    }
+
+    public void setTiposConstantesCollection(Collection<TiposConstantes> tiposConstantesCollection) {
+        this.tiposConstantesCollection = tiposConstantesCollection;
+    }
+
+    @XmlTransient
+    public Collection<TiposFormulas> getTiposFormulasCollection() {
+        return tiposFormulasCollection;
+    }
+
+    public void setTiposFormulasCollection(Collection<TiposFormulas> tiposFormulasCollection) {
+        this.tiposFormulasCollection = tiposFormulasCollection;
+    }
+
+    @XmlTransient
+    public Collection<TiposFunciones> getTiposFuncionesCollection() {
+        return tiposFuncionesCollection;
+    }
+
+    public void setTiposFuncionesCollection(Collection<TiposFunciones> tiposFuncionesCollection) {
+        this.tiposFuncionesCollection = tiposFuncionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<TiposBloques> getTiposBloquesCollection() {
+        return tiposBloquesCollection;
+    }
+
+    public void setTiposBloquesCollection(Collection<TiposBloques> tiposBloquesCollection) {
+        this.tiposBloquesCollection = tiposBloquesCollection;
+    }
+
+    @XmlTransient
+    public Collection<OperandosLogs> getOperandosLogsCollection() {
+        return operandosLogsCollection;
+    }
+
+    public void setOperandosLogsCollection(Collection<OperandosLogs> operandosLogsCollection) {
+        this.operandosLogsCollection = operandosLogsCollection;
     }
 
 }

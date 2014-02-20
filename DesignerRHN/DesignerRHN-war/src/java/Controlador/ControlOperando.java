@@ -80,6 +80,11 @@ public class ControlOperando implements Serializable {
     //ALTO SCROLL TABLA
     private String altoTabla;
     private boolean cambiosPagina;
+    //Cambios de PAgina
+    public String action;
+    public BigInteger secuenciaOperando;
+    public String tipoOperando;
+    public Operandos operandoSeleccionado;
 
     public ControlOperando() {
         cambiosPagina = true;
@@ -213,6 +218,27 @@ public class ControlOperando implements Serializable {
         RequestContext.getCurrentInstance().update("form:datosOperandos");
     }
 
+    public void verificarTipo(int indice, String tipo, BigInteger secuencia) {
+        index = indice;
+        if (listaOperandos.get(index).getTipo().equals("FUNCION")) {
+            action = "funcion";
+            secuenciaOperando = listaOperandos.get(index).getSecuencia();
+            tipoOperando = listaOperandos.get(index).getTipo();
+            operandoSeleccionado = listaOperandos.get(index);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dirigirTipoFuncion()");
+        }
+        if (listaOperandos.get(index).getTipo().equals("FORMULA")) {
+            action = "formula";
+            secuenciaOperando = listaOperandos.get(index).getSecuencia();
+            tipoOperando = listaOperandos.get(index).getTipo();
+            operandoSeleccionado = listaOperandos.get(index);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dirigirTipoFormula()");
+        }
+
+    }
+
     public void seleccionarTipoNuevoOperando(String estadoTipo, int tipoNuevo) {
         if (tipoNuevo == 1) {
             if (estadoTipo.equals("FORMULA")) {
@@ -253,7 +279,7 @@ public class ControlOperando implements Serializable {
             tipoActualizacion = 1;
             index = -1;
             secRegistro = null;
-            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
+
         } else if (LND == 2) {
             index = -1;
             secRegistro = null;
@@ -315,8 +341,6 @@ public class ControlOperando implements Serializable {
         if (pasa == 0) {
             if (bandera == 1) {
                 altoTabla = "245";
-                System.out.println("Desactivar");
-                System.out.println("TipoLista= " + tipoLista);
                 operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
                 operandosNombres.setFilterStyle("display: none; visibility: hidden;");
                 operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
@@ -348,7 +372,7 @@ public class ControlOperando implements Serializable {
             context.execute("DuplicarOperando.hide()");
         }
     }
-   
+
     public void activarAceptar() {
         aceptar = false;
     }
@@ -379,11 +403,9 @@ public class ControlOperando implements Serializable {
     }
 
     public void activarCtrlF11() {
-        System.out.println("TipoLista= " + tipoLista);
+
         if (bandera == 0) {
             altoTabla = "223";
-            System.out.println("Activar");
-            System.out.println("TipoLista= " + tipoLista);
             operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
             operandosNombres.setFilterStyle("width: 60px");
             operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
@@ -554,7 +576,7 @@ public class ControlOperando implements Serializable {
         secRegistro = null;
     }
 
-    //CREAR NOVEDADES
+    //CREAR Operando
     public void agregarNuevoOperando() {
         int pasa = 0;
         mensajeValidacion = new String();
@@ -678,9 +700,6 @@ public class ControlOperando implements Serializable {
                 for (int i = 0; i < listaOperandosBorrar.size(); i++) {
                     System.out.println("Borrando..." + listaOperandosBorrar.size());
 
-                    if (listaOperandosBorrar.get(i).getValorreal() == null) {
-                        listaOperandosBorrar.get(i).setValorreal(null);
-                    }
                     administrarOperandos.borrarOperando(listaOperandosBorrar.get(i));
                 }
                 System.out.println("Entra");
@@ -690,10 +709,6 @@ public class ControlOperando implements Serializable {
             if (!listaOperandosCrear.isEmpty()) {
                 for (int i = 0; i < listaOperandosCrear.size(); i++) {
                     System.out.println("Creando...");
-
-                    if (listaOperandosCrear.get(i).getValorreal() == null) {
-                        listaOperandosCrear.get(i).setValorreal(null);
-                    }
 
                     administrarOperandos.crearOperando(listaOperandosCrear.get(i));
                 }
@@ -721,7 +736,7 @@ public class ControlOperando implements Serializable {
         secRegistro = null;
     }
 
-    //DUPLICAR CIUDAD
+    //DUPLICAR Operando
     public void duplicarO() {
         if (index >= 0) {
             duplicarOperando = new Operandos();
@@ -732,7 +747,6 @@ public class ControlOperando implements Serializable {
                 duplicarOperando.setSecuencia(l);
                 duplicarOperando.setNombre(listaOperandos.get(index).getNombre());
                 duplicarOperando.setTipo(listaOperandos.get(index).getTipo());
-                duplicarOperando.setValorreal(listaOperandos.get(index).getValorreal());
                 duplicarOperando.setDescripcion(listaOperandos.get(index).getDescripcion());
                 duplicarOperando.setCambioanual(listaOperandos.get(index).getCambioanual());
                 duplicarOperando.setActualizable(listaOperandos.get(index).getActualizable());
@@ -742,7 +756,6 @@ public class ControlOperando implements Serializable {
                 duplicarOperando.setSecuencia(l);
                 duplicarOperando.setNombre(filtradosListaOperandos.get(index).getNombre());
                 duplicarOperando.setTipo(filtradosListaOperandos.get(index).getTipo());
-                duplicarOperando.setValorreal(filtradosListaOperandos.get(index).getValorreal());
                 duplicarOperando.setDescripcion(filtradosListaOperandos.get(index).getDescripcion());
                 duplicarOperando.setCambioanual(filtradosListaOperandos.get(index).getCambioanual());
                 duplicarOperando.setActualizable(filtradosListaOperandos.get(index).getActualizable());
@@ -824,6 +837,11 @@ public class ControlOperando implements Serializable {
     public List<Operandos> getListaOperandos() {
         if (listaOperandos == null) {
             listaOperandos = administrarOperandos.buscarOperandos();
+            for (int i = 0; i < listaOperandos.size(); i++) {
+                String valor;
+                valor = administrarOperandos.buscarValores(listaOperandos.get(i).getSecuencia());
+                listaOperandos.get(i).setValor(valor);
+            }
         }
         return listaOperandos;
     }
@@ -926,5 +944,37 @@ public class ControlOperando implements Serializable {
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
-    
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public BigInteger getSecuenciaOperando() {
+        return secuenciaOperando;
+    }
+
+    public void setSecuenciaOperando(BigInteger secuenciaOperando) {
+        this.secuenciaOperando = secuenciaOperando;
+    }
+
+    public String getTipoOperando() {
+        return tipoOperando;
+    }
+
+    public void setTipoOperando(String tipoOperando) {
+        this.tipoOperando = tipoOperando;
+    }
+
+    public Operandos getOperandoSeleccionado() {
+        return operandoSeleccionado;
+    }
+
+    public void setOperandoSeleccionado(Operandos operandoSeleccionado) {
+        this.operandoSeleccionado = operandoSeleccionado;
+    }
+
 }

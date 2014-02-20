@@ -178,6 +178,23 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/formulaproceso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>proceso</from-outcome>
+            <to-view-id>/proceso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/proceso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formulaproceso</from-outcome>
+            <to-view-id>/formulaproceso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
         
     <navigation-rule>
@@ -490,6 +507,23 @@
         <navigation-case>
             <from-outcome>conceptoFormulaRastro</from-outcome>
             <to-view-id>/formulaconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/proceso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroProceso</from-outcome>
+            <to-view-id>/proceso.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

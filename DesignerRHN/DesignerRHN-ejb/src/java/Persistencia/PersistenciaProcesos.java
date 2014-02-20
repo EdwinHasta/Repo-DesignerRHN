@@ -56,7 +56,8 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public List<Procesos> buscarProcesos() {
         try {
-            List<Procesos> procesos = (List<Procesos>) em.createNamedQuery("Procesos.findAll").getResultList();
+            Query query = em.createQuery("SELECT t FROM Procesos t ORDER BY t.codigo ASC");
+            List<Procesos> procesos = query.getResultList();
             return procesos;
         } catch (Exception e) {
             System.out.println("Error buscarProcesos");

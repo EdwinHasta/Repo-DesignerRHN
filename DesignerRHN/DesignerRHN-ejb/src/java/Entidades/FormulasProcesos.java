@@ -52,6 +52,8 @@ public class FormulasProcesos implements Serializable {
     private Formulas formula;
     @Transient
     private boolean checkPeriodicidad;
+    @Transient
+    private String strPeriodicidad;
 
     public FormulasProcesos() {
     }
@@ -96,6 +98,7 @@ public class FormulasProcesos implements Serializable {
     }
 
     public boolean isCheckPeriodicidad() {
+        getPeriodicidadindependiente();
         if (periodicidadindependiente == null || periodicidadindependiente.equalsIgnoreCase("N")) {
             checkPeriodicidad = false;
         } else {
@@ -111,6 +114,19 @@ public class FormulasProcesos implements Serializable {
             periodicidadindependiente = "S";
         }
         this.checkPeriodicidad = checkPeriodicidad;
+    }
+
+    public String getStrPeriodicidad() {
+        if (periodicidadindependiente == null || periodicidadindependiente.equalsIgnoreCase("N")) {
+            strPeriodicidad = "NO";
+        } else {
+            strPeriodicidad = "SI";
+        }
+        return strPeriodicidad;
+    }
+
+    public void setStrPeriodicidad(String strPeriodicidad) {
+        this.strPeriodicidad = strPeriodicidad;
     }
 
     @Override

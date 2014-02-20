@@ -8,6 +8,7 @@ package Administrar;
 import Entidades.Operandos;
 import InterfaceAdministrar.AdministrarOperandosInterface;
 import InterfacePersistencia.PersistenciaOperandosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -43,11 +44,17 @@ public class AdministrarOperandos implements AdministrarOperandosInterface{
     public void modificarOperando(List<Operandos> listaOperandosModificar) {
         for (int i = 0; i < listaOperandosModificar.size(); i++) {
             System.out.println("Modificando...");
-            if (listaOperandosModificar.get(i).getValorreal()== null) {
-                listaOperandosModificar.get(i).setValorreal(null);
+            if (listaOperandosModificar.get(i).getValor()== null) {
+                listaOperandosModificar.get(i).setValor(null);
             }
             persistenciaOperandos.editar(listaOperandosModificar.get(i));
         }
+    }
+    
+    public String buscarValores(BigInteger secuenciaOperando) {
+        String valores;
+        valores = persistenciaOperandos.valores(secuenciaOperando);
+        return valores;
     }
 
 }

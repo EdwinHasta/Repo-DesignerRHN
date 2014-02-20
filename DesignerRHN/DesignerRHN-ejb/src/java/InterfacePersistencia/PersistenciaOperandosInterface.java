@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.Operandos;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -27,4 +28,6 @@ public interface PersistenciaOperandosInterface {
     public void editar(Operandos operandos);
     
     public void borrar(Operandos operandos);
+    
+    public String valores(BigInteger secuenciaOperando) ;
 }
