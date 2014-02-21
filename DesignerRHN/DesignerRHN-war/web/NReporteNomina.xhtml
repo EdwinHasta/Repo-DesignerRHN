@@ -80,6 +80,10 @@
                             <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
                             <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteNomina.generarReporte()}" ajax="false"/>
                             <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
+                            <p:dialog header="Hola" width="400px" height="400px" widgetVar="dlg" id="dlg">
+                            </p:dialog>
+                            <p:remoteCommand name="start" actionListener="#{controlNReporteNomina.prueba()}" onstart="dlg.show();"  />
+                            <p:remoteCommand name="stop" actionListener="#{controlNReporteNomina.prueba()}"  onstart="dlg.hide();" />
                         </fieldset>
 
                         <p:remoteCommand name="posicionReporte" actionListener="#{controlNReporteNomina.posicionInfoReporte()}" process="@this"/>

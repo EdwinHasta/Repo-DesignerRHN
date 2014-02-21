@@ -21,9 +21,9 @@ public interface AdministrarInicioRedInterface {
 
     public boolean validarUsuario(String usuario);
 
-   public boolean validarConexionUsuario();
+   public boolean validarConexionUsuario(String idSesion);
 
-    public void cerrarSession();
+    public void cerrarSession(String idSesion);
 
     public boolean conexionDefault();
 

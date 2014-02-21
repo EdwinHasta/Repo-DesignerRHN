@@ -5,12 +5,13 @@ package Administrar;
 
 import Entidades.Generales;
 import InterfaceAdministrar.AdministarReportesInterface;
-import InterfacePersistencia.EntityManagerGlobalInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaGeneralesInterface;
 import Reportes.IniciarReporteInterface;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -35,7 +36,7 @@ public class AdministarReportes implements AdministarReportesInterface {
      * está usando el aplicativo.
      */
     @EJB
-    EntityManagerGlobalInterface entityManagerGlobal;
+    AdministrarSesionesInterface administrarSesiones;
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia
@@ -67,26 +68,30 @@ public class AdministarReportes implements AdministarReportesInterface {
      * Atributo que representa la conexión actual al aplicativo.
      */
     private Connection conexion;
+    private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public void consultarDatosConexion() {
-        Connection conexion;
-        if (entityManagerGlobal != null) {
-            EntityManager em = entityManagerGlobal.getEmf().createEntityManager();
-            em.getTransaction().begin();
-            conexion = em.unwrap(java.sql.Connection.class);
-            em.getTransaction().commit();
-            em.close();
-        }
+        em.getTransaction().begin();
+        conexion = em.unwrap(java.sql.Connection.class);
+        em.getTransaction().commit();
+        //em.close();
     }
 
     @Override
     public String generarReporte(String nombreReporte, String tipoReporte) {
+        //try {
         Generales general = persistenciaGenerales.obtenerRutas();
         String nombreUsuario = persistenciaActualUsuario.actualAliasBD();
+        String pathReporteGenerado = null;
         if (general != null && nombreUsuario != null) {
             SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
             String fechaActual = formato.format(new Date());
@@ -103,35 +108,21 @@ public class AdministarReportes implements AdministarReportesInterface {
                 nombreArchivo = nombreArchivo + ".csv";
             } else if (tipoReporte.equals("HTML")) {
                 nombreArchivo = nombreArchivo + ".html";
+            } else if (tipoReporte.equals("DOCX")) {
+                nombreArchivo = nombreArchivo + ".rtf";
             }
-            String pathReporteGenerado = reporte.ejecutarReporte(nombreReporte, rutaReporte, rutaGenerado, nombreArchivo, tipoReporte);
+                //datosConexion();
+            // if (conexion != null && !conexion.isClosed()) {
+            pathReporteGenerado = reporte.ejecutarReporte(nombreReporte, rutaReporte, rutaGenerado, nombreArchivo, tipoReporte, null);
+                    //conexion.close();
+            // return pathReporteGenerado;
+            // }
             return pathReporteGenerado;
         }
-        return null;
-    }
-
-    @Override
-    public void generarReportePDF() {
-        reporte.ejecutarReportePDF();
-    }
-
-    @Override
-    public void generarReporteXLSX() {
-        reporte.ejecutarReporteXLSX();
-    }
-
-    @Override
-    public void generarReporteXLS() {
-        reporte.ejecutarReporteXLS();
-    }
-
-    @Override
-    public void generarReporteCSV() {
-        reporte.ejecutarReporteCSV();
-    }
-
-    @Override
-    public void generarReporteHTML() {
-        reporte.ejecutarReporteHTML();
+        return pathReporteGenerado;
+        /* } catch (SQLException ex) {
+         System.out.println("PUM PUM xD");
+         return null;
+         }*/
     }
 }

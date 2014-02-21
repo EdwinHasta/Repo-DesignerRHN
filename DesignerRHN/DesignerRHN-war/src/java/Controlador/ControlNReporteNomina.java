@@ -27,12 +27,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.inputtext.InputText;
@@ -107,6 +111,7 @@ public class ControlNReporteNomina implements Serializable {
     private int indice;
     //EXPORTAR REPORTE
     private StreamedContent file;
+    private String pathReporteGenerado = null;
     //
     private List<Inforeportes> listaInfoReportesModificados;
     //
@@ -166,6 +171,13 @@ public class ControlNReporteNomina implements Serializable {
         indice = -1;
     }
 
+    @PostConstruct
+    public void iniciarAdministradores() {
+        FacesContext contexto = FacesContext.getCurrentInstance();
+        HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
+        administarReportes.obtenerConexion(ses.getId());
+    }
+    
     public void posicionInfoReporte() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -1336,9 +1348,9 @@ public class ControlNReporteNomina implements Serializable {
         }
     }
 
-    public void generarReporte() throws IOException {
+    public void generarReporte() {
+        RequestContext context = RequestContext.getCurrentInstance();
         String nombreReporte, tipoReporte;
-        String pathReporteGenerado = null;
         if (tipoLista == 0) {
             nombreReporte = listaIR.get(indice).getNombrereporte();
             tipoReporte = listaIR.get(indice).getTipo();
@@ -1350,12 +1362,19 @@ public class ControlNReporteNomina implements Serializable {
             pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
         }
         if (pathReporteGenerado != null) {
-            exportarReporte(pathReporteGenerado);
+            //context.execute("exportarReporte();");
+            System.out.println("Pasooo");
+            try {
+                exportarReporte();
+            } catch (IOException ex) {
+                Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        //context.execute("dlg.hide()");
     }
 
-    public void exportarReporte(String rutaReporteGenerado) throws IOException {
-        File reporte = new File(rutaReporteGenerado);
+    public void exportarReporte() throws IOException {
+        File reporte = new File(pathReporteGenerado);
         FacesContext ctx = FacesContext.getCurrentInstance();
         FileInputStream fis = new FileInputStream(reporte);
         byte[] bytes = new byte[1024];
