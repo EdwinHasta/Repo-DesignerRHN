@@ -156,7 +156,7 @@
                                 </p:column>
 
                                 <p:column style="padding: 0px" headerText="..." width="32" id="operandosIdentificacion" filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:commandButton value=" " style="width: 99%; height: 99%" />
+                                    <p:commandButton value=" " actionListener="#{controlOperando.guardarVariables(indice, controlOperando.secuenciaOperando)}" process="@this" style="width: 99%; height: 99%" />
                                     <f:facet name="header">
                                         <h:outputText id="headerIdentificacion" value="..." />
                                         <p:tooltip style="font-size: 12px" for="headerIdentificacion" value="#{msg['identificacion']}" />
@@ -214,6 +214,7 @@
                         <p:remoteCommand name="dirigirTipoFormula" actionListener="#{controlTipoFormula.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="formula" process="@this"/>
                         <p:remoteCommand name="dirigirTipoConstante" actionListener="#{controlTipoConstante.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="constante" process="@this"/>
                         <p:remoteCommand name="dirigirTipoBloque" actionListener="#{controlTipoBloque.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="bloque" process="@this"/>
+                        <p:remoteCommand name="dirigirDetalle" actionListener="#{controlNovedadOperando.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.operandoSeleccionado)}" action="novedadoperando" process="@this"/>
                         <p:commandButton style="position: absolute; left: 700px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlOperando.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosOperandos" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlOperando.salir()}" action="nomina" process="@this" />
 

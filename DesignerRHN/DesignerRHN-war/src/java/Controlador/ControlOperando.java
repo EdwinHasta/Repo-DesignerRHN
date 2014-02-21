@@ -217,9 +217,20 @@ public class ControlOperando implements Serializable {
         }
         RequestContext.getCurrentInstance().update("form:datosOperandos");
     }
+    
+    public void guardarVariables(int indice, BigInteger secuencia){
+        index = indice;
+        secuenciaOperando = listaOperandos.get(index).getSecuencia();
+        operandoSeleccionado = listaOperandos.get(index);
+        System.out.println("secuenciaOperando" + secuenciaOperando + "operandoSeleccionado" + operandoSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("dirigirDetalle()");
+       
+    }
 
     public void verificarTipo(int indice, String tipo, BigInteger secuencia) {
         index = indice;
+        
         if (listaOperandos.get(index).getTipo().equals("FUNCION")) {
             action = "funcion";
             secuenciaOperando = listaOperandos.get(index).getSecuencia();

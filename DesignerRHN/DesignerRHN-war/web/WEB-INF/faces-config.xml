@@ -2275,5 +2275,24 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadoperando</from-outcome>
+            <to-view-id>/novedadoperando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/novedadoperando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>operando</from-outcome>
+            <to-view-id>/operando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
  
 </faces-config>
