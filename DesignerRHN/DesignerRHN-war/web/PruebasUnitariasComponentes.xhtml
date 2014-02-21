@@ -14,12 +14,10 @@
         <h:form id="form">
             <p:panel id="PanelTotal" header="PRUEBAS" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" >
                 <h:form id="form">
-                    <lnk:calendar value="#{controlPruebasUnitarias.fechaPrueba}" id="fechaPrueba" color="#{controlPruebasUnitarias.color}" decoration="#{controlPruebasUnitarias.decoracion}" width="#{controlPruebasUnitarias.ancho}" height="#{controlPruebasUnitarias.alto}">
-                        <p:ajax event="change" update="fechaPrueba"/>
-                    </lnk:calendar> 
-                <p:commandButton actionListener="#{controlPruebasUnitarias.eventBtn()}" style="top:100px;left: 50px;position: absolute" value="Prueba Color" update="form" process="@this"/>    
-                <p:commandButton actionListener="#{controlPruebasUnitarias.restaurar()}" style="top: 160px;left: 50px;position: absolute" update="form" value="Restaurar" process="@this"/>    
-                </h:form>
+                    <p:commandButton value="Cometalo" onclick="dlg.show();"/>
+                    <p:dialog id="dlg" widgetVar="dlg" width="1024px" height="530px">
+                        <p:media value="#{controlPruebasUnitarias.reporte}" width="100%" height="500px" player="pdf"/>
+                    </p:dialog></h:form>
             </p:panel>
         </h:form>
     </h:body>

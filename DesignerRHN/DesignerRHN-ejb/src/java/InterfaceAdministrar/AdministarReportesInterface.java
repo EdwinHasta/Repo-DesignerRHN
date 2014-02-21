@@ -11,25 +11,21 @@ import java.math.BigInteger;
  */
 public interface AdministarReportesInterface {
     /**
-     * Método encargado de recuperar los datos de conexión del EntityManagerGlobal el cual tiene
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    /**
+     * Método encargado de recuperar los datos de conexión del EntityManager el cual tiene
      * el usuario asociado a un perfil del aplicativo.
      */
     public void consultarDatosConexion();
     /**
-     * Método encargado de generar un comprobante (PDF) para un Empleado específico.
-     * @param codigoEmpleado Código del empleado.
+     * Método encargado de generar el reporte que el usuario ha seleccionado.
+     * @param nombreReporte Nombre del reporte.
+     * @param tipoReporte Tipo de reporte.
+     * @return Retorna la ubicacion del reporte generado.
      */
     public String generarReporte(String nombreReporte, String tipoReporte);
-    /**
-     * Método encargado de generar un reporte XLSX para un Empleado específico.
-     */
-    public void generarReporteXLSX();
-    /**
-     * Método encargado de generar un reporte XML para un Empleado específico.
-     */
-    //public void generarReporteXML();
-    public void generarReportePDF();
-    public void generarReporteXLS();
-    public void generarReporteCSV();
-    public void generarReporteHTML();
 }

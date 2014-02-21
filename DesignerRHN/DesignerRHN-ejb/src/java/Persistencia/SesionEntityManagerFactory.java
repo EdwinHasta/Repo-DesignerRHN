@@ -3,7 +3,7 @@
  */
 package Persistencia;
 
-import InterfacePersistencia.EntityManagerGlobalInterface;
+import InterfacePersistencia.SesionEntityManagerFactoryInterface;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ import javax.persistence.Persistence;
  * @author Felipe Triviño
  */
 @Singleton
-public class EntityManagerGlobal implements EntityManagerGlobalInterface, Serializable{
+public class SesionEntityManagerFactory implements SesionEntityManagerFactoryInterface, Serializable{
     
     /**
      * Atributo EntityManagerFactory.
