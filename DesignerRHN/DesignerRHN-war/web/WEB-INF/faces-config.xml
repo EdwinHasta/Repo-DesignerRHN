@@ -73,23 +73,6 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/cargo.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>nominaf</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>analisisCargos</from-outcome>
-            <to-view-id>/cargo.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
         <from-view-id>/Formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadesFormula</from-outcome>
@@ -384,23 +367,6 @@
         <navigation-case>
             <from-outcome>vigenciasDepRastro</from-outcome>
             <to-view-id>/vigenciadeporte.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/cargo.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>rastroCargo</from-outcome>
-            <to-view-id>/cargo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2240,8 +2206,7 @@
             <to-view-id>/Rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule> 
-    
+    </navigation-rule>   
     <navigation-rule>
         <from-view-id>/operando.xhtml</from-view-id>
         <navigation-case>
@@ -2249,8 +2214,7 @@
             <to-view-id>/tipofuncion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule> 
-    
+    </navigation-rule>   
     <navigation-rule>
         <from-view-id>/operando.xhtml</from-view-id>
         <navigation-case>
@@ -2259,7 +2223,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule> 
-    
     <navigation-rule>
         <from-view-id>/tipofuncion.xhtml</from-view-id>
         <navigation-case>
@@ -2268,5 +2231,65 @@
             <redirect />
         </navigation-case>
     </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>constante</from-outcome>
+            <to-view-id>/tipoconstante.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/tipoconstante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>operando</from-outcome>
+            <to-view-id>/operando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/operando.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>bloque</from-outcome>
+            <to-view-id>/tipobloque.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule> 
+    
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciaviajero</from-outcome>
+            <to-view-id>/emplviajero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emplviajero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciaviajeroatras</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/ubicaciongeografica.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cambioSucursalPila</from-outcome>
+            <to-view-id>/sucursal_pila.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/sucursal_pila.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasSucursalPila</from-outcome>
+            <to-view-id>/ubicaciongeografica.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
  
 </faces-config>

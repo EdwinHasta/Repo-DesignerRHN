@@ -199,7 +199,7 @@
                                         <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/Iconos/IBC.png); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmplIbcs.recibirEmpleado(item.empleado.secuencia)}" action="emplIbcs"/>
                                         <p:tooltip  for="IBC" value="#{msg['IBC']}"  />
 
-                                        <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoViajero.png); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"/>
+                                       <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoViajero.png); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"  actionListener="#{controlVigenciasViajeros.recibirEmpleado(item.empleado.secuencia)}" action="vigenciaviajero"/>
                                         <p:tooltip  for="TipoViajero">
                                             #{msg['TipoViajero1']}<br/>#{msg['TipoViajero2']}
                                         </p:tooltip>

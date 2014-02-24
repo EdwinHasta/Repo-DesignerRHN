@@ -311,7 +311,7 @@ public class ControlTipoFuncion implements Serializable {
                 cualCelda = -1;
             } else if (cualCelda == 2) {
                 context.update("formularioDialogos:editarObjetos");
-                context.execute("editarDescripciones.show()");
+                context.execute("editarObjetos.show()");
                 cualCelda = -1;
             }
         }

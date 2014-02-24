@@ -9,7 +9,6 @@ import Entidades.Formulas;
 import Entidades.Operandos;
 import Entidades.TiposFormulas;
 import Exportar.ExportarPDF;
-import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTiposFormulasInterface;
@@ -104,7 +103,6 @@ public class ControlTipoFormula implements Serializable {
         listaTiposFormulasModificar = new ArrayList<TiposFormulas>();
         altoTabla = "245";
         duplicarTipoFormula = new TiposFormulas();
-        nuevoTipoFormula.setFechainicial(new Date());
     }
 
     //UBICACION CELDA
@@ -435,8 +433,12 @@ public class ControlTipoFormula implements Serializable {
                 context.execute("editarFechasFinales.show()");
                 cualCelda = -1;
             } else if (cualCelda == 2) {
-                context.update("formularioDialogos:editarObjetos");
-                context.execute("editarDescripciones.show()");
+                context.update("formularioDialogos:editarFormulas");
+                context.execute("editarFormulas.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 3) {
+                context.update("formularioDialogos:editarEstados");
+                context.execute("editarEstados.show()");
                 cualCelda = -1;
             }
         }
