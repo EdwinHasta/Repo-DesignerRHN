@@ -130,7 +130,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     @Override
     public List<Tipospagos> lovTiposPagos() {
         try {
-            List<Tipospagos> lista = persistenciaTiposPagos.buscarTiposPagos();
+            List<Tipospagos> lista = persistenciaTiposPagos.consultarTiposPagos();
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovTiposPagos Admi : " + e.toString());
