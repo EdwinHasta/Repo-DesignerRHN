@@ -73,6 +73,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nominaf</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>analisisCargos</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/Formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadesFormula</from-outcome>
@@ -367,6 +384,23 @@
         <navigation-case>
             <from-outcome>vigenciasDepRastro</from-outcome>
             <to-view-id>/vigenciadeporte.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroCargo</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

@@ -16,12 +16,11 @@
                         <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 45px;left: 395px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreEmpresa" value="#{controlCuenta.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 460px;"/>
                         <h:outputText value="#{msg['nit']}" style="position: absolute; top: 45px;left: 730px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nitEmpresa" value="#{controlCuenta.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 760px;"/>
+                        <h:outputText id="nitEmpresa" value="#{controlCuenta.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 770px;"/>
 
 
                         <fieldset style="position: absolute; left: 10px; top: 70px; font-size: 10px; width: 830px; height: 400px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['titulo']}</strong></legend>
-                            <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
                             <p:dataTable id="datosCuenta" var="infoC" rowKey="#{infoC.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 830px"   
                                          value="#{controlCuenta.listCuentas}" scrollable="true" scrollHeight="262" scrollWidth="830"
@@ -688,9 +687,6 @@
                         </p:panel>
                     </p:dialog>
 
-
-
-                    <!-- LOV EMPRESAS -->
                     <p:dialog header="#{msg['empresas']}" widgetVar="EmpresasDialogo" draggable="false" resizable="false" closable="false" id="EmpresasDialogo"  
                               showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovEmpresas" style="font-size: 11px; width: 310px" var="empresa" value="#{controlCuenta.listEmpresas}" rowKey="#{empresa.secuencia}"
@@ -752,7 +748,6 @@
                 <h:form id="formExportarCuentas">
                     <p:dataTable id="datosCuentasExportar" var="infoC" style="visibility: hidden; display: none;"                           
                                  value="#{controlCuenta.listCuentas}"> 
-                        <!--COLUMNAS TABLA DATOS VIGENCIAS LOCALIZACIONES DE UN EMPLEADO --> 
 
                         <p:column headerText="#{msg['codigoX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['codigoX']}"/> </f:facet> 
