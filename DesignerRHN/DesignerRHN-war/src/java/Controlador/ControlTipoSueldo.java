@@ -272,7 +272,7 @@ public class ControlTipoSueldo implements Serializable {
             if (tipoLista == 1) {
                 aux = filtrarListaTiposSueldos.get(index);
             }
-            if (aux.getCodigo() <= 0 || aux.getDescripcion().isEmpty()) {
+            if (aux.getCodigo() == null || aux.getDescripcion().isEmpty()) {
                 retorno = false;
             }
             if (aux.getCodigo() != null) {
@@ -1731,8 +1731,8 @@ public class ControlTipoSueldo implements Serializable {
     }
 
     public void limpiarNuevaTSGrupo() {
-        nuevoTSFormulaConcepto = new TSFormulasConceptos();
-        nuevoTSFormulaConcepto.setFormula(new Formulas());
+        nuevoTSGrupoTipoEntidad = new TSGruposTiposEntidades();
+        nuevoTSGrupoTipoEntidad.setGrupotipoentidad(new Grupostiposentidades());
         indexTSGrupos = -1;
         secRegistroTSGrupos = null;
     }
@@ -2212,6 +2212,7 @@ public class ControlTipoSueldo implements Serializable {
 
     public void borrarTSGrupo() {
         if (indexAuxTSGrupos >= 0) {
+            indexTSGrupos = indexAuxTSGrupos;
             if (tipoListaTSGrupos == 0) {
                 if (!listTSGruposTiposEntidadesModificar.isEmpty() && listTSGruposTiposEntidadesModificar.contains(listaTSGruposTiposEntidades.get(indexTSGrupos))) {
                     int modIndex = listTSGruposTiposEntidadesModificar.indexOf(listaTSGruposTiposEntidades.get(indexTSGrupos));

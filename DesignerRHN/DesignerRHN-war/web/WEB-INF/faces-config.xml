@@ -73,6 +73,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nominaf</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>analisisCargos</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/Formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadesFormula</from-outcome>
@@ -473,12 +490,8 @@
         </navigation-case>
     </navigation-rule>
     
-    
-    
-    
-    
     <navigation-rule>
-        <from-view-id>/formulacontrato.xhtml</from-view-id>
+        <from-view-id>/historiaformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -488,8 +501,25 @@
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>contratoFormulaRastro</from-outcome>
-            <to-view-id>/formulacontrato.xhtml</to-view-id>
+            <from-outcome>historiaFormulaRastro</from-outcome>
+            <to-view-id>/historiaformula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>   
+    
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroCargo</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

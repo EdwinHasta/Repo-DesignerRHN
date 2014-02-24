@@ -26,7 +26,7 @@ import javax.ejb.Stateful;
  * Clase encargada de realizar las operaciones lógicas para la pantalla
  * 'Proceso'.
  *
- * @author AndresPineda
+ * @author AndresPineda 
  */
 @Stateful
 public class AdministrarProcesos implements AdministrarProcesosInterface {
@@ -95,6 +95,10 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void crearProcesos(List<Procesos> listaP) {
         try {
             for (int i = 0; i < listaP.size(); i++) {
+                String textM = listaP.get(i).getDescripcion().toUpperCase();
+                listaP.get(i).setDescripcion(textM);
+                String textC = listaP.get(i).getComentarios().toUpperCase();
+                listaP.get(i).setComentarios(textC);
                 persistenciaProcesos.crear(listaP.get(i));
             }
         } catch (Exception e) {
@@ -107,6 +111,10 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void editarProcesos(List<Procesos> listaP) {
         try {
             for (int i = 0; i < listaP.size(); i++) {
+                String textM = listaP.get(i).getDescripcion().toUpperCase();
+                listaP.get(i).setDescripcion(textM);
+                String textC = listaP.get(i).getComentarios().toUpperCase();
+                listaP.get(i).setComentarios(textC);
                 persistenciaProcesos.editar(listaP.get(i));
             }
         } catch (Exception e) {
@@ -215,6 +223,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void crearOperandosLogs(List<OperandosLogs> listaOL) {
         try {
             for (int i = 0; i < listaOL.size(); i++) {
+                listaOL.get(i).setDescripcion(String.valueOf(listaOL.get(i).getOperando().getCodigo()));
                 persistenciaOperandosLogs.crear(listaOL.get(i));
             }
         } catch (Exception e) {

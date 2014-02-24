@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Cargos implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
+    private Collection<DetallesCargos> detallesCargosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
+    private Collection<SueldosMercados> sueldosMercadosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
     private Collection<Competenciascargos> competenciascargosCollection;
     @OneToMany(mappedBy = "cargo")
     private Collection<ParametrosInformes> parametrosInformesCollection;
@@ -63,9 +67,9 @@ public class Cargos implements Serializable {
     private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "SUELDOMAXIMO")
@@ -80,7 +84,7 @@ public class Cargos implements Serializable {
     @Size(max = 1)
     @Column(name = "JEFE")
     private String jefe;
-    @Size(max = 20)
+    //@Size(max = 20)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
     @JoinColumn(name = "PROCESOPRODUCTIVO", referencedColumnName = "SECUENCIA")
@@ -99,6 +103,14 @@ public class Cargos implements Serializable {
     private Collection<VigenciasCargos> vigenciascargosCollection;
     @Transient
     private BigDecimal sueldoCargo;
+    @Transient
+    private boolean checkCargoRotativo;
+    @Transient
+    private String strCargoRotativo;
+    @Transient
+    private boolean chechJefe;
+    @Transient
+    private String strJefe;
 
     public Cargos() {
     }
@@ -158,6 +170,9 @@ public class Cargos implements Serializable {
     }
 
     public String getTurnorotativo() {
+        if (turnorotativo == null) {
+            turnorotativo = "N";
+        }
         return turnorotativo;
     }
 
@@ -174,6 +189,9 @@ public class Cargos implements Serializable {
     }
 
     public String getJefe() {
+        if (jefe == null) {
+            jefe = "N";
+        }
         return jefe;
     }
 
@@ -219,6 +237,72 @@ public class Cargos implements Serializable {
 
     public void setEmpresa(Empresas empresa) {
         this.empresa = empresa;
+    }
+
+    public boolean isCheckCargoRotativo() {
+        getTurnorotativo();
+        if (turnorotativo == null || turnorotativo.equalsIgnoreCase("N")) {
+            checkCargoRotativo = false;
+        } else {
+            checkCargoRotativo = true;
+        }
+        return checkCargoRotativo;
+    }
+
+    public void setCheckCargoRotativo(boolean checkCargoRotativo) {
+        if (checkCargoRotativo == false) {
+            turnorotativo = "N";
+        } else {
+            turnorotativo = "S";
+        }
+        this.checkCargoRotativo = checkCargoRotativo;
+    }
+
+    public String getStrCargoRotativo() {
+        getTurnorotativo();
+        if (turnorotativo == null || turnorotativo.equalsIgnoreCase("N")) {
+            strCargoRotativo = "NO";
+        } else {
+            strCargoRotativo = "SI";
+        }
+        return strCargoRotativo;
+    }
+
+    public void setStrCargoRotativo(String strCargoRotativo) {
+        this.strCargoRotativo = strCargoRotativo;
+    }
+
+    public boolean isChechJefe() {
+        getJefe();
+        if (jefe == null || jefe.equalsIgnoreCase("N")) {
+            chechJefe = false;
+        } else {
+            chechJefe = true;
+        }
+        return chechJefe;
+    }
+
+    public void setChechJefe(boolean chechJefe) {
+        if (chechJefe == false) {
+            jefe = "N";
+        } else {
+            jefe = "S";
+        }
+        this.chechJefe = chechJefe;
+    }
+
+    public String getStrJefe() {
+        getJefe();
+        if (jefe == null || jefe.equalsIgnoreCase("N")) {
+            strJefe = "NO";
+        } else {
+            strJefe = "SI";
+        }
+        return strJefe;
+    }
+
+    public void setStrJefe(String strJefe) {
+        this.strJefe = strJefe;
     }
 
     @XmlTransient
@@ -341,5 +425,23 @@ public class Cargos implements Serializable {
 
     public void setSueldoCargo(BigDecimal sueldoCargo) {
         this.sueldoCargo = sueldoCargo;
+    }
+
+    @XmlTransient
+    public Collection<DetallesCargos> getDetallesCargosCollection() {
+        return detallesCargosCollection;
+    }
+
+    public void setDetallesCargosCollection(Collection<DetallesCargos> detallesCargosCollection) {
+        this.detallesCargosCollection = detallesCargosCollection;
+    }
+
+    @XmlTransient
+    public Collection<SueldosMercados> getSueldosMercadosCollection() {
+        return sueldosMercadosCollection;
+    }
+
+    public void setSueldosMercadosCollection(Collection<SueldosMercados> sueldosMercadosCollection) {
+        this.sueldosMercadosCollection = sueldosMercadosCollection;
     }
 }

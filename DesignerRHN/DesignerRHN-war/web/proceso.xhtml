@@ -369,16 +369,16 @@
                     <p:dialog id="confirmarGuardarSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlProceso.guardarYSalir()}" action="#{controlProceso.paginaAnterior}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlProceso.cancelarYSalir()}" action="#{controlProceso.paginaAnterior}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlProceso.guardarYSalir()}" action="#{controlProceso.valorPaginaAnterior()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlProceso.cancelarYSalir()}" action="#{controlProceso.valorPaginaAnterior()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rpter']}" resizable="false" draggable="false" modal="true" height="105" width="430px" style="font-size: 12px" >
+                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rpter']}" resizable="false" draggable="false" modal="true" height="90" width="430px" style="font-size: 12px" >
                         <h:outputText value="#{msg['seleccione']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
                         <p:commandButton value="#{msg['proceso']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 20px; top: 50px;" actionListener="#{controlProceso.verificarRastroProceso()}" process="@this" />
-                        <p:commandButton value="#{msg['formulaProceso']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 210px; top: 50px;" actionListener="#{controlProceso.verificarRastroFormulaProceso()}" process="@this"/>
-                        <p:commandButton value="#{msg['operando']}s" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 20px; top: 80px;" actionListener="#{controlProceso.verificarRastroOperandoLog()}" process="@this"/>
+                        <p:commandButton value="#{msg['formulaProceso']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 220px; top: 50px;" actionListener="#{controlProceso.verificarRastroFormulaProceso()}" process="@this"/>
+                        <p:commandButton value="#{msg['operando']}s" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 310px; top: 50px;" actionListener="#{controlProceso.verificarRastroOperandoLog()}" process="@this"/>
                     </p:dialog>
 
 
@@ -602,11 +602,11 @@
                         <h:outputText value="#{msg['errorBorrarRegistro']}" style="position: absolute; left: 70px; top: 18px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="verificarNuevoRegistro" widgetVar="verificarNuevoRegistro" header="#{msg['nuevoregistropagina']}" resizable="false" draggable="false" modal="true" height="110" width="430px" style="font-size: 12px" >
+                    <p:dialog id="verificarNuevoRegistro" widgetVar="verificarNuevoRegistro" header="#{msg['nuevoregistropagina']}" resizable="false" draggable="false" modal="true" height="90" width="430px" style="font-size: 12px" >
                         <h:outputText value="#{msg['verificarNuevoRegistro']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
                         <p:commandButton value="#{msg['proceso']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 10px; top: 50px;" oncomplete="NuevoRegistroProceso.show()" update=":formularioDialogos:nuevoProceso"  process="@this" />
-                        <p:commandButton value="#{msg['formulaProceso']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 10px; top: 90px;" oncomplete="NuevoRegistroFormulaProceso.show()" update=":formularioDialogos:nuevoFormulaProceso" process="@this"/>
-                        <p:commandButton value="#{msg['operando']}s" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 220px; top: 50px;" oncomplete="NuevoRegistroOperandoLog.show()" update=":formularioDialogos:nuevoOperandoLog" process="@this"/>
+                        <p:commandButton value="#{msg['formulaProceso']}" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 200px; top: 50px;" oncomplete="NuevoRegistroFormulaProceso.show()" update=":formularioDialogos:nuevoFormulaProceso" process="@this"/>
+                        <p:commandButton value="#{msg['operando']}s" onclick="verificarNuevoRegistro.hide();" style="position: absolute; left: 310px; top: 50px;" oncomplete="NuevoRegistroOperandoLog.show()" update=":formularioDialogos:nuevoOperandoLog" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroProceso" header="#{msg['nuevoregistroP']}" widgetVar="NuevoRegistroProceso" closable="false" resizable="false"  draggable="false" modal="true" height="510" width="400" style="font-size: 12px; padding: 0px">  

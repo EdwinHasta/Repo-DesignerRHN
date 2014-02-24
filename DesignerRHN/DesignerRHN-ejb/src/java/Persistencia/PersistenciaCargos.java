@@ -15,12 +15,14 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla
- * 'Cargos' de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'Cargos' de la base de
+ * datos
+ *
  * @author Betelgeuse
  */
 @Stateless
 public class PersistenciaCargos implements PersistenciaCargosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -83,6 +85,18 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
             return listaCargosSalario;
         } catch (Exception e) {
             System.out.println("PersistenciaCargos: Fallo el nativeQuery.cargosSalario " + e);
+            return null;
+        }
+    }
+@Override
+    public List<Cargos> buscarCargosPorSecuenciaEmpresa(BigInteger secEmpresa) {
+        try {
+            Query query = em.createQuery("SELECT c FROM Cargos c  WHERE c.empresa.secuencia=:secEmpresa");
+            query.setParameter("secEmpresa", secEmpresa);
+            List<Cargos> cargos = query.getResultList();
+            return cargos;
+        } catch (Exception e) {
+            System.out.println("Error buscarCargosPorSecuenciaEmpresa PersistenciaCargos : " + e.toString());
             return null;
         }
     }
