@@ -46,6 +46,10 @@ public class Operandos implements Serializable {
     @OneToMany(mappedBy = "operando")
     private Collection<NovedadesOperandos> novedadesOperandosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<DependenciasOperandos> dependenciasOperandosCollection;
+    @OneToMany(mappedBy = "operando")
+    private Collection<NovedadesOperandos> novedadesOperandosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<TiposConstantes> tiposConstantesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<TiposFormulas> tiposFormulasCollection;
