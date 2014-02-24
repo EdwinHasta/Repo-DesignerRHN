@@ -24,7 +24,7 @@ public class AdministrarTiposFormulas implements AdministrarTiposFormulasInterfa
     
     @EJB
     PersistenciaTiposFormulasInterface persistenciaTiposFormulas;
-        @EJB
+    @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
     
 

@@ -42,6 +42,10 @@ public class Operandos implements Serializable {
     @OneToMany(mappedBy = "operando")
     private Collection<OperandosGruposConceptos> operandosGruposConceptosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
+    private Collection<DependenciasOperandos> dependenciasOperandosCollection;
+    @OneToMany(mappedBy = "operando")
+    private Collection<NovedadesOperandos> novedadesOperandosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<TiposConstantes> tiposConstantesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
     private Collection<TiposFormulas> tiposFormulasCollection;
@@ -74,7 +78,6 @@ public class Operandos implements Serializable {
     private String descripcion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Basic(optional = false)
@@ -150,6 +153,9 @@ public class Operandos implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -402,12 +408,21 @@ public class Operandos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<OperandosGruposConceptos> getOperandosGruposConceptosCollection() {
-        return operandosGruposConceptosCollection;
+    public Collection<NovedadesOperandos> getNovedadesOperandosCollection() {
+        return novedadesOperandosCollection;
     }
 
-    public void setOperandosGruposConceptosCollection(Collection<OperandosGruposConceptos> operandosGruposConceptosCollection) {
-        this.operandosGruposConceptosCollection = operandosGruposConceptosCollection;
+    public void setNovedadesOperandosCollection(Collection<NovedadesOperandos> novedadesOperandosCollection) {
+        this.novedadesOperandosCollection = novedadesOperandosCollection;
+    }
+
+    @XmlTransient
+    public Collection<DependenciasOperandos> getDependenciasOperandosCollection() {
+        return dependenciasOperandosCollection;
+    }
+
+    public void setDependenciasOperandosCollection(Collection<DependenciasOperandos> dependenciasOperandosCollection) {
+        this.dependenciasOperandosCollection = dependenciasOperandosCollection;
     }
 
 }

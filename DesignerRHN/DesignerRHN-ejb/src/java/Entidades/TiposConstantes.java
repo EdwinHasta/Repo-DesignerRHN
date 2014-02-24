@@ -8,6 +8,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,7 +42,7 @@ public class TiposConstantes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "VALORREAL")
     private BigDecimal valorreal;
     @Column(name = "VALORDATE")
@@ -67,26 +69,28 @@ public class TiposConstantes implements Serializable {
     @JoinColumn(name = "OPERANDO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Operandos operando;
+    @Transient
+    private String estadoTipo;
 
     public TiposConstantes() {
     }
 
-    public TiposConstantes(BigDecimal secuencia) {
+    public TiposConstantes(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposConstantes(BigDecimal secuencia, Date fechainicial, Date fechafinal, String tipo) {
+    public TiposConstantes(BigInteger secuencia, Date fechainicial, Date fechafinal, String tipo) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
         this.fechafinal = fechafinal;
         this.tipo = tipo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -131,11 +135,45 @@ public class TiposConstantes implements Serializable {
     }
 
     public String getTipo() {
+        if(tipo == null){
+            tipo = "N";
+        }
         return tipo;
     }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+    
+    public String getEstadoTipo() {
+        if (estadoTipo == null) {
+            if (tipo == null) {
+                estadoTipo = "NUMERICO";
+
+            } else {
+
+                if (tipo.equalsIgnoreCase("N")) {
+                    estadoTipo = "NUMERICO";
+                } else if (tipo.equalsIgnoreCase("F")) {
+                    estadoTipo = "FECHA";
+                } else if (tipo.equalsIgnoreCase("C")) {
+                    estadoTipo = "CADENA";
+                }
+            }
+        }
+        return estadoTipo;
+    }
+
+    public void setEstadoTipo(String estadoTipo) {
+
+        if (estadoTipo.equalsIgnoreCase("NUMERICO")) {
+            setTipo("N");
+        } else if (estadoTipo.equals("FECHA")) {
+            setTipo("F");
+        } else if (estadoTipo.equals("CADENA")) {
+            setTipo("C");
+        } 
+        this.estadoTipo = estadoTipo;
     }
 
     public Operandos getOperando() {

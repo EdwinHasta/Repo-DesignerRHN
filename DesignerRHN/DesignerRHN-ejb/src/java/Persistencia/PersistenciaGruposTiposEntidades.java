@@ -10,7 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br> 
@@ -54,7 +54,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     }
 
     @Override
-    public Grupostiposentidades buscarGrupoTipoEntidad(BigInteger secuencia) {
+    public Grupostiposentidades consultarGrupoTipoEntidad(BigInteger secuencia) {
         try {
 
             return em.find(Grupostiposentidades.class, secuencia);
@@ -65,15 +65,46 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    @Override
-    public List<Grupostiposentidades> buscarGruposTiposEntidades() {
+   @Override
+    public List<Grupostiposentidades> consultarGruposTiposEntidades() {
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Grupostiposentidades.class));
-            return em.createQuery(cq).getResultList();
+            Query query = em.createQuery("SELECT ta FROM Grupostiposentidades ta ORDER BY ta.codigo");
+            List<Grupostiposentidades> todosGrupostiposentidades = query.getResultList();
+            return todosGrupostiposentidades;
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades buscarGruposTiposEntidades" + e);
+            System.err.println("Error: PersistenciaGrupostiposentidades consultarGrupostiposentidades ERROR " + e);
             return null;
         }
     }
+
+    public BigInteger contarTiposEntidadesGrupoTipoEntidad(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT (*)COUNT FROM tiposentidades WHERE grupo =?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaGrupostiposentidades contarTiposEntidadesGrupoTipoEntidad Retorno " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaGrupostiposentidades contarTiposEntidadesGrupoTipoEntidad ERROR : " + e);
+            return retorno;
+        }
+    }
+
+    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SSELECT (*)COUNT FROM tsgrupostiposentidades WHERE grupotipoentidad =?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaGrupostiposentidades contarTSgruposTiposEntidadesTipoEntidad Retorno " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaGrupostiposentidades contarTSgruposTiposEntidadesTipoEntidad ERROR : " + e);
+            return retorno;
+        }
+    }
+
 }

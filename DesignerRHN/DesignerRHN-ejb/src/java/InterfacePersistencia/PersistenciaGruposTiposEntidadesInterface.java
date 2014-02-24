@@ -9,38 +9,58 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'GruposTiposEntidades' 
- * de la base de datos.
+ * Interface encargada de determinar las operaciones que se realizan sobre la
+ * tabla 'GruposTiposEntidades' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Local
 public interface PersistenciaGruposTiposEntidadesInterface {
+
     /**
      * Método encargado de insertar un GrupoTipoEntidad en la base de datos.
+     *
      * @param gruposTiposEntidades GrupoTipoEntidad que se quiere crear.
      */
     public void crear(Grupostiposentidades gruposTiposEntidades);
+
     /**
      * Método encargado de modificar un GrupoTipoEntidad de la base de datos.
-     * Este método recibe la información del parámetro para hacer un 'merge' con la 
-     * información de la base de datos.
-     * @param gruposTiposEntidades GrupoTipoEntidad con los cambios que se van a realizar.
+     * Este método recibe la información del parámetro para hacer un 'merge' con
+     * la información de la base de datos.
+     *
+     * @param gruposTiposEntidades GrupoTipoEntidad con los cambios que se van a
+     * realizar.
      */
     public void editar(Grupostiposentidades gruposTiposEntidades);
+
     /**
-     * Método encargado de eliminar de la base de datos el GrupoTipoEntidad que entra por parámetro.
+     * Método encargado de eliminar de la base de datos el GrupoTipoEntidad que
+     * entra por parámetro.
+     *
      * @param gruposTiposEntidades GrupoTipoEntidad que se quiere eliminar.
      */
     public void borrar(Grupostiposentidades gruposTiposEntidades);
+
     /**
-     * Método encargado de buscar el GrupoTipoEntidad con la secuencia dada por parámetro.
+     * Método encargado de buscar el GrupoTipoEntidad con la secuencia dada por
+     * parámetro.
+     *
      * @param secuencia Secuencia del GrupoTipoEntidad que se quiere encontrar.
-     * @return Retorna el GrupoTipoEntidad identificado con la secuencia dada por parámetro.
+     * @return Retorna el GrupoTipoEntidad identificado con la secuencia dada
+     * por parámetro.
      */
-    public Grupostiposentidades buscarGrupoTipoEntidad(BigInteger secuencia);
+    public Grupostiposentidades consultarGrupoTipoEntidad(BigInteger secuencia);
+
     /**
-     * Método encargado de buscar todos los GruposTiposEntidades existentes en la base de datos.
+     * Método encargado de buscar todos los GruposTiposEntidades existentes en
+     * la base de datos.
+     *
      * @return Retorna una lista de GruposTiposEntidades.
      */
-    public List<Grupostiposentidades> buscarGruposTiposEntidades();
+    public List<Grupostiposentidades> consultarGruposTiposEntidades();
+
+    public BigInteger contarTiposEntidadesGrupoTipoEntidad(BigInteger secuencia);
+
+    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(BigInteger secuencia);
 }

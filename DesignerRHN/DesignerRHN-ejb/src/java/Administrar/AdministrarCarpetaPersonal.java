@@ -5,16 +5,20 @@ package Administrar;
 
 import Entidades.*;
 import InterfaceAdministrar.AdministrarCarpetaPersonalInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pestaña 'Personal'.
+ * Clase encargada de realizar las operaciones lógicas para la pestaña
+ * 'Personal'.
+ *
  * @author Administrator
  */
 @Stateful
@@ -24,163 +28,198 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     //--------------------------------------------------------------------------    
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesCargos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesCargos'.
      */
     @EJB
     PersistenciaVWActualesCargosInterface persistenciaVWActualesCargos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaActualesTiposContratos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaActualesTiposContratos'.
      */
     @EJB
     PersistenciaVWActualesTiposContratosInterface persistenciaActualesTiposContratos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesNormasEmpleados'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesNormasEmpleados'.
      */
     @EJB
     PersistenciaVWActualesNormasEmpleadosInterface persistenciaVWActualesNormasEmpleados;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesAfiliacionesSalud'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesAfiliacionesSalud'.
      */
     @EJB
     PersistenciaVWActualesAfiliacionesSaludInterface persistenciaVWActualesAfiliacionesSalud;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesAfiliacionesPension'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesAfiliacionesPension'.
      */
     @EJB
     PersistenciaVWActualesAfiliacionesPensionInterface persistenciaVWActualesAfiliacionesPension;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesLocalizaciones'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesLocalizaciones'.
      */
     @EJB
     PersistenciaVWActualesLocalizacionesInterface persistenciaVWActualesLocalizaciones;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasTiposTrabajadores'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVigenciasTiposTrabajadores'.
      */
     @EJB
     PersistenciaVigenciasTiposTrabajadoresInterface persistenciaVigenciasTiposTrabajadores;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesTiposTrabajadores'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesTiposTrabajadores'.
      */
     @EJB
     PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesContratos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesContratos'.
      */
     @EJB
     PersistenciaVWActualesContratosInterface persistenciaVWActualesContratos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesJornadas'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesJornadas'.
      */
     @EJB
     PersistenciaVWActualesJornadasInterface persistenciaVWActualesJornadas;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesSueldos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesSueldos'.
      */
     @EJB
     PersistenciaVWActualesSueldosInterface persistenciaVWActualesSueldos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesPensiones'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesPensiones'.
      */
     @EJB
     PersistenciaVWActualesPensionesInterface persistenciaVWActualesPensiones;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesReformasLaborales'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesReformasLaborales'.
      */
     @EJB
     PersistenciaVWActualesReformasLaboralesInterface persistenciaVWActualesReformasLaborales;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesUbicaciones'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesUbicaciones'.
      */
     @EJB
     PersistenciaVWActualesUbicacionesInterface persistenciaVWActualesUbicaciones;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesFormasPagos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesFormasPagos'.
      */
     @EJB
     PersistenciaVWActualesFormasPagosInterface persistenciaVWActualesFormasPagos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVWActualesVigenciasViajeros'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesVigenciasViajeros'.
      */
     @EJB
     PersistenciaVWActualesVigenciasViajerosInterface persistenciaVWActualesVigenciasViajeros;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaDetallesEmpresas'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaDetallesEmpresas'.
      */
     @EJB
     PersistenciaDetallesEmpresasInterface persistenciaDetallesEmpresas;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaUsuarios'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaUsuarios'.
      */
     @EJB
     PersistenciaUsuariosInterface persistenciaUsuarios;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaParametrosEstructuras'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaParametrosEstructuras'.
      */
     @EJB
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaVigenciasCargos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVigenciasCargos'.
      */
     @EJB
     PersistenciaVigenciasCargosInterface persistenciaVigenciasCargos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaPersonas'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaPersonas'.
      */
     @EJB
     PersistenciaPersonasInterface persistenciaPersonas;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaEmpleado'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaEmpleado'.
      */
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaActualUsuario'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaActualUsuario'.
      */
     @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaEmpresas'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaEmpresas'.
      */
     @EJB
-    PersistenciaEmpresasInterface persistenciaEmpresas; 
+    PersistenciaEmpresasInterface persistenciaEmpresas;
     /**
      * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que está usando el aplicativo.
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
      */
     @EJB
-    EntityManagerGlobalInterface entityManagerGlobal;
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------    
+     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
     @Override
-    public VWActualesCargos consultarActualCargoEmpleado(BigInteger secEmpleado) {
+    public VWActualesCargos consultarActualCargoEmpleado(BigInteger secuenciaEmpleado) {
         try {
-            VWActualesCargos vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(entityManagerGlobal.getEmf().createEntityManager(), secEmpleado);
+            VWActualesCargos vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(em, secuenciaEmpleado);
             return vwActualesCargos;
         } catch (Exception e) {
+            System.out.println("ConsultarCargo.");
+            System.out.println("Exception" + e);
             return null;
         }
     }
