@@ -367,7 +367,7 @@ public class AdministrarCargos implements AdministrarCargosInterface {
         }
     }
 
-    @Override 
+    @Override
     public void crearDetalleCargo(DetallesCargos detalleCargo) {
         try {
             persistenciaDetallesCargos.crear(detalleCargo);
@@ -391,6 +391,17 @@ public class AdministrarCargos implements AdministrarCargosInterface {
             persistenciaDetallesCargos.borrar(detalleCargo);
         } catch (Exception e) {
             System.out.println("Error borrarDetalleCargo Admi : " + e.toString());
+        }
+    }
+
+    @Override 
+    public int validarExistenciaCargoDetalleCargos(BigInteger secCargo) {
+        try {
+            List<DetallesCargos> detalle = persistenciaDetallesCargos.buscarDetallesCargosDeCargoSecuencia(secCargo);
+            return detalle.size();
+        } catch (Exception e) {
+            System.out.println("Error validarExistenciaCargoDetalleCargos Admi : " + e.toString());
+            return -1;
         }
     }
 

@@ -200,31 +200,45 @@ public interface AdministrarCargosInterface {
      * @return Retorna una lista de Enfoques.
      */
     public List<Enfoques> lovEnfoques();
+
     /**
-     * Método encargado de recuperar un Detalle Cargo asociado a un Cargo y a un TipoDetalle.
+     * Método encargado de recuperar un Detalle Cargo asociado a un Cargo y a un
+     * TipoDetalle.
      *
      * @param secTipoDetalle Secuencia TipoDetalle
      * @param secCargo Secuencia Cargo
      * @return Retorna un DetalleCargo
      */
     public DetallesCargos detalleDelCargo(BigInteger secTipoDetalle, BigInteger secCargo);
-     /**
+
+    /**
      * Método encargado de crear DetallesCargos.
      *
      * @param detalleCargo DetallesCargos que se va a crear.
      */
     public void crearDetalleCargo(DetallesCargos detalleCargo);
+
     /**
      * Método encargado de editar DetallesCargos.
      *
      * @param detalleCargo DetallesCargos que se va a modificar.
      */
     public void editarDetalleCargo(DetallesCargos detalleCargo);
+
     /**
      * Método encargado de borrar DetallesCargos.
      *
      * @param detalleCargo DetallesCargos que se va a eliminar.
      */
     public void borrarDetalleCargo(DetallesCargos detalleCargo);
+
+    /**
+     * Método encargado de encontrar el numero de registros de DetallesCargos
+     * asociados a la secuencia de un Cargo
+     *
+     * @param secCargo Secuencia del Cargo
+     * @return Numero de registros de DetallesCargos asociados al Cargo
+     */
+    public int validarExistenciaCargoDetalleCargos(BigInteger secCargo);
 
 }

@@ -40,6 +40,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     @Override
     public void editar(DetallesCargos detallesCargos) {
         try {
+            System.out.println("detallesCargos : "+detallesCargos.getDescripcion()+" ::::: "+detallesCargos.getSecuencia());
             em.merge(detallesCargos);
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaDetallesCargos : " + e.toString());
@@ -92,6 +93,20 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
         } catch (Exception e) {
             System.out.println("Error buscarDetalleCargoParaSecuenciaTipoDetalle PersistenciaDetallesCargos : " + e.toString());
             return null;
+        }
+    }
+     
+    @Override 
+    public List<DetallesCargos> buscarDetallesCargosDeCargoSecuencia(BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT dc FROM DetallesCargos dc WHERE dc.cargo.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
+            List<DetallesCargos> detallesCargos =  query.getResultList();
+            return detallesCargos;
+        } catch (Exception e) {
+            System.out.println("Error buscarDetallesCargosDeCargoSecuencia PersistenciaDetallesCargos : " + e.toString());
+            List<DetallesCargos> detallesCargos = null;
+            return detallesCargos;
         }
     }
 

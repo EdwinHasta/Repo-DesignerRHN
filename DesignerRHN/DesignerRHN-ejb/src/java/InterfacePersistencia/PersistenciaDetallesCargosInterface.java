@@ -67,5 +67,12 @@ public interface PersistenciaDetallesCargosInterface {
      * por parametro
      */
     public DetallesCargos buscarDetalleCargoParaSecuenciaTipoDetalle(BigInteger secTipoDetalle, BigInteger secCargo);
+    /**
+     * Método encargado de buscar los DetallesCargos asociados a un Cargo
+     *
+     * @param secuencia Secuencia del Cargo
+     * @return Retorna una lista de DetallesCargos
+     */
+    public List<DetallesCargos> buscarDetallesCargosDeCargoSecuencia(BigInteger secuencia);
 
 }
