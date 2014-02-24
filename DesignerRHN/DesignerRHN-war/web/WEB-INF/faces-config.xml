@@ -2275,5 +2275,21 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/ubicaciongeografica.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cambioSucursalPila</from-outcome>
+            <to-view-id>/sucursal_pila.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/sucursal_pila.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasSucursalPila</from-outcome>
+            <to-view-id>/ubicaciongeografica.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
  
 </faces-config>
