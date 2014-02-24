@@ -1035,7 +1035,7 @@ public class ControlCargo implements Serializable {
     }
 
     public void cambiarIndiceSueldoMercado(int indice, int celda) {
-        if (guardadoDetalleCargo == false) {
+        if (guardadoDetalleCargo == true) {
             if (permitirIndexSueldoMercado == true) {
                 indexSueldoMercado = indice;
                 index = indice;
@@ -1066,7 +1066,7 @@ public class ControlCargo implements Serializable {
     }
 
     public void cambiarIndiceCompetenciaCargo(int indice, int celda) {
-        if (guardadoDetalleCargo == false) {
+        if (guardadoDetalleCargo == true) {
             if (permitirCompetencia == true) {
                 indexCompetenciaCargo = indice;
                 index = -1;
@@ -1159,7 +1159,7 @@ public class ControlCargo implements Serializable {
                 guardarCambiosTiposDetalles();
             }
             if (guardadoDetalleCargo == false) {
-                System.out.println("Entro a guardar el dato");
+                System.out.println("Entro a guardar el dato : " + detalleCargo.getDescripcion());
                 if (borrarDetalleCargo == false) {
                     System.out.println("Editar");
                     administrarCargos.editarDetalleCargo(detalleCargo);
@@ -2246,12 +2246,35 @@ public class ControlCargo implements Serializable {
     //BORRAR VC
     /**
      */
+    public boolean validarExistenciaCargoDetalleCargo() {
+        boolean retorno = true;
+        int regAsociados = 0;
+        if (tipoLista == 0) {
+            regAsociados = administrarCargos.validarExistenciaCargoDetalleCargos(listaCargos.get(index).getSecuencia());
+        }
+        if (tipoLista == 1) {
+            regAsociados = administrarCargos.validarExistenciaCargoDetalleCargos(filtrarListaCargos.get(index).getSecuencia());
+        }
+        if (regAsociados == 0) {
+            retorno = true;
+        }
+        if (regAsociados > 0) {
+            retorno = false;
+        }
+        return retorno;
+    }
+
     public void verificarRegistroBorrar() {
         if (index >= 0) {
             int tam = listaSueldosMercados.size();
             int tam2 = listaCompetenciasCargos.size();
             if (tam == 0 && tam2 == 0) {
-                borrarCargo();
+                if (validarExistenciaCargoDetalleCargo() == true) {
+                    borrarCargo();
+                } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("errorBorradoCargo.show()");
+                }
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("errorBorrarRegistro.show()");
@@ -3905,6 +3928,7 @@ public class ControlCargo implements Serializable {
             l = BigInteger.valueOf(k);
             detalleCargo = new DetallesCargos();
             detalleCargo.setSecuencia(l);
+            detalleCargo.setDescripcion(" ");
             if (tipoLista == 0) {
                 detalleCargo.setCargo(listaCargos.get(indexAux));
             }
@@ -3921,6 +3945,9 @@ public class ControlCargo implements Serializable {
             FacesMessage msg = new FacesMessage("Información", "El registro fue creado con Éxito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
+            detalleCargo = null;
+            getDetalleCargo();
+            
         } catch (Exception e) {
             System.out.println("Error crearDetalleCargo : " + e.toString());
         }
@@ -3933,6 +3960,9 @@ public class ControlCargo implements Serializable {
         if (borrarDetalleCargo == true) {
             borrarDetalleCargo = false;
         }
+        cambiosPagina = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         System.out.println("Entro a modificar datos : " + detalleCargo.getDescripcion());
     }
 
