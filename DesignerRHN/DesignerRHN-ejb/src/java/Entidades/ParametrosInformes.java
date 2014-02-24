@@ -13,14 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -28,43 +25,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "PARAMETROSINFORMES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ParametrosInformes.findAll", query = "SELECT p FROM ParametrosInformes p"),
-    @NamedQuery(name = "ParametrosInformes.findByUsuario", query = "SELECT p FROM ParametrosInformes p WHERE p.usuario = :usuario"),
-    @NamedQuery(name = "ParametrosInformes.findByFechadesde", query = "SELECT p FROM ParametrosInformes p WHERE p.fechadesde = :fechadesde"),
-    @NamedQuery(name = "ParametrosInformes.findByFechahasta", query = "SELECT p FROM ParametrosInformes p WHERE p.fechahasta = :fechahasta"),
-    @NamedQuery(name = "ParametrosInformes.findByCodigoempleadodesde", query = "SELECT p FROM ParametrosInformes p WHERE p.codigoempleadodesde = :codigoempleadodesde"),
-    @NamedQuery(name = "ParametrosInformes.findByCodigoempleadohasta", query = "SELECT p FROM ParametrosInformes p WHERE p.codigoempleadohasta = :codigoempleadohasta"),
-    @NamedQuery(name = "ParametrosInformes.findByConcepto", query = "SELECT p FROM ParametrosInformes p WHERE p.concepto = :concepto"),
-    @NamedQuery(name = "ParametrosInformes.findByTipopersonal", query = "SELECT p FROM ParametrosInformes p WHERE p.tipopersonal = :tipopersonal"),
-    @NamedQuery(name = "ParametrosInformes.findByGeneraplano", query = "SELECT p FROM ParametrosInformes p WHERE p.generaplano = :generaplano"),
-    @NamedQuery(name = "ParametrosInformes.findByNombregerente", query = "SELECT p FROM ParametrosInformes p WHERE p.nombregerente = :nombregerente"),
-    @NamedQuery(name = "ParametrosInformes.findByTipoparatrabajador", query = "SELECT p FROM ParametrosInformes p WHERE p.tipoparatrabajador = :tipoparatrabajador"),
-    @NamedQuery(name = "ParametrosInformes.findByNumerodocumento", query = "SELECT p FROM ParametrosInformes p WHERE p.numerodocumento = :numerodocumento"),
-    @NamedQuery(name = "ParametrosInformes.findByConsecutivoelemento", query = "SELECT p FROM ParametrosInformes p WHERE p.consecutivoelemento = :consecutivoelemento"),
-    @NamedQuery(name = "ParametrosInformes.findByFechainicontabilizacion", query = "SELECT p FROM ParametrosInformes p WHERE p.fechainicontabilizacion = :fechainicontabilizacion"),
-    @NamedQuery(name = "ParametrosInformes.findByFechafincontabilizacion", query = "SELECT p FROM ParametrosInformes p WHERE p.fechafincontabilizacion = :fechafincontabilizacion"),
-    @NamedQuery(name = "ParametrosInformes.findByObservaciones", query = "SELECT p FROM ParametrosInformes p WHERE p.observaciones = :observaciones"),
-    @NamedQuery(name = "ParametrosInformes.findByCiudadnom", query = "SELECT p FROM ParametrosInformes p WHERE p.ciudadnom = :ciudadnom"),
-    @NamedQuery(name = "ParametrosInformes.findByEstadosolucionnodo", query = "SELECT p FROM ParametrosInformes p WHERE p.estadosolucionnodo = :estadosolucionnodo"),
-    @NamedQuery(name = "ParametrosInformes.findByEvalempleado", query = "SELECT p FROM ParametrosInformes p WHERE p.evalempleado = :evalempleado"),
-    @NamedQuery(name = "ParametrosInformes.findByEvalindagacion", query = "SELECT p FROM ParametrosInformes p WHERE p.evalindagacion = :evalindagacion"),
-    @NamedQuery(name = "ParametrosInformes.findByNumeropatronal", query = "SELECT p FROM ParametrosInformes p WHERE p.numeropatronal = :numeropatronal"),
-    @NamedQuery(name = "ParametrosInformes.findBySexo", query = "SELECT p FROM ParametrosInformes p WHERE p.sexo = :sexo"),
-    @NamedQuery(name = "ParametrosInformes.findByEdad", query = "SELECT p FROM ParametrosInformes p WHERE p.edad = :edad"),
-    @NamedQuery(name = "ParametrosInformes.findByEdadmax", query = "SELECT p FROM ParametrosInformes p WHERE p.edadmax = :edadmax"),
-    @NamedQuery(name = "ParametrosInformes.findByRodamineto", query = "SELECT p FROM ParametrosInformes p WHERE p.rodamineto = :rodamineto"),
-    @NamedQuery(name = "ParametrosInformes.findByFechacorte", query = "SELECT p FROM ParametrosInformes p WHERE p.fechacorte = :fechacorte"),
-    @NamedQuery(name = "ParametrosInformes.findByNumerocuentacredi", query = "SELECT p FROM ParametrosInformes p WHERE p.numerocuentacredi = :numerocuentacredi"),
-    @NamedQuery(name = "ParametrosInformes.findByTipocuentacredi", query = "SELECT p FROM ParametrosInformes p WHERE p.tipocuentacredi = :tipocuentacredi"),
-    @NamedQuery(name = "ParametrosInformes.findByFondocumpleanos", query = "SELECT p FROM ParametrosInformes p WHERE p.fondocumpleanos = :fondocumpleanos"),
-    @NamedQuery(name = "ParametrosInformes.findByEvaluador", query = "SELECT p FROM ParametrosInformes p WHERE p.evaluador = :evaluador"),
-    @NamedQuery(name = "ParametrosInformes.findByFechaconvocatorias", query = "SELECT p FROM ParametrosInformes p WHERE p.fechaconvocatorias = :fechaconvocatorias"),
-    @NamedQuery(name = "ParametrosInformes.findByMensajedesprendible", query = "SELECT p FROM ParametrosInformes p WHERE p.mensajedesprendible = :mensajedesprendible"),
-    @NamedQuery(name = "ParametrosInformes.findByPdgpolitica", query = "SELECT p FROM ParametrosInformes p WHERE p.pdgpolitica = :pdgpolitica"),
-    @NamedQuery(name = "ParametrosInformes.findByPdgestrategia", query = "SELECT p FROM ParametrosInformes p WHERE p.pdgestrategia = :pdgestrategia")})
-public class ParametrosInformes implements Serializable { 
+public class ParametrosInformes implements Serializable {
+
     @JoinColumn(name = "NOMBREGERENTE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Empleados nombregerente;
@@ -633,6 +595,9 @@ public class ParametrosInformes implements Serializable {
     }
 
     public Empresas getEmpresa() {
+        if (empresa == null) {
+            empresa = new Empresas();
+        }
         return empresa;
     }
 
@@ -698,7 +663,7 @@ public class ParametrosInformes implements Serializable {
     }
 
     public Empleados getNombregerente() {
-        if(nombregerente == null){
+        if (nombregerente == null) {
             nombregerente = new Empleados();
         }
         return nombregerente;
@@ -707,5 +672,5 @@ public class ParametrosInformes implements Serializable {
     public void setNombregerente(Empleados nombregerente) {
         this.nombregerente = nombregerente;
     }
-    
+
 }

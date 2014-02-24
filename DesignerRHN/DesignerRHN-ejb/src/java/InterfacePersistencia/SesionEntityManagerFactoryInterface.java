@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
  * base de datos que se va a usar. 
  * @author betelgeuse
  */
-public interface EntityManagerGlobalInterface {
+public interface SesionEntityManagerFactoryInterface {
     /**
      * Método encargado de crear una instancia de la interface EntiyManagerFactory.
      * Esta acción almacena las propiedades que se utilizarán al momento de crear el 

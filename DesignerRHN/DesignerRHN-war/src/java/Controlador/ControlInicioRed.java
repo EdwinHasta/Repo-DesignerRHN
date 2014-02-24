@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -84,12 +85,13 @@ public class ControlInicioRed implements Serializable {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
             FacesContext contexto = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
             if (estadoInicio == false) {
                 if (!baseDatos.equals("") && !usuario.equals("") && !contraseña.equals("")) {
                     if (administrarInicioRed.conexionInicial(baseDatos)) {
                         if (administrarInicioRed.validarUsuario(usuario)) {
                             if (administrarInicioRed.conexionUsuario(baseDatos, usuario, contraseña)) {
-                                if (administrarInicioRed.validarConexionUsuario()) {
+                                if (administrarInicioRed.validarConexionUsuario(ses.getId())) {
                                     cambioClave = false;
                                     estadoInicio = true;
                                     modulosDesigner = false;
@@ -165,7 +167,7 @@ public class ControlInicioRed implements Serializable {
                     context.update("form:informacionAcceso");
                 }
             } else {
-                administrarInicioRed.cerrarSession();
+                administrarInicioRed.cerrarSession(ses.getId());
                 cambioClave = true;
                 modulosDesigner = true;
                 txtBoton = "Conectar";

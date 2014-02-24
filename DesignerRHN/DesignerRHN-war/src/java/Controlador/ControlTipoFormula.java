@@ -9,7 +9,6 @@ import Entidades.Formulas;
 import Entidades.Operandos;
 import Entidades.TiposFormulas;
 import Exportar.ExportarPDF;
-import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTiposFormulasInterface;
@@ -104,7 +103,6 @@ public class ControlTipoFormula implements Serializable {
         listaTiposFormulasModificar = new ArrayList<TiposFormulas>();
         altoTabla = "245";
         duplicarTipoFormula = new TiposFormulas();
-        nuevoTipoFormula.setFechainicial(new Date());
     }
 
     //UBICACION CELDA

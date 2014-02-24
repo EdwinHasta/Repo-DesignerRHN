@@ -1,113 +1,32 @@
 package Controlador;
 
-import InterfaceAdministrar.AdministarReportesInterface;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.Date;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @SessionScoped
 public class ControlPruebasUnitarias implements Serializable {
 
-    @EJB
-    AdministarReportesInterface administarReportes;
+    private StreamedContent reporte;
 
-    Date fechaPrueba;
-    String color, decoracion;
-    String alto, ancho;
-
-    public ControlPruebasUnitarias() {
-        color = "black";
-        decoracion = "none";
-        alto = "99";
-        ancho = "80";
-    }
-
-    public void crearReportePDF() {
-        //administarReportes.generarReporteXLSX();
-        administarReportes.generarReportePDF();
-    }
-
-    public void crearReporteXLSX() {
-        //administarReportes.generarReporteXLSX();
-        administarReportes.generarReporteXLSX();
-    }
-
-    public void crearReporteXLS() {
-        //administarReportes.generarReporteXLSX();
-        administarReportes.generarReporteXLS();
-    }
-
-    public void crearReporteCSV() {
-        //administarReportes.generarReporteXLSX();
-        administarReportes.generarReporteCSV();
-    }
-
-    public void crearReporteHTML() {
-        //administarReportes.generarReporteXLSX();
-        administarReportes.generarReporteHTML();
-    }
-
-    public void eventBtn() {
-        color = "red";
-        decoracion = "underline";
-        ancho = "99";
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form");
-    }
-
-    public void restaurar() {
-        color = "black";
-        decoracion = "none";
-        ancho = "80";
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form");
-    }
-
-    public Date getFechaPrueba() {
-        if(fechaPrueba == null){
-            fechaPrueba = new Date();
+    public StreamedContent getReporte() {
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(new File("C:\\DesignerRHN\\Reportes\\ArchivosPlanos\\JRPRODUCCION14022014033535.pdf"));
+            reporte = new DefaultStreamedContent(fis, "application/pdf");
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error leyendo archivo");
         }
-        return fechaPrueba;
+        return reporte;
     }
 
-    public void setFechaPrueba(Date fechaPrueba) {
-        this.fechaPrueba = fechaPrueba;
+    public void setReporte(StreamedContent reporte) {
+        this.reporte = reporte;
     }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getDecoracion() {
-        return decoracion;
-    }
-
-    public void setDecoracion(String decoracion) {
-        this.decoracion = decoracion;
-    }
-
-    public String getAlto() {
-        return alto;
-    }
-
-    public void setAlto(String alto) {
-        this.alto = alto;
-    }
-
-    public String getAncho() {
-        return ancho;
-    }
-
-    public void setAncho(String ancho) {
-        this.ancho = ancho;
-    }
-
 }

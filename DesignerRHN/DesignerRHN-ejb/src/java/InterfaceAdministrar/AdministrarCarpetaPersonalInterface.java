@@ -14,6 +14,12 @@ import java.util.List;
  */
 public interface AdministrarCarpetaPersonalInterface {
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    /**
      * Método encargado de recuperar el cargo actual de un empleado específico.
      * @param secEmpleado Secuencia del Empleado.
      * @return Retorna un VWActualesCargos con la información requerida.

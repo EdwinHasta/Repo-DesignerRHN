@@ -19,8 +19,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.datatable.DataTable;
@@ -160,6 +162,17 @@ public class ControlRemoto implements Serializable {
         filtrosActivos = false;
     }
 
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarCarpetaPersonal.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct controlremoto");
+        }
+    }
+    
     public void datosIniciales(int pestaña) {
         numPestaña = pestaña;
     }
