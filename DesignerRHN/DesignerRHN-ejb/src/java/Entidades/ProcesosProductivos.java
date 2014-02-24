@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ public class ProcesosProductivos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -49,7 +50,7 @@ public class ProcesosProductivos implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "procesoproductivo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "procesoproductivo")
     private Collection<Cargos> cargosCollection;
     @JoinColumn(name = "CENTROCOSTO", referencedColumnName = "SECUENCIA")
     @ManyToOne
@@ -58,21 +59,21 @@ public class ProcesosProductivos implements Serializable {
     public ProcesosProductivos() {
     }
 
-    public ProcesosProductivos(BigDecimal secuencia) {
+    public ProcesosProductivos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public ProcesosProductivos(BigDecimal secuencia, BigInteger codigo, String descripcion) {
+    public ProcesosProductivos(BigInteger secuencia, BigInteger codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -85,6 +86,9 @@ public class ProcesosProductivos implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 

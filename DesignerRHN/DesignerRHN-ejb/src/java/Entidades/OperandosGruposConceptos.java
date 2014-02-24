@@ -13,23 +13,25 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author betelgeuse
+ * @author PROYECTO01
  */
 @Entity
-@Table(name = "EVALCOMPETENCIAS")
+@Table(name = "OPERANDOSGRUPOSCONCEPTOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "EvalCompetencias.findAll", query = "SELECT e FROM EvalCompetencias e")})
-public class EvalCompetencias implements Serializable {
+    @NamedQuery(name = "OperandosGruposConceptos.findAll", query = "SELECT o FROM OperandosGruposConceptos o"),
+    @NamedQuery(name = "OperandosGruposConceptos.findBySecuencia", query = "SELECT o FROM OperandosGruposConceptos o WHERE o.secuencia = :secuencia")})
+public class OperandosGruposConceptos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -37,30 +39,21 @@ public class EvalCompetencias implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODIGO")
-    private Integer codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
-    @Size(max = 1000)
-    @Column(name = "DESCOMPETENCIA")
-    private String desCompetencia;
+    @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Procesos proceso;
+    @JoinColumn(name = "OPERANDO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Operandos operando;
+    @JoinColumn(name = "GRUPOCONCEPTO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private GruposConceptos grupoconcepto;
 
-    public EvalCompetencias() {
+    public OperandosGruposConceptos() {
     }
 
-    public EvalCompetencias(BigInteger secuencia) {
+    public OperandosGruposConceptos(BigInteger secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public EvalCompetencias(BigInteger secuencia, Integer codigo, String descripcion) {
-        this.secuencia = secuencia;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
     }
 
     public BigInteger getSecuencia() {
@@ -71,34 +64,29 @@ public class EvalCompetencias implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Integer getCodigo() {
-        return codigo;
+    public Procesos getProceso() {
+        return proceso;
     }
 
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
+    public void setProceso(Procesos proceso) {
+        this.proceso = proceso;
     }
 
-    public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
-        return descripcion;
+    public Operandos getOperando() {
+        return operando;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setOperando(Operandos operando) {
+        this.operando = operando;
     }
 
-    public String getDesCompetencia() {
-        return desCompetencia;
+    public GruposConceptos getGrupoconcepto() {
+        return grupoconcepto;
     }
 
-    public void setDesCompetencia(String desCompetencia) {
-        this.desCompetencia = desCompetencia;
+    public void setGrupoconcepto(GruposConceptos grupoconcepto) {
+        this.grupoconcepto = grupoconcepto;
     }
-
-    
 
     @Override
     public int hashCode() {
@@ -110,10 +98,10 @@ public class EvalCompetencias implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EvalCompetencias)) {
+        if (!(object instanceof OperandosGruposConceptos)) {
             return false;
         }
-        EvalCompetencias other = (EvalCompetencias) object;
+        OperandosGruposConceptos other = (OperandosGruposConceptos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -122,7 +110,7 @@ public class EvalCompetencias implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.EvalCompetencias[ secuencia=" + secuencia + " ]";
+        return "Entidades.OperandosGruposConceptos[ secuencia=" + secuencia + " ]";
     }
     
 }

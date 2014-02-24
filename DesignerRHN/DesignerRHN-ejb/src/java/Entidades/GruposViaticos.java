@@ -30,6 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GruposViaticos.findAll", query = "SELECT g FROM GruposViaticos g")})
 public class GruposViaticos implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Integer codigo;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -37,8 +41,6 @@ public class GruposViaticos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "PORCENTAJELASTDAY")
@@ -68,15 +70,10 @@ public class GruposViaticos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
-    }
-
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -124,6 +121,14 @@ public class GruposViaticos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Gruposviaticos[ secuencia=" + secuencia + " ]";
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
     
 }
