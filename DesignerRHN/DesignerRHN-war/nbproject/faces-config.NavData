@@ -5,8 +5,8 @@
         <Node id="EmplVigenciaLocalizacion.xhtml" x="1400" y="300" zoom="true"/>
         <Node id="Pruebas.xhtml" x="900" y="900" zoom="true"/>
         <Node id="ProgressBar.xhtml" x="1150" y="750" zoom="true"/>
-        <Node id="EmplVigenciaTipoContrato.xhtml" x="1650" y="600" zoom="true"/>
         <Node id="EmplVigenciasCargos.xhtml" x="1150" y="600" zoom="true"/>
+        <Node id="EmplVigenciaTipoContrato.xhtml" x="1650" y="600" zoom="true"/>
         <Node id="Legislacion.xhtml" x="150" y="1200" zoom="true"/>
         <Node id="EmplVacaPendiente.xhtml" x="650" y="150" zoom="true"/>
         <Node id="NovedadPlano.xhtml" x="400" y="1050" zoom="true"/>

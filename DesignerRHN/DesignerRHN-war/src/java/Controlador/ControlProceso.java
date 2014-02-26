@@ -320,6 +320,8 @@ public class ControlProceso implements Serializable {
             if (tipoLista == 0) {
                 String textM = listaProcesos.get(indice).getDescripcion().toUpperCase();
                 listaProcesos.get(indice).setDescripcion(textM);
+                String textC = listaProcesos.get(indice).getComentarios().toUpperCase();
+                listaProcesos.get(indice).setComentarios(textC);
                 if (!listProcesosCrear.contains(listaProcesos.get(indice))) {
                     if (listProcesosModificar.isEmpty()) {
                         listProcesosModificar.add(listaProcesos.get(indice));
@@ -332,8 +334,10 @@ public class ControlProceso implements Serializable {
                 }
             }
             if (tipoLista == 1) {
-                String textM = filtrarListaProcesos.get(indice).getDescripcion().toUpperCase();
-                filtrarListaProcesos.get(indice).setDescripcion(textM);
+                 String textM = filtrarListaProcesos.get(indice).getDescripcion().toUpperCase();
+                listaProcesos.get(indice).setDescripcion(textM);
+                String textC = filtrarListaProcesos.get(indice).getComentarios().toUpperCase();
+                listaProcesos.get(indice).setComentarios(textC);
                 if (!listProcesosCrear.contains(filtrarListaProcesos.get(indice))) {
                     if (listProcesosModificar.isEmpty()) {
                         listProcesosModificar.add(filtrarListaProcesos.get(indice));
@@ -2624,13 +2628,13 @@ public class ControlProceso implements Serializable {
         if (conteo > 0) {
             retorno = false;
         }
-        System.out.println("Retorno : "+retorno);
+        System.out.println("Retorno : " + retorno);
         return retorno;
     }
 
     public void clonarProceso() {
         System.out.println("Entro Al Metodo de Clonado");
-         RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         if (!procesoNuevoClonado.getDescripcion().isEmpty() && procesoNuevoClonado.getCodigo() >= 1 && procesoBaseClonado.getSecuencia() != null) {
             if (validarNuevoProcesoClon() == true) {
             } else {
