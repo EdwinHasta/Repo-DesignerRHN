@@ -7,7 +7,6 @@ package Administrar;
 
 import Entidades.TiposBloques;
 import InterfaceAdministrar.AdministrarTiposBloquesInterface;
-import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaTiposBloquesInterface;
 import java.math.BigInteger;
 import java.util.List;
@@ -22,10 +21,7 @@ import javax.ejb.Stateful;
 public class AdministrarTiposBloques implements AdministrarTiposBloquesInterface{
     
     @EJB
-    PersistenciaTiposBloquesInterface persistenciaTiposBloques;
-    @EJB
-    PersistenciaFormulasInterface persistenciaFormulas;
-    
+    PersistenciaTiposBloquesInterface persistenciaTiposBloques;    
 
     @Override
     public List<TiposBloques> buscarTiposBloques(BigInteger secuenciaOperando, String tipoOperando) {

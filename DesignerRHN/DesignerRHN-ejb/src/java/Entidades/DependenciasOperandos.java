@@ -7,7 +7,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,7 +38,7 @@ public class DependenciasOperandos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -50,24 +51,26 @@ public class DependenciasOperandos implements Serializable {
     @JoinColumn(name = "OPERANDO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Operandos operando;
+    @Transient
+    private String nombre;
 
     public DependenciasOperandos() {
     }
 
-    public DependenciasOperandos(BigDecimal secuencia) {
+    public DependenciasOperandos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public DependenciasOperandos(BigDecimal secuencia, int codigo) {
+    public DependenciasOperandos(BigInteger secuencia, int codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -80,6 +83,9 @@ public class DependenciasOperandos implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 
@@ -96,12 +102,25 @@ public class DependenciasOperandos implements Serializable {
     }
 
     public Operandos getOperando() {
+        if (operando == null){
+            operando = new Operandos();
+        }
         return operando;
     }
 
     public void setOperando(Operandos operando) {
         this.operando = operando;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    
 
     @Override
     public int hashCode() {
