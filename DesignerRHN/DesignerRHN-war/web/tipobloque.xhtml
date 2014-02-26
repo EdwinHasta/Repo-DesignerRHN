@@ -147,6 +147,10 @@
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>
                         </p:toolbar>
+
+                        <p:remoteCommand name="dirigirDependencia" actionListener="#{controlDependenciaOperando.recibirDatosOperando(controlTipoBloque.secOperando2 ,controlTipoBloque.operando2)}" action="dependencia" process="@this"/>
+
+                        <p:commandButton style="position: absolute; left: 617px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="DEPENDENCIA" value="#{msg['dependencia']}" actionListener="#{controlTipoBloque.guardarVariables(controlTipoBloque.index, controlTipoBloque.secuenciaOperando)}" process="@this" />
                         <p:commandButton style="position: absolute; left: 700px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlTipoBloque.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosTiposBloques" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlTipoBloque.salir()}" action="operando" process="@this" />
                     </p:panel>

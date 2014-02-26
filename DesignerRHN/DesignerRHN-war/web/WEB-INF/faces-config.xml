@@ -2293,5 +2293,14 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tipobloque.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>dependencia</from-outcome>
+            <to-view-id>/dependenciaoperando.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config> 
