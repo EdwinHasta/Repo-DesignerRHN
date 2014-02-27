@@ -130,11 +130,17 @@ public class ControlTipoBloque implements Serializable {
     }
 
     public void guardarVariables(int indice, BigInteger secuencia) {
+        if (listaTiposBloquesBorrar.isEmpty() && listaTiposBloquesCrear.isEmpty() && listaTiposBloquesModificar.isEmpty()) {
+            secOperando2 = secOperando;
+            operando2 = operando;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dirigirDependencia()");
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            guardado = false;
+            context.execute("confirmarGuardar.show()");
 
-        secOperando2 = secOperando;
-        operando2 = operando;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("dirigirDependencia()");
+        }
 
     }
 
@@ -963,7 +969,5 @@ public class ControlTipoBloque implements Serializable {
     public void setOperando2(Operandos operando2) {
         this.operando2 = operando2;
     }
-    
-    
 
 }

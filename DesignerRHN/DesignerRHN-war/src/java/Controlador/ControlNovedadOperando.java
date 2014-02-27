@@ -118,7 +118,7 @@ public class ControlNovedadOperando implements Serializable {
     public void recibirDatosOperando(BigInteger secuenciaOperando, Operandos operandoSeleccionado) {
         secOperando = secuenciaOperando;
         operando = operandoSeleccionado;
-        System.out.println("secOperando "+ secOperando + "operando" + operando);
+        System.out.println("secOperando " + secOperando + "operando" + operando);
         listaNovedadesOperandos = null;
         getListaNovedadesOperandos();
     }
@@ -574,10 +574,19 @@ public class ControlNovedadOperando implements Serializable {
         mensajeValidacion = new String();
 
         RequestContext context = RequestContext.getCurrentInstance();
-
-        if (nuevoNovedadOperando.getOperando().getNombre() == null) {
+        System.out.println("nuevoNovedadOperando.getOperando().getNombre()" + nuevoNovedadOperando.getOperando().getNombre());
+        if (nuevoNovedadOperando.getOperando().getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " * Nombre\n";
             pasa++;
+        }
+
+        for (int i = 0; i < listaNovedadesOperandos.size(); i++) {
+            if (nuevoNovedadOperando.getOperando().getNombre().equals(listaNovedadesOperandos.get(i).getOperando().getNombre())) {
+                context.update("formularioDialogos:operandorecalculado");
+                context.execute("operandorecalculado.show()");
+                pasa2++;
+            }
+
         }
 
         if (pasa != 0) {
@@ -585,7 +594,7 @@ public class ControlNovedadOperando implements Serializable {
             context.execute("validacionNuevoNovedadOperando.show()");
         }
 
-        if (pasa == 0) {
+        if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 altoTabla = "245";
@@ -615,6 +624,7 @@ public class ControlNovedadOperando implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:aceptar");
             }
+
             context.execute("NuevoNovedadOperando.hide()");
             index = -1;
             secRegistro = null;
@@ -858,7 +868,7 @@ public class ControlNovedadOperando implements Serializable {
     }
 
     public List<Operandos> getLovListaOperandos() {
-        if(lovListaOperandos == null){
+        if (lovListaOperandos == null) {
             lovListaOperandos = administrarNovedadesOperandos.buscarOperandos();
         }
         return lovListaOperandos;
