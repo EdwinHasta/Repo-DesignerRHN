@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -30,15 +28,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TiposIndices.findAll", query = "SELECT t FROM TiposIndices t")})
 public class TiposIndices implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private BigInteger codigo;
+    private Integer codigo;
     @Size(max = 20)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -46,32 +45,35 @@ public class TiposIndices implements Serializable {
     public TiposIndices() {
     }
 
-    public TiposIndices(BigDecimal secuencia) {
+    public TiposIndices(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @Override
@@ -98,5 +100,5 @@ public class TiposIndices implements Serializable {
     public String toString() {
         return "Entidades.TiposIndices[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

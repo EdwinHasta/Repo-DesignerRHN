@@ -4,8 +4,11 @@
     <Scope Scope="Project">
         <Node id="EmplVigenciaLocalizacion.xhtml" x="1400" y="300" zoom="true"/>
         <Node id="ProgressBar.xhtml" x="1150" y="750" zoom="true"/>
+<<<<<<< HEAD
         <Node id="Pruebas.xhtml" x="900" y="900" zoom="true"/>
         <Node id="EmplVigenciaTipoContrato.xhtml" x="1650" y="600" zoom="true"/>
+=======
+>>>>>>> origin/master
         <Node id="EmplVigenciasCargos.xhtml" x="1150" y="600" zoom="true"/>
         <Node id="EmplVigenciaTipoContrato.xhtml" x="1650" y="600" zoom="true"/>
         <Node id="Legislacion.xhtml" x="150" y="1200" zoom="true"/>
@@ -49,13 +52,19 @@
         <Node id="OLDindex.xhtml" x="1400" y="450" zoom="true"/>
         <Node id="VigenciasProyectos.xhtml" x="400" y="750" zoom="true"/>
         <Node id="Rastro.xhtml" x="650" y="300" zoom="true"/>
+<<<<<<< HEAD
         <Node id="Tercero.xhtml" x="900" y="1050" zoom="true"/>
+=======
+>>>>>>> origin/master
         <Node id="PaginaNoEncontrada.xhtml" x="1900" y="600" zoom="true"/>
         <Node id="page1.xhtml" x="1400" y="900" zoom="true"/>
         <Node id="EmplSets.xhtml" x="400" y="450" zoom="true"/>
         <Node id="Template.xhtml" x="400" y="900" zoom="true"/>
         <Node id="EmplUbicacionGeografica.xhtml" x="400" y="1200" zoom="true"/>
+<<<<<<< HEAD
         <Node id="ListaValores.xhtml" x="2400" y="150" zoom="true"/>
+=======
+>>>>>>> origin/master
         <Node id="EmpleadoIndividual.xhtml" x="1900" y="450" zoom="true"/>
         <Node id="PaginaPrincipalMini.xhtml" x="650" y="450" zoom="true"/>
         <Node id="Status.xhtml" x="1650" y="300" zoom="true"/>
