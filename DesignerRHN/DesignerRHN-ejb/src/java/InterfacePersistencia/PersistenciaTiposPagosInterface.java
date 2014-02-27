@@ -45,7 +45,7 @@ public interface PersistenciaTiposPagosInterface {
      *
      * @return Retorna una lista de Tipospagos.
      */
-    public List<Tipospagos> buscarTiposPagos();
+    public List<Tipospagos> consultarTiposPagos();
 
     /**
      * Método encargado de buscar el Tipopago con la secuencia dada por
@@ -55,5 +55,7 @@ public interface PersistenciaTiposPagosInterface {
      * @return Retorna el Tipopago identificado con la secuencia dada por
      * parámetro.
      */
-    public Tipospagos buscarTipoPagoSecuencia(BigInteger secuencia);
+    public Tipospagos consultarTipoPago(BigInteger secuencia);
+
+    public BigInteger contarProcesosTipoPago(BigInteger secuencia);
 }
