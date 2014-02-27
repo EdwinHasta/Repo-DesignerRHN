@@ -74,6 +74,8 @@ public class ControlSucursalesPila implements Serializable {
     private SucursalesPila SucursalesPilaPorEmpresaSeleccionado;
     private boolean banderaSeleccionSucursalesPilaPorEmpresa;
     private int tamano;
+    private String backupCodigo;
+    private String backupDescripcion;
 
     public ControlSucursalesPila() {
         permitirIndex = true;
@@ -117,30 +119,37 @@ public class ControlSucursalesPila implements Serializable {
             System.err.println("CAMBIAR INDICE CUALCELDA = " + cualCelda);
             secRegistro = listSucursalesPilaPorEmpresa.get(index).getSecuencia();
             System.err.println("Sec Registro = " + secRegistro);
+            if (tipoLista == 0) {
+                backupCodigo = listSucursalesPilaPorEmpresa.get(index).getCodigo();
+                backupDescripcion = listSucursalesPilaPorEmpresa.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = listSucursalesPilaPorEmpresa.get(index).getCodigo();
+                backupDescripcion = listSucursalesPilaPorEmpresa.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     public void modificandoCentroCosto(int indice, String confirmarCambio, String valorConfirmar) {
 
-        System.err.println("ENTRE A MODIFICAR CENTROCOSTO");
+         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
-        banderaModificacionEmpresa = 1;
+
+        int contador = 0;
         boolean banderita = false;
         boolean banderita1 = false;
-        int contador = 0;
-        Short a;
-        a = null;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR CENTROCOSTO, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearSucursalesPila.contains(listSucursalesPilaPorEmpresa.get(indice))) {
-                    if (listSucursalesPilaPorEmpresa.get(indice).getCodigo().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (listSucursalesPilaPorEmpresa.get(indice).getCodigo().equals(" ")) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listSucursalesPilaPorEmpresa.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -151,21 +160,25 @@ public class ControlSucursalesPila implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listSucursalesPilaPorEmpresa.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
 
                     }
-
                     if (listSucursalesPilaPorEmpresa.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
+                        listSucursalesPilaPorEmpresa.get(indice).setDescripcion(backupDescripcion);
                     } else if (listSucursalesPilaPorEmpresa.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
+                        listSucursalesPilaPorEmpresa.get(indice).setDescripcion(backupDescripcion);
+
                     } else {
                         banderita1 = true;
                     }
@@ -178,28 +191,87 @@ public class ControlSucursalesPila implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
-
                         }
-                        context.update("form:ACEPTAR");
 
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosGruposTiposEntidades");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listSucursalesPilaPorEmpresa.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listSucursalesPilaPorEmpresa.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listSucursalesPilaPorEmpresa.size(); j++) {
+                            if (j != indice) {
+                                if (listSucursalesPilaPorEmpresa.get(indice).getCodigo().equals(listSucursalesPilaPorEmpresa.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listSucursalesPilaPorEmpresa.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listSucursalesPilaPorEmpresa.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listSucursalesPilaPorEmpresa.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listSucursalesPilaPorEmpresa.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listSucursalesPilaPorEmpresa.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosGruposTiposEntidades");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearSucursalesPila.contains(filtrarSucursalesPila.get(indice))) {
-                    if (filtrarSucursalesPila.get(indice).getCodigo().isEmpty()) {
+                    if (filtrarSucursalesPila.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                    } else if (filtrarSucursalesPila.get(indice).getCodigo().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarSucursalesPila.get(indice).setCodigo(backupCodigo);
                     } else {
+                        for (int j = 0; j < filtrarSucursalesPila.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSucursalesPila.get(indice).getCodigo().equals(listSucursalesPilaPorEmpresa.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
                         for (int j = 0; j < listSucursalesPilaPorEmpresa.size(); j++) {
                             if (j != indice) {
                                 if (filtrarSucursalesPila.get(indice).getCodigo().equals(listSucursalesPilaPorEmpresa.get(j).getCodigo())) {
@@ -207,30 +279,26 @@ public class ControlSucursalesPila implements Serializable {
                                 }
                             }
                         }
-                        for (int j = 0; j < filtrarSucursalesPila.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarSucursalesPila.get(indice).getCodigo().equals(filtrarSucursalesPila.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarSucursalesPila.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
+
                     }
 
                     if (filtrarSucursalesPila.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
+                        filtrarSucursalesPila.get(indice).setDescripcion(backupDescripcion);
                     }
                     if (filtrarSucursalesPila.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                    } else {
-                        banderita1 = true;
+                        filtrarSucursalesPila.get(indice).setDescripcion(backupDescripcion);
                     }
 
                     if (banderita == true && banderita1 == true) {
@@ -246,15 +314,68 @@ public class ControlSucursalesPila implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {if (filtrarSucursalesPila.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarSucursalesPila.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarSucursalesPila.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSucursalesPila.get(indice).getCodigo().equals(listSucursalesPilaPorEmpresa.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listSucursalesPilaPorEmpresa.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSucursalesPila.get(indice).getCodigo().equals(listSucursalesPilaPorEmpresa.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarSucursalesPila.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarSucursalesPila.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarSucursalesPila.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarSucursalesPila.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarSucursalesPila.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
                 }
 
             }
+            context.update("form:datosGruposTiposEntidades");
+            context.update("form:ACEPTAR");
         }
-        context.update("form:datosSucursalesPila");
+
 
     }
 

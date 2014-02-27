@@ -57,6 +57,8 @@ public class ControlGruposTiposEntidades implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
 
     public ControlGruposTiposEntidades() {
         listGruposTiposEntidades = null;
@@ -89,7 +91,13 @@ public class ControlGruposTiposEntidades implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listGruposTiposEntidades.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listGruposTiposEntidades.get(index).getCodigo();
+                backupDescripcion = listGruposTiposEntidades.get(index).getNombre();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarGruposTiposEntidades.get(index).getCodigo();
+                backupDescripcion = filtrarGruposTiposEntidades.get(index).getNombre();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -176,15 +184,19 @@ public class ControlGruposTiposEntidades implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearGruposTiposEntidades.contains(listGruposTiposEntidades.get(indice))) {
-                    if (listGruposTiposEntidades.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listGruposTiposEntidades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -195,9 +207,11 @@ public class ControlGruposTiposEntidades implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -205,14 +219,18 @@ public class ControlGruposTiposEntidades implements Serializable {
                     }
                     if (listGruposTiposEntidades.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listGruposTiposEntidades.get(indice).getNombre().equals(" ")) {
+                        banderita1 = false;
+                        listGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
+                    } else if (listGruposTiposEntidades.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarGruposTiposEntidades.isEmpty()) {
                             modificarGruposTiposEntidades.add(listGruposTiposEntidades.get(indice));
                         } else if (!modificarGruposTiposEntidades.contains(listGruposTiposEntidades.get(indice))) {
@@ -225,17 +243,74 @@ public class ControlGruposTiposEntidades implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosGruposTiposEntidades");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listGruposTiposEntidades.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listGruposTiposEntidades.size(); j++) {
+                            if (j != indice) {
+                                if (listGruposTiposEntidades.get(indice).getCodigo() == listGruposTiposEntidades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listGruposTiposEntidades.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
+                    } else if (listGruposTiposEntidades.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosGruposTiposEntidades");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearGruposTiposEntidades.contains(filtrarGruposTiposEntidades.get(indice))) {
-                    if (filtrarGruposTiposEntidades.get(indice).getCodigo() == a) {
+                    if (filtrarGruposTiposEntidades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < filtrarGruposTiposEntidades.size(); j++) {
                             if (j != indice) {
@@ -254,6 +329,8 @@ public class ControlGruposTiposEntidades implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -262,14 +339,16 @@ public class ControlGruposTiposEntidades implements Serializable {
 
                     if (filtrarGruposTiposEntidades.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
                     }
                     if (filtrarGruposTiposEntidades.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarGruposTiposEntidades.isEmpty()) {
                             modificarGruposTiposEntidades.add(filtrarGruposTiposEntidades.get(indice));
                         } else if (!modificarGruposTiposEntidades.contains(filtrarGruposTiposEntidades.get(indice))) {
@@ -282,7 +361,58 @@ public class ControlGruposTiposEntidades implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {if (filtrarGruposTiposEntidades.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarGruposTiposEntidades.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposTiposEntidades.get(indice).getCodigo() == listGruposTiposEntidades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listGruposTiposEntidades.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposTiposEntidades.get(indice).getCodigo() == listGruposTiposEntidades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarGruposTiposEntidades.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
+                    }
+                    if (filtrarGruposTiposEntidades.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarGruposTiposEntidades.get(indice).setNombre(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;

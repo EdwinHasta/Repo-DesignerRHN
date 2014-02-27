@@ -57,6 +57,8 @@ public class ControlJornadas implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
 
     public ControlJornadas() {
         listJornadas = null;
@@ -89,7 +91,13 @@ public class ControlJornadas implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listJornadas.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listJornadas.get(index).getCodigo();
+                backupDescripcion = listJornadas.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarJornadas.get(index).getCodigo();
+                backupDescripcion = filtrarJornadas.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -176,15 +184,19 @@ public class ControlJornadas implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearJornadas.contains(listJornadas.get(indice))) {
-                    if (listJornadas.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listJornadas.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -195,9 +207,11 @@ public class ControlJornadas implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listJornadas.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -205,14 +219,18 @@ public class ControlJornadas implements Serializable {
                     }
                     if (listJornadas.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listJornadas.get(indice).getDescripcion().equals(" ")) {
+                        banderita1 = false;
+                        listJornadas.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listJornadas.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listJornadas.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarJornadas.isEmpty()) {
                             modificarJornadas.add(listJornadas.get(indice));
                         } else if (!modificarJornadas.contains(listJornadas.get(indice))) {
@@ -225,17 +243,74 @@ public class ControlJornadas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosJornadas");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listJornadas.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listJornadas.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listJornadas.size(); j++) {
+                            if (j != indice) {
+                                if (listJornadas.get(indice).getCodigo() == listJornadas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listJornadas.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listJornadas.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listJornadas.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listJornadas.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listJornadas.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosJornadas");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearJornadas.contains(filtrarJornadas.get(indice))) {
-                    if (filtrarJornadas.get(indice).getCodigo() == a) {
+                    if (filtrarJornadas.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarJornadas.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < filtrarJornadas.size(); j++) {
                             if (j != indice) {
@@ -254,6 +329,8 @@ public class ControlJornadas implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarJornadas.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -262,14 +339,16 @@ public class ControlJornadas implements Serializable {
 
                     if (filtrarJornadas.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarJornadas.get(indice).setDescripcion(backupDescripcion);
                     }
                     if (filtrarJornadas.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarJornadas.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarJornadas.isEmpty()) {
                             modificarJornadas.add(filtrarJornadas.get(indice));
                         } else if (!modificarJornadas.contains(filtrarJornadas.get(indice))) {
@@ -282,7 +361,58 @@ public class ControlJornadas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {if (filtrarJornadas.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarJornadas.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarJornadas.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarJornadas.get(indice).getCodigo() == listJornadas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listJornadas.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarJornadas.get(indice).getCodigo() == listJornadas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarJornadas.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarJornadas.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarJornadas.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarJornadas.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarJornadas.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -474,7 +604,7 @@ public class ControlJornadas implements Serializable {
                 contador++;
             }
         }
-        if (nuevoJornadas.getDescripcion() == null) {
+        if (nuevoJornadas.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -590,7 +720,7 @@ public class ControlJornadas implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarJornadas.getDescripcion() == null) {
+        if (duplicarJornadas.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 

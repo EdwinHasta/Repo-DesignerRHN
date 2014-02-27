@@ -57,6 +57,8 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
 
     public ControlGruposFactoresRiesgos() {
         listGruposFactoresRiesgos = null;
@@ -89,7 +91,13 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listGruposFactoresRiesgos.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listGruposFactoresRiesgos.get(index).getCodigo();
+                backupDescripcion = listGruposFactoresRiesgos.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarGruposFactoresRiesgos.get(index).getCodigo();
+                backupDescripcion = filtrarGruposFactoresRiesgos.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -176,15 +184,19 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearGruposFactoresRiesgos.contains(listGruposFactoresRiesgos.get(indice))) {
-                    if (listGruposFactoresRiesgos.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listGruposFactoresRiesgos.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -195,9 +207,11 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -205,14 +219,18 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                     }
                     if (listGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listGruposFactoresRiesgos.get(indice).getDescripcion() == null) {
+                        banderita1 = false;
+                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarGruposFactoresRiesgos.isEmpty()) {
                             modificarGruposFactoresRiesgos.add(listGruposFactoresRiesgos.get(indice));
                         } else if (!modificarGruposFactoresRiesgos.contains(listGruposFactoresRiesgos.get(indice))) {
@@ -225,17 +243,74 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosGruposFactoresRiesgos");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listGruposFactoresRiesgos.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listGruposFactoresRiesgos.size(); j++) {
+                            if (j != indice) {
+                                if (listGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosGruposFactoresRiesgos");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearGruposFactoresRiesgos.contains(filtrarGruposFactoresRiesgos.get(indice))) {
-                    if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == a) {
+                    if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < filtrarGruposFactoresRiesgos.size(); j++) {
                             if (j != indice) {
@@ -254,6 +329,8 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -262,14 +339,16 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
                     if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion() == null) {
+                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarGruposFactoresRiesgos.isEmpty()) {
                             modificarGruposFactoresRiesgos.add(filtrarGruposFactoresRiesgos.get(indice));
                         } else if (!modificarGruposFactoresRiesgos.contains(filtrarGruposFactoresRiesgos.get(indice))) {
@@ -282,7 +361,59 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarGruposFactoresRiesgos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listGruposFactoresRiesgos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -345,8 +476,8 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         BigInteger contarFactoresRiesgoGrupoFactorRiesgo;
-        BigInteger contarSoIndicadoresGrupoFactorRiesgo;
         BigInteger contarSoProActividadesGrupoFactorRiesgo;
+        BigInteger contarSoIndicadoresGrupoFactorRiesgo;
 
         try {
             System.err.println("Control Secuencia de ControlGruposFactoresRiesgos ");
@@ -371,7 +502,6 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 index = -1;
                 contarFactoresRiesgoGrupoFactorRiesgo = new BigInteger("-1");
                 contarSoIndicadoresGrupoFactorRiesgo = new BigInteger("-1");
-                contarSoProActividadesGrupoFactorRiesgo = new BigInteger("-1");
 
             }
         } catch (Exception e) {
@@ -478,7 +608,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoGruposFactoresRiesgos.getDescripcion().equals(" ") ) {
+        if (nuevoGruposFactoresRiesgos.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -695,7 +825,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         }
         index = -1;
     }
- 
+
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<GruposFactoresRiesgos> getListGruposFactoresRiesgos() {
         if (listGruposFactoresRiesgos == null) {

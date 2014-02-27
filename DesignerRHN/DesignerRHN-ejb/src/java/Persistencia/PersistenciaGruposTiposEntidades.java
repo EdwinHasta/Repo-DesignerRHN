@@ -80,7 +80,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     public BigInteger contarTiposEntidadesGrupoTipoEntidad(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT (*)COUNT FROM tiposentidades WHERE grupo =?";
+            String sqlQuery = "SELECT COUNT(*) FROM tiposentidades WHERE grupo =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
@@ -95,7 +95,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     public BigInteger contarTSgruposTiposEntidadesTipoEntidad(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SSELECT (*)COUNT FROM tsgrupostiposentidades WHERE grupotipoentidad =?";
+            String sqlQuery = "SSELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
