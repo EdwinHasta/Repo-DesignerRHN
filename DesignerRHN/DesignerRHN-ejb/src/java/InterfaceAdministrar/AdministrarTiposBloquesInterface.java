@@ -17,10 +17,10 @@ public interface AdministrarTiposBloquesInterface {
 
     public List<TiposBloques> buscarTiposBloques(BigInteger secuenciaOperando, String tipoOperando);
 
-    public void borrarTiposBloques(TiposBloques tiposConstantes);
+    public void borrarTiposBloques(TiposBloques tiposBloques);
 
-    public void crearTiposBloques(TiposBloques tiposConstantes);
+    public void crearTiposBloques(TiposBloques tiposBloques);
 
-    public void modificarTiposBloques(TiposBloques tiposConstantes);
+    public void modificarTiposBloques(TiposBloques tiposBloques);
 
 }

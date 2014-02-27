@@ -455,7 +455,7 @@ public class ControlNovedadOperando implements Serializable {
             }
             if (!listaNovedadesOperandosModificar.isEmpty()) {
                 for (int i = 0; i < listaNovedadesOperandosModificar.size(); i++) {
-                    administrarNovedadesOperandos.modificarNovedadesOperandos(listaNovedadesOperandosCrear.get(i));
+                    administrarNovedadesOperandos.modificarNovedadesOperandos(listaNovedadesOperandosModificar.get(i));
                 }
                 listaNovedadesOperandosModificar.clear();
             }
@@ -733,7 +733,7 @@ public class ControlNovedadOperando implements Serializable {
                 guardado = false;
                 //RequestContext.getCurrentInstance().update("form:aceptar");
             }
-            context.update("form:datosTiposFormulas");
+            context.update("form:datosNovedadesOperandos");
             duplicarNovedadOperando = new NovedadesOperandos();
             context.update("formularioDialogos:DuplicarNovedadOperando");
             context.execute("DuplicarNovedadOperando.hide()");
