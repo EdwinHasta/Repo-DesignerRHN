@@ -2254,14 +2254,6 @@
         </navigation-case>
     </navigation-rule> 
     <navigation-rule>
-        <from-view-id>/tipoformula.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>operando</from-outcome>
-            <to-view-id>/operando.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule> 
-    <navigation-rule>
         <from-view-id>/tipofuncion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>operando</from-outcome>
@@ -2293,33 +2285,6 @@
         <navigation-case>
             <from-outcome>bloque</from-outcome>
             <to-view-id>/tipobloque.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule> 
-    
-    <navigation-rule>
-        <from-view-id>/tipobloque.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>operando</from-outcome>
-            <to-view-id>/operando.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule> 
-    
-    <navigation-rule>
-        <from-view-id>/operando.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>novedadoperando</from-outcome>
-            <to-view-id>/novedadoperando.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule> 
-    
-    <navigation-rule>
-        <from-view-id>/novedadoperando.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>operando</from-outcome>
-            <to-view-id>/operando.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule> 
@@ -2362,33 +2327,6 @@
         <navigation-case>
             <from-outcome>dependencia</from-outcome>
             <to-view-id>/dependenciaoperando.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/dependenciaoperando.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>tipobloque</from-outcome>
-            <to-view-id>/tipobloque.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/dependenciaoperando.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>dependenciasoperandos</from-outcome>
-            <to-view-id>/dependenciasoperandos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
