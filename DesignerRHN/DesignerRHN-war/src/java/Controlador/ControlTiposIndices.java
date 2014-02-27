@@ -4,10 +4,10 @@
  */
 package Controlador;
 
-import Entidades.EvalActividades;
+import Entidades.TiposIndices;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarEvalActividadesInterface;
+import InterfaceAdministrar.AdministrarTiposIndicesInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -29,20 +29,20 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlEvalActividades implements Serializable {
+public class ControlTiposIndices implements Serializable {
 
     @EJB
-    AdministrarEvalActividadesInterface administrarEvalActividades;
+    AdministrarTiposIndicesInterface administrarTiposIndices;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    private List<EvalActividades> listEvalActividades;
-    private List<EvalActividades> filtrarEvalActividades;
-    private List<EvalActividades> crearEvalActividades;
-    private List<EvalActividades> modificarEvalActividades;
-    private List<EvalActividades> borrarEvalActividades;
-    private EvalActividades nuevoEvalActividades;
-    private EvalActividades duplicarEvalActividades;
-    private EvalActividades editarEvalActividades;
+    private List<TiposIndices> listTiposIndices;
+    private List<TiposIndices> filtrarTiposIndices;
+    private List<TiposIndices> crearTiposIndices;
+    private List<TiposIndices> modificarTiposIndices;
+    private List<TiposIndices> borrarTiposIndices;
+    private TiposIndices nuevoTiposIndices;
+    private TiposIndices duplicarTiposIndices;
+    private TiposIndices editarTiposIndices;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -58,27 +58,27 @@ public class ControlEvalActividades implements Serializable {
     //filtrado table
     private int tamano;
 
-    public ControlEvalActividades() {
-        listEvalActividades = null;
-        crearEvalActividades = new ArrayList<EvalActividades>();
-        modificarEvalActividades = new ArrayList<EvalActividades>();
-        borrarEvalActividades = new ArrayList<EvalActividades>();
+    public ControlTiposIndices() {
+        listTiposIndices = null;
+        crearTiposIndices = new ArrayList<TiposIndices>();
+        modificarTiposIndices = new ArrayList<TiposIndices>();
+        borrarTiposIndices = new ArrayList<TiposIndices>();
         permitirIndex = true;
-        editarEvalActividades = new EvalActividades();
-        nuevoEvalActividades = new EvalActividades();
-        duplicarEvalActividades = new EvalActividades();
+        editarTiposIndices = new TiposIndices();
+        nuevoTiposIndices = new TiposIndices();
+        duplicarTiposIndices = new TiposIndices();
         guardado = true;
         tamano = 302;
     }
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A ControlEvalActividades.eventoFiltrar \n");
+            System.out.println("\n ENTRE A ControlTiposIndices.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR ControlEvalActividades eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlTiposIndices eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class ControlEvalActividades implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listEvalActividades.get(index).getSecuencia();
+            secRegistro = listTiposIndices.get(index).getSecuencia();
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -96,7 +96,7 @@ public class ControlEvalActividades implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE A ControlEvalActividades.asignarIndex \n");
+            System.out.println("\n ENTRE A ControlTiposIndices.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -108,7 +108,7 @@ public class ControlEvalActividades implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR ControlEvalActividades.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlTiposIndices.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -122,55 +122,55 @@ public class ControlEvalActividades implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosEvalActividades");
+            RequestContext.getCurrentInstance().update("form:datosTiposIndices");
             bandera = 0;
-            filtrarEvalActividades = null;
+            filtrarTiposIndices = null;
             tipoLista = 0;
         }
 
-        borrarEvalActividades.clear();
-        crearEvalActividades.clear();
-        modificarEvalActividades.clear();
+        borrarTiposIndices.clear();
+        crearTiposIndices.clear();
+        modificarTiposIndices.clear();
         index = -1;
         secRegistro = null;
         k = 0;
-        listEvalActividades = null;
+        listTiposIndices = null;
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosEvalActividades");
+        context.update("form:datosTiposIndices");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
             tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:descripcion");
             descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosEvalActividades");
+            RequestContext.getCurrentInstance().update("form:datosTiposIndices");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosEvalActividades");
+            RequestContext.getCurrentInstance().update("form:datosTiposIndices");
             bandera = 0;
-            filtrarEvalActividades = null;
+            filtrarTiposIndices = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarEvalActividades(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificarTiposIndices(int indice, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
@@ -183,14 +183,14 @@ public class ControlEvalActividades implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearEvalActividades.contains(listEvalActividades.get(indice))) {
-                    if (listEvalActividades.get(indice).getCodigo() == a) {
+                if (!crearTiposIndices.contains(listTiposIndices.get(indice))) {
+                    if (listTiposIndices.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listEvalActividades.size(); j++) {
+                        for (int j = 0; j < listTiposIndices.size(); j++) {
                             if (j != indice) {
-                                if (listEvalActividades.get(indice).getCodigo() == listEvalActividades.get(j).getCodigo()) {
+                                if (listTiposIndices.get(indice).getCodigo() == listTiposIndices.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -203,20 +203,20 @@ public class ControlEvalActividades implements Serializable {
                         }
 
                     }
-                    if (listEvalActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (listTiposIndices.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEvalActividades.get(indice).getDescripcion() == null) {
+                    if (listTiposIndices.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
-                        if (modificarEvalActividades.isEmpty()) {
-                            modificarEvalActividades.add(listEvalActividades.get(indice));
-                        } else if (!modificarEvalActividades.contains(listEvalActividades.get(indice))) {
-                            modificarEvalActividades.add(listEvalActividades.get(indice));
+                        if (modificarTiposIndices.isEmpty()) {
+                            modificarTiposIndices.add(listTiposIndices.get(indice));
+                        } else if (!modificarTiposIndices.contains(listTiposIndices.get(indice))) {
+                            modificarTiposIndices.add(listTiposIndices.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -232,21 +232,21 @@ public class ControlEvalActividades implements Serializable {
                 }
             } else {
 
-                if (!crearEvalActividades.contains(filtrarEvalActividades.get(indice))) {
-                    if (filtrarEvalActividades.get(indice).getCodigo() == a) {
+                if (!crearTiposIndices.contains(filtrarTiposIndices.get(indice))) {
+                    if (filtrarTiposIndices.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < filtrarEvalActividades.size(); j++) {
+                        for (int j = 0; j < filtrarTiposIndices.size(); j++) {
                             if (j != indice) {
-                                if (filtrarEvalActividades.get(indice).getCodigo() == listEvalActividades.get(j).getCodigo()) {
+                                if (filtrarTiposIndices.get(indice).getCodigo() == listTiposIndices.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listEvalActividades.size(); j++) {
+                        for (int j = 0; j < listTiposIndices.size(); j++) {
                             if (j != indice) {
-                                if (filtrarEvalActividades.get(indice).getCodigo() == listEvalActividades.get(j).getCodigo()) {
+                                if (filtrarTiposIndices.get(indice).getCodigo() == listTiposIndices.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -260,20 +260,20 @@ public class ControlEvalActividades implements Serializable {
 
                     }
 
-                    if (filtrarEvalActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarTiposIndices.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (filtrarEvalActividades.get(indice).getDescripcion() == null) {
+                    if (filtrarTiposIndices.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
-                        if (modificarEvalActividades.isEmpty()) {
-                            modificarEvalActividades.add(filtrarEvalActividades.get(indice));
-                        } else if (!modificarEvalActividades.contains(filtrarEvalActividades.get(indice))) {
-                            modificarEvalActividades.add(filtrarEvalActividades.get(indice));
+                        if (modificarTiposIndices.isEmpty()) {
+                            modificarTiposIndices.add(filtrarTiposIndices.get(indice));
+                        } else if (!modificarTiposIndices.contains(filtrarTiposIndices.get(indice))) {
+                            modificarTiposIndices.add(filtrarTiposIndices.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -289,48 +289,48 @@ public class ControlEvalActividades implements Serializable {
                 }
 
             }
-            context.update("form:datosEvalActividades");
+            context.update("form:datosTiposIndices");
             context.update("form:ACEPTAR");
         }
 
     }
 
-    public void borrandoEvalActividades() {
+    public void borrandoTiposIndices() {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                System.out.println("Entro a borrandoEvalActividades");
-                if (!modificarEvalActividades.isEmpty() && modificarEvalActividades.contains(listEvalActividades.get(index))) {
-                    int modIndex = modificarEvalActividades.indexOf(listEvalActividades.get(index));
-                    modificarEvalActividades.remove(modIndex);
-                    borrarEvalActividades.add(listEvalActividades.get(index));
-                } else if (!crearEvalActividades.isEmpty() && crearEvalActividades.contains(listEvalActividades.get(index))) {
-                    int crearIndex = crearEvalActividades.indexOf(listEvalActividades.get(index));
-                    crearEvalActividades.remove(crearIndex);
+                System.out.println("Entro a borrandoTiposIndices");
+                if (!modificarTiposIndices.isEmpty() && modificarTiposIndices.contains(listTiposIndices.get(index))) {
+                    int modIndex = modificarTiposIndices.indexOf(listTiposIndices.get(index));
+                    modificarTiposIndices.remove(modIndex);
+                    borrarTiposIndices.add(listTiposIndices.get(index));
+                } else if (!crearTiposIndices.isEmpty() && crearTiposIndices.contains(listTiposIndices.get(index))) {
+                    int crearIndex = crearTiposIndices.indexOf(listTiposIndices.get(index));
+                    crearTiposIndices.remove(crearIndex);
                 } else {
-                    borrarEvalActividades.add(listEvalActividades.get(index));
+                    borrarTiposIndices.add(listTiposIndices.get(index));
                 }
-                listEvalActividades.remove(index);
+                listTiposIndices.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoEvalActividades ");
-                if (!modificarEvalActividades.isEmpty() && modificarEvalActividades.contains(filtrarEvalActividades.get(index))) {
-                    int modIndex = modificarEvalActividades.indexOf(filtrarEvalActividades.get(index));
-                    modificarEvalActividades.remove(modIndex);
-                    borrarEvalActividades.add(filtrarEvalActividades.get(index));
-                } else if (!crearEvalActividades.isEmpty() && crearEvalActividades.contains(filtrarEvalActividades.get(index))) {
-                    int crearIndex = crearEvalActividades.indexOf(filtrarEvalActividades.get(index));
-                    crearEvalActividades.remove(crearIndex);
+                System.out.println("borrandoTiposIndices ");
+                if (!modificarTiposIndices.isEmpty() && modificarTiposIndices.contains(filtrarTiposIndices.get(index))) {
+                    int modIndex = modificarTiposIndices.indexOf(filtrarTiposIndices.get(index));
+                    modificarTiposIndices.remove(modIndex);
+                    borrarTiposIndices.add(filtrarTiposIndices.get(index));
+                } else if (!crearTiposIndices.isEmpty() && crearTiposIndices.contains(filtrarTiposIndices.get(index))) {
+                    int crearIndex = crearTiposIndices.indexOf(filtrarTiposIndices.get(index));
+                    crearTiposIndices.remove(crearIndex);
                 } else {
-                    borrarEvalActividades.add(filtrarEvalActividades.get(index));
+                    borrarTiposIndices.add(filtrarTiposIndices.get(index));
                 }
-                int VCIndex = listEvalActividades.indexOf(filtrarEvalActividades.get(index));
-                listEvalActividades.remove(VCIndex);
-                filtrarEvalActividades.remove(index);
+                int VCIndex = listTiposIndices.indexOf(filtrarTiposIndices.get(index));
+                listTiposIndices.remove(VCIndex);
+                filtrarTiposIndices.remove(index);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosEvalActividades");
+            context.update("form:datosTiposIndices");
             index = -1;
             secRegistro = null;
 
@@ -344,24 +344,18 @@ public class ControlEvalActividades implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger contarCapBuzonesEvalActividad;
-        BigInteger contarCapNecesidadesEvalActividad;
-        BigInteger contarEvalPlanesDesarrollosEvalActividad;
+        BigInteger contarFactoresRiesgoGrupoFactorRiesgo;
 
         try {
-            System.err.println("Control Secuencia de ControlEvalActividades ");
+            System.err.println("Control Secuencia de ControlTiposIndices ");
             if (tipoLista == 0) {
-                contarCapBuzonesEvalActividad = administrarEvalActividades.contarCapBuzonesEvalActividad(listEvalActividades.get(index).getSecuencia());
-                contarCapNecesidadesEvalActividad = administrarEvalActividades.contarCapNecesidadesEvalActividad(listEvalActividades.get(index).getSecuencia());
-                contarEvalPlanesDesarrollosEvalActividad = administrarEvalActividades.contarEvalPlanesDesarrollosEvalActividad(listEvalActividades.get(index).getSecuencia());
+                contarFactoresRiesgoGrupoFactorRiesgo = administrarTiposIndices.contarIndicesTipoIndice(listTiposIndices.get(index).getSecuencia());
             } else {
-                contarCapBuzonesEvalActividad = administrarEvalActividades.contarCapBuzonesEvalActividad(filtrarEvalActividades.get(index).getSecuencia());
-                contarCapNecesidadesEvalActividad = administrarEvalActividades.contarCapNecesidadesEvalActividad(filtrarEvalActividades.get(index).getSecuencia());
-                contarEvalPlanesDesarrollosEvalActividad = administrarEvalActividades.contarEvalPlanesDesarrollosEvalActividad(filtrarEvalActividades.get(index).getSecuencia());
+                contarFactoresRiesgoGrupoFactorRiesgo = administrarTiposIndices.contarIndicesTipoIndice(filtrarTiposIndices.get(index).getSecuencia());
             }
-            if (contarCapBuzonesEvalActividad.equals(new BigInteger("0")) && contarCapNecesidadesEvalActividad.equals(new BigInteger("0")) && contarEvalPlanesDesarrollosEvalActividad.equals(new BigInteger("0"))) {
+            if (contarFactoresRiesgoGrupoFactorRiesgo.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
-                borrandoEvalActividades();
+                borrandoTiposIndices();
             } else {
                 System.out.println("Borrado>0");
 
@@ -369,19 +363,17 @@ public class ControlEvalActividades implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                contarCapBuzonesEvalActividad = new BigInteger("-1");
-                contarCapNecesidadesEvalActividad = new BigInteger("-1");
-                contarEvalPlanesDesarrollosEvalActividad = new BigInteger("-1");
+                contarFactoresRiesgoGrupoFactorRiesgo = new BigInteger("-1");
 
             }
         } catch (Exception e) {
-            System.err.println("ERROR ControlEvalActividades verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlTiposIndices verificarBorrado ERROR " + e);
         }
     }
 
     public void revisarDialogoGuardar() {
 
-        if (!borrarEvalActividades.isEmpty() || !crearEvalActividades.isEmpty() || !modificarEvalActividades.isEmpty()) {
+        if (!borrarTiposIndices.isEmpty() || !crearTiposIndices.isEmpty() || !modificarTiposIndices.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
@@ -389,31 +381,31 @@ public class ControlEvalActividades implements Serializable {
 
     }
 
-    public void guardarEvalActividades() {
+    public void guardarTiposIndices() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando guardarEvalActividades");
-            if (!borrarEvalActividades.isEmpty()) {
-                administrarEvalActividades.borrarEvalActividades(borrarEvalActividades);
+            System.out.println("Realizando guardarTiposIndices");
+            if (!borrarTiposIndices.isEmpty()) {
+                administrarTiposIndices.borrarTiposIndices(borrarTiposIndices);
                 //mostrarBorrados
-                registrosBorrados = borrarEvalActividades.size();
+                registrosBorrados = borrarTiposIndices.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-                borrarEvalActividades.clear();
+                borrarTiposIndices.clear();
             }
-            if (!modificarEvalActividades.isEmpty()) {
-                administrarEvalActividades.modificarEvalActividades(modificarEvalActividades);
-                modificarEvalActividades.clear();
+            if (!modificarTiposIndices.isEmpty()) {
+                administrarTiposIndices.modificarTiposIndices(modificarTiposIndices);
+                modificarTiposIndices.clear();
             }
-            if (!crearEvalActividades.isEmpty()) {
-                administrarEvalActividades.crearEvalActividades(crearEvalActividades);
-                crearEvalActividades.clear();
+            if (!crearTiposIndices.isEmpty()) {
+                administrarTiposIndices.crearTiposIndices(crearTiposIndices);
+                crearTiposIndices.clear();
             }
             System.out.println("Se guardaron los datos con exito");
-            listEvalActividades = null;
+            listTiposIndices = null;
             context.execute("mostrarGuardar.show()");
-            context.update("form:datosEvalActividades");
+            context.update("form:datosTiposIndices");
             k = 0;
             guardado = true;
         }
@@ -425,10 +417,10 @@ public class ControlEvalActividades implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarEvalActividades = listEvalActividades.get(index);
+                editarTiposIndices = listTiposIndices.get(index);
             }
             if (tipoLista == 1) {
-                editarEvalActividades = filtrarEvalActividades.get(index);
+                editarTiposIndices = filtrarTiposIndices.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -448,8 +440,8 @@ public class ControlEvalActividades implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevoEvalActividades() {
-        System.out.println("agregarNuevoEvalActividades");
+    public void agregarNuevoTiposIndices() {
+        System.out.println("agregarNuevoTiposIndices");
         int contador = 0;
         int duplicados = 0;
 
@@ -457,14 +449,14 @@ public class ControlEvalActividades implements Serializable {
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoEvalActividades.getCodigo() == a) {
+        if (nuevoTiposIndices.getCodigo() == a) {
             mensajeValidacion = " *Debe Tener Un Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEvalActividades.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposIndices.getCodigo());
 
-            for (int x = 0; x < listEvalActividades.size(); x++) {
-                if (listEvalActividades.get(x).getCodigo() == nuevoEvalActividades.getCodigo()) {
+            for (int x = 0; x < listTiposIndices.size(); x++) {
+                if (listTiposIndices.get(x).getCodigo() == nuevoTiposIndices.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -478,7 +470,7 @@ public class ControlEvalActividades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoEvalActividades.getDescripcion().equals(" ") ) {
+        if (nuevoTiposIndices.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -494,32 +486,32 @@ public class ControlEvalActividades implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosEvalActividades");
+                RequestContext.getCurrentInstance().update("form:datosTiposIndices");
                 bandera = 0;
-                filtrarEvalActividades = null;
+                filtrarTiposIndices = null;
                 tipoLista = 0;
             }
             System.out.println("Despues de la bandera");
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoEvalActividades.setSecuencia(l);
+            nuevoTiposIndices.setSecuencia(l);
 
-            crearEvalActividades.add(nuevoEvalActividades);
+            crearTiposIndices.add(nuevoTiposIndices);
 
-            listEvalActividades.add(nuevoEvalActividades);
-            nuevoEvalActividades = new EvalActividades();
-            context.update("form:datosEvalActividades");
+            listTiposIndices.add(nuevoTiposIndices);
+            nuevoTiposIndices = new TiposIndices();
+            context.update("form:datosTiposIndices");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
-            context.execute("nuevoRegistroEvalActividades.hide()");
+            context.execute("nuevoRegistroTiposIndices.hide()");
             index = -1;
             secRegistro = null;
 
@@ -530,36 +522,36 @@ public class ControlEvalActividades implements Serializable {
         }
     }
 
-    public void limpiarNuevoEvalActividades() {
-        System.out.println("limpiarNuevoEvalActividades");
-        nuevoEvalActividades = new EvalActividades();
+    public void limpiarNuevoTiposIndices() {
+        System.out.println("limpiarNuevoTiposIndices");
+        nuevoTiposIndices = new TiposIndices();
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoEvalActividades() {
-        System.out.println("duplicandoEvalActividades");
+    public void duplicandoTiposIndices() {
+        System.out.println("duplicandoTiposIndices");
         if (index >= 0) {
-            duplicarEvalActividades = new EvalActividades();
+            duplicarTiposIndices = new TiposIndices();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarEvalActividades.setSecuencia(l);
-                duplicarEvalActividades.setCodigo(listEvalActividades.get(index).getCodigo());
-                duplicarEvalActividades.setDescripcion(listEvalActividades.get(index).getDescripcion());
+                duplicarTiposIndices.setSecuencia(l);
+                duplicarTiposIndices.setCodigo(listTiposIndices.get(index).getCodigo());
+                duplicarTiposIndices.setDescripcion(listTiposIndices.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarEvalActividades.setSecuencia(l);
-                duplicarEvalActividades.setCodigo(filtrarEvalActividades.get(index).getCodigo());
-                duplicarEvalActividades.setDescripcion(filtrarEvalActividades.get(index).getDescripcion());
+                duplicarTiposIndices.setSecuencia(l);
+                duplicarTiposIndices.setCodigo(filtrarTiposIndices.get(index).getCodigo());
+                duplicarTiposIndices.setDescripcion(filtrarTiposIndices.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
-            context.execute("duplicarRegistroEvalActividades.show()");
+            context.execute("duplicarRegistroTiposIndices.show()");
             index = -1;
             secRegistro = null;
         }
@@ -573,15 +565,15 @@ public class ControlEvalActividades implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarEvalActividades.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarEvalActividades.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarTiposIndices.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarTiposIndices.getDescripcion());
 
-        if (duplicarEvalActividades.getCodigo() == a) {
+        if (duplicarTiposIndices.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            for (int x = 0; x < listEvalActividades.size(); x++) {
-                if (listEvalActividades.get(x).getCodigo() == duplicarEvalActividades.getCodigo()) {
+            for (int x = 0; x < listTiposIndices.size(); x++) {
+                if (listTiposIndices.get(x).getCodigo() == duplicarTiposIndices.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -594,7 +586,7 @@ public class ControlEvalActividades implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarEvalActividades.getDescripcion().equals(" ")) {
+        if (duplicarTiposIndices.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -605,13 +597,13 @@ public class ControlEvalActividades implements Serializable {
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarEvalActividades.getSecuencia() + "  " + duplicarEvalActividades.getCodigo());
-            if (crearEvalActividades.contains(duplicarEvalActividades)) {
+            System.out.println("Datos Duplicando: " + duplicarTiposIndices.getSecuencia() + "  " + duplicarTiposIndices.getCodigo());
+            if (crearTiposIndices.contains(duplicarTiposIndices)) {
                 System.out.println("Ya lo contengo.");
             }
-            listEvalActividades.add(duplicarEvalActividades);
-            crearEvalActividades.add(duplicarEvalActividades);
-            context.update("form:datosEvalActividades");
+            listTiposIndices.add(duplicarTiposIndices);
+            crearTiposIndices.add(duplicarTiposIndices);
+            context.update("form:datosTiposIndices");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -620,17 +612,17 @@ public class ControlEvalActividades implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposIndices:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosEvalActividades");
+                RequestContext.getCurrentInstance().update("form:datosTiposIndices");
                 bandera = 0;
-                filtrarEvalActividades = null;
+                filtrarTiposIndices = null;
                 tipoLista = 0;
             }
-            duplicarEvalActividades = new EvalActividades();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroEvalActividades.hide()");
+            duplicarTiposIndices = new TiposIndices();
+            RequestContext.getCurrentInstance().execute("duplicarRegistroTiposIndices.hide()");
 
         } else {
             contador = 0;
@@ -639,25 +631,25 @@ public class ControlEvalActividades implements Serializable {
         }
     }
 
-    public void limpiarDuplicarEvalActividades() {
-        duplicarEvalActividades = new EvalActividades();
+    public void limpiarDuplicarTiposIndices() {
+        duplicarTiposIndices = new TiposIndices();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosEvalActividadesExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposIndicesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "EVALACTIVIDADES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "TIPOSINDICES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosEvalActividadesExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposIndicesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "EVALACTIVIDADES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "TIPOSINDICES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -666,10 +658,10 @@ public class ControlEvalActividades implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listEvalActividades.isEmpty()) {
+        if (!listTiposIndices.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "EVALACTIVIDADES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSINDICES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -686,7 +678,7 @@ public class ControlEvalActividades implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("EVALACTIVIDADES")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("TIPOSINDICES")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
@@ -697,47 +689,47 @@ public class ControlEvalActividades implements Serializable {
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
-    public List<EvalActividades> getListEvalActividades() {
-        if (listEvalActividades == null) {
-            listEvalActividades = administrarEvalActividades.consultarEvalActividades();
+    public List<TiposIndices> getListTiposIndices() {
+        if (listTiposIndices == null) {
+            listTiposIndices = administrarTiposIndices.consultarTiposIndices();
         }
-        return listEvalActividades;
+        return listTiposIndices;
     }
 
-    public void setListEvalActividades(List<EvalActividades> listEvalActividades) {
-        this.listEvalActividades = listEvalActividades;
+    public void setListTiposIndices(List<TiposIndices> listTiposIndices) {
+        this.listTiposIndices = listTiposIndices;
     }
 
-    public List<EvalActividades> getFiltrarEvalActividades() {
-        return filtrarEvalActividades;
+    public List<TiposIndices> getFiltrarTiposIndices() {
+        return filtrarTiposIndices;
     }
 
-    public void setFiltrarEvalActividades(List<EvalActividades> filtrarEvalActividades) {
-        this.filtrarEvalActividades = filtrarEvalActividades;
+    public void setFiltrarTiposIndices(List<TiposIndices> filtrarTiposIndices) {
+        this.filtrarTiposIndices = filtrarTiposIndices;
     }
 
-    public EvalActividades getNuevoEvalActividades() {
-        return nuevoEvalActividades;
+    public TiposIndices getNuevoTiposIndices() {
+        return nuevoTiposIndices;
     }
 
-    public void setNuevoEvalActividades(EvalActividades nuevoEvalActividades) {
-        this.nuevoEvalActividades = nuevoEvalActividades;
+    public void setNuevoTiposIndices(TiposIndices nuevoTiposIndices) {
+        this.nuevoTiposIndices = nuevoTiposIndices;
     }
 
-    public EvalActividades getDuplicarEvalActividades() {
-        return duplicarEvalActividades;
+    public TiposIndices getDuplicarTiposIndices() {
+        return duplicarTiposIndices;
     }
 
-    public void setDuplicarEvalActividades(EvalActividades duplicarEvalActividades) {
-        this.duplicarEvalActividades = duplicarEvalActividades;
+    public void setDuplicarTiposIndices(TiposIndices duplicarTiposIndices) {
+        this.duplicarTiposIndices = duplicarTiposIndices;
     }
 
-    public EvalActividades getEditarEvalActividades() {
-        return editarEvalActividades;
+    public TiposIndices getEditarTiposIndices() {
+        return editarTiposIndices;
     }
 
-    public void setEditarEvalActividades(EvalActividades editarEvalActividades) {
-        this.editarEvalActividades = editarEvalActividades;
+    public void setEditarTiposIndices(TiposIndices editarTiposIndices) {
+        this.editarTiposIndices = editarTiposIndices;
     }
 
     public BigInteger getSecRegistro() {

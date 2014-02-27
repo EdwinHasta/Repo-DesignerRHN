@@ -647,7 +647,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGruposFactoresRiesgosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "TIPOSCONCLUSIONES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "GRUPOSFACTORESRIESGOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -657,7 +657,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGruposFactoresRiesgosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "TIPOSCONCLUSIONES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "GRUPOSFACTORESRIESGOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -669,7 +669,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         if (!listGruposFactoresRiesgos.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSCONCLUSIONES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "GRUPOSFACTORESRIESGOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -686,7 +686,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("TIPOSCONCLUSIONES")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("GRUPOSFACTORESRIESGOS")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
