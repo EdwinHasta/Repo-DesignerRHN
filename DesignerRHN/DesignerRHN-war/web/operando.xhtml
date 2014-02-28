@@ -18,8 +18,8 @@
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 330px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>#{msg['operandos']}</strong></legend>
 
-                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 10px; top: 350px;  " id="btnBuscar" actionListener="#{controlOperando.asignarIndex(indice, 0, 0)}" value="Buscar Operando" process="@this"/>
-                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 210px; top: 350px;  " id="btnMostrarTodos" actionListener="#{controlOperando.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 100px; top: 350px;  " id="btnBuscar" actionListener="#{controlOperando.asignarIndex(indice, 0, 0)}" value="Buscar Operando" process="@this"/>
+                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 310px; top: 350px;  " id="btnMostrarTodos" actionListener="#{controlOperando.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
 
 
                             <p:dataTable id="datosOperandos" var="op" rowKey="#{op.secuencia}" rowIndexVar="indice"  style="border: 1px;width: 840px;"                         
@@ -28,14 +28,6 @@
                                          editable="true" editMode="cell"  paginator="true" paginatorPosition="top" rows="8"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                                 <p:ajax listener="#{controlOperando.eventoFiltrar()}" event="filter"/>
-
-                                <p:column style="padding: 0px" headerText="..." width="32" id="operandosDetalles" filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:commandButton actionListener="#{controlOperando.verificarTipo(indice,op.tipo, op.secuencia)}" value=" " style="width: 99%; height: 99%"/>
-                                    <f:facet name="header">
-                                        <h:outputText id="headerDetalles" value="..." />
-                                        <p:tooltip style="font-size: 12px" for="headerDetalles" value="#{msg['detalles']}" />
-                                    </f:facet>
-                                </p:column>
 
                                 <p:column headerText="#{msg['nombre']}" width="180" sortBy="#{op.nombre}" filterBy="#{op.nombre}"  filterMatchMode="contains" id="operandosNombres" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
@@ -70,7 +62,6 @@
                                     <f:facet name="footer">
                                         <h:outputText value="#{msg['tipo']}" />
                                     </f:facet>
-
                                 </p:column>
 
                                 <p:column headerText="#{msg['valorconstante']}" width="40" disabledSelection="true" sortBy="#{op.valor}" filterBy="#{op.valor}"  filterMatchMode="contains" id="operandosValores" filterStyle="display: none; visibility: hidden;"  >  
@@ -90,7 +81,6 @@
                                     <f:facet name="footer">
                                         <h:outputText value="#{msg['valorconstante']}" />
                                     </f:facet>
-
                                 </p:column>
 
                                 <p:column headerText="#{msg['descripcion']}" width="210" sortBy="#{op.descripcion}" filterBy="#{op.descripcion}"  filterMatchMode="contains" id="operandosDescripciones" filterStyle="display: none; visibility: hidden;"  >  
@@ -155,14 +145,6 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="padding: 0px" headerText="..." width="32" id="operandosIdentificacion" filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:commandButton value=" " actionListener="#{controlOperando.guardarVariables(indice, controlOperando.secuenciaOperando)}" process="@this" style="width: 99%; height: 99%" />
-                                    <f:facet name="header">
-                                        <h:outputText id="headerIdentificacion" value="..." />
-                                        <p:tooltip style="font-size: 12px" for="headerIdentificacion" value="#{msg['identificacion']}" />
-                                    </f:facet>
-                                </p:column>
-
                             </p:dataTable>
                         </fieldset>
 
@@ -210,14 +192,17 @@
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup> 
                         </p:toolbar>
-                        <p:remoteCommand name="dirigirTipoFuncion" actionListener="#{controlTipoFuncion.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="funcion" process="@this"/>
-                        <p:remoteCommand name="dirigirTipoFormula" actionListener="#{controlTipoFormula.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="formula" process="@this"/>
-                        <p:remoteCommand name="dirigirTipoConstante" actionListener="#{controlTipoConstante.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="constante" process="@this"/>
-                        <p:remoteCommand name="dirigirTipoBloque" actionListener="#{controlTipoBloque.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoSeleccionado)}" action="bloque" process="@this"/>
-                        <p:remoteCommand name="dirigirDetalle" actionListener="#{controlNovedadOperando.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.operandoSeleccionado)}" action="novedadoperando" process="@this"/>
+                        <p:remoteCommand name="dirigirTipoFuncion" actionListener="#{controlTipoFuncion.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoRegistro)}" action="funcion" process="@this"/>
+                        <p:remoteCommand name="dirigirTipoFormula" actionListener="#{controlTipoFormula.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoRegistro)}" action="formula" process="@this"/>
+                        <p:remoteCommand name="dirigirTipoConstante" actionListener="#{controlTipoConstante.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoRegistro)}" action="constante" process="@this"/>
+                        <p:remoteCommand name="dirigirTipoBloque" actionListener="#{controlTipoBloque.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoRegistro)}" action="bloque" process="@this"/>
+                        <p:remoteCommand name="dirigirDetalle" actionListener="#{controlNovedadOperando.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.operandoRegistro)}" action="novedadoperando" process="@this"/>
                         <p:commandButton style="position: absolute; left: 700px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlOperando.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosOperandos" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlOperando.salir()}" action="nomina" process="@this" />
-
+                        <p:commandButton style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 800px; top: 430px;" id="DETALLES" value="" process="@this" actionListener="#{controlOperando.guardarVariables(controlOperando.operandoRegistro.secuencia)}" />
+                        <p:tooltip style="font-size: 12px" for="DETALLES" value="#{msg['identificacion']}" />
+                        <p:commandButton style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 50px; top: 430px;" id="PRIMERA" value="" process="@this" actionListener="#{controlOperando.verificarTipo(controlOperando.operandoRegistro.secuencia)}" />
+                        <p:tooltip style="font-size: 12px" for="PRIMERA" value="#{msg['detalles']}" />
                     </p:panel>
                 </h:form>
 
@@ -456,7 +441,7 @@
                         <p:column headerText="#{msg['tipoX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['tipoX']}"/> </f:facet> 
                             <h:outputText value="#{o.tipo}" />
-                        </p:column>  
+                        </p:column>
 
                         <p:column headerText="#{msg['valorconstanteXX']}">
                             <f:facet name="header"><h:outputText value="#{msg['valorconstanteX']}"/></f:facet>

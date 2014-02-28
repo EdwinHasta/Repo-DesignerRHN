@@ -15,7 +15,7 @@
                     <f:loadBundle basename="Recursos.tipobloque" var="msg" />
 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 520px;" >
-                        <p:commandButton style="position: absolute; left: 25px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlTipoBloque.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 25px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlTipoBloque.cancelarModificacion()}" process="@this" />
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 330px; border-radius: 10px; ">
                             <legend style="font-size: 13px; color: #14388B"><strong>#{msg['bloque']}</strong></legend>
 
@@ -147,13 +147,16 @@
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>
                         </p:toolbar>
+
+                        <p:remoteCommand name="dirigirDependencia" actionListener="#{controlDependenciaOperando.recibirDatosOperando(controlTipoBloque.secOperando2 ,controlTipoBloque.operando2)}" action="dependencia" process="@this"/>
+
+                        <p:commandButton style="position: absolute; left: 517px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="DEPENDENCIA" value="#{msg['dependencia']}" actionListener="#{controlTipoBloque.guardarVariables(controlTipoBloque.index, controlTipoBloque.secuenciaOperando)}" process="@this" />
                         <p:commandButton style="position: absolute; left: 700px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlTipoBloque.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosTiposBloques" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlTipoBloque.salir()}" action="operando" process="@this" />
                     </p:panel>
                 </h:form>
 
                 <h:form id="formularioDialogos">
-
 
                     <p:dialog id="editorSQL" header="#{msg['editorSQL']}" widgetVar="editorSQL" resizable="false" draggable="false" modal="true"  height="500" width="650" closable="false">
                         <p:editor id="editor" value="#{controlTipoBloque.editarTiposBloques.bloqueplsql}" width="620" height="470" >
@@ -169,7 +172,7 @@
                             <p:ajax event="change" listener="#{controlTipoBloque.modificarTiposBloques(indice, 'N', controlTipoBloque.editarTiposBloques.bloqueplsql)}" update="@this" />
                         </p:inputTextarea>
                         <p:commandButton id="aceptarSQL" value="#{msg['aceptar']}" actionListener="#{controlTipoBloque.cambiarEditor()}" onclick="editarSQL.hide();" style="position: absolute; top: 470px; left: 450px; font-size: 11px" process="@this"/>
-                        <p:commandButton id="cancelarSQL" value="#{msg['atras']}" onclick="editarSQL.hide();" style="position: absolute; top: 470px; left: 550px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarSQL" value="#{msg['atras']}" onclick="editarSQL.hide();" style="position: absolute; top: 470px; left: 533px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarFechasIniciales" header="#{msg['editarFechasIniciales']}" widgetVar="editarFechasIniciales" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
@@ -188,7 +191,7 @@
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlTipoFormula.guardarCambiosTiposFormulas()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlTipoBloque.guardarCambiosTiposBloques()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>

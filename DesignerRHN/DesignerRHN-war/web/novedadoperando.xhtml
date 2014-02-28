@@ -14,7 +14,6 @@
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.novedadoperando" var="msg" />
 
-
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 500px;" >
                         <p:commandButton style="position: absolute; left: 25px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadOperando.cancelarModificacion()}" process="@this" />
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 330px; border-radius: 10px; ">
@@ -57,7 +56,7 @@
 
                                 <p:separator style="position: relative; top: -10px;"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true" actionListener="#{controlNovedadOperando.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadOperando.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadOperando.activarCtrlF11()}" process="@this"/>
@@ -150,13 +149,13 @@
 
                     <!-- Nuevo Registro --> 
 
-                    <p:dialog id="NuevoNovedadOperando" header="#{msg['nuevoregistro']}" widgetVar="NuevoNovedadOperando" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoNovedadOperando" header="#{msg['nuevoregistro']}" widgetVar="NuevoNovedadOperando" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="400" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevoNovedadOperando" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['nombreN']}" style="font-size: 12px; position: absolute; top: 65px;" /></strong>
+                            <strong><h:outputText value="#{msg['nombreN']}" style="font-size: 12px; position: absolute; top: 67px;" /></strong>
                             <p:inputText id="nuevoOperando" value="#{controlNovedadOperando.nuevoNovedadOperando.operando.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 180px; top: 65px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlNovedadOperando.valoresBackupAutocompletar(1, 'OPERANDO')}" />
                                 <p:ajax event="change" listener="#{controlNovedadOperando.autocompletarNuevoyDuplicado('OPERANDO', controlNovedadOperando.nuevoNovedadOperando.operando.nombre, 1)}" />
@@ -164,9 +163,9 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 311px; top: 65px;  " id="btnNuevoOperando" actionListener="#{controlNovedadOperando.asignarIndex(indice, 0, 1)}" icon="ui-icon-search" process="@this" />
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 50px; top: 300px;" actionListener="#{controlNovedadOperando.limpiarNuevoNovedadesOperandos()}" update="nuevoNovedadOperando" process="@this"/>
-                            <p:commandButton id="agregarN" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 250px; top: 300px;"  actionListener="#{controlNovedadOperando.agregarNuevoNovedadOperando()}" process="@this"/>
-                            <p:commandButton id="cancelarN" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 320px; top: 300px;" actionListener="#{controlNovedadOperando.limpiarNuevoNovedadesOperandos()}" update="nuevoNovedadOperando" onclick="NuevoNovedadOperando.hide();" process="@this"/>
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 50px; top: 150px;" actionListener="#{controlNovedadOperando.limpiarNuevoNovedadesOperandos()}" update="nuevoNovedadOperando" process="@this"/>
+                            <p:commandButton id="agregarN" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 200px; top: 150px;"  actionListener="#{controlNovedadOperando.agregarNuevoNovedadOperando()}" process="@this"/>
+                            <p:commandButton id="cancelarN" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 270px; top: 150px;" actionListener="#{controlNovedadOperando.limpiarNuevoNovedadesOperandos()}" update="nuevoNovedadOperando" onclick="NuevoNovedadOperando.hide();" process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -196,6 +195,12 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']}  #{controlNovedadOperando.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevoNovedadOperando.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="operandorecalculado" header="#{msg['atencion']}" widgetVar="operandorecalculado"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['operandorecalculado']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="operandorecalculado.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- DIALOGOS RASTROS -->

@@ -41,8 +41,12 @@ public class ControlTipoBloque implements Serializable {
 
     //Parametros que llegan
     private BigInteger secOperando;
+    private Operandos operando;
     private String tOperando;
-    private Operandos operando;//LISTA INFOREPORTES
+    //Parametros que envia
+    private BigInteger secOperando2;
+    private Operandos operando2;
+    //LISTA INFOREPORTES
     private List<TiposBloques> listaTiposBloques;
     private List<TiposBloques> filtradosListaTiposBloques;
     //L.O.V INFOREPORTES
@@ -94,6 +98,9 @@ public class ControlTipoBloque implements Serializable {
     private boolean cadenaBD;
     //String que guarda el editar
     private String editorE;
+    public BigInteger secuenciaOperando;
+    public String tipoOperando;
+    public Operandos operandoRegistro;
 
     public ControlTipoBloque() {
         listaTiposBloques = null;
@@ -114,16 +121,29 @@ public class ControlTipoBloque implements Serializable {
         nuevoTipoBloque.setFechainicial(new Date());
     }
 
-    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoSeleccionado) {
+    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoRegistro) {
         secOperando = secuenciaOperando;
         tOperando = tipoOperando;
-        operando = operandoSeleccionado;
+        operando = operandoRegistro;
         listaTiposBloques = null;
         getListaTiposBloques();
     }
 
-    
-      
+    public void guardarVariables(int indice, BigInteger secuencia) {
+        if (listaTiposBloquesBorrar.isEmpty() && listaTiposBloquesCrear.isEmpty() && listaTiposBloquesModificar.isEmpty()) {
+            secOperando2 = secOperando;
+            operando2 = operando;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dirigirDependencia()");
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            guardado = false;
+            context.execute("confirmarGuardar.show()");
+
+        }
+
+    }
+
     public void cambiarEditor() {
         System.out.println("Bloque Tipos Bloques : " + editarTiposBloques.getBloqueplsql());
         System.out.println("Editar Tipo Bloque" + editarTiposBloques.getSecuencia());
@@ -137,6 +157,7 @@ public class ControlTipoBloque implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosTiposBloques");
     }
+
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
         if (index >= 0) {
@@ -907,6 +928,46 @@ public class ControlTipoBloque implements Serializable {
 
     public void setEditorE(String editorE) {
         this.editorE = editorE;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public BigInteger getSecuenciaOperando() {
+        return secuenciaOperando;
+    }
+
+    public void setSecuenciaOperando(BigInteger secuenciaOperando) {
+        this.secuenciaOperando = secuenciaOperando;
+    }
+
+    public Operandos getOperandoSeleccionado() {
+        return operandoRegistro;
+    }
+
+    public void setOperandoSeleccionado(Operandos operandoRegistro) {
+        this.operandoRegistro = operandoRegistro;
+    }
+
+    public BigInteger getSecOperando2() {
+        return secOperando2;
+    }
+
+    public void setSecOperando2(BigInteger secOperando2) {
+        this.secOperando2 = secOperando2;
+    }
+
+    public Operandos getOperando2() {
+        return operando2;
+    }
+
+    public void setOperando2(Operandos operando2) {
+        this.operando2 = operando2;
     }
 
 }
