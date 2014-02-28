@@ -30,4 +30,6 @@ public interface PersistenciaOperandosInterface {
     public void borrar(Operandos operandos);
     
     public String valores(BigInteger secuenciaOperando) ;
+    
+    public Operandos operandosPorSecuencia(BigInteger secuencia);
 }

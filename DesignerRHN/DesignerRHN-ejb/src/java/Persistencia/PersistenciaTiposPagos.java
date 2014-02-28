@@ -20,7 +20,7 @@ import javax.persistence.Query;
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface{
+public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
@@ -33,7 +33,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface{
         try {
             em.persist(tipospagos);
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaProcesos : " + e.toString());
+            System.out.println("Error crear PersistenciaProcesos : " + e);
         }
     }
 
@@ -42,7 +42,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface{
         try {
             em.merge(tipospagos);
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaProcesos : " + e.toString());
+            System.out.println("Error editar PersistenciaProcesos : " + e);
         }
     }
 
@@ -51,24 +51,24 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface{
         try {
             em.remove(em.merge(tipospagos));
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaProcesos : " + e.toString());
+            System.out.println("Error borrar PersistenciaProcesos : " + e);
         }
     }
 
     @Override
-    public List<Tipospagos> buscarTiposPagos() {
+    public List<Tipospagos> consultarTiposPagos() {
         try {
-            Query query = em.createQuery("SELECT t FROM Tipospagos t");
+            Query query = em.createQuery("SELECT t FROM Tipospagos t ORDER BY t.codigo  ASC");
             List<Tipospagos> tipospagos = query.getResultList();
             return tipospagos;
         } catch (Exception e) {
-            System.out.println("Error buscarTiposPagos");
+            System.out.println("Error buscarTiposPagos ERROR" + e);
             return null;
         }
     }
 
     @Override
-    public Tipospagos buscarTipoPagoSecuencia(BigInteger secuencia) {
+    public Tipospagos consultarTipoPago(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM Tipospagos t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
@@ -78,6 +78,21 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface{
             System.out.println("Error buscarTipoPagoSecuencia");
             Tipospagos tipospagos = null;
             return tipospagos;
+        }
+    }
+
+    public BigInteger contarProcesosTipoPago(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = " SELECT COUNT(*)FROM procesos WHERE tipopago =?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaProcesos contarProcesosTipoPago Retorno " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaProcesos contarProcesosTipoPago ERROR : " + e);
+            return retorno;
         }
     }
 }
