@@ -221,8 +221,7 @@ public class ControlOperando implements Serializable {
     }
 
     public void guardarVariables(BigInteger secuencia) {
-        if (index < 0) {
-            System.out.println("INDEX " + index);
+        if (operandoRegistro == null) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("seleccionarRegistro.show()");
         }
@@ -238,6 +237,7 @@ public class ControlOperando implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
         }
+        operandoRegistro = null;
     }
 
     public void verificarTipo(BigInteger secuencia) {
