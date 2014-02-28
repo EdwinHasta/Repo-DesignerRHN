@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,6 +34,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Niveles.findByCodigo", query = "SELECT n FROM Niveles n WHERE n.codigo = :codigo"),
     @NamedQuery(name = "Niveles.findByDescripcion", query = "SELECT n FROM Niveles n WHERE n.descripcion = :descripcion")})
 public class Niveles implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Integer codigo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivel")
+    private Collection<PlantasPersonales> plantasPersonalesCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -41,8 +48,6 @@ public class Niveles implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "nivel")
@@ -67,14 +72,6 @@ public class Niveles implements Serializable {
 
     public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
     }
 
     public String getDescripcion() {
@@ -117,6 +114,23 @@ public class Niveles implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Niveles[ secuencia=" + secuencia + " ]";
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    @XmlTransient
+    public Collection<PlantasPersonales> getPlantasPersonalesCollection() {
+        return plantasPersonalesCollection;
+    }
+
+    public void setPlantasPersonalesCollection(Collection<PlantasPersonales> plantasPersonalesCollection) {
+        this.plantasPersonalesCollection = plantasPersonalesCollection;
     }
 
 }

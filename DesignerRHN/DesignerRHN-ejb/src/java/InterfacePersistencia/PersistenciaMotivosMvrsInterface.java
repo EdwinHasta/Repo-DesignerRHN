@@ -6,7 +6,6 @@ package InterfacePersistencia;
 import Entidades.Motivosmvrs;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -14,7 +13,6 @@ import javax.ejb.Local;
  *
  * @author betelgeuse
  */
-@Local
 public interface PersistenciaMotivosMvrsInterface {
 
     /**
