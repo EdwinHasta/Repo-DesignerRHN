@@ -37,11 +37,11 @@
 
                             <p:dataTable id="datosCargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 820px;position: relative"                           
                                          value="#{controlCargo.listaCargos}" scrollable="true" scrollHeight="#{controlCargo.altoTablaCargo}"  scrollWidth="820"
-                                         filteredValue="#{controlCargo.filtrarListaCargos}" emptyMessage="#{msg['vacio']}"
+                                         filteredValue="#{controlCargo.filtrarListaCargos}"  emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell"  rows="4" liveScroll="true" scrollRows="4">
 
                                 <p:ajax event="filter" listener="#{controlCargo.eventoFiltrar()}"/>
-
+                                
                                 <p:column style="font-size: 11px;" headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" 
                                           id="cargoCodigo" width="35" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  

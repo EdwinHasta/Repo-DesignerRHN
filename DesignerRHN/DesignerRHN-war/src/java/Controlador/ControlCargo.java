@@ -156,6 +156,7 @@ public class ControlCargo implements Serializable {
     private DetallesCargos detalleCargo;
     //
     private boolean activoDetalleCargo;
+    
 
     public ControlCargo() {
         activoDetalleCargo = true;
@@ -3947,7 +3948,6 @@ public class ControlCargo implements Serializable {
             RequestContext.getCurrentInstance().update("form:growl");
             detalleCargo = null;
             getDetalleCargo();
-            
         } catch (Exception e) {
             System.out.println("Error crearDetalleCargo : " + e.toString());
         }

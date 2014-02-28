@@ -161,7 +161,7 @@
                                     </span>
                                 </p:treeNode>   
                             </p:tree>
-                            <p:commandButton id="btnEstructuraPlanta" value="#{msg['estructuraplanta']}" style="position: relative; top: 215px;"/>
+                            <p:commandButton id="btnEstructuraPlanta" value="#{msg['estructuraplanta']}" style="position: relative; top: 215px;" action="estructuraPlanta" actionListener="#{controlEstructuraPlanta.inicializarPagina('estructura')}"/>
                             <p:commandButton id="btnRiesgosProfesionales" value="#{msg['riesgosprofesionales']}" style="position: relative; top: 215px;"/>
                             <p:commandButton id="btnReportePlanta" value="#{msg['reporteplantapersonal']}" style="position: relative; top: 215px;"/>
                         </fieldset>
