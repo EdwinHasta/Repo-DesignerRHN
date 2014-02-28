@@ -82,4 +82,17 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
             return null;
         }
     }
+    
+    @Override
+    public Operandos operandosPorSecuencia(BigInteger secOperando) {
+        try {
+            Query query = em.createQuery("SELECT o FROM Operandos o WHERE o.secuencia=:secOperando");
+            query.setParameter("secOperando", secOperando);
+            Operandos operandos = (Operandos) query.getSingleResult();
+            return operandos;
+        } catch (Exception e) {
+            System.out.println("Error Persistencia operandosPorSecuencia : " + e.toString());
+            return null;
+        }
+    }
 }

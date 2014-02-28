@@ -56,5 +56,16 @@ public class AdministrarOperandos implements AdministrarOperandosInterface{
         valores = persistenciaOperandos.valores(secuenciaOperando);
         return valores;
     }
+    
+    @Override
+    public Operandos consultarOperandoActual(BigInteger secOperando) {
+        try {
+            Operandos actual = persistenciaOperandos.operandosPorSecuencia(secOperando);
+            return actual;
+        } catch (Exception e) {
+            System.out.println("Error conceptoActual Admi : " + e.toString());
+            return null;
+        }
+    }
 
 }

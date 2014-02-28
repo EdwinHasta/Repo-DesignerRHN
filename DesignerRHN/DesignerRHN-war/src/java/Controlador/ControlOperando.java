@@ -38,6 +38,8 @@ public class ControlOperando implements Serializable {
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
+    private Operandos operandoActual;
+    private Operandos operandoRegistro;
     //LISTA INFOREPORTES
     private List<Operandos> listaOperandos;
     private List<Operandos> filtradosListaOperandos;
@@ -84,7 +86,6 @@ public class ControlOperando implements Serializable {
     public String action;
     public BigInteger secuenciaOperando;
     public String tipoOperando;
-    public Operandos operandoSeleccionado;
 
     public ControlOperando() {
         cambiosPagina = true;
@@ -113,6 +114,7 @@ public class ControlOperando implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            operandoRegistro = listaOperandos.get(index);
             if (tipoLista == 0) {
                 secRegistro = listaOperandos.get(index).getSecuencia();
             } else {
@@ -218,64 +220,68 @@ public class ControlOperando implements Serializable {
         RequestContext.getCurrentInstance().update("form:datosOperandos");
     }
 
-    public void guardarVariables(int indice, BigInteger secuencia) {
-        index = indice;
-        if (listaOperandosCrear.isEmpty() && listaOperandosBorrar.isEmpty() && listaOperandosModificar.isEmpty()) {
-
-            secuenciaOperando = listaOperandos.get(index).getSecuencia();
-            operandoSeleccionado = listaOperandos.get(index);
-            System.out.println("secuenciaOperando" + secuenciaOperando + "operandoSeleccionado" + operandoSeleccionado);
+    public void guardarVariables(BigInteger secuencia) {
+        if (index < 0) {
+            System.out.println("INDEX " + index);
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("dirigirDetalle()");
+            context.execute("seleccionarRegistro.show()");
+        }
+        if (listaOperandosCrear.isEmpty() && listaOperandosBorrar.isEmpty() && listaOperandosModificar.isEmpty()) {
+            if (operandoRegistro != null) {
+                secuenciaOperando = operandoRegistro.getSecuencia();
+
+                System.out.println("secuenciaOperando" + secuenciaOperando + "operandoRegistro" + operandoRegistro);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("dirigirDetalle()");
+            }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
-
         }
     }
 
-    public void verificarTipo(int indice, String tipo, BigInteger secuencia) {
-        index = indice;
+    public void verificarTipo(BigInteger secuencia) {
 
         if (listaOperandosCrear.isEmpty() && listaOperandosBorrar.isEmpty() && listaOperandosModificar.isEmpty()) {
-
-            if (listaOperandos.get(index).getTipo().equals("FUNCION")) {
-                action = "funcion";
-                secuenciaOperando = listaOperandos.get(index).getSecuencia();
-                tipoOperando = listaOperandos.get(index).getTipo();
-                operandoSeleccionado = listaOperandos.get(index);
+            if (operandoRegistro != null) {
+                if (operandoRegistro.getTipo().equals("FUNCION")) {
+                    action = "funcion";
+                    secuenciaOperando = operandoRegistro.getSecuencia();
+                    tipoOperando = operandoRegistro.getTipo();
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("dirigirTipoFuncion()");
+                }
+                if (operandoRegistro.getTipo().equals("FORMULA")) {
+                    action = "formula";
+                    secuenciaOperando = operandoRegistro.getSecuencia();
+                    tipoOperando = operandoRegistro.getTipo();
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("dirigirTipoFormula()");
+                }
+                if (operandoRegistro.getTipo().equals("CONSTANTE")) {
+                    action = "constante";
+                    secuenciaOperando = operandoRegistro.getSecuencia();
+                    tipoOperando = operandoRegistro.getTipo();
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("dirigirTipoConstante()");
+                }
+                if (operandoRegistro.getTipo().equals("BLOQUE PL/SQL")) {
+                    action = "bloque";
+                    secuenciaOperando = operandoRegistro.getSecuencia();
+                    tipoOperando = operandoRegistro.getTipo();
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("dirigirTipoBloque()");
+                }
+            } else {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("dirigirTipoFuncion()");
-            }
-            if (listaOperandos.get(index).getTipo().equals("FORMULA")) {
-                action = "formula";
-                secuenciaOperando = listaOperandos.get(index).getSecuencia();
-                tipoOperando = listaOperandos.get(index).getTipo();
-                operandoSeleccionado = listaOperandos.get(index);
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("dirigirTipoFormula()");
-            }
-            if (listaOperandos.get(index).getTipo().equals("CONSTANTE")) {
-                action = "constante";
-                secuenciaOperando = listaOperandos.get(index).getSecuencia();
-                tipoOperando = listaOperandos.get(index).getTipo();
-                operandoSeleccionado = listaOperandos.get(index);
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("dirigirTipoConstante()");
-            }
-            if (listaOperandos.get(index).getTipo().equals("BLOQUE PL/SQL")) {
-                action = "bloque";
-                secuenciaOperando = listaOperandos.get(index).getSecuencia();
-                tipoOperando = listaOperandos.get(index).getTipo();
-                operandoSeleccionado = listaOperandos.get(index);
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("dirigirTipoBloque()");
+                context.execute("seleccionarRegistro.show()");
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
 
         }
+        operandoRegistro = null;
     }
 
     public void seleccionarTipoNuevoOperando(String estadoTipo, int tipoNuevo) {
@@ -1008,11 +1014,27 @@ public class ControlOperando implements Serializable {
     }
 
     public Operandos getOperandoSeleccionado() {
-        return operandoSeleccionado;
+        return operandoRegistro;
     }
 
-    public void setOperandoSeleccionado(Operandos operandoSeleccionado) {
-        this.operandoSeleccionado = operandoSeleccionado;
+    public void setOperandoSeleccionado(Operandos operandoRegistro) {
+        this.operandoRegistro = operandoRegistro;
+    }
+
+    public Operandos getOperandoActual() {
+        return operandoActual;
+    }
+
+    public void setOperandoActual(Operandos operandoActual) {
+        this.operandoActual = operandoActual;
+    }
+
+    public Operandos getOperandoRegistro() {
+        return operandoRegistro;
+    }
+
+    public void setOperandoRegistro(Operandos operandoRegistro) {
+        this.operandoRegistro = operandoRegistro;
     }
 
 }

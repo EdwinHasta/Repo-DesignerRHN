@@ -42,7 +42,6 @@
                                             </p:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
-
                                     <f:facet name="footer">
                                         <h:outputText value="#{msg['fechainicial']}" />
                                     </f:facet>
@@ -68,14 +67,6 @@
 
                                     <f:facet name="footer">
                                         <h:outputText value="#{msg['fechafinal']}" />
-                                    </f:facet>
-                                </p:column>
-
-                                <p:column style="padding: 0px" headerText="..." width="32" id="operandosDetalles" filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:commandButton value=" " style="width: 99%; height: 99%" />
-                                    <f:facet name="header">
-                                        <h:outputText id="headerFormula" value="..." />
-                                        <p:tooltip style="font-size: 12px" for="headerFormula" value="#{msg['formula']}" />
                                     </f:facet>
                                 </p:column>
 
@@ -157,6 +148,10 @@
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup>
                         </p:toolbar>
+                        
+                        <p:remoteCommand name="dirigirFormula" actionListener="#{controlFormula.recibirDatosTiposFormulas(controlTipoFormula.secuenciaTiposFormulas,controlTipoFormula.tiposFormulasRegistro)}" action="formula" process="@this"/>
+                        <p:commandButton style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 800px; top: 430px;" id="FORMULAS" value="" process="@this" actionListener="#{controlTipoFormula.guardarVariables(controlTipoFormula.tiposFormulasRegistro.secuencia)}" />
+                        <p:tooltip style="font-size: 12px" for="FORMULAS" value="#{msg['dirigirFormula']}" />
                         <p:commandButton style="position: absolute; left: 700px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlTipoFormula.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosTiposFormulas" process="@this" />
                         <p:commandButton style="position: absolute; left: 783px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlTipoFormula.salir()}" action="operando" process="@this" />
 

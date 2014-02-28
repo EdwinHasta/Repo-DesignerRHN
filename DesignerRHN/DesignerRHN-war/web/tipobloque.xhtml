@@ -158,7 +158,6 @@
 
                 <h:form id="formularioDialogos">
 
-
                     <p:dialog id="editorSQL" header="#{msg['editorSQL']}" widgetVar="editorSQL" resizable="false" draggable="false" modal="true"  height="500" width="650" closable="false">
                         <p:editor id="editor" value="#{controlTipoBloque.editarTiposBloques.bloqueplsql}" width="620" height="470" >
                         </p:editor>
@@ -173,7 +172,7 @@
                             <p:ajax event="change" listener="#{controlTipoBloque.modificarTiposBloques(indice, 'N', controlTipoBloque.editarTiposBloques.bloqueplsql)}" update="@this" />
                         </p:inputTextarea>
                         <p:commandButton id="aceptarSQL" value="#{msg['aceptar']}" actionListener="#{controlTipoBloque.cambiarEditor()}" onclick="editarSQL.hide();" style="position: absolute; top: 470px; left: 450px; font-size: 11px" process="@this"/>
-                        <p:commandButton id="cancelarSQL" value="#{msg['atras']}" onclick="editarSQL.hide();" style="position: absolute; top: 470px; left: 550px; font-size: 11px" process="@this"/>
+                        <p:commandButton id="cancelarSQL" value="#{msg['atras']}" onclick="editarSQL.hide();" style="position: absolute; top: 470px; left: 533px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarFechasIniciales" header="#{msg['editarFechasIniciales']}" widgetVar="editarFechasIniciales" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  

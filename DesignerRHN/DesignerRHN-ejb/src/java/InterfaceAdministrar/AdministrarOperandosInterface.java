@@ -21,5 +21,6 @@ public interface AdministrarOperandosInterface {
     public void crearOperando(Operandos operandos);
     public void modificarOperando(List<Operandos> listaOperandosModificar);
     public String buscarValores(BigInteger secuenciaOperando);
+    public Operandos consultarOperandoActual(BigInteger secOperando);
     
 }

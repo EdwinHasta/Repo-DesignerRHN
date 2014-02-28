@@ -1,6 +1,7 @@
 package Controlador;
 
 import Entidades.Formulas;
+import Entidades.TiposFormulas;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarFormulaInterface;
@@ -28,6 +29,10 @@ public class ControlFormula implements Serializable {
     AdministrarFormulaInterface administrarFormula;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
+    //Parametros que llegan
+    private BigInteger secTiposFormulas;
+    private TiposFormulas tiposFormulas;
     private List<Formulas> listaFormulas;
     private List<Formulas> filtradoListaFormulas;
     private List<Formulas> listaFormulasLOV;
@@ -103,6 +108,7 @@ public class ControlFormula implements Serializable {
         formulaOriginal = new Formulas();
         permitirIndex = true;
         altoTabla = "184";
+        tiposFormulas = null;
 
     }
 
@@ -135,6 +141,14 @@ public class ControlFormula implements Serializable {
             activoBuscarTodos = false;
         }
         llamadoPrevioPagina = 0;
+    }
+    
+    public void recibirDatosTiposFormulas(BigInteger secuenciaTiposFormulas, TiposFormulas tiposFormulasRegistro) {
+        secTiposFormulas = secuenciaTiposFormulas;
+        tiposFormulas = tiposFormulasRegistro;
+        System.out.println("secTiposFormulas " + secTiposFormulas + "operando" + tiposFormulas);
+        listaFormulas = null;
+        getListaFormulas();
     }
 
     //SELECCIONAR NATURALEZA
@@ -903,7 +917,8 @@ public class ControlFormula implements Serializable {
     //GETTER AND SETTER
 
     public List<Formulas> getListaFormulas() {
-        if (listaFormulas == null) {
+        if (listaFormulas == null && tiposFormulas == null) {
+            
             listaFormulas = administrarFormula.formulas();
             if (listaFormulas != null || !listaFormulas.isEmpty()) {
                 if (listaFormulas.get(0).getTipo().equals("FINAL") && listaFormulas.get(0).getEstado().equals("ACTIVO")) {
@@ -917,7 +932,12 @@ public class ControlFormula implements Serializable {
                 context.update("form:conceptoFormula");
                 context.update("form:legislacionFormula");
             }
-        }
+        } else if(tiposFormulas != null){
+                System.out.println("Lawl");
+                listaFormulas = administrarFormula.formulas();
+                listaFormulas.clear();
+                listaFormulas.add(tiposFormulas.getFormula());
+            }
         return listaFormulas;
     }
 

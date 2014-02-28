@@ -2392,5 +2392,14 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tipoformula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formula</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
  
 </faces-config>

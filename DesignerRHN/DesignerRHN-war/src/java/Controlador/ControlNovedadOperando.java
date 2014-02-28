@@ -115,9 +115,9 @@ public class ControlNovedadOperando implements Serializable {
         }
     }
 
-    public void recibirDatosOperando(BigInteger secuenciaOperando, Operandos operandoSeleccionado) {
+    public void recibirDatosOperando(BigInteger secuenciaOperando, Operandos operandoRegistro) {
         secOperando = secuenciaOperando;
-        operando = operandoSeleccionado;
+        operando = operandoRegistro;
         System.out.println("secOperando " + secOperando + "operando" + operando);
         listaNovedadesOperandos = null;
         getListaNovedadesOperandos();

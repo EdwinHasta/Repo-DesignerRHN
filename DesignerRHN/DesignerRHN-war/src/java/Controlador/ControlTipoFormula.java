@@ -86,6 +86,9 @@ public class ControlTipoFormula implements Serializable {
     private List<Formulas> lovListaFormulas;
     private List<Formulas> lovFiltradosListaFormulas;
     private Formulas seleccionFormulas;
+    //Enviar a Formulas
+    private TiposFormulas tiposFormulasRegistro;
+    private BigInteger secuenciaTiposFormulas;
 
     public ControlTipoFormula() {
         cambiosPagina = true;
@@ -110,6 +113,7 @@ public class ControlTipoFormula implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            tiposFormulasRegistro = listaTiposFormulas.get(index);
             if (tipoLista == 0) {
                 secRegistro = listaTiposFormulas.get(index).getSecuencia();
             } else {
@@ -118,14 +122,12 @@ public class ControlTipoFormula implements Serializable {
         }
     }
 
-    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoSeleccionado) {
+    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoRegistro) {
         secOperando = secuenciaOperando;
         tOperando = tipoOperando;
-
-        operando = operandoSeleccionado;
+        operando = operandoRegistro;
         listaTiposFormulas = null;
         getListaTiposFormulas();
-
     }
 
     //AUTOCOMPLETAR
@@ -222,6 +224,26 @@ public class ControlTipoFormula implements Serializable {
             context.execute("formulasDialogo.show()");
         }
 
+    }
+    
+    public void guardarVariables(BigInteger secuencia) {
+        if (index < 0) {
+            System.out.println("INDEX " + index);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("seleccionarRegistro.show()");
+        }
+        if (listaTiposFormulasCrear.isEmpty() && listaTiposFormulasBorrar.isEmpty() && listaTiposFormulasModificar.isEmpty()) {
+            if (tiposFormulasRegistro != null) {
+                secuenciaTiposFormulas = tiposFormulasRegistro.getSecuencia();
+
+                System.out.println("secuenciaOperando" + secuenciaTiposFormulas + "operandoRegistro" + tiposFormulasRegistro);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("dirigirFormula()");
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
+        }
     }
 
     //LISTA DE VALORES DINAMICA
@@ -943,5 +965,23 @@ public class ControlTipoFormula implements Serializable {
     public void setSeleccionFormulas(Formulas seleccionFormulas) {
         this.seleccionFormulas = seleccionFormulas;
     }
+
+    public TiposFormulas getTiposFormulasRegistro() {
+        return tiposFormulasRegistro;
+    }
+
+    public void setTiposFormulasRegistro(TiposFormulas tiposFormulasRegistro) {
+        this.tiposFormulasRegistro = tiposFormulasRegistro;
+    }
+
+    public BigInteger getSecuenciaTiposFormulas() {
+        return secuenciaTiposFormulas;
+    }
+
+    public void setSecuenciaTiposFormulas(BigInteger secuenciaTiposFormulas) {
+        this.secuenciaTiposFormulas = secuenciaTiposFormulas;
+    }
+    
+    
 
 }
