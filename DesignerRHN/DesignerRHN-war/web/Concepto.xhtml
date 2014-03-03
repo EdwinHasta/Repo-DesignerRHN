@@ -326,7 +326,7 @@
                         <p:commandButton style="position: absolute; left: 717px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();"  process="@this" />
                         <p:commandButton style="position: absolute; left: 9px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlConcepto.refrescar()}" process="@this" />
                         <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 125px; top: 500px;" id="DETALLES" value="" process="@this" action="detalleConcepto" actionListener="#{controlDetalleConcepto.obtenerConcepto(controlConcepto.conceptoRegistro.secuencia)}" />
-                        <p:tooltip style="font-size: 12px" for="DETALLES" value="Detalles del concepto seleccionado" />
+                        <p:tooltip style="font-size: 12px" for="DETALLES" value="#{msg['detalle']}" />
                         <p:commandButton style="position: absolute; left: 800px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlConcepto.refrescar()}" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>

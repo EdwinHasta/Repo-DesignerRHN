@@ -112,10 +112,10 @@ public class ControlTipoConstante implements Serializable{
         nuevoTipoConstante.setFechainicial(new Date());
     }
 
-    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoSeleccionado) {
+    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoRegistro) {
         secOperando = secuenciaOperando;
         tOperando = tipoOperando;
-        operando = operandoSeleccionado;
+        operando = operandoRegistro;
         listaTiposConstantes = null;
         getListaTiposConstantes();
     }

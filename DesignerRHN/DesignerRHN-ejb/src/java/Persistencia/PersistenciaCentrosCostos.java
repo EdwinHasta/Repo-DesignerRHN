@@ -73,7 +73,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     @Override
     public CentrosCostos buscarCentroCostoSecuencia(BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT cc FROM CentrosCostos cc WHERE cc.secuencia = :secuencia");
+            Query query = em.createQuery("SELECT cc FROM CentrosCostos cc WHERE cc.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             CentrosCostos centrosCostos = (CentrosCostos) query.getSingleResult();
             return centrosCostos;
@@ -113,6 +113,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorDetallesCCConsolidador(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -127,6 +128,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorDetallesCCDetalle(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -141,6 +143,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorEmpresas(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -155,6 +158,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorEstructuras(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -169,6 +173,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorInterconCondor(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -183,6 +188,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorInterconDynamics(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -197,6 +203,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorInterconGeneral(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -211,6 +218,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorInterconHelisa(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -225,6 +233,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorInterconSapbo(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -239,6 +248,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorInterconSiigo(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -253,6 +263,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorInterconTotal(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -267,6 +278,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorNovedadesC(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -281,6 +293,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorNovedadesD(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -295,6 +308,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorProcesosProductivos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -309,6 +323,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorProyecciones(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -323,6 +338,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorSolucionesNodosC(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -337,6 +353,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorSolucionesNodosD(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -351,6 +368,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorSoPanoramas(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -365,6 +383,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorTerceros(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -379,6 +398,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorUnidadesRegistradas(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -393,6 +413,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorVigenciasCuentasC(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -407,6 +428,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorVigenciasCuentasD(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -421,6 +443,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
     public BigInteger contadorVigenciasProrrateos(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -435,4 +458,17 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
         }
     }
 
+    @Override
+    public List<CentrosCostos> buscarCentroCostoPorSecuenciaEmpresa(BigInteger secEmpresa) {
+        try {
+            Query query = em.createQuery("SELECT c FROM CentrosCostos c WHERE EXISTS (SELECT e FROM Empresas e WHERE e.secuencia=c.empresa.secuencia AND e.secuencia=:secEmpresa) AND c.obsoleto!='S' ORDER BY c.codigo ASC");
+            query.setParameter("secEmpresa", secEmpresa);
+            List<CentrosCostos> centrosCostos = query.getResultList();
+            return centrosCostos;
+        } catch (Exception e) {
+            System.out.println("Error buscarCentroCostoSecuencia PersistenciaCentrosCostos : " + e.toString());
+            List<CentrosCostos> centrosCostos = null;
+            return centrosCostos;
+        } 
+    }
 }

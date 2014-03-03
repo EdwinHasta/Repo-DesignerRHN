@@ -330,4 +330,12 @@ public interface PersistenciaCentrosCostosInterface {
      * CentroCosto cuya secCentroCosto coincide con el parámetro.
      */
     public BigInteger contadorVigenciasProrrateos(BigInteger secCentroCosto);
+
+    /**
+     * Método encargado de obtener la lista de CentrosCostos que correspondan a una Empresa
+     *
+     * @param secEmpresa Secuencia de la Empresa.
+     * @return Retorna una lista de CentrosCostos
+     */
+    public List<CentrosCostos> buscarCentroCostoPorSecuenciaEmpresa(BigInteger secEmpresa);
 }

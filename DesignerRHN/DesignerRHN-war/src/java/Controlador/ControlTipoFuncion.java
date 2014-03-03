@@ -114,11 +114,11 @@ public class ControlTipoFuncion implements Serializable {
         }
     }
 
-    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoSeleccionado) {
+    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoRegistro) {
         secOperando = secuenciaOperando;
         tOperando = tipoOperando;
         
-        operando = operandoSeleccionado;
+        operando = operandoRegistro;
         listaTiposFunciones = null;
         getListaTiposFunciones();
 

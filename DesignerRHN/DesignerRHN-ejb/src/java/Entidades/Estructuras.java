@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,8 +36,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findFiltradas", query = "SELECT es FROM Estructuras es where (es.centrocosto.obsoleto ='N' or es.centrocosto.obsoleto is null)"),
     @NamedQuery(name = "Estructuras.findBySecOrganigrama", query = "SELECT es FROM Estructuras es where (es.centrocosto.obsoleto ='N' or es.centrocosto.obsoleto is null) AND es.organigrama.secuencia = :secOrganigrama"),
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
-    
+
 public class Estructuras implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
+    private Collection<PlantasPersonales> plantasPersonalesCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
     private Collection<Pdgpoliticas> pdgpoliticasCollection;
     @OneToMany(mappedBy = "localizacion")
@@ -60,9 +64,9 @@ public class Estructuras implements Serializable {
     private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Long codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 20)
@@ -84,6 +88,10 @@ public class Estructuras implements Serializable {
     private CentrosCostos centrocosto;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
     private Collection<VigenciasCargos> vigenciascargosCollection;
+    @Transient
+    private String cantidadCargosControlar;
+    @Transient
+    private String cantidadCargosEmplActivos;
 
     public Estructuras() {
     }
@@ -123,7 +131,7 @@ public class Estructuras implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getCodigoalfa() {
@@ -173,6 +181,22 @@ public class Estructuras implements Serializable {
 
     public void setCentrocosto(CentrosCostos centrocosto) {
         this.centrocosto = centrocosto;
+    }
+
+    public String getCantidadCargosControlar() {
+        return cantidadCargosControlar;
+    }
+
+    public void setCantidadCargosControlar(String cantidadCargosControlar) {
+        this.cantidadCargosControlar = cantidadCargosControlar;
+    }
+
+    public String getCantidadCargosEmplActivos() {
+        return cantidadCargosEmplActivos;
+    }
+
+    public void setCantidadCargosEmplActivos(String cantidadCargosEmplActivos) {
+        this.cantidadCargosEmplActivos = cantidadCargosEmplActivos;
     }
 
     @XmlTransient
@@ -269,5 +293,14 @@ public class Estructuras implements Serializable {
 
     public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
         this.parametrosInformesCollection = parametrosInformesCollection;
+    }
+
+    @XmlTransient
+    public Collection<PlantasPersonales> getPlantasPersonalesCollection() {
+        return plantasPersonalesCollection;
+    }
+
+    public void setPlantasPersonalesCollection(Collection<PlantasPersonales> plantasPersonalesCollection) {
+        this.plantasPersonalesCollection = plantasPersonalesCollection;
     }
 }

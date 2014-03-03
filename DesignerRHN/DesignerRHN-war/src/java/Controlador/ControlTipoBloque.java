@@ -100,7 +100,7 @@ public class ControlTipoBloque implements Serializable {
     private String editorE;
     public BigInteger secuenciaOperando;
     public String tipoOperando;
-    public Operandos operandoSeleccionado;
+    public Operandos operandoRegistro;
 
     public ControlTipoBloque() {
         listaTiposBloques = null;
@@ -121,20 +121,26 @@ public class ControlTipoBloque implements Serializable {
         nuevoTipoBloque.setFechainicial(new Date());
     }
 
-    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoSeleccionado) {
+    public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoRegistro) {
         secOperando = secuenciaOperando;
         tOperando = tipoOperando;
-        operando = operandoSeleccionado;
+        operando = operandoRegistro;
         listaTiposBloques = null;
         getListaTiposBloques();
     }
 
     public void guardarVariables(int indice, BigInteger secuencia) {
+        if (listaTiposBloquesBorrar.isEmpty() && listaTiposBloquesCrear.isEmpty() && listaTiposBloquesModificar.isEmpty()) {
+            secOperando2 = secOperando;
+            operando2 = operando;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("dirigirDependencia()");
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            guardado = false;
+            context.execute("confirmarGuardar.show()");
 
-        secOperando2 = secOperando;
-        operando2 = operando;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("dirigirDependencia()");
+        }
 
     }
 
@@ -941,11 +947,11 @@ public class ControlTipoBloque implements Serializable {
     }
 
     public Operandos getOperandoSeleccionado() {
-        return operandoSeleccionado;
+        return operandoRegistro;
     }
 
-    public void setOperandoSeleccionado(Operandos operandoSeleccionado) {
-        this.operandoSeleccionado = operandoSeleccionado;
+    public void setOperandoSeleccionado(Operandos operandoRegistro) {
+        this.operandoRegistro = operandoRegistro;
     }
 
     public BigInteger getSecOperando2() {
@@ -963,7 +969,5 @@ public class ControlTipoBloque implements Serializable {
     public void setOperando2(Operandos operando2) {
         this.operando2 = operando2;
     }
-    
-    
 
 }
