@@ -360,7 +360,7 @@
                         <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" disabled="#{controlEmpleadoIndividual.guardado}" value="#{msg['aceptar']}" icon="ui-icon-check" process="@this" />
                         <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlEmpleadoIndividual.refrescar()}"  process="@this" />
                         <p:commandButton style="position: absolute; left: 100px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="IMPRIMIRHOJAVIDA" value="#{msg['imprimirhojadevida']}" process="@this"/>
-                        <p:commandButton style="position: absolute; left: 243px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REPORTESPERSONAL" value="#{msg['reportesdepersonal']}" process="@this" action="reportePersonal"/>
+                        <p:commandButton style="position: absolute; left: 243px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REPORTESPERSONAL" value="#{msg['reportesdepersonal']}" process="@this" action="reportePersonal" actionListener="#{controlNReportePersonal.iniciarPagina()}"/>
                         <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
 
                     </p:panel>

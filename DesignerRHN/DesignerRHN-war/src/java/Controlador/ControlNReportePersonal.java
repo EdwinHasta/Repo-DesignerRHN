@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -123,8 +124,12 @@ public class ControlNReportePersonal implements Serializable {
     //
     private Date fechaDesde, fechaHasta;
     private BigInteger emplDesde, emplHasta;
+    //
+    private boolean activoMostrarTodos, activoBuscarReporte;
 
     public ControlNReportePersonal() {
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
         color = "black";
         decoracion = "none";
         color2 = "black";
@@ -171,6 +176,16 @@ public class ControlNReportePersonal implements Serializable {
         permitirIndex = true;
     }
 
+    public void iniciarPagina() {
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
+        listaIR = null;
+        getListaIR();
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
+    }
+    
     public void requisitosParaReporte() {
         int indiceSeleccion = 0;
         if (tipoLista == 0) {
@@ -268,6 +283,9 @@ public class ControlNReportePersonal implements Serializable {
             }
             cambiosReporte = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
             context.update("form:ACEPTAR");
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
@@ -1123,7 +1141,14 @@ public class ControlNReportePersonal implements Serializable {
         getParametroDeInforme();
         getListaIR();
         refrescarParametros();
+         activoMostrarTodos = true;
+        activoBuscarReporte = false;
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARREPORTE");
         context.update("form:ACEPTAR");
         context.update("form:reportesPersonal");
     }
@@ -1163,20 +1188,25 @@ public class ControlNReportePersonal implements Serializable {
     }
 
     public void generarReporte() throws IOException {
-        String nombreReporte, tipoReporte;
-        String pathReporteGenerado = null;
-        if (tipoLista == 0) {
-            nombreReporte = listaIR.get(indice).getNombrereporte();
-            tipoReporte = listaIR.get(indice).getTipo();
+        if (cambiosReporte == true) {
+            String nombreReporte, tipoReporte;
+            String pathReporteGenerado = null;
+            if (tipoLista == 0) {
+                nombreReporte = listaIR.get(indice).getNombrereporte();
+                tipoReporte = listaIR.get(indice).getTipo();
+            } else {
+                nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+                tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
+            }
+            if (nombreReporte != null && tipoReporte != null) {
+                pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+            }
+            if (pathReporteGenerado != null) {
+                exportarReporte(pathReporteGenerado);
+            }
         } else {
-            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
-            tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
-        }
-        if (nombreReporte != null && tipoReporte != null) {
-            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
-        }
-        if (pathReporteGenerado != null) {
-            exportarReporte(pathReporteGenerado);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardarSinSalida.show()");
         }
     }
 
@@ -1265,6 +1295,7 @@ public class ControlNReportePersonal implements Serializable {
     }
 
     public void actualizarSeleccionInforeporte() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
             altoTabla = "140";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesPersonal:codigoIR");
@@ -1284,7 +1315,11 @@ public class ControlNReportePersonal implements Serializable {
         filtrarListInforeportesUsuario = null;
         inforreporteSeleccionado = new Inforeportes();
         aceptar = true;
-        RequestContext context = RequestContext.getCurrentInstance();
+        actualInfoReporteTabla = listaIR.get(0);
+        activoBuscarReporte = true;
+        activoMostrarTodos = false;
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARREPORTE");
         context.update("form:ReportesDialogo");
         context.update("form:lovReportesDialogo");
         context.update("form:aceptarR");
@@ -1303,7 +1338,14 @@ public class ControlNReportePersonal implements Serializable {
             defaultPropiedadesParametrosReporte();
             listaIR = null;
             getListaIR();
+            if (listaIR.size() > 0) {
+                actualInfoReporteTabla = listaIR.get(0);
+            }
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBuscarReporte = false;
+            activoMostrarTodos = true;
+            context.update("form:MOSTRARTODOS");
+            context.update("form:BUSCARREPORTE");
             context.update("form:reportesPersonal");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -2058,4 +2100,21 @@ public class ControlNReportePersonal implements Serializable {
     public void setDecoracion2(String decoracion) {
         this.decoracion2 = decoracion;
     }
+
+    public boolean isActivoMostrarTodos() {
+        return activoMostrarTodos;
+    }
+
+    public void setActivoMostrarTodos(boolean activoMostrarTodos) {
+        this.activoMostrarTodos = activoMostrarTodos;
+    }
+
+    public boolean isActivoBuscarReporte() {
+        return activoBuscarReporte;
+    }
+
+    public void setActivoBuscarReporte(boolean activoBuscarReporte) {
+        this.activoBuscarReporte = activoBuscarReporte;
+    }
+
 }

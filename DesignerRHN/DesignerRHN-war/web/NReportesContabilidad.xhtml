@@ -17,16 +17,24 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
                         <p:commandButton style="position: absolute; left: 785px; top: 480px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteContabilidad.salir()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 690px; top: 480px; " icon="ui-icon-arrowreturnthick-1-w" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteContabilidad.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteContabilidad.cambiosReporte}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 690px; top: 480px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteContabilidad.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteContabilidad.cambiosReporte}" process="@this" />
                         <p:commandButton style="position: absolute; left: 170px; top: 480px; " icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNReporteContabilidad.cancelarModificaciones()}" process="@this" />
                         <p:separator id="separatorBtnsInferiores"  style="vertical-align: central;position: absolute;height: 25px;width: 3px;top: 477px;left: 155px "/>  
                         <p:commandButton style="position: absolute; left: 10px; top: 480px;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteContabilidad.defaultPropiedadesParametrosReporte()}"/>
 
-                        <p:dialog id="confirmarGuardar" header="" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                             <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" action="nomina" actionListener="#{controlNReporteContabilidad.guardarYSalir()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" action="nomina" actionListener="#{controlNReporteContabilidad.cancelarYSalir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                            <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        </p:dialog>
+                        
+                         <p:dialog id="confirmarGuardarSinSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                            <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNReporteContabilidad.guardarCambios()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();"  actionListener="#{controlNReporteContabilidad.cancelarModificaciones()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
@@ -59,7 +67,7 @@
                                     </p:selectOneMenu>
                                 </p:column>
                             </p:dataTable>    
-                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteContabilidad.generarReporte()}" ajax="false"/>
+                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteContabilidad.generarReporte()}" />
                             <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
                         </fieldset>
 
@@ -248,7 +256,7 @@
                 <h:form id="formParametros" style="position: absolute; top: 120px; left: 245px">
                     <fieldset id="parametrosInforme" style="position: absolute; left: 10px; top: 70px; width: 830px; height: 80px; border-radius: 10px; ">
                         <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['parametros']}</strong></legend>
-                        <h:outputText value="#{msg['fechadesde']}" style="position: absolute; top: 20px; left: 30px;"/>
+                        <h:outputText value="#{msg['fechadesde']}:" style="position: absolute; top: 20px; left: 30px;"/>
                         <div id="posicionFechaDesdeParametro" style="position: absolute; top: 40px; left: 30px;width: 90px">
                             <lnk:calendar value="#{controlNReporteContabilidad.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" color="#{controlNReporteContabilidad.color}" decoration="#{controlNReporteContabilidad.decoracion}"  width="80">
                                 <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(1)}" process="@this"/>
@@ -257,7 +265,7 @@
                             </lnk:calendar> 
                         </div>
 
-                        <h:outputText value="#{msg['fechahasta']}" style="position: absolute; top: 20px; left: 150px;"/>
+                        <h:outputText value="#{msg['fechahasta']}:" style="position: absolute; top: 20px; left: 150px;"/>
                         <div id="posicionFechaHastaParametro" style="position: absolute; top: 40px; left: 150px;width: 90px">
                             <lnk:calendar value="#{controlNReporteContabilidad.parametroDeInforme.fechahasta}" id="fechaHastaParametroL" color="#{controlNReporteContabilidad.color2}" decoration="#{controlNReporteContabilidad.decoracion2}"  width="80">
                                 <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(3)}" process="@this"/> 
@@ -270,14 +278,14 @@
 
                         <!-- -->
 
-                        <h:outputText value="#{msg['empleadodesde']}" style="position: absolute; top: 20px; left: 260px;"/>
+                        <h:outputText value="#{msg['empleadodesde']}:" style="position: absolute; top: 20px; left: 260px;"/>
                         <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 40px; left: 260px;height: 15px;width: 90px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(2)}" process="@this"/> 
                             <p:ajax event="change" update="empleadoDesdeParametroL" listener="#{controlNReporteContabilidad.modificarParametroInforme()}"  process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteContabilidad.mostrarDialogosListas()}"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['empleadohasta']}" style="position: absolute; top: 20px; left: 400px"/>
+                        <h:outputText value="#{msg['empleadohasta']}:" style="position: absolute; top: 20px; left: 400px"/>
                         <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 40px; left: 400px;height: 15px;width: 90px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(4)}" process="@this"/> 
                             <p:ajax event="change" update="empleadoHastaParametroL" listener="#{controlNReporteContabilidad.modificarParametroInforme()}" process="@this"/>
@@ -290,14 +298,14 @@
                         <!-- -->
 
 
-                        <h:outputText value="#{msg['proceso']}" style="position: absolute; top: 20px; left: 565px;"/>
+                        <h:outputText value="#{msg['proceso']}:" style="position: absolute; top: 20px; left: 565px;"/>
                         <p:inputText value="#{controlNReporteContabilidad.parametroDeInforme.proceso.descripcion}" id="procesoParametroL" style="position: absolute; top: 40px; left: 540px;height: 15px;width: 100px" onclick="select()">
                             <p:ajax event="click" listener="#{controlNReporteContabilidad.posicionCelda(5)}" process="@this"/> 
                             <p:ajax event="change" update="procesoParametroL" listener="#{controlNReporteContabilidad.autocompletarGeneral('PROCESO',controlNReporteContabilidad.parametroDeInforme.proceso.descripcion)}"  process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteContabilidad.mostrarDialogosListas()}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['estado']}" style="position: absolute; top: 20px; left: 700px"/>
+                        <h:outputText value="#{msg['estado']}:" style="position: absolute; top: 20px; left: 700px"/>
                         <p:selectOneMenu value="#{controlNReporteContabilidad.parametroDeInforme.tipopersonal}" id="estadoParametroL" style="position: absolute; top: 40px; left: 685px;width: 95px;text-transform: uppercase">  
                             <f:selectItem itemLabel=" " itemValue="null" />
                             <f:selectItem itemLabel="#{msg['liquidado']}" itemValue="LIQUIDADO" />  

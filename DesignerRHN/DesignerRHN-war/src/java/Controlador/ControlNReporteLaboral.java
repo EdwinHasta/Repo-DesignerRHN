@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -90,8 +91,12 @@ public class ControlNReporteLaboral implements Serializable {
     //
     private Date fechaDesde, fechaHasta;
     private BigInteger emplDesde, emplHasta;
+    //
+    private boolean activoMostrarTodos, activoBuscarReporte;
 
     public ControlNReporteLaboral() {
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
         color = "black";
         decoracion = "none";
         color2 = "black";
@@ -120,7 +125,17 @@ public class ControlNReporteLaboral implements Serializable {
         empresaSeleccionada = new Empresas();
         empleadoSeleccionado = new Empleados();
     }
-    
+
+    public void iniciarPagina() {
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
+        listaIR = null;
+        getListaIR();
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
+    }
+
     public void requisitosParaReporte() {
         int indiceSeleccion = 0;
         if (tipoLista == 0) {
@@ -193,6 +208,9 @@ public class ControlNReporteLaboral implements Serializable {
             }
             cambiosReporte = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
             context.update("form:ACEPTAR");
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
@@ -312,18 +330,23 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void generarReporte(int i) {
-        if (tipoLista == 0) {
-            reporteGenerar = listaIR.get(i).getNombre();
-            posicionReporte = i;
-        }
-        if (tipoLista == 1) {
-            if (listaIR.contains(filtrarListInforeportesUsuario.get(i))) {
-                int posicion = listaIR.indexOf(filtrarListInforeportesUsuario.get(i));
-                reporteGenerar = listaIR.get(posicion).getNombre();
-                posicionReporte = posicion;
+        if (cambiosReporte == true) {
+            if (tipoLista == 0) {
+                reporteGenerar = listaIR.get(i).getNombre();
+                posicionReporte = i;
             }
+            if (tipoLista == 1) {
+                if (listaIR.contains(filtrarListInforeportesUsuario.get(i))) {
+                    int posicion = listaIR.indexOf(filtrarListInforeportesUsuario.get(i));
+                    reporteGenerar = listaIR.get(posicion).getNombre();
+                    posicionReporte = posicion;
+                }
+            }
+            mostrarDialogoGenerarReporte();
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardarSinSalida.show()");
         }
-        mostrarDialogoGenerarReporte();
     }
 
     public void mostrarDialogoGenerarReporte() {
@@ -425,7 +448,14 @@ public class ControlNReporteLaboral implements Serializable {
         getParametroDeInforme();
         getListaIR();
         refrescarParametros();
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARREPORTE");
         context.update("form:ACEPTAR");
         context.update("form:reportesLaboral");
     }
@@ -465,12 +495,30 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void actualizarSeleccionInforeporte() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (bandera == 1) {
+            altoTabla = "185";
+            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesPersonal:codigoIR");
+            codigoIR.setFilterStyle("display: none; visibility: hidden;");
+            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesPersonal:reporteIR");
+            reporteIR.setFilterStyle("display: none; visibility: hidden;");
+            tipoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesPersonal:tipoIR");
+            tipoIR.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:reportesPersonal");
+            bandera = 0;
+            filtrarListInforeportesUsuario = null;
+            tipoLista = 0;
+        }
         listaIR = new ArrayList<Inforeportes>();
         listaIR.add(inforreporteSeleccionado);
         filtrarListInforeportesUsuario = null;
         inforreporteSeleccionado = new Inforeportes();
         aceptar = true;
-        RequestContext context = RequestContext.getCurrentInstance();
+        actualInfoReporteTabla = listaIR.get(0);
+        activoBuscarReporte = true;
+        activoMostrarTodos = false;
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARREPORTE");
         context.update("form:ReportesDialogo");
         context.update("form:lovReportesDialogo");
         context.update("form:aceptarR");
@@ -663,7 +711,14 @@ public class ControlNReporteLaboral implements Serializable {
             defaultPropiedadesParametrosReporte();
             listaIR = null;
             getListaIR();
+            if (listaIR.size() > 0) {
+                actualInfoReporteTabla = listaIR.get(0);
+            }
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBuscarReporte = false;
+            activoMostrarTodos = true;
+            context.update("form:MOSTRARTODOS");
+            context.update("form:BUSCARREPORTE");
             context.update("form:reportesLaboral");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -833,20 +888,25 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void generarReporte() throws IOException {
-        String nombreReporte, tipoReporte;
-        String pathReporteGenerado = null;
-        if (tipoLista == 0) {
-            nombreReporte = listaIR.get(indice).getNombrereporte();
-            tipoReporte = listaIR.get(indice).getTipo();
+        if (cambiosReporte == true) {
+            String nombreReporte, tipoReporte;
+            String pathReporteGenerado = null;
+            if (tipoLista == 0) {
+                nombreReporte = listaIR.get(indice).getNombrereporte();
+                tipoReporte = listaIR.get(indice).getTipo();
+            } else {
+                nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+                tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
+            }
+            if (nombreReporte != null && tipoReporte != null) {
+                pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+            }
+            if (pathReporteGenerado != null) {
+                exportarReporte(pathReporteGenerado);
+            }
         } else {
-            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
-            tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
-        }
-        if (nombreReporte != null && tipoReporte != null) {
-            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
-        }
-        if (pathReporteGenerado != null) {
-            exportarReporte(pathReporteGenerado);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardarSinSalida.show()");
         }
     }
 
@@ -1151,6 +1211,22 @@ public class ControlNReporteLaboral implements Serializable {
 
     public void setActualInfoReporteTabla(Inforeportes actualInfoReporteTabla) {
         this.actualInfoReporteTabla = actualInfoReporteTabla;
+    }
+
+    public boolean isActivoMostrarTodos() {
+        return activoMostrarTodos;
+    }
+
+    public void setActivoMostrarTodos(boolean activoMostrarTodos) {
+        this.activoMostrarTodos = activoMostrarTodos;
+    }
+
+    public boolean isActivoBuscarReporte() {
+        return activoBuscarReporte;
+    }
+
+    public void setActivoBuscarReporte(boolean activoBuscarReporte) {
+        this.activoBuscarReporte = activoBuscarReporte;
     }
 
 }

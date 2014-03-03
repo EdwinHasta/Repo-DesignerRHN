@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -117,7 +118,15 @@ public class ControlNReporteContabilidad implements Serializable {
         listProcesos = null;
         procesoSeleccionado = new Procesos();
     }
-    
+
+    public void iniciarPagina() {
+        listaIR = null;
+        getListaIR();
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
+    }
+
     public void requisitosParaReporte() {
         int indiceSeleccion = 0;
         if (tipoLista == 0) {
@@ -187,6 +196,9 @@ public class ControlNReporteContabilidad implements Serializable {
             }
             cambiosReporte = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
             context.update("form:ACEPTAR");
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
@@ -254,18 +266,23 @@ public class ControlNReporteContabilidad implements Serializable {
     }
 
     public void generarReporte(int i) {
-        if (tipoLista == 0) {
-            reporteGenerar = listaIR.get(i).getNombre();
-            posicionReporte = i;
-        }
-        if (tipoLista == 1) {
-            if (listaIR.contains(filtrarListInforeportesUsuario.get(i))) {
-                int posicion = listaIR.indexOf(filtrarListInforeportesUsuario.get(i));
-                reporteGenerar = listaIR.get(posicion).getNombre();
-                posicionReporte = posicion;
+        if (cambiosReporte == true) {
+            if (tipoLista == 0) {
+                reporteGenerar = listaIR.get(i).getNombre();
+                posicionReporte = i;
             }
+            if (tipoLista == 1) {
+                if (listaIR.contains(filtrarListInforeportesUsuario.get(i))) {
+                    int posicion = listaIR.indexOf(filtrarListInforeportesUsuario.get(i));
+                    reporteGenerar = listaIR.get(posicion).getNombre();
+                    posicionReporte = posicion;
+                }
+            }
+            mostrarDialogoGenerarReporte();
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardarSinSalida.show()");
         }
-        mostrarDialogoGenerarReporte();
     }
 
     public void mostrarDialogoGenerarReporte() {
@@ -361,6 +378,9 @@ public class ControlNReporteContabilidad implements Serializable {
         getParametroDeInforme();
         getListaIR();
         refrescarParametros();
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:reportesContabilidad");
@@ -424,7 +444,7 @@ public class ControlNReporteContabilidad implements Serializable {
         aceptar = true;
         filtrarListProcesos = null;
         cambiosReporte = false;
-         RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ProcesoDialogo");
         context.update("form:lovProceso");
         context.update("form:aceptarPro");
@@ -448,7 +468,7 @@ public class ControlNReporteContabilidad implements Serializable {
         aceptar = true;
         filtrarListEmpleados = null;
         cambiosReporte = false;
-         RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:EmpleadoDesdeDialogo");
         context.update("form:lovEmpleadoDesde");
         context.update("form:aceptarED");
@@ -472,7 +492,7 @@ public class ControlNReporteContabilidad implements Serializable {
         aceptar = true;
         filtrarListEmpleados = null;
         cambiosReporte = false;
-         RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:EmpleadoHastaDialogo");
         context.update("form:lovEmpleadoHasta");
         context.update("form:aceptarEH");
@@ -920,7 +940,7 @@ public class ControlNReporteContabilidad implements Serializable {
     public void setActualInfoReporteTabla(Inforeportes actualInfoReporteTabla) {
         this.actualInfoReporteTabla = actualInfoReporteTabla;
     }
-    
+
     public String getColor() {
         return color;
     }

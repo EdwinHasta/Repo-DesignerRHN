@@ -26,11 +26,11 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -124,8 +124,12 @@ public class ControlNReporteNomina implements Serializable {
     //
     private Date fechaDesde, fechaHasta;
     private BigInteger emplDesde, emplHasta;
+    //
+    private boolean activoMostrarTodos, activoBuscarReporte;
 
     public ControlNReporteNomina() {
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
         color = "black";
         decoracion = "none";
         color2 = "black";
@@ -169,6 +173,16 @@ public class ControlNReporteNomina implements Serializable {
         permitirIndex = true;
         altoTabla = "185";
         indice = -1;
+    }
+
+    public void iniciarPagina() {
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
+        listaIR = null;
+        getListaIR();
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
     }
 
     @PostConstruct
@@ -267,6 +281,9 @@ public class ControlNReporteNomina implements Serializable {
                 }
                 cambiosReporte = true;
                 RequestContext context = RequestContext.getCurrentInstance();
+                FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                RequestContext.getCurrentInstance().update("form:growl");
                 context.update("form:ACEPTAR");
             }
         } catch (Exception e) {
@@ -804,7 +821,7 @@ public class ControlNReporteNomina implements Serializable {
         parametroDeInforme.setTipoasociacion(tiposASeleccionado);
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
-       RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:TipoAsociacionDialogo");
         context.update("form:lovTipoAsociacion");
         context.update("form:aceptarTA");
@@ -1037,6 +1054,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarSeleccionInforeporte() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
             altoTabla = "185";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesNomina:codigoIR");
@@ -1056,7 +1074,11 @@ public class ControlNReporteNomina implements Serializable {
         filtrarListInforeportesUsuario = null;
         inforreporteSeleccionado = new Inforeportes();
         aceptar = true;
-         RequestContext context = RequestContext.getCurrentInstance();
+        actualInfoReporteTabla = listaIR.get(0);
+        activoBuscarReporte = true;
+        activoMostrarTodos = false;
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARREPORTE");
         context.update("form:ReportesDialogo");
         context.update("form:lovReportesDialogo");
         context.update("form:aceptarR");
@@ -1075,7 +1097,14 @@ public class ControlNReporteNomina implements Serializable {
             defaultPropiedadesParametrosReporte();
             listaIR = null;
             getListaIR();
+            if (listaIR.size() > 0) {
+                actualInfoReporteTabla = listaIR.get(0);
+            }
             RequestContext context = RequestContext.getCurrentInstance();
+            activoBuscarReporte = false;
+            activoMostrarTodos = true;
+            context.update("form:MOSTRARTODOS");
+            context.update("form:BUSCARREPORTE");
             context.update(":form:reportesNomina");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1112,7 +1141,14 @@ public class ControlNReporteNomina implements Serializable {
         cambiosReporte = true;
         getParametroDeInforme();
         getListaIR();
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARREPORTE");
         context.update("form:ACEPTAR");
         context.update("form:reportesNomina");
         context.update("formParametros:fechaDesdeParametro");
@@ -1381,26 +1417,33 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void generarReporte() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        String nombreReporte, tipoReporte;
-        if (tipoLista == 0) {
-            nombreReporte = listaIR.get(indice).getNombrereporte();
-            tipoReporte = listaIR.get(indice).getTipo();
-        } else {
-            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
-            tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
-        }
-        if (nombreReporte != null && tipoReporte != null) {
-            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
-        }
-        if (pathReporteGenerado != null) {
-            //context.execute("exportarReporte();");
-            System.out.println("Pasooo");
-            try {
-                exportarReporte();
-            } catch (IOException ex) {
-                Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println("cambiosReporte = " + cambiosReporte);
+        if (cambiosReporte == true) {
+            String nombreReporte, tipoReporte;
+            if (tipoLista == 0) {
+                nombreReporte = listaIR.get(indice).getNombrereporte();
+                tipoReporte = listaIR.get(indice).getTipo();
+            } else {
+                nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+                tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
             }
+            if (nombreReporte != null && tipoReporte != null) {
+                pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+            }
+            if (pathReporteGenerado != null) {
+                //context.execute("exportarReporte();");
+                System.out.println("Pasooo");
+                try {
+                    exportarReporte();
+                } catch (IOException ex) {
+                    Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            System.out.println("Syso antes ");
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:confirmarGuardarSinSalida");
+            context.execute("confirmarGuardarSinSalida.show()");
         }
         //context.execute("dlg.hide()");
     }
@@ -1902,4 +1945,21 @@ public class ControlNReporteNomina implements Serializable {
     public void setDecoracion2(String decoracion) {
         this.decoracion2 = decoracion;
     }
+
+    public boolean isActivoMostrarTodos() {
+        return activoMostrarTodos;
+    }
+
+    public void setActivoMostrarTodos(boolean activoMostrarTodos) {
+        this.activoMostrarTodos = activoMostrarTodos;
+    }
+
+    public boolean isActivoBuscarReporte() {
+        return activoBuscarReporte;
+    }
+
+    public void setActivoBuscarReporte(boolean activoBuscarReporte) {
+        this.activoBuscarReporte = activoBuscarReporte;
+    }
+
 }

@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -142,6 +143,13 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
     }
 
+    public void iniciarPagina() {
+        listaIR = null;
+        getListaIR();
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
+    }
 
     public void requisitosParaReporte() {
         int indiceSeleccion = 0;
@@ -228,6 +236,9 @@ public class ControlReportesBancos implements Serializable {
             }
             cambiosReporte = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
             context.update("form:ACEPTAR");
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
@@ -838,6 +849,9 @@ public class ControlReportesBancos implements Serializable {
         getParametroDeInforme();
         getListaIR();
         refrescarParametros();
+        if (listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
+        }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:reportesBancos");
@@ -913,7 +927,6 @@ public class ControlReportesBancos implements Serializable {
         color2 = "black";
         decoracion2 = "none";
         RequestContext.getCurrentInstance().update("formParametros");
-
 
         empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
         empleadoDesdeParametro.setStyle("position: absolute; top: 40px; left: 120px;height: 15px;width: 90px;");
@@ -1016,18 +1029,23 @@ public class ControlReportesBancos implements Serializable {
     }
 
     public void generarReporte() throws IOException {
-        String nombreReporte;
-        String pathReporteGenerado = null;
-        if (tipoLista == 0) {
-            nombreReporte = listaIR.get(indice).getNombrereporte();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cambiosReporte == true) {
+            String nombreReporte;
+            String pathReporteGenerado = null;
+            if (tipoLista == 0) {
+                nombreReporte = listaIR.get(indice).getNombrereporte();
+            } else {
+                nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+            }
+            if (nombreReporte != null) {
+                pathReporteGenerado = administarReportes.generarReporte(nombreReporte, "TXT");
+            }
+            if (pathReporteGenerado != null) {
+                exportarReporte(pathReporteGenerado);
+            }
         } else {
-            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
-        }
-        if (nombreReporte != null) {
-            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, "TXT");
-        }
-        if (pathReporteGenerado != null) {
-            exportarReporte(pathReporteGenerado);
+            context.execute("confirmarGuardarSinSalida.show()");
         }
     }
 
@@ -1075,8 +1093,8 @@ public class ControlReportesBancos implements Serializable {
             if (parametroDeInforme.getProceso() == null) {
                 parametroDeInforme.setProceso(new Procesos());
             }
-            
-             if (parametroDeInforme.getEmpresa()== null) {
+
+            if (parametroDeInforme.getEmpresa() == null) {
                 parametroDeInforme.setEmpresa(new Empresas());
             }
 
