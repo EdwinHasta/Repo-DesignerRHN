@@ -199,6 +199,7 @@ public class ControlGruposTiposEntidades implements Serializable {
                     if (listGruposTiposEntidades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listGruposTiposEntidades.size(); j++) {
                             if (j != indice) {
@@ -211,6 +212,7 @@ public class ControlGruposTiposEntidades implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            System.out.println("BANDERA FALSE backupCodigo : " + backupCodigo);
                             listGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
@@ -364,7 +366,8 @@ public class ControlGruposTiposEntidades implements Serializable {
                     }
                     index = -1;
                     secRegistro = null;
-                } else {if (filtrarGruposTiposEntidades.get(indice).getCodigo() == null) {
+                } else {
+                    if (filtrarGruposTiposEntidades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarGruposTiposEntidades.get(indice).setCodigo(backupCodigo);

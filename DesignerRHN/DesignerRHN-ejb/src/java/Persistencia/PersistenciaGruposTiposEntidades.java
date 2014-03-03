@@ -13,13 +13,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'GruposTiposEntidades'
  * de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTiposEntidadesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -37,6 +39,10 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
 
     @Override
     public void editar(Grupostiposentidades gruposTiposEntidades) {
+        System.out.println("PERSISTENCIA-------------");
+        System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
+        System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
+        System.out.println("-------------PERSISTENCIA");
         try {
             em.merge(gruposTiposEntidades);
         } catch (Exception e) {
@@ -47,9 +53,14 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     @Override
     public void borrar(Grupostiposentidades gruposTiposEntidades) {
         try {
-            em.remove(gruposTiposEntidades);
+            System.out.println("PERSISTENCIA-------------");
+            System.out.println("----------BORRAR--------------------------------");
+            System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
+            System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
+            System.out.println("-------------PERSISTENCIA");
+            em.remove(em.merge(gruposTiposEntidades));
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades borrar ERROR +" + e);
+            System.err.println("\n ERROR EN PersistenciaGruposTiposEntidades borrar ERROR " + e.toString());
         }
     }
 
@@ -65,7 +76,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-   @Override
+    @Override
     public List<Grupostiposentidades> consultarGruposTiposEntidades() {
         try {
             Query query = em.createQuery("SELECT ta FROM Grupostiposentidades ta ORDER BY ta.codigo");
@@ -95,7 +106,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     public BigInteger contarTSgruposTiposEntidadesTipoEntidad(BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SSELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";
+            String sqlQuery = "SELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
