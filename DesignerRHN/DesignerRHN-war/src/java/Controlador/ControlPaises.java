@@ -605,7 +605,7 @@ public class ControlPaises implements Serializable {
             }
         }
         if (nuevoPaises.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -721,7 +721,7 @@ public class ControlPaises implements Serializable {
             }
         }
         if (duplicarPaises.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + "   * una Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
