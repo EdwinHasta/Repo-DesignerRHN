@@ -49,14 +49,15 @@
                             <p:dataTable id="reportesLaboral" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;"                           
                                          value="#{controlNReporteLaboral.listaIR}" scrollable="true" selectionMode="single" scrollHeight="#{controlNReporteLaboral.altoTabla}" scrollWidth="690"
                                          filteredValue="#{controlNReporteLaboral.filtrarListInforeportesUsuario}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell"  selection="#{controlNReporteLaboral.actualInfoReporteTabla}">
+                                         editable="true" editMode="cell"  selection="#{controlNReporteLaboral.actualInfoReporteTabla}"   liveScroll="true" scrollRows="8">
                                 <p:ajax event="rowSelect" listener="#{controlNReporteLaboral.seleccionRegistro()}" process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlNReporteLaboral.requisitosParaReporte()}" process="@this" />
                                 <p:column style="padding: 0px; text-align: center; width: 50px;" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:outputLabel onclick="posicionReporte([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}])"  value="#{info.codigo}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
+                                    <h:outputText value="#{info.codigo}"/>
                                 </p:column>
 
                                 <p:column  id="reporteIR" headerText="#{msg['reporte']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:outputLabel onclick="posicionReporte([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}])"  value="#{info.nombre}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
+                                    <h:outputText value="#{info.nombre}"/>
                                 </p:column>
 
                                 <p:column id="tipoIR" headerText="#{msg['tipo']}" width="110" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px; width: 110px" >                                  
@@ -80,10 +81,7 @@
 
                         </fieldset>
 
-                        <p:remoteCommand name="posicionReporte" actionListener="#{controlNReporteLaboral.posicionInfoReporte()}" process="@this"/>
-                        <p:remoteCommand name="parametrosReporte" actionListener="#{controlNReporteLaboral.posicionParaResaltoParametros()}" process="@this"/>
-
-
+                       
                         <p:toolbar style="font-size: 12px; position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNReporteLaboral.guardarCambios()}" process="@this" />
@@ -135,6 +133,7 @@
                                      selection="#{controlNReporteLaboral.inforreporteSeleccionado}" selectionMode="single" widgetVar="lovReportesDialogo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteLaboral.filtrarListInforeportesUsuario}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteLaboral.activarAceptar()}" update=":form:aceptarR"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteLaboral.actualizarSeleccionInforeporte()}"  process="@this" onstart="lovReportesDialogo.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -160,10 +159,10 @@
                                 <h:outputText value="#{reportes.tipo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarR" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesLaboral" process="@this">
+                        <p:commandButton id="aceptarR" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesLaboral" process="@this">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasR" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionInforeporte()}" process="@this">
+                        <p:commandButton id="atrasR" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionInforeporte()}" process="@this">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -174,6 +173,7 @@
                                      selection="#{controlNReporteLaboral.cargoSeleccionado}" selectionMode="single" widgetVar="lovCargoDialogo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteLaboral.filtrarListCargos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteLaboral.activarAceptar()}" update=":form:aceptarC"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteLaboral.actualizarSeleccionCargo()}"  process="@this" onstart="lovCargoDialogo.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCargoDialogo.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -192,10 +192,10 @@
                                 <h:outputText value="#{cargo.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarC" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionCargo()}" update="lovCargoDialogo, aceptarC" process="@this">
+                        <p:commandButton id="aceptarC" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionCargo()}" update="lovCargoDialogo, aceptarC" process="@this">
                             <p:resetInput target=":form:lovCargoDialogo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasC" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();"  update="lovCargoDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionCargo()}" process="@this">
+                        <p:commandButton id="atrasC" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();"  update="lovCargoDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionCargo()}" process="@this">
                             <p:resetInput target=":form:lovCargoDialogo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -206,6 +206,7 @@
                                      selection="#{controlNReporteLaboral.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteLaboral.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteLaboral.activarAceptar()}" update=":form:aceptarED"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteLaboral.actualizarEmpleadoDesde()}"  process="@this" onstart="lovEmpleadoDesde.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoDesde.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -223,10 +224,10 @@
                                 <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarED" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpleadoDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
+                        <p:commandButton id="aceptarED" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpleadoDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasED" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteLaboral.cancelarEmpleadoDesde()}" update="lovEmpleadoDesde" process="@this">
+                        <p:commandButton id="atrasED" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteLaboral.cancelarEmpleadoDesde()}" update="lovEmpleadoDesde" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -237,6 +238,7 @@
                                      selection="#{controlNReporteLaboral.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteLaboral.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteLaboral.activarAceptar()}" update=":form:aceptarEH"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteLaboral.actualizarEmpleadoHasta()}"  process="@this" onstart="lovEmpleadoHasta.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMPH']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoHasta.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -254,10 +256,10 @@
                                 <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEH" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpleadoHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
+                        <p:commandButton id="aceptarEH" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpleadoHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEH" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteLaboral.cancelarEmpleadoHasta()}" update="lovEmpleadoHasta" process="@this">
+                        <p:commandButton id="atrasEH" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteLaboral.cancelarEmpleadoHasta()}" update="lovEmpleadoHasta" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -269,6 +271,7 @@
                                      selection="#{controlNReporteLaboral.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteLaboral.filtrarListEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteLaboral.activarAceptar()}" update=":form:aceptarE"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteLaboral.actualizarEmpresa()}"  process="@this" onstart="lovEmpresa.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresa.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -286,10 +289,10 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarE" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpresa()}" update="lovEmpresa, aceptarE" process="@this">
+                        <p:commandButton id="aceptarE" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpresa()}" update="lovEmpresa, aceptarE" process="@this">
                             <p:resetInput target=":form:lovEmpresa:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReporteLaboral.cancelarEmpresa()}" update="lovEmpresa" process="@this">
+                        <p:commandButton id="atrasE" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReporteLaboral.cancelarEmpresa()}" update="lovEmpresa" process="@this">
                             <p:resetInput target=":form:lovEmpresa:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>

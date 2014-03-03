@@ -36,14 +36,16 @@
                             <p:dataTable id="reportesContabilidad" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;width: 805px"                           
                                          value="#{controlNReporteContabilidad.listaIR}" scrollable="true" selectionMode="single" scrollHeight="#{controlNReporteContabilidad.altoTabla}" scrollWidth="820"
                                          filteredValue="#{controlNReporteContabilidad.filtrarListInforeportesUsuario}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" selection="#{controlNReporteContabilidad.actualInfoReporteTabla}">
+                                         editable="true" editMode="cell" selection="#{controlNReporteContabilidad.actualInfoReporteTabla}" liveScroll="true" scrollRows="8">
                                 <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.seleccionRegistro()}" process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.requisitosParaReporte()}" process="@this" />
+                                
                                 <p:column style="padding: 0px; text-align: center; width: 50px;" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:outputLabel onclick="posicionReporte([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}])"  value="#{info.codigo}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
+                                    <h:outputText value="#{info.codigo}"/>
                                 </p:column>
 
                                 <p:column  id="reporteIR" headerText="#{msg['reporte']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:outputLabel onclick="posicionReporte([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}])"  value="#{info.nombre}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
+                                    <h:outputText value="#{info.nombre}"/>
                                 </p:column>
 
                                 <p:column id="tipoIR" headerText="#{msg['tipo']}" width="110" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px; width: 110px" >                                  
@@ -60,10 +62,6 @@
                             <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteContabilidad.generarReporte()}" ajax="false"/>
                             <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
                         </fieldset>
-
-                        <p:remoteCommand name="posicionReporte" actionListener="#{controlNReporteContabilidad.posicionInfoReporte()}" process="@this"/>
-                        <p:remoteCommand name="parametrosReporte" actionListener="#{controlNReporteContabilidad.posicionParaResaltoParametros()}" process="@this"/>
-
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 
@@ -117,6 +115,7 @@
                                      selection="#{controlNReporteContabilidad.procesoSeleccionado}" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteContabilidad.filtrarListProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarPro"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarProceso()}"  process="@this" onstart="lovProceso.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProceso.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -134,10 +133,10 @@
                                 <h:outputText  value="#{proceso.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPro" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarProceso()}" update="lovProceso, aceptarPro" process="@this">
+                        <p:commandButton id="aceptarPro" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarProceso()}" update="lovProceso, aceptarPro" process="@this">
                             <p:resetInput target=":form:lovProceso:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasPro" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioProceso()}" update="lovProceso" process="@this">
+                        <p:commandButton id="atrasPro" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioProceso()}" update="lovProceso" process="@this">
                             <p:resetInput target=":form:lovProceso:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -150,6 +149,7 @@
                                      selection="#{controlNReporteContabilidad.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarED"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarEmplDesde()}"  process="@this" onstart="lovEmpleadoDesde.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoDesde.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -167,10 +167,10 @@
                                 <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarED" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
+                        <p:commandButton id="aceptarED" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasED" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
+                        <p:commandButton id="atrasED" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -181,6 +181,7 @@
                                      selection="#{controlNReporteContabilidad.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarEH"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarEmplHasta()}"  process="@this" onstart="lovEmpleadoHasta.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMPH']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoHasta.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -198,10 +199,10 @@
                                 <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEH" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
+                        <p:commandButton id="aceptarEH" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEH" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
+                        <p:commandButton id="atrasEH" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>

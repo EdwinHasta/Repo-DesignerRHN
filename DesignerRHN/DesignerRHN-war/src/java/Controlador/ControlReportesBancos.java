@@ -142,22 +142,16 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
     }
 
-    public void posicionInfoReporte() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-        String type = map.get("t"); // type attribute of node
-        String cass = map.get("n"); // type attribute of node
-        int ind = Integer.parseInt(type);
-        int cassi = Integer.parseInt(cass);
-        cambiarIndexInforeporte(ind, cassi);
-    }
 
-    public void posicionParaResaltoParametros() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-        String type = map.get("t"); // type attribute of node
-        int ind = Integer.parseInt(type);
-        parametrosDeReporte(ind);
+    public void requisitosParaReporte() {
+        int indiceSeleccion = 0;
+        if (tipoLista == 0) {
+            indiceSeleccion = listaIR.indexOf(actualInfoReporteTabla);
+        }
+        if (tipoLista == 1) {
+            indiceSeleccion = filtrarListInforeportesUsuario.indexOf(actualInfoReporteTabla);
+        }
+        parametrosDeReporte(indiceSeleccion);
     }
 
     public void seleccionRegistro() {
@@ -593,6 +587,10 @@ public class ControlReportesBancos implements Serializable {
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:EmpleadoDesdeDialogo");
+        context.update("form:lovEmpleadoDesde");
+        context.update("form:aceptarED");
+        context.execute("EmpleadoDesdeDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoDesdeParametro");
         empleadoSeleccionado = null;
@@ -614,6 +612,10 @@ public class ControlReportesBancos implements Serializable {
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:EmpleadoHastaDialogo");
+        context.update("form:lovEmpleadoHasta");
+        context.update("form:aceptarEH");
+        context.execute("EmpleadoHastaDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoHastaParametro");
         empleadoSeleccionado = null;
@@ -634,6 +636,10 @@ public class ControlReportesBancos implements Serializable {
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:EmpresaDialogo");
+        context.update("form:lovEmpresa");
+        context.update("form:aceptarEmp");
+        context.execute("EmpresaDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empresaParametro");
         empresaSeleccionada = null;
@@ -654,6 +660,10 @@ public class ControlReportesBancos implements Serializable {
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:TipoTrabajadorDialogo");
+        context.update("form:lovTipoTrabajador");
+        context.update("form:aceptarTT");
+        context.execute("TipoTrabajadorDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:tipoTrabajadorParametro");
         tipoTSeleccionado = null;
@@ -676,6 +686,10 @@ public class ControlReportesBancos implements Serializable {
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ProcesoDialogo");
+        context.update("form:lovProceso");
+        context.update("form:aceptarPro");
+        context.execute("ProcesoDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:procesoParametro");
         procesoSeleccionado = null;
@@ -697,6 +711,10 @@ public class ControlReportesBancos implements Serializable {
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:BancoDialogo");
+        context.update("form:lovBancos");
+        context.update("form:aceptarBan");
+        context.execute("BancoDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:bancoParametro");
         bancoSeleccionado = null;
@@ -718,6 +736,10 @@ public class ControlReportesBancos implements Serializable {
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:CiudadDialogo");
+        context.update("form:lovCiudades");
+        context.update("form:aceptarCiu");
+        context.execute("CiudadDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:ciudadParametro");
         ciudadSeleccionada = null;
@@ -920,25 +942,21 @@ public class ControlReportesBancos implements Serializable {
         }
         defaultPropiedadesParametrosReporte();
         if (reporteS.getFecdesde().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Fecha Desde -";
             color = "red";
             decoracion = "underline";
             RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteS.getFechasta().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Fecha Hasta -";
             color2 = "red";
             decoracion2 = "underline";
             RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteS.getEmdesde().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Empleado Desde -";
             empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
             empleadoDesdeParametro.setStyle("position: absolute; top: 40px; left: 120px;height: 15px;width: 90px;text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
         }
         if (reporteS.getEmhasta().equals("SI")) {
-            requisitosReporte = requisitosReporte + "- Empleado Hasta -";
             empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametro");
             empleadoHastaParametro.setStyle("position: absolute; top: 40px; left: 390px;height: 15px;width: 90px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
