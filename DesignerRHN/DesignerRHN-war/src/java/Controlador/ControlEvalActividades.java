@@ -57,6 +57,8 @@ public class ControlEvalActividades implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
 
     public ControlEvalActividades() {
         listEvalActividades = null;
@@ -89,7 +91,13 @@ public class ControlEvalActividades implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listEvalActividades.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listEvalActividades.get(index).getCodigo();
+                backupDescripcion = listEvalActividades.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarEvalActividades.get(index).getCodigo();
+                backupDescripcion = filtrarEvalActividades.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -176,15 +184,19 @@ public class ControlEvalActividades implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearEvalActividades.contains(listEvalActividades.get(indice))) {
-                    if (listEvalActividades.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listEvalActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -195,9 +207,11 @@ public class ControlEvalActividades implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listEvalActividades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -205,14 +219,18 @@ public class ControlEvalActividades implements Serializable {
                     }
                     if (listEvalActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listEvalActividades.get(indice).getDescripcion() == null) {
+                        banderita1 = false;
+                        listEvalActividades.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listEvalActividades.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listEvalActividades.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarEvalActividades.isEmpty()) {
                             modificarEvalActividades.add(listEvalActividades.get(indice));
                         } else if (!modificarEvalActividades.contains(listEvalActividades.get(indice))) {
@@ -225,17 +243,74 @@ public class ControlEvalActividades implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosEvalActividades");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listEvalActividades.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listEvalActividades.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listEvalActividades.size(); j++) {
+                            if (j != indice) {
+                                if (listEvalActividades.get(indice).getCodigo() == listEvalActividades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listEvalActividades.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listEvalActividades.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listEvalActividades.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listEvalActividades.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listEvalActividades.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosEvalActividades");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearEvalActividades.contains(filtrarEvalActividades.get(indice))) {
-                    if (filtrarEvalActividades.get(indice).getCodigo() == a) {
+                    if (filtrarEvalActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEvalActividades.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < filtrarEvalActividades.size(); j++) {
                             if (j != indice) {
@@ -254,6 +329,8 @@ public class ControlEvalActividades implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarEvalActividades.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -262,14 +339,16 @@ public class ControlEvalActividades implements Serializable {
 
                     if (filtrarEvalActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarEvalActividades.get(indice).getDescripcion() == null) {
+                    if (filtrarEvalActividades.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarEvalActividades.isEmpty()) {
                             modificarEvalActividades.add(filtrarEvalActividades.get(indice));
                         } else if (!modificarEvalActividades.contains(filtrarEvalActividades.get(indice))) {
@@ -282,7 +361,58 @@ public class ControlEvalActividades implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {if (filtrarEvalActividades.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEvalActividades.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarEvalActividades.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalActividades.get(indice).getCodigo() == listEvalActividades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listEvalActividades.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalActividades.get(indice).getCodigo() == listEvalActividades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarEvalActividades.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarEvalActividades.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarEvalActividades.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -359,7 +489,7 @@ public class ControlEvalActividades implements Serializable {
                 contarCapNecesidadesEvalActividad = administrarEvalActividades.contarCapNecesidadesEvalActividad(filtrarEvalActividades.get(index).getSecuencia());
                 contarEvalPlanesDesarrollosEvalActividad = administrarEvalActividades.contarEvalPlanesDesarrollosEvalActividad(filtrarEvalActividades.get(index).getSecuencia());
             }
-            if (contarCapBuzonesEvalActividad.equals(new BigInteger("0")) && contarCapNecesidadesEvalActividad.equals(new BigInteger("0")) && contarEvalPlanesDesarrollosEvalActividad.equals(new BigInteger("0"))) {
+            if (contarCapBuzonesEvalActividad.equals(new BigInteger("0")) && contarCapNecesidadesEvalActividad.equals(new BigInteger("0"))&& contarEvalPlanesDesarrollosEvalActividad.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoEvalActividades();
             } else {
@@ -478,7 +608,7 @@ public class ControlEvalActividades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoEvalActividades.getDescripcion().equals(" ") ) {
+        if (nuevoEvalActividades.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 

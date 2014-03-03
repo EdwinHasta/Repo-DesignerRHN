@@ -57,6 +57,8 @@ public class ControlTiposIndices implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
 
     public ControlTiposIndices() {
         listTiposIndices = null;
@@ -89,7 +91,13 @@ public class ControlTiposIndices implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listTiposIndices.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listTiposIndices.get(index).getCodigo();
+                backupDescripcion = listTiposIndices.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarTiposIndices.get(index).getCodigo();
+                backupDescripcion = filtrarTiposIndices.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -176,15 +184,19 @@ public class ControlTiposIndices implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposIndices.contains(listTiposIndices.get(indice))) {
-                    if (listTiposIndices.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listTiposIndices.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -195,9 +207,11 @@ public class ControlTiposIndices implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listTiposIndices.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -205,14 +219,18 @@ public class ControlTiposIndices implements Serializable {
                     }
                     if (listTiposIndices.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listTiposIndices.get(indice).getDescripcion() == null) {
+                        banderita1 = false;
+                        listTiposIndices.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listTiposIndices.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listTiposIndices.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarTiposIndices.isEmpty()) {
                             modificarTiposIndices.add(listTiposIndices.get(indice));
                         } else if (!modificarTiposIndices.contains(listTiposIndices.get(indice))) {
@@ -225,17 +243,74 @@ public class ControlTiposIndices implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosTiposIndices");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listTiposIndices.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposIndices.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposIndices.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposIndices.get(indice).getCodigo() == listTiposIndices.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listTiposIndices.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listTiposIndices.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listTiposIndices.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listTiposIndices.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listTiposIndices.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosTiposIndices");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearTiposIndices.contains(filtrarTiposIndices.get(indice))) {
-                    if (filtrarTiposIndices.get(indice).getCodigo() == a) {
+                    if (filtrarTiposIndices.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposIndices.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < filtrarTiposIndices.size(); j++) {
                             if (j != indice) {
@@ -254,6 +329,8 @@ public class ControlTiposIndices implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarTiposIndices.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -262,14 +339,16 @@ public class ControlTiposIndices implements Serializable {
 
                     if (filtrarTiposIndices.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarTiposIndices.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarTiposIndices.get(indice).getDescripcion() == null) {
+                    if (filtrarTiposIndices.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarTiposIndices.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarTiposIndices.isEmpty()) {
                             modificarTiposIndices.add(filtrarTiposIndices.get(indice));
                         } else if (!modificarTiposIndices.contains(filtrarTiposIndices.get(indice))) {
@@ -282,7 +361,58 @@ public class ControlTiposIndices implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {if (filtrarTiposIndices.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposIndices.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarTiposIndices.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposIndices.get(indice).getCodigo() == listTiposIndices.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listTiposIndices.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposIndices.get(indice).getCodigo() == listTiposIndices.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarTiposIndices.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarTiposIndices.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarTiposIndices.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarTiposIndices.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarTiposIndices.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -344,16 +474,16 @@ public class ControlTiposIndices implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger contarFactoresRiesgoGrupoFactorRiesgo;
+        BigInteger contarIndicesTipoIndice;
 
         try {
             System.err.println("Control Secuencia de ControlTiposIndices ");
             if (tipoLista == 0) {
-                contarFactoresRiesgoGrupoFactorRiesgo = administrarTiposIndices.contarIndicesTipoIndice(listTiposIndices.get(index).getSecuencia());
+                contarIndicesTipoIndice = administrarTiposIndices.contarIndicesTipoIndice(listTiposIndices.get(index).getSecuencia());
             } else {
-                contarFactoresRiesgoGrupoFactorRiesgo = administrarTiposIndices.contarIndicesTipoIndice(filtrarTiposIndices.get(index).getSecuencia());
+                contarIndicesTipoIndice = administrarTiposIndices.contarIndicesTipoIndice(filtrarTiposIndices.get(index).getSecuencia());
             }
-            if (contarFactoresRiesgoGrupoFactorRiesgo.equals(new BigInteger("0"))) {
+            if (contarIndicesTipoIndice.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoTiposIndices();
             } else {
@@ -363,7 +493,7 @@ public class ControlTiposIndices implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                contarFactoresRiesgoGrupoFactorRiesgo = new BigInteger("-1");
+                contarIndicesTipoIndice = new BigInteger("-1");
 
             }
         } catch (Exception e) {
