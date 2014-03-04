@@ -57,6 +57,8 @@ public class ControlTiposPagos implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
 
     public ControlTiposPagos() {
         listTiposPagos = null;
@@ -89,7 +91,13 @@ public class ControlTiposPagos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listTiposPagos.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listTiposPagos.get(index).getCodigo();
+                backupDescripcion = listTiposPagos.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarTiposPagos.get(index).getCodigo();
+                backupDescripcion = filtrarTiposPagos.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -176,15 +184,19 @@ public class ControlTiposPagos implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposPagos.contains(listTiposPagos.get(indice))) {
-                    if (listTiposPagos.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listTiposPagos.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -195,9 +207,11 @@ public class ControlTiposPagos implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listTiposPagos.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -205,14 +219,18 @@ public class ControlTiposPagos implements Serializable {
                     }
                     if (listTiposPagos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listTiposPagos.get(indice).getDescripcion()== null) {
+                        banderita1 = false;
+                        listTiposPagos.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listTiposPagos.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listTiposPagos.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarTiposPagos.isEmpty()) {
                             modificarTiposPagos.add(listTiposPagos.get(indice));
                         } else if (!modificarTiposPagos.contains(listTiposPagos.get(indice))) {
@@ -225,17 +243,74 @@ public class ControlTiposPagos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosTiposPagos");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listTiposPagos.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposPagos.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposPagos.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposPagos.get(indice).getCodigo() == listTiposPagos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listTiposPagos.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listTiposPagos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listTiposPagos.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listTiposPagos.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listTiposPagos.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosTiposPagos");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearTiposPagos.contains(filtrarTiposPagos.get(indice))) {
-                    if (filtrarTiposPagos.get(indice).getCodigo() == a) {
+                    if (filtrarTiposPagos.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposPagos.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < filtrarTiposPagos.size(); j++) {
                             if (j != indice) {
@@ -254,6 +329,8 @@ public class ControlTiposPagos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarTiposPagos.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -262,14 +339,16 @@ public class ControlTiposPagos implements Serializable {
 
                     if (filtrarTiposPagos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarTiposPagos.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarTiposPagos.get(indice).getDescripcion()== null) {
+                    if (filtrarTiposPagos.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarTiposPagos.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarTiposPagos.isEmpty()) {
                             modificarTiposPagos.add(filtrarTiposPagos.get(indice));
                         } else if (!modificarTiposPagos.contains(filtrarTiposPagos.get(indice))) {
@@ -282,7 +361,58 @@ public class ControlTiposPagos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {if (filtrarTiposPagos.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposPagos.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarTiposPagos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposPagos.get(indice).getCodigo() == listTiposPagos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listTiposPagos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposPagos.get(indice).getCodigo() == listTiposPagos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarTiposPagos.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarTiposPagos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarTiposPagos.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarTiposPagos.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarTiposPagos.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -470,7 +600,7 @@ public class ControlTiposPagos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTiposPagos.getDescripcion()== null) {
+        if (nuevoTiposPagos.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -586,7 +716,7 @@ public class ControlTiposPagos implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTiposPagos.getDescripcion()== null) {
+        if (duplicarTiposPagos.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 

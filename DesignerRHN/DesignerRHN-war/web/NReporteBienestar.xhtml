@@ -22,7 +22,7 @@
                         <p:separator id="separatorBtnsInferiores"  style="vertical-align: central;position: absolute;height: 25px;width: 3px;top: 477px;left: 155px "/>  
                         <p:commandButton style="position: absolute; left: 10px; top: 480px; " id="ENVIOCORREO" value="#{msg['envio']}" process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteBienestar.defaultPropiedadesParametrosReporte()}"/>
 
-                        <p:dialog id="confirmarGuardar" header="" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                             <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" action="nomina" actionListener="#{controlNReporteBienestar.guardarYSalir()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
@@ -30,7 +30,7 @@
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
-                        <p:dialog id="confirmarGuardarSinSalida" header="" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                        <p:dialog id="confirmarGuardarSinSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                             <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSinSalida.hide();" actionListener="#{controlNReporteBienestar.guardarCambios()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
@@ -48,14 +48,17 @@
                             <p:dataTable id="reportesBienestar" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;"                           
                                          value="#{controlNReporteBienestar.listaIR}" scrollable="true" scrollHeight="#{controlNReporteBienestar.altoTabla}" scrollWidth="690"
                                          filteredValue="#{controlNReporteBienestar.filtrarListInforeportesUsuario}" selectionMode="single" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10" selection="#{controlNReporteBienestar.actualInfoReporteTabla}" >
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10" selection="#{controlNReporteBienestar.actualInfoReporteTabla}" liveScroll="true" scrollRows="8">
+                                
                                 <p:ajax event="rowSelect" listener="#{controlNReporteBienestar.seleccionRegistro()}" process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlNReporteBienestar.requisitosParaReporte()}" process="@this" />
+
                                 <p:column style="padding: 0px; text-align: center; width: 50px;" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:outputLabel onclick="posicionReporte([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}])"  value="#{info.codigo}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
+                                    <h:outputText value="#{info.codigo}"/>
                                 </p:column>
 
                                 <p:column  id="reporteIR" headerText="#{msg['reporte']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:outputLabel onclick="posicionReporte([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}])"  value="#{info.nombre}" ondblclick="parametrosReporte([{name: 't', value: '#{indice}'}]);"/>
+                                    <h:outputText value="#{info.nombre}"/>
                                 </p:column>
 
                                 <p:column id="tipoIR" headerText="#{msg['tipo']}" width="110" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px; width: 110px" >                                  
@@ -71,16 +74,13 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton style="position: absolute; left: 585px; top: 231px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteBienestar.mostrarTodos()}" update=":form:reportesBienestar"/>
+                            <p:commandButton style="position: absolute; left: 585px; top: 231px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteBienestar.mostrarTodos()}" disabled="#{controlNReporteBienestar.activoMostrarTodos}" update=":form:reportesBienestar"/>
                             <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="Mostrar todos los reportes." />
-                            <p:commandButton style="position: absolute; left: 460px; top: 231px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteBienestar.mostrarDialogoBuscarReporte()}" />
+                            <p:commandButton style="position: absolute; left: 460px; top: 231px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteBienestar.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteBienestar.activoBuscarReporte}"/>
                             <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
-                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteBienestar.generarReporte()}" ajax="false"/>
+                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteBienestar.generarReporte()}" />
                             <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
                         </fieldset>
-
-                        <p:remoteCommand name="posicionReporte" actionListener="#{controlNReporteBienestar.posicionInfoReporte()}" process="@this"/>
-                        <p:remoteCommand name="parametrosReporte" actionListener="#{controlNReporteBienestar.posicionParaResaltoParametros()}" process="@this"/>
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 
@@ -133,6 +133,7 @@
                                      selection="#{controlNReporteBienestar.actividadSeleccionada}" selectionMode="single" widgetVar="lovActividad" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteBienestar.filtrarListActividades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteBienestar.activarAceptar()}" update=":form:aceptarAct"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteBienestar.actualizarActividad()}"  process="@this" onstart="lovActividad.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovActividad.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -150,10 +151,10 @@
                                 <h:outputText value="#{actividad.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarAct" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="ActividadDialogo.hide(), lovActividad.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarActividad()}" update="lovActividad, aceptarAct" process="@this">
+                        <p:commandButton id="aceptarAct" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="ActividadDialogo.hide(), lovActividad.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarActividad()}" update="lovActividad, aceptarAct" process="@this">
                             <p:resetInput target=":form:lovActividad:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasAct" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="ActividadDialogo.hide(), lovActividad.clearFilters();" actionListener="#{controlNReporteBienestar.cancelarCambioActividad()}" update="lovActividad" process="@this">
+                        <p:commandButton id="atrasAct" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="ActividadDialogo.hide(), lovActividad.clearFilters();" actionListener="#{controlNReporteBienestar.cancelarCambioActividad()}" update="lovActividad" process="@this">
                             <p:resetInput target=":form:lovActividad:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -166,6 +167,7 @@
                                      selection="#{controlNReporteBienestar.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteBienestar.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteBienestar.activarAceptar()}" update=":form:aceptarED"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteBienestar.actualizarEmplDesde()}"  process="@this" onstart="lovEmpleadoDesde.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoDesde.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -183,10 +185,10 @@
                                 <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarED" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
+                        <p:commandButton id="aceptarED" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasED" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteBienestar.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
+                        <p:commandButton id="atrasED" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteBienestar.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -197,6 +199,7 @@
                                      selection="#{controlNReporteBienestar.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteBienestar.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteBienestar.activarAceptar()}" update=":form:aceptarEH"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteBienestar.actualizarEmplHasta()}"  process="@this" onstart="lovEmpleadoHasta.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMPH']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoHasta.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -214,10 +217,10 @@
                                 <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEH" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
+                        <p:commandButton id="aceptarEH" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEH" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteBienestar.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
+                        <p:commandButton id="atrasEH" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteBienestar.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -228,6 +231,7 @@
                                      selection="#{controlNReporteBienestar.inforreporteSeleccionado}" selectionMode="single" widgetVar="lovReportesDialogo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReporteBienestar.filtrarListInforeportesUsuario}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteBienestar.activarAceptar()}" update=":form:aceptarR"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteBienestar.actualizarSeleccionInforeporte()}"  process="@this" onstart="lovReportesDialogo.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -253,10 +257,10 @@
                                 <h:outputText value="#{reportes.tipo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarR" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesBienestar" process="@this">
+                        <p:commandButton id="aceptarR" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlNReporteBienestar.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReporteBienestar.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesBienestar" process="@this">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasR" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReporteBienestar.cancelarSeleccionInforeporte()}" process="@this">
+                        <p:commandButton id="atrasR" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReporteBienestar.cancelarSeleccionInforeporte()}" process="@this">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -301,8 +305,8 @@
                 <h:form id="formParametros" style="position: absolute; top: 120px; left: 240px">
                     <fieldset id="parametros Informe" style="position: absolute; left: 10px; top: 70px; width: 830px; height: 80px; border-radius: 10px; ">
                         <legend style="color: blue;text-align:left"><strong>#{msg['parametros']}</strong></legend>
-                        <h:outputText value="#{msg['fechadesde']}" style="position: absolute; top: 20px; left: 30px;"/>
-                         <div id="posicionFechaDesdeParametro" style="position: absolute; top: 40px; left: 30px;width: 90px">
+                        <h:outputText value="#{msg['fechadesde']}:" style="position: absolute; top: 20px; left: 30px;"/>
+                        <div id="posicionFechaDesdeParametro" style="position: absolute; top: 40px; left: 30px;width: 90px">
                             <lnk:calendar value="#{controlNReporteBienestar.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" color="#{controlNReporteBienestar.color}" decoration="#{controlNReporteBienestar.decoracion}"  width="80">
                                 <p:ajax event="click" listener="#{controlNReporteBienestar.posicionCelda(1)}" process="@this"/>
                                 <p:ajax event="change" listener="#{controlNReporteBienestar.modificarParametroInforme()}" process="@this" update="fechaDesdeParametroL"/>
@@ -310,27 +314,27 @@
                             </lnk:calendar> 
                         </div>
 
-                        <h:outputText value="#{msg['fechahasta']}" style="position: absolute; top: 20px; left: 150px;"/>
+                        <h:outputText value="#{msg['fechahasta']}:" style="position: absolute; top: 20px; left: 150px;"/>
                         <div id="posicionFechaHastaParametro" style="position: absolute; top: 40px; left: 150px;width: 90px">
                             <lnk:calendar value="#{controlNReporteBienestar.parametroDeInforme.fechahasta}" id="fechaHastaParametroL" color="#{controlNReporteBienestar.color2}" decoration="#{controlNReporteBienestar.decoracion2}"  width="80">
                                 <p:ajax event="click" listener="#{controlNReporteBienestar.posicionCelda(3)}" process="@this"/> 
                                 <p:ajax event="change" listener="#{controlNReporteBienestar.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
                                 <p:ajax event="dateSelect" listener="#{controlNReporteBienestar.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
-                                </lnk:calendar> 
+                            </lnk:calendar> 
                         </div>
-                       
+
                         <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 70px;width: 1px;top: 5px;left: 240px "/>  
 
                         <!-- -->
 
-                        <h:outputText value="#{msg['empleadodesde']}" style="position: absolute; top: 20px; left: 260px;"/>
+                        <h:outputText value="#{msg['empleadodesde']}:" style="position: absolute; top: 20px; left: 260px;"/>
                         <p:inputText value="#{controlNReporteBienestar.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametroL" style="position: absolute; top: 40px; left: 260px;height: 15px;width: 90px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteBienestar.posicionCelda(2)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReporteBienestar.modificarParametroInforme()}" update="empleadoDesdeParametroL"  process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteBienestar.mostrarDialogosListas()}"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['empleadohasta']}" style="position: absolute; top: 20px; left: 400px;"/>
+                        <h:outputText value="#{msg['empleadohasta']}:" style="position: absolute; top: 20px; left: 400px;"/>
                         <p:inputText value="#{controlNReporteBienestar.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametroL" style="position: absolute; top: 40px; left: 400px;height: 15px;width: 90px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteBienestar.posicionCelda(4)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReporteBienestar.modificarParametroInforme()}" update="empleadoHastaParametroL" process="@this"/>
@@ -343,7 +347,7 @@
                         <!-- -->
 
 
-                        <h:outputText value="#{msg['nombreactividad']}" style="position: absolute; top: 20px; left: 565px;"/>
+                        <h:outputText value="#{msg['nombreactividad']}:" style="position: absolute; top: 20px; left: 565px;"/>
                         <p:inputText value="#{controlNReporteBienestar.parametroDeInforme.actividadbienestar.descripcion}" id="actividadParametroL" style="position: absolute; top: 40px; left: 540px;height: 10px;width: 130px" onclick="select()">
                             <p:ajax event="click" listener="#{controlNReporteBienestar.posicionCelda(5)}" process="@this"/> 
                             <p:ajax event="change" update="actividadParametroL" listener="#{controlNReporteBienestar.autocompletarGeneral('ACTIVIDAD',controlNReporteBienestar.parametroDeInforme.actividadbienestar.descripcion)}"  process="@this"/>

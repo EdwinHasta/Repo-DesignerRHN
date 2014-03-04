@@ -27,9 +27,12 @@
                         <h:outputText id="nitEmpresa" value="#{controlCargo.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 770px;"/>
 
 
-                        <p:commandButton style="position: absolute; left: 20px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlCargo.cancelarModificacionGeneral()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 710px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlCargo.salir()}" action="#{controlCargo.valorPaginaAnterior()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARCARGO" value="#{msg['buscarCargo']}"  actionListener="#{controlCargo.dispararDialogoBuscarCargo()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 120px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="#{msg['mostrarTodos']}"  actionListener="#{controlCargo.mostrarTodos()}"  process="@this" />
+                        <p:separator style="position: absolute; left: 230px; top: 520px; width: 3px; height: 23px" />
+                        <p:commandButton style="position: absolute; left: 235px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlCargo.cancelarModificacionGeneral()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 710px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlCargo.salir()}" action="#{controlCargo.valorPaginaAnterior()}" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 10px; width: 830px; height: 180px; border-radius: 10px; ">
@@ -37,7 +40,7 @@
 
                             <p:dataTable id="datosCargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 820px;position: relative"                           
                                          value="#{controlCargo.listaCargos}" scrollable="true" scrollHeight="#{controlCargo.altoTablaCargo}"  scrollWidth="820"
-                                         filteredValue="#{controlCargo.filtrarListaCargos}" emptyMessage="#{msg['vacio']}"
+                                         filteredValue="#{controlCargo.filtrarListaCargos}"  emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell"  rows="4" liveScroll="true" scrollRows="4">
 
                                 <p:ajax event="filter" listener="#{controlCargo.eventoFiltrar()}"/>
@@ -579,7 +582,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorDescripcionTipoDetalle']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="ingresoNuevoDetalleCargo" header="#{msg['atencion']}" widgetVar="ingresoNuevoDetalleCargo"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['ingresoNuevoDetalleCargo']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
@@ -587,6 +590,38 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="ingresoNuevoDetalleCargo.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
+                    <p:dialog header="#{msg['buscarCargoD']}" widgetVar="BuscarCargoDialogo" draggable="false" resizable="false" closable="false" id="BuscarCargoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="600" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovBuscarCargo" style="font-size: 11px; width: 570px" var="buscarCargo" value="#{controlCargo.lovCargos}" rowKey="#{buscarCargo.secuencia}"
+                                     selection="#{controlCargo.cargoSeleccionado}" scrollWidth="586" selectionMode="single" widgetVar="lovBuscarCargo" scrollable="true" scrollHeight="250" 
+                                     filteredValue="#{controlCargo.filtrarLovCargos}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarBC"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarCargo()}"  process="@this" onstart="lovBuscarCargo.clearFilters()" />
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarBC']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovBuscarCargo.filter();" style="width:140px; position: relative; left: 70px;" />  
+                            </f:facet>
+
+                            <p:column filterBy="#{buscarCargo.codigo}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['codigo']}" />
+                                </f:facet>
+                                <h:outputText value="#{buscarCargo.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{buscarCargo.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['nombre']}" />
+                                </f:facet>
+                                <h:outputText value="#{buscarCargo.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarBC" style="position: relative; left: 430px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();"  actionListener="#{controlCargo.actualizarCargo()}" update="lovBuscarCargo, aceptarBC, datosCargo" process="@this">
+                            <p:resetInput target=":form:lovBuscarCargo:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasBC" style="position: relative; left: 430px" value="#{msg['atras']}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" update="lovBuscarCargo" process="@this">
+                            <p:resetInput target=":form:lovBuscarCargo:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
 
 
                     <p:dialog header="#{msg['grupoSalarialD']}" widgetVar="GrupoSalarialDialogo" draggable="false" resizable="false" closable="false" id="GrupoSalarialDialogo"  
@@ -827,7 +862,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorBorrarRegistro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorBorradoCargo" header="#{msg['atencion']}" widgetVar="errorBorradoCargo"  resizable="false" draggable="false" modal="true" height="80" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorBorradoCargo']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />

@@ -156,8 +156,14 @@ public class ControlCargo implements Serializable {
     private DetallesCargos detalleCargo;
     //
     private boolean activoDetalleCargo;
+    //
+    private List<Cargos> lovCargos;
+    private List<Cargos> filtrarLovCargos;
+    private Cargos cargoSeleccionado;
 
     public ControlCargo() {
+        lovCargos = null;
+        cargoSeleccionado = new Cargos();
         activoDetalleCargo = true;
         indexAux = -1;
         indexAuxTipoDetalle = -1;
@@ -3947,10 +3953,147 @@ public class ControlCargo implements Serializable {
             RequestContext.getCurrentInstance().update("form:growl");
             detalleCargo = null;
             getDetalleCargo();
-            
         } catch (Exception e) {
             System.out.println("Error crearDetalleCargo : " + e.toString());
         }
+    }
+
+    public void dispararDialogoBuscarCargo() {
+        if (guardado == true && guardadoCompetencia == true && guardadoDetalleCargo == true && guardadoSueldoMercado == true && guardadoTipoDetalle == true) {
+            lovCargos = null;
+            lovCargos = administrarCargos.listaCargosParaEmpresa(empresaActual.getSecuencia());
+            cargoSeleccionado = new Cargos();
+            filtrarLovCargos = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:BuscarCargoDialogo");
+            context.update("form:lovBuscarCargo");
+            context.update("form:aceptarBC");
+            context.execute("BuscarCargoDialogo.show()");
+            index = -1;
+            indexSueldoMercado = -1;
+            indexCompetenciaCargo = -1;
+            indexTipoDetalle = -1;
+            indexDetalleCargo = -1;
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
+        }
+    }
+
+    public void actualizarCargo() {
+        listaCargos = null;
+        listaCargos = new ArrayList<Cargos>();
+        listaCargos.add(cargoSeleccionado);
+        cargoSeleccionado = new Cargos();
+        filtrarLovCargos = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:BuscarCargoDialogo");
+        context.update("form:lovBuscarCargo");
+        context.update("form:aceptarBC");
+        context.execute("BuscarCargoDialogo.hide()");
+        index = 0;
+        indexAux = -1;
+        indexSueldoMercado = -1;
+        indexCompetenciaCargo = -1;
+        indexTipoDetalle = -1;
+        indexDetalleCargo = -1;
+        listaSueldosMercados = null;
+        context.update("form:datosCargo");
+        getListaSueldosMercados();
+        context.update("form:datosSueldoMercado");
+        listaCompetenciasCargos = null;
+        getListaCompetenciasCargos();
+        context.update("form:datosCompetenciaCargo");
+        if (banderaSueldoMercado == 1) {
+            altoTablaSueldoMercado = "58";
+            sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
+            sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
+            sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
+            sueldoMercadoTipoEmpresa.setFilterStyle("display: none; visibility: hidden;");
+            sueldoMercadoSueldoMaximo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMaximo");
+            sueldoMercadoSueldoMaximo.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosSueldoMercado");
+            banderaSueldoMercado = 0;
+            filtrarListaSueldosMercados = null;
+            tipoListaSueldoMercado = 0;
+        }
+        if (banderaCompetencia == 1) {
+            altoTablaCompetencia = "58";
+            competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
+            competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
+            banderaCompetencia = 0;
+            filtrarListaCompetenciasCargos = null;
+            tipoListaCompetencia = 0;
+        }
+        activoDetalleCargo = true;
+        legendDetalleCargo = "";
+        detalleCargo = new DetallesCargos();
+        context.update("form:legendDetalleCargo");
+        context.update("form:detalleCargo");
+    }
+
+    public void cancelarSeleccionCargo() {
+        cargoSeleccionado = new Cargos();
+        filtrarLovCargos = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:BuscarCargoDialogo");
+        context.update("form:lovBuscarCargo");
+        context.update("form:aceptarBC");
+        context.execute("BuscarCargoDialogo.show()");
+    }
+
+    public void mostrarTodos() {
+        if (guardado == true && guardadoCompetencia == true && guardadoDetalleCargo == true && guardadoSueldoMercado == true && guardadoTipoDetalle == true) {
+            listaCargos = null;
+            getListaCargos();
+            RequestContext context = RequestContext.getCurrentInstance();
+            index = 0;
+            indexAux = -1;
+            indexSueldoMercado = -1;
+            indexCompetenciaCargo = -1;
+            indexTipoDetalle = -1;
+            indexDetalleCargo = -1;
+            listaSueldosMercados = null;
+            context.update("form:datosCargo");
+            getListaSueldosMercados();
+            context.update("form:datosSueldoMercado");
+            listaCompetenciasCargos = null;
+            getListaCompetenciasCargos();
+            context.update("form:datosCompetenciaCargo");
+            if (banderaSueldoMercado == 1) {
+                altoTablaSueldoMercado = "58";
+                sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
+                sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
+                sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
+                sueldoMercadoTipoEmpresa.setFilterStyle("display: none; visibility: hidden;");
+                sueldoMercadoSueldoMaximo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMaximo");
+                sueldoMercadoSueldoMaximo.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosSueldoMercado");
+                banderaSueldoMercado = 0;
+                filtrarListaSueldosMercados = null;
+                tipoListaSueldoMercado = 0;
+            }
+            if (banderaCompetencia == 1) {
+                altoTablaCompetencia = "58";
+                competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
+                competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
+                banderaCompetencia = 0;
+                filtrarListaCompetenciasCargos = null;
+                tipoListaCompetencia = 0;
+            }
+            activoDetalleCargo = true;
+            legendDetalleCargo = "";
+            detalleCargo = new DetallesCargos();
+            context.update("form:legendDetalleCargo");
+            context.update("form:detalleCargo");
+
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("confirmarGuardar.show()");
+        }
+
     }
 
     public void modificacionesDetalleCargo() {
@@ -4736,6 +4879,30 @@ public class ControlCargo implements Serializable {
 
     public void setActivoDetalleCargo(boolean activoDetalleCargo) {
         this.activoDetalleCargo = activoDetalleCargo;
+    }
+
+    public List<Cargos> getLovCargos() {
+        return lovCargos;
+    }
+
+    public void setLovCargos(List<Cargos> lovCargos) {
+        this.lovCargos = lovCargos;
+    }
+
+    public List<Cargos> getFiltrarLovCargos() {
+        return filtrarLovCargos;
+    }
+
+    public void setFiltrarLovCargos(List<Cargos> filtrarLovCargos) {
+        this.filtrarLovCargos = filtrarLovCargos;
+    }
+
+    public Cargos getCargoSeleccionado() {
+        return cargoSeleccionado;
+    }
+
+    public void setCargoSeleccionado(Cargos cargoSeleccionado) {
+        this.cargoSeleccionado = cargoSeleccionado;
     }
 
 }

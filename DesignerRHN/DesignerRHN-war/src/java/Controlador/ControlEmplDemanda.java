@@ -169,7 +169,12 @@ public class ControlEmplDemanda implements Serializable {
             cambiarIndiceD(i, c);
             modificarDemanda(i);
         } else {
-            listDemandasEmpleado.get(index).setFecha(fechaInic);
+            if (tipoLista == 0) {
+                listDemandasEmpleado.get(index).setFecha(fechaInic);
+            }
+            if (tipoLista == 1) {
+                filtrarListDemandasEmpleado.get(index).setFecha(fechaInic);
+            }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosDemanda");
             context.execute("errorFechas.show()");

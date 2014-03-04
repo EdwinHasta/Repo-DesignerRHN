@@ -45,7 +45,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
 
     public void borrar(Jornadas jornadas) {
         try {
-            em.remove(jornadas);
+            em.remove(em.merge(jornadas));
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaJornadas borrar ERROR +" + e);
         }

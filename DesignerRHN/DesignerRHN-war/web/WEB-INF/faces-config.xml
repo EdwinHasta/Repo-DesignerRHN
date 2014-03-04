@@ -973,6 +973,22 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
+        <from-view-id>/estructuraplanta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estructura</from-outcome>
+            <to-view-id>/Estructura.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Estructura.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estructuraPlanta</from-outcome>
+            <to-view-id>/estructuraplanta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadPlano</from-outcome>
@@ -1088,6 +1104,23 @@
         <navigation-case>
             <from-outcome>cuentaRastro</from-outcome>
             <to-view-id>/Cuenta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/estructuraplanta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroEstructuraPlanta</from-outcome>
+            <to-view-id>/estructuraplanta.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

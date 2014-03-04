@@ -1,6 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controlador;
@@ -58,6 +57,8 @@ public class ControlPaises implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
 
     public ControlPaises() {
         listPaises = null;
@@ -90,7 +91,13 @@ public class ControlPaises implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listPaises.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listPaises.get(index).getCodigo();
+                backupDescripcion = listPaises.get(index).getNombre();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarPaises.get(index).getCodigo();
+                backupDescripcion = filtrarPaises.get(index).getNombre();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -177,15 +184,19 @@ public class ControlPaises implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearPaises.contains(listPaises.get(indice))) {
-                    if (listPaises.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listPaises.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -196,9 +207,11 @@ public class ControlPaises implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listPaises.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -206,14 +219,18 @@ public class ControlPaises implements Serializable {
                     }
                     if (listPaises.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listPaises.get(indice).getNombre().equals(" ")) {
+                        banderita1 = false;
+                        listPaises.get(indice).setNombre(backupDescripcion);
+                    } else if (listPaises.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listPaises.get(indice).setNombre(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarPaises.isEmpty()) {
                             modificarPaises.add(listPaises.get(indice));
                         } else if (!modificarPaises.contains(listPaises.get(indice))) {
@@ -226,17 +243,74 @@ public class ControlPaises implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosPaises");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listPaises.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listPaises.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listPaises.size(); j++) {
+                            if (j != indice) {
+                                if (listPaises.get(indice).getCodigo() == listPaises.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listPaises.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listPaises.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listPaises.get(indice).setNombre(backupDescripcion);
+                    } else if (listPaises.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listPaises.get(indice).setNombre(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosPaises");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearPaises.contains(filtrarPaises.get(indice))) {
-                    if (filtrarPaises.get(indice).getCodigo() == a) {
+                    if (filtrarPaises.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarPaises.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < filtrarPaises.size(); j++) {
                             if (j != indice) {
@@ -255,6 +329,8 @@ public class ControlPaises implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarPaises.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -263,14 +339,16 @@ public class ControlPaises implements Serializable {
 
                     if (filtrarPaises.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarPaises.get(indice).setNombre(backupDescripcion);
                     }
                     if (filtrarPaises.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarPaises.get(indice).setNombre(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarPaises.isEmpty()) {
                             modificarPaises.add(filtrarPaises.get(indice));
                         } else if (!modificarPaises.contains(filtrarPaises.get(indice))) {
@@ -283,7 +361,58 @@ public class ControlPaises implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {if (filtrarPaises.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarPaises.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarPaises.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarPaises.get(indice).getCodigo() == listPaises.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listPaises.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarPaises.get(indice).getCodigo() == listPaises.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarPaises.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarPaises.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarPaises.get(indice).setNombre(backupDescripcion);
+                    }
+                    if (filtrarPaises.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarPaises.get(indice).setNombre(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -461,7 +590,7 @@ public class ControlPaises implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoPaises.getCodigo());
 
             for (int x = 0; x < listPaises.size(); x++) {
-                if (listPaises.get(x).getCodigo().equals(nuevoPaises.getCodigo())) {
+                if (listPaises.get(x).getCodigo() == nuevoPaises.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -475,8 +604,8 @@ public class ControlPaises implements Serializable {
                 contador++;
             }
         }
-        if (nuevoPaises.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un nombre \n";
+        if (nuevoPaises.getNombre().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -591,8 +720,8 @@ public class ControlPaises implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarPaises.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * un nombre \n";
+        if (duplicarPaises.getNombre().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + "   * una Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -644,7 +773,7 @@ public class ControlPaises implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosPaisesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "TIPOSAUSENTISMOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "PAISES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -654,7 +783,7 @@ public class ControlPaises implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosPaisesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "TIPOSAUSENTISMOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "PAISES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -666,7 +795,7 @@ public class ControlPaises implements Serializable {
         if (!listPaises.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSAUSENTISMOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "PAISES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -683,7 +812,7 @@ public class ControlPaises implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("TIPOSAUSENTISMOS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("PAISES")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");

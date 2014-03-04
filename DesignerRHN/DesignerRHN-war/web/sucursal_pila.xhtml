@@ -41,10 +41,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none; " value="Código"/>
-                                    </f:facet>
                                 </p:column>  
                                 <p:tooltip style="font-size: 12px" for="fooCodigoCC" value="Código" />
 
@@ -58,9 +54,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px; font-size: 9px; border: none;" value="Descripcion" />
-                                    </f:facet>
                                 </p:column>
                             </p:dataTable> 
                         </fieldset>
@@ -136,10 +129,10 @@
                         <h:outputText value="No se puede borrar este elemento porque esta relacionado con otra tabla" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionBorrar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="mostrarGuardar" header="ATENCIÓN...!" widgetVar="mostrarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 25px; top: 10px;"  />
-                        <h:outputText value="Se han guardado los cambios correctamente" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    <p:dialog id="mostrarGuardar" header="ATENCIÓN...!" widgetVar="mostrarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="Se ha guardado correctamente los cambios" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" />
                     </p:dialog>
                     <p:dialog id="mostrarBorrados" header="ATENCIÓN...!" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
@@ -221,7 +214,7 @@
                     </p:dialog> 
 
 
-                    <p:dialog id="NuevoRegistroSucursalesPila" header="Nuevo Registro" widgetVar="NuevoRegistroSucursalesPila" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroSucursalesPila" header="Nuevo Registro" widgetVar="NuevoRegistroSucursalesPila" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="340" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Agregar Nueva Sucursal Pila" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -229,21 +222,21 @@
 
                             <!--0-->
                             <strong><h:outputText value="Código" style="font-size: 12px; position: absolute; top: 51px" /></strong>
-                            <p:inputText id="nuevaCodigoCC" value="#{controlSucursalesPila.nuevoCentroCosto.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 45px;">
+                            <p:inputText id="nuevaCodigoCC" value="#{controlSucursalesPila.nuevoCentroCosto.codigo}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 49px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoCC" value="Código" />
                             <!--1-->
                             <strong><h:outputText value="Descripcion" style="font-size: 12px; position: absolute; top: 96px" /></strong>
-                            <p:inputText id="nuevaNombreCentroCostos" value="#{controlSucursalesPila.nuevoCentroCosto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 89px;text-transform: uppercase">
+                            <p:inputText id="nuevaNombreCentroCostos" value="#{controlSucursalesPila.nuevoCentroCosto.descripcion}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 91px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaNombreCentroCostos" value="Descripcion" />
 
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 102px; top: 390px;" actionListener="#{controlSucursalesPila.limpiarNuevoSucursalesPila()}" update="nuevoSucursalesPila" process="@this"/>
-                            <p:commandButton id="agregarCC" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 390px;"  process="@this" actionListener="#{controlSucursalesPila.agregarNuevoSucursalesPila()}"  />
-                            <p:commandButton id="cancelarCC" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 390px;" actionListener="#{controlSucursalesPila.limpiarNuevoSucursalesPila()}" update="nuevoSucursalesPila" onclick="NuevoRegistroSucursalesPila.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 160px;" actionListener="#{controlSucursalesPila.limpiarNuevoSucursalesPila()}" update="nuevoSucursalesPila" process="@this"/>
+                            <p:commandButton id="agregarCC" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 160px;"  process="@this" actionListener="#{controlSucursalesPila.agregarNuevoSucursalesPila()}"  />
+                            <p:commandButton id="cancelarCC" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 160px;" actionListener="#{controlSucursalesPila.limpiarNuevoSucursalesPila()}" update="nuevoSucursalesPila" onclick="NuevoRegistroSucursalesPila.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -255,27 +248,27 @@
 
 
                     <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->                    
-                    <p:dialog id="DuplicarRegistroSucursalesPila" header="Duplicar Registro" widgetVar="DuplicarRegistroSucursalesPila" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroSucursalesPila" header="Duplicar Registro" widgetVar="DuplicarRegistroSucursalesPila" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="340" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="Duplicar Sucursal Pila" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarSucursalesPila" style="border: none;">
                             <!--0-->
                             <strong><h:outputText value="Código" style="font-size: 12px; position: absolute; top: 51px" /></strong>
-                            <p:inputText id="duplicarCodigoCC" value="#{controlSucursalesPila.duplicarCentroCosto.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 45px;">
+                            <p:inputText id="duplicarCodigoCC" value="#{controlSucursalesPila.duplicarCentroCosto.codigo}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 45px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoCC" value="Código" />
                             <!--1-->
                             <strong><h:outputText value="Descripcion" style="font-size: 12px; position: absolute; top: 96px" /></strong>
-                            <p:inputText id="duplicarNombreCentroCostos" value="#{controlSucursalesPila.duplicarCentroCosto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 89px;">
+                            <p:inputText id="duplicarNombreCentroCostos" value="#{controlSucursalesPila.duplicarCentroCosto.descripcion}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 89px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombreCentroCostos" value="Descripcion" />
 
-                            <p:commandButton id="limpiarDuplicadoCC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 390px;" actionListener="#{controlSucursalesPila.limpiarDuplicarSucursalesPila()}" update="duplicarSucursalesPila" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoCC" value="Agregar" style="font-size: 11px; position: absolute; left: 140px; top: 390px;"  process="@this" actionListener="#{controlSucursalesPila.confirmarDuplicar()}"/>
-                            <p:commandButton id="cancelarDuplicadoCC" value="Cancelar" style="font-size: 11px; position: absolute; left: 210px; top: 390px;" actionListener="#{controlSucursalesPila.limpiarDuplicarSucursalesPila()}" update="duplicarSucursalesPila" onclick="DuplicarRegistroSucursalesPila.hide();" process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoCC" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 160px;" actionListener="#{controlSucursalesPila.limpiarDuplicarSucursalesPila()}" update="duplicarSucursalesPila" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoCC" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 160px;"  process="@this" actionListener="#{controlSucursalesPila.confirmarDuplicar()}"/>
+                            <p:commandButton id="cancelarDuplicadoCC" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 160px;" actionListener="#{controlSucursalesPila.limpiarDuplicarSucursalesPila()}" update="duplicarSucursalesPila" onclick="DuplicarRegistroSucursalesPila.hide();" process="@this"/>
                         </p:panel>
                     </p:dialog>
 

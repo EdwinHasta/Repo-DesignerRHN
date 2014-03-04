@@ -13,15 +13,18 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Estructuras'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Estructuras' de la
+ * base de datos.
+ *
  * @author Hugo David Sin Gutiérrez
  * @author Felipe Triviño
  */
 @Stateless
 public class PersistenciaEstructuras implements PersistenciaEstructurasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -59,9 +62,9 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
             return null;
         }
     }
-    
+
     @Override
-        public List<Estructuras> estructuras() {
+    public List<Estructuras> estructuras() {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e ORDER BY e.nombre");
             List<Estructuras> estructuras = query.getResultList();
@@ -72,14 +75,27 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructurasPorOrganigrama(BigInteger secOrganigrama) {
+    public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(BigInteger secOrganigrama) {
         try {
-            System.out.println("PersistenciaEstructuras: Empieza busqueda Estructuras por organigrama");
-            List<Estructuras> estructuras = (List<Estructuras>) em.createNamedQuery("Estructuras.findBySecOrganigrama").setParameter("secOrganigrama", secOrganigrama).getResultList();
-            System.out.println("PersistenciaEstructuras: Finaliza busqueda Estructuras por organigrama");
+            Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.nombre");
+            query.setParameter("secOrganigrama", secOrganigrama);
+            List<Estructuras> estructuras = query.getResultList();
             return estructuras;
         } catch (Exception e) {
-            System.out.println("PersistenciaEstructuras: Fallo en la busqueda de las estructuras por organigrama");
+            System.out.println("Error buscarEstructurasPorSecuenciaOrganigrama PersistenciaEstructuras");
+            return null;
+        }
+    }
+
+    @Override
+    public List<Estructuras> buscarEstructurasPorOrganigrama(BigInteger secOrganigrama) {
+        try {
+            Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.codigo ASC");
+            query.setParameter("secOrganigrama", secOrganigrama);
+            List<Estructuras> estructuras = query.getResultList();
+            return estructuras;
+        } catch (Exception e) {
+            System.out.println("Error buscarEstructurasPorOrganigrama PersistenciaEstructuras : " + e.toString());
             return null;
         }
     }
@@ -160,6 +176,20 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
         }
         return estructura;
     }
-    
-   
+
+    @Override
+    public List<Estructuras> buscarEstructurasPadres(BigInteger secOrganigrama, BigInteger secEstructura) {
+        try {
+            String strQuery = "SELECT * FROM Estructuras WHERE organigrama =? AND secuencia != NVL(?,0) ORDER BY nombre ASC"; 
+            Query query = em.createNativeQuery(strQuery, Estructuras.class);
+            query.setParameter(1, secOrganigrama);
+            query.setParameter(2, secEstructura);
+            List<Estructuras> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarEstructurasPadres PersistenciaEstructuras : " + e.toString());
+            return null;
+        }
+    }
+
 }
