@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,13 +34,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "DetallesEmpresas.findAll", query = "SELECT d FROM DetallesEmpresas d")})
 public class DetallesEmpresas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -167,15 +168,29 @@ public class DetallesEmpresas implements Serializable {
     @JoinColumn(name = "CARGOFIRMACONSTANCIA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Cargos cargofirmaconstancia;
+    @Transient
+    private String strTipoDocumento;
+    @Transient
+    private String strTipoPersona;
+    @Transient
+    private String strNaturalezaJuridica;
+    @Transient
+    private String strClaseAportante;
+    @Transient
+    private String strFormaPresentacion;
+    @Transient
+    private String strTipoAportante;
+    @Transient
+    private String strTipoAccion;
 
     public DetallesEmpresas() {
     }
 
-    public DetallesEmpresas(BigDecimal secuencia) {
+    public DetallesEmpresas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public DetallesEmpresas(BigDecimal secuencia, String tipo, String direccion, String telefono, String fax, String nombrerepresentante, String documentorepresentante) {
+    public DetallesEmpresas(BigInteger secuencia, String tipo, String direccion, String telefono, String fax, String nombrerepresentante, String documentorepresentante) {
         this.secuencia = secuencia;
         this.tipo = tipo;
         this.direccion = direccion;
@@ -185,11 +200,11 @@ public class DetallesEmpresas implements Serializable {
         this.documentorepresentante = documentorepresentante;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -266,6 +281,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getZona() {
+        if (zona == null) {
+            zona = "RURAL";
+        }
         return zona;
     }
 
@@ -305,12 +323,57 @@ public class DetallesEmpresas implements Serializable {
         this.tipodocumento = tipodocumento;
     }
 
+    public String getStrTipoDocumento() {
+        getTipodocumento();
+        if (tipodocumento.equalsIgnoreCase("NI")) {
+            strTipoDocumento = "NIT";
+        }
+        if (tipodocumento.equalsIgnoreCase("CC")) {
+            strTipoDocumento = "CEDULA";
+        }
+        if (tipodocumento.equalsIgnoreCase("CE")) {
+            strTipoDocumento = "CEDULA EXTRANJERIA";
+        }
+        if (tipodocumento.equalsIgnoreCase("TI")) {
+            strTipoDocumento = "TARJETA IDENTIDAD";
+        }
+        if (tipodocumento.equalsIgnoreCase("RC")) {
+            strTipoDocumento = "REGISTRO CIVIL";
+        }
+        if (tipodocumento.equalsIgnoreCase("PA")) {
+            strTipoDocumento = "PASAPORTE";
+        }
+        return strTipoDocumento;
+    }
+
+    public void setStrTipoDocumento(String strTipoDocumento) {
+        this.strTipoDocumento = strTipoDocumento;
+    }
+
     public String getClaseaportante() {
         return claseaportante;
     }
 
     public void setClaseaportante(String claseaportante) {
         this.claseaportante = claseaportante;
+    }
+
+    public String getStrClaseAportante() {
+        getClaseaportante();
+        if (claseaportante.equalsIgnoreCase("A")) {
+            strClaseAportante = "APORTANTE CON MAS DE 200 COTIZANTES";
+        }
+        if (claseaportante.equalsIgnoreCase("B")) {
+            strClaseAportante = "APORTANTE CON MENOS DE 200 COTIZANTES";
+        }
+        if (claseaportante.equalsIgnoreCase("I")) {
+            strClaseAportante = "INDEPENDIENTE";
+        }
+        return strClaseAportante;
+    }
+
+    public void setStrClaseAportante(String strClaseAportante) {
+        this.strClaseAportante = strClaseAportante;
     }
 
     public String getNaturalezajuridica() {
@@ -321,12 +384,51 @@ public class DetallesEmpresas implements Serializable {
         this.naturalezajuridica = naturalezajuridica;
     }
 
+    public String getStrNaturalezaJuridica() {
+        getNaturalezajuridica();
+        if (naturalezajuridica.equalsIgnoreCase("1")) {
+            strNaturalezaJuridica = "PUBLICA";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("2")) {
+            strNaturalezaJuridica = "PRIVADA";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("3")) {
+            strNaturalezaJuridica = "MIXTA";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("4")) {
+            strNaturalezaJuridica = "ORGANISMO MULTILATERAL";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("5")) {
+            strNaturalezaJuridica = "ENTIDADES DE DERECHO PUBLICO NO SOMETIDO LEGISLACION COLOMBIANA";
+        }
+        return strNaturalezaJuridica;
+    }
+
+    public void setStrNaturalezaJuridica(String strNaturalezaJuridica) {
+        this.strNaturalezaJuridica = strNaturalezaJuridica;
+    }
+
     public String getTipopersona() {
         return tipopersona;
     }
 
     public void setTipopersona(String tipopersona) {
         this.tipopersona = tipopersona;
+    }
+
+    public String getStrTipoPersona() {
+        getTipopersona();
+        if (tipopersona.equalsIgnoreCase("N")) {
+            strTipoPersona = "NATURAL";
+        }
+        if (tipopersona.equalsIgnoreCase("J")) {
+            strTipoPersona = "JURIDICA";
+        }
+        return strTipoPersona;
+    }
+
+    public void setStrTipoPersona(String strTipoPersona) {
+        this.strTipoPersona = strTipoPersona;
     }
 
     public String getFormapresentacion() {
@@ -337,6 +439,27 @@ public class DetallesEmpresas implements Serializable {
         this.formapresentacion = formapresentacion;
     }
 
+    public String getStrFormaPresentacion() {
+        getFormapresentacion();
+        if (formapresentacion.equalsIgnoreCase("U")) {
+            strFormaPresentacion = "UNICO";
+        }
+        if (formapresentacion.equalsIgnoreCase("C")) {
+            strFormaPresentacion = "CONSOLIDADO";
+        }
+        if (formapresentacion.equalsIgnoreCase("S")) {
+            strFormaPresentacion = "SUCURSAL";
+        }
+        if (formapresentacion.equalsIgnoreCase("D")) {
+            strFormaPresentacion = "DEPENDENCIA";
+        }
+        return strFormaPresentacion;
+    }
+
+    public void setStrFormaPresentacion(String strFormaPresentacion) {
+        this.strFormaPresentacion = strFormaPresentacion;
+    }
+
     public BigInteger getTipoaportante() {
         return tipoaportante;
     }
@@ -345,12 +468,66 @@ public class DetallesEmpresas implements Serializable {
         this.tipoaportante = tipoaportante;
     }
 
+    public String getStrTipoAportante() {
+        getTipoaportante();
+        if (tipoaportante.equals(new BigInteger("1"))) {
+            strTipoAportante = "EMPLEADOR";
+        }
+        if (tipoaportante.equals(new BigInteger("2"))) {
+            strTipoAportante = "INDEPENDIENTE";
+        }
+        if (tipoaportante.equals(new BigInteger("3"))) {
+            strTipoAportante = "ENTIDADES O UNIVERSIDADES PUBLICAS CON REGIMEN ESPECIAL EN SALUD";
+        }
+        if (tipoaportante.equals(new BigInteger("4"))) {
+            strTipoAportante = "AGREMIACIONES O ASOCIACIONES";
+        }
+        if (tipoaportante.equals(new BigInteger("5"))) {
+            strTipoAportante = "COOPERATUCAS Y PRECOPERATIVAS DE TRABAJO ASOCIADO";
+        }
+        if (tipoaportante.equals(new BigInteger("6"))) {
+            strTipoAportante = "MISIONES DIPLOMATICAS, CONSULARES U ORGANISMO MULTILATERAL";
+        }
+        if (tipoaportante.equals(new BigInteger("7"))) {
+            strTipoAportante = "ORGANIZACIONES ADMINISTRADORAS DEL PROGRAMA DE HOGARES DE BIENTESTAR";
+        }
+        if (tipoaportante.equals(new BigInteger("8"))) {
+            strTipoAportante = "PAGADOR DE APORTES DE LOS CONCELAJES MUNICIPALES";
+        }
+        return strTipoAportante;
+    }
+
+    public void setStrTipoAportante(String strTipoAportante) {
+        this.strTipoAportante = strTipoAportante;
+    }
+
     public BigInteger getTipoaccion() {
         return tipoaccion;
     }
 
     public void setTipoaccion(BigInteger tipoaccion) {
         this.tipoaccion = tipoaccion;
+    }
+
+    public String getStrTipoAccion() {
+        getTipoaccion();
+        if (tipoaccion.equals(new BigInteger("1"))) {
+            strTipoAccion = "CONCORDATO";
+        }
+        if (tipoaccion.equals(new BigInteger("2"))) {
+            strTipoAccion = "REESTRUCTURACION";
+        }
+        if (tipoaccion.equals(new BigInteger("3"))) {
+            strTipoAccion = "LIQUIDACION";
+        }
+        if (tipoaccion.equals(new BigInteger("3"))) {
+            strTipoAccion = "CESE DE ACTIVIDADES";
+        }
+        return strTipoAccion;
+    }
+
+    public void setStrTipoAccion(String strTipoAccion) {
+        this.strTipoAccion = strTipoAccion;
     }
 
     public String getCiiu() {
@@ -537,5 +714,5 @@ public class DetallesEmpresas implements Serializable {
     public String toString() {
         return "Entidades.Detallesempresas[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
