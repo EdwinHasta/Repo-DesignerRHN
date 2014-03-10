@@ -99,7 +99,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     @Override
     public List<Cargos> consultarTodoCargos() {
         try {
-            cargos = persistenciaCargos.buscarCargos();
+            cargos = persistenciaCargos.consultarCargos();
         } catch (Exception ex) {
             cargos = null;
         }
@@ -143,7 +143,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
 
     public List<Empresas> obtenerEmpresas() {
         List<Empresas> listaEmpresas;
-        listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+        listaEmpresas = persistenciaEmpresas.consultarEmpresas();
         return listaEmpresas;
     }
 

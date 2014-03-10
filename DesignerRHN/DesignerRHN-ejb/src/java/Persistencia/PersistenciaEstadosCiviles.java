@@ -64,7 +64,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     }
 
     @Override
-    public List<EstadosCiviles> buscarEstadosCiviles() {
+    public List<EstadosCiviles> consultarEstadosCiviles() {
         Query query = em.createQuery("SELECT e FROM EstadosCiviles e ORDER BY e.codigo ");
         List<EstadosCiviles> listEstadosCiviles = query.getResultList();
         return listEstadosCiviles;

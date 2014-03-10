@@ -119,7 +119,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.buscarEmpresas();
+            listEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Administrar : " + e.toString());

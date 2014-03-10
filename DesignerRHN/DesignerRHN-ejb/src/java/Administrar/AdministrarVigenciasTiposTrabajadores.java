@@ -238,7 +238,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<Personas> listaPersonas(){
         try{
-            listaPersonas = persistenciaPersonas.buscarPersonas();
+            listaPersonas = persistenciaPersonas.consultarPersonas();
             return listaPersonas;
         }catch(Exception e){
             System.out.println("Error listaPersonas AdministrarVigenciaTipoTrabajador");

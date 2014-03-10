@@ -35,7 +35,7 @@ public interface PersistenciaEmpresasInterface {
      * Método encargado de buscar todas las Empresas existentes en la base de datos.
      * @return Retorna una lista de Empresas.
      */
-    public List<Empresas> buscarEmpresas();
+    public List<Empresas> consultarEmpresas();
     /**
      * Método encargado de buscar la Empresa con la secuencia dada por parámetro.
      * @param secuencia Secuencia de la Empresa que se quiere encontrar.

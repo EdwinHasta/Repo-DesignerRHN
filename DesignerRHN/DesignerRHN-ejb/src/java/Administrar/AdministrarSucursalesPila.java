@@ -30,7 +30,7 @@ public class AdministrarSucursalesPila implements AdministrarSucursalesPilaInter
     //-------------------------------------------------------------------------------------
     public List<Empresas> buscarEmpresas() {
         try {
-            List<Empresas> listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listaEmpresas;
         } catch (Exception e) {
             System.out.println("AdministrarCentroCostos: Falló al buscar las empresas /n" + e.getMessage());

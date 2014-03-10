@@ -62,7 +62,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
     @Override
     public List<Empresas> consultarEmpresas() {
         try {
-            List<Empresas> listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listaEmpresas;
         } catch (Exception e) {
             System.out.println("ADMINISTRARUBICACIONESGEOGRAFICAS: Falló al buscar las empresas /n" + e.getMessage());

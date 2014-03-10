@@ -50,7 +50,7 @@ public class AdministrarEstadosCiviles implements AdministrarEstadosCivilesInter
     @Override
     public List<EstadosCiviles> consultarEstadosCiviles() {
         List<EstadosCiviles> listEstadosCiviles;
-        listEstadosCiviles = persistenciaEstadosCiviles.buscarEstadosCiviles();
+        listEstadosCiviles = persistenciaEstadosCiviles.consultarEstadosCiviles();
         return listEstadosCiviles;
     }
 

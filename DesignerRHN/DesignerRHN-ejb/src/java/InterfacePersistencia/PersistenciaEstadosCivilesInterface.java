@@ -56,7 +56,7 @@ public interface PersistenciaEstadosCivilesInterface {
      *
      * @return Retorna una lista de EstadosCiviles
      */
-    public List<EstadosCiviles> buscarEstadosCiviles();
+    public List<EstadosCiviles> consultarEstadosCiviles();
 
     /**
      * Método encargado de revisar si existe una relacion entre un EstadoCivil

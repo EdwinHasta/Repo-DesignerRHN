@@ -82,7 +82,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Cargos> listCargos(){
         try{
-            listCargos = persistenciaCargos.buscarCargos();
+            listCargos = persistenciaCargos.consultarCargos();
             return listCargos;
         }catch(Exception e){
             System.out.println("Error en listCargos Administrar: "+e.toString());
@@ -104,7 +104,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.buscarEmpresas();
+            listEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Administrar : " + e.toString());

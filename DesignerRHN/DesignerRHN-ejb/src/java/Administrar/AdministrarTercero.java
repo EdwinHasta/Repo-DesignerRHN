@@ -118,7 +118,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.buscarEmpresas();
+            listEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error en listEmpresas Admi : "+e.toString());
