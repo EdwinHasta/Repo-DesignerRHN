@@ -78,6 +78,7 @@ public interface AdministrarDetallesEmpresasInterface {
      * @return Retorna una lista de Cargos.
      */
     public List<Cargos> lovCargos();
+
     /**
      * Método encargado de recuperar todas las Empresas.
      *
@@ -85,4 +86,10 @@ public interface AdministrarDetallesEmpresasInterface {
      */
     public List<Empresas> lovEmpresas();
 
+    /**
+     * Método encargado de recuperar una Empresa por medio la la secuencia dada por parametro
+     * @param secEmpresa Secuencia de la Empresa
+     * @return Empresa referenciada por la secuencia dada
+     */
+    public Empresas empresaActual(BigInteger secEmpresa);
 }

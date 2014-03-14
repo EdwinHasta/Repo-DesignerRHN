@@ -130,6 +130,21 @@ public class DetallesEmpresas implements Serializable {
     @Size(max = 1)
     @Column(name = "AFILIADOCCF")
     private String afiliadoccf;
+    @Size(max = 1)
+    @Column(name = "REFORMAEXONERAICBFSENASALUD")
+    private String reformaexoneraicbfsenasalud;
+    @Size(max = 1)
+    @Column(name = "PILAUSAMULTILINEASLN")
+    private String pilausamultilineasln;
+    @Size(max = 1)
+    @Column(name = "SOLIDARIDADFOSYGAEXENTOPRF")
+    private String solidaridadfosygaexentoprf;
+    @Size(max = 1)
+    @Column(name = "EXONERALNSTARIFAAFPPATRON")
+    private String exoneralnstarifaafppatron;
+    @Size(max = 1)
+    @Column(name = "REPORTALNSTARIFAAFPESPECIAL")
+    private String reportalnstarifaafpespecial;
     @Column(name = "TERCEROARP")
     private BigInteger terceroarp;
     @Column(name = "TERCEROCCF")
@@ -182,6 +197,26 @@ public class DetallesEmpresas implements Serializable {
     private String strTipoAportante;
     @Transient
     private String strTipoAccion;
+    @Transient
+    private boolean checkReformaExoneraIcbfSenaSalud;
+    @Transient
+    private String strReformaExoneraIcbfSenaSalud;
+    @Transient
+    private boolean checkPilaSsaMultilineasln;
+    @Transient
+    private String strPilaSsaMultilineasln;
+    @Transient
+    private boolean checkSolidaridadFosygaeExentoPrf;
+    @Transient
+    private String strSolidaridadFosygaeExentoPrf;
+    @Transient
+    private boolean checkExoneraLnsTarifaAfpPatron;
+    @Transient
+    private String strExoneraLnsTarifaAfpPatron;
+    @Transient
+    private boolean checkReportaLnsTarifaAfpEspecial;
+    @Transient
+    private String strReportaLnsTarifaAfpEspecial;
 
     public DetallesEmpresas() {
     }
@@ -213,7 +248,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = tipo.toUpperCase();
     }
 
     public String getDireccion() {
@@ -221,7 +256,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        this.direccion = direccion.toUpperCase();
     }
 
     public String getTelefono() {
@@ -229,7 +264,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        this.telefono = telefono.toUpperCase();;
     }
 
     public String getFax() {
@@ -237,7 +272,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setFax(String fax) {
-        this.fax = fax;
+        this.fax = fax.toUpperCase();;
     }
 
     public String getNombrerepresentante() {
@@ -245,7 +280,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setNombrerepresentante(String nombrerepresentante) {
-        this.nombrerepresentante = nombrerepresentante;
+        this.nombrerepresentante = nombrerepresentante.toUpperCase();;
     }
 
     public String getDocumentorepresentante() {
@@ -253,7 +288,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setDocumentorepresentante(String documentorepresentante) {
-        this.documentorepresentante = documentorepresentante;
+        this.documentorepresentante = documentorepresentante.toUpperCase();;
     }
 
     public String getTiponit() {
@@ -261,7 +296,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTiponit(String tiponit) {
-        this.tiponit = tiponit;
+        this.tiponit = tiponit.toUpperCase();;
     }
 
     public Short getDigitoverificacion() {
@@ -273,11 +308,14 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getEmail() {
+        if (email == null) {
+            email = " ";
+        }
         return email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toUpperCase();;
     }
 
     public String getZona() {
@@ -292,11 +330,14 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getActividadeconomica() {
+        if (actividadeconomica == null) {
+            actividadeconomica = " ";
+        }
         return actividadeconomica;
     }
 
     public void setActividadeconomica(String actividadeconomica) {
-        this.actividadeconomica = actividadeconomica;
+        this.actividadeconomica = actividadeconomica.toUpperCase();;
     }
 
     public Date getFechapensiones() {
@@ -316,6 +357,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getTipodocumento() {
+        if (tipodocumento == null) {
+            tipodocumento = "NIT";
+        }
         return tipodocumento;
     }
 
@@ -351,6 +395,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getClaseaportante() {
+        if (claseaportante == null) {
+            claseaportante = "A";
+        }
         return claseaportante;
     }
 
@@ -377,6 +424,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getNaturalezajuridica() {
+        if (naturalezajuridica == null) {
+            naturalezajuridica = "1";
+        }
         return naturalezajuridica;
     }
 
@@ -409,6 +459,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getTipopersona() {
+        if (tipopersona == null) {
+            tipopersona = "J";
+        }
         return tipopersona;
     }
 
@@ -432,6 +485,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getFormapresentacion() {
+        if (formapresentacion == null) {
+            formapresentacion = "U";
+        }
         return formapresentacion;
     }
 
@@ -461,6 +517,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public BigInteger getTipoaportante() {
+        if (tipoaportante == null) {
+            tipoaportante = new BigInteger("1");
+        }
         return tipoaportante;
     }
 
@@ -502,6 +561,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public BigInteger getTipoaccion() {
+        if (tipoaccion == null) {
+            tipoaccion = new BigInteger("1");
+        }
         return tipoaccion;
     }
 
@@ -543,23 +605,29 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setNombrearquitecto(String nombrearquitecto) {
-        this.nombrearquitecto = nombrearquitecto;
+        this.nombrearquitecto = nombrearquitecto.toUpperCase();;
     }
 
     public String getCargoarquitecto() {
+        if (cargoarquitecto == null) {
+            cargoarquitecto = " ";
+        }
         return cargoarquitecto;
     }
 
     public void setCargoarquitecto(String cargoarquitecto) {
-        this.cargoarquitecto = cargoarquitecto;
+        this.cargoarquitecto = cargoarquitecto.toUpperCase();;
     }
 
     public String getPilaultimaplanilla() {
+        if (pilaultimaplanilla == null) {
+            pilaultimaplanilla = " ";
+        }
         return pilaultimaplanilla;
     }
 
     public void setPilaultimaplanilla(String pilaultimaplanilla) {
-        this.pilaultimaplanilla = pilaultimaplanilla;
+        this.pilaultimaplanilla = pilaultimaplanilla.toUpperCase();;
     }
 
     public String getAfiliadoarp() {
@@ -713,6 +781,226 @@ public class DetallesEmpresas implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Detallesempresas[ secuencia=" + secuencia + " ]";
+    }
+
+    public String getReformaexoneraicbfsenasalud() {
+        if (reformaexoneraicbfsenasalud == null) {
+            reformaexoneraicbfsenasalud = "N";
+        }
+        return reformaexoneraicbfsenasalud;
+    }
+
+    public void setReformaexoneraicbfsenasalud(String reformaexoneraicbfsenasalud) {
+        this.reformaexoneraicbfsenasalud = reformaexoneraicbfsenasalud;
+    }
+
+    public String getPilausamultilineasln() {
+        if (pilausamultilineasln == null) {
+            pilausamultilineasln = "N";
+        }
+        return pilausamultilineasln;
+    }
+
+    public void setPilausamultilineasln(String pilausamultilineasln) {
+        this.pilausamultilineasln = pilausamultilineasln;
+    }
+
+    public String getSolidaridadfosygaexentoprf() {
+        if (solidaridadfosygaexentoprf == null) {
+            solidaridadfosygaexentoprf = "N";
+        }
+        return solidaridadfosygaexentoprf;
+    }
+
+    public void setSolidaridadfosygaexentoprf(String solidaridadfosygaexentoprf) {
+        this.solidaridadfosygaexentoprf = solidaridadfosygaexentoprf;
+    }
+
+    public String getExoneralnstarifaafppatron() {
+        if (exoneralnstarifaafppatron == null) {
+            exoneralnstarifaafppatron = "N";
+        }
+        return exoneralnstarifaafppatron;
+    }
+
+    public void setExoneralnstarifaafppatron(String exoneralnstarifaafppatron) {
+        this.exoneralnstarifaafppatron = exoneralnstarifaafppatron;
+    }
+
+    public String getReportalnstarifaafpespecial() {
+        if (reportalnstarifaafpespecial == null) {
+            reportalnstarifaafpespecial = "N";
+        }
+        return reportalnstarifaafpespecial;
+    }
+
+    public void setReportalnstarifaafpespecial(String reportalnstarifaafpespecial) {
+        this.reportalnstarifaafpespecial = reportalnstarifaafpespecial;
+    }
+
+    public boolean isCheckReformaExoneraIcbfSenaSalud() {
+        getReformaexoneraicbfsenasalud();
+        if (reformaexoneraicbfsenasalud.equalsIgnoreCase("N")) {
+            checkReformaExoneraIcbfSenaSalud = false;
+        } else {
+            checkReformaExoneraIcbfSenaSalud = true;
+        }
+        return checkReformaExoneraIcbfSenaSalud;
+    }
+
+    public void setCheckReformaExoneraIcbfSenaSalud(boolean checkReformaExoneraIcbfSenaSalud) {
+        if (checkReformaExoneraIcbfSenaSalud == false) {
+            reformaexoneraicbfsenasalud = "N";
+        } else {
+            reformaexoneraicbfsenasalud = "S";
+        }
+        this.checkReformaExoneraIcbfSenaSalud = checkReformaExoneraIcbfSenaSalud;
+    }
+
+    public String getStrReformaExoneraIcbfSenaSalud() {
+        getReformaexoneraicbfsenasalud();
+        if (reformaexoneraicbfsenasalud.equalsIgnoreCase("N")) {
+            strReformaExoneraIcbfSenaSalud = "NO";
+        } else {
+            strReformaExoneraIcbfSenaSalud = "SI";
+        }
+        return strReformaExoneraIcbfSenaSalud;
+    }
+
+    public void setStrReformaExoneraIcbfSenaSalud(String strReformaExoneraIcbfSenaSalud) {
+        this.strReformaExoneraIcbfSenaSalud = strReformaExoneraIcbfSenaSalud;
+    }
+
+    public boolean isCheckPilaSsaMultilineasln() {
+        getPilausamultilineasln();
+        if (pilausamultilineasln.equalsIgnoreCase("N")) {
+            checkPilaSsaMultilineasln = false;
+        } else {
+            checkPilaSsaMultilineasln = true;
+        }
+        return checkPilaSsaMultilineasln;
+    }
+
+    public void setCheckPilaSsaMultilineasln(boolean checkPilaSsaMultilineasln) {
+        if (checkPilaSsaMultilineasln == false) {
+            pilausamultilineasln = "N";
+        } else {
+            pilausamultilineasln = "S";
+        }
+        this.checkPilaSsaMultilineasln = checkPilaSsaMultilineasln;
+    }
+
+    public String getStrPilaSsaMultilineasln() {
+        getPilausamultilineasln();
+        if (pilausamultilineasln.equalsIgnoreCase("N")) {
+            strPilaSsaMultilineasln = "NO";
+        } else {
+            strPilaSsaMultilineasln = "SI";
+        }
+        return strPilaSsaMultilineasln;
+    }
+
+    public void setStrPilaSsaMultilineasln(String strPilaSsaMultilineasln) {
+        this.strPilaSsaMultilineasln = strPilaSsaMultilineasln;
+    }
+
+    public boolean isCheckSolidaridadFosygaeExentoPrf() {
+        getSolidaridadfosygaexentoprf();
+        if (solidaridadfosygaexentoprf.equalsIgnoreCase("N")) {
+            checkSolidaridadFosygaeExentoPrf = false;
+        } else {
+            checkSolidaridadFosygaeExentoPrf = true;
+        }
+        return checkSolidaridadFosygaeExentoPrf;
+    }
+
+    public void setCheckSolidaridadFosygaeExentoPrf(boolean checkSolidaridadFosygaeExentoPrf) {
+        if (checkSolidaridadFosygaeExentoPrf == false) {
+            solidaridadfosygaexentoprf = "N";
+        } else {
+            solidaridadfosygaexentoprf = "S";
+        }
+        this.checkSolidaridadFosygaeExentoPrf = checkSolidaridadFosygaeExentoPrf;
+    }
+
+    public String getStrSolidaridadFosygaeExentoPrf() {
+        getSolidaridadfosygaexentoprf();
+        if (solidaridadfosygaexentoprf.equalsIgnoreCase("N")) {
+            strSolidaridadFosygaeExentoPrf = "NO";
+        } else {
+            strSolidaridadFosygaeExentoPrf = "SI";
+        }
+        return strSolidaridadFosygaeExentoPrf;
+    }
+
+    public void setStrSolidaridadFosygaeExentoPrf(String strSolidaridadFosygaeExentoPrf) {
+        this.strSolidaridadFosygaeExentoPrf = strSolidaridadFosygaeExentoPrf;
+    }
+
+    public boolean isCheckExoneraLnsTarifaAfpPatron() {
+        getExoneralnstarifaafppatron();
+        if (exoneralnstarifaafppatron.equalsIgnoreCase("N")) {
+            checkExoneraLnsTarifaAfpPatron = false;
+        } else {
+            checkExoneraLnsTarifaAfpPatron = true;
+        }
+        return checkExoneraLnsTarifaAfpPatron;
+    }
+
+    public void setCheckExoneraLnsTarifaAfpPatron(boolean checkExoneraLnsTarifaAfpPatron) {
+        if (checkExoneraLnsTarifaAfpPatron == false) {
+            exoneralnstarifaafppatron = "N";
+        } else {
+            exoneralnstarifaafppatron = "S";
+        }
+        this.checkExoneraLnsTarifaAfpPatron = checkExoneraLnsTarifaAfpPatron;
+    }
+
+    public String getStrExoneraLnsTarifaAfpPatron() {
+        getExoneralnstarifaafppatron();
+        if (exoneralnstarifaafppatron.equalsIgnoreCase("N")) {
+            strExoneraLnsTarifaAfpPatron = "NO";
+        } else {
+            strExoneraLnsTarifaAfpPatron = "SI";
+        }
+        return strExoneraLnsTarifaAfpPatron;
+    }
+
+    public void setStrExoneraLnsTarifaAfpPatron(String strExoneraLnsTarifaAfpPatron) {
+        this.strExoneraLnsTarifaAfpPatron = strExoneraLnsTarifaAfpPatron;
+    }
+
+    public boolean isCheckReportaLnsTarifaAfpEspecial() {
+        getReportalnstarifaafpespecial();
+        if (reportalnstarifaafpespecial.equalsIgnoreCase("N")) {
+            checkReportaLnsTarifaAfpEspecial = false;
+        } else {
+            checkReportaLnsTarifaAfpEspecial = true;
+        }
+        return checkReportaLnsTarifaAfpEspecial;
+    }
+
+    public void setCheckReportaLnsTarifaAfpEspecial(boolean checkReportaLnsTarifaAfpEspecial) {
+        if (checkReportaLnsTarifaAfpEspecial == false) {
+            reportalnstarifaafpespecial = "N";
+        } else {
+            reportalnstarifaafpespecial = "S";
+        }
+        this.checkReportaLnsTarifaAfpEspecial = checkReportaLnsTarifaAfpEspecial;
+    }
+
+    public String getStrReportaLnsTarifaAfpEspecial() {
+        getReportalnstarifaafpespecial();
+        if (reportalnstarifaafpespecial.equalsIgnoreCase("N")) {
+            strReportaLnsTarifaAfpEspecial = "NO";
+        } else {
+            strReportaLnsTarifaAfpEspecial = "SI";
+        }
+        return strReportaLnsTarifaAfpEspecial;
+    }
+
+    public void setStrReportaLnsTarifaAfpEspecial(String strReportaLnsTarifaAfpEspecial) {
+        this.strReportaLnsTarifaAfpEspecial = strReportaLnsTarifaAfpEspecial;
     }
 
 }
