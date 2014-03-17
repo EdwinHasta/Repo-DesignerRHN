@@ -75,7 +75,7 @@ public interface PersistenciaEmpleadoInterface {
      */
     public Empleados buscarEmpleadoTipo(BigInteger codigoEmpleado);
     /**
-     * Método encargado de buscar los empleado que sean 'ACTIVOS','RETIRADOS' O 'PENCIONADOS'
+     * Método encargado de buscar los empleado que sean 'ACTIVOS','RETIRADOS' O 'PENSIONADOS'
      * y que se encuentren en la vista vwactualestipostrabajadores de la base de datos.
      * @return Retorna una lista de empleados.
      */
@@ -99,4 +99,10 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> lovEmpleadosParametros();
     
     public List<Empleados> empleadosAuxilios();
+    /**
+     * Método encargado de buscar los empleado que sean 'ACTIVOS'
+     * y que se encuentren en la vista vwactualestipostrabajadores de la base de datos.
+     * @return Retorna una lista de empleados.
+     */
+    public List<Empleados> empleadosNovedadEmbargo();
 }

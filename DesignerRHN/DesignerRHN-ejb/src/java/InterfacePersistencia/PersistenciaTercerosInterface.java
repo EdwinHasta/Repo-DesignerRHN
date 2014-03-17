@@ -61,4 +61,10 @@ public interface PersistenciaTercerosInterface {
      * @return Retorna una lista de Terceros ordenados por nombre.
      */
     public List<Terceros> lovTerceros(BigInteger secEmpresa);
+    /**
+     * Método encargado de buscar todos los Terceros existentes en la base de datos
+     * donde las empresa estén en la tabla Terceros
+     * @return Retorna una lista de Terceros.
+     */
+    public List<Terceros> tercerosEmbargos();
 }

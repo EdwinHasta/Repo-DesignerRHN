@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -37,6 +38,8 @@ public class Periodicidades implements Serializable {
     @NotNull()
     @Column(name = "CODIGO")
     private Integer codigo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "periodicidad")
+    private Collection<EersPrestamosDtos> eersPrestamosDtosCollection;
     @OneToMany(mappedBy = "periodicidadcorte")
     private Collection<GruposProvisiones> gruposProvisionesCollection;
     @OneToMany(mappedBy = "periodicidad")
@@ -183,6 +186,15 @@ public class Periodicidades implements Serializable {
     public void setCodigoStr(String codigoStr) {
         codigo = Integer.parseInt(codigoStr);
         this.codigoStr = codigoStr;
+    }
+
+    @XmlTransient
+    public Collection<EersPrestamosDtos> getEersPrestamosDtosCollection() {
+        return eersPrestamosDtosCollection;
+    }
+
+    public void setEersPrestamosDtosCollection(Collection<EersPrestamosDtos> eersPrestamosDtosCollection) {
+        this.eersPrestamosDtosCollection = eersPrestamosDtosCollection;
     }
 
     public Integer getCodigo() {
