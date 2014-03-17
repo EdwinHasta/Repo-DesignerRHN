@@ -46,7 +46,7 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
     @Override
     public List<Empresas> consultarEmpresas() {
         try {
-            List<Empresas> listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listaEmpresas;
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPAPELES CONSULTAREMPRESAS ERROR : " + e);

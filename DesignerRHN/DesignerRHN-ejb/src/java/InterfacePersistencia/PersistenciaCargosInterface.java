@@ -54,7 +54,7 @@ public interface PersistenciaCargosInterface {
      *
      * @return Retorna una lista de Cargos.
      */
-    public List<Cargos> buscarCargos();
+    public List<Cargos> consultarCargos();
 
     /**
      * Método encargado de traer todos los cargos de la base de datos,

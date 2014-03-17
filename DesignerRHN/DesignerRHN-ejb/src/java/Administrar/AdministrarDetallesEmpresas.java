@@ -220,7 +220,7 @@ public class AdministrarDetallesEmpresas implements AdministrarDetallesEmpresasI
     @Override
     public List<Personas> lovPersonas() {
         try {
-            List<Personas> lista = persistenciaPersonas.buscarPersonas();
+            List<Personas> lista = persistenciaPersonas.consultarPersonas();
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovPersonas Admi : " + e.toString());
@@ -231,7 +231,7 @@ public class AdministrarDetallesEmpresas implements AdministrarDetallesEmpresasI
     @Override
     public List<Cargos> lovCargos() {
         try {
-            List<Cargos> lista = persistenciaCargos.buscarCargos();
+            List<Cargos> lista = persistenciaCargos.consultarCargos();
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovCargos Admi : " + e.toString());
@@ -242,15 +242,15 @@ public class AdministrarDetallesEmpresas implements AdministrarDetallesEmpresasI
     @Override
     public List<Empresas> lovEmpresas() {
         try {
-            List<Empresas> lista = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> lista = persistenciaEmpresas.consultarEmpresas();
             return lista;
         } catch (Exception e) {
-            System.out.println("Error lovEmpresas Admi : " + e.toString());
+            System.out.println("Error lovPersonas Admi : " + e.toString());
             return null;
         }
     }
 
-    @Override
+       @Override
     public Empresas empresaActual(BigInteger secEmpresa) {
         try {
             Empresas empr = persistenciaEmpresas.buscarEmpresasSecuencia(secEmpresa);

@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Bancos.findAll", query = "SELECT b FROM Bancos b")})
 public class Bancos implements Serializable {
+
     @OneToMany(mappedBy = "banco")
     private Collection<ParametrosInformes> parametrosInformesCollection;
     private static final long serialVersionUID = 1L;
@@ -46,9 +47,6 @@ public class Bancos implements Serializable {
     @Size(max = 40)
     @Column(name = "GERENTE")
     private String gerente;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 15)
@@ -109,7 +107,7 @@ public class Bancos implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
+        if (nombre == null) {
             nombre = " ";
         }
         return nombre;
@@ -209,5 +207,5 @@ public class Bancos implements Serializable {
     public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
         this.parametrosInformesCollection = parametrosInformesCollection;
     }
-    
+
 }

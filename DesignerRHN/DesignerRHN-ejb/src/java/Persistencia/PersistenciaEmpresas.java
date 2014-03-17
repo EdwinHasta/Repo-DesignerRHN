@@ -51,7 +51,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         em.remove(em.merge(empresas));
     }
 
-    @Override
+    @Override 
     public List<Empresas> buscarEmpresas() {
         try {
             Query query = em.createQuery("SELECT e FROM Empresas e");
@@ -125,6 +125,18 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             }
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.codigoEmpresa" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empresas> consultarEmpresas() {
+        try {
+            Query query = em.createQuery("SELECT e FROM Empresas e");
+            List<Empresas> empresas = query.getResultList();
+            return empresas;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpresas PersistenciaEmpresas : " + e.toString());
             return null;
         }
     }

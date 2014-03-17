@@ -48,6 +48,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
     @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tercero")
+    private Collection<EersPrestamos> eersPrestamosCollection;
+    @OneToMany(mappedBy = "demandante")
+    private Collection<EersPrestamos> eersPrestamosCollection1;
     @OneToMany(mappedBy = "tercero")
     private Collection<EersAuxilios> eersAuxiliosCollection;
 
@@ -76,7 +80,7 @@ public class Terceros implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "NIT")
-    private long nit;
+    private Long nit;
     @Column(name = "CODIGOALTERNATIVO")
     private Long codigoalternativo;
     @Basic(optional = false)
@@ -148,7 +152,10 @@ public class Terceros implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public long getNit() {
+    public Long getNit() {
+        if(nit == null){
+           nit = Long.valueOf("0");
+        }
         return nit;
     }
 
@@ -411,5 +418,23 @@ public class Terceros implements Serializable {
 
     public void setEersAuxiliosCollection(Collection<EersAuxilios> eersAuxiliosCollection) {
         this.eersAuxiliosCollection = eersAuxiliosCollection;
+    }
+
+    @XmlTransient
+    public Collection<EersPrestamos> getEersPrestamosCollection() {
+        return eersPrestamosCollection;
+    }
+
+    public void setEersPrestamosCollection(Collection<EersPrestamos> eersPrestamosCollection) {
+        this.eersPrestamosCollection = eersPrestamosCollection;
+    }
+
+    @XmlTransient
+    public Collection<EersPrestamos> getEersPrestamosCollection1() {
+        return eersPrestamosCollection1;
+    }
+
+    public void setEersPrestamosCollection1(Collection<EersPrestamos> eersPrestamosCollection1) {
+        this.eersPrestamosCollection1 = eersPrestamosCollection1;
     }
 }

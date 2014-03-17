@@ -78,7 +78,7 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
 
     @Override
     public List<Empresas> consultarEmpresas() {
-        return persistenciaEmpresas.buscarEmpresas();
+        return persistenciaEmpresas.consultarEmpresas();
     }
 
     @Override

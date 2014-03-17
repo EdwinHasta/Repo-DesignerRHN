@@ -101,8 +101,6 @@ public class Empresas implements Serializable {
     @Column(name = "NIT")
     private long nit;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Lob

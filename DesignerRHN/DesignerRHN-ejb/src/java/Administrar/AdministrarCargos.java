@@ -136,7 +136,7 @@ public class AdministrarCargos implements AdministrarCargosInterface {
     @Override
     public List<Cargos> consultarCargos() {
         try {
-            return persistenciaCargos.buscarCargos();
+            return persistenciaCargos.consultarCargos();
         } catch (Exception e) {
             System.out.println("Error consultarCargos Admi : " + e.toString());
             return null;
@@ -146,7 +146,7 @@ public class AdministrarCargos implements AdministrarCargosInterface {
     @Override
     public List<Empresas> listaEmpresas() {
         try {
-            List<Empresas> lista = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> lista = persistenciaEmpresas.consultarEmpresas();
             return lista;
         } catch (Exception e) {
             return null;

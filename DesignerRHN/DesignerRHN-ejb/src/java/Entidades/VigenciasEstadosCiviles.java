@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,14 +37,12 @@ public class VigenciasEstadosCiviles implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "FECHAVIGENCIA")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechavigencia;
     @Column(name = "CODIGO")
-    private Long codigo;
+    private Integer codigo;
     @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Personas persona;
@@ -55,20 +53,20 @@ public class VigenciasEstadosCiviles implements Serializable {
     public VigenciasEstadosCiviles() {
     }
 
-    public VigenciasEstadosCiviles(BigDecimal secuencia) {
+    public VigenciasEstadosCiviles(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public VigenciasEstadosCiviles(BigDecimal secuencia, Date fechavigencia) {
+    public VigenciasEstadosCiviles(BigInteger secuencia, Date fechavigencia) {
         this.secuencia = secuencia;
         this.fechavigencia = fechavigencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -80,11 +78,11 @@ public class VigenciasEstadosCiviles implements Serializable {
         this.fechavigencia = fechavigencia;
     }
 
-    public Long getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Long codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

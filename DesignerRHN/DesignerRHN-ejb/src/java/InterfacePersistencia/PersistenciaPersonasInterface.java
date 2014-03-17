@@ -39,7 +39,7 @@ public interface PersistenciaPersonasInterface {
      * Método encargado de buscar todas las Personas existentes en la base de datos.
      * @return Retorna una lista de Personas.
      */
-    public List<Personas> buscarPersonas();
+    public List<Personas> consultarPersonas();
     /**
      * Metodo encargado de actualizar en la base de datos si una persona tiene foto o no.
      * @param identificacion Número de documento de la persona a la que se le pone una foto.

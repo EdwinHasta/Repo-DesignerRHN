@@ -45,6 +45,8 @@ public class Conceptos implements Serializable {
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
+    private Collection<DetallesFormasDtos> detallesFormasDtosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
     @OneToMany(mappedBy = "concepto")
     private List<DetallesExtrasRecargos> detallesExtrasRecargosList;
@@ -719,14 +721,6 @@ public class Conceptos implements Serializable {
         this.detallesExtrasRecargosList = detallesExtrasRecargosList;
     }
 
-    public BigInteger getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(BigInteger codigo) {
-        this.codigo = codigo;
-    }
-
     @XmlTransient
     public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
         return tSFormulasConceptosCollection;
@@ -734,6 +728,23 @@ public class Conceptos implements Serializable {
 
     public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
         this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
+    }
+
+    @XmlTransient
+    public Collection<DetallesFormasDtos> getDetallesFormasDtosCollection() {
+        return detallesFormasDtosCollection;
+    }
+
+    public void setDetallesFormasDtosCollection(Collection<DetallesFormasDtos> detallesFormasDtosCollection) {
+        this.detallesFormasDtosCollection = detallesFormasDtosCollection;
+    }
+
+    public BigInteger getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(BigInteger codigo) {
+        this.codigo = codigo;
     }
 }
 

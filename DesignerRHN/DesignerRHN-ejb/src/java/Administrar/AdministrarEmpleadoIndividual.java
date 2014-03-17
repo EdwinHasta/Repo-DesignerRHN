@@ -140,7 +140,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasEstadosCiviles estadoCivilPersona(BigInteger secPersona) {
         List<VigenciasEstadosCiviles> listaVigenciasEstadosCiviles;
-        listaVigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.vigenciaEstadoCivilPersona(secPersona);
+        listaVigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPersona(secPersona);
         if (listaVigenciasEstadosCiviles != null) {
             return listaVigenciasEstadosCiviles.get(0);
         } else {
@@ -353,7 +353,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public List<Cargos> cargos() {
         List<Cargos> listaCargos;
-        listaCargos = persistenciaCargos.buscarCargos();
+        listaCargos = persistenciaCargos.consultarCargos();
         return listaCargos;
     }
 

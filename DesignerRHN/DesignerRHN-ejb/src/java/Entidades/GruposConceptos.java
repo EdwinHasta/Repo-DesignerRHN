@@ -30,6 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GruposConceptos.findAll", query = "SELECT g FROM GruposConceptos g")})
 public class GruposConceptos implements Serializable {
+    @OneToMany(mappedBy = "basegrupo")
+    private Collection<DetallesFormasDtos> detallesFormasDtosCollection;
+    @OneToMany(mappedBy = "grupodisparador")
+    private Collection<DetallesFormasDtos> detallesFormasDtosCollection1;
     @OneToMany(mappedBy = "grupoconcepto")
     private Collection<OperandosGruposConceptos> operandosGruposConceptosCollection;
 
@@ -233,6 +237,24 @@ public class GruposConceptos implements Serializable {
 
     public void setOperandosGruposConceptosCollection(Collection<OperandosGruposConceptos> operandosGruposConceptosCollection) {
         this.operandosGruposConceptosCollection = operandosGruposConceptosCollection;
+    }
+
+    @XmlTransient
+    public Collection<DetallesFormasDtos> getDetallesFormasDtosCollection() {
+        return detallesFormasDtosCollection;
+    }
+
+    public void setDetallesFormasDtosCollection(Collection<DetallesFormasDtos> detallesFormasDtosCollection) {
+        this.detallesFormasDtosCollection = detallesFormasDtosCollection;
+    }
+
+    @XmlTransient
+    public Collection<DetallesFormasDtos> getDetallesFormasDtosCollection1() {
+        return detallesFormasDtosCollection1;
+    }
+
+    public void setDetallesFormasDtosCollection1(Collection<DetallesFormasDtos> detallesFormasDtosCollection1) {
+        this.detallesFormasDtosCollection1 = detallesFormasDtosCollection1;
     }
 
 }
