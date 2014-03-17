@@ -62,8 +62,8 @@ public class AdministrarNovedadesEmbargos implements AdministrarNovedadesEmbargo
     PersistenciaDetallesFormasDtosInterface persistenciaDetallesFormasDtos;
     @EJB
     PersistenciaVWPrestamoDtosRealizadosInterface persistenciaVWPrestamo;
-    private EersPrestamosDtos dE;
-    private EersPrestamos e;
+    public EersPrestamosDtos dE;
+    public EersPrestamos e;
 
     @Override
     public List<Empleados> listaEmpleados() {
@@ -129,21 +129,12 @@ public class AdministrarNovedadesEmbargos implements AdministrarNovedadesEmbargo
             System.out.println("Modificando...");
             if (listaDetallesEmbargosModificar.get(i).getValor() == null) {
                 listaDetallesEmbargosModificar.get(i).setValor(null);
-                dE = listaDetallesEmbargosModificar.get(i);
-            } else {
-                dE = listaDetallesEmbargosModificar.get(i);
             }
             if (listaDetallesEmbargosModificar.get(i).getPorcentaje() == null) {
                 listaDetallesEmbargosModificar.get(i).setPorcentaje(null);
-                dE = listaDetallesEmbargosModificar.get(i);
-            } else {
-                dE = listaDetallesEmbargosModificar.get(i);
             }
             if (listaDetallesEmbargosModificar.get(i).getSaldoinicial() == null) {
                 listaDetallesEmbargosModificar.get(i).setSaldoinicial(null);
-                dE = listaDetallesEmbargosModificar.get(i);
-            } else {
-                dE = listaDetallesEmbargosModificar.get(i);
             }
 
             persistenciaEersDtos.editar(dE);
@@ -164,33 +155,28 @@ public class AdministrarNovedadesEmbargos implements AdministrarNovedadesEmbargo
     @Override
     public void modificarEmbargo(List<EersPrestamos> listaEmbargosModificar) {
         for (int i = 0; i < listaEmbargosModificar.size(); i++) {
+            System.out.println("ListaEmbargosModificar " + listaEmbargosModificar.size());
             System.out.println("Modificando...");
-            if (listaEmbargosModificar.get(i).getTipoembargo()== null) {
+            if (listaEmbargosModificar.get(i).getTipoembargo() == null) {
                 listaEmbargosModificar.get(i).setTipoembargo(null);
-                e = listaEmbargosModificar.get(i);
             }
             if (listaEmbargosModificar.get(i).getCancelaciondocumento() == null) {
                 listaEmbargosModificar.get(i).setCancelaciondocumento(null);
-                e = listaEmbargosModificar.get(i);
             }
             if (listaEmbargosModificar.get(i).getCancelacionfechahasta() == null) {
                 listaEmbargosModificar.get(i).setCancelacionfechahasta(null);
-                e = listaEmbargosModificar.get(i);
             }
             if (listaEmbargosModificar.get(i).getMotivoembargo() == null) {
                 listaEmbargosModificar.get(i).setMotivoembargo(null);
-                e = listaEmbargosModificar.get(i);
             }
             if (listaEmbargosModificar.get(i).getJuzgado() == null) {
                 listaEmbargosModificar.get(i).setJuzgado(null);
-                e = listaEmbargosModificar.get(i);
             }
             if (listaEmbargosModificar.get(i).getNumeroproceso() == null) {
                 listaEmbargosModificar.get(i).setNumeroproceso(null);
-                e = listaEmbargosModificar.get(i);
             }
 
-            persistenciaEers.editar(e);
+            persistenciaEers.editar(listaEmbargosModificar.get(i));
         }
     }
 

@@ -88,7 +88,7 @@
                                             <p:calendar  style="font-size: 10px;" value="#{embargos.fechadocumento}" id="editFechaOficio"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect"  update="editFechaOficio"/>
-                                                <p:ajax event="change" />
+                                                <p:ajax event="change" listener="#{controlNovedadEmbargo.modificarEmbargos(indice, 'N', embargos.fechadocumento)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadEmbargo.cambiarIndice(indice, 2)}" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
@@ -237,7 +237,7 @@
                                             <p:calendar  style="font-size: 10px;" value="#{embargos.fechainiciodescuento}" id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect"  update="editFechaInicial"/>
-                                                <p:ajax event="change" />
+                                                <p:ajax event="change" listener="#{controlNovedadEmbargo.modificarEmbargos(indice, 'N', embargos.fechainiciodescuento)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadEmbargo.cambiarIndice(indice, 10)}" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
@@ -298,7 +298,7 @@
                                             <p:calendar  style="font-size: 10px;" value="#{embargos.cancelacionfechahasta}" id="editFechaCancelacion"   styleClass="ui-datepicker, myClass"  
                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
                                                 <p:ajax event="dateSelect"  update="editFechaCancelacion"/>
-                                                <p:ajax event="change" />
+                                                <p:ajax event="change" listener="#{controlNovedadEmbargo.modificarEmbargos(indice, 'N', embargos.cancelacionfechahasta)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadEmbargo.cambiarIndice(indice, 13)}" />
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:calendar>
@@ -377,9 +377,9 @@
                             </p:toolbarGroup>
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 522px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  onclick="confirmarGuardar.show();" update=":form:datosEmbargos" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}"  actionListener="#{controlNovedadEmbargo.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 605px; top: 490px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"  actionListener="#{controlNovedadEmbargo.salir()}" action="individual" process="@this" /> 
+                        <p:commandButton style="position: absolute; left: 722px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  disabled="#{controlNovedadEmbargo.cambiosPagina}" onclick="confirmarGuardar.show();" update=":form:datosEmbargos" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}"  actionListener="#{controlNovedadEmbargo.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 805px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"  actionListener="#{controlNovedadEmbargo.salir()}" action="individual" process="@this" /> 
 
 
                         <!-- Detalles -->    

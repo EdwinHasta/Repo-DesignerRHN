@@ -192,6 +192,7 @@ public class ControlNovedadEmbargo implements Serializable {
         m = 0;
         roPorcentaje = false;
         roValor = false;
+        cambiosPagina = true;
     }
 
     //CREAR Embargo
@@ -431,6 +432,7 @@ public class ControlNovedadEmbargo implements Serializable {
             context.update("form:datosEmbargosDetalles");
             indexD = -1;
             secRegistro = null;
+            cambiosPagina = false;
 
             if (guardado == true) {
                 guardado = false;
@@ -511,10 +513,10 @@ public class ControlNovedadEmbargo implements Serializable {
             context.update("form:datosEmbargos");
             guardado = true;
             permitirIndex = true;
+            cambiosPagina = true;
             RequestContext.getCurrentInstance().update("form:aceptar");
             //  k = 0;
         }
-        System.out.println("Tamaño lista: " + listaEmbargosCrear.size());
         System.out.println("Valor k: " + k);
         index = -1;
         secRegistro = null;
@@ -584,6 +586,7 @@ public class ControlNovedadEmbargo implements Serializable {
 
         System.out.println("Valor k: " + k);
         indexD = -1;
+        cambiosPagina = true;
         secRegistro = null;
 
     }
@@ -2326,6 +2329,7 @@ public class ControlNovedadEmbargo implements Serializable {
                 lovlistaDetallesFormasDtos.clear();
                 getLovlistaDetallesFormasDtos();
             } else {
+                cambiosPagina = false;
                 permitirIndex = false;
                 context.update("formularioDialogos:formasDescuentosDialogo");
                 context.execute("formasDescuentosDialogo.show()");
@@ -2353,6 +2357,7 @@ public class ControlNovedadEmbargo implements Serializable {
                 lovlistaPeriodicidades.clear();
                 getLovlistaPeriodicidades();
             } else {
+                cambiosPagina = false;
                 permitirIndex = false;
                 context.update("formularioDialogos:periodicidadesDialogo");
                 context.execute("periodicidadesDialogo.show()");
@@ -3501,5 +3506,15 @@ public class ControlNovedadEmbargo implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
+
+    public boolean isCambiosPagina() {
+        return cambiosPagina;
+    }
+
+    public void setCambiosPagina(boolean cambiosPagina) {
+        this.cambiosPagina = cambiosPagina;
+    }
+    
+    
 
 }
