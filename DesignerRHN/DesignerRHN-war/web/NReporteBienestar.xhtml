@@ -48,7 +48,7 @@
                             <p:dataTable id="reportesBienestar" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;"                           
                                          value="#{controlNReporteBienestar.listaIR}" scrollable="true" scrollHeight="#{controlNReporteBienestar.altoTabla}" scrollWidth="690"
                                          filteredValue="#{controlNReporteBienestar.filtrarListInforeportesUsuario}" selectionMode="single" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10" selection="#{controlNReporteBienestar.actualInfoReporteTabla}" liveScroll="true" scrollRows="8">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10" selection="#{controlNReporteBienestar.actualInfoReporteTabla}">
                                 
                                 <p:ajax event="rowSelect" listener="#{controlNReporteBienestar.seleccionRegistro()}" process="@this" />
                                 <p:ajax event="rowDblselect" listener="#{controlNReporteBienestar.requisitosParaReporte()}" process="@this" />

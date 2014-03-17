@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,13 +34,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "DetallesEmpresas.findAll", query = "SELECT d FROM DetallesEmpresas d")})
 public class DetallesEmpresas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -129,6 +130,21 @@ public class DetallesEmpresas implements Serializable {
     @Size(max = 1)
     @Column(name = "AFILIADOCCF")
     private String afiliadoccf;
+    @Size(max = 1)
+    @Column(name = "REFORMAEXONERAICBFSENASALUD")
+    private String reformaexoneraicbfsenasalud;
+    @Size(max = 1)
+    @Column(name = "PILAUSAMULTILINEASLN")
+    private String pilausamultilineasln;
+    @Size(max = 1)
+    @Column(name = "SOLIDARIDADFOSYGAEXENTOPRF")
+    private String solidaridadfosygaexentoprf;
+    @Size(max = 1)
+    @Column(name = "EXONERALNSTARIFAAFPPATRON")
+    private String exoneralnstarifaafppatron;
+    @Size(max = 1)
+    @Column(name = "REPORTALNSTARIFAAFPESPECIAL")
+    private String reportalnstarifaafpespecial;
     @Column(name = "TERCEROARP")
     private BigInteger terceroarp;
     @Column(name = "TERCEROCCF")
@@ -167,15 +183,49 @@ public class DetallesEmpresas implements Serializable {
     @JoinColumn(name = "CARGOFIRMACONSTANCIA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Cargos cargofirmaconstancia;
+    @Transient
+    private String strTipoDocumento;
+    @Transient
+    private String strTipoPersona;
+    @Transient
+    private String strNaturalezaJuridica;
+    @Transient
+    private String strClaseAportante;
+    @Transient
+    private String strFormaPresentacion;
+    @Transient
+    private String strTipoAportante;
+    @Transient
+    private String strTipoAccion;
+    @Transient
+    private boolean checkReformaExoneraIcbfSenaSalud;
+    @Transient
+    private String strReformaExoneraIcbfSenaSalud;
+    @Transient
+    private boolean checkPilaSsaMultilineasln;
+    @Transient
+    private String strPilaSsaMultilineasln;
+    @Transient
+    private boolean checkSolidaridadFosygaeExentoPrf;
+    @Transient
+    private String strSolidaridadFosygaeExentoPrf;
+    @Transient
+    private boolean checkExoneraLnsTarifaAfpPatron;
+    @Transient
+    private String strExoneraLnsTarifaAfpPatron;
+    @Transient
+    private boolean checkReportaLnsTarifaAfpEspecial;
+    @Transient
+    private String strReportaLnsTarifaAfpEspecial;
 
     public DetallesEmpresas() {
     }
 
-    public DetallesEmpresas(BigDecimal secuencia) {
+    public DetallesEmpresas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public DetallesEmpresas(BigDecimal secuencia, String tipo, String direccion, String telefono, String fax, String nombrerepresentante, String documentorepresentante) {
+    public DetallesEmpresas(BigInteger secuencia, String tipo, String direccion, String telefono, String fax, String nombrerepresentante, String documentorepresentante) {
         this.secuencia = secuencia;
         this.tipo = tipo;
         this.direccion = direccion;
@@ -185,11 +235,11 @@ public class DetallesEmpresas implements Serializable {
         this.documentorepresentante = documentorepresentante;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -198,7 +248,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = tipo.toUpperCase();
     }
 
     public String getDireccion() {
@@ -206,7 +256,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        this.direccion = direccion.toUpperCase();
     }
 
     public String getTelefono() {
@@ -214,7 +264,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        this.telefono = telefono.toUpperCase();;
     }
 
     public String getFax() {
@@ -222,7 +272,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setFax(String fax) {
-        this.fax = fax;
+        this.fax = fax.toUpperCase();;
     }
 
     public String getNombrerepresentante() {
@@ -230,7 +280,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setNombrerepresentante(String nombrerepresentante) {
-        this.nombrerepresentante = nombrerepresentante;
+        this.nombrerepresentante = nombrerepresentante.toUpperCase();;
     }
 
     public String getDocumentorepresentante() {
@@ -238,7 +288,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setDocumentorepresentante(String documentorepresentante) {
-        this.documentorepresentante = documentorepresentante;
+        this.documentorepresentante = documentorepresentante.toUpperCase();;
     }
 
     public String getTiponit() {
@@ -246,7 +296,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTiponit(String tiponit) {
-        this.tiponit = tiponit;
+        this.tiponit = tiponit.toUpperCase();;
     }
 
     public Short getDigitoverificacion() {
@@ -258,14 +308,20 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getEmail() {
+        if (email == null) {
+            email = " ";
+        }
         return email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toUpperCase();;
     }
 
     public String getZona() {
+        if (zona == null) {
+            zona = "RURAL";
+        }
         return zona;
     }
 
@@ -274,11 +330,14 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getActividadeconomica() {
+        if (actividadeconomica == null) {
+            actividadeconomica = " ";
+        }
         return actividadeconomica;
     }
 
     public void setActividadeconomica(String actividadeconomica) {
-        this.actividadeconomica = actividadeconomica;
+        this.actividadeconomica = actividadeconomica.toUpperCase();;
     }
 
     public Date getFechapensiones() {
@@ -298,6 +357,9 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public String getTipodocumento() {
+        if (tipodocumento == null) {
+            tipodocumento = "NIT";
+        }
         return tipodocumento;
     }
 
@@ -305,7 +367,37 @@ public class DetallesEmpresas implements Serializable {
         this.tipodocumento = tipodocumento;
     }
 
+    public String getStrTipoDocumento() {
+        getTipodocumento();
+        if (tipodocumento.equalsIgnoreCase("NI")) {
+            strTipoDocumento = "NIT";
+        }
+        if (tipodocumento.equalsIgnoreCase("CC")) {
+            strTipoDocumento = "CEDULA";
+        }
+        if (tipodocumento.equalsIgnoreCase("CE")) {
+            strTipoDocumento = "CEDULA EXTRANJERIA";
+        }
+        if (tipodocumento.equalsIgnoreCase("TI")) {
+            strTipoDocumento = "TARJETA IDENTIDAD";
+        }
+        if (tipodocumento.equalsIgnoreCase("RC")) {
+            strTipoDocumento = "REGISTRO CIVIL";
+        }
+        if (tipodocumento.equalsIgnoreCase("PA")) {
+            strTipoDocumento = "PASAPORTE";
+        }
+        return strTipoDocumento;
+    }
+
+    public void setStrTipoDocumento(String strTipoDocumento) {
+        this.strTipoDocumento = strTipoDocumento;
+    }
+
     public String getClaseaportante() {
+        if (claseaportante == null) {
+            claseaportante = "A";
+        }
         return claseaportante;
     }
 
@@ -313,7 +405,28 @@ public class DetallesEmpresas implements Serializable {
         this.claseaportante = claseaportante;
     }
 
+    public String getStrClaseAportante() {
+        getClaseaportante();
+        if (claseaportante.equalsIgnoreCase("A")) {
+            strClaseAportante = "APORTANTE CON MAS DE 200 COTIZANTES";
+        }
+        if (claseaportante.equalsIgnoreCase("B")) {
+            strClaseAportante = "APORTANTE CON MENOS DE 200 COTIZANTES";
+        }
+        if (claseaportante.equalsIgnoreCase("I")) {
+            strClaseAportante = "INDEPENDIENTE";
+        }
+        return strClaseAportante;
+    }
+
+    public void setStrClaseAportante(String strClaseAportante) {
+        this.strClaseAportante = strClaseAportante;
+    }
+
     public String getNaturalezajuridica() {
+        if (naturalezajuridica == null) {
+            naturalezajuridica = "1";
+        }
         return naturalezajuridica;
     }
 
@@ -321,7 +434,34 @@ public class DetallesEmpresas implements Serializable {
         this.naturalezajuridica = naturalezajuridica;
     }
 
+    public String getStrNaturalezaJuridica() {
+        getNaturalezajuridica();
+        if (naturalezajuridica.equalsIgnoreCase("1")) {
+            strNaturalezaJuridica = "PUBLICA";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("2")) {
+            strNaturalezaJuridica = "PRIVADA";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("3")) {
+            strNaturalezaJuridica = "MIXTA";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("4")) {
+            strNaturalezaJuridica = "ORGANISMO MULTILATERAL";
+        }
+        if (naturalezajuridica.equalsIgnoreCase("5")) {
+            strNaturalezaJuridica = "ENTIDADES DE DERECHO PUBLICO NO SOMETIDO LEGISLACION COLOMBIANA";
+        }
+        return strNaturalezaJuridica;
+    }
+
+    public void setStrNaturalezaJuridica(String strNaturalezaJuridica) {
+        this.strNaturalezaJuridica = strNaturalezaJuridica;
+    }
+
     public String getTipopersona() {
+        if (tipopersona == null) {
+            tipopersona = "J";
+        }
         return tipopersona;
     }
 
@@ -329,7 +469,25 @@ public class DetallesEmpresas implements Serializable {
         this.tipopersona = tipopersona;
     }
 
+    public String getStrTipoPersona() {
+        getTipopersona();
+        if (tipopersona.equalsIgnoreCase("N")) {
+            strTipoPersona = "NATURAL";
+        }
+        if (tipopersona.equalsIgnoreCase("J")) {
+            strTipoPersona = "JURIDICA";
+        }
+        return strTipoPersona;
+    }
+
+    public void setStrTipoPersona(String strTipoPersona) {
+        this.strTipoPersona = strTipoPersona;
+    }
+
     public String getFormapresentacion() {
+        if (formapresentacion == null) {
+            formapresentacion = "U";
+        }
         return formapresentacion;
     }
 
@@ -337,7 +495,31 @@ public class DetallesEmpresas implements Serializable {
         this.formapresentacion = formapresentacion;
     }
 
+    public String getStrFormaPresentacion() {
+        getFormapresentacion();
+        if (formapresentacion.equalsIgnoreCase("U")) {
+            strFormaPresentacion = "UNICO";
+        }
+        if (formapresentacion.equalsIgnoreCase("C")) {
+            strFormaPresentacion = "CONSOLIDADO";
+        }
+        if (formapresentacion.equalsIgnoreCase("S")) {
+            strFormaPresentacion = "SUCURSAL";
+        }
+        if (formapresentacion.equalsIgnoreCase("D")) {
+            strFormaPresentacion = "DEPENDENCIA";
+        }
+        return strFormaPresentacion;
+    }
+
+    public void setStrFormaPresentacion(String strFormaPresentacion) {
+        this.strFormaPresentacion = strFormaPresentacion;
+    }
+
     public BigInteger getTipoaportante() {
+        if (tipoaportante == null) {
+            tipoaportante = new BigInteger("1");
+        }
         return tipoaportante;
     }
 
@@ -345,12 +527,69 @@ public class DetallesEmpresas implements Serializable {
         this.tipoaportante = tipoaportante;
     }
 
+    public String getStrTipoAportante() {
+        getTipoaportante();
+        if (tipoaportante.equals(new BigInteger("1"))) {
+            strTipoAportante = "EMPLEADOR";
+        }
+        if (tipoaportante.equals(new BigInteger("2"))) {
+            strTipoAportante = "INDEPENDIENTE";
+        }
+        if (tipoaportante.equals(new BigInteger("3"))) {
+            strTipoAportante = "ENTIDADES O UNIVERSIDADES PUBLICAS CON REGIMEN ESPECIAL EN SALUD";
+        }
+        if (tipoaportante.equals(new BigInteger("4"))) {
+            strTipoAportante = "AGREMIACIONES O ASOCIACIONES";
+        }
+        if (tipoaportante.equals(new BigInteger("5"))) {
+            strTipoAportante = "COOPERATUCAS Y PRECOPERATIVAS DE TRABAJO ASOCIADO";
+        }
+        if (tipoaportante.equals(new BigInteger("6"))) {
+            strTipoAportante = "MISIONES DIPLOMATICAS, CONSULARES U ORGANISMO MULTILATERAL";
+        }
+        if (tipoaportante.equals(new BigInteger("7"))) {
+            strTipoAportante = "ORGANIZACIONES ADMINISTRADORAS DEL PROGRAMA DE HOGARES DE BIENTESTAR";
+        }
+        if (tipoaportante.equals(new BigInteger("8"))) {
+            strTipoAportante = "PAGADOR DE APORTES DE LOS CONCELAJES MUNICIPALES";
+        }
+        return strTipoAportante;
+    }
+
+    public void setStrTipoAportante(String strTipoAportante) {
+        this.strTipoAportante = strTipoAportante;
+    }
+
     public BigInteger getTipoaccion() {
+        if (tipoaccion == null) {
+            tipoaccion = new BigInteger("1");
+        }
         return tipoaccion;
     }
 
     public void setTipoaccion(BigInteger tipoaccion) {
         this.tipoaccion = tipoaccion;
+    }
+
+    public String getStrTipoAccion() {
+        getTipoaccion();
+        if (tipoaccion.equals(new BigInteger("1"))) {
+            strTipoAccion = "CONCORDATO";
+        }
+        if (tipoaccion.equals(new BigInteger("2"))) {
+            strTipoAccion = "REESTRUCTURACION";
+        }
+        if (tipoaccion.equals(new BigInteger("3"))) {
+            strTipoAccion = "LIQUIDACION";
+        }
+        if (tipoaccion.equals(new BigInteger("3"))) {
+            strTipoAccion = "CESE DE ACTIVIDADES";
+        }
+        return strTipoAccion;
+    }
+
+    public void setStrTipoAccion(String strTipoAccion) {
+        this.strTipoAccion = strTipoAccion;
     }
 
     public String getCiiu() {
@@ -366,23 +605,29 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setNombrearquitecto(String nombrearquitecto) {
-        this.nombrearquitecto = nombrearquitecto;
+        this.nombrearquitecto = nombrearquitecto.toUpperCase();;
     }
 
     public String getCargoarquitecto() {
+        if (cargoarquitecto == null) {
+            cargoarquitecto = " ";
+        }
         return cargoarquitecto;
     }
 
     public void setCargoarquitecto(String cargoarquitecto) {
-        this.cargoarquitecto = cargoarquitecto;
+        this.cargoarquitecto = cargoarquitecto.toUpperCase();;
     }
 
     public String getPilaultimaplanilla() {
+        if (pilaultimaplanilla == null) {
+            pilaultimaplanilla = " ";
+        }
         return pilaultimaplanilla;
     }
 
     public void setPilaultimaplanilla(String pilaultimaplanilla) {
-        this.pilaultimaplanilla = pilaultimaplanilla;
+        this.pilaultimaplanilla = pilaultimaplanilla.toUpperCase();;
     }
 
     public String getAfiliadoarp() {
@@ -537,5 +782,225 @@ public class DetallesEmpresas implements Serializable {
     public String toString() {
         return "Entidades.Detallesempresas[ secuencia=" + secuencia + " ]";
     }
-    
+
+    public String getReformaexoneraicbfsenasalud() {
+        if (reformaexoneraicbfsenasalud == null) {
+            reformaexoneraicbfsenasalud = "N";
+        }
+        return reformaexoneraicbfsenasalud;
+    }
+
+    public void setReformaexoneraicbfsenasalud(String reformaexoneraicbfsenasalud) {
+        this.reformaexoneraicbfsenasalud = reformaexoneraicbfsenasalud;
+    }
+
+    public String getPilausamultilineasln() {
+        if (pilausamultilineasln == null) {
+            pilausamultilineasln = "N";
+        }
+        return pilausamultilineasln;
+    }
+
+    public void setPilausamultilineasln(String pilausamultilineasln) {
+        this.pilausamultilineasln = pilausamultilineasln;
+    }
+
+    public String getSolidaridadfosygaexentoprf() {
+        if (solidaridadfosygaexentoprf == null) {
+            solidaridadfosygaexentoprf = "N";
+        }
+        return solidaridadfosygaexentoprf;
+    }
+
+    public void setSolidaridadfosygaexentoprf(String solidaridadfosygaexentoprf) {
+        this.solidaridadfosygaexentoprf = solidaridadfosygaexentoprf;
+    }
+
+    public String getExoneralnstarifaafppatron() {
+        if (exoneralnstarifaafppatron == null) {
+            exoneralnstarifaafppatron = "N";
+        }
+        return exoneralnstarifaafppatron;
+    }
+
+    public void setExoneralnstarifaafppatron(String exoneralnstarifaafppatron) {
+        this.exoneralnstarifaafppatron = exoneralnstarifaafppatron;
+    }
+
+    public String getReportalnstarifaafpespecial() {
+        if (reportalnstarifaafpespecial == null) {
+            reportalnstarifaafpespecial = "N";
+        }
+        return reportalnstarifaafpespecial;
+    }
+
+    public void setReportalnstarifaafpespecial(String reportalnstarifaafpespecial) {
+        this.reportalnstarifaafpespecial = reportalnstarifaafpespecial;
+    }
+
+    public boolean isCheckReformaExoneraIcbfSenaSalud() {
+        getReformaexoneraicbfsenasalud();
+        if (reformaexoneraicbfsenasalud.equalsIgnoreCase("N")) {
+            checkReformaExoneraIcbfSenaSalud = false;
+        } else {
+            checkReformaExoneraIcbfSenaSalud = true;
+        }
+        return checkReformaExoneraIcbfSenaSalud;
+    }
+
+    public void setCheckReformaExoneraIcbfSenaSalud(boolean checkReformaExoneraIcbfSenaSalud) {
+        if (checkReformaExoneraIcbfSenaSalud == false) {
+            reformaexoneraicbfsenasalud = "N";
+        } else {
+            reformaexoneraicbfsenasalud = "S";
+        }
+        this.checkReformaExoneraIcbfSenaSalud = checkReformaExoneraIcbfSenaSalud;
+    }
+
+    public String getStrReformaExoneraIcbfSenaSalud() {
+        getReformaexoneraicbfsenasalud();
+        if (reformaexoneraicbfsenasalud.equalsIgnoreCase("N")) {
+            strReformaExoneraIcbfSenaSalud = "NO";
+        } else {
+            strReformaExoneraIcbfSenaSalud = "SI";
+        }
+        return strReformaExoneraIcbfSenaSalud;
+    }
+
+    public void setStrReformaExoneraIcbfSenaSalud(String strReformaExoneraIcbfSenaSalud) {
+        this.strReformaExoneraIcbfSenaSalud = strReformaExoneraIcbfSenaSalud;
+    }
+
+    public boolean isCheckPilaSsaMultilineasln() {
+        getPilausamultilineasln();
+        if (pilausamultilineasln.equalsIgnoreCase("N")) {
+            checkPilaSsaMultilineasln = false;
+        } else {
+            checkPilaSsaMultilineasln = true;
+        }
+        return checkPilaSsaMultilineasln;
+    }
+
+    public void setCheckPilaSsaMultilineasln(boolean checkPilaSsaMultilineasln) {
+        if (checkPilaSsaMultilineasln == false) {
+            pilausamultilineasln = "N";
+        } else {
+            pilausamultilineasln = "S";
+        }
+        this.checkPilaSsaMultilineasln = checkPilaSsaMultilineasln;
+    }
+
+    public String getStrPilaSsaMultilineasln() {
+        getPilausamultilineasln();
+        if (pilausamultilineasln.equalsIgnoreCase("N")) {
+            strPilaSsaMultilineasln = "NO";
+        } else {
+            strPilaSsaMultilineasln = "SI";
+        }
+        return strPilaSsaMultilineasln;
+    }
+
+    public void setStrPilaSsaMultilineasln(String strPilaSsaMultilineasln) {
+        this.strPilaSsaMultilineasln = strPilaSsaMultilineasln;
+    }
+
+    public boolean isCheckSolidaridadFosygaeExentoPrf() {
+        getSolidaridadfosygaexentoprf();
+        if (solidaridadfosygaexentoprf.equalsIgnoreCase("N")) {
+            checkSolidaridadFosygaeExentoPrf = false;
+        } else {
+            checkSolidaridadFosygaeExentoPrf = true;
+        }
+        return checkSolidaridadFosygaeExentoPrf;
+    }
+
+    public void setCheckSolidaridadFosygaeExentoPrf(boolean checkSolidaridadFosygaeExentoPrf) {
+        if (checkSolidaridadFosygaeExentoPrf == false) {
+            solidaridadfosygaexentoprf = "N";
+        } else {
+            solidaridadfosygaexentoprf = "S";
+        }
+        this.checkSolidaridadFosygaeExentoPrf = checkSolidaridadFosygaeExentoPrf;
+    }
+
+    public String getStrSolidaridadFosygaeExentoPrf() {
+        getSolidaridadfosygaexentoprf();
+        if (solidaridadfosygaexentoprf.equalsIgnoreCase("N")) {
+            strSolidaridadFosygaeExentoPrf = "NO";
+        } else {
+            strSolidaridadFosygaeExentoPrf = "SI";
+        }
+        return strSolidaridadFosygaeExentoPrf;
+    }
+
+    public void setStrSolidaridadFosygaeExentoPrf(String strSolidaridadFosygaeExentoPrf) {
+        this.strSolidaridadFosygaeExentoPrf = strSolidaridadFosygaeExentoPrf;
+    }
+
+    public boolean isCheckExoneraLnsTarifaAfpPatron() {
+        getExoneralnstarifaafppatron();
+        if (exoneralnstarifaafppatron.equalsIgnoreCase("N")) {
+            checkExoneraLnsTarifaAfpPatron = false;
+        } else {
+            checkExoneraLnsTarifaAfpPatron = true;
+        }
+        return checkExoneraLnsTarifaAfpPatron;
+    }
+
+    public void setCheckExoneraLnsTarifaAfpPatron(boolean checkExoneraLnsTarifaAfpPatron) {
+        if (checkExoneraLnsTarifaAfpPatron == false) {
+            exoneralnstarifaafppatron = "N";
+        } else {
+            exoneralnstarifaafppatron = "S";
+        }
+        this.checkExoneraLnsTarifaAfpPatron = checkExoneraLnsTarifaAfpPatron;
+    }
+
+    public String getStrExoneraLnsTarifaAfpPatron() {
+        getExoneralnstarifaafppatron();
+        if (exoneralnstarifaafppatron.equalsIgnoreCase("N")) {
+            strExoneraLnsTarifaAfpPatron = "NO";
+        } else {
+            strExoneraLnsTarifaAfpPatron = "SI";
+        }
+        return strExoneraLnsTarifaAfpPatron;
+    }
+
+    public void setStrExoneraLnsTarifaAfpPatron(String strExoneraLnsTarifaAfpPatron) {
+        this.strExoneraLnsTarifaAfpPatron = strExoneraLnsTarifaAfpPatron;
+    }
+
+    public boolean isCheckReportaLnsTarifaAfpEspecial() {
+        getReportalnstarifaafpespecial();
+        if (reportalnstarifaafpespecial.equalsIgnoreCase("N")) {
+            checkReportaLnsTarifaAfpEspecial = false;
+        } else {
+            checkReportaLnsTarifaAfpEspecial = true;
+        }
+        return checkReportaLnsTarifaAfpEspecial;
+    }
+
+    public void setCheckReportaLnsTarifaAfpEspecial(boolean checkReportaLnsTarifaAfpEspecial) {
+        if (checkReportaLnsTarifaAfpEspecial == false) {
+            reportalnstarifaafpespecial = "N";
+        } else {
+            reportalnstarifaafpespecial = "S";
+        }
+        this.checkReportaLnsTarifaAfpEspecial = checkReportaLnsTarifaAfpEspecial;
+    }
+
+    public String getStrReportaLnsTarifaAfpEspecial() {
+        getReportalnstarifaafpespecial();
+        if (reportalnstarifaafpespecial.equalsIgnoreCase("N")) {
+            strReportaLnsTarifaAfpEspecial = "NO";
+        } else {
+            strReportaLnsTarifaAfpEspecial = "SI";
+        }
+        return strReportaLnsTarifaAfpEspecial;
+    }
+
+    public void setStrReportaLnsTarifaAfpEspecial(String strReportaLnsTarifaAfpEspecial) {
+        this.strReportaLnsTarifaAfpEspecial = strReportaLnsTarifaAfpEspecial;
+    }
+
 }
