@@ -39,6 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
+    private Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
+    private Collection<Circulares> circularesCollection;
     @OneToMany(mappedBy = "empresa")
     private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
     @OneToMany(mappedBy = "empresa")
@@ -375,9 +380,9 @@ public class Empresas implements Serializable {
     }
 
     public void setStrNit(String strNit) {
-        if(strNit.isEmpty()){
-            nit=0;
-        }else{
+        if (strNit.isEmpty()) {
+            nit = 0;
+        } else {
             nit = Long.parseLong(strNit);
         }
         this.strNit = strNit;
@@ -391,7 +396,7 @@ public class Empresas implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     public String getReglamento() {
@@ -1215,6 +1220,24 @@ public class Empresas implements Serializable {
 
     public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
         this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
+    }
+
+    @XmlTransient
+    public Collection<VigenciasMonedasBases> getVigenciasMonedasBasesCollection() {
+        return vigenciasMonedasBasesCollection;
+    }
+
+    public void setVigenciasMonedasBasesCollection(Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection) {
+        this.vigenciasMonedasBasesCollection = vigenciasMonedasBasesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Circulares> getCircularesCollection() {
+        return circularesCollection;
+    }
+
+    public void setCircularesCollection(Collection<Circulares> circularesCollection) {
+        this.circularesCollection = circularesCollection;
     }
 
 }
