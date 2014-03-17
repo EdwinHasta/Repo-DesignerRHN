@@ -145,7 +145,7 @@ public class ControlTipoSueldo implements Serializable {
         paginaAnterior = "";
         //altos tablas
         altoTablaTiposSueldos = "112";
-        altoTablaTSFormulas = "175";
+        altoTablaTSFormulas = "165";
         altoTablaTSGrupos = "58";
         altoTablaTEFormulas = "58";
         //Permitir index
@@ -928,7 +928,7 @@ public class ControlTipoSueldo implements Serializable {
             listaTEFormulasConceptos = null;
             context.update("form:datosTEFormula");
             if (banderaTSFormulas == 1) {
-                altoTablaTSFormulas = "175";
+                altoTablaTSFormulas = "165";
                 tsFormulaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTSFormula:tsFormulaConcepto");
                 tsFormulaConcepto.setFilterStyle("display: none; visibility: hidden;");
                 tsFormulaFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTSFormula:tsFormulaFormula");
@@ -1003,7 +1003,7 @@ public class ControlTipoSueldo implements Serializable {
                     grupo = filtrarListaTSGruposTiposEntidades.get(indexTSGrupos).getGrupotipoentidad().getNombre();
                 }
                 if (banderaTSFormulas == 1) {
-                    altoTablaTSFormulas = "175";
+                    altoTablaTSFormulas = "165";
                     tsFormulaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTSFormula:tsFormulaConcepto");
                     tsFormulaConcepto.setFilterStyle("display: none; visibility: hidden;");
                     tsFormulaFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTSFormula:tsFormulaFormula");
@@ -1279,7 +1279,7 @@ public class ControlTipoSueldo implements Serializable {
 
     public void cancelarModificacionTSFormula() {
         if (banderaTSFormulas == 1) {
-            altoTablaTSFormulas = "120";
+            altoTablaTSFormulas = "160";
             tsFormulaConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTSFormula:tsFormulaConcepto");
             tsFormulaConcepto.setFilterStyle("display: none; visibility: hidden;");
             tsFormulaFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTSFormula:tsFormulaFormula");

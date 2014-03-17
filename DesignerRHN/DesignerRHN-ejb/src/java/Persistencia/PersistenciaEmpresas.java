@@ -14,12 +14,14 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Empresas'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Empresas' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -49,11 +51,16 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         em.remove(em.merge(empresas));
     }
 
-    @Override
-    public List<Empresas> consultarEmpresas() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Empresas.class));
-        return em.createQuery(cq).getResultList();
+    @Override 
+    public List<Empresas> buscarEmpresas() {
+        try {
+            Query query = em.createQuery("SELECT e FROM Empresas e");
+            List<Empresas> empresas = query.getResultList();
+            return empresas;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpresas PersistenciaEmpresas : " + e.toString());
+            return null;
+        }
     }
 
     @Override
@@ -103,7 +110,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return null;
         }
     }
-    
+
     @Override
     public Short codigoEmpresa() {
         try {
@@ -118,6 +125,18 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             }
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.codigoEmpresa" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empresas> consultarEmpresas() {
+        try {
+            Query query = em.createQuery("SELECT e FROM Empresas e");
+            List<Empresas> empresas = query.getResultList();
+            return empresas;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpresas PersistenciaEmpresas : " + e.toString());
             return null;
         }
     }
