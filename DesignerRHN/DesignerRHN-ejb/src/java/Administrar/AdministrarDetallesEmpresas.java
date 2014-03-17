@@ -245,12 +245,12 @@ public class AdministrarDetallesEmpresas implements AdministrarDetallesEmpresasI
             List<Empresas> lista = persistenciaEmpresas.consultarEmpresas();
             return lista;
         } catch (Exception e) {
-            System.out.println("Error lovEmpresas Admi : " + e.toString());
+            System.out.println("Error lovPersonas Admi : " + e.toString());
             return null;
         }
     }
 
-    @Override
+       @Override
     public Empresas empresaActual(BigInteger secEmpresa) {
         try {
             Empresas empr = persistenciaEmpresas.buscarEmpresasSecuencia(secEmpresa);
