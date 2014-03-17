@@ -35,6 +35,7 @@
                                 </p:column>
                             </p:dataTable>
                         </fieldset>
+                        <!----------------------------------------------------->
                         <fieldset style="position: absolute; left: 10px; top: 230px; font-size: 10px; width: 835px; height: 235px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue"><strong>Festivo</strong></legend>
 
@@ -101,7 +102,7 @@
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  oncomplete="nuevoRegistroEvalEmpresas.show()" update=":formularioDialogos:nuevaaEvalEmpresa" process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Festivo" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlFestivos.borrandoHvFestivos()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlFestivos.borrandoFestivos()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Festivo" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFestivos.duplicandoFestivos()}" process="@this"/>  

@@ -417,7 +417,7 @@ public class ControlFestivos implements Serializable {
         }
     }
 
-    public void borrandoHvEntrevistas() {
+    public void borrandoFestivos() {
 
         if (index >= 0) {
             if (tipoLista == 0) {

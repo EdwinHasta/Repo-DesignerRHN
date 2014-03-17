@@ -1484,7 +1484,7 @@ public class ControlEmpresasBancos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoEmpresasBancos.getNumerocuenta().isEmpty()) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Debe Tener Un Numero Cuenta \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEmpresasBancos.getNumerocuenta());
@@ -1497,7 +1497,7 @@ public class ControlEmpresasBancos implements Serializable {
             System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
 
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Hayan Codigos Repetidos \n";
+                mensajeValidacion = " *Que NO Hayan Cuenta Repetidas \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -1533,19 +1533,9 @@ public class ControlEmpresasBancos implements Serializable {
 
         }
 
-        if (nuevoEmpresasBancos.getNumerocuenta().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Numero Cuenta \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-        } else {
-            System.out.println("bandera");
-            contador++;//5
-
-        }
-
         System.out.println("contador " + contador);
 
-        if (contador == 5) {
+        if (contador == 4) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
@@ -1666,7 +1656,7 @@ public class ControlEmpresasBancos implements Serializable {
         System.err.println("ConfirmarDuplicar codigo " + duplicarEmpresasBancos.getNumerocuenta());
 
         if (duplicarEmpresasBancos.getNumerocuenta().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   * Numero Cuenta \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEmpresasBancos.size(); x++) {
@@ -1693,7 +1683,7 @@ public class ControlEmpresasBancos implements Serializable {
             contador++;
         }
         if (duplicarEmpresasBancos.getBanco().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Persona \n";
+            mensajeValidacion = mensajeValidacion + "   * una Banco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1701,7 +1691,7 @@ public class ControlEmpresasBancos implements Serializable {
             contador++;
         }
         if (duplicarEmpresasBancos.getCiudad().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Cargo \n";
+            mensajeValidacion = mensajeValidacion + "   * una Ciudad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
