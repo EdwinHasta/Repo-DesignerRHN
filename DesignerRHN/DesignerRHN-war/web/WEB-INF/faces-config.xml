@@ -372,6 +372,29 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciasC</from-outcome>
+            <to-view-id>/EmplVigenciasCargos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>telefonos</from-outcome>
+            <to-view-id>/PerTelefono.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    <navigation-rule>
         <from-view-id>/vigenciadeporte.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -404,6 +427,59 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/detalleempresa.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroDetalleEmp</from-outcome>
+            <to-view-id>/detalleempresa.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/empresa.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroEmp</from-outcome>
+            <to-view-id>/empresa.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/empresa.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detalle</from-outcome>
+            <to-view-id>/detalleempresa.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/detalleempresa.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>empresa</from-outcome>
+            <to-view-id>/empresa.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
     
     <navigation-rule>
         <from-view-id>/tiposueldo.xhtml</from-view-id>
