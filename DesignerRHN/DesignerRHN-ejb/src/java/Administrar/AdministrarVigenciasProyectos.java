@@ -66,7 +66,7 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
 
     @Override
     public List<Cargos> lovCargos() {
-        return persistenciaCargos.buscarCargos();
+        return persistenciaCargos.consultarCargos();
     }
        
     @Override

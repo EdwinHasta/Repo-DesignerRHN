@@ -56,7 +56,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     @Override
     public List<Empresas> buscarEmpresas() {
         try {
-            List<Empresas> listaEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listaEmpresas;
         } catch (Exception e) {
             System.out.println("AdministrarCentroCostos: Falló al buscar las empresas /n" + e.getMessage());

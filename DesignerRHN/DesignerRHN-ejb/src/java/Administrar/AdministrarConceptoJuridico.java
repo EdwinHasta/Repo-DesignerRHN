@@ -85,7 +85,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     @Override
     public List<Empresas> consultarEmpresas() {
         try {
-            List<Empresas> empresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> empresas = persistenciaEmpresas.consultarEmpresas();
             return empresas;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Admi : " + e.toString());

@@ -68,9 +68,6 @@ public class Personas implements Serializable {
     @Size(max = 2)
     @Column(name = "GRUPOSANGUINEO")
     private String gruposanguineo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "NOMBRE")
     private String nombre;
     @Basic(optional = false)

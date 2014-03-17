@@ -4,16 +4,32 @@
 package InterfacePersistencia;
 
 import Entidades.Departamentos;
+import java.math.BigInteger;
 import java.util.List;
+
 /**
- * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Departamentos' 
- * de la base de datos.
+ * Interface encargada de determinar las operaciones que se realizan sobre la
+ * tabla 'Departamentos' de la base de datos.
+ *
  * @author betelgeuse
  */
 public interface PersistenciaDepartamentosInterface {
-    /**
-     * Método encargado de buscar todos los Departamentos existentes en la base de datos. 
-     * @return Retorna una lista de Deparamentos
-     */
-    public List<Departamentos> departamentos();
+
+    public void crear(Departamentos departamentos);
+
+    public void editar(Departamentos departamentos);
+
+    public void borrar(Departamentos departamentos);
+
+    public Departamentos consultarDepartamento(BigInteger secuencia);
+
+    public List<Departamentos> consultarDepartamentos();
+
+    public BigInteger contarSoAccidentesMedicosDepartamento(BigInteger secuencia);
+
+    public BigInteger contarCiudadesDepartamento(BigInteger secuencia);
+
+    public BigInteger contarCapModulosDepartamento(BigInteger secuencia);
+
+    public BigInteger contarBienProgramacionesDepartamento(BigInteger secuencia);
 }

@@ -50,7 +50,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public List<Empresas> buscarEmpresas() {
+    public List<Empresas> consultarEmpresas() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Empresas.class));
         return em.createQuery(cq).getResultList();

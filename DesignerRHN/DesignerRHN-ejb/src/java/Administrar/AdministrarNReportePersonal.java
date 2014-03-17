@@ -117,7 +117,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.buscarEmpresas();
+            listEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Administrar : " + e.toString());
@@ -216,7 +216,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<EstadosCiviles> listEstadosCiviles() {
         try {
-            listEstadosCiviles = persistenciaEstadosCiviles.buscarEstadosCiviles();
+            listEstadosCiviles = persistenciaEstadosCiviles.consultarEstadosCiviles();
             return listEstadosCiviles;
         } catch (Exception e) {
             System.out.println("Error listEstadosCiviles Administrar : " + e.toString());

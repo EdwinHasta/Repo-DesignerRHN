@@ -11,14 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasEstadosCiviles'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'VigenciasEstadosCiviles' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigenciasEstadosCivilesInterface{
+public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigenciasEstadosCivilesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -50,14 +53,14 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasEstadosCiviles> buscarVigenciasEstadosCiviles() {
+    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCiviles() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasEstadosCiviles.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<VigenciasEstadosCiviles> vigenciaEstadoCivilPersona(BigInteger secuenciaPersona) {
+    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPersona(BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT COUNT(vec) FROM VigenciasEstadosCiviles vec WHERE vec.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
@@ -71,6 +74,19 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
             return null;
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasEstadosCiviles.estadoCivilPersona" + e);
+            return null;
+        }
+    }
+    @Override
+    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPorPersona(BigInteger secuenciaPersona) {
+        try {
+            Query query = em.createQuery("SELECT vec FROM VigenciasEstadosCiviles vec WHERE vec.persona.secuencia = :secuenciaPersona");
+            query.setParameter("secuenciaPersona", secuenciaPersona);
+
+            List<VigenciasEstadosCiviles> listaVigenciasEstadosCiviles = query.getResultList();
+            return listaVigenciasEstadosCiviles;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPorPersona : " + e);
             return null;
         }
     }

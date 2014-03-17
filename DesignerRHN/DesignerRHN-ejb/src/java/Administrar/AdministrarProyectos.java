@@ -143,7 +143,7 @@ public class AdministrarProyectos implements AdministrarProyectosInterface {
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            List<Empresas> listE = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listE = persistenciaEmpresas.consultarEmpresas();
             return listE;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Admi : " + e.toString());

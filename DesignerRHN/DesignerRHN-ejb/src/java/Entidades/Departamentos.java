@@ -4,9 +4,8 @@
  */
 package Entidades;
 
-import Administrar.AdministrarDepartamentos;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,7 +19,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,18 +32,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Departamentos.findAll", query = "SELECT d FROM Departamentos d")})
 public class Departamentos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private Short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
@@ -57,33 +53,33 @@ public class Departamentos implements Serializable {
     public Departamentos() {
     }
 
-    public Departamentos(BigDecimal secuencia) {
+    public Departamentos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Departamentos(BigDecimal secuencia, String nombre) {
+    public Departamentos(BigInteger secuencia, String nombre) {
         this.secuencia = secuencia;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getNombre() {
-        if(nombre == null){
+        if (nombre == null) {
             nombre = (" ");
         }
         return nombre;
@@ -134,5 +130,5 @@ public class Departamentos implements Serializable {
     public String toString() {
         return "Entidades.Departamentos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

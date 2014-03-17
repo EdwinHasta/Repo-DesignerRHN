@@ -93,7 +93,7 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     @Override
     public List<Empresas> consultarEmpresas() {
         try {
-            List<Empresas> listEmpresas = persistenciaEmpresas.buscarEmpresas();
+            List<Empresas> listEmpresas = persistenciaEmpresas.consultarEmpresas();
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error en listEmpresas Admi : " + e.toString());

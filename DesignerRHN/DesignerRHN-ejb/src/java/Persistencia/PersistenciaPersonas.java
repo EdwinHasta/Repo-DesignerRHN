@@ -46,7 +46,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     }
 
     @Override
-    public List<Personas> buscarPersonas() {
+    public List<Personas> consultarPersonas() {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Personas.class));
         return em.createQuery(cq).getResultList();

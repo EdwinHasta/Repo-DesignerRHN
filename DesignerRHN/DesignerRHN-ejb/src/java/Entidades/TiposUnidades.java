@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -31,20 +31,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposUnidades.findAll", query = "SELECT t FROM TiposUnidades t")})
 public class TiposUnidades implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipounidad")
@@ -53,38 +49,41 @@ public class TiposUnidades implements Serializable {
     public TiposUnidades() {
     }
 
-    public TiposUnidades(BigDecimal secuencia) {
+    public TiposUnidades(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TiposUnidades(BigDecimal secuencia, short codigo, String nombre) {
+    public TiposUnidades(BigInteger secuencia, Integer codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getNombre() {
+        if (nombre == null) {
+        nombre=" ";
+        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase();
     }
 
     @XmlTransient
@@ -120,5 +119,5 @@ public class TiposUnidades implements Serializable {
     public String toString() {
         return "Entidades.Tiposunidades[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
