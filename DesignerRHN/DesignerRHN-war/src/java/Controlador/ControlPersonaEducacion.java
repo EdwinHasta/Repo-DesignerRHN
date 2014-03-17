@@ -1297,7 +1297,7 @@ public class ControlPersonaEducacion implements Serializable {
         } else if (indexNF >= 0 && CualTabla == 1) {
 
             if (tipoListaNF == 0) {
-                if (!listaVigenciasNoFormalesModificar.isEmpty() && listaVigenciasNoFormalesModificar.contains(listaVigenciasNoFormalesModificar.get(indexNF))) {
+                if (!listaVigenciasNoFormalesModificar.isEmpty() && listaVigenciasNoFormalesModificar.contains(listaVigenciasNoFormales.get(indexNF))) {
                     int modIndex = listaVigenciasNoFormalesModificar.indexOf(listaVigenciasNoFormales.get(indexNF));
                     listaVigenciasNoFormalesModificar.remove(modIndex);
                     listaVigenciasNoFormalesBorrar.add(listaVigenciasNoFormales.get(indexNF));
@@ -1531,7 +1531,7 @@ public class ControlPersonaEducacion implements Serializable {
                 }
 
             }
-            index = -1;
+            indexNF = -1;
         }
 
     }
@@ -2568,13 +2568,13 @@ public class ControlPersonaEducacion implements Serializable {
 
     public void dialogoVigenciasFormales() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciasFormalesPersona");
+        context.update("form:NuevoRegistroVigenciaFormal");
         context.execute("NuevoRegistroVigenciaFormal.show()");
     }
 
     public void dialogoVigenciasNoFormales() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciasNoFormalesPersona");
+        context.update("form:NuevoRegistroVigenciaNoFormal");
         context.execute("NuevoRegistroVigenciaNoFormal.show()");
 
     }

@@ -7,16 +7,19 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,6 +31,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TiposEmbargos.findAll", query = "SELECT t FROM TiposEmbargos t")})
 public class TiposEmbargos implements Serializable {
+    @Column(name = "CODIGO")
+    private Integer codigo;
+    @OneToMany(mappedBy = "tipoembargo")
+    private Collection<FormasDtos> formasDtosCollection;
+    @OneToMany(mappedBy = "tipoembargo")
+    private Collection<EersPrestamos> eersPrestamosCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -38,8 +47,6 @@ public class TiposEmbargos implements Serializable {
     private BigInteger secuencia;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @Column(name = "MANEJASALDO")
     private String manejaSaldo;
     @Transient
@@ -66,19 +73,14 @@ public class TiposEmbargos implements Serializable {
     }
 
     public String getDescripcion() {
+        if(descripcion == null){
+            descripcion = " ";
+        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion.toUpperCase();
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
     }
 
     @Override
@@ -131,5 +133,31 @@ public class TiposEmbargos implements Serializable {
 
     public void setManejaSaldoPromedio(Boolean manejaSaldoPromedio) {
         this.manejaSaldoPromedio = manejaSaldoPromedio;
+    }
+
+    @XmlTransient
+    public Collection<FormasDtos> getFormasDtosCollection() {
+        return formasDtosCollection;
+    }
+
+    public void setFormasDtosCollection(Collection<FormasDtos> formasDtosCollection) {
+        this.formasDtosCollection = formasDtosCollection;
+    }
+
+    @XmlTransient
+    public Collection<EersPrestamos> getEersPrestamosCollection() {
+        return eersPrestamosCollection;
+    }
+
+    public void setEersPrestamosCollection(Collection<EersPrestamos> eersPrestamosCollection) {
+        this.eersPrestamosCollection = eersPrestamosCollection;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 }

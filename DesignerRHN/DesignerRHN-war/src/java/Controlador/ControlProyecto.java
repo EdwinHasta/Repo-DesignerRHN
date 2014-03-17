@@ -620,6 +620,7 @@ public class ControlProyecto implements Serializable {
                 }
             }
             if (tipoListaP == 1) {
+                fechaFin = filtrarListProyectos.get(indexP).getFechafinal();
                 fechaInic = filtrarListProyectos.get(indexP).getFechainicial();
                 secRegistro = filtrarListProyectos.get(indexP).getSecuencia();
                 if (cualCeldaP == 0) {
@@ -899,7 +900,7 @@ public class ControlProyecto implements Serializable {
      */
     public void verificarDuplicarProyecto() {
         if (indexP >= 0) {
-            duplicarVigenciaP();
+            duplicarProyectoM();
         }
     }
 
@@ -907,7 +908,7 @@ public class ControlProyecto implements Serializable {
     /**
      * Duplica una registro de VigenciaProrrateos
      */
-    public void duplicarVigenciaP() {
+    public void duplicarProyectoM() {
         if (indexP >= 0) {
             duplicarProyecto = new Proyectos();
             k++;

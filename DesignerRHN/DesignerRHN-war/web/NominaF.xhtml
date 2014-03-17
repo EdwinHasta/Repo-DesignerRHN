@@ -42,7 +42,7 @@
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;"   actionListener="#{controlVigenciasUbicaciones.exportPDF()}" ajax="false">
-                                <p:dataExporter type="pdf"  target=":formExportar:empleadosExportar" fileName="PersonalPDF" encoding="UTF-8"/>
+                                    <p:dataExporter type="pdf"  target=":formExportar:empleadosExportar" fileName="PersonalPDF" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
@@ -199,7 +199,7 @@
                                         <p:commandButton id="IBC" value="" style="position: absolute; background-image: url(Imagenes/Iconos/IBC.png); width: 29px; height: 35px; top: 159px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmplIbcs.recibirEmpleado(item.empleado.secuencia)}" action="emplIbcs"/>
                                         <p:tooltip  for="IBC" value="#{msg['IBC']}"  />
 
-                                       <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoViajero.png); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"  actionListener="#{controlVigenciasViajeros.recibirEmpleado(item.empleado.secuencia)}" action="vigenciaviajero"/>
+                                        <p:commandButton id="TipoViajero" value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoViajero.png); width: 29px; height: 35px; top: 194px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"  actionListener="#{controlVigenciasViajeros.recibirEmpleado(item.empleado.secuencia)}" action="vigenciaviajero"/>
                                         <p:tooltip  for="TipoViajero">
                                             #{msg['TipoViajero1']}<br/>#{msg['TipoViajero2']}
                                         </p:tooltip>
@@ -382,7 +382,7 @@
                                         <!-- Panel Reportes -->
 
                                         <fieldset style="height: 35px; width: 50px; display: block; position: absolute; border-radius: 5px; top: 423px; left: 566px;">
-                                            <p:commandButton id="ReportesLaborales" value="" style="position: absolute; background-image: url(Imagenes/Iconos/reportes.png); width: 60px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" action="ReporteLaboral" />
+                                            <p:commandButton id="ReportesLaborales" value="" style="position: absolute; background-image: url(Imagenes/Iconos/reportes.png); width: 60px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" action="ReporteLaboral" actionListener="#{controlNReporteLaboral.iniciarPagina()}" />
                                             <p:tooltip  for="ReportesLaborales">
                                                 #{msg['reporteslaborales1']}<br/>#{msg['reporteslaborales2']}
                                             </p:tooltip>
@@ -508,7 +508,7 @@
 
                                         <p:commandButton value=" " id="btnCerrarLiquidacion" style="position: absolute; left: 275px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; " actionListener="#{controlCerrarLiquidacion.tipoLiquidacion(controlRemoto.pago)}" action="cerrarliq"/>
 
-                                        <p:commandButton value=" " id="btnReportesNomina" style="position: absolute; left: 275px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteNomina"/>
+                                        <p:commandButton value=" " id="btnReportesNomina" style="position: absolute; left: 275px; top: 175px; width: 80px; height: 80px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " actionListener="#{controlNReporteNomina.iniciarPagina()}" action="ReporteNomina"/>
 
                                     </fieldset>
 
@@ -539,7 +539,7 @@
                                     <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="cuenta" actionListener="#{controlCuenta.obtenerEmpresa()}"/>
                                     <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnTerceros" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="tercero" actionListener="#{controlTercero.obtenerEmpresa()}"/>
-                                    <p:commandButton id="btnRepCont" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteContabilidad"/>
+                                    <p:commandButton id="btnRepCont" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteContabilidad" actionListener="#{controlNReporteContabilidad.iniciarPagina()}"/>
                                     <h:outputText value="#{msg['plandecuentaspuc']}" style="width: 199px; height: 12px; position: absolute; left: 110px; top: 18px; color:blue;  font-weight: bold" />
                                     <h:outputText value="#{msg['textoplandecuentaspuc']}" style="width: 280px; height: 35px; position: absolute; left: 110px; top: 35px;  text-align: justify" />                            
                                     <h:outputText value="#{msg['centrodecostos']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: blue;  font-weight: bold" />                            
@@ -601,7 +601,7 @@
 
                                     <p:commandButton id="btnEvaluacionSeleccion" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 281px; background-image: url(Imagenes/GereEvalSeleccion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnCapacitacion" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 281px; background-image: url(Imagenes/GereCapacitacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 281px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="ReporteBienestar"/>
+                                    <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 281px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%;" actionListener="#{controlNReporteBienestar.iniciarPagina()}" action="ReporteBienestar"/>
                                     <p:commandButton id="btnProyecciones" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 281px; background-image: url(Imagenes/GereProyeccion1.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 54px; top:383px; text-align:center" value="#{msg['evaluacionseleccion']}"/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 240px; top:383px; text-align:center" value="#{msg['capacitacion']}"/>

@@ -8,15 +8,18 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,6 +31,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "MotivosPrestamos.findAll", query = "SELECT m FROM MotivosPrestamos m")})
 public class MotivosPrestamos implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Integer codigo;
+    @OneToMany(mappedBy = "motivoprestamo")
+    private Collection<EersPrestamos> eersPrestamosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -35,8 +44,6 @@ public class MotivosPrestamos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
 
@@ -59,14 +66,6 @@ public class MotivosPrestamos implements Serializable {
 
     public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -100,6 +99,23 @@ public class MotivosPrestamos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Motivosprestamos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<EersPrestamos> getEersPrestamosCollection() {
+        return eersPrestamosCollection;
+    }
+
+    public void setEersPrestamosCollection(Collection<EersPrestamos> eersPrestamosCollection) {
+        this.eersPrestamosCollection = eersPrestamosCollection;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
     
 }

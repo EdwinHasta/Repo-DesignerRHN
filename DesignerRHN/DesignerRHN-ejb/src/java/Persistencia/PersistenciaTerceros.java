@@ -76,7 +76,6 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             Terceros terceros = null;
             return terceros;
         }
-
     }
 
     @Override
@@ -119,5 +118,18 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             System.out.println("Exepcion lovTerceros: " + e);
             return null;
         }
+    }
+    
+    @Override
+    public List<Terceros> tercerosEmbargos() {
+        try {
+            Query query = em.createQuery("SELECT t.nit, t.nombre, e.nombre FROM Terceros t, Empresas e Where e.secuencia=t.empresa ORDER BY t.nombre");
+            List<Terceros> listaTerceros = query.getResultList();
+            return listaTerceros;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEmpleados.tercerosEmbargos" + e);
+            return null;
+        }
+
     }
 }

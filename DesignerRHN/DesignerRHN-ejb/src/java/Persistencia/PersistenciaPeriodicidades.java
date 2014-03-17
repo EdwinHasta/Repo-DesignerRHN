@@ -67,7 +67,6 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
         }
     }
 
-    @Override
     public List<Periodicidades> consultarPeriodicidades() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Periodicidades.class));

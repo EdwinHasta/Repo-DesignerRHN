@@ -7,6 +7,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +15,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,6 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Juzgados.findAll", query = "SELECT j FROM Juzgados j")})
 public class Juzgados implements Serializable {
+    @OneToMany(mappedBy = "juzgado")
+    private Collection<EersPrestamos> eersPrestamosCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -71,6 +76,9 @@ public class Juzgados implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = " "; 
+        }
         return nombre;
     }
 
@@ -126,5 +134,16 @@ public class Juzgados implements Serializable {
     public void setCiudad(Ciudades ciudad) {
         this.ciudad = ciudad;
     }
+
+    @XmlTransient
+    public Collection<EersPrestamos> getEersPrestamosCollection() {
+        return eersPrestamosCollection;
+    }
+
+    public void setEersPrestamosCollection(Collection<EersPrestamos> eersPrestamosCollection) {
+        this.eersPrestamosCollection = eersPrestamosCollection;
+    }
+
+    
 
 }
