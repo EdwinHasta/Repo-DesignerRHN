@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Persistencia;
 
 import Entidades.FirmasReportes;
@@ -14,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  *
  * @author user
@@ -29,6 +29,14 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
 
     public void crear(FirmasReportes tiposCursos) {
         try {
+            System.out.println("PERSISTENCIA CREAR------------------------");
+            System.out.println("CODIGO : " + tiposCursos.getCodigo());
+            System.out.println("NOMBRE: " + tiposCursos.getDescripcion());
+            System.out.println("EMPRESA: " + tiposCursos.getEmpresa().getNombre());
+            System.out.println("SUBTITULO : " + tiposCursos.getSubtitulofirma());
+            System.out.println("PERSONA : " + tiposCursos.getPersonaFirma().getNombre());
+            System.out.println("CARGO : " + tiposCursos.getCargo().getNombre());
+            System.out.println("--------------CREAR------------------------");
             em.persist(tiposCursos);
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaFirmasReportes : " + e.toString());

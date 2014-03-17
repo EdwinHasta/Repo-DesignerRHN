@@ -23,11 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author user
  */
 @Entity
-@Table(name = "FIRMASREPORTES")
+@Table(name = "EMPRESASBANCOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FirmasReportes.findAll", query = "SELECT f FROM FirmasReportes f")})
-public class FirmasReportes implements Serializable {
+    @NamedQuery(name = "EmpresasBancos.findAll", query = "SELECT e FROM EmpresasBancos e")})
+public class EmpresasBancos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -36,31 +36,22 @@ public class FirmasReportes implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Integer codigo;
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
-    @Column(name = "SUBTITULOFIRMA")
-    private String subtitulofirma;
+    @Column(name = "NUMEROCUENTA")
+    private String numerocuenta;
+    @Column(name = "TIPOCUENTA")
+    private String tipocuenta;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     private Empresas empresa;
-    @JoinColumn(name = "PERSONAFIRMA", referencedColumnName = "SECUENCIA")
-    private Personas personaFirma;
-    @JoinColumn(name = "CARGOFIRMA", referencedColumnName = "SECUENCIA")
-    private Cargos cargo;
+    @JoinColumn(name = "BANCO", referencedColumnName = "SECUENCIA")
+    private Bancos banco;
+    @JoinColumn(name = "CIUDAD", referencedColumnName = "SECUENCIA")
+    private Ciudades ciudad;
 
-    public FirmasReportes() {
+    public EmpresasBancos() {
     }
 
-    public FirmasReportes(BigInteger secuencia) {
+    public EmpresasBancos(BigInteger secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public FirmasReportes(BigInteger secuencia, Integer codigo, String descripcion, String subtitulofirma) {
-        this.secuencia = secuencia;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
-        this.subtitulofirma = subtitulofirma;
     }
 
     public BigInteger getSecuencia() {
@@ -71,32 +62,24 @@ public class FirmasReportes implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getDescripcion() {
-        if(descripcion==null)
-        {
-        descripcion = " ";
+    public String getNumerocuenta() {
+        if (numerocuenta == null) {
+            numerocuenta = " ";
         }
-        return descripcion;
+        return numerocuenta;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setNumerocuenta(String numerocuenta) {
+        this.numerocuenta = numerocuenta;
     }
 
-    public String getSubtitulofirma() {
-        return subtitulofirma;
+    public String getTipocuenta() {
+        return tipocuenta;
     }
 
-    public void setSubtitulofirma(String subtitulofirma) {
-        this.subtitulofirma = subtitulofirma;
+    public void setTipocuenta(String tipocuenta) {
+        //System.out.println("ENTIDAD EMPRESASBANCOS SET TIPOCUENTA " + tipocuenta);
+        this.tipocuenta = tipocuenta;
     }
 
     public Empresas getEmpresa() {
@@ -107,20 +90,20 @@ public class FirmasReportes implements Serializable {
         this.empresa = empresa;
     }
 
-    public Personas getPersonaFirma() {
-        return personaFirma;
+    public Bancos getBanco() {
+        return banco;
     }
 
-    public void setPersonaFirma(Personas personaFirma) {
-        this.personaFirma = personaFirma;
+    public void setBanco(Bancos banco) {
+        this.banco = banco;
     }
 
-    public Cargos getCargo() {
-        return cargo;
+    public Ciudades getCiudad() {
+        return ciudad;
     }
 
-    public void setCargo(Cargos cargo) {
-        this.cargo = cargo;
+    public void setCiudad(Ciudades ciudad) {
+        this.ciudad = ciudad;
     }
 
     @Override
@@ -133,10 +116,10 @@ public class FirmasReportes implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FirmasReportes)) {
+        if (!(object instanceof EmpresasBancos)) {
             return false;
         }
-        FirmasReportes other = (FirmasReportes) object;
+        EmpresasBancos other = (EmpresasBancos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -145,7 +128,7 @@ public class FirmasReportes implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.FirmasReportes[ secuencia=" + secuencia + " ]";
+        return "Entidades.EmpresasBancos[ secuencia=" + secuencia + " ]";
     }
 
 }

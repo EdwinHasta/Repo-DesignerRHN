@@ -64,6 +64,14 @@ public class AdministrarFirmasReportes implements AdministrarFirmasReportesInter
     public void crearFirmasReportes(List<FirmasReportes> listaFirmasReportes) {
         for (int i = 0; i < listaFirmasReportes.size(); i++) {
             System.out.println("Administrar Creando...");
+            System.out.println("--------------DUPLICAR------------------------");
+            System.out.println("CODIGO : " + listaFirmasReportes.get(i).getCodigo());
+            System.out.println("NOMBRE: " + listaFirmasReportes.get(i).getDescripcion());
+            System.out.println("EMPRESA: " + listaFirmasReportes.get(i).getEmpresa().getNombre());
+            System.out.println("SUBTITULO : " + listaFirmasReportes.get(i).getSubtitulofirma());
+            System.out.println("PERSONA : " + listaFirmasReportes.get(i).getPersonaFirma().getNombre());
+            System.out.println("CARGO : " + listaFirmasReportes.get(i).getCargo().getNombre());
+            System.out.println("--------------DUPLICAR------------------------");
             persistenciaFirmasReportes.crear(listaFirmasReportes.get(i));
         }
     }
