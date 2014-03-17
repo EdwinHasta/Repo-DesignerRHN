@@ -2434,5 +2434,23 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/novedadembargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>eersprestamos</from-outcome>
+            <to-view-id>/novedadembargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
  
 </faces-config>
