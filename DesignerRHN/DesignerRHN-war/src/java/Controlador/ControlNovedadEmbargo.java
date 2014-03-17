@@ -1570,6 +1570,14 @@ public class ControlNovedadEmbargo implements Serializable {
             context.update("formularioDialogos:elegirTabla");
             context.execute("elegirTabla.show()");
         }
+        int tamaño = listaEmbargos.size();
+        
+        
+        if(tamaño == 0){
+            context.update("formularioDialogos:NuevoRegistroEmbargos");
+            context.execute("NuevoRegistroEmbargos.show()");
+        }
+        
 
         if (listaDetallesEmbargos.isEmpty() && !listaEmbargos.isEmpty()) {
             context.update("formularioDialogos:elegirTabla");
