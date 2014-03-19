@@ -42,6 +42,8 @@ public class Personas implements Serializable {
     @NotNull
     @Column(name = "NUMERODOCUMENTO")
     private BigInteger numerodocumento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
+    private Collection<Declarantes> declarantesCollection;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsable")
     private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
@@ -681,5 +683,14 @@ public class Personas implements Serializable {
 
     public void setNumerodocumento(BigInteger numerodocumento) {
         this.numerodocumento = numerodocumento;
+    }
+
+    @XmlTransient
+    public Collection<Declarantes> getDeclarantesCollection() {
+        return declarantesCollection;
+    }
+
+    public void setDeclarantesCollection(Collection<Declarantes> declarantesCollection) {
+        this.declarantesCollection = declarantesCollection;
     }
 }
