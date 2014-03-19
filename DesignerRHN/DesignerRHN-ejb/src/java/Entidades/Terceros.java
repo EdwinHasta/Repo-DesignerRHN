@@ -174,7 +174,7 @@ public class Terceros implements Serializable {
     }
 
     public void setStrNit(String strNit) {
-        
+        nit = Long.parseLong(strNit);
         this.strNit = strNit;
     }
 
