@@ -29,6 +29,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -90,8 +91,7 @@ public class ControlNovedadEmbargo implements Serializable {
     //AUTOCOMPLETAR D
     private String Pago, Periodicidad;
     //AUTOCOMPLETAR
-    private String TipoEmbargo, Juzgado, Motivo, Demandante, Forma;
-    private Long Nit;
+    private String TipoEmbargo, Juzgado, Motivo, Demandante, Forma,Nit;
     //OTROS
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
@@ -574,11 +574,14 @@ public class ControlNovedadEmbargo implements Serializable {
 
             listaDetallesEmbargosModificar.clear();
         }
-
+        FacesMessage msg = new FacesMessage("Información", "Se han guardado los datos exitosamente.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
         System.out.println("Se guardaron los datos con exito");
         listaDetallesEmbargos = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosEmbargosDetalles");
+        context.update("form:growl");
         guardado = true;
         permitirIndex = true;
         RequestContext.getCurrentInstance().update("form:aceptar");
@@ -1149,6 +1152,7 @@ public class ControlNovedadEmbargo implements Serializable {
 
             if (tipoLista == 0) {
                 duplicarEmbargo.setSecuencia(l);
+                duplicarEmbargo.setTipoeer(listaEmbargos.get(index).getTipoeer());
                 duplicarEmbargo.setEmpleado(listaEmbargos.get(index).getEmpleado());
                 duplicarEmbargo.setTipoembargo(listaEmbargos.get(index).getTipoembargo());
                 duplicarEmbargo.setDocumento(listaEmbargos.get(index).getDocumento());
@@ -1167,6 +1171,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (tipoLista == 1) {
                 duplicarEmbargo.setSecuencia(l);
+                duplicarEmbargo.setTipoeer(filtradoListaEmbargos.get(index).getTipoeer());
                 duplicarEmbargo.setEmpleado(filtradoListaEmbargos.get(index).getEmpleado());
                 duplicarEmbargo.setTipoembargo(filtradoListaEmbargos.get(index).getTipoembargo());
                 duplicarEmbargo.setDocumento(filtradoListaEmbargos.get(index).getDocumento());
@@ -2240,9 +2245,9 @@ public class ControlNovedadEmbargo implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("TERCERO")) {
             if (tipoLista == 0) {
-                listaEmbargos.get(indice).getTercero().setNit(Nit);
+                listaEmbargos.get(indice).getTercero().setStrNit(Nit);
             } else {
-                filtradoListaEmbargos.get(indice).getTercero().setNit(Nit);
+                filtradoListaEmbargos.get(indice).getTercero().setStrNit(Nit);
             }
 
             for (int i = 0; i < listaEmbargos.size(); i++) {
@@ -2398,7 +2403,7 @@ public class ControlNovedadEmbargo implements Serializable {
                 } else if (cualCelda == 6) {
                     Demandante = listaEmbargos.get(index).getDemandante().getNombre();
                 } else if (cualCelda == 7) {
-                    Nit = listaEmbargos.get(index).getTercero().getNit();
+                    Nit = listaEmbargos.get(index).getTercero().getStrNit();
                 } else if (cualCelda == 11) {
                     Forma = listaEmbargos.get(index).getFormadto().getDescripcion();
                 }
@@ -2435,9 +2440,9 @@ public class ControlNovedadEmbargo implements Serializable {
                 }
             } else if (Campo.equals("NIT")) {
                 if (tipoNuevo == 1) {
-                    Nit = nuevoEmbargo.getTercero().getNit();
+                    Nit = nuevoEmbargo.getTercero().getStrNit();
                 } else if (tipoNuevo == 2) {
-                    Nit = duplicarEmbargo.getTercero().getNit();
+                    Nit = duplicarEmbargo.getTercero().getStrNit();
                 }
             } else if (Campo.equals("FORMA")) {
                 if (tipoNuevo == 1) {
@@ -2583,17 +2588,13 @@ public class ControlNovedadEmbargo implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("NIT")) {
             if (tipoNuevo == 1) {
-                nuevoEmbargo.getTercero().setNit(Nit);
+                nuevoEmbargo.getTercero().setStrNit(Nit);
             } else if (tipoNuevo == 2) {
-                duplicarEmbargo.getTercero().setNit(Nit);
+                duplicarEmbargo.getTercero().setStrNit(Nit);
             }
-            String nit = new String();
-            Long nitLong = Long.valueOf(nit);
-
+            
             for (int i = 0; i < lovlistaTerceros.size(); i++) {
-                nitLong = lovlistaTerceros.get(i).getNit();
-                nit = nitLong.toString();
-                if (nit.startsWith(valorConfirmar.toUpperCase())) {
+                if (lovlistaTerceros.get(i).getStrNit().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -3276,7 +3277,6 @@ public class ControlNovedadEmbargo implements Serializable {
 
     public List<EersPrestamosDtos> getListaDetallesEmbargos() {
         if (listaDetallesEmbargos == null && embargoSeleccionado != null) {
-            System.out.println("Entra");
             listaDetallesEmbargos = administrarNovedadesEmbargos.eersPrestamosEmpleadoDtos(secuenciaEmbargo);
         }
         return listaDetallesEmbargos;

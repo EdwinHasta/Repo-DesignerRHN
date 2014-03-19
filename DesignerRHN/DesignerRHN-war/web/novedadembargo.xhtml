@@ -13,6 +13,7 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.novedadembargo" var="msg" />
+                    <p:growl id="growl" showDetail="true" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
                         <fieldset style="position: absolute; left: 10px; top: 63px; font-size: 12px; width: 835px; height: 68px; border-radius: 10px; ">
@@ -57,9 +58,10 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{embargos.documento}" filterBy="#{embargos.documento}" filterMatchMode="contains" id="embargosDocumento" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column sortBy="#{embargos.documento}" filterBy="#{embargos.documento}" filterMatchMode="contains" id="embargosDocumento" width="52" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="documentoHead" value="#{msg['numerooficio']}" />
+                                        <p:tooltip value="#{msg['numerooficioTT']}" for="documentoHead" />
 
                                     </f:facet>
                                     <p:cellEditor>  
@@ -100,9 +102,10 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{embargos.numeroproceso}" filterBy="#{embargos.numeroproceso}" filterMatchMode="contains" id="embargosNumero" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column sortBy="#{embargos.numeroproceso}" filterBy="#{embargos.numeroproceso}" filterMatchMode="contains" id="embargosNumero" width="22" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="numeroHead" value="#{msg['numeroproceso']}" />
+                                        <p:tooltip value="#{msg['numeroprocesoTT']}" for="numeroHead"/>
                                     </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{embargos.numeroproceso}" style="text-transform: uppercase " /></f:facet>  
@@ -119,7 +122,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['juzgado']}" sortBy="#{embargos.juzgado.nombre}" filterBy="#{embargos.juzgado.nombre}" filterMatchMode="contains" id="embargosJuzgado" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['juzgado']}" sortBy="#{embargos.juzgado.nombre}" filterBy="#{embargos.juzgado.nombre}" filterMatchMode="contains" id="embargosJuzgado" width="180" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{embargos.juzgado.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -153,6 +156,8 @@
                                     </f:facet>
                                 </p:column>
 
+
+
                                 <p:column headerText="#{msg['demandante']}" sortBy="#{embargos.demandante.nombre}" filterBy="#{embargos.demandante.nombre}" filterMatchMode="contains" id="embargosBeneficiario" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{embargos.demandante.nombre}" /></f:facet>  
@@ -170,12 +175,13 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['nit']}" sortBy="#{embargos.tercero.nit}" filterBy="#{embargos.tercero.nit}" filterMatchMode="contains" id="embargosNit" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column headerText="#{msg['nit']}" sortBy="#{embargos.tercero.strNit}" filterBy="#{embargos.tercero.strNit}" filterMatchMode="contains" id="embargosNITTercero" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{embargos.tercero.nit}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{embargos.tercero.strNit}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{embargos.tercero.nit}" id="editarNIT" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlNovedadEmbargo.modificarEmbargos(indice, 'TERCERO', embargos.tercero.nit)}"/>
+                                            <p:inputText value="#{embargos.tercero.strNit}" id="editarNITTercero" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlNovedadEmbargo.modificarEmbargos(indice, 'TERCERO', embargos.tercero.strNit)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadEmbargo.cambiarIndice(indice, 7)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 0)}"/>
                                             </p:inputText>
@@ -183,18 +189,19 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooNIT" value="#{msg['nit']}"/>
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooTercerosNIT" value="#{msg['nit']}"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{embargos.tercero.nombre}" filterBy="#{embargos.tercero.nombre}" filterMatchMode="contains" id="embargosTercero" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column sortBy="#{embargos.tercero.nombre}" filterBy="#{embargos.tercero.nombre}" filterMatchMode="contains" id="embargosTercero" width="130" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="terceroHead" value="#{msg['descuento']}" />
                                     </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{embargos.tercero.nombre}" style="text-transform: uppercase " /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{embargos.tercero.nombre}" id="editarTercero" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
+                                            <p:inputText value="#{embargos.tercero.nombre}" id="editarTercero" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase" > 
                                                 <p:ajax event="select" listener="#{controlNovedadEmbargo.cambiarIndice(indice, 8)}" />
                                                 <p:ajax event="change" listener="#{controlNovedadEmbargo.modificarEmbargos(indice, 'N', embargos.tercero.nombre)}"/>
                                             </p:inputText>
@@ -206,7 +213,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{embargos.valortotal}" filterBy="#{embargos.valortotal}" filterMatchMode="contains" id="embargosValorTotal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column sortBy="#{embargos.valortotal}" filterBy="#{embargos.valortotal}" filterMatchMode="contains" id="embargosValorTotal" width="70" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="valorHead" value="#{msg['valortotal']}" />
                                     </f:facet>
@@ -226,7 +233,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['fechainicialdescuento']}" sortBy="#{embargos.fechainiciodescuento}" filterBy="#{embargos.fechainiciodescuento}" filterMatchMode="contains"  width="72" id="embargosFechaInicio" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['fechainicialdescuento']}" sortBy="#{embargos.fechainiciodescuento}" filterBy="#{embargos.fechainiciodescuento}" filterMatchMode="contains"  width="50" id="embargosFechaInicio" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{embargos.fechainiciodescuento}" >
@@ -287,7 +294,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['fechacancelacion']}" sortBy="#{embargos.cancelacionfechahasta}" filterBy="#{embargos.cancelacionfechahasta}" filterMatchMode="contains"  width="72" id="embargosCancelacionFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['fechacancelacion']}" sortBy="#{embargos.cancelacionfechahasta}" filterBy="#{embargos.cancelacionfechahasta}" filterMatchMode="contains"  width="50" id="embargosCancelacionFecha" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{embargos.cancelacionfechahasta}" >
@@ -692,122 +699,123 @@
                                 </p:column>
                             </p:dataTable>
                         </fieldset>
-
-
                     </p:panel>
 
-
                 </h:form>
+
                 <h:form id="formularioDialogos">
                     <!-- Nuevo Embargo -->
-                    <p:dialog id="NuevoRegistroEmbargos" header="#{msg['nuevoregistro']}"  widgetVar="NuevoRegistroEmbargos" closable="false" resizable="false"  draggable="false" modal="true" height="480" width="800" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoRegistroEmbargos" header="#{msg['nuevoregistro']}"  widgetVar="NuevoRegistroEmbargos" closable="false" resizable="false"  draggable="false" modal="true" height="430" width="710" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevoEmbargo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevoEmbargo" style="border: none;">
+                            <fieldset style="position: absolute; left: 10px; top: 40px; font-size: 11px; width: 665px; height: 318px; border-radius: 10px; ">
 
-                            <strong><h:outputText value="#{msg['tipoembargoN']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:inputText id="nuevoTipoEmbargo" value="#{controlNovedadEmbargo.nuevoEmbargo.tipoembargo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'TIPOEMBARGO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('TIPOEMBARGO', controlNovedadEmbargo.nuevoEmbargo.tipoembargo.descripcion, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 1)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 65px;  " id="btnNuevoTipoEmbargo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 1)}"/>   
+                                <strong><h:outputText value="#{msg['tipoembargoN']}" style="font-size: 12px; position: absolute; top: 17px" /></strong>
+                                <p:inputText id="nuevoTipoEmbargo" value="#{controlNovedadEmbargo.nuevoEmbargo.tipoembargo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 15px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'TIPOEMBARGO')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('TIPOEMBARGO', controlNovedadEmbargo.nuevoEmbargo.tipoembargo.descripcion, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 283px; top: 15px;  " id="btnNuevoTipoEmbargo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 1)}"/>   
 
-                            <strong><h:outputText value="#{msg['numerooficioN']}"  style="font-size: 12px; position: absolute; top: 105px" /></strong>
-                            <p:inputText id="nuevoNumero" value="#{controlNovedadEmbargo.nuevoEmbargo.documento}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevoNumero"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['fechaoficioN']}" style="font-size: 12px; position: absolute; top: 57px" /></strong>
+                                <p:calendar  id="nuevaFechaOficio" style="font-size: 10px; position: absolute; top: 55px; left: 152px;" value="#{controlNovedadEmbargo.nuevoEmbargo.fechadocumento}"  styleClass="ui-datepicker, myClass2"  
+                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                    <p:ajax event="dateSelect" update="nuevaFechaOficio"/>
+                                    <p:ajax event="change" update="nuevaFechaOficio"/>
+                                </p:calendar>
 
-                            <strong><h:outputText value="#{msg['fechaoficioN']}" style="font-size: 12px; position: absolute; top: 145px" /></strong>
-                            <p:calendar  id="nuevaFechaOficio" style="font-size: 10px; position: absolute; top: 145px; left: 200px;" value="#{controlNovedadEmbargo.nuevoEmbargo.fechadocumento}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaOficio"/>
-                                <p:ajax event="change" update="nuevaFechaOficio"/>
-                            </p:calendar>
+                                <strong><h:outputText value="#{msg['numeroprocesoN']}"  style="font-size: 12px; position: absolute; top: 97px" /></strong>
+                                <p:inputText id="nuevoNumeroProceso" value="#{controlNovedadEmbargo.nuevoEmbargo.numeroproceso}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 95px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="nuevoNumeroProceso"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['numeroprocesoN']}"  style="font-size: 12px; position: absolute; top: 185px" /></strong>
-                            <p:inputText id="nuevoNumeroProceso" value="#{controlNovedadEmbargo.nuevoEmbargo.numeroproceso}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevoNumeroProceso"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['valortotalN']}"  style="font-size: 12px; position: absolute;  top: 137px;" /></strong>
+                                <p:inputText id="nuevoValor" value="#{controlNovedadEmbargo.nuevoEmbargo.valortotal}" style="font-size: 12px; width: 122px; position: absolute; top: 135px; left: 152px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="nuevoValor"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['juzgadoN']}" style="font-size: 12px; position: absolute; top: 225px" /></strong>
-                            <p:inputText id="nuevoJuzgado" value="#{controlNovedadEmbargo.nuevoEmbargo.juzgado.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top:225px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'JUZGADO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('JUZGADO', controlNovedadEmbargo.nuevoEmbargo.juzgado.nombre, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 1)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnNuevoJuzgado" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 1)}"/>   
+                                <strong><h:outputText value="#{msg['nitN']}" style="font-size: 12px; position: absolute; top: 177px;" /></strong>
+                                <p:inputText id="nuevoNIT" value="#{controlNovedadEmbargo.nuevoEmbargo.tercero.nit}" style="font-size: 12px; width: 122px; position: absolute; top: 175px; left: 152px; text-transform:uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'NIT')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('NIT', controlNovedadEmbargo.nuevoEmbargo.tercero.nit, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 283px; top: 175px;  " id="btnNuevoNIT" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 1)}"/>   
 
-                            <strong><h:outputText value="#{msg['motivoembargoN']}" style="font-size: 12px; position: absolute; top: 265px" /></strong>
-                            <p:inputText id="nuevoMotivo" value="#{controlNovedadEmbargo.nuevoEmbargo.motivoembargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top:265px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'MOTIVO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('MOTIVO', controlNovedadEmbargo.nuevoEmbargo.motivoembargo.nombre, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 1)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 265px;  " id="btnNuevoMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 1)}"/>   
+                                <strong><h:outputText value="#{msg['fechainicialdescuentoN']}" style="font-size: 12px; position: absolute; top: 217px;" /></strong>
+                                <p:calendar  id="nuevaFechaInicio" style="font-size: 10px; position: absolute; top: 215px; left: 152px;" value="#{controlNovedadEmbargo.nuevoEmbargo.fechainiciodescuento}"  styleClass="ui-datepicker, myClass2"  
+                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                    <p:ajax event="dateSelect" update="nuevaFechaInicio"/>
+                                    <p:ajax event="change" update="nuevaFechaInicio"/>
+                                </p:calendar>
 
-                            <strong><h:outputText value="#{msg['demandanteN']}" style="font-size: 12px; position: absolute; top: 305px" /></strong>
-                            <p:inputText id="nuevoDemandante" value="#{controlNovedadEmbargo.nuevoEmbargo.demandante.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top:305px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'DEMANDANTE')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('DEMANDANTE', controlNovedadEmbargo.nuevoEmbargo.demandante.nombre, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 1)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 305px;  " id="btnNuevoDemandante" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 1)}"/>   
+                                <strong><h:outputText value="#{msg['fechacancelacionN']}" style="font-size: 12px; position: absolute; top: 257px" /></strong>
+                                <p:calendar  id="nuevaFechaCancelacion" style="font-size: 10px; position: absolute; top: 255px; left: 152px;" value="#{controlNovedadEmbargo.nuevoEmbargo.cancelacionfechahasta}"  styleClass="ui-datepicker, myClass2"  
+                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                    <p:ajax event="dateSelect" update="nuevaFechaCancelacion"/>
+                                    <p:ajax event="change" update="nuevaFechaCancelacion"/>
+                                </p:calendar>
 
-                            <strong><h:outputText value="#{msg['nitN']}" style="font-size: 12px; position: absolute; top: 345px;" /></strong>
-                            <p:inputText id="nuevoNIT" value="#{controlNovedadEmbargo.nuevoEmbargo.tercero.nit}" style="font-size: 12px; width: 122px; position: absolute; top: 345px; left: 200px; text-transform:uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'NIT')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('NIT', controlNovedadEmbargo.nuevoEmbargo.tercero.nit, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 1)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 345px;  " id="btnNuevoNIT" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 1)}"/>   
+                                <strong><h:outputText value="#{msg['observacionN']}"  style="font-size: 12px; position: absolute;  top: 297px;" /></strong>
+                                <p:inputText id="nuevaObservacion" value="#{controlNovedadEmbargo.nuevoEmbargo.observaciones}" style="font-size: 12px; width: 504px; position: absolute; top: 295px; left: 152px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="nuevaObservacion"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['descuentoN']}"  style="font-size: 12px; position: absolute;  top: 65px; left: 410px" /></strong>
-                            <p:inputText readonly="true" id="nuevoTercero" value="#{controlNovedadEmbargo.nuevoEmbargo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; top: 65px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevoTercero"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['motivoembargoN']}" style="font-size: 12px; position: absolute; top: 17px;left: 350px" /></strong>
+                                <p:inputText id="nuevoMotivo" value="#{controlNovedadEmbargo.nuevoEmbargo.motivoembargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top:15px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'MOTIVO')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('MOTIVO', controlNovedadEmbargo.nuevoEmbargo.motivoembargo.nombre, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 15px;  " id="btnNuevoMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 1)}"/>   
 
-                            <strong><h:outputText value="#{msg['valortotalN']}"  style="font-size: 12px; position: absolute;  top: 105px; left: 410px" /></strong>
-                            <p:inputText id="nuevoValor" value="#{controlNovedadEmbargo.nuevoEmbargo.valortotal}" style="font-size: 12px; width: 122px; position: absolute; top: 105px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevoValor"/>
-                            </p:inputText>
 
-                            <strong><h:outputText value="#{msg['fechainicialdescuentoN']}" style="font-size: 12px; position: absolute; top: 145px; left: 410px" /></strong>
-                            <p:calendar  id="nuevaFechaInicio" style="font-size: 10px; position: absolute; top: 145px; left: 560px;" value="#{controlNovedadEmbargo.nuevoEmbargo.fechainiciodescuento}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInicio"/>
-                                <p:ajax event="change" update="nuevaFechaInicio"/>
-                            </p:calendar>
+                                <strong><h:outputText value="#{msg['numerooficioN']}"  style="font-size: 12px; position: absolute; top: 57px; left:350px" /></strong>
+                                <p:inputText id="nuevoNumero" value="#{controlNovedadEmbargo.nuevoEmbargo.documento}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top: 55px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="nuevoNumero"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['formadescuentoN']}" style="font-size: 12px; position: absolute; top: 185px; left: 410px" /></strong>
-                            <p:inputText id="nuevaForma" value="#{controlNovedadEmbargo.nuevoEmbargo.formadto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; top: 185px; left: 560px; text-transform:uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'FORMA')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('FORMA', controlNovedadEmbargo.nuevoEmbargo.formadto.descripcion, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 1)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 185px;  " id="btnNuevaForma" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 1)}"/>   
+                                <strong><h:outputText value="#{msg['juzgadoN']}" style="font-size: 12px; position: absolute; top: 97px;left:350px" /></strong>
+                                <p:inputText id="nuevoJuzgado" value="#{controlNovedadEmbargo.nuevoEmbargo.juzgado.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top:95px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'JUZGADO')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('JUZGADO', controlNovedadEmbargo.nuevoEmbargo.juzgado.nombre, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 95px;  " id="btnNuevoJuzgado" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 1)}"/>   
 
-                            <strong><h:outputText value="#{msg['cancelaciondocumentoN']}"  style="font-size: 12px; position: absolute;  top: 225px; left: 410px" /></strong>
-                            <p:inputText id="nuevaCancelacion" value="#{controlNovedadEmbargo.nuevoEmbargo.cancelaciondocumento}" style="font-size: 12px; width: 122px; position: absolute; top: 225px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevaCancelacion"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['demandanteN']}" style="font-size: 12px; position: absolute; top: 137px;left: 350px" /></strong>
+                                <p:inputText id="nuevoDemandante" value="#{controlNovedadEmbargo.nuevoEmbargo.demandante.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top:135px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'DEMANDANTE')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('DEMANDANTE', controlNovedadEmbargo.nuevoEmbargo.demandante.nombre, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 135px;  " id="btnNuevoDemandante" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 1)}"/>   
 
-                            <strong><h:outputText value="#{msg['fechacancelacionN']}" style="font-size: 12px; position: absolute; top: 265px; left: 410px" /></strong>
-                            <p:calendar  id="nuevaFechaCancelacion" style="font-size: 10px; position: absolute; top: 265px; left: 560px;" value="#{controlNovedadEmbargo.nuevoEmbargo.cancelacionfechahasta}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaCancelacion"/>
-                                <p:ajax event="change" update="nuevaFechaCancelacion"/>
-                            </p:calendar>
+                                <strong><h:outputText value="#{msg['descuentoN']}"  style="font-size: 12px; position: absolute;  top: 177px; left: 350px" /></strong>
+                                <p:inputText readonly="true" id="nuevoTercero" value="#{controlNovedadEmbargo.nuevoEmbargo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; top: 175px; left: 500px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="nuevoTercero"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['observacionN']}"  style="font-size: 12px; position: absolute;  top: 305px; left: 410px" /></strong>
-                            <p:inputText id="nuevaObservacion" value="#{controlNovedadEmbargo.nuevoEmbargo.observaciones}" style="font-size: 12px; width: 122px; position: absolute; top: 305px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="nuevaObservacion"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['formadescuentoN']}" style="font-size: 12px; position: absolute; top: 217px; left: 350px" /></strong>
+                                <p:inputText id="nuevaForma" value="#{controlNovedadEmbargo.nuevoEmbargo.formadto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; top: 215px; left: 500px; text-transform:uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(1, 'FORMA')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('FORMA', controlNovedadEmbargo.nuevoEmbargo.formadto.descripcion, 1)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 1)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 215px;  " id="btnNuevaForma" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 1)}"/>   
 
-                            <p:commandButton id="limpiarE" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 500px; top: 410px;" actionListener="#{controlNovedadEmbargo.limpiarNuevoEmbargo()}" update="nuevoEmbargo" process="@this"/>
-                            <p:commandButton id="agregarE" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 640px; top: 410px;"  process="@this" actionListener="#{controlNovedadEmbargo.agregarNuevoEmbargo()}"/>
-                            <p:commandButton id="cancelarE" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 710px; top: 410px;" actionListener="#{controlNovedadEmbargo.limpiarNuevoEmbargo()}" update="nuevoEmbargo" onclick="NuevoRegistroEmbargos.hide();"  process="@this"/>
+                                <strong><h:outputText value="#{msg['cancelaciondocumentoN']}"  style="font-size: 12px; position: absolute;  top: 255px; left: 350px" /></strong>
+                                <p:inputText id="nuevaCancelacion" value="#{controlNovedadEmbargo.nuevoEmbargo.cancelaciondocumento}" style="font-size: 12px; width: 122px; position: absolute; top: 255px; left: 500px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="nuevaCancelacion"/>
+                                </p:inputText>
+
+                                <p:commandButton id="limpiarE" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 350px;" actionListener="#{controlNovedadEmbargo.limpiarNuevoEmbargo()}" update="nuevoEmbargo" process="@this"/>
+                                <p:commandButton id="agregarE" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 530px; top: 350px;"  process="@this" actionListener="#{controlNovedadEmbargo.agregarNuevoEmbargo()}"/>
+                                <p:commandButton id="cancelarE" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 600px; top: 350px;" actionListener="#{controlNovedadEmbargo.limpiarNuevoEmbargo()}" update="nuevoEmbargo" onclick="NuevoRegistroEmbargos.hide();"  process="@this"/>
+                            </fieldset>
                         </p:panel>
                     </p:dialog>
 
@@ -824,114 +832,117 @@
 
                     <!-- Duplicar Embargo --> 
 
-                    <p:dialog id="DuplicarRegistroEmbargos" header="#{msg['duplicarregistro']}"  widgetVar="DuplicarRegistroEmbargos" closable="false" resizable="false"  draggable="false" modal="true" height="480" width="800" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroEmbargos" header="#{msg['duplicarregistro']}"  widgetVar="DuplicarRegistroEmbargos" closable="false" resizable="false"  draggable="false" modal="true" height="430" width="710" style="font-size: 12px; padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevoEmbargo']}"  style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarEmbargo" style="border: none;">
+                            <fieldset style="position: absolute; left: 10px; top: 40px; font-size: 11px; width: 665px; height: 318px; border-radius: 10px; ">
 
-                            <strong><h:outputText value="#{msg['tipoembargoN']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:inputText id="duplicarTipoEmbargo" value="#{controlNovedadEmbargo.duplicarEmbargo.tipoembargo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 65px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'TIPOEMBARGO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('TIPOEMBARGO', controlNovedadEmbargo.duplicarEmbargo.tipoembargo.descripcion, 2)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 2)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 65px;  " id="btnDuplicarTipoEmbargo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 2)}"/>   
+                                <strong><h:outputText value="#{msg['tipoembargoN']}" style="font-size: 12px; position: absolute; top: 17px" /></strong>
+                                <p:inputText id="duplicarTipoEmbargo" value="#{controlNovedadEmbargo.duplicarEmbargo.tipoembargo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 15px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'TIPOEMBARGO')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('TIPOEMBARGO', controlNovedadEmbargo.duplicarEmbargo.tipoembargo.descripcion, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 283px; top: 15px;  " id="btnDuplicarTipoEmbargo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 0, 2)}"/>   
 
-                            <strong><h:outputText value="#{msg['numerooficioN']}"  style="font-size: 12px; position: absolute; top: 105px" /></strong>
-                            <p:inputText id="duplicarNumero" value="#{controlNovedadEmbargo.duplicarEmbargo.documento}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 105px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarNumero"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['fechaoficioN']}" style="font-size: 12px; position: absolute; top: 57px" /></strong>
+                                <p:calendar  id="duplicarFechaOficio" style="font-size: 10px; position: absolute; top: 55px; left: 152px;" value="#{controlNovedadEmbargo.duplicarEmbargo.fechadocumento}"  styleClass="ui-datepicker, myClass2"  
+                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                    <p:ajax event="dateSelect" update="duplicarFechaOficio"/>
+                                    <p:ajax event="change" update="duplicarFechaOficio"/>
+                                </p:calendar>
 
-                            <strong><h:outputText value="#{msg['fechaoficioN']}" style="font-size: 12px; position: absolute; top: 145px" /></strong>
-                            <p:calendar  id="duplicarFechaOficio" style="font-size: 10px; position: absolute; top: 145px; left: 200px;" value="#{controlNovedadEmbargo.duplicarEmbargo.fechadocumento}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaOficio"/>
-                                <p:ajax event="change" update="duplicarFechaOficio"/>
-                            </p:calendar>
+                                <strong><h:outputText value="#{msg['numeroprocesoN']}"  style="font-size: 12px; position: absolute; top: 97px" /></strong>
+                                <p:inputText id="duplicarNumeroProceso" value="#{controlNovedadEmbargo.duplicarEmbargo.numeroproceso}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 95px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="duplicarNumeroProceso"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['numeroprocesoN']}"  style="font-size: 12px; position: absolute; top: 185px" /></strong>
-                            <p:inputText id="duplicarNumeroProceso" value="#{controlNovedadEmbargo.duplicarEmbargo.numeroproceso}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarNumeroProceso"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['valortotalN']}"  style="font-size: 12px; position: absolute;  top: 137px;" /></strong>
+                                <p:inputText id="duplicarValor" value="#{controlNovedadEmbargo.duplicarEmbargo.valortotal}" style="font-size: 12px; width: 122px; position: absolute; top: 135px; left: 152px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="duplicarValor"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['juzgadoN']}" style="font-size: 12px; position: absolute; top: 225px" /></strong>
-                            <p:inputText id="duplicarJuzgado" value="#{controlNovedadEmbargo.duplicarEmbargo.juzgado.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top:225px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'JUZGADO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('JUZGADO', controlNovedadEmbargo.duplicarEmbargo.juzgado.nombre, 2)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 2)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 225px;  " id="btnDuplicarJuzgado" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 2)}"/>   
+                                <strong><h:outputText value="#{msg['nitN']}" style="font-size: 12px; position: absolute; top: 177px;" /></strong>
+                                <p:inputText id="duplicarNIT" value="#{controlNovedadEmbargo.duplicarEmbargo.tercero.nit}" style="font-size: 12px; width: 122px; position: absolute; top: 175px; left: 152px; text-transform:uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'NIT')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('NIT', controlNovedadEmbargo.duplicarEmbargo.tercero.nit, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 283px; top: 175px;  " id="btnDuplicarNIT" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 2)}"/>   
 
-                            <strong><h:outputText value="#{msg['motivoembargoN']}" style="font-size: 12px; position: absolute; top: 265px" /></strong>
-                            <p:inputText id="duplicarMotivo" value="#{controlNovedadEmbargo.duplicarEmbargo.motivoembargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top:265px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'MOTIVO')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('MOTIVO', controlNovedadEmbargo.duplicarEmbargo.motivoembargo.nombre, 2)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 2)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 265px;  " id="btnDuplicarMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 1)}"/>   
+                                <strong><h:outputText value="#{msg['fechainicialdescuentoN']}" style="font-size: 12px; position: absolute; top: 217px;" /></strong>
+                                <p:calendar  id="duplicarFechaInicio" style="font-size: 10px; position: absolute; top: 215px; left: 152px;" value="#{controlNovedadEmbargo.duplicarEmbargo.fechainiciodescuento}"  styleClass="ui-datepicker, myClass2"  
+                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                    <p:ajax event="dateSelect" update="duplicarFechaInicio"/>
+                                    <p:ajax event="change" update="duplicarFechaInicio"/>
+                                </p:calendar>
 
-                            <strong><h:outputText value="#{msg['demandanteN']}" style="font-size: 12px; position: absolute; top: 305px" /></strong>
-                            <p:inputText id="duplicarDemandante" value="#{controlNovedadEmbargo.duplicarEmbargo.demandante.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top:305px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'DEMANDANTE')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('DEMANDANTE', controlNovedadEmbargo.duplicarEmbargo.demandante.nombre, 2)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 2)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 305px;  " id="btnDuplicarDemandante" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 2)}"/>   
+                                <strong><h:outputText value="#{msg['fechacancelacionN']}" style="font-size: 12px; position: absolute; top: 257px" /></strong>
+                                <p:calendar  id="duplicarFechaCancelacion" style="font-size: 10px; position: absolute; top: 255px; left: 152px;" value="#{controlNovedadEmbargo.duplicarEmbargo.cancelacionfechahasta}"  styleClass="ui-datepicker, myClass2"  
+                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                                    <p:ajax event="dateSelect" update="duplicarFechaCancelacion"/>
+                                    <p:ajax event="change" update="duplicarFechaCancelacion"/>
+                                </p:calendar>
 
-                            <strong><h:outputText value="#{msg['nitN']}" style="font-size: 12px; position: absolute; top: 345px;" /></strong>
-                            <p:inputText id="duplicarNIT" value="#{controlNovedadEmbargo.duplicarEmbargo.tercero.nit}" style="font-size: 12px; width: 122px; position: absolute; top: 345px; left: 200px; text-transform:uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'NIT')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('NIT', controlNovedadEmbargo.duplicarEmbargo.tercero.nit, 2)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 2)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 345px;  " id="btnDuplicarNIT" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 4, 2)}"/>   
+                                <strong><h:outputText value="#{msg['observacionN']}"  style="font-size: 12px; position: absolute;  top: 297px;" /></strong>
+                                <p:inputText id="duplicarObservacion" value="#{controlNovedadEmbargo.duplicarEmbargo.observaciones}" style="font-size: 12px; width: 504px; position: absolute; top: 295px; left: 152px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="duplicarObservacion"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['descuentoN']}"  style="font-size: 12px; position: absolute;  top: 65px; left: 410px" /></strong>
-                            <p:inputText readonly="true" id="duplicarTercero" value="#{controlNovedadEmbargo.duplicarEmbargo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; top: 65px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarTercero"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['motivoembargoN']}" style="font-size: 12px; position: absolute; top: 17px;left: 350px" /></strong>
+                                <p:inputText id="duplicarMotivo" value="#{controlNovedadEmbargo.duplicarEmbargo.motivoembargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top:15px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'MOTIVO')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('MOTIVO', controlNovedadEmbargo.duplicarEmbargo.motivoembargo.nombre, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 15px;  " id="btnDuplicarMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 2, 2)}"/>   
 
-                            <strong><h:outputText value="#{msg['valortotalN']}"  style="font-size: 12px; position: absolute;  top: 105px; left: 410px" /></strong>
-                            <p:inputText id="duplicarValor" value="#{controlNovedadEmbargo.duplicarEmbargo.valortotal}" style="font-size: 12px; width: 122px; position: absolute; top: 105px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarValor"/>
-                            </p:inputText>
 
-                            <strong><h:outputText value="#{msg['fechainicialdescuentoN']}" style="font-size: 12px; position: absolute; top: 145px; left: 410px" /></strong>
-                            <p:calendar  id="duplicarFechaInicio" style="font-size: 10px; position: absolute; top: 145px; left: 560px;" value="#{controlNovedadEmbargo.duplicarEmbargo.fechainiciodescuento}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaInicio"/>
-                                <p:ajax event="change" update="duplicarFechaInicio"/>
-                            </p:calendar>
+                                <strong><h:outputText value="#{msg['numerooficioN']}"  style="font-size: 12px; position: absolute; top: 57px; left:350px" /></strong>
+                                <p:inputText id="duplicarNumero" value="#{controlNovedadEmbargo.duplicarEmbargo.documento}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top: 55px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="duplicarNumero"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['formadescuentoN']}" style="font-size: 12px; position: absolute; top: 185px; left: 410px" /></strong>
-                            <p:inputText id="duplicarForma" value="#{controlNovedadEmbargo.duplicarEmbargo.formadto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; top: 185px; left: 560px; text-transform:uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'FORMA')}" />
-                                <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('FORMA', controlNovedadEmbargo.duplicarEmbargo.formadto.descripcion, 2)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 2)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 185px;  " id="btnDuplicarForma" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 2)}"/>   
+                                <strong><h:outputText value="#{msg['juzgadoN']}" style="font-size: 12px; position: absolute; top: 97px;left:350px" /></strong>
+                                <p:inputText id="duplicarJuzgado" value="#{controlNovedadEmbargo.duplicarEmbargo.juzgado.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top:95px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'JUZGADO')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('JUZGADO', controlNovedadEmbargo.duplicarEmbargo.juzgado.nombre, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 95px;  " id="btnDuplicarJuzgado" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 1, 2)}"/>   
 
-                            <strong><h:outputText value="#{msg['cancelaciondocumentoN']}"  style="font-size: 12px; position: absolute;  top: 225px; left: 410px" /></strong>
-                            <p:inputText id="duplicarCancelacion" value="#{controlNovedadEmbargo.duplicarEmbargo.cancelaciondocumento}" style="font-size: 12px; width: 122px; position: absolute; top: 225px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarCancelacion"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['demandanteN']}" style="font-size: 12px; position: absolute; top: 137px;left: 350px" /></strong>
+                                <p:inputText id="duplicarDemandante" value="#{controlNovedadEmbargo.duplicarEmbargo.demandante.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 500px; top:135px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'DEMANDANTE')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('DEMANDANTE', controlNovedadEmbargo.duplicarEmbargo.demandante.nombre, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 135px;  " id="btnDuplicarDemandante" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 3, 2)}"/>   
 
-                            <strong><h:outputText value="#{msg['fechacancelacionN']}" style="font-size: 12px; position: absolute; top: 265px; left: 410px" /></strong>
-                            <p:calendar  id="duplicarFechaCancelacion" style="font-size: 10px; position: absolute; top: 265px; left: 560px;" value="#{controlNovedadEmbargo.duplicarEmbargo.cancelacionfechahasta}"  styleClass="ui-datepicker, myClass2"  
-                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="duplicarFechaCancelacion"/>
-                                <p:ajax event="change" update="duplicarFechaCancelacion"/>
-                            </p:calendar>
+                                <strong><h:outputText value="#{msg['descuentoN']}"  style="font-size: 12px; position: absolute;  top: 177px; left: 350px" /></strong>
+                                <p:inputText readonly="true" id="duplicarTercero" value="#{controlNovedadEmbargo.duplicarEmbargo.tercero.nombre}" style="font-size: 12px; width: 122px; position: absolute; top: 175px; left: 500px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="duplicarTercero"/>
+                                </p:inputText>
 
-                            <strong><h:outputText value="#{msg['observacionN']}"  style="font-size: 12px; position: absolute;  top: 305px; left: 410px" /></strong>
-                            <p:inputText id="duplicarObservacion" value="#{controlNovedadEmbargo.duplicarEmbargo.observaciones}" style="font-size: 12px; width: 122px; position: absolute; top: 305px; left: 560px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarObservacion"/>
-                            </p:inputText>
+                                <strong><h:outputText value="#{msg['formadescuentoN']}" style="font-size: 12px; position: absolute; top: 217px; left: 350px" /></strong>
+                                <p:inputText id="duplicarForma" value="#{controlNovedadEmbargo.duplicarEmbargo.formadto.descripcion}" style="font-size: 12px; width: 122px; position: absolute; top: 215px; left: 500px; text-transform:uppercase" onclick="select();">
+                                    <p:ajax event="click" listener="#{controlNovedadEmbargo.valoresBackupAutocompletar(2, 'FORMA')}" />
+                                    <p:ajax event="change" listener="#{controlNovedadEmbargo.autocompletarNuevoyDuplicado('FORMA', controlNovedadEmbargo.duplicarEmbargo.formadto.descripcion, 2)}" />
+                                    <p:ajax event="dblclick" listener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 2)}" />
+                                </p:inputText>
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 631px; top: 215px;  " id="btnDuplicarForma" icon="ui-icon-search" process="@this"  actionListener="#{controlNovedadEmbargo.asignarIndex(indice, 5, 2)}"/>   
 
-                            <p:commandButton id="limpiarED" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 500px; top: 410px;" actionListener="#{controlNovedadEmbargo.limpiarduplicarEmbargo()}" update="duplicarEmbargo" process="@this"/>
-                            <p:commandButton id="agregarED" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 640px; top: 410px;"  process="@this" actionListener="#{controlNovedadEmbargo.confirmarDuplicar()}" onclick="DuplicarRegistroEmbargos.hide();"/>
-                            <p:commandButton id="cancelarED" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 710px; top: 410px;" actionListener="#{controlNovedadEmbargo.limpiarduplicarEmbargo()}" update="duplicarEmbargo" onclick="DuplicarRegistroEmbargos.hide();"  process="@this"/>
+                                <strong><h:outputText value="#{msg['cancelaciondocumentoN']}"  style="font-size: 12px; position: absolute;  top: 255px; left: 350px" /></strong>
+                                <p:inputText id="duplicarCancelacion" value="#{controlNovedadEmbargo.duplicarEmbargo.cancelaciondocumento}" style="font-size: 12px; width: 122px; position: absolute; top: 255px; left: 500px; text-transform: uppercase" onclick="select();">
+                                    <p:ajax event="change" update="duplicarCancelacion"/>
+                                </p:inputText>
+
+                                <p:commandButton id="limpiarED" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 350px;" actionListener="#{controlNovedadEmbargo.limpiarduplicarEmbargo()}" update="duplicarEmbargo" process="@this"/>
+                                <p:commandButton id="agregarED" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 530px; top: 350px;"  process="@this" actionListener="#{controlNovedadEmbargo.confirmarDuplicar()}"/>
+                                <p:commandButton id="cancelarED" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 600px; top: 350px;" actionListener="#{controlNovedadEmbargo.limpiarduplicarEmbargo()}" update="duplicarEmbargo" onclick="DuplicarRegistroEmbargos.hide();"  process="@this"/>
+                            </fieldset>
                         </p:panel>
                     </p:dialog>
                     <!-- Nuevo REgistro Detalles Embargos -->
@@ -1097,7 +1108,7 @@
 
                     <!-- LOV Formas descuentos tabla de arriba -->
 
-                    <p:dialog header="#{msg['formasdedescuentoFD']}" widgetVar="formasDtosDialogo" draggable="false" resizable="false" id="formasDtosDialogo" closable="false"  
+                    <p:dialog header="#{msg['formasdedescuentosFD']}" widgetVar="formasDtosDialogo" draggable="false" resizable="false" id="formasDtosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" style="font-size: 12px">
 
                         <p:dataTable  id="LOVFormasDtos" style="font-size: 11px; width: 600px" var="formasdtos" rowKey="#{formasdtos.secuencia}" value="#{controlNovedadEmbargo.lovlistaFormasDtos}"
@@ -1120,10 +1131,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarFD" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarFormasDtos()}" onclick="LOVFormas.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarFD" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarFormasDtos()}" onclick="LOVFormas.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormasDtos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasFD" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="formasDtosDialogo.hide(), LOVFormasDtos.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTerceros()}" update="LOVFormasDtos, aceptarFD" process="@this">
+                        <p:commandButton id="atrasFD" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="formasDtosDialogo.hide(), LOVFormasDtos.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTerceros()}" update="LOVFormasDtos, aceptarFD" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormasDtos:globalFilter"/>
                         </p:commandButton>
 
@@ -1168,10 +1179,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarDF" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarDetallesFormasDtos()}" onclick="LOVFormas.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarDF" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarDetallesFormasDtos()}" onclick="LOVFormas.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasDF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="formasDescuentosDialogo.hide(), LOVFormas.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTerceros()}" update="LOVFormas, aceptarDF" process="@this">
+                        <p:commandButton id="atrasDF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="formasDescuentosDialogo.hide(), LOVFormas.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTerceros()}" update="LOVFormas, aceptarDF" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormas:globalFilter"/>
                         </p:commandButton>
 
@@ -1208,10 +1219,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarPER" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarPER" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasPER" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioPeriodicidades()}" update="LOVPeriodicidades, aceptarPER" process="@this">
+                        <p:commandButton id="atrasPER" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioPeriodicidades()}" update="LOVPeriodicidades, aceptarPER" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -1255,10 +1266,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarTER" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarTER" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTER" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTerceros()}" update="LOVTerceros, aceptarTER" process="@this">
+                        <p:commandButton id="atrasTER" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTerceros()}" update="LOVTerceros, aceptarTER" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
 
@@ -1279,7 +1290,7 @@
                                 <p:inputText id="globalFilter" onkeyup="LOVDemandantes.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{demandantes.nit}" filterBy="#{demandantes.nit}" width="100" filterMatchMode="contains" > 
+                            <p:column sortBy="#{demandantes.nit}" filterBy="#{demandantes.nit}" filterStyle="width: 55px" width="7%" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nitD']}" />
                                 </f:facet>
@@ -1293,12 +1304,19 @@
                                 <h:outputText value="#{demandantes.nombre}" />  
                             </p:column>
 
+                            <p:column sortBy="#{demandantes.empresa.nombre}" filterBy="#{demandantes.empresa.nombre}" width="100" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['empresa']}" />
+                                </f:facet>
+                                <h:outputText value="#{demandantes.empresa.nombre}" />  
+                            </p:column>
+
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarD" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarDemandantes()}" onclick="LOVDemandantes.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarD" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarDemandantes()}" onclick="LOVDemandantes.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVDemandantes:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasD" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="demandantesDialogo.hide(), LOVDemandantes.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioDemandantes()}" update="LOVDemandantes, aceptarD" process="@this">
+                        <p:commandButton id="atrasD" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="demandantesDialogo.hide(), LOVDemandantes.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioDemandantes()}" update="LOVDemandantes, aceptarD" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVDemandantes:globalFilter"/>
                         </p:commandButton>
 
@@ -1313,7 +1331,7 @@
                                       filteredValue="#{controlNovedadEmbargo.lovfiltradoslistaMotivos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{motivos.secuencia}" selection="#{controlNovedadEmbargo.motivosSeleccionado}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadEmbargo.activarAceptar()}" update=":formularioDialogos:aceptarME"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadEmbargo.actualizarTipoEmbargo()}" process="@this" onstart="LOVMotivosEmbargos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadEmbargo.actualizarMotivoEmbargo()}" process="@this" onstart="LOVMotivosEmbargos.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVMotivosEmbargos.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -1328,10 +1346,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarME" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarMotivoEmbargo()}" onclick="LOVMotivosEmbargos.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarME" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarMotivoEmbargo()}" onclick="LOVMotivosEmbargos.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVMotivosEmbargos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasME" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="motivosDialogo.hide(), LOVMotivosEmbargos.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioMotivosEmbargos()}" update="LOVMotivosEmbargos, aceptarME" process="@this">
+                        <p:commandButton id="atrasME" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="motivosDialogo.hide(), LOVMotivosEmbargos.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioMotivosEmbargos()}" update="LOVMotivosEmbargos, aceptarME" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVMotivosEmbargos:globalFilter"/>
                         </p:commandButton>
 
@@ -1361,10 +1379,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarJ" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarJuzgado()}" onclick="LOVJuzgados.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarJ" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarJuzgado()}" onclick="LOVJuzgados.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVJuzgados:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasJ" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="juzgadosDialogo.hide(), LOVJuzgados.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioJuzgados()}" update="LOVJuzgados, aceptarJ" process="@this">
+                        <p:commandButton id="atrasJ" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="juzgadosDialogo.hide(), LOVJuzgados.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioJuzgados()}" update="LOVJuzgados, aceptarJ" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVJuzgados:globalFilter"/>
                         </p:commandButton>
 
@@ -1394,10 +1412,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarTE" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 350px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarTipoEmbargo()}" onclick="LOVTiposEmbargos.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarTE" value="#{msg['aceptar']}" disabled="#{controlNovedadEmbargo.aceptar}" style="position: absolute; top: 305px; left: 490px; font-size: 12px" actionListener="#{controlNovedadEmbargo.actualizarTipoEmbargo()}" onclick="LOVTiposEmbargos.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTiposEmbargos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTE" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 450px; font-size: 12px" onclick="tiposEmbargosDialogo.hide(), LOVTiposEmbargos.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTiposEmbargos()}" update="LOVTiposEmbargos, aceptarTE" process="@this">
+                        <p:commandButton id="atrasTE" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 570px; font-size: 12px" onclick="tiposEmbargosDialogo.hide(), LOVTiposEmbargos.clearFilters();" actionListener="#{controlNovedadEmbargo.cancelarCambioTiposEmbargos()}" update="LOVTiposEmbargos, aceptarTE" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTiposEmbargos:globalFilter"/>
                         </p:commandButton>
 
