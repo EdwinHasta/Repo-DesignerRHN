@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Departamentos.findAll", query = "SELECT d FROM Departamentos d")})
 public class Departamentos implements Serializable {
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -123,11 +123,11 @@ public class Departamentos implements Serializable {
         return "Entidades.Departamentos[ secuencia=" + secuencia + " ]";
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
