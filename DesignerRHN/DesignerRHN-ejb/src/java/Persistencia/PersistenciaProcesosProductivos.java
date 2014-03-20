@@ -20,7 +20,7 @@ import javax.persistence.Query;
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaProcesosProductivos implements PersistenciaProcesosProductivosInterface{
+public class PersistenciaProcesosProductivos implements PersistenciaProcesosProductivosInterface {
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
@@ -56,7 +56,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     }
 
     @Override
-    public List<ProcesosProductivos> buscarProcesosProductivos() {
+    public List<ProcesosProductivos> consultarProcesosProductivos() {
         try {
             Query query = em.createQuery("SELECT pp FROM ProcesosProductivos pp ORDER BY pp.codigo ASC");
             List<ProcesosProductivos> procesos = query.getResultList();
@@ -68,7 +68,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     }
 
     @Override
-    public ProcesosProductivos buscarProcesosProductivosSecuencia(BigInteger secuencia) {
+    public ProcesosProductivos consultarProcesosProductivos(BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT pp FROM ProcesosProductivos pp WHERE pp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -78,6 +78,51 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
             System.out.println("Error buscarProcesosProductivosSecuencia PersistenciaProcesosProductivos : " + e.toString());
             ProcesosProductivos procesos = null;
             return procesos;
+        }
+    }
+
+    public BigInteger contarUnidadesProducidasProcesoProductivo(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT (*)FROM unidadesproducidas WHERE procesoproductivo = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaSubCategorias contarVigenciasFormasPagosSucursal persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PERSISTENCIASUCURSALES contarVigenciasFormasPagosSucursal : " + e);
+            return retorno;
+        }
+    }
+
+    public BigInteger contarTarifasProductosProcesoProductivo(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT (*)FROM tarifasproductos WHERE procesoproductivo = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaSubCategorias contarVigenciasFormasPagosSucursal persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PERSISTENCIASUCURSALES contarVigenciasFormasPagosSucursal : " + e);
+            return retorno;
+        }
+    }
+    
+    public BigInteger contarCargosProcesoProductivo(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT (*)FROM cargos WHERE procesoproductivo =  ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaSubCategorias contarVigenciasFormasPagosSucursal persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PERSISTENCIASUCURSALES contarVigenciasFormasPagosSucursal : " + e);
+            return retorno;
         }
     }
 }

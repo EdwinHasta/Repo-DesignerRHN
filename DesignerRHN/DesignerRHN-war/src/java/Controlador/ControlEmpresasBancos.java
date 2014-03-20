@@ -1640,7 +1640,6 @@ public class ControlEmpresasBancos implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroEmpresasBancos.show()");
-            index = -1;
             secRegistro = null;
         }
     }
@@ -1742,6 +1741,7 @@ public class ControlEmpresasBancos implements Serializable {
             duplicarEmpresasBancos.setEmpresa(new Empresas());
             duplicarEmpresasBancos.setCiudad(new Ciudades());
             duplicarEmpresasBancos.setBanco(new Bancos());
+            index = -1;
 
             RequestContext.getCurrentInstance().execute("duplicarRegistroEmpresasBancos.hide()");
 

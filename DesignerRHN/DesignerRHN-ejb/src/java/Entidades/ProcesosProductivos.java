@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ProcesosProductivos.findAll", query = "SELECT p FROM ProcesosProductivos p")})
 public class ProcesosProductivos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -41,13 +41,8 @@ public class ProcesosProductivos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private BigInteger codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "procesoproductivo")
@@ -63,7 +58,7 @@ public class ProcesosProductivos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public ProcesosProductivos(BigInteger secuencia, BigInteger codigo, String descripcion) {
+    public ProcesosProductivos(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -77,23 +72,23 @@ public class ProcesosProductivos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
+        if (descripcion == null) {
             descripcion = " ";
         }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @XmlTransient
@@ -137,5 +132,5 @@ public class ProcesosProductivos implements Serializable {
     public String toString() {
         return "Entidades.Procesosproductivos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

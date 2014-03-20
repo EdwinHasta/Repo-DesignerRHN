@@ -54,7 +54,6 @@ public class CentrosCostos implements Serializable {
     private String codigo;
     @Column(name = "MANOOBRA")
     private String manoobra;
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "COMODIN")
