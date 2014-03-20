@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -26,78 +31,74 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author user
  */
 @Entity
-@Table(name = "MONEDAS")
+@Table(name = "VIGENCIASRETENCIONESMINIMAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Monedas.findAll", query = "SELECT m FROM Monedas m")})
-public class Monedas implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "moneda")
-    private Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection;
-
+    @NamedQuery(name = "VigenciaRretencionesMinimas.findAll", query = "SELECT v FROM VigenciaRretencionesMinimas v")})
+public class VigenciaRretencionesMinimas implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigInteger secuencia;
+    private BigDecimal secuencia;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
-    private String codigo;
-    @Column(name = "NOMBRE")
-    private String nombre;
-    @Column(name = "CODIGOALTERNATIVO")
-    private String codigoalternativo;
+    private BigInteger codigo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHAVIGENCIA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechavigencia;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vigenciaretencionminima")
+    private Collection<RetencionesMinimas> retencionesMinimasCollection;
 
-    public Monedas() {
+    public VigenciaRretencionesMinimas() {
     }
 
-    public Monedas(BigInteger secuencia) {
+    public VigenciaRretencionesMinimas(BigDecimal secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Monedas(BigInteger secuencia, String codigo, String nombre) {
+    public VigenciaRretencionesMinimas(BigDecimal secuencia, BigInteger codigo, Date fechavigencia) {
         this.secuencia = secuencia;
         this.codigo = codigo;
-        this.nombre = nombre;
+        this.fechavigencia = fechavigencia;
     }
 
-    public BigInteger getSecuencia() {
+    public BigDecimal getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigInteger secuencia) {
+    public void setSecuencia(BigDecimal secuencia) {
         this.secuencia = secuencia;
     }
 
-    public String getCodigo() {
-        if (codigo == null) {
-            codigo = " ";
-        }
+    public BigInteger getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo.toUpperCase();
+    public void setCodigo(BigInteger codigo) {
+        this.codigo = codigo;
     }
 
-    public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
-        return nombre;
+    public Date getFechavigencia() {
+        return fechavigencia;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+    public void setFechavigencia(Date fechavigencia) {
+        this.fechavigencia = fechavigencia;
     }
 
-    public String getCodigoalternativo() {
-        return codigoalternativo;
+    @XmlTransient
+    public Collection<RetencionesMinimas> getRetencionesMinimasCollection() {
+        return retencionesMinimasCollection;
     }
 
-    public void setCodigoalternativo(String codigoalternativo) {
-        this.codigoalternativo = codigoalternativo;
+    public void setRetencionesMinimasCollection(Collection<RetencionesMinimas> retencionesMinimasCollection) {
+        this.retencionesMinimasCollection = retencionesMinimasCollection;
     }
 
     @Override
@@ -110,10 +111,10 @@ public class Monedas implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Monedas)) {
+        if (!(object instanceof VigenciaRretencionesMinimas)) {
             return false;
         }
-        Monedas other = (Monedas) object;
+        VigenciaRretencionesMinimas other = (VigenciaRretencionesMinimas) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -122,16 +123,7 @@ public class Monedas implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Monedas[ secuencia=" + secuencia + " ]";
+        return "Entidades.VigenciaRretencionesMinimas[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<VigenciasMonedasBases> getVigenciasMonedasBasesCollection() {
-        return vigenciasMonedasBasesCollection;
-    }
-
-    public void setVigenciasMonedasBasesCollection(Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection) {
-        this.vigenciasMonedasBasesCollection = vigenciasMonedasBasesCollection;
-    }
-
+    
 }

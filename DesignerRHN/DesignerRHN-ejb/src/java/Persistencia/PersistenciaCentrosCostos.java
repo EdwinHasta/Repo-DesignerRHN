@@ -62,7 +62,8 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     @Override
     public List<CentrosCostos> buscarCentrosCostos() {
         try {
-            List<CentrosCostos> centrosCostos = (List<CentrosCostos>) em.createNamedQuery("CentrosCostos.findAll").getResultList();
+            Query query = em.createQuery("SELECT cc FROM CentrosCostos cc");
+            List<CentrosCostos> centrosCostos = query.getResultList();
             return centrosCostos;
         } catch (Exception e) {
             System.out.println("Error buscarCentrosCostos PersistenciaCentrosCostos");

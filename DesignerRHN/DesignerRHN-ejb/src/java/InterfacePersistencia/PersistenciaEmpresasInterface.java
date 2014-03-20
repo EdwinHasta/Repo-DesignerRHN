@@ -65,4 +65,6 @@ public interface PersistenciaEmpresasInterface {
      */
     public Short codigoEmpresa();
     
+     public List<Empresas> buscarEmpresas();
+    
 }

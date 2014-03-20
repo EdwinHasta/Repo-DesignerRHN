@@ -22,7 +22,6 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaEersPrestamos implements PersistenciaEersPrestamosInterface {
 
-
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
@@ -38,9 +37,11 @@ public class PersistenciaEersPrestamos implements PersistenciaEersPrestamosInter
     @Override
     public void editar(EersPrestamos eersPrestamos) {
         try {
+            System.out.println("eersPrestamos : "+eersPrestamos);
+            System.out.println("eersPrestamos secuencia : "+eersPrestamos.getSecuencia());
             em.merge(eersPrestamos);
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el eersPrestamos");
+            System.out.println("No se pudo modificar el eersPrestamos : " + e.toString());
         }
     }
 
