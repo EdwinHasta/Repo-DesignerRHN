@@ -45,7 +45,7 @@ public interface PersistenciaProcesosProductivosInterface {
      *
      * @return Retorna una lista de ProcesosProductivos.
      */
-    public List<ProcesosProductivos> buscarProcesosProductivos();
+    public List<ProcesosProductivos> consultarProcesosProductivos();
 
     /**
      * Método encargado de buscar el ProcesoProductivo con la secuencia dada por
@@ -55,6 +55,11 @@ public interface PersistenciaProcesosProductivosInterface {
      * @return Retorna el ProcesoProductivo identificado con la secuencia dada
      * por parámetro.
      */
-    public ProcesosProductivos buscarProcesosProductivosSecuencia(BigInteger secuencia);
+    public ProcesosProductivos consultarProcesosProductivos(BigInteger secuencia);
 
+    public BigInteger contarUnidadesProducidasProcesoProductivo(BigInteger secuencia);
+
+    public BigInteger contarTarifasProductosProcesoProductivo(BigInteger secuencia);
+
+    public BigInteger contarCargosProcesoProductivo(BigInteger secuencia);
 }

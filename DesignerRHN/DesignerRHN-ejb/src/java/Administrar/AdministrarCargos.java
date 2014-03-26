@@ -430,7 +430,7 @@ public class AdministrarCargos implements AdministrarCargosInterface {
     @Override
     public List<ProcesosProductivos> lovProcesosProductivos() {
         try {
-            List<ProcesosProductivos> lista = persistenciaProcesosProductivos.buscarProcesosProductivos();
+            List<ProcesosProductivos> lista = persistenciaProcesosProductivos.consultarProcesosProductivos();
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovProcesosProductivos Admi : " + e.toString());

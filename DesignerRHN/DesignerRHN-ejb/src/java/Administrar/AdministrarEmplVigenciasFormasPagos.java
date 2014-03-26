@@ -102,7 +102,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     @Override
     public List<Sucursales> consultarLOVSucursales() {
         try {
-            listSucursales = persistenciaSucursales.buscarSucursales();
+            listSucursales = persistenciaSucursales.consultarSucursales();
             return listSucursales;
         } catch (Exception e) {
             System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de sucursales " + e);

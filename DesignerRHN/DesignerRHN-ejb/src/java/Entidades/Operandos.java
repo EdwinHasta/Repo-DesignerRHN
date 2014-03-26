@@ -71,9 +71,6 @@ public class Operandos implements Serializable {
     @NotNull
     @Column(name = "CODIGO")
     private int codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
