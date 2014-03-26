@@ -63,5 +63,5 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
             System.out.println("Error PersistenciaPruebaEmpleados.empleadosAsignacion. " + e);
             return null;
         }
-    }  
+    }
 }
