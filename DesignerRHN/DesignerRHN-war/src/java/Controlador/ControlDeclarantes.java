@@ -422,8 +422,8 @@ public class ControlDeclarantes implements Serializable {
                 context.execute("editarDeseado.show()");
                 cualCelda = -1;
             } else if (cualCelda == 3) {
-                context.update("formularioDialogos:editarTarifaDeseo");
-                context.execute("editarTarifaDeseo.show()");
+                context.update("formularioDialogos:editarMinima");
+                context.execute("editarMinima.show()");
                 cualCelda = -1;
             }
         }

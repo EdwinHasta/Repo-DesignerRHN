@@ -152,7 +152,7 @@
                                         <f:facet name="output"><h:outputText value="#{dec.retencionminima.retencion}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{dec.retencionminima.retencion}" id="editarTarifaDeseo" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
-                                                <p:ajax event="select"  listener="#{controlDeclarantes.cambiarIndice(indice, 3)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlDeclarantes.cambiarIndice(indice, 3)}" />
                                                 <p:ajax event="change" update="editarTarifaDeseo" listener="#{controlDeclarantes.modificarDeclarantes(indice,'MINIMA',dec.retencionminima.retencion)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlDeclarantes.asignarIndex(indice,0,0)}" process="@this"/>
                                             </p:inputText>
