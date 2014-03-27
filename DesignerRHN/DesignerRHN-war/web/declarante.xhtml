@@ -300,7 +300,7 @@
                                     <p:ajax event="change" listener="#{controlDeclarantes.autocompletarNuevoyDuplicado('MINIMA', controlDeclarantes.duplicarDeclarante.retencionminima.retencion, 2)}" />
                                     <p:ajax event="dblclick" listener="#{controlDeclarantes.asignarIndex(indice, -1, 2)}" />
                                 </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 283px; top: 175px;  " id="btnDuplicarMinima" icon="ui-icon-search" process="@this"  actionListener="#{controlDeclarantes.asignarIndex(indice, 0, 1)}"/>   
+                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 283px; top: 175px;  " id="btnDuplicarMinima" icon="ui-icon-search" process="@this"  actionListener="#{controlDeclarantes.asignarIndex(indice, -1, 2)}"/>   
 
                                 <p:commandButton id="limpiarDD" value="#{msg['limpiar']}"  style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlDeclarantes.limpiarNuevaDeclarantes()}" update="duplicarDeclarante" process="@this"/>
                                 <p:commandButton id="agregarDD" value="#{msg['agregar']}"  style="font-size: 11px; position: absolute; left: 230px; top: 250px;"  process="@this" actionListener="#{controlDeclarantes.agregarNuevoDeclarante()}"/>
