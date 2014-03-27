@@ -94,7 +94,9 @@ public class Periodicidades implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        }
     }
 
     public String getIndependienteadelanto() {
