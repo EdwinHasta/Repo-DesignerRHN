@@ -435,7 +435,6 @@ public class ControlDeclarantes implements Serializable {
     /**
      * Metodo que se encarga de agregar un nuevo Declarante
      */
-    //CREAR DECLARANTE
     public void agregarNuevoDeclarante() {
         int pasa = 0;
         mensajeValidacion = new String();
