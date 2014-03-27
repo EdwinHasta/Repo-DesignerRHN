@@ -2528,5 +2528,42 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/EmplSets.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>declarante</from-outcome>
+            <to-view-id>/declarante.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/declarante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>declarantes</from-outcome>
+            <to-view-id>/declarante</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/declarante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>sets</from-outcome>
+            <to-view-id>/EmplSets.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
  
 </faces-config>

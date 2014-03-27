@@ -1,6 +1,7 @@
 package Controlador;
 
 import Entidades.Empleados;
+import Entidades.Personas;
 import Entidades.Sets;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
@@ -38,6 +39,7 @@ public class ControlSets implements Serializable {
     private List<Sets> listSets;
     private List<Sets> filtrarSets;
     private Empleados empleado;
+    private Personas per;
     //Activo/Desactivo Crtl + F11
     private int bandera;
     //Columnas Tabla VC
@@ -99,8 +101,10 @@ public class ControlSets implements Serializable {
     }
 
     public void recibirEmpleado(Empleados empl) {
+        
         listSets = null;
         empleado = empl;
+        per = empleado.getPersona();
     }
 
     public boolean validarDatosRegistro(int i) {
@@ -945,5 +949,15 @@ public class ControlSets implements Serializable {
     public void setBackUpSecRegistro(BigInteger BackUpSecRegistro) {
         this.backUpSecRegistro = BackUpSecRegistro;
     }
+
+    public Personas getPer() {
+        return per;
+    }
+
+    public void setPer(Personas per) {
+        this.per = per;
+    }
+    
+    
 
 }

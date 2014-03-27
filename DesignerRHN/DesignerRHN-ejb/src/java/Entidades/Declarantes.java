@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -21,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,13 +35,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Declarantes.findAll", query = "SELECT d FROM Declarantes d")})
 public class Declarantes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAINICIAL")
@@ -63,25 +64,29 @@ public class Declarantes implements Serializable {
     @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Personas persona;
+    @Transient
+    private boolean estadoDeclarante;
+    @Transient
+    private BigDecimal equivalencia;
 
     public Declarantes() {
     }
 
-    public Declarantes(BigDecimal secuencia) {
+    public Declarantes(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Declarantes(BigDecimal secuencia, Date fechainicial, Date fechafinal) {
+    public Declarantes(BigInteger secuencia, Date fechainicial, Date fechafinal) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
         this.fechafinal = fechafinal;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -110,6 +115,9 @@ public class Declarantes implements Serializable {
     }
 
     public String getDeclarante() {
+        if(declarante == null){
+            declarante = "N";
+        }
         return declarante;
     }
 
@@ -118,6 +126,9 @@ public class Declarantes implements Serializable {
     }
 
     public RetencionesMinimas getRetencionminima() {
+        if(retencionminima == null){
+            retencionminima = new RetencionesMinimas();
+        }
         return retencionminima;
     }
 
@@ -131,6 +142,28 @@ public class Declarantes implements Serializable {
 
     public void setPersona(Personas persona) {
         this.persona = persona;
+    }
+
+    public boolean isEstadoDeclarante() {
+        if (declarante != null) {
+            if (declarante.equals("S")) {
+                estadoDeclarante = true;
+            } else {
+                estadoDeclarante = false;
+            }
+        } else {
+            estadoDeclarante = false;
+        }
+        return estadoDeclarante;
+    }
+
+    public void setEstadoDeclarante(boolean estadoDeclarante) {
+        if (estadoDeclarante == true) {
+            declarante = "S";
+        } else {
+            declarante = "N";
+        }
+        this.estadoDeclarante = estadoDeclarante;
     }
 
     @Override
@@ -157,5 +190,5 @@ public class Declarantes implements Serializable {
     public String toString() {
         return "Entidades.Declarantes[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

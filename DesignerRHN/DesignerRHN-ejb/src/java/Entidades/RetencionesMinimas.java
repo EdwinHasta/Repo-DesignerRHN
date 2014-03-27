@@ -40,7 +40,7 @@ public class RetencionesMinimas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MENSUALIZADO")
@@ -60,20 +60,20 @@ public class RetencionesMinimas implements Serializable {
     public RetencionesMinimas() {
     }
 
-    public RetencionesMinimas(BigDecimal secuencia) {
+    public RetencionesMinimas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public RetencionesMinimas(BigDecimal secuencia, BigInteger mensualizado) {
+    public RetencionesMinimas(BigInteger secuencia, BigInteger mensualizado) {
         this.secuencia = secuencia;
         this.mensualizado = mensualizado;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -119,6 +119,9 @@ public class RetencionesMinimas implements Serializable {
     }
 
     public VigenciaRretencionesMinimas getVigenciaretencionminima() {
+        if(vigenciaretencionminima == null){
+            vigenciaretencionminima = new VigenciaRretencionesMinimas();
+        }
         return vigenciaretencionminima;
     }
 

@@ -65,7 +65,7 @@
                         </p:toolbar> 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 830px; height: 315px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue"><strong>#{msg['informacion']}></strong></legend>
+                            <legend style="font-size: 12px; color: blue"><strong>#{msg['informacion']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
 
                             <p:dataTable id="datosSetsEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" 
@@ -193,7 +193,7 @@
 
                         <p:commandButton style="position: absolute; left: 680px; top: 411px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosSetsEmpleado" process="@this" />
                         <p:commandButton style="position: absolute; left: 100px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlSets.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="DECLARANTE" value="#{msg['declarante']}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="DECLARANTE" value="#{msg['declarante']}" action="declarante" actionListener="#{controlDeclarantes.recibirPersona(controlSets.per)}" process="@this" />
                         <p:commandButton style="position: absolute; left: 780px; top: 412px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlSets.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
