@@ -61,10 +61,10 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
         }
     }
 
-    @Override
+     @Override
     public List<UbicacionesGeograficas> consultarUbicacionesGeograficas() {
         try {
-            Query query = em.createQuery("SELECT u FROM UbicacionesGeograficas u");
+            Query query = em.createQuery("SELECT u FROM UbicacionesGeograficas u ORDER BY u.codigo ASC");
             List<UbicacionesGeograficas> ubicacionesGeograficas = query.getResultList();
             return ubicacionesGeograficas;
         } catch (Exception e) {

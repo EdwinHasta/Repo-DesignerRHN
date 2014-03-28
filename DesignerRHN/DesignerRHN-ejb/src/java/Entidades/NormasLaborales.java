@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "NormasLaborales.findAll", query = "SELECT n FROM NormasLaborales n")})
 public class NormasLaborales implements Serializable {
+
     @OneToMany(mappedBy = "normalaboral")
     private Collection<NovedadesSistema> novedadessistemaCollection;
     private static final long serialVersionUID = 1L;
@@ -79,6 +80,9 @@ public class NormasLaborales implements Serializable {
     }
 
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -119,5 +123,5 @@ public class NormasLaborales implements Serializable {
     public void setNovedadessistemaCollection(Collection<NovedadesSistema> novedadessistemaCollection) {
         this.novedadessistemaCollection = novedadessistemaCollection;
     }
-    
+
 }

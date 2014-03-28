@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Paises.findAll", query = "SELECT p FROM Paises p")})
 public class Paises implements Serializable {
+    @Column(name = "CODIGO")
+    private Integer codigo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,8 +41,6 @@ public class Paises implements Serializable {
     private BigInteger secuencia;
     @Column(name = "NOMBRE")
     private String nombre;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pais")
     private Collection<Departamentos> departamentosCollection;
 
