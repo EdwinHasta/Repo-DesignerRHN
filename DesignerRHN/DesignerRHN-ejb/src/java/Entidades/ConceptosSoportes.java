@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,7 +40,7 @@ public class ConceptosSoportes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -67,20 +67,20 @@ public class ConceptosSoportes implements Serializable {
     public ConceptosSoportes() {
     }
 
-    public ConceptosSoportes(BigDecimal secuencia) {
+    public ConceptosSoportes(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public ConceptosSoportes(BigDecimal secuencia, String tipo) {
+    public ConceptosSoportes(BigInteger secuencia, String tipo) {
         this.secuencia = secuencia;
         this.tipo = tipo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

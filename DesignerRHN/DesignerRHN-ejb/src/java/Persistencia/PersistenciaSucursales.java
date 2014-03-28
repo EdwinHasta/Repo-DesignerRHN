@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
@@ -52,9 +53,24 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
     }
 
     @Override
-    public List<Sucursales> buscarSucursales() {
+    public List<Sucursales> consultarSucursales() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Sucursales.class));
         return em.createQuery(cq).getResultList();
+    }
+    
+     public BigInteger contarVigenciasFormasPagosSucursal(BigInteger secuencia) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM vigenciasformaspagos WHERE sucursal = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuencia);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.out.println("Contador PersistenciaSubCategorias contarVigenciasFormasPagosSucursal persistencia " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("Error PERSISTENCIASUCURSALES contarVigenciasFormasPagosSucursal : " + e);
+            return retorno;
+        }
     }
 }
