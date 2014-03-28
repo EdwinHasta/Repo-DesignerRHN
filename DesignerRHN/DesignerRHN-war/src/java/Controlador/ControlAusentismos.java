@@ -1055,8 +1055,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).getTipo().setDescripcion(TipoAusentismo);
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if (listaAusentismos.get(i).getTipo().getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaTiposAusentismos.size(); i++) {
+                if (listaTiposAusentismos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1092,18 +1092,18 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
+                    listaAusentismos.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
+                    filtradosListaAusentismos.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
                 }
-                listaTiposAusentismos.clear();
-                getListaTiposAusentismos();
+                listaTerceros.clear();
+                getListaTerceros();
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
-                context.update("formularioDialogos:tiposAusentismosDialogo");
-                context.execute("tiposAusentismosDialogo.show()");
+                context.update("formularioDialogos:tercerosDialogo");
+                context.execute("tercerosDialogo.show()");
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("CLASE")) {
@@ -1113,8 +1113,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).getClase().setDescripcion(ClaseAusentismo);
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if (listaAusentismos.get(i).getClase().getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaClasesAusentismos.size(); i++) {
+                if (listaClasesAusentismos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1142,8 +1142,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).getCausa().setDescripcion(CausaAusentismo);
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if (listaAusentismos.get(i).getCausa().getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaCausasAusentismos.size(); i++) {
+                if (listaCausasAusentismos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1171,8 +1171,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).setPorcentajeindividual(new BigInteger(Porcentaje));
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if ((listaAusentismos.get(i).getPorcentajeindividual()).toString().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaPorcentaje.size(); i++) {
+                if ((listaPorcentaje.get(i)).toString().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1200,8 +1200,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).setBaseliquidacion(new BigInteger(BaseLiquidacion));
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if ((listaAusentismos.get(i).getBaseliquidacion()).toString().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaIBCS.size(); i++) {
+                if ((listaIBCS.get(i)).toString().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1229,8 +1229,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).setFormaliquidacion(Forma);
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if ((listaAusentismos.get(i).getFormaliquidacion()).startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaForma.size(); i++) {
+                if ((listaForma.get(i)).startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1258,8 +1258,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).getAccidente().setDescripcioncaso(AD);
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if (listaAusentismos.get(i).getAccidente().getDescripcioncaso().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaAccidentes.size(); i++) {
+                if (listaAccidentes.get(i).getDescripcioncaso().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1287,8 +1287,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).getEnfermedad().getCategoria().setDescripcion(Enfermedad);
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if (listaAusentismos.get(i).getEnfermedad().getCategoria().getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaEnfermeadadesProfesionales.size(); i++) {
+                if (listaEnfermeadadesProfesionales.get(i).getCategoria().getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1316,8 +1316,8 @@ public class ControlAusentismos implements Serializable {
                 filtradosListaAusentismos.get(indice).getDiagnosticocategoria().setCodigo(Diagnostico);
             }
 
-            for (int i = 0; i < listaAusentismos.size(); i++) {
-                if (listaAusentismos.get(i).getDiagnosticocategoria().getCodigo().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaDiagnosticos.size(); i++) {
+                if (listaDiagnosticos.get(i).getCodigo().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
