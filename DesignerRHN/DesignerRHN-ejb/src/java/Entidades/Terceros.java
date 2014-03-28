@@ -48,6 +48,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
     @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NIT")
+    private long nit;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tercero")
     private Collection<EersPrestamos> eersPrestamosCollection;
     @OneToMany(mappedBy = "demandante")
@@ -77,10 +81,6 @@ public class Terceros implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "NIT")
-    private Long nit;
     @Column(name = "CODIGOALTERNATIVO")
     private Long codigoalternativo;
     @Basic(optional = false)
@@ -150,17 +150,6 @@ public class Terceros implements Serializable {
 
     public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
-    }
-
-    public Long getNit() {
-        if(nit == null){
-           nit = Long.valueOf("0");
-        }
-        return nit;
-    }
-
-    public void setNit(long nit) {
-        this.nit = nit;
     }
 
     public String getStrNit() {
@@ -436,5 +425,13 @@ public class Terceros implements Serializable {
 
     public void setEersPrestamosCollection1(Collection<EersPrestamos> eersPrestamosCollection1) {
         this.eersPrestamosCollection1 = eersPrestamosCollection1;
+    }
+
+    public long getNit() {
+        return nit;
+    }
+
+    public void setNit(long nit) {
+        this.nit = nit;
     }
 }

@@ -33,6 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VigenciasCargos.findAll", query = "SELECT v FROM VigenciasCargos v"),
     @NamedQuery(name = "VigenciasCargos.findByEmpleado", query = "SELECT v FROM VigenciasCargos v where v.empleado = :empleado order by v.fechavigencia desc")})
 public class VigenciasCargos implements Serializable {
+    @JoinColumn(name = "PAPEL", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Papeles papel;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -205,5 +208,13 @@ public class VigenciasCargos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Vigenciascargos[ secuencia=" + secuencia + " ]";
+    }
+
+    public Papeles getPapel() {
+        return papel;
+    }
+
+    public void setPapel(Papeles papel) {
+        this.papel = papel;
     }
 }
