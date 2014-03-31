@@ -46,7 +46,7 @@
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeclarantes.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}"  />
 
-                                <p:separator style="position: relative; top: -10px;"/> 
+                                <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroDeclarantes.show()" update=":formularioDialogos:nuevoDeclarante" process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}"  />
 
@@ -56,7 +56,7 @@
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeclarantes.duplicarDeclarantes()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}"  />
 
-                                <p:separator style="position: relative; top: -10px;"/> 
+                                <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeclarantes.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}" />
                             </p:toolbarGroup>  
@@ -88,7 +88,7 @@
                                                 <p:ajax event="change" listener="#{controlDeclarantes.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlDeclarantes.cambiarIndice(indice,0)}" process="@this"/> 
                                             </lnk:calendar>
-                                           
+
                                         </f:facet>   
                                     </p:cellEditor>
 
@@ -221,20 +221,20 @@
                             <fieldset style="position: absolute; left: 10px; top: 40px; font-size: 11px; width: 365px; height: 218px; border-radius: 10px; ">
 
                                 <strong><h:outputText value="#{msg['fechainicioN']}"  style="font-size: 12px; position: absolute; top: 17px" /></strong>
-                               <div id="posicionFormulaFechaIniNuevoReg" style="font-size: 10px; position: absolute; top: 17px; left: 152px">
-                                   <lnk:calendar id="nuevaFechaInicial" value="#{controlDeclarantes.nuevoDeclarante.fechainicial}" >
-                                    <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
-                                    <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
-                                </lnk:calendar>
-                            </div>
+                                <div id="posicionFechaInicialNuevo" style="font-size: 10px; position: absolute; top: 17px; left: 152px">
+                                    <lnk:calendar id="nuevaFechaInicial" value="#{controlDeclarantes.nuevoDeclarante.fechainicial}" >
+                                        <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
+                                        <p:ajax event="change" update="nuevaFechaInicial" process="@this"/>
+                                    </lnk:calendar>
+                                </div>
 
                                 <strong><h:outputText value="#{msg['fechafinalN']}"  style="font-size: 12px; position: absolute; top: 57px" /></strong>
-                                <div id="posicionFormulaFechaFinNuevoReg" style="font-size: 10px; position: absolute; top: 57px; left: 152px">
+                                <div id="posicionFechaInicialNuevo" style="font-size: 10px; position: absolute; top: 57px; left: 152px">
                                     <lnk:calendar id="nuevaFechaFinal" value="#{controlDeclarantes.nuevoDeclarante.fechafinal}" >
-                                    <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
-                                    <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
-                                </lnk:calendar>
-                            </div>
+                                        <p:ajax event="dateSelect" update="nuevaFechaFinal" process="@this"/>
+                                        <p:ajax event="change" update="nuevaFechaFinal" process="@this"/>
+                                    </lnk:calendar>
+                                </div>
 
                                 <strong><h:outputText value="#{msg['declaranteN']}"   style="font-size: 12px; position: absolute; top: 97px" /></strong>
                                 <p:selectBooleanCheckbox id="nuevoDeclaranteBooleano" style="position: absolute; top: 95px; left: 152px;" value="#{controlDeclarantes.nuevoDeclarante.estadoDeclarante}">
@@ -272,18 +272,20 @@
 
 
                                 <strong><h:outputText value="#{msg['fechainicioN']}"  style="font-size: 12px; position: absolute; top: 17px" /></strong>
-                                <p:calendar  id="duplicarFechaInicio" style="font-size: 10px; position: absolute; top: 15px; left: 152px;" value="#{controlDeclarantes.duplicarDeclarante.fechainicial}"  styleClass="ui-datepicker, myClass2"  
-                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                    <p:ajax event="dateSelect" update="duplicarFechaInicio"/>
-                                    <p:ajax event="change" update="duplicarFechaInicio"/>
-                                </p:calendar>
+                                <div id="posicionFechaInicioDuplicar" style="font-size: 10px; position: absolute; top: 17px; left: 152px">
+                                    <lnk:calendar id="duplicarFechaInicial" value="#{controlDeclarantes.duplicarDeclarante.fechainicial}" >
+                                        <p:ajax event="dateSelect" update="duplicarFechaInicial" process="@this"/>
+                                        <p:ajax event="change" update="duplicarFechaInicial" process="@this"/>
+                                    </lnk:calendar>
+                                </div>
 
                                 <strong><h:outputText value="#{msg['fechafinalN']}"  style="font-size: 12px; position: absolute; top: 57px" /></strong>
-                                <p:calendar  id="duplicarFechaFinal" style="font-size: 10px; position: absolute; top: 55px; left: 152px;" value="#{controlDeclarantes.duplicarDeclarante.fechafinal}"  styleClass="ui-datepicker, myClass2"  
-                                             navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                                    <p:ajax event="dateSelect" update="duplicarFechaFinal"/>
-                                    <p:ajax event="change" update="duplicarFechaFinal"/>
-                                </p:calendar>
+                                <div id="posicionFechaFinalDuplicar" style="font-size: 10px; position: absolute; top: 57px; left: 152px">
+                                    <lnk:calendar id="duplicarFechaFinal" value="#{controlDeclarantes.duplicarDeclarante.fechafinal}" >
+                                        <p:ajax event="dateSelect" update="duplicarFechaFinal" process="@this"/>
+                                        <p:ajax event="change" update="duplicarFechaFinal" process="@this"/>
+                                    </lnk:calendar>
+                                </div>
 
                                 <strong><h:outputText value="#{msg['declaranteN']}"   style="font-size: 12px; position: absolute; top: 97px" /></strong>
                                 <p:selectBooleanCheckbox id="duplicarDeclaranteBooleano" style="position: absolute; top: 95px; left: 152px;" value="#{controlDeclarantes.duplicarDeclarante.estadoDeclarante}">
@@ -309,36 +311,36 @@
                             </fieldset>
                         </p:panel>
                     </p:dialog>
-                    
+
                     <p:dialog id="validacionNuevoDeclarante" header="#{msg['atencion']}" widgetVar="validacionNuevoDeclarante"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} " style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevoDeclarante.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="fechaNula" header="#{msg['atencion']}" widgetVar="fechaNula"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['fechanula']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="fechaNula.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="fechas" header="#{msg['atencion']}" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['fechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="fechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="fechasTraslapadas" header="#{msg['atencion']}" widgetVar="fechasTraslapadas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['traslapamiento']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="fechasTraslapadas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
