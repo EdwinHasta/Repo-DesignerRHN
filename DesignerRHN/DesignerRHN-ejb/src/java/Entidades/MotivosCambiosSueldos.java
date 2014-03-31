@@ -82,6 +82,9 @@ public class MotivosCambiosSueldos implements Serializable {
     }
 
     public String getNombre() {
+        if (nombre == null) {
+            nombre = " ";
+        }
         return nombre;
     }
 
@@ -107,7 +110,7 @@ public class MotivosCambiosSueldos implements Serializable {
     }
 
     public Boolean getEstadoSueldoPromedio() {
-        if(this.sueldopromedio == null || this.sueldopromedio.equals("N")) {
+        if (this.sueldopromedio == null || this.sueldopromedio.equals("N")) {
             this.estadoSueldoPromedio = false;
         } else {
             this.estadoSueldoPromedio = true;

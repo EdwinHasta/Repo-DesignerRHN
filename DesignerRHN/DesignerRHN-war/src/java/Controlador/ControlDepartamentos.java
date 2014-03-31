@@ -104,7 +104,7 @@ public class ControlDepartamentos implements Serializable {
             cualCelda = celda;
             secRegistro = listDepartamentos.get(index).getSecuencia();
             if (tipoLista == 0) {
-                backupCodigo = listDepartamentos.get(index).getCodigo();
+                backupCodigo = listDepartamentos.get(index).getCodigo(); 
                 backupDescripcion = listDepartamentos.get(index).getNombre();
             } else if (tipoLista == 1) {
                 backupCodigo = filtrarDepartamentos.get(index).getCodigo();
