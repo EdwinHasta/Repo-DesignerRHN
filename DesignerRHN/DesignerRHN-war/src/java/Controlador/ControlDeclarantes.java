@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -76,6 +77,9 @@ public class ControlDeclarantes implements Serializable {
     private List<TarifaDeseo> lovlistaRetenciones;
     private List<TarifaDeseo> lovfiltradoslistaRetenciones;
     private TarifaDeseo retencionesSeleccionado;
+    private Date fechaFinal;
+    private Date fechaInicial;
+    private Date fechaParametro;
 
     /**
      * Constructor de ControlDeclarante
@@ -195,6 +199,30 @@ public class ControlDeclarantes implements Serializable {
         System.out.println("Entro a Modificar Declarantes");
 
         RequestContext context = RequestContext.getCurrentInstance();
+
+        for (int i = 0; i < listaDeclarantes.size(); i++) {
+            if (listaDeclarantes.get(index).getFechainicial().after(listaDeclarantes.get(i).getFechainicial()) && listaDeclarantes.get(index).getFechainicial().before(listaDeclarantes.get(i).getFechafinal())) {
+                listaDeclarantes.get(index).setFechainicial(fechaInicial);
+                context.update("formularioDialogos:fechasTraslapadas");
+                context.execute("fechasTraslapadas.show()");
+                context.update("form:datosDeclarantes");
+                break;
+            }
+        }
+
+        if (listaDeclarantes.get(index).getFechafinal().before(listaDeclarantes.get(index).getFechainicial())) {
+            listaDeclarantes.get(index).setFechafinal(fechaFinal);
+            context.update("formularioDialogos:fechas");
+            context.execute("fechas.show()");
+            context.update("form:datosDeclarantes");
+        }
+
+        if (listaDeclarantes.get(index).getFechainicial().after(listaDeclarantes.get(index).getFechafinal())) {
+            listaDeclarantes.get(index).setFechainicial(fechaInicial);
+            context.update("formularioDialogos:fechas");
+            context.execute("fechas.show()");
+            context.update("form:datosDeclarantes");
+        }
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
                 if (!listaDeclarantesCrear.contains(listaDeclarantes.get(index))) {
@@ -269,6 +297,125 @@ public class ControlDeclarantes implements Serializable {
         }
     }
 
+    public void modificarFechas(int i, int c) {
+        Declarantes auxiliar = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (tipoLista == 0) {
+            auxiliar = listaDeclarantes.get(i);
+        }
+        if (tipoLista == 1) {
+            auxiliar = filtradoListaDeclarantes.get(i);
+        }
+
+        if (auxiliar.getFechainicial() != null && auxiliar.getFechafinal() != null) {
+            boolean solapado = false;
+            for (int y = 0; y < listaDeclarantes.size(); y++) {
+                if (listaDeclarantes.get(index).getFechainicial().after(listaDeclarantes.get(y).getFechainicial()) && listaDeclarantes.get(index).getFechainicial().before(listaDeclarantes.get(y).getFechafinal())) {
+                    solapado = true;
+                    break;
+                }
+            }
+            /*
+             if (listaDeclarantes.get(index).getFechafinal().before(listaDeclarantes.get(index).getFechainicial())) {
+             listaDeclarantes.get(index).setFechafinal(fechaFinal);
+             context.update("formularioDialogos:fechas");
+             context.execute("fechas.show()");
+             context.update("form:datosDeclarantes");
+             }
+
+             if (listaDeclarantes.get(index).getFechainicial().after(listaDeclarantes.get(index).getFechafinal())) {
+             listaDeclarantes.get(index).setFechainicial(fechaInicial);
+             context.update("formularioDialogos:fechas");
+             context.execute("fechas.show()");
+             context.update("form:datosDeclarantes");
+             }
+             */
+            if (solapado == false) {
+                boolean retorno = false;
+                index = i;
+                retorno = validarFechasRegistro(0);
+                if (retorno == true) {
+                    cambiarIndice(i, c);
+                    modificarDeclarantes(i, "N", "");
+                } else {
+                    if (tipoLista == 0) {
+                        listaDeclarantes.get(i).setFechafinal(fechaFinal);
+                        listaDeclarantes.get(i).setFechainicial(fechaInicial);
+                    }
+                    if (tipoLista == 1) {
+                        filtradoListaDeclarantes.get(i).setFechafinal(fechaFinal);
+                        filtradoListaDeclarantes.get(i).setFechainicial(fechaInicial);
+
+                    }
+                    context.update("form:datosDeclarantes");
+                    context.execute("errorFechas.show()");
+                }
+            } else {
+                if (tipoLista == 0) {
+                    listaDeclarantes.get(index).setFechainicial(fechaInicial);
+                }
+                if (tipoLista == 1) {
+                    filtradoListaDeclarantes.get(index).setFechainicial(fechaInicial);
+                }
+                context.update("formularioDialogos:fechasTraslapadas");
+                context.execute("fechasTraslapadas.show()");
+                context.update("form:datosDeclarantes");
+            }
+        } else {
+            if (tipoLista == 0) {
+                listaDeclarantes.get(i).setFechainicial(fechaInicial);
+                listaDeclarantes.get(i).setFechafinal(fechaFinal);
+            }
+            if (tipoLista == 1) {
+                filtradoListaDeclarantes.get(i).setFechainicial(fechaInicial);
+                filtradoListaDeclarantes.get(i).setFechafinal(fechaFinal);
+            }
+            context.update("form:datosDeclarantes");
+            context.execute("errorRegNew.show()");
+        }
+    }
+
+    public boolean validarFechasRegistro(int i) {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        System.err.println("fechaparametro : " + fechaParametro);
+        boolean retorno = true;
+        if (i == 0) {
+            Declarantes auxiliar = null;
+            if (tipoLista == 0) {
+                auxiliar = listaDeclarantes.get(index);
+            }
+            if (tipoLista == 1) {
+                auxiliar = filtradoListaDeclarantes.get(index);
+            }
+            if (auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+
+        }
+        if (i == 1) {
+            if (nuevoDeclarante.getFechainicial().before(nuevoDeclarante.getFechafinal())) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+
+        }
+        if (i == 2) {
+            if (duplicarDeclarante.getFechainicial().before(duplicarDeclarante.getFechafinal())) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
     //Ubicacion Celda.
     /**
      * Metodo que obtiene la posicion dentro de la tabla Declarantes
@@ -282,6 +429,8 @@ public class ControlDeclarantes implements Serializable {
             index = indice;
             cualCelda = celda;
             declaranteSeleccionado = listaDeclarantes.get(index);
+            fechaFinal = listaDeclarantes.get(index).getFechafinal();
+            fechaInicial = listaDeclarantes.get(index).getFechainicial();
             System.out.println("Declarante Seleccionado Fecha Final: " + declaranteSeleccionado.getFechafinal());
 
             if (tipoLista == 0) {
@@ -436,62 +585,111 @@ public class ControlDeclarantes implements Serializable {
      * Metodo que se encarga de agregar un nuevo Declarante
      */
     public void agregarNuevoDeclarante() {
-        int pasa = 0;
+
         mensajeValidacion = new String();
-
         RequestContext context = RequestContext.getCurrentInstance();
+        /*
+         
 
-        if (nuevoDeclarante.getFechainicial() == null) {
-            mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
-            pasa++;
-        }
-        if (nuevoDeclarante.getFechafinal() == null) {
-            mensajeValidacion = mensajeValidacion + " * Fecha Final\n";
-            pasa++;
-        }
+         if (nuevoDeclarante.getFechainicial() == null) {
+         mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
+         pasa++;
+         }
+         if (nuevoDeclarante.getFechafinal() == null) {
+         mensajeValidacion = mensajeValidacion + " * Fecha Final\n";
+         pasa++;
+         }
 
-        if (pasa != 0) {
-            context.update("formularioDialogos:validacionNuevoDeclarante");
+         for (int i = 0; i < listaDeclarantes.size(); i++) {
+         if (nuevoDeclarante.getFechainicial().after(listaDeclarantes.get(i).getFechainicial()) && nuevoDeclarante.getFechainicial().before(listaDeclarantes.get(i).getFechafinal())) {
+         context.update("formularioDialogos:fechasTraslapadas");
+         context.execute("fechasTraslapadas.show()");
+         pasa2++;
+         break;
+         }
+         }
+
+         if (nuevoDeclarante.getFechafinal() != null && nuevoDeclarante.getFechainicial() != null) {
+         if (nuevoDeclarante.getFechafinal().before(nuevoDeclarante.getFechainicial())) {
+         context.update("formularioDialogos:fechas");
+         context.execute("fechas.show()");
+         nuevoDeclarante.setFechafinal(null);
+         context.update("formularioDialogos:nuevaFechaFinal");
+         pasa2++;
+         } else if (nuevoDeclarante.getFechainicial().after(nuevoDeclarante.getFechafinal())) {
+         context.update("formularioDialogos:fecha");
+         context.execute("fecha.show()");
+         nuevoDeclarante.setFechainicial(null);
+         context.update("formularioDialogos:nuevaFechaInicio");
+         pasa2++;
+         }
+         }
+
+         if (pasa != 0) {
+         context.update("formularioDialogos:validacionNuevoDeclarante");
+         context.execute("validacionNuevoDeclarante.show()");
+         }
+         */
+        if (nuevoDeclarante.getFechainicial() != null && nuevoDeclarante.getFechafinal() != null) {
+            boolean validacion1 = validarFechasRegistro(1);
+            if (validacion1 == true) {
+                boolean validacion2 = true;
+                for (int i = 0; i < listaDeclarantes.size(); i++) {
+                    if (nuevoDeclarante.getFechainicial().after(listaDeclarantes.get(i).getFechainicial()) && nuevoDeclarante.getFechainicial().before(listaDeclarantes.get(i).getFechafinal())) {
+                        validacion2 = false;
+                        break;
+                    }
+                }
+                if (validacion2 == true) {
+                    if (bandera == 1) {
+                        declarantesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
+                        declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
+                        declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesBooleano = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
+                        declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
+                        declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
+                        declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
+                        RequestContext.getCurrentInstance().update("form:datosDeclarantes");
+                        altoScrollDeclarantes = "245";
+                        bandera = 0;
+                        filtradoListaDeclarantes = null;
+                        tipoLista = 0;
+                    }
+                    //AGREGAR REGISTRO A LA LISTA NOVEDADES .
+                    k++;
+                    l = BigInteger.valueOf(k);
+                    nuevoDeclarante.setSecuencia(l);
+                    nuevoDeclarante.setPersona(persona);
+
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                    listaDeclarantesCrear.add(nuevoDeclarante);
+                    listaDeclarantes.add(nuevoDeclarante);
+                    nuevoDeclarante = new Declarantes();
+                    context.update("form:datosDeclarantes");
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:aceptar");
+                    }
+                    context.execute("NuevoRegistroDeclarantes.hide()");
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    System.out.println("traslapacion de fechas");
+                    context.update("formularioDialogos:fechasTraslapadas");
+                    context.execute("fechasTraslapadas.show()");
+                }
+            } else {
+                System.out.println("error fechas ingresadas");
+                context.update("formularioDialogos:fechas");
+                context.execute("fechas.show()");
+            }
+        } else {
+            System.out.println("fechas obligatorias");
             context.execute("validacionNuevoDeclarante.show()");
-        }
-
-        if (pasa == 0) {
-            if (bandera == 1) {
-                declarantesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
-                declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                declarantesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
-                declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                declarantesBooleano = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
-                declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
-                declarantesPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
-                declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
-                declarantesTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
-                declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosDeclarantes");
-                altoScrollDeclarantes = "245";
-                bandera = 0;
-                filtradoListaDeclarantes = null;
-                tipoLista = 0;
-            }
-            //AGREGAR REGISTRO A LA LISTA NOVEDADES .
-            k++;
-            l = BigInteger.valueOf(k);
-            nuevoDeclarante.setSecuencia(l);
-            nuevoDeclarante.setPersona(persona);
-
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
-            listaDeclarantesCrear.add(nuevoDeclarante);
-            listaDeclarantes.add(nuevoDeclarante);
-            nuevoDeclarante = new Declarantes();
-            context.update("form:datosDeclarantes");
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
-            }
-            context.execute("NuevoRegistroDeclarantes.hide()");
-            index = -1;
-            secRegistro = null;
         }
     }
 
@@ -609,32 +807,67 @@ public class ControlDeclarantes implements Serializable {
      */
     public void confirmarDuplicar() {
 
-        listaDeclarantes.add(duplicarDeclarante);
-        listaDeclarantesCrear.add(duplicarDeclarante);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosDeclarantes");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-        }
-        if (bandera == 1) {
-            declarantesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
-            declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            declarantesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
-            declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            declarantesBooleano = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
-            declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
-            declarantesPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
-            declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
-            declarantesTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
-            declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosDeclarantes");
-            altoScrollDeclarantes = "245";
-            bandera = 0;
-            filtradoListaDeclarantes = null;
-            tipoLista = 0;
+
+        if (nuevoDeclarante.getFechainicial() != null && nuevoDeclarante.getFechafinal() != null) {
+            boolean validacion1 = validarFechasRegistro(1);
+            if (validacion1 == true) {
+                boolean validacion2 = true;
+                for (int i = 0; i < listaDeclarantes.size(); i++) {
+                    if (nuevoDeclarante.getFechainicial().after(listaDeclarantes.get(i).getFechainicial()) && nuevoDeclarante.getFechainicial().before(listaDeclarantes.get(i).getFechafinal())) {
+                        validacion2 = false;
+                        break;
+                    }
+                }
+                if (validacion2 == true) {
+                    if (bandera == 1) {
+                        declarantesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
+                        declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
+                        declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesBooleano = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
+                        declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
+                        declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
+                        declarantesTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
+                        declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
+                        RequestContext.getCurrentInstance().update("form:datosDeclarantes");
+                        altoScrollDeclarantes = "245";
+                        bandera = 0;
+                        filtradoListaDeclarantes = null;
+                        tipoLista = 0;
+                    }
+                    //AGREGAR REGISTRO A LA LISTA NOVEDADES .
+                    k++;
+                    l = BigInteger.valueOf(k);
+                    nuevoDeclarante.setSecuencia(l);
+                    nuevoDeclarante.setPersona(persona);
+
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                    listaDeclarantesCrear.add(nuevoDeclarante);
+                    listaDeclarantes.add(nuevoDeclarante);
+                    nuevoDeclarante = new Declarantes();
+                    context.update("form:datosDeclarantes");
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:aceptar");
+                    }
+                    context.execute("NuevoRegistroDeclarantes.hide()");
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    System.out.println("traslapacion de fechas");
+                    context.update("formularioDialogos:fechasTraslapadas");
+                    context.execute("fechasTraslapadas.show()");
+                }
+            } else {
+                System.out.println("error fechas ingresadas");
+                context.execute("fecha.show()");
+            }
+        } else {
+            System.out.println("fechas obligatorias");
+            context.execute("validacionNuevoDeclarante.show()");
         }
 
         duplicarDeclarante = new Declarantes();

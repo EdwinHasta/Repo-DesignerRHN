@@ -33,7 +33,7 @@ import org.primefaces.context.RequestContext;
 @ManagedBean
 @SessionScoped
 public class ControlFormulasAseguradas implements Serializable {
-
+    
     @EJB
     AdministrarFormulasAseguradasInterface administrarFormulasAseguradas;
     @EJB
@@ -86,7 +86,7 @@ public class ControlFormulasAseguradas implements Serializable {
     private List<FormulasAseguradas> listFormulasAseguradasBoton;
     private List<FormulasAseguradas> filterFormulasAseguradasBoton;
     private FormulasAseguradas formulaSoporteSeleccionado;
-
+    
     public ControlFormulasAseguradas() {
         listFormulasAseguradasBoton = null;
         listFormulasAseguradas = null;
@@ -111,9 +111,9 @@ public class ControlFormulasAseguradas implements Serializable {
         filtradoPeriodicidades = null;
         guardado = true;
         tamano = 302;
-
+        
     }
-
+    
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlFormulasAseguradas.eventoFiltrar \n");
@@ -124,10 +124,10 @@ public class ControlFormulasAseguradas implements Serializable {
             System.out.println("ERROR ControlFormulasAseguradas eventoFiltrar ERROR===" + e.getMessage());
         }
     }
-
+    
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
-
+        
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
@@ -140,14 +140,14 @@ public class ControlFormulasAseguradas implements Serializable {
                 if (cualCelda == 1) {
                     backupProceso = listFormulasAseguradas.get(index).getFormula().getNombrelargo();
                     System.out.println("CONCEPTO : " + backupProceso);
-
+                    
                 }
                 if (cualCelda == 2) {
                     backupPeriodicidad = listFormulasAseguradas.get(index).getPeriodicidad().getNombre();
                     System.out.println("VALOR VOLUNTARIO : " + backupPeriodicidad);
-
+                    
                 }
-
+                
             } else if (tipoLista == 1) {
                 if (cualCelda == 0) {
                     backupFormula = filtrarFormulasAseguradas.get(index).getFormula().getNombrelargo();
@@ -162,11 +162,11 @@ public class ControlFormulasAseguradas implements Serializable {
 
                  }*/
             }
-
+            
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
-
+    
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -190,19 +190,24 @@ public class ControlFormulasAseguradas implements Serializable {
                 context.execute("procesosDialogo.show()");
                 dig = -1;
             }
-
+            if (dig == 2) {
+                context.update("form:periodicidadesDialogo");
+                context.execute("periodicidadesDialogo.show()");
+                dig = -1;
+            }
+            
         } catch (Exception e) {
             System.out.println("ERROR ControlFormulasAseguradas.asignarIndex ERROR======" + e.getMessage());
         }
     }
-
+    
     public void activarAceptar() {
         aceptar = false;
     }
-
+    
     public void listaValoresBoton() {
         if (index >= 0) {
-
+            
             if (cualCelda == 0) {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:personasDialogo");
@@ -220,7 +225,7 @@ public class ControlFormulasAseguradas implements Serializable {
             }
         }
     }
-
+    
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
@@ -235,7 +240,7 @@ public class ControlFormulasAseguradas implements Serializable {
             filtrarFormulasAseguradas = null;
             tipoLista = 0;
         }
-
+        
         borrarFormulasAseguradas.clear();
         crearFormulasAseguradas.clear();
         modificarFormulasAseguradas.clear();
@@ -249,7 +254,7 @@ public class ControlFormulasAseguradas implements Serializable {
         context.update("form:datosFormulasAseguradas");
         context.update("form:ACEPTAR");
     }
-
+    
     public void activarCtrlF11() {
         if (bandera == 0) {
             tamano = 280;
@@ -271,24 +276,24 @@ public class ControlFormulasAseguradas implements Serializable {
             proceso.setFilterStyle("display: none; visibility: hidden;");
             periodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
             periodicidad.setFilterStyle("display: none; visibility: hidden;");
-
+            
             RequestContext.getCurrentInstance().update("form:datosFormulasAseguradas");
             bandera = 0;
             filtrarFormulasAseguradas = null;
             tipoLista = 0;
         }
     }
-
+    
     public void actualizarFormulas() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("formula seleccionado : " + formulaSeleccionado.getNombrelargo());
         System.out.println("tipo Actualizacion : " + tipoActualizacion);
         System.out.println("tipo Lista : " + tipoLista);
-
+        
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listFormulasAseguradas.get(index).setFormula(formulaSeleccionado);
-
+                
                 if (!crearFormulasAseguradas.contains(listFormulasAseguradas.get(index))) {
                     if (modificarFormulasAseguradas.isEmpty()) {
                         modificarFormulasAseguradas.add(listFormulasAseguradas.get(index));
@@ -298,7 +303,7 @@ public class ControlFormulasAseguradas implements Serializable {
                 }
             } else {
                 filtrarFormulasAseguradas.get(index).setFormula(formulaSeleccionado);
-
+                
                 if (!crearFormulasAseguradas.contains(filtrarFormulasAseguradas.get(index))) {
                     if (modificarFormulasAseguradas.isEmpty()) {
                         modificarFormulasAseguradas.add(filtrarFormulasAseguradas.get(index));
@@ -336,7 +341,7 @@ public class ControlFormulasAseguradas implements Serializable {
         context.reset("form:lovFormulas:globalFilter");
         context.update("form:lovFormulas");
     }
-
+    
     public void cancelarCambioFormulas() {
         filtradoFormulas = null;
         formulaSeleccionado = null;
@@ -346,17 +351,17 @@ public class ControlFormulasAseguradas implements Serializable {
         tipoActualizacion = -1;
         permitirIndex = true;
     }
-
+    
     public void actualizarProcesos() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("formula seleccionado : " + procesoSeleccionado.getDescripcion());
         System.out.println("tipo Actualizacion : " + tipoActualizacion);
         System.out.println("tipo Lista : " + tipoLista);
-
+        
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listFormulasAseguradas.get(index).setProceso(procesoSeleccionado);
-
+                
                 if (!crearFormulasAseguradas.contains(listFormulasAseguradas.get(index))) {
                     if (modificarFormulasAseguradas.isEmpty()) {
                         modificarFormulasAseguradas.add(listFormulasAseguradas.get(index));
@@ -366,7 +371,7 @@ public class ControlFormulasAseguradas implements Serializable {
                 }
             } else {
                 filtrarFormulasAseguradas.get(index).setProceso(procesoSeleccionado);
-
+                
                 if (!crearFormulasAseguradas.contains(filtrarFormulasAseguradas.get(index))) {
                     if (modificarFormulasAseguradas.isEmpty()) {
                         modificarFormulasAseguradas.add(filtrarFormulasAseguradas.get(index));
@@ -402,7 +407,7 @@ public class ControlFormulasAseguradas implements Serializable {
         context.reset("form:lovProcesos:globalFilter");
         context.update("form:lovProcesos");
     }
-
+    
     public void cancelarCambioProcesos() {
         filtradoProcesos = null;
         procesoSeleccionado = null;
@@ -412,17 +417,17 @@ public class ControlFormulasAseguradas implements Serializable {
         tipoActualizacion = -1;
         permitirIndex = true;
     }
-
+    
     public void actualizarPeriocidades() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("formula seleccionado : " + periodicidadSeleccionado.getNombre());
         System.out.println("tipo Actualizacion : " + tipoActualizacion);
         System.out.println("tipo Lista : " + tipoLista);
-
+        
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listFormulasAseguradas.get(index).setPeriodicidad(periodicidadSeleccionado);
-
+                
                 if (!crearFormulasAseguradas.contains(listFormulasAseguradas.get(index))) {
                     if (modificarFormulasAseguradas.isEmpty()) {
                         modificarFormulasAseguradas.add(listFormulasAseguradas.get(index));
@@ -432,7 +437,7 @@ public class ControlFormulasAseguradas implements Serializable {
                 }
             } else {
                 filtrarFormulasAseguradas.get(index).setPeriodicidad(periodicidadSeleccionado);
-
+                
                 if (!crearFormulasAseguradas.contains(filtrarFormulasAseguradas.get(index))) {
                     if (modificarFormulasAseguradas.isEmpty()) {
                         modificarFormulasAseguradas.add(filtrarFormulasAseguradas.get(index));
@@ -468,7 +473,7 @@ public class ControlFormulasAseguradas implements Serializable {
         context.reset("form:lovPeriodicidades:globalFilter");
         context.update("form:lovPeriodicidades");
     }
-
+    
     public void cancelarCambioPeriodicidades() {
         filtradoPeriodicidades = null;
         periodicidadSeleccionado = null;
@@ -478,7 +483,7 @@ public class ControlFormulasAseguradas implements Serializable {
         tipoActualizacion = -1;
         permitirIndex = true;
     }
-
+    
     public void modificarFormulasAseguradas(int indice, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
@@ -498,14 +503,14 @@ public class ControlFormulasAseguradas implements Serializable {
                 } else {
                     listFormulasAseguradas.get(indice).getFormula().setNombrelargo(backupFormula);
                 }
-
+                
                 for (int i = 0; i < listaFormulas.size(); i++) {
                     if (listaFormulas.get(i).getNombrelargo().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
-
+                
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
                         listFormulasAseguradas.get(indice).setFormula(listaFormulas.get(indiceUnicoElemento));
@@ -534,11 +539,11 @@ public class ControlFormulasAseguradas implements Serializable {
                 context.update("form:personasDialogo");
                 context.execute("personasDialogo.show()");
             }
-
+            
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
                     if (!crearFormulasAseguradas.contains(listFormulasAseguradas.get(indice))) {
-
+                        
                         if (modificarFormulasAseguradas.isEmpty()) {
                             modificarFormulasAseguradas.add(listFormulasAseguradas.get(indice));
                         } else if (!modificarFormulasAseguradas.contains(listFormulasAseguradas.get(indice))) {
@@ -552,7 +557,7 @@ public class ControlFormulasAseguradas implements Serializable {
                     secRegistro = null;
                 } else {
                     if (!crearFormulasAseguradas.contains(filtrarFormulasAseguradas.get(indice))) {
-
+                        
                         if (modificarFormulasAseguradas.isEmpty()) {
                             modificarFormulasAseguradas.add(filtrarFormulasAseguradas.get(indice));
                         } else if (!modificarFormulasAseguradas.contains(filtrarFormulasAseguradas.get(indice))) {
@@ -566,10 +571,10 @@ public class ControlFormulasAseguradas implements Serializable {
                     secRegistro = null;
                 }
             }
-
+            
             context.update("form:datosFormulasAseguradas");
             context.update("form:ACEPTAR");
-
+            
         } else if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
             System.out.println("MODIFICANDO NORMA LABORAL : " + listFormulasAseguradas.get(indice).getProceso().getDescripcion());
             if (!listFormulasAseguradas.get(indice).getProceso().getDescripcion().equals("")) {
@@ -578,14 +583,14 @@ public class ControlFormulasAseguradas implements Serializable {
                 } else {
                     listFormulasAseguradas.get(indice).getProceso().setDescripcion(backupProceso);
                 }
-
+                
                 for (int i = 0; i < listaProcesos.size(); i++) {
                     if (listaProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
-
+                
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
                         listFormulasAseguradas.get(indice).setProceso(listaProcesos.get(indiceUnicoElemento));
@@ -615,11 +620,11 @@ public class ControlFormulasAseguradas implements Serializable {
                 context.update("form:procesosDialogo");
                 context.execute("procesosDialogo.show()");
             }
-
+            
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
                     if (!crearFormulasAseguradas.contains(listFormulasAseguradas.get(indice))) {
-
+                        
                         if (modificarFormulasAseguradas.isEmpty()) {
                             modificarFormulasAseguradas.add(listFormulasAseguradas.get(indice));
                         } else if (!modificarFormulasAseguradas.contains(listFormulasAseguradas.get(indice))) {
@@ -633,7 +638,7 @@ public class ControlFormulasAseguradas implements Serializable {
                     secRegistro = null;
                 } else {
                     if (!crearFormulasAseguradas.contains(filtrarFormulasAseguradas.get(indice))) {
-
+                        
                         if (modificarFormulasAseguradas.isEmpty()) {
                             modificarFormulasAseguradas.add(filtrarFormulasAseguradas.get(indice));
                         } else if (!modificarFormulasAseguradas.contains(filtrarFormulasAseguradas.get(indice))) {
@@ -647,10 +652,10 @@ public class ControlFormulasAseguradas implements Serializable {
                     secRegistro = null;
                 }
             }
-
+            
             context.update("form:datosFormulasAseguradas");
             context.update("form:ACEPTAR");
-
+            
         } else if (confirmarCambio.equalsIgnoreCase("PERIODICIDAD")) {
             System.out.println("MODIFICANDO NORMA LABORAL : " + listFormulasAseguradas.get(indice).getProceso().getDescripcion());
             if (!listFormulasAseguradas.get(indice).getPeriodicidad().getNombre().equals("")) {
@@ -659,14 +664,14 @@ public class ControlFormulasAseguradas implements Serializable {
                 } else {
                     listFormulasAseguradas.get(indice).getPeriodicidad().setNombre(backupPeriodicidad);
                 }
-
+                
                 for (int i = 0; i < listaPeriodicidades.size(); i++) {
                     if (listaPeriodicidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
-
+                
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
                         listFormulasAseguradas.get(indice).setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
@@ -685,24 +690,25 @@ public class ControlFormulasAseguradas implements Serializable {
                 }
             } else {
                 System.out.println("BackUpPeriodicidad : " + backupPeriodicidad);
-
+                
                 if (tipoLista == 0) {
                     listFormulasAseguradas.get(indice).getPeriodicidad().setNombre(backupPeriodicidad);
                     listFormulasAseguradas.get(indice).setPeriodicidad(new Periodicidades());
+                    System.out.println("listFormulasAseguradas.get(" + indice + ").getPeriodicidad() : = " + listFormulasAseguradas.get(indice).getPeriodicidad());
                 } else {
                     filtrarFormulasAseguradas.get(indice).getPeriodicidad().setNombre(backupPeriodicidad);
                     filtrarFormulasAseguradas.get(indice).setPeriodicidad(new Periodicidades());
                 }
                 coincidencias = 1;
-
+                
                 tipoActualizacion = 0;
-
+                
             }
-
+            
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
                     if (!crearFormulasAseguradas.contains(listFormulasAseguradas.get(indice))) {
-
+                        
                         if (modificarFormulasAseguradas.isEmpty()) {
                             modificarFormulasAseguradas.add(listFormulasAseguradas.get(indice));
                         } else if (!modificarFormulasAseguradas.contains(listFormulasAseguradas.get(indice))) {
@@ -716,7 +722,7 @@ public class ControlFormulasAseguradas implements Serializable {
                     secRegistro = null;
                 } else {
                     if (!crearFormulasAseguradas.contains(filtrarFormulasAseguradas.get(indice))) {
-
+                        
                         if (modificarFormulasAseguradas.isEmpty()) {
                             modificarFormulasAseguradas.add(filtrarFormulasAseguradas.get(indice));
                         } else if (!modificarFormulasAseguradas.contains(filtrarFormulasAseguradas.get(indice))) {
@@ -730,16 +736,16 @@ public class ControlFormulasAseguradas implements Serializable {
                     secRegistro = null;
                 }
             }
-
+            
             context.update("form:datosFormulasAseguradas");
             context.update("form:ACEPTAR");
-
+            
         }
-
+        
     }
-
+    
     public void borrandoFormulasAseguradas() {
-
+        
         if (index >= 0) {
             if (tipoLista == 0) {
                 System.out.println("Entro a borrandoFormulasAseguradas");
@@ -770,22 +776,22 @@ public class ControlFormulasAseguradas implements Serializable {
                 int VCIndex = listFormulasAseguradas.indexOf(filtrarFormulasAseguradas.get(index));
                 listFormulasAseguradas.remove(VCIndex);
                 filtrarFormulasAseguradas.remove(index);
-
+                
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosFormulasAseguradas");
             index = -1;
             secRegistro = null;
-
+            
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
             cambioFormulasAseguradas = true;
         }
-
+        
     }
-
+    
     public void valoresBackupAutocompletar(int tipoNuevo, String valorCambio) {
         System.out.println("1...");
         if (valorCambio.equals("FORMULA")) {
@@ -794,7 +800,7 @@ public class ControlFormulasAseguradas implements Serializable {
             } else if (tipoNuevo == 2) {
                 nuevoYduplicarCompletarFormula = duplicarFormulasAseguradas.getFormula().getNombrelargo();
             }
-
+            
             System.out.println("CONCEPTO : " + nuevoYduplicarCompletarFormula);
         }
         if (valorCambio.equals("PROCESO")) {
@@ -803,7 +809,7 @@ public class ControlFormulasAseguradas implements Serializable {
             } else if (tipoNuevo == 2) {
                 nuevoYduplicarCompletarProcesos = duplicarFormulasAseguradas.getProceso().getDescripcion();
             }
-
+            
             System.out.println("PROCESO : " + nuevoYduplicarCompletarProcesos);
         }
         if (valorCambio.equals("PERIODICIDAD")) {
@@ -812,22 +818,22 @@ public class ControlFormulasAseguradas implements Serializable {
             } else if (tipoNuevo == 2) {
                 nuevoYduplicarCompletarPeriodicidad = duplicarFormulasAseguradas.getPeriodicidad().getNombre();
             }
-
+            
             System.out.println("PERIODICIDAD : " + nuevoYduplicarCompletarPeriodicidad);
         }
-
+        
     }
-
+    
     public void autocompletarNuevo(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
-
+        
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-
+        
         if (confirmarCambio.equalsIgnoreCase("FORMULA")) {
             System.out.println(" nueva Operando    Entro al if 'Centro costo'");
             System.out.println("NUEVO PERSONA :-------> " + nuevoFormulasAseguradas.getFormula().getNombrelargo());
-
+            
             if (!nuevoFormulasAseguradas.getFormula().getNombrelargo().equals("")) {
                 System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("valorConfirmar: " + valorConfirmar);
@@ -858,10 +864,10 @@ public class ControlFormulasAseguradas implements Serializable {
             }
             context.update("formularioDialogos:nuevoPersona");
             context.update("formularioDialogos:nuevoCodigo");
-
+            
         } else if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
             System.out.println("NUEVO PROCESO :-------> " + nuevoFormulasAseguradas.getProceso().getDescripcion());
-
+            
             if (!nuevoFormulasAseguradas.getProceso().getDescripcion().equals("")) {
                 System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("valorConfirmar: " + valorConfirmar);
@@ -891,10 +897,10 @@ public class ControlFormulasAseguradas implements Serializable {
                 System.out.println("PROCESOSOS : : : : :  " + nuevoFormulasAseguradas.getProceso().getDescripcion());
             }
             context.update("formularioDialogos:nuevoProceso");
-
+            
         } else if (confirmarCambio.equalsIgnoreCase("PERIODICIDAD")) {
             System.out.println("NUEVO PERIODICIDAD :-------> " + nuevoFormulasAseguradas.getPeriodicidad().getNombre());
-
+            
             if (!nuevoFormulasAseguradas.getPeriodicidad().getNombre().equals("")) {
                 System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("valorConfirmar: " + valorConfirmar);
@@ -923,10 +929,10 @@ public class ControlFormulasAseguradas implements Serializable {
                 System.out.println("PERIODICIDAD : : : : :  " + nuevoFormulasAseguradas.getProceso().getDescripcion());
             }
             context.update("formularioDialogos:nuevoPeriodicidad");
-
+            
         }
     }
-
+    
     public void asignarVariableFormulas(int tipoNuevo) {
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
@@ -938,7 +944,7 @@ public class ControlFormulasAseguradas implements Serializable {
         context.update("form:personasDialogo");
         context.execute("personasDialogo.show()");
     }
-
+    
     public void asignarVariableProcesos(int tipoNuevo) {
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
@@ -950,7 +956,7 @@ public class ControlFormulasAseguradas implements Serializable {
         context.update("form:procesosDialogo");
         context.execute("procesosDialogo.show()");
     }
-
+    
     public void asignarVariablePeriodicidades(int tipoNuevo) {
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
@@ -962,7 +968,7 @@ public class ControlFormulasAseguradas implements Serializable {
         context.update("form:periodicidadesDialogo");
         context.execute("periodicidadesDialogo.show()");
     }
-
+    
     public void autocompletarDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
         System.out.println("DUPLICAR entrooooooooooooooooooooooooooooooooooooooooooooooooooooooo!!!");
         int coincidencias = 0;
@@ -971,7 +977,7 @@ public class ControlFormulasAseguradas implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("FORMULA")) {
             System.out.println("DUPLICAR valorConfirmar : " + valorConfirmar);
             System.out.println("DUPLICAR CIUDAD bkp : " + nuevoYduplicarCompletarFormula);
-
+            
             if (!duplicarFormulasAseguradas.getFormula().getNombrelargo().equals("")) {
                 System.out.println("DUPLICAR ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("DUPLICAR valorConfirmar: " + valorConfirmar);
@@ -999,7 +1005,7 @@ public class ControlFormulasAseguradas implements Serializable {
                     System.out.println("DUPLICAR INDEX : " + index);
                     duplicarFormulasAseguradas.setFormula(new Formulas());
                     duplicarFormulasAseguradas.getFormula().setNombrelargo(" ");
-
+                    
                     System.out.println("DUPLICAR PERSONA  : " + duplicarFormulasAseguradas.getFormula().getNombrelargo());
                     System.out.println("nuevoYduplicarCompletarPERSONA : " + nuevoYduplicarCompletarFormula);
                     if (tipoLista == 0) {
@@ -1009,16 +1015,16 @@ public class ControlFormulasAseguradas implements Serializable {
                     } else if (tipoLista == 1) {
                         filtrarFormulasAseguradas.get(index).getFormula().setNombrelargo(nuevoYduplicarCompletarFormula);
                     }
-
+                    
                 }
-
+                
             }
-
+            
             context.update("formularioDialogos:duplicarPersona");
         } else if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
             System.out.println("DUPLICAR valorConfirmar : " + valorConfirmar);
             System.out.println("DUPLICAR CIUDAD bkp : " + nuevoYduplicarCompletarProcesos);
-
+            
             if (!duplicarFormulasAseguradas.getProceso().getDescripcion().equals("")) {
                 System.out.println("DUPLICAR ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("DUPLICAR valorConfirmar: " + valorConfirmar);
@@ -1045,7 +1051,7 @@ public class ControlFormulasAseguradas implements Serializable {
                     System.out.println("DUPLICAR INDEX : " + index);
                     duplicarFormulasAseguradas.setProceso(new Procesos());
                     duplicarFormulasAseguradas.getProceso().setDescripcion(" ");
-
+                    
                     System.out.println("DUPLICAR PROCESO  : " + duplicarFormulasAseguradas.getProceso().getDescripcion());
                     System.out.println("nuevoYduplicarCompletarPERSONA : " + nuevoYduplicarCompletarProcesos);
                     if (tipoLista == 0) {
@@ -1055,16 +1061,16 @@ public class ControlFormulasAseguradas implements Serializable {
                     } else if (tipoLista == 1) {
                         filtrarFormulasAseguradas.get(index).getProceso().setDescripcion(nuevoYduplicarCompletarFormula);
                     }
-
+                    
                 }
-
+                
             }
-
+            
             context.update("formularioDialogos:duplicarProceso");
         } else if (confirmarCambio.equalsIgnoreCase("PERIODICIDAD")) {
             System.out.println("DUPLICAR valorConfirmar : " + valorConfirmar);
             System.out.println("DUPLICAR PERIODICIDAD : " + nuevoYduplicarCompletarPeriodicidad);
-
+            
             if (!duplicarFormulasAseguradas.getPeriodicidad().getNombre().equals("")) {
                 System.out.println("DUPLICAR ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("DUPLICAR valorConfirmar: " + valorConfirmar);
@@ -1091,7 +1097,7 @@ public class ControlFormulasAseguradas implements Serializable {
                     System.out.println("DUPLICAR INDEX : " + index);
                     duplicarFormulasAseguradas.setPeriodicidad(new Periodicidades());
                     duplicarFormulasAseguradas.getPeriodicidad().setNombre(" ");
-
+                    
                     System.out.println("DUPLICAR PERIODICIDAD  : " + duplicarFormulasAseguradas.getPeriodicidad().getNombre());
                     System.out.println("nuevoYduplicarCompletarPERIODICIDAD : " + nuevoYduplicarCompletarPeriodicidad);
                     if (tipoLista == 0) {
@@ -1101,28 +1107,28 @@ public class ControlFormulasAseguradas implements Serializable {
                     } else if (tipoLista == 1) {
                         filtrarFormulasAseguradas.get(index).getProceso().setDescripcion(nuevoYduplicarCompletarFormula);
                     }
-
+                    
                 }
-
+                
             }
-
+            
             context.update("formularioDialogos:duplicarPeriodicidad");
         }
     }
-
+    
     public void revisarDialogoGuardar() {
-
+        
         if (!borrarFormulasAseguradas.isEmpty() || !crearFormulasAseguradas.isEmpty() || !modificarFormulasAseguradas.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
         }
-
+        
     }
-
+    
     public void guardarFormulasAseguradas() {
         RequestContext context = RequestContext.getCurrentInstance();
-
+        
         if (guardado == false) {
             System.out.println("Realizando guardarFormulasAseguradas");
             if (!borrarFormulasAseguradas.isEmpty()) {
@@ -1147,13 +1153,13 @@ public class ControlFormulasAseguradas implements Serializable {
             context.update("form:datosFormulasAseguradas");
             k = 0;
             guardado = true;
-
+            
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
+        
     }
-
+    
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -1162,7 +1168,7 @@ public class ControlFormulasAseguradas implements Serializable {
             if (tipoLista == 1) {
                 editarFormulasAseguradas = filtrarFormulasAseguradas.get(index);
             }
-
+            
             RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
@@ -1178,26 +1184,26 @@ public class ControlFormulasAseguradas implements Serializable {
                 context.execute("editOperandos.show()");
                 cualCelda = -1;
             }
-
+            
         }
         index = -1;
         secRegistro = null;
     }
-
+    
     public void agregarNuevoFormulasAseguradas() {
         System.out.println("agregarNuevoFormulasAseguradas");
         int contador = 0;
         int duplicados = 0;
-
+        
         Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-
+        
         if (nuevoFormulasAseguradas.getFormula().getNombrelargo().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *un Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-
+            
         } else {
             System.out.println("bandera");
             contador++;//3
@@ -1206,16 +1212,16 @@ public class ControlFormulasAseguradas implements Serializable {
         if (nuevoFormulasAseguradas.getProceso().getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *un Proceso \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-
+            
         } else {
             System.out.println("bandera");
             contador++;//3
 
         }
-
+        
         System.out.println("contador " + contador);
         System.out.println("Periodicidad " + nuevoFormulasAseguradas.getPeriodicidad().getNombre());
-
+        
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -1231,12 +1237,12 @@ public class ControlFormulasAseguradas implements Serializable {
                 tipoLista = 0;
             }
             System.out.println("Despues de la bandera");
-
+            
             k++;
             l = BigInteger.valueOf(k);
             nuevoFormulasAseguradas.setSecuencia(l);
             crearFormulasAseguradas.add(nuevoFormulasAseguradas);
-
+            
             listFormulasAseguradas.add(nuevoFormulasAseguradas);
             nuevoFormulasAseguradas = new FormulasAseguradas();
             nuevoFormulasAseguradas.setFormula(new Formulas());
@@ -1247,20 +1253,20 @@ public class ControlFormulasAseguradas implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-
+            
             context.execute("nuevoRegistroFormulasAseguradas.hide()");
             index = -1;
             secRegistro = null;
             cambioFormulasAseguradas = true;
-
+            
         } else {
-
+            
             context.update("form:validacionNuevaCentroCosto");
             context.execute("validacionNuevaCentroCosto.show()");
             contador = 0;
         }
     }
-
+    
     public void limpiarNuevoFormulasAseguradas() {
         System.out.println("limpiarNuevoFormulasAseguradas");
         nuevoFormulasAseguradas = new FormulasAseguradas();
@@ -1269,22 +1275,22 @@ public class ControlFormulasAseguradas implements Serializable {
         nuevoFormulasAseguradas.setPeriodicidad(new Periodicidades());
         secRegistro = null;
         index = -1;
-
+        
     }
 
     //------------------------------------------------------------------------------
     public void cargarNuevoFormulasAseguradas() {
         System.out.println("cargarNuevoFormulasAseguradas");
-
+        
         duplicarFormulasAseguradas = new FormulasAseguradas();
         duplicarFormulasAseguradas.setFormula(new Formulas());
         duplicarFormulasAseguradas.setPeriodicidad(new Periodicidades());
         duplicarFormulasAseguradas.setProceso(new Procesos());
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("nuevoRegistroFormulasAseguradas.show()");
-
+        
     }
-
+    
     public void duplicandoFormulasAseguradas() {
         System.out.println("duplicandoFormulasAseguradas");
         if (index >= 0) {
@@ -1292,7 +1298,7 @@ public class ControlFormulasAseguradas implements Serializable {
             duplicarFormulasAseguradas.setFormula(new Formulas());
             k++;
             l = BigInteger.valueOf(k);
-
+            
             if (tipoLista == 0) {
                 duplicarFormulasAseguradas.setSecuencia(l);
                 duplicarFormulasAseguradas.setFormula(listFormulasAseguradas.get(index).getFormula());
@@ -1305,14 +1311,14 @@ public class ControlFormulasAseguradas implements Serializable {
                 duplicarFormulasAseguradas.setProceso(filtrarFormulasAseguradas.get(index).getProceso());
                 duplicarFormulasAseguradas.setPeriodicidad(filtrarFormulasAseguradas.get(index).getPeriodicidad());
             }
-
+            
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroFormulasAseguradas.show()");
             secRegistro = null;
         }
     }
-
+    
     public void confirmarDuplicar() {
         System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
@@ -1321,11 +1327,11 @@ public class ControlFormulasAseguradas implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-
+        
         if (duplicarFormulasAseguradas.getFormula().getNombrelargo().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * una Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-
+            
         } else {
             System.out.println("Bandera : ");
             contador++;
@@ -1333,12 +1339,12 @@ public class ControlFormulasAseguradas implements Serializable {
         if (duplicarFormulasAseguradas.getProceso().getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * una Proceso \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-
+            
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-
+        
         if (contador == 2) {
             if (crearFormulasAseguradas.contains(duplicarFormulasAseguradas)) {
                 System.out.println("Ya lo contengo.");
@@ -1350,7 +1356,7 @@ public class ControlFormulasAseguradas implements Serializable {
             System.out.println("--------------DUPLICAR------------------------");
             System.out.println("PERSONA : " + duplicarFormulasAseguradas.getFormula().getNombrelargo());
             System.out.println("--------------DUPLICAR------------------------");
-
+            
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
@@ -1371,23 +1377,23 @@ public class ControlFormulasAseguradas implements Serializable {
             }
             duplicarFormulasAseguradas = new FormulasAseguradas();
             duplicarFormulasAseguradas.setFormula(new Formulas());
-
+            
             RequestContext.getCurrentInstance().execute("duplicarRegistroFormulasAseguradas.hide()");
             index = -1;
         } else {
-
+            
             contador = 0;
-
+            
             context.update("form:validacionDuplicarVigencia");
             context.execute("validacionDuplicarVigencia.show()");
         }
     }
-
+    
     public void limpiarDuplicarFormulasAseguradas() {
         duplicarFormulasAseguradas = new FormulasAseguradas();
         duplicarFormulasAseguradas.setFormula(new Formulas());
     }
-
+    
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosFormulasAseguradasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1397,7 +1403,7 @@ public class ControlFormulasAseguradas implements Serializable {
         index = -1;
         secRegistro = null;
     }
-
+    
     public void exportXLS() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosFormulasAseguradasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1407,7 +1413,7 @@ public class ControlFormulasAseguradas implements Serializable {
         index = -1;
         secRegistro = null;
     }
-
+    
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -1436,37 +1442,37 @@ public class ControlFormulasAseguradas implements Serializable {
             } else {
                 context.execute("errorRastroHistorico.show()");
             }
-
+            
         }
         index = -1;
     }
     private boolean cambioFormulasAseguradas = false;
-
+    
     public void llamadoDialogoBuscarFormulas() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (guardado == false) {
                 // banderaSeleccionCentrosCostosPorEmpresa = true;
                 context.execute("confirmarGuardar.show()");
-
+                
             } else {
                 listFormulasAseguradasBoton = null;
                 getListFormulasAseguradasBoton();
                 index = -1;
                 context.update("formularioDialogos:lovCentrosCostos");
                 context.execute("buscarCentrosCostosDialogo.show()");
-
+                
             }
         } catch (Exception e) {
             System.err.println("ERROR LLAMADO DIALOGO BUSCAR CENTROS COSTOS " + e);
         }
-
+        
     }
-
+    
     public void seleccionConceptoSoporte() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-
+            
             if (guardado == true) {
                 listFormulasAseguradas.clear();
                 System.err.println("seleccionCentrosCostosPorEmpresa " + formulaSoporteSeleccionado.getFormula().getNombrelargo());
@@ -1483,12 +1489,12 @@ public class ControlFormulasAseguradas implements Serializable {
                 context.update("form:confirmarGuardarFormulas");
                 context.execute("confirmarGuardarFormulas.show()");
             }
-
+            
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.seleccionaVigencia ERROR====" + e.getMessage());
         }
     }
-
+    
     public void cancelarSeleccionConceptoSoporte() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1498,43 +1504,43 @@ public class ControlFormulasAseguradas implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             context.update("form:aceptarNCC");
-
+            
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarSeleccionVigencia ERROR====" + e.getMessage());
         }
     }
-
+    
     public List<FormulasAseguradas> getListFormulasAseguradasBoton() {
         if (listFormulasAseguradasBoton == null) {
             listFormulasAseguradasBoton = listFormulasAseguradas;
         }
         return listFormulasAseguradasBoton;
     }
-
+    
     public void setListFormulasAseguradasBoton(List<FormulasAseguradas> listFormulasAseguradasBoton) {
         this.listFormulasAseguradasBoton = listFormulasAseguradasBoton;
     }
-
+    
     public List<FormulasAseguradas> getFilterFormulasAseguradasBoton() {
         return filterFormulasAseguradasBoton;
     }
-
+    
     public void setFilterFormulasAseguradasBoton(List<FormulasAseguradas> filterFormulasAseguradasBoton) {
         this.filterFormulasAseguradasBoton = filterFormulasAseguradasBoton;
     }
-
+    
     public boolean isAceptar() {
         return aceptar;
     }
-
+    
     public void setAceptar(boolean aceptar) {
         this.aceptar = aceptar;
     }
-
+    
     public FormulasAseguradas getFormulaSoporteSeleccionado() {
         return formulaSoporteSeleccionado;
     }
-
+    
     public void setFormulaSoporteSeleccionado(FormulasAseguradas formulaSoporteSeleccionado) {
         this.formulaSoporteSeleccionado = formulaSoporteSeleccionado;
     }
@@ -1543,165 +1549,171 @@ public class ControlFormulasAseguradas implements Serializable {
     public List<FormulasAseguradas> getListFormulasAseguradas() {
         if (listFormulasAseguradas == null) {
             listFormulasAseguradas = administrarFormulasAseguradas.consultarFormulasAseguradas();
+            for (int i = 0; i < listFormulasAseguradas.size(); i++) {
+                if (listFormulasAseguradas.get(i).getPeriodicidad() == null) {
+                    listFormulasAseguradas.get(i).setPeriodicidad(new Periodicidades());
+                }
+            }
         }
+        
         return listFormulasAseguradas;
     }
-
+    
     public void setListFormulasAseguradas(List<FormulasAseguradas> listFormulasAseguradas) {
         this.listFormulasAseguradas = listFormulasAseguradas;
     }
-
+    
     public List<FormulasAseguradas> getFiltrarFormulasAseguradas() {
         return filtrarFormulasAseguradas;
     }
-
+    
     public void setFiltrarFormulasAseguradas(List<FormulasAseguradas> filtrarFormulasAseguradas) {
         this.filtrarFormulasAseguradas = filtrarFormulasAseguradas;
     }
-
+    
     public FormulasAseguradas getNuevoFormulasAseguradas() {
         return nuevoFormulasAseguradas;
     }
-
+    
     public void setNuevoFormulasAseguradas(FormulasAseguradas nuevoFormulasAseguradas) {
         this.nuevoFormulasAseguradas = nuevoFormulasAseguradas;
     }
-
+    
     public FormulasAseguradas getDuplicarFormulasAseguradas() {
         return duplicarFormulasAseguradas;
     }
-
+    
     public void setDuplicarFormulasAseguradas(FormulasAseguradas duplicarFormulasAseguradas) {
         this.duplicarFormulasAseguradas = duplicarFormulasAseguradas;
     }
-
+    
     public FormulasAseguradas getEditarFormulasAseguradas() {
         return editarFormulasAseguradas;
     }
-
+    
     public void setEditarFormulasAseguradas(FormulasAseguradas editarFormulasAseguradas) {
         this.editarFormulasAseguradas = editarFormulasAseguradas;
     }
-
+    
     public BigInteger getSecRegistro() {
         return secRegistro;
     }
-
+    
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-
+    
     public int getRegistrosBorrados() {
         return registrosBorrados;
     }
-
+    
     public void setRegistrosBorrados(int registrosBorrados) {
         this.registrosBorrados = registrosBorrados;
     }
-
+    
     public String getMensajeValidacion() {
         return mensajeValidacion;
     }
-
+    
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
-
+    
     public boolean isGuardado() {
         return guardado;
     }
-
+    
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-
+    
     public int getTamano() {
         return tamano;
     }
-
+    
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
-
+    
     public List<Formulas> getListaFormulas() {
         if (listaFormulas == null) {
             listaFormulas = administrarFormulasAseguradas.consultarLOVFormulas();
         }
         return listaFormulas;
     }
-
+    
     public void setListaFormulas(List<Formulas> listaFormulas) {
         this.listaFormulas = listaFormulas;
     }
-
+    
     public List<Formulas> getFiltradoFormulas() {
         return filtradoFormulas;
     }
-
+    
     public void setFiltradoFormulas(List<Formulas> filtradoFormulas) {
         this.filtradoFormulas = filtradoFormulas;
     }
-
+    
     public Formulas getFormulaSeleccionado() {
         return formulaSeleccionado;
     }
-
+    
     public void setFormulaSeleccionado(Formulas formulaSeleccionado) {
         this.formulaSeleccionado = formulaSeleccionado;
     }
-
+    
     public List<Procesos> getListaProcesos() {
         if (listaProcesos == null) {
             listaProcesos = administrarFormulasAseguradas.consultarLOVProcesos();
         }
         return listaProcesos;
     }
-
+    
     public void setListaProcesos(List<Procesos> listaProcesos) {
         this.listaProcesos = listaProcesos;
     }
-
+    
     public Procesos getProcesoSeleccionado() {
         return procesoSeleccionado;
     }
-
+    
     public void setProcesoSeleccionado(Procesos procesoSeleccionado) {
         this.procesoSeleccionado = procesoSeleccionado;
     }
-
+    
     public List<Procesos> getFiltradoProcesos() {
         return filtradoProcesos;
     }
-
+    
     public void setFiltradoProcesos(List<Procesos> filtradoProcesos) {
         this.filtradoProcesos = filtradoProcesos;
     }
-
+    
     public List<Periodicidades> getListaPeriodicidades() {
         if (listaPeriodicidades == null) {
             listaPeriodicidades = administrarFormulasAseguradas.consultarLOVPPeriodicidades();
         }
         return listaPeriodicidades;
     }
-
+    
     public void setListaPeriodicidades(List<Periodicidades> listaPeriodicidades) {
         this.listaPeriodicidades = listaPeriodicidades;
     }
-
+    
     public List<Periodicidades> getFiltradoPeriodicidades() {
         return filtradoPeriodicidades;
     }
-
+    
     public void setFiltradoPeriodicidades(List<Periodicidades> filtradoPeriodicidades) {
         this.filtradoPeriodicidades = filtradoPeriodicidades;
     }
-
+    
     public Periodicidades getPeriodicidadSeleccionado() {
         return periodicidadSeleccionado;
     }
-
+    
     public void setPeriodicidadSeleccionado(Periodicidades periodicidadSeleccionado) {
         this.periodicidadSeleccionado = periodicidadSeleccionado;
     }
-
+    
 }

@@ -1,7 +1,6 @@
 /**
  * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package Persistencia;
 
 import Entidades.Formulascontratos;
@@ -14,13 +13,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'FormulasContratos'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'FormulasContratos' de
+ * la base de datos.
+ *
  * @author Andres Pineda.
  */
 @Stateless
-public class PersistenciaFormulasContratos implements PersistenciaFormulasContratosInterface{
+public class PersistenciaFormulasContratos implements PersistenciaFormulasContratosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -66,7 +67,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
             return null;
         }
     }
-    
+
     @Override
     public List<Formulascontratos> formulasContratosParaContratoSecuencia(BigInteger secuencia) {
         try {
@@ -79,4 +80,17 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
             return null;
         }
     }
+
+    public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(BigInteger secuencia) {
+        try {
+            Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.secuencia=:secuencia");
+            queryFinal.setParameter("secuencia", secuencia);
+            Formulascontratos formulascontratos = (Formulascontratos) queryFinal.getSingleResult();
+            return formulascontratos;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaFormulasContratos.formulasContratosParaContratoFormulasContratosEntidades : " + e.toString());
+            return null;
+        }
+    }
+
 }
