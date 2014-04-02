@@ -5,7 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,7 +19,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,12 +38,10 @@ public class Clasesausentismos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
-    @Size(max = 50)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clase")
@@ -58,28 +55,28 @@ public class Clasesausentismos implements Serializable {
     public Clasesausentismos() {
     }
 
-    public Clasesausentismos(BigDecimal secuencia) {
+    public Clasesausentismos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Clasesausentismos(BigDecimal secuencia, short codigo) {
+    public Clasesausentismos(BigInteger secuencia, Integer codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
