@@ -1,24 +1,23 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,11 +30,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Actividades.findAll", query = "SELECT a FROM Actividades a"),
     @NamedQuery(name = "Actividades.findBySecuencia", query = "SELECT a FROM Actividades a WHERE a.secuencia = :secuencia"),
     @NamedQuery(name = "Actividades.findByCodigo", query = "SELECT a FROM Actividades a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion")})
+    @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion"),
+    @NamedQuery(name = "Actividades.findByClaseactividad", query = "SELECT a FROM Actividades a WHERE a.claseactividad = :claseactividad")})
 public class Actividades implements Serializable {
-    @OneToMany(mappedBy = "actividadbienestar")
-    private Collection<ParametrosInformes> parametrosinformesCollection;
-    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -50,7 +47,9 @@ public class Actividades implements Serializable {
     @Size(max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    
+    @Size(max = 50)
+    @Column(name = "CLASEACTIVIDAD")
+    private String claseactividad;
 
     public Actividades() {
     }
@@ -81,9 +80,6 @@ public class Actividades implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 
@@ -91,13 +87,12 @@ public class Actividades implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosinformesCollection() {
-        return parametrosinformesCollection;
+    public String getClaseactividad() {
+        return claseactividad;
     }
 
-    public void setParametrosinformesCollection(Collection<ParametrosInformes> parametrosinformesCollection) {
-        this.parametrosinformesCollection = parametrosinformesCollection;
+    public void setClaseactividad(String claseactividad) {
+        this.claseactividad = claseactividad;
     }
 
     @Override
@@ -124,9 +119,5 @@ public class Actividades implements Serializable {
     public String toString() {
         return "Entidades.Actividades[ secuencia=" + secuencia + " ]";
     }
-
-   
-
-    
     
 }
