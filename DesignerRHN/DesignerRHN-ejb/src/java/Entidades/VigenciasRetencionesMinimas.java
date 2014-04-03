@@ -9,22 +9,18 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,15 +30,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "VIGENCIASRETENCIONESMINIMAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VigenciaRretencionesMinimas.findAll", query = "SELECT v FROM VigenciaRretencionesMinimas v")})
-public class VigenciaRretencionesMinimas implements Serializable {
+    @NamedQuery(name = "VigenciasRetencionesMinimas.findAll", query = "SELECT v FROM VigenciasRetencionesMinimas v ORDER BY v.fechavigencia")})
+public class VigenciasRetencionesMinimas implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -52,27 +48,25 @@ public class VigenciaRretencionesMinimas implements Serializable {
     @Column(name = "FECHAVIGENCIA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechavigencia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vigenciaretencionminima")
-    private Collection<RetencionesMinimas> retencionesMinimasCollection;
 
-    public VigenciaRretencionesMinimas() {
+    public VigenciasRetencionesMinimas() {
     }
 
-    public VigenciaRretencionesMinimas(BigDecimal secuencia) {
+    public VigenciasRetencionesMinimas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public VigenciaRretencionesMinimas(BigDecimal secuencia, BigInteger codigo, Date fechavigencia) {
+    public VigenciasRetencionesMinimas(BigInteger secuencia, BigInteger codigo, Date fechavigencia) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.fechavigencia = fechavigencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -92,15 +86,6 @@ public class VigenciaRretencionesMinimas implements Serializable {
         this.fechavigencia = fechavigencia;
     }
 
-    @XmlTransient
-    public Collection<RetencionesMinimas> getRetencionesMinimasCollection() {
-        return retencionesMinimasCollection;
-    }
-
-    public void setRetencionesMinimasCollection(Collection<RetencionesMinimas> retencionesMinimasCollection) {
-        this.retencionesMinimasCollection = retencionesMinimasCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -111,10 +96,10 @@ public class VigenciaRretencionesMinimas implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VigenciaRretencionesMinimas)) {
+        if (!(object instanceof VigenciasRetencionesMinimas)) {
             return false;
         }
-        VigenciaRretencionesMinimas other = (VigenciaRretencionesMinimas) object;
+        VigenciasRetencionesMinimas other = (VigenciasRetencionesMinimas) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -123,7 +108,7 @@ public class VigenciaRretencionesMinimas implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.VigenciaRretencionesMinimas[ secuencia=" + secuencia + " ]";
+        return "Entidades.VigenciasRetencionesMinimas[ secuencia=" + secuencia + " ]";
     }
     
 }
