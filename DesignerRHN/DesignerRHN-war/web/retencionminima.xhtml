@@ -319,12 +319,12 @@
                         <p:panel id="duplicarRetencion" style="border: none;">
                             <fieldset style="position: absolute; left: 10px; top: 40px; font-size: 11px; width: 295px; height: 178px; border-radius: 10px; ">
 
-                                <strong><h:outputText value="#{msg['valorminimoN']}" style="font-size: 12px; position: absolute; top: 17px" /></strong>
+                                <strong><h:outputText value="#{msg['mensualizadoN']}" style="font-size: 12px; position: absolute; top: 17px" /></strong>
                                 <p:inputText id="duplicarMensualizado" value="#{controlRetencionMinima.duplicarRetencion.mensualizado}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 15px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="change" update="duplicarMensualizado" />
                                 </p:inputText>
 
-                                <strong><h:outputText value="#{msg['valormaximoN']}" style="font-size: 12px; position: absolute; top: 57px" /></strong>
+                                <strong><h:outputText value="#{msg['retencionN']}" style="font-size: 12px; position: absolute; top: 57px" /></strong>
                                 <p:inputText id="duplicarRetencionn" value="#{controlRetencionMinima.duplicarRetencion.retencion}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 55px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="change" update="duplicarRetencionn"/>
                                 </p:inputText>
@@ -334,7 +334,7 @@
                                     <p:ajax event="change" update="duplicarPorcentaje"/>
                                 </p:inputText>
 
-                                <strong><h:outputText value="#{msg['valorN']}"  style="font-size: 12px; position: absolute; top: 137px" /></strong>
+                                <strong><h:outputText value="#{msg['restauvtN']}"  style="font-size: 12px; position: absolute; top: 137px" /></strong>
                                 <p:inputText id="duplicarResta" value="#{controlRetencionMinima.duplicarRetencion.restauvt}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 135px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="change" update="duplicarResta"/>
                                 </p:inputText>
