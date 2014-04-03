@@ -48,14 +48,14 @@ public class RetencionesMinimas implements Serializable {
     @Column(name = "RETENCION")
     private BigInteger retencion;
     @Column(name = "PORCENTAJE")
-    private BigInteger porcentaje;
+    private BigDecimal porcentaje;
     @Column(name = "RESTAUVT")
     private BigInteger restauvt;
     @OneToMany(mappedBy = "retencionminima")
     private Collection<Declarantes> declarantesCollection;
     @JoinColumn(name = "VIGENCIARETENCIONMINIMA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private VigenciaRretencionesMinimas vigenciaretencionminima;
+    private VigenciasRetencionesMinimas vigenciaretencionminima;
 
     public RetencionesMinimas() {
     }
@@ -93,11 +93,11 @@ public class RetencionesMinimas implements Serializable {
         this.retencion = retencion;
     }
 
-    public BigInteger getPorcentaje() {
+    public BigDecimal getPorcentaje() {
         return porcentaje;
     }
 
-    public void setPorcentaje(BigInteger porcentaje) {
+    public void setPorcentaje(BigDecimal porcentaje) {
         this.porcentaje = porcentaje;
     }
 
@@ -118,14 +118,14 @@ public class RetencionesMinimas implements Serializable {
         this.declarantesCollection = declarantesCollection;
     }
 
-    public VigenciaRretencionesMinimas getVigenciaretencionminima() {
+    public VigenciasRetencionesMinimas getVigenciasretencionminima() {
         if(vigenciaretencionminima == null){
-            vigenciaretencionminima = new VigenciaRretencionesMinimas();
+            vigenciaretencionminima = new VigenciasRetencionesMinimas();
         }
         return vigenciaretencionminima;
     }
 
-    public void setVigenciaretencionminima(VigenciaRretencionesMinimas vigenciaretencionminima) {
+    public void setVigenciaretencionminima(VigenciasRetencionesMinimas vigenciaretencionminima) {
         this.vigenciaretencionminima = vigenciaretencionminima;
     }
 

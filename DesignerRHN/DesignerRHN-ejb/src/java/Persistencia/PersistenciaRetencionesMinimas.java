@@ -7,6 +7,7 @@ package Persistencia;
 
 import Entidades.RetencionesMinimas;
 import InterfacePersistencia.PersistenciaRetencionesMinimasInterface;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -41,6 +42,35 @@ public class PersistenciaRetencionesMinimas implements PersistenciaRetencionesMi
 
         } catch (Exception e) {
             System.out.println("Error: ( RetencionesMinimas)" + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public void crear(RetencionesMinimas retenciones) {
+        em.persist(retenciones);
+    }
+
+    @Override
+    public void editar(RetencionesMinimas retenciones) {
+        em.merge(retenciones);
+    }
+
+    @Override
+    public void borrar(RetencionesMinimas retenciones) {
+        em.remove(em.merge(retenciones));
+    }
+
+    @Override
+    public List<RetencionesMinimas> buscarRetencionesMinimasVig(BigInteger secRetencion){
+        try {
+            Query query = em.createQuery("SELECT r FROM RetencionesMinimas r WHERE r.vigenciaretencionminima.secuencia = :secRetencion");
+            query.setParameter("secRetencion", secRetencion);
+            
+            List<RetencionesMinimas> retenciones = query.getResultList();
+            return retenciones;
+        } catch (Exception e) {
+            System.out.println("Error en Persistencia Retenciones Minimas " + e);
             return null;
         }
     }
