@@ -8,6 +8,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -23,11 +25,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author user
  */
 @Entity
-@Table(name = "GRUPOSFACTORESRIESGOS")
+@Table(name = "SOPOBLACIONOBJETIVOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "GruposFactoresRiesgos.findAll", query = "SELECT g FROM GruposFactoresRiesgos g")})
-public class GruposFactoresRiesgos implements Serializable {
+    @NamedQuery(name = "SoPoblacionObjetivos.findAll", query = "SELECT s FROM SoPoblacionObjetivos s"),
+    @NamedQuery(name = "SoPoblacionObjetivos.findBySecuencia", query = "SELECT s FROM SoPoblacionObjetivos s WHERE s.secuencia = :secuencia"),
+    @NamedQuery(name = "SoPoblacionObjetivos.findByCodigo", query = "SELECT s FROM SoPoblacionObjetivos s WHERE s.codigo = :codigo"),
+    @NamedQuery(name = "SoPoblacionObjetivos.findByDescripcion", query = "SELECT s FROM SoPoblacionObjetivos s WHERE s.descripcion = :descripcion")})
+public class SoPoblacionObjetivos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -35,20 +40,19 @@ public class GruposFactoresRiesgos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-   @Column(name = "CODIGO")
+    @Column(name = "CODIGO")
     private Integer codigo;
-    @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
-    public GruposFactoresRiesgos() {
+    public SoPoblacionObjetivos() {
     }
 
-    public GruposFactoresRiesgos(BigInteger secuencia) {
+    public SoPoblacionObjetivos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public GruposFactoresRiesgos(BigInteger secuencia, Integer codigo, String descripcion) {
+    public SoPoblacionObjetivos(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -71,14 +75,15 @@ public class GruposFactoresRiesgos implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion==null){
-        descripcion=" ";
+        if(descripcion==null)
+        {
+        descripcion = " ";
         }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @Override
@@ -91,10 +96,10 @@ public class GruposFactoresRiesgos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof GruposFactoresRiesgos)) {
+        if (!(object instanceof SoPoblacionObjetivos)) {
             return false;
         }
-        GruposFactoresRiesgos other = (GruposFactoresRiesgos) object;
+        SoPoblacionObjetivos other = (SoPoblacionObjetivos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -103,7 +108,7 @@ public class GruposFactoresRiesgos implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.GruposFactoresRiesgos[ secuencia=" + secuencia + " ]";
+        return "Entidades.SoPoblacionObjetivos[ secuencia=" + secuencia + " ]";
     }
     
 }

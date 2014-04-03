@@ -86,6 +86,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
+        System.err.println("permitirIndex  " + permitirIndex);
 
         if (permitirIndex == true) {
             index = indice;
@@ -199,6 +200,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                     if (listGruposFactoresRiesgos.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                            listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listGruposFactoresRiesgos.size(); j++) {
                             if (j != indice) {
