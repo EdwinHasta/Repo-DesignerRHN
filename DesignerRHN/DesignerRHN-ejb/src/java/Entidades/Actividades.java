@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,18 +32,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion"),
     @NamedQuery(name = "Actividades.findByClaseactividad", query = "SELECT a FROM Actividades a WHERE a.claseactividad = :claseactividad")})
 public class Actividades implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
-    @Size(max = 200)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 50)
@@ -54,37 +51,40 @@ public class Actividades implements Serializable {
     public Actividades() {
     }
 
-    public Actividades(BigDecimal secuencia) {
+    public Actividades(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Actividades(BigDecimal secuencia, short codigo) {
+    public Actividades(BigInteger secuencia, Integer codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
+        if (descripcion == null) {
+            descripcion = " ";
+        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     public String getClaseactividad() {
@@ -119,5 +119,5 @@ public class Actividades implements Serializable {
     public String toString() {
         return "Entidades.Actividades[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
