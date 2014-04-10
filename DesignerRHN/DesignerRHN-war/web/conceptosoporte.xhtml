@@ -23,7 +23,7 @@
                                 <p:ajax event="filter" listener="#{controlConceptosSoportes.eventoFiltrar()}"/>
 
 
-                                <p:column headerText="Codigo" sortBy="#{info.concepto.codigo}" filterBy="#{info.concepto.codigo}" filterMatchMode="contains" id="codigo" width="140" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Codigo" sortBy="#{info.concepto.codigo}" filterBy="#{info.concepto.codigo}" filterMatchMode="contains" id="codigo" width="30" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.concepto.codigo}"  /></f:facet>  
                                         <f:facet name="input">
@@ -34,8 +34,11 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCodigo"  value="Codigo"/>
+                                    </f:facet>
                                 </p:column>
-                                <p:column headerText="Concepto" sortBy="#{info.concepto.descripcion}" filterBy="#{info.concepto.descripcion}" filterMatchMode="contains" id="personafir" width="140" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Concepto" sortBy="#{info.concepto.descripcion}" filterBy="#{info.concepto.descripcion}" filterMatchMode="contains" id="personafir" width="200" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.concepto.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
@@ -46,8 +49,11 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCiudad"  value="Concepto"/>
+                                    </f:facet>
                                 </p:column>
-                                <p:column headerText="Ciudad" sortBy="#{info.operando.nombre}" filterBy="#{info.operando.nombre}" filterMatchMode="contains" id="cargo" width="145" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Operando" sortBy="#{info.operando.nombre}" filterBy="#{info.operando.nombre}" filterMatchMode="contains" id="cargo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.operando.nombre}"  /></f:facet>  
                                         <f:facet name="input">
@@ -58,6 +64,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooOperando"  value="Operando"/>
+                                    </f:facet>
                                 </p:column>
                             </p:dataTable>
 
@@ -119,7 +128,7 @@
 
 
                         <p:dialog header="CONCEPTOS" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovConceptos" style="font-size: 11px; width: 430px" var="personaFirmas" value="#{controlConceptosSoportes.listaConceptos}" rowKey="#{personaFirmas.secuencia}"
                                          selection="#{controlConceptosSoportes.conceptoSeleccionado}" selectionMode="single" widgetVar="lovConceptos" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlConceptosSoportes.filtradoConceptos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
@@ -154,7 +163,7 @@
 
 
                         <p:dialog header="Operandos" widgetVar="cargosDialogo" draggable="false" resizable="false" closable="false" id="cargosDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovOperandos" style="font-size: 11px; width: 430px" var="personaOperandos" value="#{controlConceptosSoportes.listaOperandos}" rowKey="#{personaOperandos.secuencia}"
                                          selection="#{controlConceptosSoportes.operandoSeleccionado}" selectionMode="single" widgetVar="lovOperandos" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlConceptosSoportes.filtradoOperandos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
@@ -196,7 +205,7 @@
                             <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
-                        
+
                         <p:dialog header="ATENCIÓN...!" widgetVar="confirmarGuardarConceptos" draggable="false" resizable="false" closable="false" id="confirmarGuardarConceptos"  
                                   showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 11px;">
                             <h:graphicImage value="Imagenes/alerta.jpg" width="60" height="70" style="position: absolute; left: 30px; top: 10px;"  />
@@ -210,8 +219,8 @@
 
 
                     <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="Necesita : #{controlConceptosSoportes.mensajeValidacion}" style="position: absolute; left: 80px; top: 20px; width: 300px; font-weight:bold" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="Necesita : #{controlConceptosSoportes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
@@ -235,8 +244,8 @@
                         <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="105" width="450px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar es necesario adicionar: #{controlConceptosSoportes.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar es necesario adicionar: #{controlConceptosSoportes.mensajeValidacion}" style="position: absolute; left: 120px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 65px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlConceptosSoportes.activarCtrlF11()}"/> 
@@ -297,11 +306,11 @@
                         <p:inputTextarea value="#{controlConceptosSoportes.editarConceptosSoportes.concepto.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarPais" value="Atras" onclick="editPais.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editConceptos" header="Editar Persona" widgetVar="editConceptos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editConceptos" header="Editar Concepto" widgetVar="editConceptos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
                         <p:inputTextarea value="#{controlConceptosSoportes.editarConceptosSoportes.concepto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarConceptos" value="Atras" onclick="editConceptos.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editOperandos" header="Editar Persona" widgetVar="editOperandos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editOperandos" header="Editar Operando" widgetVar="editOperandos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
                         <p:inputTextarea value="#{controlConceptosSoportes.editarConceptosSoportes.operando.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarOperandos" value="Atras" onclick="editOperandos.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
@@ -345,8 +354,8 @@
 
 
                             <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 240px;"  actionListener="#{controlConceptosSoportes.limpiarNuevoConceptosSoportes()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 240px;" actionListener="#{controlConceptosSoportes.agregarNuevoConceptosSoportes()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 240px;"  update="nuevaTipoempresa" onclick="nuevoRegistroConceptosSoportes.hide();"  actionListener="#{controlConceptosSoportes.limpiarNuevoConceptosSoportes()}"  process="@this"/>
+                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 240px;" actionListener="#{controlConceptosSoportes.agregarNuevoConceptosSoportes()}" process="@this" />
+                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 240px;"  update="nuevaTipoempresa" onclick="nuevoRegistroConceptosSoportes.hide();"  actionListener="#{controlConceptosSoportes.limpiarNuevoConceptosSoportes()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -419,8 +428,8 @@
 
 
                             <p:commandButton id="limpiarD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlConceptosSoportes.limpiarDuplicarConceptosSoportes() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 365px;" actionListener="#{controlConceptosSoportes.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroConceptosSoportes.hide();" actionListener="#{controlConceptosSoportes.limpiarDuplicarConceptosSoportes()}"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlConceptosSoportes.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroConceptosSoportes.hide();" actionListener="#{controlConceptosSoportes.limpiarDuplicarConceptosSoportes()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

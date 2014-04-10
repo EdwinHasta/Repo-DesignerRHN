@@ -189,6 +189,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             codigo.setFilterStyle("width: 20px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
             descripcion.setFilterStyle("width: 130px");
+            RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {

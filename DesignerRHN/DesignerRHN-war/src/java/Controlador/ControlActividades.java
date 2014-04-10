@@ -51,7 +51,7 @@ public class ControlActividades implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
-    private Column codigo, descripcion,dimensiones;
+    private Column codigo, descripcion, dimensiones;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
@@ -656,7 +656,9 @@ public class ControlActividades implements Serializable {
             contador++;
 
         }
-        if (nuevoActividades.getClaseactividad().isEmpty()) {
+        if (nuevoActividades.getClaseactividad() == null) {
+            nuevoActividades.setClaseactividad(null);
+        } else if (nuevoActividades.getClaseactividad().isEmpty()) {
             nuevoActividades.setClaseactividad(null);
         }
 
@@ -778,7 +780,9 @@ public class ControlActividades implements Serializable {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarActividades.getClaseactividad().isEmpty()) {
+        if (duplicarActividades.getClaseactividad() == null) {
+            duplicarActividades.setClaseactividad(null);
+        } else if (duplicarActividades.getClaseactividad().isEmpty()) {
             duplicarActividades.setClaseactividad(null);
         }
 

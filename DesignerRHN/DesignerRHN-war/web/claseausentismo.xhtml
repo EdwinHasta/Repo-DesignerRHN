@@ -115,7 +115,7 @@
 
 
                         <p:dialog header="CENTROS COSTOS" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovTiposausentismos" style="font-size: 11px; width: 430px" var="personaFirmas" value="#{controlClasesAusentismos.listaTiposausentismos}" rowKey="#{personaFirmas.secuencia}"
                                          selection="#{controlClasesAusentismos.tipoSeleccionado}" selectionMode="single" widgetVar="lovTiposausentismos" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlClasesAusentismos.filtradoTiposausentismos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
@@ -164,8 +164,8 @@
 
 
                     <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="Necesita : #{controlClasesAusentismos.mensajeValidacion}" style="position: absolute; left: 80px; top: 20px; width: 300px; font-weight:bold" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="Necesita : #{controlClasesAusentismos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
@@ -189,8 +189,8 @@
                         <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="105" width="450px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar es necesario adicionar: #{controlClasesAusentismos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar es necesario adicionar: #{controlClasesAusentismos.mensajeValidacion}" style="position: absolute; left: 120px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 65px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlClasesAusentismos.activarCtrlF11()}"/> 
@@ -289,8 +289,8 @@
                             <p:watermark for="nuevoPersona" value="Persona" />
 
                             <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlClasesAusentismos.limpiarNuevoClasesAusentismos()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 365px;" actionListener="#{controlClasesAusentismos.agregarNuevoClasesAusentismos()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 365px;"  update="nuevaTipoempresa" onclick="nuevoRegistroClasesAusentismos.hide();"  actionListener="#{controlClasesAusentismos.limpiarNuevoClasesAusentismos()}"  process="@this"/>
+                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlClasesAusentismos.agregarNuevoClasesAusentismos()}" process="@this" />
+                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="nuevaTipoempresa" onclick="nuevoRegistroClasesAusentismos.hide();"  actionListener="#{controlClasesAusentismos.limpiarNuevoClasesAusentismos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -325,8 +325,8 @@
 
 
                             <p:commandButton id="limpiarD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlClasesAusentismos.limpiarDuplicarClasesAusentismos() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 365px;" actionListener="#{controlClasesAusentismos.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroClasesAusentismos.hide();" actionListener="#{controlClasesAusentismos.limpiarDuplicarClasesAusentismos()}"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlClasesAusentismos.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroClasesAusentismos.hide();" actionListener="#{controlClasesAusentismos.limpiarDuplicarClasesAusentismos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>
