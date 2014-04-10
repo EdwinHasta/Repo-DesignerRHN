@@ -139,11 +139,11 @@
                                     <p:inputText id="globalFilter" onkeyup="lovFormulas.filter();" style="width:150px; position: relative; left: 50px;" />  
                                 </f:facet>
 
-                                <p:column filterBy="#{personaFirmas.nombresFormula}" width="50" filterStyle="width:30px;" filterMatchMode="contains">
+                                <p:column filterBy="#{personaFirmas.nombrecorto}" width="50" filterStyle="width:30px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Nombre" />
                                     </f:facet>
-                                    <h:outputText value="#{personaFirmas.nombresFormula}" />
+                                    <h:outputText value="#{personaFirmas.nombrecorto}" />
                                 </p:column>
                                 <p:column filterBy="#{personaFirmas.nombrelargo}" width="130px" filterStyle="width:110px;" filterMatchMode="contains">
                                     <f:facet name="header">
