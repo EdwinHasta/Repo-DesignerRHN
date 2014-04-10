@@ -17,6 +17,8 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.fill.AsynchronousFilllListener;
 
 /**
  * Clase Stateful. <br>
@@ -69,6 +71,7 @@ public class AdministarReportes implements AdministarReportesInterface {
      */
     private Connection conexion;
     private EntityManager em;
+    private Generales general;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
@@ -86,10 +89,51 @@ public class AdministarReportes implements AdministarReportesInterface {
         //em.close();
     }
 
+        public String generarReporte(String nombreReporte, String tipoReporte, AsynchronousFilllListener asistenteReporte) {
+        //try {
+        general = persistenciaGenerales.obtenerRutas();
+        String nombreUsuario = persistenciaActualUsuario.actualAliasBD();
+        String pathReporteGenerado = null;
+        if (general != null && nombreUsuario != null) {
+            SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
+            String fechaActual = formato.format(new Date());
+            String nombreArchivo = "JR" + nombreUsuario + fechaActual;
+            String rutaReporte = general.getPathreportes();
+            String rutaGenerado = general.getUbicareportes();
+            if (tipoReporte.equals("PDF")) {
+                nombreArchivo = nombreArchivo + ".pdf";
+            } else if (tipoReporte.equals("XLSX")) {
+                nombreArchivo = nombreArchivo + ".xlsx";
+            } else if (tipoReporte.equals("XLS")) {
+                nombreArchivo = nombreArchivo + ".xls";
+            } else if (tipoReporte.equals("CSV")) {
+                nombreArchivo = nombreArchivo + ".csv";
+            } else if (tipoReporte.equals("HTML")) {
+                nombreArchivo = nombreArchivo + ".html";
+            } else if (tipoReporte.equals("DOCX")) {
+                nombreArchivo = nombreArchivo + ".rtf";
+            }
+            //datosConexion();
+            // if (conexion != null && !conexion.isClosed()) {
+            //pathReporteGenerado = reporte.ejecutarReporte(nombreReporte, rutaReporte, rutaGenerado, nombreArchivo, tipoReporte, null);
+            // pathReporteGenerado = reporte.ejecutarReportinho(nombreReporte, rutaReporte, rutaGenerado, nombreArchivo, tipoReporte, null);
+            reporte.llenarReporte(nombreReporte, rutaReporte, asistenteReporte);
+            //conexion.close();
+            // return pathReporteGenerado;
+            // }
+            return pathReporteGenerado;
+        }
+        return pathReporteGenerado;
+        /* } catch (SQLException ex) {
+         System.out.println("PUM PUM xD");
+         return null;
+         }*/
+    }
+        
     @Override
     public String generarReporte(String nombreReporte, String tipoReporte) {
         //try {
-        Generales general = persistenciaGenerales.obtenerRutas();
+        general = persistenciaGenerales.obtenerRutas();
         String nombreUsuario = persistenciaActualUsuario.actualAliasBD();
         String pathReporteGenerado = null;
         if (general != null && nombreUsuario != null) {
@@ -124,5 +168,30 @@ public class AdministarReportes implements AdministarReportesInterface {
          System.out.println("PUM PUM xD");
          return null;
          }*/
+    }
+    
+    public void iniciarLlenadoReporte(String nombreReporte, AsynchronousFilllListener asistenteReporte) {
+        if (general == null) {
+            general = persistenciaGenerales.obtenerRutas();
+        }
+        String rutaReporte = general.getPathreportes();
+        reporte.llenarReporte(nombreReporte, rutaReporte, asistenteReporte);
+    }
+    
+    public String crearArchivoReporte(JasperPrint print, String tipoReporte) {
+        String nombreUsuario = persistenciaActualUsuario.actualAliasBD();
+        String pathReporteGenerado = null;
+        if (general != null && nombreUsuario != null) {
+            SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
+            String fechaActual = formato.format(new Date());
+            String nombreArchivo = "JR" + nombreUsuario + fechaActual;
+            String rutaGenerado = general.getUbicareportes();
+            pathReporteGenerado = reporte.crearArchivoReporte(rutaGenerado, nombreArchivo, tipoReporte, print);
+        }
+        return pathReporteGenerado;
+    }
+
+    public void cancelarReporte() {
+        reporte.cancelarReporte();
     }
 }
