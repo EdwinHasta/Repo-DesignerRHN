@@ -12,13 +12,37 @@
     </h:head> 
     <h:body>
         <h:form id="form">
-            <p:panel id="PanelTotal" header="PRUEBAS" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" >
-                <h:form id="form">
-                    <p:commandButton value="Cometalo" onclick="dlg.show();"/>
-                    <p:dialog id="dlg" widgetVar="dlg" width="1024px" height="530px">
-                        <p:media value="#{controlPruebasUnitarias.reporte}" width="100%" height="500px" player="pdf"/>
-                    </p:dialog></h:form>
-            </p:panel>
+
+            <h:panelGrid id="grid" columns="3" style="margin-bottom:10px">
+                <h:outputLabel for="template" value="Template:" style="font-weight:bold"/>
+                <p:inputText id="template" value="#{controlPruebasUnitarias.columnTemplate}" size="50" readonly="true"/>
+                <p:watermark for="template" value="Cantidad Maxima Columnas 10"/>
+                <p:commandButton id="btn" update="cars" actionListener="#{controlPruebasUnitarias.updateColumns}" value="Cargar Tabla" process="@parent"/>
+            </h:panelGrid>
+
+            <p:dataTable id="cars" var="car" value="#{controlPruebasUnitarias.carsSmall}" 
+                         filteredValue="#{controlPruebasUnitarias.filteredCars}" draggableColumns="true">
+                <p:columns value="#{controlPruebasUnitarias.columns}" var="column" columnIndexVar="colIndex" 
+                           sortBy="#{column.property}" filterBy="#{column.property}">
+                    <f:facet name="header">
+                        #{column.header}
+                    </f:facet>
+                    <p:inputText onclick="select();" value="#{car[column.property]}"/>
+                </p:columns>
+
+            </p:dataTable>
+
+            <p:commandButton value="Agregar Columna" actionListener="#{controlPruebasUnitarias.dispararDialogo()}"/>
+            <p:commandButton value="Restaurar" actionListener="#{controlPruebasUnitarias.restaurar()}"/>
+
+
+            <p:dialog id="nuevaColumna" header="Nueva Columna" widgetVar="nuevaColumna"  resizable="false" draggable="false" modal="true" height="90" width="375px" style="font-size: 12px" closable="false">  
+                <h:outputText value="Nueva Columna: "  style="position: absolute; left: 10px; top: 15px;"  />
+                <p:inputText value="#{controlPruebasUnitarias.nuevaColumna}" style="position: absolute; left: 110px; top: 10px; font-weight:bold;" />
+                <p:commandButton value="Aceptar" onclick="nuevaColumna.hide();" actionListener="#{controlPruebasUnitarias.agregarColumna()}" style="position: absolute; top: 50px; left: 250px"/>
+                <p:commandButton value="Cancelar" onclick="nuevaColumna.hide();" style="position: absolute; top: 50px; left: 50px"/>
+            </p:dialog>
+
         </h:form>
     </h:body>
 </html>
