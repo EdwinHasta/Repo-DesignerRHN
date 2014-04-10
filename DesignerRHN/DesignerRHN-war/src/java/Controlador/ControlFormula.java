@@ -29,7 +29,7 @@ public class ControlFormula implements Serializable {
     AdministrarFormulaInterface administrarFormula;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //Parametros que llegan
     private BigInteger secTiposFormulas;
     private TiposFormulas tiposFormulas;
@@ -38,6 +38,7 @@ public class ControlFormula implements Serializable {
     private List<Formulas> listaFormulasLOV;
     private List<Formulas> filtradoListaFormulasLOV;
     private Formulas formulaSeleccionada;
+    private Formulas formulaSeleccionadaPrueba;
     private boolean verSeleccionFormula;
     private boolean verMostrarTodos;
     private boolean mostrarTodos;
@@ -142,7 +143,7 @@ public class ControlFormula implements Serializable {
         }
         llamadoPrevioPagina = 0;
     }
-    
+
     public void recibirDatosTiposFormulas(BigInteger secuenciaTiposFormulas, TiposFormulas tiposFormulasRegistro) {
         secTiposFormulas = secuenciaTiposFormulas;
         tiposFormulas = tiposFormulasRegistro;
@@ -918,7 +919,7 @@ public class ControlFormula implements Serializable {
 
     public List<Formulas> getListaFormulas() {
         if (listaFormulas == null && tiposFormulas == null) {
-            
+
             listaFormulas = administrarFormula.formulas();
             if (listaFormulas != null || !listaFormulas.isEmpty()) {
                 if (listaFormulas.get(0).getTipo().equals("FINAL") && listaFormulas.get(0).getEstado().equals("ACTIVO")) {
@@ -932,12 +933,12 @@ public class ControlFormula implements Serializable {
                 context.update("form:conceptoFormula");
                 context.update("form:legislacionFormula");
             }
-        } else if(tiposFormulas != null){
-                System.out.println("Lawl");
-                listaFormulas = administrarFormula.formulas();
-                listaFormulas.clear();
-                listaFormulas.add(tiposFormulas.getFormula());
-            }
+        } else if (tiposFormulas != null) {
+            System.out.println("Lawl");
+            listaFormulas = administrarFormula.formulas();
+            listaFormulas.clear();
+            listaFormulas.add(tiposFormulas.getFormula());
+        }
         return listaFormulas;
     }
 
@@ -1082,6 +1083,14 @@ public class ControlFormula implements Serializable {
 
     public void setActualFormula(Formulas actualFormula) {
         this.actualFormula = actualFormula;
+    }
+
+    public Formulas getFormulaSeleccionadaPrueba() {
+        return formulaSeleccionadaPrueba;
+    }
+
+    public void setFormulaSeleccionadaPrueba(Formulas formulaSeleccionadaPrueba) {
+        this.formulaSeleccionadaPrueba = formulaSeleccionadaPrueba;
     }
 
 }
