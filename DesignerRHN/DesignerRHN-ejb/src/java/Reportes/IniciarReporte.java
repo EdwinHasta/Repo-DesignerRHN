@@ -16,12 +16,17 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.engine.export.JRXhtmlExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.engine.fill.AsynchronousFillHandle;
+import net.sf.jasperreports.engine.fill.AsynchronousFilllListener;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.web.servlets.AsyncJasperPrintAccessor;
+import net.sf.jasperreports.web.servlets.JasperPrintAccessor;
 
 @Stateless
 public class IniciarReporte implements IniciarReporteInterface, Serializable {
 
     Connection conexion = null;
+    AsynchronousFillHandle handle;
 
     @Override
     public void inicarC() {
@@ -78,11 +83,164 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
             return outFileName;
         } catch (JRException e) {
             System.out.println("Error IniciarReporte.ejecutarReporte: " + e);
-            System.out.println(e.getStackTrace());
+            //System.out.println(e.getStackTrace());
             System.out.println("************************************");
             System.out.println(e.getCause().toString());
             //e.printStackTrace();
-            return null;
+            if (e.getCause() != null) {
+                return "Error: " + e.toString() + "\n" + e.getCause().toString();
+            } else {
+                return "Error: " + e.toString();
+            }
+        }
+    }
+    
+    public String ejecutarReportinho(String nombreReporte, String rutaReporte, String rutaGenerado, String nombreArchivo, String tipoReporte, Connection cxn) {
+        try {
+            inicarC();
+            File archivo = new File(rutaReporte + nombreReporte + ".jasper");
+            JasperReport masterReport;
+            JasperPrintAccessor jpAcceso;
+            JasperPrint imprimir;
+            masterReport = (JasperReport) JRLoader.loadObject(archivo);
+            handle = AsynchronousFillHandle.createHandle(masterReport, null, conexion);
+            handle.addListener(new AsynchronousFilllListener() {
+                public void reportFinished(JasperPrint print) {
+                    System.out.println("Finalizado");
+                }
+
+                public void reportCancelled() {
+                    System.out.println("Cancelado");
+                }
+
+                public void reportFillError(Throwable t) {
+                    System.out.println("Error llenando el reporte");
+                }
+            });
+            //handle.startFill();
+            AsyncJasperPrintAccessor acceso = new AsyncJasperPrintAccessor(handle);
+            System.out.println("0");
+            handle.startFill();
+            System.out.println("1");
+            jpAcceso = acceso;
+            System.out.println("2");
+            imprimir = acceso.getFinalJasperPrint();
+            System.out.println("3");
+            String outFileName = rutaGenerado + nombreArchivo;
+            System.out.println("4");
+            JRExporter exporter = null;
+            if (tipoReporte.equals("PDF")) {
+                exporter = new JRPdfExporter();
+            } else if (tipoReporte.equals("XLSX")) {
+                exporter = new JRXlsxExporter();
+            } else if (tipoReporte.equals("XLS")) {
+                exporter = new JExcelApiMetadataExporter();
+                exporter.setParameter(JExcelApiExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.TRUE);
+                exporter.setParameter(JExcelApiExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+                exporter.setParameter(JExcelApiExporterParameter.IS_IGNORE_CELL_BACKGROUND, Boolean.TRUE);
+            } else if (tipoReporte.equals("CSV")) {
+                exporter = new JRCsvMetadataExporter();
+                exporter.setParameter(JRCsvMetadataExporterParameter.CHARACTER_ENCODING, "ISO-8859-1");
+            } else if (tipoReporte.equals("HTML")) {
+                exporter = new JRXhtmlExporter();
+                exporter.setParameter(JRHtmlExporterParameter.IS_OUTPUT_IMAGES_TO_DIR, Boolean.FALSE);
+            } else if (tipoReporte.equals("DOCX")) {
+                //exporter = new JRDocxExporter();
+                exporter = new JRRtfExporter();
+                //exporter.setParameter(JRDocxExporterParameter., Boolean.FALSE);
+            }
+            if (exporter != null) {
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+                exporter.exportReport();
+            }
+            //handle = null;
+            //cerrarConexion();
+            return outFileName;
+        } catch (JRException e) {
+            System.out.println("Error IniciarReporte.ejecutarReporte: " + e);
+            //System.out.println(e.getStackTrace());
+            System.out.println("************************************");
+            // System.out.println(e.getCause().toString());
+            //e.printStackTrace();
+            if (e.getCause() != null) {
+                return "Error: " + e.toString() + "\n" + e.getCause().toString();
+            } else {
+                return "Error: " + e.toString();
+            }
+        }
+    }
+
+    @Override
+    public void llenarReporte(String nombreReporte, String rutaReporte, AsynchronousFilllListener asistenteReporte) {
+        try {
+            inicarC();
+            File archivo = new File(rutaReporte + nombreReporte + ".jasper");
+            JasperReport masterReport;
+            masterReport = (JasperReport) JRLoader.loadObject(archivo);
+            handle = AsynchronousFillHandle.createHandle(masterReport, null, conexion);
+            handle.addListener(asistenteReporte);
+            handle.startFill();
+            System.out.println("Inicio Llenado");
+        } catch (Exception ex) {
+            System.out.println("Error antes de llenar el reporte (llenarReporte)\n" + ex);
+        }
+    }
+
+    public String crearArchivoReporte(String rutaGenerado, String nombreArchivo, String tipoReporte, JasperPrint imprimir) {
+        JRExporter exporter = null;
+        if (tipoReporte.equals("PDF")) {
+            exporter = new JRPdfExporter();
+            nombreArchivo = nombreArchivo + ".pdf";
+        } else if (tipoReporte.equals("XLSX")) {
+            exporter = new JRXlsxExporter();
+            nombreArchivo = nombreArchivo + ".xlsx";
+        } else if (tipoReporte.equals("XLS")) {
+            exporter = new JExcelApiMetadataExporter();
+            exporter.setParameter(JExcelApiExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.TRUE);
+            exporter.setParameter(JExcelApiExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+            exporter.setParameter(JExcelApiExporterParameter.IS_IGNORE_CELL_BACKGROUND, Boolean.TRUE);
+            nombreArchivo = nombreArchivo + ".xls";
+        } else if (tipoReporte.equals("CSV")) {
+            exporter = new JRCsvMetadataExporter();
+            exporter.setParameter(JRCsvMetadataExporterParameter.CHARACTER_ENCODING, "ISO-8859-1");
+            nombreArchivo = nombreArchivo + ".csv";
+        } else if (tipoReporte.equals("HTML")) {
+            exporter = new JRXhtmlExporter();
+            exporter.setParameter(JRHtmlExporterParameter.IS_OUTPUT_IMAGES_TO_DIR, Boolean.FALSE);
+            nombreArchivo = nombreArchivo + ".html";
+        } else if (tipoReporte.equals("DOCX")) {
+            //exporter = new JRDocxExporter();
+            exporter = new JRRtfExporter();
+            nombreArchivo = nombreArchivo + ".rtf";
+            //exporter.setParameter(JRDocxExporterParameter., Boolean.FALSE);
+        }
+        if (exporter != null) {
+            String outFileName = rutaGenerado + nombreArchivo;
+            try {
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+                exporter.exportReport();
+                return outFileName;
+            } catch (JRException e) {
+                System.out.println("Error crear archivo reporte \n" + e);
+                if (e.getCause() != null) {
+                    return "Error: " + e.toString() + "\n" + e.getCause().toString();
+                } else {
+                    return "Error: " + e.toString();
+                }
+            }
+        }
+        return null;
+    }
+
+    public void cancelarReporte() {
+        try {
+            System.out.println("CANCELAR REPORTE");
+            handle.cancellFill();
+            handle = null;
+        } catch (Exception ex) {
+            System.out.println("Reporte cancelado. \n" + ex);
         }
     }
 
@@ -90,8 +248,9 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
     public void cerrarConexion() {
         try {
             conexion.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Error cerrar: " + e);
+            System.out.println("Error causa: " + e.getCause());
         }
     }
 }
