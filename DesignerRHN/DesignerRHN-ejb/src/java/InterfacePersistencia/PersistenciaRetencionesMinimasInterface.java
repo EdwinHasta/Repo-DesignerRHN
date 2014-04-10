@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package InterfacePersistencia;
 
 import Entidades.RetencionesMinimas;
-import java.util.Date;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -15,7 +14,15 @@ import java.util.List;
  * @author user
  */
 public interface PersistenciaRetencionesMinimasInterface {
-    
+
     public List<RetencionesMinimas> retenciones();
-    
+
+    public void crear(RetencionesMinimas retenciones);
+
+    public void editar(RetencionesMinimas retenciones);
+
+    public void borrar(RetencionesMinimas retenciones);
+
+    public List<RetencionesMinimas> buscarRetencionesMinimasVig(BigInteger secRetencion);
+
 }

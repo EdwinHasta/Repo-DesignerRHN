@@ -16,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,9 +35,7 @@ public class GruposFactoresRiesgos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODIGO")
+   @Column(name = "CODIGO")
     private Integer codigo;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
@@ -81,7 +78,7 @@ public class GruposFactoresRiesgos implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @Override

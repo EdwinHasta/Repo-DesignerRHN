@@ -305,7 +305,7 @@
 
                                 <strong><h:outputText value="#{msg['codigoN']}" style="font-size: 12px; position: absolute; top: 17px" /></strong>
                                 <p:inputText maxlength="4" id="duplicarCodigo" value="#{controlRetencion.duplicarVigenciasRetenciones.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 15px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="nuevoCodigo" />
+                                    <p:ajax event="change" update="duplicarCodigo" />
                                 </p:inputText>
 
                                 <strong><h:outputText value="#{msg['fechavigenciaN']}"  style="font-size: 12px; position: absolute; top: 57px" /></strong>
@@ -318,7 +318,7 @@
 
                                 <strong><h:outputText value="#{msg['uvtN']}"  style="font-size: 12px; position: absolute; top: 97px" /></strong>
                                 <p:inputText id="duplicarUvt" value="#{controlRetencion.duplicarVigenciasRetenciones.uvt}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 95px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="nuevoUvt"/>
+                                    <p:ajax event="change" update="duplicarUvt"/>
                                 </p:inputText>
 
                                 <p:commandButton id="limpiarVRD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 180px;" actionListener="#{controlRetencion.limpiarduplicarVigencia()}" update="duplicarVigenciaRetencion" process="@this"/>
@@ -378,27 +378,27 @@
 
                                 <strong><h:outputText value="#{msg['valorminimoN']}" style="font-size: 12px; position: absolute; top: 17px" /></strong>
                                 <p:inputText id="duplicarValorMinimo" value="#{controlRetencion.duplicarRetencion.valorminimo}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 15px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="nuevoValorMinimo" />
+                                    <p:ajax event="change" update="duplicarValorMinimo" />
                                 </p:inputText>
 
                                 <strong><h:outputText value="#{msg['valormaximoN']}" style="font-size: 12px; position: absolute; top: 57px" /></strong>
                                 <p:inputText id="duplicarValorMaximo" value="#{controlRetencion.duplicarRetencion.valormaximo}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 55px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="nuevoValorMaximo"/>
+                                    <p:ajax event="change" update="duplicarValorMaximo"/>
                                 </p:inputText>
 
                                 <strong><h:outputText value="#{msg['porcentajeN']}"  style="font-size: 12px; position: absolute; top: 97px" /></strong>
                                 <p:inputText id="duplicarPorcentaje" value="#{controlRetencion.duplicarRetencion.porcentaje}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 95px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="nuevoPorcentaje"/>
+                                    <p:ajax event="change" update="duplicarPorcentaje"/>
                                 </p:inputText>
 
                                 <strong><h:outputText value="#{msg['valorN']}"  style="font-size: 12px; position: absolute; top: 137px" /></strong>
                                 <p:inputText id="duplicarValor" value="#{controlRetencion.duplicarRetencion.valor}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 135px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="nuevoValor"/>
+                                    <p:ajax event="change" update="duplicarValor"/>
                                 </p:inputText>
 
                                 <strong><h:outputText value="#{msg['adicionauvtN']}"  style="font-size: 12px; position: absolute; top: 177px" /></strong>
                                 <p:inputText id="duplicarAdiciona" value="#{controlRetencion.duplicarRetencion.adicionauvt}" style="font-size: 12px; width: 122px; position: absolute; left: 152px; top: 175px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="nuevoAdiciona"/>
+                                    <p:ajax event="change" update="duplicarAdiciona"/>
                                 </p:inputText>
 
                                 <p:commandButton id="limpiarRD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 250px;" actionListener="#{controlRetencion.limpiarNuevoRetencion()}" update="duplicarRetencion" process="@this"/>
@@ -605,8 +605,8 @@
                     <p:dialog id="elegirTabla" header="#{msg['atencion']}" widgetVar="elegirTabla"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['elegirTabla']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Vigencias Retenciones" onclick="elegirTabla.hide();" actionListener="#{controlRetencion.dialogoVigencias()}" style="position: absolute; top: 60px; left: 20px" process="@this" />
-                        <p:commandButton value="Retenciones" onclick="elegirTabla.hide();" actionListener="#{controlRetencion.dialogoRetenciones()}" style="position: absolute; top: 60px; left: 220px" process="@this" />
+                        <p:commandButton value="#{msg['vigenciasRetenciones']}" onclick="elegirTabla.hide();" actionListener="#{controlRetencion.dialogoVigencias()}" style="position: absolute; top: 60px; left: 20px" process="@this" />
+                        <p:commandButton value="#{msg['retencion']}" onclick="elegirTabla.hide();" actionListener="#{controlRetencion.dialogoRetenciones()}" style="position: absolute; top: 60px; left: 220px" process="@this" />
                     </p:dialog>
                 </h:form>
 

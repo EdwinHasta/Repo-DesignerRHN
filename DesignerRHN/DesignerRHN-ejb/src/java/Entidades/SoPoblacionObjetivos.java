@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Entidades;
 
 import java.io.Serializable;
@@ -15,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -23,16 +23,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author user
  */
 @Entity
-@Table(name = "ACTIVIDADES")
+@Table(name = "SOPOBLACIONOBJETIVOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Actividades.findAll", query = "SELECT a FROM Actividades a"),
-    @NamedQuery(name = "Actividades.findBySecuencia", query = "SELECT a FROM Actividades a WHERE a.secuencia = :secuencia"),
-    @NamedQuery(name = "Actividades.findByCodigo", query = "SELECT a FROM Actividades a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion"),
-    @NamedQuery(name = "Actividades.findByClaseactividad", query = "SELECT a FROM Actividades a WHERE a.claseactividad = :claseactividad")})
-public class Actividades implements Serializable {
-
+    @NamedQuery(name = "SoPoblacionObjetivos.findAll", query = "SELECT s FROM SoPoblacionObjetivos s"),
+    @NamedQuery(name = "SoPoblacionObjetivos.findBySecuencia", query = "SELECT s FROM SoPoblacionObjetivos s WHERE s.secuencia = :secuencia"),
+    @NamedQuery(name = "SoPoblacionObjetivos.findByCodigo", query = "SELECT s FROM SoPoblacionObjetivos s WHERE s.codigo = :codigo"),
+    @NamedQuery(name = "SoPoblacionObjetivos.findByDescripcion", query = "SELECT s FROM SoPoblacionObjetivos s WHERE s.descripcion = :descripcion")})
+public class SoPoblacionObjetivos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -44,20 +42,18 @@ public class Actividades implements Serializable {
     private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Size(max = 50)
-    @Column(name = "CLASEACTIVIDAD")
-    private String claseactividad;
 
-    public Actividades() {
+    public SoPoblacionObjetivos() {
     }
 
-    public Actividades(BigInteger secuencia) {
+    public SoPoblacionObjetivos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Actividades(BigInteger secuencia, Integer codigo) {
+    public SoPoblacionObjetivos(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
+        this.descripcion = descripcion;
     }
 
     public BigInteger getSecuencia() {
@@ -77,22 +73,15 @@ public class Actividades implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
+        if(descripcion==null)
+        {
+        descripcion = " ";
         }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion.toUpperCase();
-    }
-
-    public String getClaseactividad() {
-        return claseactividad;
-    }
-
-    public void setClaseactividad(String claseactividad) {
-        this.claseactividad = claseactividad;
     }
 
     @Override
@@ -105,10 +94,10 @@ public class Actividades implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Actividades)) {
+        if (!(object instanceof SoPoblacionObjetivos)) {
             return false;
         }
-        Actividades other = (Actividades) object;
+        SoPoblacionObjetivos other = (SoPoblacionObjetivos) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -117,7 +106,7 @@ public class Actividades implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Actividades[ secuencia=" + secuencia + " ]";
+        return "Entidades.SoPoblacionObjetivos[ secuencia=" + secuencia + " ]";
     }
-
+    
 }

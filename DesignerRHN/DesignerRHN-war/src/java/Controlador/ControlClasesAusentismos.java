@@ -1212,7 +1212,7 @@ public class ControlClasesAusentismos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosClasesAusentismosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "PROCESOSPRODUCTIVOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "CLASESAUSENTISMOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1222,7 +1222,7 @@ public class ControlClasesAusentismos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosClasesAusentismosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "PROCESOSPRODUCTIVOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "CLASESAUSENTISMOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1234,7 +1234,7 @@ public class ControlClasesAusentismos implements Serializable {
         if (!listClasesAusentismos.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "PROCESOSPRODUCTIVOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "CLASESAUSENTISMOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -1251,7 +1251,7 @@ public class ControlClasesAusentismos implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("PROCESOSPRODUCTIVOS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("CLASESAUSENTISMOS")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");

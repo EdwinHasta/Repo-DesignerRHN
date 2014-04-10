@@ -4,10 +4,10 @@
  */
 package Controlador;
 
-import Entidades.GruposFactoresRiesgos;
+import Entidades.Actividades;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarGruposFactoresRiesgosInterface;
+import InterfaceAdministrar.AdministrarActividadesInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -29,20 +29,20 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlGruposFactoresRiesgos implements Serializable {
+public class ControlActividades implements Serializable {
 
     @EJB
-    AdministrarGruposFactoresRiesgosInterface administrarGruposFactoresRiesgos;
+    AdministrarActividadesInterface administrarActividades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    private List<GruposFactoresRiesgos> listGruposFactoresRiesgos;
-    private List<GruposFactoresRiesgos> filtrarGruposFactoresRiesgos;
-    private List<GruposFactoresRiesgos> crearGruposFactoresRiesgos;
-    private List<GruposFactoresRiesgos> modificarGruposFactoresRiesgos;
-    private List<GruposFactoresRiesgos> borrarGruposFactoresRiesgos;
-    private GruposFactoresRiesgos nuevoGruposFactoresRiesgos;
-    private GruposFactoresRiesgos duplicarGruposFactoresRiesgos;
-    private GruposFactoresRiesgos editarGruposFactoresRiesgos;
+    private List<Actividades> listActividades;
+    private List<Actividades> filtrarActividades;
+    private List<Actividades> crearActividades;
+    private List<Actividades> modificarActividades;
+    private List<Actividades> borrarActividades;
+    private Actividades nuevoActividades;
+    private Actividades duplicarActividades;
+    private Actividades editarActividades;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -51,7 +51,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
-    private Column codigo, descripcion;
+    private Column codigo, descripcion, dimensiones;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
@@ -60,27 +60,27 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     private Integer backupCodigo;
     private String backupDescripcion;
 
-    public ControlGruposFactoresRiesgos() {
-        listGruposFactoresRiesgos = null;
-        crearGruposFactoresRiesgos = new ArrayList<GruposFactoresRiesgos>();
-        modificarGruposFactoresRiesgos = new ArrayList<GruposFactoresRiesgos>();
-        borrarGruposFactoresRiesgos = new ArrayList<GruposFactoresRiesgos>();
+    public ControlActividades() {
+        listActividades = null;
+        crearActividades = new ArrayList<Actividades>();
+        modificarActividades = new ArrayList<Actividades>();
+        borrarActividades = new ArrayList<Actividades>();
         permitirIndex = true;
-        editarGruposFactoresRiesgos = new GruposFactoresRiesgos();
-        nuevoGruposFactoresRiesgos = new GruposFactoresRiesgos();
-        duplicarGruposFactoresRiesgos = new GruposFactoresRiesgos();
+        editarActividades = new Actividades();
+        nuevoActividades = new Actividades();
+        duplicarActividades = new Actividades();
         guardado = true;
         tamano = 302;
     }
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A ControlGruposFactoresRiesgos.eventoFiltrar \n");
+            System.out.println("\n ENTRE A ControlActividades.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR ControlGruposFactoresRiesgos eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlActividades eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -91,13 +91,13 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listGruposFactoresRiesgos.get(index).getSecuencia();
+            secRegistro = listActividades.get(index).getSecuencia();
             if (tipoLista == 0) {
-                backupCodigo = listGruposFactoresRiesgos.get(index).getCodigo();
-                backupDescripcion = listGruposFactoresRiesgos.get(index).getDescripcion();
+                backupCodigo = listActividades.get(index).getCodigo();
+                backupDescripcion = listActividades.get(index).getDescripcion();
             } else if (tipoLista == 1) {
-                backupCodigo = filtrarGruposFactoresRiesgos.get(index).getCodigo();
-                backupDescripcion = filtrarGruposFactoresRiesgos.get(index).getDescripcion();
+                backupCodigo = filtrarActividades.get(index).getCodigo();
+                backupDescripcion = filtrarActividades.get(index).getDescripcion();
             }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -105,7 +105,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE A ControlGruposFactoresRiesgos.asignarIndex \n");
+            System.out.println("\n ENTRE A ControlActividades.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -117,7 +117,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR ControlGruposFactoresRiesgos.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlActividades.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -131,55 +131,95 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
+            dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+            dimensiones.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosActividades");
             bandera = 0;
-            filtrarGruposFactoresRiesgos = null;
+            filtrarActividades = null;
             tipoLista = 0;
         }
 
-        borrarGruposFactoresRiesgos.clear();
-        crearGruposFactoresRiesgos.clear();
-        modificarGruposFactoresRiesgos.clear();
+        borrarActividades.clear();
+        crearActividades.clear();
+        modificarActividades.clear();
         index = -1;
         secRegistro = null;
         k = 0;
-        listGruposFactoresRiesgos = null;
+        listActividades = null;
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosGruposFactoresRiesgos");
+        context.update("form:datosActividades");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
             tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
-            codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
-            descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
+            codigo.setFilterStyle("width: 110px");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
+            descripcion.setFilterStyle("width: 110px");
+            dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+            dimensiones.setFilterStyle("width: 110px");
+            RequestContext.getCurrentInstance().update("form:datosActividades");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
+            dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+            dimensiones.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosActividades");
             bandera = 0;
-            filtrarGruposFactoresRiesgos = null;
+            filtrarActividades = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarGruposFactoresRiesgos(int indice, String confirmarCambio, String valorConfirmar) {
+    public void mostrarInfo(int indice, int celda) {
+        if (permitirIndex == true) {
+            RequestContext context = RequestContext.getCurrentInstance();
+
+            index = indice;
+            cualCelda = celda;
+            secRegistro = listActividades.get(index).getSecuencia();
+            if (cualCelda == 2) {
+                System.out.println("CLASE ACTIVIDAD : " + listActividades.get(indice).getClaseactividad());
+            }
+            if (tipoLista == 0) {
+                if (modificarActividades.isEmpty()) {
+                    modificarActividades.add(listActividades.get(indice));
+                } else if (!modificarActividades.contains(listActividades.get(indice))) {
+                    modificarActividades.add(listActividades.get(indice));
+                }
+            } else {
+                if (modificarActividades.isEmpty()) {
+                    modificarActividades.add(filtrarActividades.get(indice));
+                } else if (!modificarActividades.contains(filtrarActividades.get(indice))) {
+                    modificarActividades.add(filtrarActividades.get(indice));
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+            }
+            context.update("form:ACEPTAR");
+            context.update("form:datosActividades");
+
+        }
+        System.out.println("Indice: " + index + " Celda: " + cualCelda);
+
+    }
+
+    public void modificarActividades(int indice, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
@@ -192,19 +232,19 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearGruposFactoresRiesgos.contains(listGruposFactoresRiesgos.get(indice))) {
+                if (!crearActividades.contains(listActividades.get(indice))) {
 
                     System.out.println("backupCodigo : " + backupCodigo);
                     System.out.println("backupDescripcion : " + backupDescripcion);
 
-                    if (listGruposFactoresRiesgos.get(indice).getCodigo() == null) {
+                    if (listActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                            listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                        listActividades.get(indice).setCodigo(backupCodigo);
                     } else {
-                        for (int j = 0; j < listGruposFactoresRiesgos.size(); j++) {
+                        for (int j = 0; j < listActividades.size(); j++) {
                             if (j != indice) {
-                                if (listGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                if (listActividades.get(indice).getCodigo() == listActividades.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -213,30 +253,30 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
-                            listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                            listActividades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
 
                     }
-                    if (listGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
+                    if (listActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
+                        listActividades.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listActividades.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                        listActividades.get(indice).setDescripcion(backupDescripcion);
 
                     } else {
                         banderita1 = true;
                     }
 
                     if (banderita == true && banderita1 == true) {
-                        if (modificarGruposFactoresRiesgos.isEmpty()) {
-                            modificarGruposFactoresRiesgos.add(listGruposFactoresRiesgos.get(indice));
-                        } else if (!modificarGruposFactoresRiesgos.contains(listGruposFactoresRiesgos.get(indice))) {
-                            modificarGruposFactoresRiesgos.add(listGruposFactoresRiesgos.get(indice));
+                        if (modificarActividades.isEmpty()) {
+                            modificarActividades.add(listActividades.get(indice));
+                        } else if (!modificarActividades.contains(listActividades.get(indice))) {
+                            modificarActividades.add(listActividades.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -249,21 +289,21 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                     }
                     index = -1;
                     secRegistro = null;
-                    context.update("form:datosGruposFactoresRiesgos");
+                    context.update("form:datosActividades");
                     context.update("form:ACEPTAR");
                 } else {
 
                     System.out.println("backupCodigo : " + backupCodigo);
                     System.out.println("backupDescripcion : " + backupDescripcion);
 
-                    if (listGruposFactoresRiesgos.get(indice).getCodigo() == null) {
+                    if (listActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                        listActividades.get(indice).setCodigo(backupCodigo);
                     } else {
-                        for (int j = 0; j < listGruposFactoresRiesgos.size(); j++) {
+                        for (int j = 0; j < listActividades.size(); j++) {
                             if (j != indice) {
-                                if (listGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                if (listActividades.get(indice).getCodigo() == listActividades.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -272,20 +312,20 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
-                            listGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                            listActividades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
 
                     }
-                    if (listGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
+                    if (listActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
+                        listActividades.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listActividades.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        listGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                        listActividades.get(indice).setDescripcion(backupDescripcion);
 
                     } else {
                         banderita1 = true;
@@ -302,28 +342,28 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                     }
                     index = -1;
                     secRegistro = null;
-                    context.update("form:datosGruposFactoresRiesgos");
+                    context.update("form:datosActividades");
                     context.update("form:ACEPTAR");
 
                 }
             } else {
 
-                if (!crearGruposFactoresRiesgos.contains(filtrarGruposFactoresRiesgos.get(indice))) {
-                    if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == null) {
+                if (!crearActividades.contains(filtrarActividades.get(indice))) {
+                    if (filtrarActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                        filtrarActividades.get(indice).setCodigo(backupCodigo);
                     } else {
-                        for (int j = 0; j < filtrarGruposFactoresRiesgos.size(); j++) {
+                        for (int j = 0; j < filtrarActividades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                if (filtrarActividades.get(indice).getCodigo() == listActividades.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listGruposFactoresRiesgos.size(); j++) {
+                        for (int j = 0; j < listActividades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                if (filtrarActividades.get(indice).getCodigo() == listActividades.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -331,7 +371,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
-                            filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                            filtrarActividades.get(indice).setCodigo(backupCodigo);
 
                         } else {
                             banderita = true;
@@ -339,22 +379,22 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
                     }
 
-                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                        filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarActividades.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                        filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
 
                     if (banderita == true && banderita1 == true) {
-                        if (modificarGruposFactoresRiesgos.isEmpty()) {
-                            modificarGruposFactoresRiesgos.add(filtrarGruposFactoresRiesgos.get(indice));
-                        } else if (!modificarGruposFactoresRiesgos.contains(filtrarGruposFactoresRiesgos.get(indice))) {
-                            modificarGruposFactoresRiesgos.add(filtrarGruposFactoresRiesgos.get(indice));
+                        if (modificarActividades.isEmpty()) {
+                            modificarActividades.add(filtrarActividades.get(indice));
+                        } else if (!modificarActividades.contains(filtrarActividades.get(indice))) {
+                            modificarActividades.add(filtrarActividades.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -367,21 +407,21 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                     index = -1;
                     secRegistro = null;
                 } else {
-                    if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == null) {
+                    if (filtrarActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                        filtrarActividades.get(indice).setCodigo(backupCodigo);
                     } else {
-                        for (int j = 0; j < filtrarGruposFactoresRiesgos.size(); j++) {
+                        for (int j = 0; j < filtrarActividades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                if (filtrarActividades.get(indice).getCodigo() == listActividades.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listGruposFactoresRiesgos.size(); j++) {
+                        for (int j = 0; j < listActividades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarGruposFactoresRiesgos.get(indice).getCodigo() == listGruposFactoresRiesgos.get(j).getCodigo()) {
+                                if (filtrarActividades.get(indice).getCodigo() == listActividades.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -389,7 +429,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
-                            filtrarGruposFactoresRiesgos.get(indice).setCodigo(backupCodigo);
+                            filtrarActividades.get(indice).setCodigo(backupCodigo);
 
                         } else {
                             banderita = true;
@@ -397,15 +437,15 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
                     }
 
-                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                        filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarGruposFactoresRiesgos.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarActividades.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
-                        filtrarGruposFactoresRiesgos.get(indice).setDescripcion(backupDescripcion);
+                        filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
 
                     if (banderita == true && banderita1 == true) {
@@ -422,48 +462,48 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 }
 
             }
-            context.update("form:datosGruposFactoresRiesgos");
+            context.update("form:datosActividades");
             context.update("form:ACEPTAR");
         }
 
     }
 
-    public void borrandoGruposFactoresRiesgos() {
+    public void borrandoActividades() {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                System.out.println("Entro a borrandoGruposFactoresRiesgos");
-                if (!modificarGruposFactoresRiesgos.isEmpty() && modificarGruposFactoresRiesgos.contains(listGruposFactoresRiesgos.get(index))) {
-                    int modIndex = modificarGruposFactoresRiesgos.indexOf(listGruposFactoresRiesgos.get(index));
-                    modificarGruposFactoresRiesgos.remove(modIndex);
-                    borrarGruposFactoresRiesgos.add(listGruposFactoresRiesgos.get(index));
-                } else if (!crearGruposFactoresRiesgos.isEmpty() && crearGruposFactoresRiesgos.contains(listGruposFactoresRiesgos.get(index))) {
-                    int crearIndex = crearGruposFactoresRiesgos.indexOf(listGruposFactoresRiesgos.get(index));
-                    crearGruposFactoresRiesgos.remove(crearIndex);
+                System.out.println("Entro a borrandoActividades");
+                if (!modificarActividades.isEmpty() && modificarActividades.contains(listActividades.get(index))) {
+                    int modIndex = modificarActividades.indexOf(listActividades.get(index));
+                    modificarActividades.remove(modIndex);
+                    borrarActividades.add(listActividades.get(index));
+                } else if (!crearActividades.isEmpty() && crearActividades.contains(listActividades.get(index))) {
+                    int crearIndex = crearActividades.indexOf(listActividades.get(index));
+                    crearActividades.remove(crearIndex);
                 } else {
-                    borrarGruposFactoresRiesgos.add(listGruposFactoresRiesgos.get(index));
+                    borrarActividades.add(listActividades.get(index));
                 }
-                listGruposFactoresRiesgos.remove(index);
+                listActividades.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoGruposFactoresRiesgos ");
-                if (!modificarGruposFactoresRiesgos.isEmpty() && modificarGruposFactoresRiesgos.contains(filtrarGruposFactoresRiesgos.get(index))) {
-                    int modIndex = modificarGruposFactoresRiesgos.indexOf(filtrarGruposFactoresRiesgos.get(index));
-                    modificarGruposFactoresRiesgos.remove(modIndex);
-                    borrarGruposFactoresRiesgos.add(filtrarGruposFactoresRiesgos.get(index));
-                } else if (!crearGruposFactoresRiesgos.isEmpty() && crearGruposFactoresRiesgos.contains(filtrarGruposFactoresRiesgos.get(index))) {
-                    int crearIndex = crearGruposFactoresRiesgos.indexOf(filtrarGruposFactoresRiesgos.get(index));
-                    crearGruposFactoresRiesgos.remove(crearIndex);
+                System.out.println("borrandoActividades ");
+                if (!modificarActividades.isEmpty() && modificarActividades.contains(filtrarActividades.get(index))) {
+                    int modIndex = modificarActividades.indexOf(filtrarActividades.get(index));
+                    modificarActividades.remove(modIndex);
+                    borrarActividades.add(filtrarActividades.get(index));
+                } else if (!crearActividades.isEmpty() && crearActividades.contains(filtrarActividades.get(index))) {
+                    int crearIndex = crearActividades.indexOf(filtrarActividades.get(index));
+                    crearActividades.remove(crearIndex);
                 } else {
-                    borrarGruposFactoresRiesgos.add(filtrarGruposFactoresRiesgos.get(index));
+                    borrarActividades.add(filtrarActividades.get(index));
                 }
-                int VCIndex = listGruposFactoresRiesgos.indexOf(filtrarGruposFactoresRiesgos.get(index));
-                listGruposFactoresRiesgos.remove(VCIndex);
-                filtrarGruposFactoresRiesgos.remove(index);
+                int VCIndex = listActividades.indexOf(filtrarActividades.get(index));
+                listActividades.remove(VCIndex);
+                filtrarActividades.remove(index);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosGruposFactoresRiesgos");
+            context.update("form:datosActividades");
             index = -1;
             secRegistro = null;
 
@@ -477,24 +517,21 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger contarFactoresRiesgoGrupoFactorRiesgo;
-        BigInteger contarSoProActividadesGrupoFactorRiesgo;
-        BigInteger contarSoIndicadoresGrupoFactorRiesgo;
+        BigInteger contarBienNecesidadesActividad;
+        BigInteger contarParametrosInformesActividad;
 
         try {
-            System.err.println("Control Secuencia de ControlGruposFactoresRiesgos ");
+            System.err.println("Control Secuencia de ControlActividades ");
             if (tipoLista == 0) {
-                contarFactoresRiesgoGrupoFactorRiesgo = administrarGruposFactoresRiesgos.contarFactoresRiesgoGrupoFactorRiesgo(listGruposFactoresRiesgos.get(index).getSecuencia());
-                contarSoIndicadoresGrupoFactorRiesgo = administrarGruposFactoresRiesgos.contarSoIndicadoresGrupoFactorRiesgo(listGruposFactoresRiesgos.get(index).getSecuencia());
-                contarSoProActividadesGrupoFactorRiesgo = administrarGruposFactoresRiesgos.contarSoProActividadesGrupoFactorRiesgo(listGruposFactoresRiesgos.get(index).getSecuencia());
+                contarBienNecesidadesActividad = administrarActividades.contarBienNecesidadesActividad(listActividades.get(index).getSecuencia());
+                contarParametrosInformesActividad = administrarActividades.contarParametrosInformesActividad(listActividades.get(index).getSecuencia());
             } else {
-                contarFactoresRiesgoGrupoFactorRiesgo = administrarGruposFactoresRiesgos.contarFactoresRiesgoGrupoFactorRiesgo(filtrarGruposFactoresRiesgos.get(index).getSecuencia());
-                contarSoIndicadoresGrupoFactorRiesgo = administrarGruposFactoresRiesgos.contarSoIndicadoresGrupoFactorRiesgo(filtrarGruposFactoresRiesgos.get(index).getSecuencia());
-                contarSoProActividadesGrupoFactorRiesgo = administrarGruposFactoresRiesgos.contarSoProActividadesGrupoFactorRiesgo(filtrarGruposFactoresRiesgos.get(index).getSecuencia());
+                contarBienNecesidadesActividad = administrarActividades.contarBienNecesidadesActividad(filtrarActividades.get(index).getSecuencia());
+                contarParametrosInformesActividad = administrarActividades.contarParametrosInformesActividad(filtrarActividades.get(index).getSecuencia());
             }
-            if (contarFactoresRiesgoGrupoFactorRiesgo.equals(new BigInteger("0")) && contarSoIndicadoresGrupoFactorRiesgo.equals(new BigInteger("0")) && contarSoProActividadesGrupoFactorRiesgo.equals(new BigInteger("0"))) {
+            if (contarBienNecesidadesActividad.equals(new BigInteger("0")) && contarParametrosInformesActividad.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
-                borrandoGruposFactoresRiesgos();
+                borrandoActividades();
             } else {
                 System.out.println("Borrado>0");
 
@@ -502,18 +539,18 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                contarFactoresRiesgoGrupoFactorRiesgo = new BigInteger("-1");
-                contarSoIndicadoresGrupoFactorRiesgo = new BigInteger("-1");
+                contarBienNecesidadesActividad = new BigInteger("-1");
+                contarParametrosInformesActividad = new BigInteger("-1");
 
             }
         } catch (Exception e) {
-            System.err.println("ERROR ControlGruposFactoresRiesgos verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlActividades verificarBorrado ERROR " + e);
         }
     }
 
     public void revisarDialogoGuardar() {
 
-        if (!borrarGruposFactoresRiesgos.isEmpty() || !crearGruposFactoresRiesgos.isEmpty() || !modificarGruposFactoresRiesgos.isEmpty()) {
+        if (!borrarActividades.isEmpty() || !crearActividades.isEmpty() || !modificarActividades.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
@@ -521,31 +558,31 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
     }
 
-    public void guardarGruposFactoresRiesgos() {
+    public void guardarActividades() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando guardarGruposFactoresRiesgos");
-            if (!borrarGruposFactoresRiesgos.isEmpty()) {
-                administrarGruposFactoresRiesgos.borrarGruposFactoresRiesgos(borrarGruposFactoresRiesgos);
+            System.out.println("Realizando guardarActividades");
+            if (!borrarActividades.isEmpty()) {
+                administrarActividades.borrarActividades(borrarActividades);
                 //mostrarBorrados
-                registrosBorrados = borrarGruposFactoresRiesgos.size();
+                registrosBorrados = borrarActividades.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-                borrarGruposFactoresRiesgos.clear();
+                borrarActividades.clear();
             }
-            if (!modificarGruposFactoresRiesgos.isEmpty()) {
-                administrarGruposFactoresRiesgos.modificarGruposFactoresRiesgos(modificarGruposFactoresRiesgos);
-                modificarGruposFactoresRiesgos.clear();
+            if (!modificarActividades.isEmpty()) {
+                administrarActividades.modificarActividades(modificarActividades);
+                modificarActividades.clear();
             }
-            if (!crearGruposFactoresRiesgos.isEmpty()) {
-                administrarGruposFactoresRiesgos.crearGruposFactoresRiesgos(crearGruposFactoresRiesgos);
-                crearGruposFactoresRiesgos.clear();
+            if (!crearActividades.isEmpty()) {
+                administrarActividades.crearActividades(crearActividades);
+                crearActividades.clear();
             }
             System.out.println("Se guardaron los datos con exito");
-            listGruposFactoresRiesgos = null;
+            listActividades = null;
             context.execute("mostrarGuardar.show()");
-            context.update("form:datosGruposFactoresRiesgos");
+            context.update("form:datosActividades");
             k = 0;
             guardado = true;
         }
@@ -557,10 +594,10 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarGruposFactoresRiesgos = listGruposFactoresRiesgos.get(index);
+                editarActividades = listActividades.get(index);
             }
             if (tipoLista == 1) {
-                editarGruposFactoresRiesgos = filtrarGruposFactoresRiesgos.get(index);
+                editarActividades = filtrarActividades.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -580,8 +617,8 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevoGruposFactoresRiesgos() {
-        System.out.println("agregarNuevoGruposFactoresRiesgos");
+    public void agregarNuevoActividades() {
+        System.out.println("agregarNuevoActividades");
         int contador = 0;
         int duplicados = 0;
 
@@ -589,14 +626,14 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoGruposFactoresRiesgos.getCodigo() == a) {
+        if (nuevoActividades.getCodigo() == a) {
             mensajeValidacion = " *Debe Tener Un Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoGruposFactoresRiesgos.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoActividades.getCodigo());
 
-            for (int x = 0; x < listGruposFactoresRiesgos.size(); x++) {
-                if (listGruposFactoresRiesgos.get(x).getCodigo() == nuevoGruposFactoresRiesgos.getCodigo()) {
+            for (int x = 0; x < listActividades.size(); x++) {
+                if (listActividades.get(x).getCodigo() == nuevoActividades.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -610,7 +647,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoGruposFactoresRiesgos.getDescripcion().equals(" ")) {
+        if (nuevoActividades.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -619,6 +656,11 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             contador++;
 
         }
+        if (nuevoActividades.getClaseactividad() == null) {
+            nuevoActividades.setClaseactividad(null);
+        } else if (nuevoActividades.getClaseactividad().isEmpty()) {
+            nuevoActividades.setClaseactividad(null);
+        }
 
         System.out.println("contador " + contador);
 
@@ -626,32 +668,34 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
+                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+                dimensiones.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosActividades");
                 bandera = 0;
-                filtrarGruposFactoresRiesgos = null;
+                filtrarActividades = null;
                 tipoLista = 0;
             }
             System.out.println("Despues de la bandera");
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoGruposFactoresRiesgos.setSecuencia(l);
+            nuevoActividades.setSecuencia(l);
 
-            crearGruposFactoresRiesgos.add(nuevoGruposFactoresRiesgos);
+            crearActividades.add(nuevoActividades);
 
-            listGruposFactoresRiesgos.add(nuevoGruposFactoresRiesgos);
-            nuevoGruposFactoresRiesgos = new GruposFactoresRiesgos();
-            context.update("form:datosGruposFactoresRiesgos");
+            listActividades.add(nuevoActividades);
+            nuevoActividades = new Actividades();
+            context.update("form:datosActividades");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
-            context.execute("nuevoRegistroGruposFactoresRiesgos.hide()");
+            context.execute("nuevoRegistroActividades.hide()");
             index = -1;
             secRegistro = null;
 
@@ -662,36 +706,38 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         }
     }
 
-    public void limpiarNuevoGruposFactoresRiesgos() {
-        System.out.println("limpiarNuevoGruposFactoresRiesgos");
-        nuevoGruposFactoresRiesgos = new GruposFactoresRiesgos();
+    public void limpiarNuevoActividades() {
+        System.out.println("limpiarNuevoActividades");
+        nuevoActividades = new Actividades();
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoGruposFactoresRiesgos() {
-        System.out.println("duplicandoGruposFactoresRiesgos");
+    public void duplicandoActividades() {
+        System.out.println("duplicandoActividades");
         if (index >= 0) {
-            duplicarGruposFactoresRiesgos = new GruposFactoresRiesgos();
+            duplicarActividades = new Actividades();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarGruposFactoresRiesgos.setSecuencia(l);
-                duplicarGruposFactoresRiesgos.setCodigo(listGruposFactoresRiesgos.get(index).getCodigo());
-                duplicarGruposFactoresRiesgos.setDescripcion(listGruposFactoresRiesgos.get(index).getDescripcion());
+                duplicarActividades.setSecuencia(l);
+                duplicarActividades.setCodigo(listActividades.get(index).getCodigo());
+                duplicarActividades.setDescripcion(listActividades.get(index).getDescripcion());
+                duplicarActividades.setClaseactividad(listActividades.get(index).getClaseactividad());
             }
             if (tipoLista == 1) {
-                duplicarGruposFactoresRiesgos.setSecuencia(l);
-                duplicarGruposFactoresRiesgos.setCodigo(filtrarGruposFactoresRiesgos.get(index).getCodigo());
-                duplicarGruposFactoresRiesgos.setDescripcion(filtrarGruposFactoresRiesgos.get(index).getDescripcion());
+                duplicarActividades.setSecuencia(l);
+                duplicarActividades.setCodigo(filtrarActividades.get(index).getCodigo());
+                duplicarActividades.setDescripcion(filtrarActividades.get(index).getDescripcion());
+                duplicarActividades.setClaseactividad(filtrarActividades.get(index).getClaseactividad());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
-            context.execute("duplicarRegistroGruposFactoresRiesgos.show()");
+            context.execute("duplicarRegistroActividades.show()");
             index = -1;
             secRegistro = null;
         }
@@ -705,15 +751,15 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarGruposFactoresRiesgos.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarGruposFactoresRiesgos.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarActividades.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarActividades.getDescripcion());
 
-        if (duplicarGruposFactoresRiesgos.getCodigo() == a) {
+        if (duplicarActividades.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            for (int x = 0; x < listGruposFactoresRiesgos.size(); x++) {
-                if (listGruposFactoresRiesgos.get(x).getCodigo() == duplicarGruposFactoresRiesgos.getCodigo()) {
+            for (int x = 0; x < listActividades.size(); x++) {
+                if (listActividades.get(x).getCodigo() == duplicarActividades.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -726,7 +772,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarGruposFactoresRiesgos.getDescripcion().equals(" ")) {
+        if (duplicarActividades.getDescripcion().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -734,16 +780,21 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             System.out.println("Bandera : ");
             contador++;
         }
+        if (duplicarActividades.getClaseactividad() == null) {
+            duplicarActividades.setClaseactividad(null);
+        } else if (duplicarActividades.getClaseactividad().isEmpty()) {
+            duplicarActividades.setClaseactividad(null);
+        }
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarGruposFactoresRiesgos.getSecuencia() + "  " + duplicarGruposFactoresRiesgos.getCodigo());
-            if (crearGruposFactoresRiesgos.contains(duplicarGruposFactoresRiesgos)) {
+            System.out.println("Datos Duplicando: " + duplicarActividades.getSecuencia() + "  " + duplicarActividades.getCodigo());
+            if (crearActividades.contains(duplicarActividades)) {
                 System.out.println("Ya lo contengo.");
             }
-            listGruposFactoresRiesgos.add(duplicarGruposFactoresRiesgos);
-            crearGruposFactoresRiesgos.add(duplicarGruposFactoresRiesgos);
-            context.update("form:datosGruposFactoresRiesgos");
+            listActividades.add(duplicarActividades);
+            crearActividades.add(duplicarActividades);
+            context.update("form:datosActividades");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -752,17 +803,19 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
+                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+                dimensiones.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosActividades");
                 bandera = 0;
-                filtrarGruposFactoresRiesgos = null;
+                filtrarActividades = null;
                 tipoLista = 0;
             }
-            duplicarGruposFactoresRiesgos = new GruposFactoresRiesgos();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroGruposFactoresRiesgos.hide()");
+            duplicarActividades = new Actividades();
+            RequestContext.getCurrentInstance().execute("duplicarRegistroActividades.hide()");
 
         } else {
             contador = 0;
@@ -771,25 +824,25 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         }
     }
 
-    public void limpiarDuplicarGruposFactoresRiesgos() {
-        duplicarGruposFactoresRiesgos = new GruposFactoresRiesgos();
+    public void limpiarDuplicarActividades() {
+        duplicarActividades = new Actividades();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGruposFactoresRiesgosExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosActividadesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "GRUPOSFACTORESRIESGOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "ACTIVIDADES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGruposFactoresRiesgosExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosActividadesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "GRUPOSFACTORESRIESGOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "ACTIVIDADES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -798,10 +851,10 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listGruposFactoresRiesgos.isEmpty()) {
+        if (!listActividades.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "GRUPOSFACTORESRIESGOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "ACTIVIDADES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -818,7 +871,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("GRUPOSFACTORESRIESGOS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("ACTIVIDADES")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
@@ -829,47 +882,47 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
-    public List<GruposFactoresRiesgos> getListGruposFactoresRiesgos() {
-        if (listGruposFactoresRiesgos == null) {
-            listGruposFactoresRiesgos = administrarGruposFactoresRiesgos.consultarGruposFactoresRiesgos();
+    public List<Actividades> getListActividades() {
+        if (listActividades == null) {
+            listActividades = administrarActividades.consultarActividades();
         }
-        return listGruposFactoresRiesgos;
+        return listActividades;
     }
 
-    public void setListGruposFactoresRiesgos(List<GruposFactoresRiesgos> listGruposFactoresRiesgos) {
-        this.listGruposFactoresRiesgos = listGruposFactoresRiesgos;
+    public void setListActividades(List<Actividades> listActividades) {
+        this.listActividades = listActividades;
     }
 
-    public List<GruposFactoresRiesgos> getFiltrarGruposFactoresRiesgos() {
-        return filtrarGruposFactoresRiesgos;
+    public List<Actividades> getFiltrarActividades() {
+        return filtrarActividades;
     }
 
-    public void setFiltrarGruposFactoresRiesgos(List<GruposFactoresRiesgos> filtrarGruposFactoresRiesgos) {
-        this.filtrarGruposFactoresRiesgos = filtrarGruposFactoresRiesgos;
+    public void setFiltrarActividades(List<Actividades> filtrarActividades) {
+        this.filtrarActividades = filtrarActividades;
     }
 
-    public GruposFactoresRiesgos getNuevoGruposFactoresRiesgos() {
-        return nuevoGruposFactoresRiesgos;
+    public Actividades getNuevoActividades() {
+        return nuevoActividades;
     }
 
-    public void setNuevoGruposFactoresRiesgos(GruposFactoresRiesgos nuevoGruposFactoresRiesgos) {
-        this.nuevoGruposFactoresRiesgos = nuevoGruposFactoresRiesgos;
+    public void setNuevoActividades(Actividades nuevoActividades) {
+        this.nuevoActividades = nuevoActividades;
     }
 
-    public GruposFactoresRiesgos getDuplicarGruposFactoresRiesgos() {
-        return duplicarGruposFactoresRiesgos;
+    public Actividades getDuplicarActividades() {
+        return duplicarActividades;
     }
 
-    public void setDuplicarGruposFactoresRiesgos(GruposFactoresRiesgos duplicarGruposFactoresRiesgos) {
-        this.duplicarGruposFactoresRiesgos = duplicarGruposFactoresRiesgos;
+    public void setDuplicarActividades(Actividades duplicarActividades) {
+        this.duplicarActividades = duplicarActividades;
     }
 
-    public GruposFactoresRiesgos getEditarGruposFactoresRiesgos() {
-        return editarGruposFactoresRiesgos;
+    public Actividades getEditarActividades() {
+        return editarActividades;
     }
 
-    public void setEditarGruposFactoresRiesgos(GruposFactoresRiesgos editarGruposFactoresRiesgos) {
-        this.editarGruposFactoresRiesgos = editarGruposFactoresRiesgos;
+    public void setEditarActividades(Actividades editarActividades) {
+        this.editarActividades = editarActividades;
     }
 
     public BigInteger getSecRegistro() {

@@ -55,6 +55,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooBanco"  value="Banco"/>
+                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Ciudad" sortBy="#{info.ciudad.nombre}" filterBy="#{info.ciudad.nombre}" filterMatchMode="contains" id="cargo" width="145" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -67,6 +70,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCiudad"  value="Ciudad"/>
+                                    </f:facet>
                                 </p:column>
                             </p:dataTable>
 
@@ -95,7 +101,7 @@
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSucursales.limpiarNuevoSucursales()}"  ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosSucursalesExportar" fileName="EMPRESASBANCOS" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target=":formExportar:datosSucursalesExportar" fileName="SUCURSALES" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
 
@@ -126,9 +132,9 @@
 
 
                         <p:dialog header="BANCOS" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovBancos" style="font-size: 11px; width: 430px" var="personaFirmas" value="#{controlSucursales.listaBancos}" rowKey="#{personaFirmas.secuencia}"
-                                         selection="#{controlSucursales.bancoSeleccionado}" selectionMode="single" widgetVar="lovBancos" scrollable="true" scrollWidth="450" scrollHeight="280"
+                                         selection="#{controlSucursales.bancoSeleccionado}" selectionMode="single" widgetVar="lovBancos" scrollable="true" scrollWidth="450" scrollHeight="300"
                                          filteredValue="#{controlSucursales.filtradoBancos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlSucursales.activarAceptar()}" update=":form:aceptarPer"/>
                                 <p:ajax event="rowDblselect" listener="#{controlSucursales.actualizarBancos()}" process="@this" onstart="lovBancos.clearFilters()"/>
@@ -137,13 +143,13 @@
                                     <p:inputText id="globalFilter" onkeyup="lovBancos.filter();" style="width:150px; position: relative; left: 50px;" />  
                                 </f:facet>
 
-                                <p:column filterBy="#{personaFirmas.numeroidentificaciont}" width="50" filterStyle="width:30px;" filterMatchMode="contains">
+                                <p:column filterBy="#{personaFirmas.codigo}" width="50" filterStyle="width:30px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Codigo" />
                                     </f:facet>
-                                    <h:outputText value="#{personaFirmas.numeroidentificaciont}" />
+                                    <h:outputText value="#{personaFirmas.codigo}" />
                                 </p:column>
-                                <p:column filterBy="#{personaFirmas.nombre}" width="130px" filterStyle="width:110px;" filterMatchMode="contains">
+                                <p:column filterBy="#{personaFirmas.nombre}" width="115px" filterStyle="width:110px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Nombre" />
                                     </f:facet>
@@ -161,7 +167,7 @@
 
 
                         <p:dialog header="Ciudades" widgetVar="cargosDialogo" draggable="false" resizable="false" closable="false" id="cargosDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovCiudades" style="font-size: 11px; width: 430px" var="personaCiudades" value="#{controlSucursales.listaCiudades}" rowKey="#{personaCiudades.secuencia}"
                                          selection="#{controlSucursales.ciudadSeleccionado}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlSucursales.filtradoCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
@@ -208,8 +214,8 @@
 
 
                     <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="Necesita : #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 80px; top: 20px; width: 300px; font-weight:bold" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="Necesita : #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
@@ -233,9 +239,9 @@
                         <p:commandButton value="Aceptar" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="105" width="450px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar es necesario adicionar: #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 65px; left: 300px" process="@this" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar es necesario adicionar: #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 120px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 65px; left: 340px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlSucursales.activarCtrlF11()}"/> 
                 </h:form>
@@ -244,15 +250,15 @@
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla 'EMPRESASBANCOS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSucursales.secRegistro, 'Sucursales','empresabanco')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla 'SUCURSALES' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSucursales.secRegistro, 'Sucursales','sucursal')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla EMPRESASBANCOS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Sucursales','empresabanco')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <h:outputText value="La tabla SUCURSALES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Sucursales','sucursal')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -269,7 +275,7 @@
                     <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSucursales.secRegistro, 'Sucursales','empresabanco')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlSucursales.secRegistro, 'Sucursales','sucursal')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -285,7 +291,7 @@
 
                     <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla 'EMPRESASBANCOS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="La tabla 'SUCURSALES' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
 
@@ -303,7 +309,7 @@
                         <p:inputTextarea value="#{controlSucursales.editarSucursales.banco.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarBancos" value="Atras" onclick="editBancos.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editCiudades" header="Editar Persona" widgetVar="editCiudades" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editCiudades" header="Editar Ciudad" widgetVar="editCiudades" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
                         <p:inputTextarea value="#{controlSucursales.editarSucursales.ciudad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCiudades" value="Atras" onclick="editCiudades.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
@@ -315,27 +321,27 @@
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
-                            <strong><h:outputText value="Código: "  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*Código: "  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
                             <p:inputText id="nuevoCodigo" value="#{controlSucursales.nuevoSucursales.codigo}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 85px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
-                            <strong><h:outputText value="Nombre "  style="font-size: 12px; position: absolute; top: 140px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*Nombre: "  style="font-size: 12px; position: absolute; top: 140px;text-transform: uppercase" /></strong>
                             <p:inputText  id="nuevoNombre" value="#{controlSucursales.nuevoSucursales.nombre}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 135px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
-                            <strong><h:outputText value="BANCO "  style="font-size: 12px; position: absolute; top: 190px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*BANCO: "  style="font-size: 12px; position: absolute; top: 190px;text-transform: uppercase" /></strong>
                             <p:inputText  id="nuevoPersona" value="#{controlSucursales.nuevoSucursales.banco.nombre}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 185px;text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlSucursales.valoresBackupAutocompletar(1,'PERSONA')}" />
                                 <p:ajax event="change" listener="#{controlSucursales.autocompletarNuevo('PERSONA',controlSucursales.nuevoSucursales.banco.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlSucursales.asignarVariableBancos(0)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 310px; top: 185px;  " id="btnnuevoPersonaFirma" icon="ui-icon-search" process="@this"  actionListener="#{controlSucursales.asignarVariableBancos(0)}"/>   
-                            <p:watermark for="nuevoPersona" value="Persona" />
+                            <p:watermark for="nuevoPersona" value="Banco" />
 
-                            <strong><h:outputText value="CIUDAD "  style="font-size: 12px; position: absolute; top: 240px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*CIUDAD: "  style="font-size: 12px; position: absolute; top: 240px;text-transform: uppercase" /></strong>
                             <p:inputText  id="nuevoCargo" value="#{controlSucursales.nuevoSucursales.ciudad.nombre}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 235px;text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlSucursales.valoresBackupAutocompletar(1,'CARGO')}" />
                                 <p:ajax event="change" listener="#{controlSucursales.autocompletarNuevo('CARGO',controlSucursales.nuevoSucursales.ciudad.nombre, 1)}" />
@@ -348,8 +354,8 @@
 
 
                             <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlSucursales.limpiarNuevoSucursales()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 365px;" actionListener="#{controlSucursales.agregarNuevoSucursales()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 365px;"  update="nuevaTipoempresa" onclick="nuevoRegistroSucursales.hide();"  actionListener="#{controlSucursales.limpiarNuevoSucursales()}"  process="@this"/>
+                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlSucursales.agregarNuevoSucursales()}" process="@this" />
+                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="nuevaTipoempresa" onclick="nuevoRegistroSucursales.hide();"  actionListener="#{controlSucursales.limpiarNuevoSucursales()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -360,19 +366,19 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
 
-                            <strong><h:outputText value="Código: "  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*Código: "  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
                             <p:inputText id="duplicarCodigo" value="#{controlSucursales.duplicarSucursales.codigo}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 85px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
-                            <strong><h:outputText value="Nombre "  style="font-size: 12px; position: absolute; top: 140px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*Nombre: "  style="font-size: 12px; position: absolute; top: 140px;text-transform: uppercase" /></strong>
                             <p:inputText  id="duplicarNombre" value="#{controlSucursales.duplicarSucursales.nombre}" style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 135px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Nombre" />
 
-                            <strong><h:outputText value="BANCO"  style="font-size: 12px; position: absolute; top: 190px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*BANCO:"  style="font-size: 12px; position: absolute; top: 190px;text-transform: uppercase" /></strong>
                             <p:inputText id="duplicarPersona" value="#{controlSucursales.duplicarSucursales.banco.nombre}"  style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 185px;" >
                                 <p:ajax event="click" listener="#{controlSucursales.valoresBackupAutocompletar(2,'PERSONA')}" />
                                 <p:ajax event="change" listener="#{controlSucursales.autocompletarDuplicado('PERSONA', controlSucursales.duplicarSucursales.banco.nombre , 2)}" />
@@ -381,7 +387,7 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 310px; top: 185px;  " id="btnduplicarPersona" icon="ui-icon-search" process="@this"  actionListener="#{controlSucursales.asignarVariableBancos(1)}"/>   
                             <p:watermark for="duplicarPersona" value="Persona" />
 
-                            <strong><h:outputText value="CIUDAD"  style="font-size: 12px; position: absolute; top: 240px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*CIUDAD:"  style="font-size: 12px; position: absolute; top: 240px;text-transform: uppercase" /></strong>
                             <p:inputText id="duplicarCargo" value="#{controlSucursales.duplicarSucursales.ciudad.nombre}"  style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 235px;" >
                                 <p:ajax event="click" listener="#{controlSucursales.valoresBackupAutocompletar(2,'CARGO')}" />
                                 <p:ajax event="change" listener="#{controlSucursales.autocompletarDuplicado('CARGO', controlSucursales.duplicarSucursales.ciudad.nombre , 2)}" />
@@ -392,8 +398,8 @@
 
 
                             <p:commandButton id="limpiarD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlSucursales.limpiarDuplicarSucursales() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 365px;" actionListener="#{controlSucursales.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroSucursales.hide();" actionListener="#{controlSucursales.limpiarDuplicarSucursales()}"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlSucursales.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroSucursales.hide();" actionListener="#{controlSucursales.limpiarDuplicarSucursales()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>
