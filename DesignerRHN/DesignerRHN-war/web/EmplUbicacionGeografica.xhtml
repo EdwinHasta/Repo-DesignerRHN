@@ -208,11 +208,11 @@
                                 <p:ajax event="dblclick" listener="#{controlVigenciasUbicaciones.asignarIndex(indice, 1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevaUbicacion" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasUbicaciones.asignarIndex(indice, 1)}"/>   
-                            <p:watermark for="nuevaDescripcion" value="Descripción" />
+                            <p:watermark for="nuevaDescripcion" value="#{msg['descripcion']}" />
 
                             <strong><h:outputText value="#{msg['ciudadN']}" style="font-size: 12px; position: absolute; top: 153px" /></strong>
                             <p:inputText id="nuevaCiudad" value="#{controlVigenciasUbicaciones.nuevaVigencia.ubicacion.ciudad.nombre}" readonly="true" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;"/>
-                            <p:watermark for="nuevaCiudad" value="Ciudad" />
+                            <p:watermark for="nuevaCiudad" value="#{msg['ciudad']}" />
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 200px;" actionListener="#{controlVigenciasUbicaciones.limpiarNuevaVU()}" update="nuevaVU" process="@this"/>
                             <p:commandButton id="agregarVU" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 240px; top: 200px;"  process="@this" actionListener="#{controlVigenciasUbicaciones.agregarNuevaVU()}"/>

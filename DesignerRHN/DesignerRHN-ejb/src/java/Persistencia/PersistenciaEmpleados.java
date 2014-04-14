@@ -208,7 +208,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
-    
+
     @Override
     public List<Empleados> empleadosNovedadEmbargo() {
         try {
@@ -222,6 +222,18 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return listaEmpleados;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empleados> buscarEmpleadosBusquedaAvanzada(String queryBusquedaAvanzada) {
+        try {
+            Query query = em.createNativeQuery(queryBusquedaAvanzada, Empleados.class);
+            List<Empleados> empleado = query.getResultList();
+            return empleado;
+        } catch (Exception e) {
+            System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzada : " + e.toString());
             return null;
         }
     }

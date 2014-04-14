@@ -189,6 +189,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             codigo.setFilterStyle("width: 20px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
             descripcion.setFilterStyle("width: 130px");
+            RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
@@ -838,7 +839,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosSoPoblacionObjetivosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "EMPRESASBANCOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "SOPOBLACIONOBJETIVOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -848,7 +849,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosSoPoblacionObjetivosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "EMPRESASBANCOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "SOPOBLACIONOBJETIVOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -860,7 +861,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         if (!listSoPoblacionObjetivos.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "EMPRESASBANCOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "SOPOBLACIONOBJETIVOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -877,7 +878,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("EMPRESASBANCOS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("SOPOBLACIONOBJETIVOS")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");

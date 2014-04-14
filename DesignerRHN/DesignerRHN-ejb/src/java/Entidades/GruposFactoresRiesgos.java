@@ -78,7 +78,7 @@ public class GruposFactoresRiesgos implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.toUpperCase();
     }
 
     @Override

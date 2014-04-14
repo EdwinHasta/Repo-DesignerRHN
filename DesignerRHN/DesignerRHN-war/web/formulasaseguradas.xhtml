@@ -23,7 +23,7 @@
                                 <p:ajax event="filter" listener="#{controlFormulasAseguradas.eventoFiltrar()}"/>
 
 
-                                <p:column headerText="Formula" sortBy="#{info.formula.nombrelargo}" filterBy="#{info.formula.nombrelargo}" filterMatchMode="contains" id="personafir" width="300" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Formula" sortBy="#{info.formula.nombrelargo}" filterBy="#{info.formula.nombrelargo}" filterMatchMode="contains" id="personafir" width="200" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.formula.nombrelargo}"  /></f:facet>  
                                         <f:facet name="input">
@@ -34,6 +34,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooCiudad"  value="Formula"/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="Proceso" sortBy="#{info.proceso.descripcion}" filterBy="#{info.proceso.descripcion}" filterMatchMode="contains" id="proceso" width="200" filterStyle="display: none; visibility: hidden;" >                                  
@@ -47,8 +50,11 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooProceso"  value="Proceso"/>
+                                    </f:facet>
                                 </p:column>
-                                <p:column headerText="Periodicidad" sortBy="#{info.periodicidad.nombre}" filterBy="#{info.periodicidad.nombre}" filterMatchMode="contains" id="periodicidad" width="200" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Periodicidad" sortBy="#{info.periodicidad.nombre}" filterBy="#{info.periodicidad.nombre}" filterMatchMode="contains" id="periodicidad" width="170" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.periodicidad.nombre}"  /></f:facet>  
                                         <f:facet name="input">
@@ -59,6 +65,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooperiodicidad"  value="Periodicidad"/>
+                                    </f:facet>
                                 </p:column>
 
                             </p:dataTable>
@@ -97,13 +106,13 @@
 
                                 <p:separator /> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlFormulasAseguradas.cargarNuevoFormulasAseguradas()}" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Formula Asegurada" />
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Concepto Soporte" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlFormulasAseguradas.borrandoFormulasAseguradas()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Formula Asegurada" />
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Concepto Soporte" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasAseguradas.duplicandoFormulasAseguradas()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Formula Asegurada" />
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Concepto Soporte" />
                                 <p:separator /> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasAseguradas.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
@@ -119,7 +128,7 @@
 
 
                         <p:dialog header="FORMULAS" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovFormulas" style="font-size: 11px; width: 430px" var="personaFirmas" value="#{controlFormulasAseguradas.listaFormulas}" rowKey="#{personaFirmas.secuencia}"
                                          selection="#{controlFormulasAseguradas.formulaSeleccionado}" selectionMode="single" widgetVar="lovFormulas" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlFormulasAseguradas.filtradoFormulas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
@@ -130,11 +139,11 @@
                                     <p:inputText id="globalFilter" onkeyup="lovFormulas.filter();" style="width:150px; position: relative; left: 50px;" />  
                                 </f:facet>
 
-                                <p:column filterBy="#{personaFirmas.nombresFormula}" width="50" filterStyle="width:30px;" filterMatchMode="contains">
+                                <p:column filterBy="#{personaFirmas.nombrecorto}" width="50" filterStyle="width:30px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Nombre" />
                                     </f:facet>
-                                    <h:outputText value="#{personaFirmas.nombresFormula}" />
+                                    <h:outputText value="#{personaFirmas.nombrecorto}" />
                                 </p:column>
                                 <p:column filterBy="#{personaFirmas.nombrelargo}" width="130px" filterStyle="width:110px;" filterMatchMode="contains">
                                     <f:facet name="header">
@@ -152,7 +161,7 @@
                             </p:commandButton>
                         </p:dialog>
                         <p:dialog header="PROCESO" widgetVar="procesosDialogo" draggable="false" resizable="false" closable="false" id="procesosDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovProcesos" style="font-size: 11px; width: 430px" var="procesosdi" value="#{controlFormulasAseguradas.listaProcesos}" rowKey="#{procesosdi.secuencia}"
                                          selection="#{controlFormulasAseguradas.procesoSeleccionado}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlFormulasAseguradas.filtradoProcesos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
@@ -188,7 +197,7 @@
 
 
                         <p:dialog header="PERIODICIDADES" widgetVar="periodicidadesDialogo" draggable="false" resizable="false" closable="false" id="periodicidadesDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovPeriodicidades" style="font-size: 11px; width: 430px" var="periodicidadesdia" value="#{controlFormulasAseguradas.listaPeriodicidades}" rowKey="#{periodicidadesdia.secuencia}"
                                          selection="#{controlFormulasAseguradas.periodicidadSeleccionado}" selectionMode="single" widgetVar="lovPeriodicidades" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlFormulasAseguradas.filtradoPeriodicidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
@@ -332,8 +341,8 @@
 
 
 
-                    <p:dialog id="nuevoRegistroFormulasAseguradas" header="Nuevo Registro" widgetVar="nuevoRegistroFormulasAseguradas" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="340" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText id="informacion" value="Ingresar Nuevo Formula Asegurada" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                    <p:dialog id="nuevoRegistroFormulasAseguradas" header="Nuevo Registro" widgetVar="nuevoRegistroFormulasAseguradas" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="340" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText id="informacion" value="Ingresar Nuevo Concepto Soporte" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
@@ -366,14 +375,14 @@
 
 
                             <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 220px;"  actionListener="#{controlFormulasAseguradas.limpiarNuevoFormulasAseguradas()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 220px;" actionListener="#{controlFormulasAseguradas.agregarNuevoFormulasAseguradas()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 220px;"  update="nuevaTipoempresa" onclick="nuevoRegistroFormulasAseguradas.hide();"  actionListener="#{controlFormulasAseguradas.limpiarNuevoFormulasAseguradas()}"  process="@this"/>
+                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 220px;" actionListener="#{controlFormulasAseguradas.agregarNuevoFormulasAseguradas()}" process="@this" />
+                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 220px;"  update="nuevaTipoempresa" onclick="nuevoRegistroFormulasAseguradas.hide();"  actionListener="#{controlFormulasAseguradas.limpiarNuevoFormulasAseguradas()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroFormulasAseguradas" header="duplicar Registro" widgetVar="duplicarRegistroFormulasAseguradas" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="340" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="duplicarRegistroFormulasAseguradas" header="duplicar Registro" widgetVar="duplicarRegistroFormulasAseguradas" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="340" style="font-size: 12px; padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Formulas Aseguradas" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
@@ -406,8 +415,8 @@
                             <p:watermark for="duplicarPeriodicidad" value="Periodicidad" />
 
                             <p:commandButton id="limpiarD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 220px;"  actionListener="#{controlFormulasAseguradas.limpiarDuplicarFormulasAseguradas() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 220px;" actionListener="#{controlFormulasAseguradas.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 220px;"  update="duplicarTE" onclick="duplicarRegistroFormulasAseguradas.hide();" actionListener="#{controlFormulasAseguradas.limpiarDuplicarFormulasAseguradas()}"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 220px;" actionListener="#{controlFormulasAseguradas.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 220px;"  update="duplicarTE" onclick="duplicarRegistroFormulasAseguradas.hide();" actionListener="#{controlFormulasAseguradas.limpiarDuplicarFormulasAseguradas()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

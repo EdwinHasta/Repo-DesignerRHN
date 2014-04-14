@@ -1,8 +1,11 @@
 package Controlador;
 
+import ClasesAyuda.ColumnasBusquedaAvanzada;
+import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
 import Entidades.Cargos;
 import Entidades.CentrosCostos;
 import Entidades.Ciudades;
+import Entidades.ColumnasEscenarios;
 import Entidades.Contratos;
 import Entidades.Empleados;
 import Entidades.EstadosAfiliaciones;
@@ -38,6 +41,7 @@ import Entidades.VigenciasSueldos;
 import Entidades.VigenciasTiposContratos;
 import Entidades.VigenciasTiposTrabajadores;
 import Entidades.VigenciasUbicaciones;
+import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfaceAdministrar.AdministrarEmplMvrsInterface;
 import InterfaceAdministrar.AdministrarEmplVigenciasFormasPagosInterface;
 import InterfaceAdministrar.AdministrarVigenciaLocalizacionInterface;
@@ -53,12 +57,16 @@ import InterfaceAdministrar.AdministrarVigenciasTiposTrabajadoresInterface;
 import InterfaceAdministrar.AdministrarVigenciasUbicacionesInterface;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
@@ -97,6 +105,9 @@ public class ControlBusquedaAvanzada implements Serializable {
     AdministrarEmplMvrsInterface administrarEmplMvrs;
     @EJB
     AdministrarVigenciasJornadasInterface administrarVigenciaJornada;
+    //
+    @EJB
+    AdministrarBusquedaAvanzadaInterface administrarBusquedaAvanzada;
 
     //Objetos para realizar el proceso de busqueda avanzada
     //Modulo Cargos
@@ -219,7 +230,6 @@ public class ControlBusquedaAvanzada implements Serializable {
     private boolean permitirIndexVigenciaJornada;
     private Date fechaInicialJornadaLaboral, fechaFinalJornadaLaboral;
     private Date auxFechaInicialJornadaLaboral, auxFechaFinalJornadaLaboral;
-    private int tipoFechaJornadaLaboral;
     //Modulo Fecha Retiro
     private MotivosRetiros motivoRetiroBA;
     private int tabActivaFechaRetiro;
@@ -227,7 +237,6 @@ public class ControlBusquedaAvanzada implements Serializable {
     private boolean permitirIndexMotivoRetiro;
     private Date fechaInicialFechaRetiro, fechaFinalFechaRetiro;
     private Date auxFechaInicialFechaRetiro, auxFechaFinalFechaRetiro;
-    private int tipoFechaFechaRetiro;
     //LOVS 
     //Motivos Retiros
     private List<MotivosRetiros> lovMotivosRetiros;
@@ -344,13 +353,46 @@ public class ControlBusquedaAvanzada implements Serializable {
     private Date fechaParametro;
     private boolean activoFechasCargos, activoFechasCentroCosto, activoFechasSueldo, activoFechasFechaContrato, activoFechasTipoTrabajador;
     private boolean activoFechasTipoSalario, activoFechasNormaLaboral, activoFechasLegislacionLaboral, activoFechasUbicacion;
-    private boolean activoFechasAfiliacion, activoFechasFormaPago, activoFechasMvrs, activoFechasSets, activoFechasJornadaLaboral, activoFechasMotivoRetiro;
+    private boolean activoFechasAfiliacion, activoFechasFormaPago, activoFechasMvrs, activoFechasSets;
     private BigDecimal sueldoMaxSueldo, sueldoMinSueldo;
     private BigDecimal sueldoMaxMvrs, sueldoMinMvrs;
     private BigDecimal promedioMinimoSets, promedioMaximoSets;
     private String tipoMetodoSets;
+    //Resulatos de busqueda
+    private final static List<String> VALID_COLUMN_KEYS = Arrays.asList("codigo", "primeroApellido", "segundoApellido", "nombre", "columna0", "columna1", "columna2", "columna3", "columna4", "columna5", "columna6", "columna7", "columna8", "columna9");
+    //Nombres de los valores en la clase que tomaran lo valores correspondientes de las columnas que se desean agregar
+    private String columnTemplate;
+    //Valores que seran mostrados en los header de cada columna
+    private Map<String, String> mapValoresColumnas;
+    //Cargue de los valores static de los arreglos color y manufactura
+    private List<ColumnasBusquedaAvanzada> filteredListaColumnasBusquedaAvanzada;
+    //Lista de filtrado
+    private List<ColumnasBusquedaAvanzada> listaColumnasBusquedaAvanzada;
+    //Lista de carros que sera cargada por la tabla
+    private List<ColumnModel> columns = new ArrayList<ColumnModel>();
+    //Lista de las columnas que seran agregadas a la tabla
+    private String nuevaColumna;
+    //
+    private List<ColumnasEscenarios> lovColumnasEscenarios;
+    private List<ColumnasEscenarios> filtrarLovColumnasEscenarios;
+    private ColumnasEscenarios columnaEscenarioSeleccionada;
+    // 
+    private List<ParametrosQueryBusquedaAvanzada> listaParametrosQueryModulos;
+    //
+    private List<Empleados> listaEmpleadosResultados;
+    //
+    private boolean auxTabActivoCentroCosto;
+    //
+    private List<ColumnasEscenarios> listaColumnasEscenarios;
 
     public ControlBusquedaAvanzada() {
+        auxTabActivoCentroCosto = false;
+        //
+        listaColumnasEscenarios = null;
+        lovColumnasEscenarios = null;
+        columnaEscenarioSeleccionada = new ColumnasEscenarios();
+        listaEmpleadosResultados = new ArrayList<Empleados>();
+        listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
         //Fechas Modulos
         auxFechaFinalCargo = null;
         auxFechaInicialCargo = null;
@@ -404,8 +446,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         tipoFechaFormaPago = 1;
         tipoFechaMvrs = 1;
         tipoFechaSets = 1;
-        tipoFechaJornadaLaboral = 1;
-        tipoFechaFechaRetiro = 1;
         //Activo Fechas
         activoFechasCargos = true;
         activoFechasCentroCosto = true;
@@ -420,8 +460,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         activoFechasFormaPago = true;
         activoFechasMvrs = true;
         activoFechasSets = true;
-        activoFechasJornadaLaboral = true;
-        activoFechasMotivoRetiro = true;
         //POSICION MODULOS
         casillaVigenciaSueldo = -1;
         casillaVigenciaCargo = -1;
@@ -440,6 +478,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         casillaVigenciaJornadaLaboral = -1;
         casillaMotivoRetiro = -1;
         //
+        auxTabActivoCentroCosto = false;
         tabActivaCentroCosto = 0;
         tabActivaCargos = 0;
         tabActivaSueldo = 0;
@@ -567,8 +606,478 @@ public class ControlBusquedaAvanzada implements Serializable {
         auxPromedioMaximoSets = null;
         auxPromedioMinimoSets = null;
         tipoMetodoSets = "";
+        //Resulatos de busqueda
+        nuevaColumna = "";
+        columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre";
+        mapValoresColumnas = new HashMap<String, String>();
+        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
+        createStaticColumns();
     }
 
+    public void ejecutarQuery() {
+        System.out.println("Inicio el ejecutarQuery");
+        listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
+        cargueParametrosModuloCargo();
+        cargueParametrosModuloCentroCosto();
+        cargueParametrosModuloSueldo();
+        cargueParametrosModuloFechaContrato();
+        cargueParametrosModuloTipoTrabajador();
+        cargueParametrosModuloTipoSalario();
+        cargueParametrosModuloNormaLaboral();
+        cargueParametrosModuloLegislacionLaboral();
+        cargueParametrosModuloUbicacionGeografica();
+        cargueParametrosModuloAfiliaciones();
+        cargueParametrosModuloFormaPago();
+        cargueParametrosModuloMVR();
+        cargueParametrosModuloSET();
+        cargueParametrosModuloVacaciones();
+        cargueParametrosModuloFechaRetiro();
+        cargueParametrosModuloJornadaLaboral();
+        String query = administrarBusquedaAvanzada.armarQueryModulosBusquedaAvanzada(listaParametrosQueryModulos);
+        System.out.println("Query hecho por Administrar : " + query);
+        String queryEmpleado = "SELECT * FROM EMPLEADOS EM ";
+        if (!query.isEmpty()) {
+            queryEmpleado = queryEmpleado + query;
+        }
+        System.out.println("Query Final Busqueda Avanzada : " + queryEmpleado);
+        listaEmpleadosResultados = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulos(queryEmpleado);
+        updateColumns();
+    }
+
+    public void cargueParametrosModuloCargo() {
+        if (tabActivaCargos == 1) {
+            System.out.println("Inicio el cargueParametrosModuloCargo");
+            if (tipoFechaCargo == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "BCARGO", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaCargo == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "BCARGO", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGODESDE", fechaInicialCargo.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGOHASTA", fechaFinalCargo.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaCargoBA.getCargo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGO", vigenciaCargoBA.getCargo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaCargoBA.getEstructura().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "ESTRUCTURA", vigenciaCargoBA.getEstructura().getSecuencia().toString());
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("CARGO", "CENTROCOSTO", vigenciaCargoBA.getEstructura().getCentrocosto().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+            }
+            if (vigenciaCargoBA.getEmpleadojefe().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "EMPLEADOJEFE", vigenciaCargoBA.getEmpleadojefe().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaCargoBA.getMotivocambiocargo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "MOTIVOCAMBIOCARGO", vigenciaCargoBA.getMotivocambiocargo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaCargoBA.getPapel().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "PAPEL", vigenciaCargoBA.getPapel().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloCentroCosto() {
+        System.out.println("tabActivaCentroCosto : " + tabActivaCentroCosto);
+        System.out.println("auxTabActivoCentroCosto : " + auxTabActivoCentroCosto);
+        if (auxTabActivoCentroCosto == true) {
+            tabActivaCentroCosto = 1;
+        }
+        if (tabActivaCentroCosto == 1) {
+            System.out.println("Inicio el cargueParametrosModuloCentroCosto");
+            if (tipoFechaCentroCosto == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "BCENTROCOSTO", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaCentroCosto == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "BCENTROCOSTO", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "CENTROCOSTODESDE", fechaInicialCentroCosto.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "CENTROCOSTOHASTA", fechaFinalCentroCosto.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaLocalizacionBA.getLocalizacion().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "LOCALIZACION", vigenciaLocalizacionBA.getLocalizacion().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaLocalizacionBA.getMotivo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "MOTIVOLOCALIZACION", vigenciaLocalizacionBA.getMotivo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloSueldo() {
+        if (tabActivaSueldo == 1) {
+            System.out.println("Inicio el cargueParametrosModuloSueldo");
+            if (tipoFechaSueldo == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "BSUELDO", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaSueldo == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "BSUELDO", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDODESDE", fechaInicialSueldo.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDOHASTA", fechaFinalSueldo.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaSueldoBA.getTiposueldo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "TIPOSUELDO ", vigenciaSueldoBA.getTiposueldo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaSueldoBA.getMotivocambiosueldo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "MOTIVOCAMBIOSUELDO", vigenciaSueldoBA.getMotivocambiosueldo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (sueldoMinSueldo != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDOMINIMO", sueldoMinSueldo.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (sueldoMaxSueldo != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDOMAXIMO", sueldoMaxSueldo.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloFechaContrato() {
+        if (tabActivaFechaContrato == 1) {
+            System.out.println("Inicio el cargueParametrosModuloFechaContrato");
+            if (tipoFechaFechaContrato == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "BFECHACONTRATO", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaFechaContrato == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "BFECHACONTRATO", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "FECHACONTRATODESDE", fechaInicialFechaContrato.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "FECHACONTRATOHASTA", fechaFinalFechaContrato.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaTipoContratoBA.getTipocontrato().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "TIPOCONTRATO", vigenciaTipoContratoBA.getTipocontrato().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaTipoContratoBA.getMotivocontrato().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "MOTIVOCONTRATO", vigenciaTipoContratoBA.getMotivocontrato().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloTipoTrabajador() {
+        if (tabActivaTipoTrabajador == 1) {
+            System.out.println("Inicio el cargueParametrosModuloTipoTrabajador");
+            if (tipoFechaTipoTrabajador == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "BTIPOTRABAJADOR", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaTipoTrabajador == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "BTIPOTRABAJADOR", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORDESDE", fechaInicialTipoTrabajador.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORHASTA", fechaFinalTipoTrabajador.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaTipoTrabajadorBA.getTipotrabajador().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADOR", vigenciaTipoTrabajadorBA.getTipotrabajador().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloTipoSalario() {
+        if (tabActivaTipoSalario == 1) {
+            System.out.println("Inicio el cargueParametrosModuloTipoSalario");
+            if (tipoFechaTipoSalario == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "BTIPOSALARIO", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaTipoSalario == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "BTIPOSALARIO", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "TIPOSALARIODESDE", fechaInicialTipoSalario.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "TIPOSALARIOHASTA", fechaFinalTipoSalario.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaReformaLaboralBA.getReformalaboral().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "REFORMA", vigenciaReformaLaboralBA.getReformalaboral().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloNormaLaboral() {
+        if (tabActivaNormaLaboral == 1) {
+            System.out.println("Inicio el cargueParametrosModuloNormaLaboral");
+            if (tipoFechaNormaLaboral == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "BNORMALABORAL", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaNormaLaboral == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "BNORMALABORAL", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMALABORALDESDE", fechaInicialNormaLaboral.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMALABORALHASTA", fechaFinalNormaLaboral.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaNormaEmpleadoBA.getNormalaboral().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMA", vigenciaNormaEmpleadoBA.getNormalaboral().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloLegislacionLaboral() {
+        if (tabActivaLegislacionLaboral == 1) {
+            System.out.println("Inicio el cargueParametrosModuloLegislacionLaboral");
+            if (tipoFechaLegislacionLaboral == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "BLEGISLACIONLABORAL", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaLegislacionLaboral == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "BLEGISLACIONLABORAL", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALDESDE", fechaMIInicialLegislacionLaboral.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALHASTA", fechaMIFinalLegislacionLaboral.toString());
+                ParametrosQueryBusquedaAvanzada parametro4 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALDESDEF", fechaMFInicialLegislacionLaboral.toString());
+                ParametrosQueryBusquedaAvanzada parametro5 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALHASTAF", fechaMFFinalLegislacionLaboral.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+                listaParametrosQueryModulos.add(parametro4);
+                listaParametrosQueryModulos.add(parametro5);
+            }
+            if (vigenciaContratoBA.getContrato().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "CONTRATO", vigenciaContratoBA.getContrato().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloUbicacionGeografica() {
+        if (tabActivaUbicacion == 1) {
+            System.out.println("Inicio el cargueParametrosModuloUbicacionGeografica");
+            if (tipoFechaUbicacion == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("UBICACION", "BUBICACION", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaUbicacion == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("UBICACION", "BUBICACION", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACIONDESDE", fechaInicialUbicacion.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACIONHASTA", fechaFinalUbicacion.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaUbicacionBA.getUbicacion().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACION", vigenciaUbicacionBA.getUbicacion().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloAfiliaciones() {
+        if (tabActivaAfiliacion == 1) {
+            System.out.println("Inicio el cargueParametrosModuloAfiliaciones");
+            if (tipoFechaAfiliacion == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "BAFILIACIONES", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaAfiliacion == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "BAFILIACIONES", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "AFILIACIONESDESDE", fechaInicialAfiliacion.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "AFILIACIONESHASTA", fechaFinalAfiliacion.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaAfiliacionBA.getTercerosucursal().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "TERCERO", vigenciaAfiliacionBA.getTercerosucursal().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaAfiliacionBA.getTipoentidad().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "TIPOENTIDAD", vigenciaAfiliacionBA.getTipoentidad().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaAfiliacionBA.getEstadoafiliacion().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "ESTADO", vigenciaAfiliacionBA.getEstadoafiliacion().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloFormaPago() {
+        if (tabActivaFormaPago == 1) {
+            System.out.println("Inicio el cargueParametrosModuloFormaPago");
+            if (tipoFechaFormaPago == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "BFORMAPAGO", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaFormaPago == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "BFORMAPAGO", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGODESDE", fechaInicialFormaPago.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGOHASTA", fechaFinalFormaPago.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaFormaPagoBA.getFormapago().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGO", vigenciaFormaPagoBA.getFormapago().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaFormaPagoBA.getSucursal().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "SUCURSAL", vigenciaFormaPagoBA.getSucursal().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+
+        }
+    }
+
+    public void cargueParametrosModuloMVR() {
+        if (tabActivaMvrs == 1) {
+            System.out.println("Inicio el cargueParametrosModuloMVR");
+            if (tipoFechaMvrs == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("MVRS", "BMVRS", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaMvrs == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("MVRS", "BMVRS", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("MVRS", "MVRSDESDE", fechaInicialMvrs.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("MVRS", "MVRSHASTA", fechaFinalMvrs.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (mvrsBA.getMotivo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("MVRS", "MOTIVO", mvrsBA.getMotivo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (sueldoMinMvrs != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("MVRS", "SUELDOMINIMO", sueldoMinMvrs.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (sueldoMaxMvrs != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("MVRS", "SUELDOMAXIMO", sueldoMaxMvrs.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloSET() {
+        if (tabActivaSets == 1) {
+            System.out.println("Inicio el cargueParametrosModuloSET");
+            if (tipoFechaSets == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "BSETS", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaMvrs == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "BSETS", "H");
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSDESDE", fechaMIInicialSets.toString());
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSHASTA", fechaMIFinalSets.toString());
+                ParametrosQueryBusquedaAvanzada parametro4 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSDESDEF", fechaMFInicialSets.toString());
+                ParametrosQueryBusquedaAvanzada parametro5 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSHASTAF", fechaMFFinalSets.toString());
+                listaParametrosQueryModulos.add(parametro);
+                listaParametrosQueryModulos.add(parametro2);
+                listaParametrosQueryModulos.add(parametro3);
+                listaParametrosQueryModulos.add(parametro4);
+                listaParametrosQueryModulos.add(parametro5);
+            }
+            if (tipoMetodoSets != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "METODO", tipoMetodoSets);
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (promedioMinimoSets != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "PROMEDIOMINIMO", promedioMinimoSets.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (promedioMaximoSets != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "PROMEDIOMAXIMO", promedioMaximoSets.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloVacaciones() {
+        if (tabActivaVacacion == 1) {
+            System.out.println("Inicio el cargueParametrosModuloVacaciones");
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("VACACIONES", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+            if (fechaMIInicialVacacion != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHASALIDADESDE", fechaMIInicialVacacion.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (fechaMIFinalVacacion != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHASALIDAHASTA", fechaMIFinalVacacion.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (fechaMFInicialVacacion != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHAREGRESODESDE", fechaMFInicialVacacion.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (fechaMFFinalVacacion != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHAREGRESOHASTA", fechaMFFinalVacacion.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloFechaRetiro() {
+        if (tabActivaFechaRetiro == 1) {
+            System.out.println("Inicio el cargueParametrosModuloFechaRetiro");
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+            if (fechaInicialFechaRetiro != null) {
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "FECHARETIRODESDE", fechaInicialFechaRetiro.toString());
+                listaParametrosQueryModulos.add(parametro2);
+            }
+            if (fechaFinalFechaRetiro != null) {
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "FECHARETIROHASTA", fechaFinalFechaRetiro.toString());
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (motivoRetiroBA.getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "MOTIVO", motivoRetiroBA.getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloJornadaLaboral() {
+        if (tabActivaJornadaLaboral == 1) {
+            System.out.println("Inicio el cargueParametrosModuloJornadaLaboral");
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+            if (fechaInicialJornadaLaboral != null) {
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADALABORALDESDE", fechaInicialJornadaLaboral.toString());
+                listaParametrosQueryModulos.add(parametro2);
+            }
+            if (fechaFinalJornadaLaboral != null) {
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADALABORALHASTA", fechaFinalJornadaLaboral.toString());
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (vigenciaJornadaBA.getJornadatrabajo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADA", vigenciaJornadaBA.getJornadatrabajo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void cancelarModificaciones() {
         //
         vigenciaCargoBA = new VigenciasCargos();
@@ -611,6 +1120,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         vigenciaJornadaBA.setJornadatrabajo(new JornadasLaborales());
         motivoRetiroBA = new MotivosRetiros();
         //
+        auxTabActivoCentroCosto = false;
         tabActivaFechaContrato = 0;
         tabActivaCargos = 0;
         tabActivaCentroCosto = 0;
@@ -746,10 +1256,8 @@ public class ControlBusquedaAvanzada implements Serializable {
         activarCasillasFechasMvrs();
         tipoFechaSets = 1;
         activarCasillasFechasSets();
-        tipoFechaJornadaLaboral = 1;
-        activarCasillasFechasJornadaLaboral();
-        tipoFechaFechaRetiro = 1;
-        activarCasillasFechasFechaRetiro();
+        //
+        restaurar();
         //
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabViewCosto");
@@ -1646,7 +2154,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             auxFechaInicialJornadaLaboral = fechaInicialJornadaLaboral;
         }
     }
-    
+
     public void cambiarIndiceFechaRetiro(int i) {
         if (permitirIndexMotivoRetiro == true) {
             casillaVigenciaCargo = -1;
@@ -2044,7 +2552,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.update("form:tabViewSets");
                     System.out.println("Error de fechas MI modulo de sets");
-                context.execute("errorFechasIngresadas.show()");
+                    context.execute("errorFechasIngresadas.show()");
                 }
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -2150,7 +2658,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             System.out.println("Error modificarFechaFinalModuloJornadaLaboral Fechas Jornada Laboral : " + e.toString());
         }
     }
-    
+
     public void modificarFechaFinalModuloFechaRetiro(int i) {
         try {
             boolean retorno = false;
@@ -2462,7 +2970,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
         return retorno;
     }
-    
+
     public boolean validarFechasRegistroModuloFechaRetiro() {
         fechaParametro = new Date();
         fechaParametro.setYear(0);
@@ -2995,7 +3503,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
         }
     }
-    
+
     public void modificarParametrosFechaRetiro(String cualParametro, String valorConfirmar) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -3048,7 +3556,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
         }
     }
-    
+
     public void modificarPromediosModuloSets() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (promedioMaximoSets != null && promedioMinimoSets != null) {
@@ -3085,7 +3593,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         aceptar = true;
         permitirIndexMotivoRetiro = true;
     }
-    
+
     public void actualizarParametroJornadaJornadaLaboral() {
         vigenciaJornadaBA.setJornadatrabajo(jornadaLaboralSeleccionada);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3458,7 +3966,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void actualizarParametroLocalizacionCentroCosto() {
         vigenciaLocalizacionBA.setLocalizacion(estructuraSeleccionada);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabViewCentroCosto:parametroMotivoModSueldo");
+        context.update("form:tabViewCentroCosto:parametroLocalizacionModCentroCosto");
         estructuraSeleccionada = null;
         filtrarLovEstructuras = null;
         casillaVigenciaLocalizacion = -1;
@@ -3468,6 +3976,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:lovLocalizacionCentroCosto");
         context.update("form:aceptarECC");
         context.execute("LocalizacionCentroCostoDialogo.hide()");
+        System.out.println("tabActivaCentroCosto : " + tabActivaCentroCosto);
     }
 
     public void cancelarParametroLocalizacionCentroCosto() {
@@ -3491,6 +4000,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:lovMotivoCentroCosto");
         context.update("form:aceptarMCC");
         context.execute("MotivoCentroCostoDialogo.hide()");
+        System.out.println("tabActivaCentroCosto : " + tabActivaCentroCosto);
     }
 
     public void cancelarParametroMotivoCentroCosto() {
@@ -3623,6 +4133,11 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void changeTapCentroCosto() {
         System.out.println("tabActivaCentroCosto : " + tabActivaCentroCosto);
+        if (tabActivaCentroCosto == 1) {
+            auxTabActivoCentroCosto = true;
+        } else {
+            auxTabActivoCentroCosto = false;
+        }
     }
 
     public void changeTapSueldo() {
@@ -3676,7 +4191,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void changeTapJornadaLaboral() {
         System.out.println("tabActivaJornadaLaboral : " + tabActivaJornadaLaboral);
     }
-    
+
     public void changeTapFechaRetiro() {
         System.out.println("tabActivaFechaRetiro : " + tabActivaFechaRetiro);
     }
@@ -3901,36 +4416,288 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:tabViewSets:tipoFechaLegislacionLaboral");
     }
 
-    public void activarCasillasFechasJornadaLaboral() {
-        if (tipoFechaJornadaLaboral == 1) {
-            activoFechasJornadaLaboral = true;
-            fechaInicialJornadaLaboral = null;
-            fechaFinalJornadaLaboral = null;
-            auxFechaFinalJornadaLaboral = null;
-            auxFechaInicialJornadaLaboral = null;
+    //Clase de columnas que sera cargadas en la tabla
+    static public class ColumnModel implements Serializable {
+
+        private String header;
+        //Cabecera de la columna
+        private String property;
+        //Valor que sera mostrado en cada columna
+
+        public ColumnModel(String header, String property) {
+            this.header = header;
+            this.property = property;
         }
-        if (tipoFechaJornadaLaboral == 2) {
-            activoFechasJornadaLaboral = false;
+
+        public String getHeader() {
+            return header;
         }
+
+        public String getProperty() {
+            return property;
+        }
+    }
+
+    public String getColumnTemplate() {
+        return columnTemplate;
+    }
+
+    public void setColumnTemplate(String columnTemplate) {
+        this.columnTemplate = columnTemplate;
+    }
+
+    public void updateColumns() {
+        //reset table state
+        UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:resultadoBusquedaAvanzada");
+        table.setValueExpression("sortBy", null);
+        //update columns
+        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
+        int tamEmpleado = listaEmpleadosResultados.size();
+        for (int i = 0; i < tamEmpleado; i++) {
+            listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
+        }
+        String[] valoresColumnasDeseadas = columnTemplate.split(" ");
+        columns.clear();
+        mapValoresColumnas.clear();
+        if (tamEmpleado > 0) {
+            if (valoresColumnasDeseadas.length == 4) {
+                createStaticColumns();
+                cargarTablaColumnasEstaticas();
+            }
+            if (valoresColumnasDeseadas.length >= 5) {
+                createStaticColumns();
+                createDynamicColumns();
+                cargarTablaColumnasEstaticas();
+                cargarTablaColumnasDinamicas();
+            }
+        } else {
+            listaColumnasBusquedaAvanzada = null;
+            createStaticColumns();
+        }
+    }
+
+    public void createStaticColumns() {
+        String nameColumnaEstatica0 = "codigo";
+        mapValoresColumnas.put(nameColumnaEstatica0, "Codigo");
+        String nameColumnaEstatica1 = "primeroApellido";
+        mapValoresColumnas.put(nameColumnaEstatica1, "Primer_Apellido");
+        String nameColumnaEstatica2 = "segundoApellido";
+        mapValoresColumnas.put(nameColumnaEstatica2, "Segundo_Apellido");
+        String nameColumnaEstatica3 = "nombre";
+        mapValoresColumnas.put(nameColumnaEstatica3, "Nombre");
+        for (int i = 0; i < 4; i++) {
+            columns.add(i, new ColumnModel("", ""));
+        }
+        columns.set(0, new ColumnModel("Codigo".toUpperCase(), "codigo"));
+        columns.set(1, new ColumnModel("Primer_Apellido".toUpperCase(), "primeroApellido"));
+        columns.set(2, new ColumnModel("Segundo_Apellido".toUpperCase(), "segundoApellido"));
+        columns.set(3, new ColumnModel("Nombre".toUpperCase(), "nombre"));
+    }
+
+    public void createDynamicColumns() {
+        String[] valoresColumnasDeseadas = columnTemplate.split(" ");
+        for (int i = 4; i < valoresColumnasDeseadas.length; i++) {
+            String nameColumna = "columna" + String.valueOf(i);
+            mapValoresColumnas.put(nameColumna, valoresColumnasDeseadas[i]);
+        }
+        int numeroColumnas = mapValoresColumnas.size();
+        for (int i = 4; i < numeroColumnas; i++) {
+            columns.add(i, new ColumnModel("", ""));
+        }
+        for (Map.Entry<String, String> entry : mapValoresColumnas.entrySet()) {
+            String numero = entry.getKey().charAt(entry.getKey().length() - 1) + "";
+            int numeroCol = Integer.parseInt(numero);
+            if (VALID_COLUMN_KEYS.contains(entry.getKey())) {
+                columns.set(numeroCol + 4, new ColumnModel(entry.getValue().toUpperCase(), entry.getKey().toString()));
+            }
+        }
+    }
+
+    public void cargarTablaColumnasEstaticas() {
+        for (int i = 0; i < 4; i++) {
+            int tamEmpleado = listaEmpleadosResultados.size();
+            System.out.println("tamEmpleado : " + tamEmpleado);
+            if (columns.get(i).getProperty().equalsIgnoreCase("codigo")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setCodigo(listaEmpleadosResultados.get(j).getCodigoempleado().toString());
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("primeroApellido")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setPrimeroApellido(listaEmpleadosResultados.get(j).getPersona().getPrimerapellido().toUpperCase());
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("segundoApellido")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setSegundoApellido(listaEmpleadosResultados.get(j).getPersona().getSegundoapellido().toUpperCase());
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("nombre")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setNombre(listaEmpleadosResultados.get(j).getPersona().getNombre().toUpperCase());
+                }
+            }
+        }
+
+    }
+
+    public void cargarTablaColumnasDinamicas() {
+        int tam = columns.size();
+        for (int i = 4; i < tam; i++) {
+            int tamEmpleado = listaEmpleadosResultados.size();
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna0")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna0(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna1")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna1(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna2")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna2(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna3")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna3(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna4")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna4(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna5")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna5(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna6")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna6(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna7")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna7(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna8")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna8(aux);
+                }
+            }
+            if (columns.get(i).getProperty().equalsIgnoreCase("columna9")) {
+                String aux = columns.get(i).getHeader();
+                for (int j = 0; j < tamEmpleado; j++) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna9(aux);
+                }
+            }
+            //list.add(new ColumnasBusquedaAvanzada(getRandomModel(), String.valueOf(getRandomYear()), getRandomManufacturer(), getRandomColor()));
+        }
+    }
+
+    public void restaurar() {
+        mapValoresColumnas.clear();
+        columns.clear();
+        System.out.println("columns : " + columns.size());
+        System.out.println("mapValoresColumnas : " + mapValoresColumnas.size());
+        columnTemplate = "";
+        columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre ";
+        listaColumnasBusquedaAvanzada = null;
+        createStaticColumns();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabViewJornadaLaboral");
-        context.update("form:tabViewJornadaLaboral:tipoFechaJornadaLaboral");
+        context.update("form:resultadoBusquedaAvanzada");
+    }
+
+    public void dispararDialogo() {
+        String[] valoresColumnasDeseadas = columnTemplate.split(" ");
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (valoresColumnasDeseadas.length < 14) {
+            nuevaColumna = "";
+            context.update("form:ColumnaEscenarioDialogo");
+            context.execute("ColumnaEscenarioDialogo.show()");
+        } else {
+            context.execute("errorNewColumna.show()");
+            System.out.println("No se peuden agregar mas columnas");
+        }
+    }
+
+    public void agregarColumna() {
+        int tam = listaColumnasEscenarios.size();
+        if(tam == 0){
+            listaColumnasEscenarios = new ArrayList<ColumnasEscenarios>();
+        }
+        listaColumnasEscenarios.add(columnaEscenarioSeleccionada);
+        String[] palabras = columnaEscenarioSeleccionada.getNombrecolumna().split(" ");
+        nuevaColumna = palabras[0];
+        for(int i = 1;i<palabras.length;i++){
+            nuevaColumna = nuevaColumna +"_"+palabras[i];
+        }
+        columnTemplate = columnTemplate + nuevaColumna + " ";
+        nuevaColumna = "";
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:nuevaColumna");
+        context.update("form:resultadoBusquedaAvanzada");
+        context.update("form:tabViewFechaRetiro:parametroMotivoModFechaRetiro");
+        columnaEscenarioSeleccionada = null;
+        filtrarLovColumnasEscenarios = null;
+        aceptar = true;
+        context.update("form:ColumnaEscenarioDialogo");
+        context.update("form:lovColumnaEscenario");
+        context.update("form:aceptarCE");
+        context.execute("ColumnaEscenarioDialogo.hide()");
+    }
+
+    public void cancelarColumna() {
+        nuevaColumna = "";
+        columnaEscenarioSeleccionada = null;
+        filtrarLovColumnasEscenarios = null;
+        aceptar = true;
+    }
+
+    public List<ColumnasBusquedaAvanzada> getListaColumnasBusquedaAvanzada() {
+        return listaColumnasBusquedaAvanzada;
     }
     
-    public void activarCasillasFechasFechaRetiro() {
-        if (tipoFechaFechaRetiro == 1) {
-            activoFechasMotivoRetiro = true;
-            auxFechaFinalFechaRetiro = null;
-            fechaFinalFechaRetiro = null;
-            auxFechaInicialFechaRetiro = null;
-            fechaInicialFechaRetiro = null;
-        }
-        if (tipoFechaFechaRetiro == 2) {
-            activoFechasMotivoRetiro = false;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabViewFechaRetiro");
-        context.update("form:tabViewFechaRetiro:tipoFechaFechaRetiro");
+    public void setListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> lista){
+        this.listaColumnasBusquedaAvanzada = lista;
+    }
+
+    public List<ColumnModel> getColumns() {
+        return columns;
+    }
+
+    public List<ColumnasBusquedaAvanzada> getFilteredListaColumnasBusquedaAvanzada() {
+        return filteredListaColumnasBusquedaAvanzada;
+    }
+
+    public void setFilteredListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> filteredCars) {
+        this.filteredListaColumnasBusquedaAvanzada = filteredCars;
+    }
+
+    public String getNuevaColumna() {
+        return nuevaColumna;
+    }
+
+    public void setNuevaColumna(String nuevaColumna) {
+        this.nuevaColumna = nuevaColumna;
     }
 
     //GET-SET
@@ -4157,6 +4924,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void setTabActivaCentroCosto(int tabActivaCentroCosto) {
+        
         this.tabActivaCentroCosto = tabActivaCentroCosto;
     }
 
@@ -5285,14 +6053,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.fechaFinalJornadaLaboral = fechaFinalJornadaLaboral;
     }
 
-    public int getTipoFechaJornadaLaboral() {
-        return tipoFechaJornadaLaboral;
-    }
-
-    public void setTipoFechaJornadaLaboral(int tipoFechaJornadaLaboral) {
-        this.tipoFechaJornadaLaboral = tipoFechaJornadaLaboral;
-    }
-
     public List<JornadasLaborales> getLovJornadasLaborales() {
         if (lovJornadasLaborales == null) {
             lovJornadasLaborales = administrarVigenciaJornada.jornadasLaborales();
@@ -5318,14 +6078,6 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void setJornadaLaboralSeleccionada(JornadasLaborales jornadaLaboralSeleccionada) {
         this.jornadaLaboralSeleccionada = jornadaLaboralSeleccionada;
-    }
-
-    public boolean isActivoFechasJornadaLaboral() {
-        return activoFechasJornadaLaboral;
-    }
-
-    public void setActivoFechasJornadaLaboral(boolean activoFechasJornadaLaboral) {
-        this.activoFechasJornadaLaboral = activoFechasJornadaLaboral;
     }
 
     public MotivosRetiros getMotivoRetiroBA() {
@@ -5360,16 +6112,8 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.fechaFinalFechaRetiro = fechaFinalFechaRetiro;
     }
 
-    public int getTipoFechaFechaRetiro() {
-        return tipoFechaFechaRetiro;
-    }
-
-    public void setTipoFechaFechaRetiro(int tipoFechaFechaRetiro) {
-        this.tipoFechaFechaRetiro = tipoFechaFechaRetiro;
-    }
-
     public List<MotivosRetiros> getLovMotivosRetiros() {
-        if(lovMotivosRetiros == null){
+        if (lovMotivosRetiros == null) {
             lovMotivosRetiros = administrarVigenciasTiposTrabajadores.motivosRetiros();
         }
         return lovMotivosRetiros;
@@ -5395,13 +6139,36 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.motivoRetiroSeleccionado = motivoRetiroSeleccionado;
     }
 
-    public boolean isActivoFechasMotivoRetiro() {
-        return activoFechasMotivoRetiro;
+    public List<ColumnasEscenarios> getLovColumnasEscenarios() {
+        return lovColumnasEscenarios;
     }
 
-    public void setActivoFechasMotivoRetiro(boolean activoFechasMotivoRetiro) {
-        this.activoFechasMotivoRetiro = activoFechasMotivoRetiro;
+    public void setLovColumnasEscenarios(List<ColumnasEscenarios> listaColumnasEscenarios) {
+        this.lovColumnasEscenarios = listaColumnasEscenarios;
     }
-    
+
+    public List<ColumnasEscenarios> getFiltrarLovColumnasEscenarios() {
+        return filtrarLovColumnasEscenarios;
+    }
+
+    public void setFiltrarLovColumnasEscenarios(List<ColumnasEscenarios> filtrarListaColumnasEscenarios) {
+        this.filtrarLovColumnasEscenarios = filtrarListaColumnasEscenarios;
+    }
+
+    public ColumnasEscenarios getColumnaEscenarioSeleccionada() {
+        return columnaEscenarioSeleccionada;
+    }
+
+    public void setColumnaEscenarioSeleccionada(ColumnasEscenarios columnaEscenarioSeleccionada) {
+        this.columnaEscenarioSeleccionada = columnaEscenarioSeleccionada;
+    }
+
+    public List<ColumnasEscenarios> getListaColumnasEscenarios() {
+        return listaColumnasEscenarios;
+    }
+
+    public void setListaColumnasEscenarios(List<ColumnasEscenarios> listaColumnasEscenarios) {
+        this.listaColumnasEscenarios = listaColumnasEscenarios;
+    }    
 
 }
