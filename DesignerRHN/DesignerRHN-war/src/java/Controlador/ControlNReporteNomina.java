@@ -20,6 +20,7 @@ import InterfaceAdministrar.AdministarReportesInterface;
 import InterfaceAdministrar.AdministrarNReportesNominaInterface;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -30,18 +31,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.FactoryFinder;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.fill.AsynchronousFilllListener;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.context.DefaultRequestContext;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 /**
@@ -110,8 +121,8 @@ public class ControlNReporteNomina implements Serializable {
     private String altoTabla;
     private int indice;
     //EXPORTAR REPORTE
-    private StreamedContent file;
     private String pathReporteGenerado = null;
+    private String nombreReporte, tipoReporte;
     //
     private List<Inforeportes> listaInfoReportesModificados;
     //
@@ -126,6 +137,14 @@ public class ControlNReporteNomina implements Serializable {
     private BigInteger emplDesde, emplHasta;
     //
     private boolean activoMostrarTodos, activoBuscarReporte;
+    //VISUALIZAR REPORTE PDF
+    private StreamedContent reporte;
+    private String cabezeraVisor;
+    //Listener reporte
+    private AsynchronousFilllListener asistenteReporte;
+    //BANDERAS
+    private boolean estadoReporte;
+    private String resultadoReporte;
 
     public ControlNReporteNomina() {
         activoMostrarTodos = true;
@@ -173,6 +192,9 @@ public class ControlNReporteNomina implements Serializable {
         permitirIndex = true;
         altoTabla = "185";
         indice = -1;
+        reporte = new DefaultStreamedContent();
+        cabezeraVisor = null;
+        estadoReporte = false;
     }
 
     public void iniciarPagina() {
@@ -187,9 +209,14 @@ public class ControlNReporteNomina implements Serializable {
 
     @PostConstruct
     public void iniciarAdministradores() {
-        FacesContext contexto = FacesContext.getCurrentInstance();
-        HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
-        administarReportes.obtenerConexion(ses.getId());
+        try {
+            FacesContext contexto = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
+            administarReportes.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct controlNReporteNomina" + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void requisitosParaReporte() {
@@ -1416,58 +1443,205 @@ public class ControlNReporteNomina implements Serializable {
         }
     }
 
+    /*public void generarReporte() {
+     System.out.println("cambiosReporte = " + cambiosReporte);
+     if (cambiosReporte == true) {
+     String nombreReporte, tipoReporte;
+     if (tipoLista == 0) {
+     nombreReporte = listaIR.get(indice).getNombrereporte();
+     tipoReporte = listaIR.get(indice).getTipo();
+     } else {
+     nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+     tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
+     }
+     if (nombreReporte != null && tipoReporte != null) {
+     pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+     }
+     if (pathReporteGenerado != null) {
+     //context.execute("exportarReporte();");
+     System.out.println("Pasooo");
+     try {
+     exportarReporte();
+     } catch (IOException ex) {
+     Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
+     }
+     }
+     } else {
+     System.out.println("Syso antes ");
+     RequestContext context = RequestContext.getCurrentInstance();
+     context.update("form:confirmarGuardarSinSalida");
+     context.execute("confirmarGuardarSinSalida.show()");
+     }
+     //context.execute("dlg.hide()");
+     }*/
     public void generarReporte() {
-        System.out.println("cambiosReporte = " + cambiosReporte);
-        if (cambiosReporte == true) {
-            String nombreReporte, tipoReporte;
-            if (tipoLista == 0) {
-                nombreReporte = listaIR.get(indice).getNombrereporte();
-                tipoReporte = listaIR.get(indice).getTipo();
-            } else {
-                nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
-                tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
-            }
-            if (nombreReporte != null && tipoReporte != null) {
-                pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
-            }
-            if (pathReporteGenerado != null) {
-                //context.execute("exportarReporte();");
-                System.out.println("Pasooo");
-                try {
-                    exportarReporte();
-                } catch (IOException ex) {
-                    Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        /*HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+         FacesContext con = getFacesContext(request, response);*/
+        //System.out.println("Faces: " + con);
+        //FacesContext f = FacesContext.getCurrentInstance();
+        ///System.out.println("Estado respuesta: " + f.getResponseComplete());
+        RequestContext context = RequestContext.getCurrentInstance();
+        //System.out.println("Context: " + f);
+        if (tipoLista == 0) {
+            nombreReporte = listaIR.get(indice).getNombrereporte();
+            tipoReporte = listaIR.get(indice).getTipo();
         } else {
-            System.out.println("Syso antes ");
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:confirmarGuardarSinSalida");
-            context.execute("confirmarGuardarSinSalida.show()");
+            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+            tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
         }
+        if (asistenteReporte == null) {
+            asistenteReporte = listener();
+            System.out.println("Creo el listener. :D");
+        }
+        /*if (nombreReporte != null && tipoReporte != null) {
+         pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte, asistenteReporte);
+         }*/
+        if (nombreReporte != null) {
+            administarReportes.iniciarLlenadoReporte(nombreReporte, asistenteReporte);
+        }
+        /* if (pathReporteGenerado != null) {
+         //context.execute("exportarReporte();");
+         System.out.println("Pasooo");
+         /* try {
+         //exportarReporte();
+         } catch (IOException ex) {
+         Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
+        //}
         //context.execute("dlg.hide()");
+        // context.execute("esperarReporte();");
+    }
+
+    public AsynchronousFilllListener listener() {
+        return new AsynchronousFilllListener() {
+            //RequestContext context = c;
+
+            @Override
+            public void reportFinished(JasperPrint jp) {
+                System.out.println("Termino el llenado");
+                // System.out.println("Context listener: " + context);
+                try {
+                    estadoReporte = true;
+                    resultadoReporte = "Exito";
+                    /* final RequestContext currentInstance = RequestContext.getCurrentInstance();
+                     Renderer.instance().render(template);
+                     RequestContext.setCurrentInstance(currentInstance)*/
+// System.out.println("Estado respuesta listener: " + c.getResponseComplete());
+                    // context.execute("formDialogos:generandoReporte");
+                    //generarArchivoReporte(jp);
+                } catch (Exception e) {
+                    System.out.println("Errrrrroooooorrrr: " + e.toString());
+                }
+                //System.out.println("FINALIZO");
+            }
+
+            @Override
+            public void reportCancelled() {
+                System.out.println("Fue cancelado");
+                estadoReporte = true;
+                resultadoReporte = "Cancelación";
+            }
+
+            @Override
+            public void reportFillError(Throwable e) {
+                System.out.println("Error llenando el reporte");
+                if (e.getCause() != null) {
+                    pathReporteGenerado = "Error: " + e.toString() + "\n" + e.getCause().toString();
+                } else {
+                    pathReporteGenerado = "Error: " + e.toString();
+                }
+                estadoReporte = true;
+                resultadoReporte = "Se estallo";
+                /*RequestContext context = RequestContext.getCurrentInstance();
+                 context.update("formDialogos:errorGenerandoReporte");
+                 context.execute("errorGenerandoReporte.show();");*/
+            }
+        };
+    }
+
+    public void generarArchivoReporte(JasperPrint print) {
+        System.out.println("Hola pase... um0");
+        if (print != null && tipoReporte != null) {
+            System.out.println("Hola pase... um1");
+            pathReporteGenerado = administarReportes.crearArchivoReporte(print, tipoReporte);
+            System.out.println("Hola pase... um2");
+            validarDescargaReporte();
+            System.out.println("Hola pase... um3");
+        }
     }
 
     public void exportarReporte() throws IOException {
-        File reporte = new File(pathReporteGenerado);
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        FileInputStream fis = new FileInputStream(reporte);
-        byte[] bytes = new byte[1024];
-        int read;
-        if (!ctx.getResponseComplete()) {
-            String fileName = reporte.getName();
-            HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
-            ServletOutputStream out = response.getOutputStream();
+        if (pathReporteGenerado != null) {
+            File reporte = new File(pathReporteGenerado);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            FileInputStream fis = new FileInputStream(reporte);
+            byte[] bytes = new byte[1024];
+            int read;
+            if (!ctx.getResponseComplete()) {
+                String fileName = reporte.getName();
+                HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+                response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+                ServletOutputStream out = response.getOutputStream();
 
-            while ((read = fis.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
+                while ((read = fis.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                out.flush();
+                out.close();
+                System.out.println("\nDescargado\n");
+                ctx.responseComplete();
             }
-            out.flush();
-            out.close();
-            System.out.println("\nDescargado\n");
-            ctx.responseComplete();
         }
+    }
+
+    public void validarDescargaReporte() {
+        System.out.println("0");
+        RequestContext context = new DefaultRequestContext();
+        System.out.println("1");
+        context.execute("generandoReporte.hide();");
+        System.out.println("2");
+        if (pathReporteGenerado != null && !pathReporteGenerado.startsWith("Error:")) {
+            if (!tipoReporte.equals("PDF")) {
+                context.execute("descargarReporte.show();");
+            } else {
+                FileInputStream fis;
+                try {
+                    System.out.println("Ruta: " + pathReporteGenerado);
+                    fis = new FileInputStream(new File(pathReporteGenerado));
+                    reporte = new DefaultStreamedContent(fis, "application/pdf");
+                } catch (FileNotFoundException ex) {
+                    System.out.println("Error leyendo archivo");
+                    System.out.println(ex.getCause());
+                    reporte = null;
+                }
+                if (reporte != null) {
+                    cabezeraVisor = "Reporte - " + listaIR.get(indice).getNombre();
+                    context.update("formDialogos:verReportePDF");
+                    context.execute("verReportePDF.show();");
+                }
+            }
+            pathReporteGenerado = null;
+        } else {
+            context.update("formDialogos:errorGenerandoReporte");
+            context.execute("errorGenerandoReporte.show();");
+        }
+    }
+
+    /* public void esperarLLenado() {
+     while (!estadoReporte) {
+     System.out.println("Esperando que termine.....");
+     }
+     estadoReporte = false;
+     System.out.println("Resultado: " + resultadoReporte);
+     System.out.println("Fin de la historia");
+     }*/
+    public void prueba() {
+        System.out.println("TERMINOOOOOOOOOO HPTA VIDA");
+    }
+
+    public void cancelarReporte() {
+        administarReportes.cancelarReporte();
     }
 
     //GETTER AND SETTER
@@ -1885,11 +2059,6 @@ public class ControlNReporteNomina implements Serializable {
         return altoTabla;
     }
 
-    public StreamedContent getFile() {
-        System.out.println("FILE: " + file);
-        return file;
-    }
-
     public List<Inforeportes> getListaInfoReportesModificados() {
         return listaInfoReportesModificados;
     }
@@ -1962,4 +2131,47 @@ public class ControlNReporteNomina implements Serializable {
         this.activoBuscarReporte = activoBuscarReporte;
     }
 
+    public StreamedContent getReporte() {
+        return reporte;
+    }
+
+    public String getCabezeraVisor() {
+        return cabezeraVisor;
+    }
+
+    public String getPathReporteGenerado() {
+        return pathReporteGenerado;
+    }
+
+    public static FacesContext getFacesContext(HttpServletRequest request, HttpServletResponse response) {
+        // Get current FacesContext.
+        FacesContext facesContext;
+
+        System.out.println("Entro a crear un FacesContext");
+        // Create new Lifecycle.
+        LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+        Lifecycle lifecycle = lifecycleFactory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
+
+        // Create new FacesContext.
+        FacesContextFactory contextFactory = (FacesContextFactory) FactoryFinder.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
+        facesContext = contextFactory.getFacesContext(
+                request.getSession().getServletContext(), request, response, lifecycle);
+
+        // Create new View.
+        UIViewRoot view = facesContext.getApplication().getViewHandler().createView(
+                facesContext, "");
+        facesContext.setViewRoot(view);
+
+        // Set current FacesContext.
+        FacesContextWrapper.setCurrentInstance(facesContext);
+
+        return facesContext;
+    }
+
+    private static abstract class FacesContextWrapper extends FacesContext {
+
+        protected static void setCurrentInstance(FacesContext facesContext) {
+            FacesContext.setCurrentInstance(facesContext);
+        }
+    }
 }

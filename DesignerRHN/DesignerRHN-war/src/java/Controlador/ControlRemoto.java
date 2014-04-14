@@ -169,7 +169,8 @@ public class ControlRemoto implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCarpetaPersonal.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct controlremoto");
+            System.out.println("Error postconstruct controlremoto: " + e);
+            System.out.println("Causa: " + e.getCause());
         }
     }
     

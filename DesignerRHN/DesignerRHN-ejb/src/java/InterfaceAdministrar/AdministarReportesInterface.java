@@ -4,6 +4,8 @@
 package InterfaceAdministrar;
 
 import java.math.BigInteger;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.fill.AsynchronousFilllListener;
 
 /**
  * Interface encargada de determinar las operaciones lógicas necesarias para realizar reportes. 
@@ -27,5 +29,9 @@ public interface AdministarReportesInterface {
      * @param tipoReporte Tipo de reporte.
      * @return Retorna la ubicacion del reporte generado.
      */
+    public String generarReporte(String nombreReporte, String tipoReporte, AsynchronousFilllListener asistenteReporte);
     public String generarReporte(String nombreReporte, String tipoReporte);
+    public void iniciarLlenadoReporte(String nombreReporte, AsynchronousFilllListener asistenteReporte);
+    public String crearArchivoReporte(JasperPrint print, String tipoReporte);
+    public void cancelarReporte();
 }

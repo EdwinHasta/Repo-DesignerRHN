@@ -82,10 +82,9 @@
                             <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="Mostrar todos los reportes." />
                             <p:commandButton style="position: absolute; left: 460px; top: 231px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
                             <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
-                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteNomina.generarReporte()}" />
+                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteNomina.generarReporte()}" onclick="generandoReporte.show();"/>
                             <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
-                            <p:dialog header="Hola" width="400px" height="400px" widgetVar="dlg" id="dlg">
-                            </p:dialog>
+                            <p:remoteCommand name="validarDescargaReporte" actionListener="#{controlNReporteNomina.validarDescargaReporte()}"/>
                         </fieldset>
 
                         <p:toolbar style=" position: absolute; top: 30px; left: 10px;">  
@@ -798,6 +797,27 @@
                     <p:dialog id="requisitosReporte" header="#{msg['requisitosReporte']}" widgetVar="requisitosReporte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <h:outputText value="#{controlNReporteNomina.requisitosReporte}" style="overflow: auto; width: 200px; height: 40px"/>
                         <p:commandButton id="cancelarRequisitoReporte" value="#{msg['atras']}" onclick="requisitosReporte.hide();" actionListener="#{controlNReporteNomina.cancelarRequisitosReporte()}" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="generandoReporte" header="#{msg['informacion']}" widgetVar="generandoReporte"  resizable="false" draggable="false" modal="true" height="85" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/cargando.gif" width="50" height="50" style="position: absolute; left: 15px; top: 20px;"  />
+                        <h:outputText value="#{msg['generandoReporte']}" style="position: absolute; left: 80px; top: 20px; width: 240px; text-align: justify" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="generandoReporte.hide();" actionListener="#{controlNReporteNomina.cancelarReporte()}" style="position: absolute; top: 55px; left: 242px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="descargarReporte" header="#{msg['informacion']}" widgetVar="descargarReporte"  resizable="false" draggable="false" modal="true" height="90" width="330px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/descargar.gif" width="50" height="50" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['mensajeExitoReporte']}" style="position: absolute; left: 80px; top: 20px; width: 240px; text-align: justify" />
+                        <p:commandButton value="#{msg['descargar']}" actionListener="#{controlNReporteNomina.exportarReporte()}" style="position: absolute; top: 50px; left: 122px" process="@this" ajax="false" onclick="descargarReporte.hide();"/>
+                        <p:commandButton value="#{msg['cancelar']}" onclick="descargarReporte.hide();" style="position: absolute; top: 50px; left: 212px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorGenerandoReporte" header="#{msg['errorReporte']}" widgetVar="errorGenerandoReporte"  resizable="false" draggable="false" modal="true" height="85" width="350px" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlNReporteNomina.pathReporteGenerado}" style="position: absolute; left: 10px; top: 20px; width: 300px; height: 70px; overflow: auto;" readonly="true" />
+                    </p:dialog>
+
+                    <p:dialog header="#{controlNReporteNomina.cabezeraVisor}" id="verReportePDF" widgetVar="verReportePDF" width="1024px" height="530px" resizable="false" draggable="false" modal="true">
+                        <p:media value="#{controlNReporteNomina.reporte}" width="100%" height="500px" player="pdf"/>
                     </p:dialog>
 
                 </h:form>
