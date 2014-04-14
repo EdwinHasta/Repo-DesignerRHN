@@ -1777,7 +1777,7 @@ public class ControlAusentismos implements Serializable {
             if (tipoNuevo == 1) {
                 nuevoAusentismo.getClase().setDescripcion(ClaseAusentismo);
             } else if (tipoNuevo == 2) {
-                nuevoAusentismo.getClase().setDescripcion(ClaseAusentismo);
+                duplicarAusentismo.getClase().setDescripcion(ClaseAusentismo);
             }
 
             for (int i = 0; i < listaClasesAusentismos.size(); i++) {

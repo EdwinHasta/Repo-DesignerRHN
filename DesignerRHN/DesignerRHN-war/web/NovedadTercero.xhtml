@@ -916,7 +916,7 @@
                         <p:commandButton id="aceptarT" value="#{msg['aceptar']}" disabled="#{controlNovedadesTerceros.aceptar}" style="position: absolute; top: 305px; left: 150px; font-size: 12px" actionListener="#{controlNovedadesTerceros.actualizarTercerosNovedad()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasT" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesTerceros.cancelarCambioTerceros()}" update="LOVTerceros, aceptarT" process="@this">
+                        <p:commandButton id="atrasT" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; font-size: 12px" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesTerceros.cancelarCambioTercerosNovedad()}" update="LOVTerceros, aceptarT" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
 

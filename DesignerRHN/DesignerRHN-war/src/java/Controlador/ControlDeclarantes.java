@@ -809,12 +809,12 @@ public class ControlDeclarantes implements Serializable {
 
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevoDeclarante.getFechainicial() != null && nuevoDeclarante.getFechafinal() != null) {
+        if (duplicarDeclarante.getFechainicial() != null && duplicarDeclarante.getFechafinal() != null) {
             boolean validacion1 = validarFechasRegistro(1);
             if (validacion1 == true) {
                 boolean validacion2 = true;
                 for (int i = 0; i < listaDeclarantes.size(); i++) {
-                    if (nuevoDeclarante.getFechainicial().after(listaDeclarantes.get(i).getFechainicial()) && nuevoDeclarante.getFechainicial().before(listaDeclarantes.get(i).getFechafinal())) {
+                    if (duplicarDeclarante.getFechainicial().after(listaDeclarantes.get(i).getFechainicial()) && duplicarDeclarante.getFechainicial().before(listaDeclarantes.get(i).getFechafinal())) {
                         validacion2 = false;
                         break;
                     }
@@ -840,20 +840,20 @@ public class ControlDeclarantes implements Serializable {
                     //AGREGAR REGISTRO A LA LISTA NOVEDADES .
                     k++;
                     l = BigInteger.valueOf(k);
-                    nuevoDeclarante.setSecuencia(l);
-                    nuevoDeclarante.setPersona(persona);
+                    duplicarDeclarante.setSecuencia(l);
+                    duplicarDeclarante.setPersona(persona);
 
                     cambiosPagina = false;
                     context.update("form:ACEPTAR");
-                    listaDeclarantesCrear.add(nuevoDeclarante);
-                    listaDeclarantes.add(nuevoDeclarante);
-                    nuevoDeclarante = new Declarantes();
+                    listaDeclarantesCrear.add(duplicarDeclarante);
+                    listaDeclarantes.add(duplicarDeclarante);
+                    duplicarDeclarante = new Declarantes();
                     context.update("form:datosDeclarantes");
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:aceptar");
                     }
-                    context.execute("NuevoRegistroDeclarantes.hide()");
+                    context.execute("DuplicarRegistroDeclarantes.hide()");
                     index = -1;
                     secRegistro = null;
                 } else {

@@ -1526,6 +1526,16 @@ public class ControlNovedadesTerceros implements Serializable {
         cualCelda = -1;
         permitirIndex = true;
     }
+    
+    public void cancelarCambioTercerosNovedad() {
+        filtradosListaTercerosNovedad = null;
+        aceptar = true;
+        index = -1;
+        secRegistro = null;
+        tipoActualizacion = -1;
+        cualCelda = -1;
+        permitirIndex = true;
+    }
 
     public void actualizarTercerosNovedad() {
         RequestContext context = RequestContext.getCurrentInstance();
