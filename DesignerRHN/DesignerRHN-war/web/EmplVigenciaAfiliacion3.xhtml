@@ -14,10 +14,9 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplvigenciaafiliacion3" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 510px; text-align: left" >  
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplVigenciaAfiliacion3.empleado.persona.primerapellido} #{controlEmplVigenciaAfiliacion3.empleado.persona.segundoapellido} #{controlEmplVigenciaAfiliacion3.empleado.persona.nombre}">
-                        </h:outputText>
+                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplVigenciaAfiliacion3.empleado.persona.nombreCompleto}"/>
 
-                        <p:toolbar style="font-size: 12px;  position: absolute; top: 37px; left: 12px; height: 23px">  
+                        <p:toolbar style="font-size: 12px;  position: absolute; top: 37px; left: 12px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;" actionListener="#{controlEmplVigenciaAfiliacion3.guardadoGeneral()}" process="@this" />
@@ -26,7 +25,7 @@
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaAfiliacion3.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px" />
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaAfiliacion3.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
@@ -34,7 +33,7 @@
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaAfiliacion3.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEmplVigenciaAfiliacion3.verificarExportXLS()}" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
@@ -47,7 +46,7 @@
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaAfiliacion3.validarExportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
-                                <p:separator /> 
+                                <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaAfiliacion3.validarNuevoRegistro()}"  process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
@@ -67,9 +66,7 @@
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['afiliaciones']}</strong></legend>
                             <p:dataTable id="datosVAVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVA" value="#{controlEmplVigenciaAfiliacion3.listVigenciasAfiliaciones}" 
                                          filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarVigenciasAfiliaciones}" editable="true" editMode="cell" rows="8" 
-                                         scrollable="true" scrollWidth="830" scrollHeight="200" emptyMessage="#{msg['vacio']}" style="font-size: 10px; border: 1px;width: 830px"
-                                         paginator="true"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                         scrollable="true" scrollWidth="830" scrollHeight="200" emptyMessage="#{msg['vacio']}" style="font-size: 10px; border: 1px;width: 830px">
 
                                 <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="100"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; font-size: 11px">                                  

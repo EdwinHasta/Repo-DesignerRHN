@@ -107,6 +107,7 @@ public class ControlVigenciasCargos implements Serializable {
     private String registroFoco;
     //INFORMACION DEL REGISTRO QUE TIENE EL FOCO
     private String infoRegistro;
+    private String altoTabla;
     //------------------------------------------------------------------------------------------
     //CONSTRUCTOR(ES)
     //------------------------------------------------------------------------------------------
@@ -157,6 +158,7 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         //INICIALIZAR FOCO PARA EL PRIMER REGISTRO
         registroFoco = "form:datosVCEmpleado:editFecha";
+        altoTabla = "270";
 
     }
 //------------------------------------------------------------------------------------------
@@ -438,6 +440,11 @@ public class ControlVigenciasCargos implements Serializable {
     public String getInfoRegistro() {
         return infoRegistro;
     }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+    
     //------------------------------------------------------------------------------------------
     //METODOS DE MANEJO DE INFORMACION
     //------------------------------------------------------------------------------------------
@@ -883,6 +890,7 @@ public class ControlVigenciasCargos implements Serializable {
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
             vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
@@ -917,6 +925,7 @@ public class ControlVigenciasCargos implements Serializable {
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
             vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
@@ -1025,7 +1034,7 @@ public class ControlVigenciasCargos implements Serializable {
                 index = -1;
                 secRegistro = null;
             }
-            context.update("form:datosVCEmpleado");
+            //context.update("form:datosVCEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("ESTRUCTURA")) {
             if (tipoLista == 0) {
                 vigenciasCargosEmpleado.get(indice).getEstructura().setNombre(nombreEstructura);
@@ -1166,7 +1175,7 @@ public class ControlVigenciasCargos implements Serializable {
                 secRegistro = null;
             }
         }
-        context.update("form:datosVCEmpleado");
+        //context.update("form:datosVCEmpleado");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
@@ -1557,6 +1566,7 @@ public class ControlVigenciasCargos implements Serializable {
                 vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
                 vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
                 vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
                 bandera = 0;
                 filterVC = null;
@@ -1804,6 +1814,7 @@ public class ControlVigenciasCargos implements Serializable {
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
             vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
@@ -1910,6 +1921,7 @@ public class ControlVigenciasCargos implements Serializable {
             vcCentrosC.setFilterStyle("");
             vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
@@ -1926,6 +1938,7 @@ public class ControlVigenciasCargos implements Serializable {
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
             vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
