@@ -3,23 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package InterfaceAdministrar;
 
-import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
+package InterfacePersistencia;
+
 import Entidades.ColumnasEscenarios;
-import Entidades.Empleados;
 import java.util.List;
 
 /**
  *
  * @author PROYECTO01
  */
-public interface AdministrarBusquedaAvanzadaInterface {
-
-    public List<Empleados> ejecutarQueryBusquedaAvanzadaPorModulos(String query);
-
-    public String armarQueryModulosBusquedaAvanzada(List<ParametrosQueryBusquedaAvanzada> listaParametro);
+public interface PersistenciaColumnasEscenariosInterface {
     
     public List<ColumnasEscenarios> buscarColumnasEscenarios();
-
+    
 }
