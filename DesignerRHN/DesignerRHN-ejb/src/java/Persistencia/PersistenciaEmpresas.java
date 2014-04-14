@@ -51,7 +51,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         em.remove(em.merge(empresas));
     }
 
-    @Override 
+    @Override
     public List<Empresas> buscarEmpresas() {
         try {
             Query query = em.createQuery("SELECT e FROM Empresas e");
@@ -138,6 +138,32 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         } catch (Exception e) {
             System.out.println("Error buscarEmpresas PersistenciaEmpresas : " + e.toString());
             return null;
+        }
+    }
+
+    @Override
+    public String consultarPrimeraEmpresa() {
+        try {
+            String retorno = "";
+            Query query = em.createQuery("SELECT e FROM Empresas e WHERE ROWNUM=1");
+            Empresas empresa = (Empresas) query.getSingleResult();
+            if (empresa != null) {
+                String sqlQuery = "call EMPRESAS_PKG.RETENCIONYSEGSOCXPERSONA(?)";
+                Query query2 = em.createNativeQuery(sqlQuery);
+                query2.setParameter(1, empresa.getCodigo());
+                String aux = (String) query2.getSingleResult();
+                if (aux == null || aux.isEmpty()) {
+                    retorno = "N";
+                } else {
+                    retorno = "S";
+                }
+            } else {
+                retorno = "N";
+            }
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error consultarPrimeraEmpresa PersistenciaEmpresas : " + e.toString());
+            return "N";
         }
     }
 }
