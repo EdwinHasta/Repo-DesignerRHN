@@ -132,7 +132,7 @@ public class ControlPruebasUnitarias implements Serializable {
     public void cargarTabla() {
         carsSmall = new ArrayList<ColumnasBusquedaAvanzada>();
         for (int i = 0; i < 10; i++) {
-            carsSmall.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", ""));
+            carsSmall.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
         }
         int tam = columns.size();
         for (int i = 0; i < tam; i++) {
