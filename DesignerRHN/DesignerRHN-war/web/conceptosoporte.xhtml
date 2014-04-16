@@ -162,12 +162,8 @@
                             </p:commandButton>
                         </p:dialog>
 
-<<<<<<< HEAD
 
                         <p:dialog header="#{msg['operandos']}" widgetVar="cargosDialogo" draggable="false" resizable="false" closable="false" id="cargosDialogo"  
-=======
-                        <p:dialog header="Operandos" widgetVar="cargosDialogo" draggable="false" resizable="false" closable="false" id="cargosDialogo"  
->>>>>>> origin/master
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
                             <p:dataTable id="lovOperandos" style="font-size: 11px; width: 430px" var="personaOperandos" value="#{controlConceptosSoportes.listaOperandos}" rowKey="#{personaOperandos.secuencia}"
                                          selection="#{controlConceptosSoportes.operandoSeleccionado}" selectionMode="single" widgetVar="lovOperandos" scrollable="true" scrollWidth="450" scrollHeight="280"
@@ -201,11 +197,7 @@
                             </p:commandButton>
                         </p:dialog>
 
-<<<<<<< HEAD
                         <p:dialog header="#{msg['atencion']}" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
-=======
-                        <p:dialog header="ATENCIÓN...!" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
->>>>>>> origin/master
                                   showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 11px;">
                             <h:graphicImage value="Imagenes/alerta.jpg" width="60" height="70" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
@@ -307,14 +299,10 @@
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-<<<<<<< HEAD
 
 
 
                     <p:dialog id="editPais" header="#{msg['editarCodigo']}" widgetVar="editPais" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
-=======
-                    <p:dialog id="editPais" header="Editar Codigo" widgetVar="editPais" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
->>>>>>> origin/master
                         <p:inputTextarea value="#{controlConceptosSoportes.editarConceptosSoportes.concepto.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarPais" value="#{msg['atras']}" onclick="editPais.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
@@ -327,17 +315,11 @@
                         <p:commandButton id="cancelarOperandos" value="#{msg['atras']}" onclick="editOperandos.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-<<<<<<< HEAD
 
 
                     <p:dialog id="nuevoRegistroConceptosSoportes" header="#{msg['nuevoD']}" widgetVar="nuevoRegistroConceptosSoportes" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="340" style="font-size: 12px; padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="#{msg['nuevoDD']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-=======
                     
-                    <p:dialog id="nuevoRegistroConceptosSoportes" header="Nuevo Registro" widgetVar="nuevoRegistroConceptosSoportes" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="340" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText id="informacion" value="Ingresar Nuevo Concepto Soporte" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
->>>>>>> origin/master
-
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="#{msg['codigoN']}"  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
@@ -368,18 +350,12 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 310px; top: 185px;  " id="btnnuevoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlConceptosSoportes.asignarVariableOperandos(0)}"/>   
                             <p:watermark for="nuevoCargo" value="#{msg['operandoNN']}" />
 
-<<<<<<< HEAD
 
 
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 240px;"  actionListener="#{controlConceptosSoportes.limpiarNuevoConceptosSoportes()}" update="nuevaTipoempresa" process="@this"/>
                             <p:commandButton id="agregarTE" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 240px;" actionListener="#{controlConceptosSoportes.agregarNuevoConceptosSoportes()}" process="@this" />
                             <p:commandButton id="cancelarTE" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 260px; top: 240px;"  update="nuevaTipoempresa" onclick="nuevoRegistroConceptosSoportes.hide();"  actionListener="#{controlConceptosSoportes.limpiarNuevoConceptosSoportes()}"  process="@this"/>
-=======
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 240px;"  actionListener="#{controlConceptosSoportes.limpiarNuevoConceptosSoportes()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 240px;" actionListener="#{controlConceptosSoportes.agregarNuevoConceptosSoportes()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 240px;"  update="nuevaTipoempresa" onclick="nuevoRegistroConceptosSoportes.hide();"  actionListener="#{controlConceptosSoportes.limpiarNuevoConceptosSoportes()}"  process="@this"/>
->>>>>>> origin/master
                         </p:panel>
                     </p:dialog>
 
@@ -415,23 +391,14 @@
                         </p:commandButton>
                     </p:dialog> 
 
-<<<<<<< HEAD
 
 
                     <p:dialog id="duplicarRegistroConceptosSoportes" header="#{msg['duplicarD']}" widgetVar="duplicarRegistroConceptosSoportes" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="340" style="font-size: 12px; padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['duplicar']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-=======
-                    <p:dialog id="duplicarRegistroConceptosSoportes" header="duplicar Registro" widgetVar="duplicarRegistroConceptosSoportes" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="340" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Concepto Soporte" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
->>>>>>> origin/master
 
                         <p:panel id="duplicarTE" style="border: none;">
 
-<<<<<<< HEAD
                             <strong><h:outputText value="#{msg['codigoN']}"  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
-=======
-                            <strong><h:outputText value="CODIGO"  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
->>>>>>> origin/master
                             <p:inputText id="duplicarCodigo" value="#{controlConceptosSoportes.duplicarConceptosSoportes.concepto.codigo}"  style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 85px;" >
                                 <p:ajax event="click" listener="#{controlConceptosSoportes.valoresBackupAutocompletar(2,'CODIGOCONCEPTO')}" />
                                 <p:ajax event="change" listener="#{controlConceptosSoportes.autocompletarDuplicadoCodigoBigInteger('CODIGOCONCEPTO', controlConceptosSoportes.duplicarConceptosSoportes.concepto.codigo , 2)}" />
@@ -457,16 +424,10 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 310px; top: 185px;  " id="btnduplicarCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlConceptosSoportes.asignarVariableOperandos(1)}"/>   
                             <p:watermark for="duplicarCargo" value="#{msg['operandoNN']}" />
 
-<<<<<<< HEAD
 
                             <p:commandButton id="limpiarD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlConceptosSoportes.limpiarDuplicarConceptosSoportes() }" update="duplicarTE"  process="@this"/>
                             <p:commandButton id="duplicarVFP" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlConceptosSoportes.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroConceptosSoportes.hide();" actionListener="#{controlConceptosSoportes.limpiarDuplicarConceptosSoportes()}"  process="@this"/>
-=======
-                            <p:commandButton id="limpiarD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlConceptosSoportes.limpiarDuplicarConceptosSoportes() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlConceptosSoportes.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroConceptosSoportes.hide();" actionListener="#{controlConceptosSoportes.limpiarDuplicarConceptosSoportes()}"  process="@this"/>
->>>>>>> origin/master
                         </p:panel>
                     </p:dialog>
                 </h:form>
