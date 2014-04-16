@@ -294,7 +294,7 @@
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlProcesosProductivos.limpiarNuevoProcesosProductivos()}" update="nuevaTipoempresa" process="@this"/>
                             <p:commandButton id="agregarTE" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 365px;" actionListener="#{controlProcesosProductivos.agregarNuevoProcesosProductivos()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="#{msg['cancelar']}"style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="nuevaTipoempresa" onclick="nuevoRegistroProcesosProductivos.hide();"  actionListener="#{controlProcesosProductivos.limpiarNuevoProcesosProductivos()}"  process="@this"/>
+                            <p:commandButton id="cancelarTE" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 260px; top: 365px;"  update="nuevaTipoempresa" onclick="nuevoRegistroProcesosProductivos.hide();"  actionListener="#{controlProcesosProductivos.limpiarNuevoProcesosProductivos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -330,7 +330,7 @@
 
                             <p:commandButton id="limpiarD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 365px;"  actionListener="#{controlProcesosProductivos.limpiarDuplicarProcesosProductivos() }" update="duplicarTE"  process="@this"/>
                             <p:commandButton id="duplicarVFP" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 180px; top: 365px;" actionListener="#{controlProcesosProductivos.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="#{msg['cancelar']}"style="font-size: 11px; position: absolute; left: 250px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroProcesosProductivos.hide();" actionListener="#{controlProcesosProductivos.limpiarDuplicarProcesosProductivos()}"  process="@this"/>
+                            <p:commandButton id="cancelarDuplicarVFP" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 250px; top: 365px;"  update="duplicarTE" onclick="duplicarRegistroProcesosProductivos.hide();" actionListener="#{controlProcesosProductivos.limpiarDuplicarProcesosProductivos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

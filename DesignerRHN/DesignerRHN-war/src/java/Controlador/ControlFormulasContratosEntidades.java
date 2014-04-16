@@ -812,7 +812,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosFormulasContratosEntidadesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "FORMULASASEGURADAS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "FORMULASCONTRATOSENTIDADES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -822,7 +822,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosFormulasContratosEntidadesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "FORMULASASEGURADAS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "FORMULASCONTRATOSENTIDADES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -834,7 +834,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
         if (!listFormulasContratosEntidades.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "FORMULASASEGURADAS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "FORMULASCONTRATOSENTIDADES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -851,7 +851,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("FORMULASASEGURADAS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("FORMULASCONTRATOSENTIDADES")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
