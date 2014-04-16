@@ -1201,7 +1201,7 @@
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['resultadoBusqueda']}</strong></legend>
                                             
                                     <p:dataTable id="resultadoBusquedaAvanzada" widgetVar="resultadoBusquedaAvanzada" var="busqueda" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 715px;position: relative"
-                                                 value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}" scrollable="true" scrollWidth="730" scrollHeight="70"
+                                                 value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}" scrollable="true" scrollWidth="733" scrollHeight="70"
                                                  liveScroll="true" scrollRows="4" filteredValue="#{controlBusquedaAvanzada.filteredListaColumnasBusquedaAvanzada}" emptyMessage="#{msg['vacio']}"
                                                  editable="true" editMode="cell">
                                         
@@ -1218,7 +1218,7 @@
                                
                                     
                         </fieldset>
-                        <p:commandButton id="detalles" style="position: absolute; left: 780px; top: 395px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 90px" value="#{msg['detalle']}" actionListener="#{controlBusquedaAvanzada.dispararDialogo()}"/>
+                        <p:commandButton id="detalles" style="position: absolute; left: 780px; top: 395px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 90px" value="#{msg['detalle']}" actionListener="#{controlBusquedaAvanzada.dispararDialogoConfiguracionDetalle()}"/>
                         <p:tooltip style="font-size: 12px" for="detalles" value="#{msg['textDetalles']}" />
                         <p:commandButton id="ejecutarbnt" value="" style="position: absolute; left: 785px; top: 423px; background-size: 100% 100%;background-image: url(Imagenes/ejecutarBusqueda.png) ;background-repeat: no-repeat; width: 80px; height: 80px;"  update="resultadoBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.ejecutarQuery}" process="@parent"/>
                         <p:tooltip style="font-size: 12px" for="ejecutarbnt" value="#{msg['textEjecutar']}" />
@@ -1232,16 +1232,54 @@
 
 
                     </p:panel>
-
-                    <p:dialog id="nuevaColumna" header="#{msg['nuevaColumna']}" widgetVar="nuevaColumna"  resizable="false" draggable="false" modal="true" height="90" width="375px" style="font-size: 12px" closable="false">  
-                        <h:outputText value="#{msg['nombreColumna']}"  style="position: absolute; left: 10px; top: 15px;"  />
-                        <p:inputText value="#{controlPruebasUnitarias.nuevaColumna}" style="position: absolute; left: 110px; top: 10px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="nuevaColumna.hide();" actionListener="#{controlPruebasUnitarias.agregarColumna()}" style="position: absolute; top: 50px; left: 250px"/>
-                        <p:commandButton value="#{msg['cancelar']}" onclick="nuevaColumna.hide();" style="position: absolute; top: 50px; left: 50px"/>
-                    </p:dialog>
                     
                     <!-- Dialogos de la #$%& cantidad de listas de valores que hay !-->
-                                     
+
+                    
+                    <p:dialog header="#{msg['detalleConfiguracionD']}" widgetVar="ConfiguracionDetalleDialogo" draggable="false" resizable="false" closable="false" id="ConfiguracionDetalleDialogo"  
+                              showEffect="fade" hideEffect="fade" width="545" height="380" modal="true" style="font-size: 11px;">
+                        <h:outputText value="#{msg['textDetalleConfiguracion']}"/>
+                        <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 11px; width: 490px; height: 280px; border-radius: 5px; ">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['detalleBusqueda']}</strong></legend>
+                                    
+                                        <p:dataTable id="lovConfiguracionDetalle" style="font-size: 11px; width: 470px" var="detalleConfig" value="#{controlBusquedaAvanzada.listaColumnasEscenarios}" rowKey="#{detalleConfig.secuencia}"
+                                                     widgetVar="lovConfiguracionDetalle"  selectionMode="single" scrollable="true" scrollWidth="485"
+                                                     selection="#{controlBusquedaAvanzada.actualColumnaConfigDetalle}"  rowIndexVar="indiceCD" scrollHeight="180"
+                                                     filteredValue="#{controlBusquedaAvanzada.filtrarListaColumnasEscenarios}" liveScroll="true" scrollRows="9" emptyMessage="#{msg['lovvacio']}">              
+                                            <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.seleccionRegistroConfigDetalle()}"/>
+                                            <f:facet name="header">  
+                                                <h:outputText value="#{msg['buscarCDE']}"  style="position: absolute; left: 27px; top: 30px"/>  
+                                                <p:inputText id="globalFilter" onkeyup="lovConfiguracionDetalle.filter();" style="width:150px; position: relative; left: 20px;" />  
+                                            </f:facet>
+                                            <p:column filterBy="#{detalleConfig.nombrecolumna}" filterMatchMode="contains" >
+                                                <f:facet name="header">
+                                                    <h:outputText style="text-align: center" value="#{msg['campo']}" />
+                                                </f:facet>
+                                                <h:outputLabel onclick="posicionConfiguracionDetalle([{name: 'n', value: '1'}, {name: 't', value: '#{indiceCD}'}]);" value="#{detalleConfig.nombrecolumna}">
+                                                </h:outputLabel>
+                                            </p:column>
+                                            <p:column filterBy="#{detalleConfig.descripcion}" filterMatchMode="contains">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{msg['descripcion']}" />
+                                                </f:facet>
+                                                <h:outputLabel onclick="posicionConfiguracionDetalle([{name: 'n', value: '1'}, {name: 't', value: '#{indiceCD}'}]);" value="#{detalleConfig.descripcion}">
+                                                </h:outputLabel>
+                                            </p:column>
+                                        </p:dataTable>
+                                    
+                        </fieldset>
+                        <p:commandButton id="nuevaColumnaCDE" style="position: absolute;top: 360px; left: 20px" value="#{msg['nuevaColumna']}" actionListener="#{controlBusquedaAvanzada.dispararDialogoNuevaColumna()}" onclick="ConfiguracionDetalleDialogo.hide(), lovConfiguracionDetalle.clearFilters();" update="lovConfiguracionDetalle" process="@this">
+                        </p:commandButton>
+                        
+                        <p:commandButton id="borrarColumnaCDE" style="position: absolute;top: 360px; left: 150px" value="#{msg['eliminarColumna']}" actionListener="#{controlBusquedaAvanzada.eliminaRegistroConfiguracionDetalle()}"  update="lovConfiguracionDetalle" process="@this">
+                        </p:commandButton>
+                        
+                        <p:commandButton id="atrasCDE" style="position: absolute;top: 360px; left: 460px" value="#{msg['atras']}" onclick="ConfiguracionDetalleDialogo.hide(), lovConfiguracionDetalle.clearFilters();" update="lovConfiguracionDetalle" process="@this">
+                            <p:resetInput target=":form:lovConfiguracionDetalle:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:remoteCommand name="posicionConfiguracionDetalle" actionListener="#{controlBusquedaAvanzada.posicionConfiguracionDetalle()}"/>
                     
                     <p:dialog header="#{msg['columnaEscenarioD']}" widgetVar="ColumnaEscenarioDialogo" draggable="false" resizable="false" closable="false" id="ColumnaEscenarioDialogo"  
                               showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">

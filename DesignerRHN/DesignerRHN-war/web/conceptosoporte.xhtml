@@ -197,7 +197,6 @@
                             </p:commandButton>
                         </p:dialog>
 
-
                         <p:dialog header="#{msg['atencion']}" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
                                   showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 11px;">
                             <h:graphicImage value="Imagenes/alerta.jpg" width="60" height="70" style="position: absolute; left: 30px; top: 10px;"  />
@@ -360,7 +359,6 @@
                         </p:panel>
                     </p:dialog>
 
-
                     <p:dialog header="Conceptos Soportes" widgetVar="buscarCentrosCostosDialogo" draggable="false" resizable="false" closable="false" id="buscarCentrosCostosDialogo"  
                               showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
                         <p:dataTable  id="lovCentrosCostos" style="font-size: 11px; width: 430px" var="centroscostosporempresa" value="#{controlConceptosSoportes.listConceptosSoportesBoton}" rowKey="#{centroscostosporempresa.secuencia}"
@@ -400,7 +398,6 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
 
-
                             <strong><h:outputText value="#{msg['codigoN']}"  style="font-size: 12px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
                             <p:inputText id="duplicarCodigo" value="#{controlConceptosSoportes.duplicarConceptosSoportes.concepto.codigo}"  style="font-size: 12px; width: 135px; position: absolute; left: 180px; top: 85px;" >
                                 <p:ajax event="click" listener="#{controlConceptosSoportes.valoresBackupAutocompletar(2,'CODIGOCONCEPTO')}" />
@@ -439,7 +436,6 @@
                 <h:form id="formExportar">
                     <p:dataTable id="datosConceptosSoportesExportar" var="info" style="visibility: hidden; display: none;"                           
                                  value="#{controlConceptosSoportes.listConceptosSoportes}">
-
                         <p:column>  
                             <f:facet name="header"><h:outputText value="#{msg['codigoE']}" /></f:facet>
                             <h:outputText value="#{info.concepto.codigo}"/>

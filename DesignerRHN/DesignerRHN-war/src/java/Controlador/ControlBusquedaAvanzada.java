@@ -384,10 +384,17 @@ public class ControlBusquedaAvanzada implements Serializable {
     private boolean auxTabActivoCentroCosto;
     //
     private List<ColumnasEscenarios> listaColumnasEscenarios;
+    private List<ColumnasEscenarios> filtrarListaColumnasEscenarios;
+    private ColumnasEscenarios actualColumnaConfigDetalle;
+    //
+    private int indiceConfigDetalle, columnaConfigDetalle;
 
     public ControlBusquedaAvanzada() {
         auxTabActivoCentroCosto = false;
         //
+        actualColumnaConfigDetalle = new ColumnasEscenarios();
+        indiceConfigDetalle = -1;
+        columnaConfigDetalle = -1;
         listaColumnasEscenarios = null;
         lovColumnasEscenarios = null;
         columnaEscenarioSeleccionada = new ColumnasEscenarios();
@@ -1257,6 +1264,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         tipoFechaSets = 1;
         activarCasillasFechasSets();
         //
+        indiceConfigDetalle = -1;
+        columnaConfigDetalle = -1;
+        //
+        columnaEscenarioSeleccionada = null;
+        listaColumnasEscenarios = null;
+        //
         restaurar();
         //
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1276,6 +1289,10 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:tabViewVacacion");
         context.update("form:tabViewJornadaLaboral");
         context.update("form:tabViewFechaRetiro");
+        //
+        context.update("form:ConfiguracionDetalleDialogo");
+        context.update("form:lovConfiguracionDetalle");
+        context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
     }
 
     public void editarCelda() {
@@ -4495,6 +4512,17 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void createDynamicColumns() {
+        if(listaColumnasEscenarios != null){
+        for(int j = 0;j<listaColumnasEscenarios.size();j++){
+        String[] palabras = listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
+        nuevaColumna = palabras[0];
+        for(int i = 1;i<palabras.length;i++){
+            nuevaColumna = nuevaColumna +"_"+palabras[i];
+        }
+        columnTemplate = columnTemplate + nuevaColumna + " ";
+        nuevaColumna = "";
+        }
+        }
         String[] valoresColumnasDeseadas = columnTemplate.split(" ");
         for (int i = 4; i < valoresColumnasDeseadas.length; i++) {
             String nameColumna = "columna" + String.valueOf(i);
@@ -4626,7 +4654,15 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:resultadoBusquedaAvanzada");
     }
 
-    public void dispararDialogo() {
+    public void dispararDialogoConfiguracionDetalle(){
+        getListaColumnasEscenarios();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ConfiguracionDetalleDialogo");
+        context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
+        context.execute("ConfiguracionDetalleDialogo.show()");
+    }
+    
+    public void dispararDialogoNuevaColumna() {
         String[] valoresColumnasDeseadas = columnTemplate.split(" ");
         RequestContext context = RequestContext.getCurrentInstance();
         if (valoresColumnasDeseadas.length < 14) {
@@ -4638,24 +4674,23 @@ public class ControlBusquedaAvanzada implements Serializable {
             System.out.println("No se peuden agregar mas columnas");
         }
     }
+    
+    public void eliminaRegistroConfiguracionDetalle(){
+        if(indiceConfigDetalle>=0){
+            listaColumnasEscenarios.remove(indiceConfigDetalle);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:ConfiguracionDetalleDialogo");
+            context.update("form:lovConfiguracionDetalle");
+            context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
+        }
+    }
 
     public void agregarColumna() {
-        int tam = listaColumnasEscenarios.size();
-        if(tam == 0){
+        if(listaColumnasEscenarios == null){
             listaColumnasEscenarios = new ArrayList<ColumnasEscenarios>();
         }
         listaColumnasEscenarios.add(columnaEscenarioSeleccionada);
-        String[] palabras = columnaEscenarioSeleccionada.getNombrecolumna().split(" ");
-        nuevaColumna = palabras[0];
-        for(int i = 1;i<palabras.length;i++){
-            nuevaColumna = nuevaColumna +"_"+palabras[i];
-        }
-        columnTemplate = columnTemplate + nuevaColumna + " ";
-        nuevaColumna = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:nuevaColumna");
-        context.update("form:resultadoBusquedaAvanzada");
-        context.update("form:tabViewFechaRetiro:parametroMotivoModFechaRetiro");
         columnaEscenarioSeleccionada = null;
         filtrarLovColumnasEscenarios = null;
         aceptar = true;
@@ -4663,6 +4698,11 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:lovColumnaEscenario");
         context.update("form:aceptarCE");
         context.execute("ColumnaEscenarioDialogo.hide()");
+        getListaColumnasEscenarios();
+        context.update("form:ConfiguracionDetalleDialogo");
+        context.update("form:lovConfiguracionDetalle");
+        context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
+        context.execute("ConfiguracionDetalleDialogo.show()");
     }
 
     public void cancelarColumna() {
@@ -4670,6 +4710,28 @@ public class ControlBusquedaAvanzada implements Serializable {
         columnaEscenarioSeleccionada = null;
         filtrarLovColumnasEscenarios = null;
         aceptar = true;
+        dispararDialogoConfiguracionDetalle();
+    }
+    
+    public void posicionConfiguracionDetalle() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndiceConfiguracionDetalle(indice, columna);
+    }
+    
+    public void cambiarIndiceConfiguracionDetalle(int i, int c){
+        columnaConfigDetalle = c;
+        indiceConfigDetalle = i;
+        System.out.println("cambiarIndiceConfiguracionDetalle : Indice = "+indiceConfigDetalle+" --- indiceConfigDetalle : "+indiceConfigDetalle);
+    }
+    
+    public void seleccionRegistroConfigDetalle(){
+        int indice = listaColumnasBusquedaAvanzada.indexOf(actualColumnaConfigDetalle);
+        indiceConfigDetalle = indice;
     }
 
     public List<ColumnasBusquedaAvanzada> getListaColumnasBusquedaAvanzada() {
@@ -4722,7 +4784,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             lovEstructuras = administrarVigenciaCargoBusquedaAvanzada.lovEstructura();
         }
         return lovEstructuras;
-    }
+    } 
 
     public void setLovEstructuras(List<Estructuras> lovEstructurasVigenciasCargos) {
         this.lovEstructuras = lovEstructurasVigenciasCargos;
@@ -6140,6 +6202,9 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public List<ColumnasEscenarios> getLovColumnasEscenarios() {
+        if(lovColumnasEscenarios == null){
+            lovColumnasEscenarios = administrarBusquedaAvanzada.buscarColumnasEscenarios();
+        }
         return lovColumnasEscenarios;
     }
 
@@ -6170,5 +6235,24 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void setListaColumnasEscenarios(List<ColumnasEscenarios> listaColumnasEscenarios) {
         this.listaColumnasEscenarios = listaColumnasEscenarios;
     }    
+
+    public List<ColumnasEscenarios> getFiltrarListaColumnasEscenarios() {
+        return filtrarListaColumnasEscenarios;
+    }
+
+    public void setFiltrarListaColumnasEscenarios(List<ColumnasEscenarios> filtrarListaColumnasEscenarios) {
+        this.filtrarListaColumnasEscenarios = filtrarListaColumnasEscenarios;
+    }
+
+    public ColumnasEscenarios getActualColumnaConfigDetalle() {
+        return actualColumnaConfigDetalle;
+    }
+
+    public void setActualColumnaConfigDetalle(ColumnasEscenarios actualColumnaConfigDetalle) {
+        this.actualColumnaConfigDetalle = actualColumnaConfigDetalle;
+    }
+    
+    
+    
 
 }
