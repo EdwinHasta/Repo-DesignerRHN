@@ -4533,21 +4533,21 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
         for (Map.Entry<String, String> entry : mapValoresColumnas.entrySet()) {
             String numero = entry.getKey().charAt(entry.getKey().length() - 1) + "";
-            if(esNumero(numero) == true){
-            System.out.println("createDynamicColumns numero : " + numero);
-            int numeroCol = Integer.parseInt(numero);
-            if (VALID_COLUMN_KEYS.contains(entry.getKey())) {
-               columns.set(numeroCol + 4, new ColumnModel(entry.getValue().toUpperCase(), entry.getKey().toString()));
-            }
+            if (esNumero(numero) == true) {
+                System.out.println("createDynamicColumns numero : " + numero);
+                int numeroCol = Integer.parseInt(numero);
+                if (VALID_COLUMN_KEYS.contains(entry.getKey())) {
+                    columns.set(numeroCol + 4, new ColumnModel(entry.getValue().toUpperCase(), entry.getKey().toString()));
+                }
             }
         }
     }
-    
-    public boolean esNumero(String valor){
-        try{
+
+    public boolean esNumero(String valor) {
+        try {
             int numeroCol = Integer.parseInt(valor);
             return true;
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }
@@ -4585,70 +4585,45 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void cargarTablaColumnasDinamicas() {
+        List<String> campos = new ArrayList<String>();
+        for (int i = 4; i < columns.size(); i++) {
+            campos.add(columns.get(i).getHeader());
+        }
         int tam = columns.size();
         for (int i = 4; i < tam; i++) {
-            int tamEmpleado = listaEmpleadosResultados.size();
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna0")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna0(aux);
+            List<ColumnasBusquedaAvanzada> registro = administrarBusquedaAvanzada.obtenerQVWEmpleadosCorteParaEmpleado(listaEmpleadosResultados, campos);
+            for (int j = 0; j < registro.size(); j++) {
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna0")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna0(registro.get(j).getColumna0());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna1")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna1(registro.get(j).getColumna1());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna2")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna2(registro.get(j).getColumna2());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna3")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna3(registro.get(j).getColumna3());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna4")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna4(registro.get(j).getColumna4());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna5")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna5(registro.get(j).getColumna5());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna6")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna6(registro.get(j).getColumna6());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna7")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna7(registro.get(j).getColumna7());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna8")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna8(registro.get(j).getColumna8());
+                }
+                if (columns.get(i).getProperty().equalsIgnoreCase("columna9")) {
+                    listaColumnasBusquedaAvanzada.get(j).setColumna9(registro.get(j).getColumna9());
                 }
             }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna1")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna1(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna2")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna2(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna3")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna3(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna4")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna4(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna5")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna5(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna6")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna6(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna7")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna7(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna8")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna8(aux);
-                }
-            }
-            if (columns.get(i).getProperty().equalsIgnoreCase("columna9")) {
-                String aux = columns.get(i).getHeader();
-                for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna9(aux);
-                }
-            }
-            //list.add(new ColumnasBusquedaAvanzada(getRandomModel(), String.valueOf(getRandomYear()), getRandomManufacturer(), getRandomColor()));
         }
     }
 

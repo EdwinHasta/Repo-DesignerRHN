@@ -1225,8 +1225,9 @@
                         <p:commandButton id="btnbuscar" style="position: absolute; left: 780px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 90px" value="#{msg['buscar']}"  update="resultadoBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.ejecutarQuery}" process="@parent"/>
                         <p:tooltip style="font-size: 12px" for="btnbuscar" value="#{msg['textEjecutar']}" />
                         
+                        <p:commandButton style="position: absolute; left: 25px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ANADIRAPARAMETROS" value="#{msg['anadirParametros']}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 285px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlBusquedaAvanzada.cancelarModificaciones()}" icon="ui-icon-refresh" process="@this" />
                         <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" action="nominaf" process="@this" />
-                        <p:commandButton style="position: absolute; left: 285px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlBusquedaAvanzada.cancelarModificaciones()}" icon="ui-icon-refresh" process="@this" />
                         <p:commandButton style="position: absolute; left: 790px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" action="nominaf" icon="ui-icon-arrowreturnthick-1-w" process="@this" />
 
 
