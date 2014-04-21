@@ -101,12 +101,12 @@ public class Ciudades implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
+        //if (nombre == null) {
+       //     nombre = " ";
             return nombre;
-        } else {
-            return nombre.toUpperCase();
-        }
+        //} else {
+         //   return nombre.toUpperCase();
+       // }
     }
 
     public void setNombre(String nombre) {
