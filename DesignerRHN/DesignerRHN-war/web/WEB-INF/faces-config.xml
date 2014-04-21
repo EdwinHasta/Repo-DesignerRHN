@@ -73,6 +73,40 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/busquedaavanzada.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nominaf</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>busquedaAvanzada</from-outcome>
+            <to-view-id>/busquedaavanzada.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/busquedaavanzada.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>configurarColumnas</from-outcome>
+            <to-view-id>/configurarcolumnas.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/configurarcolumnas.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>busquedaAvanzada</from-outcome>
+            <to-view-id>/busquedaavanzada.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/cargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nominaf</from-outcome>
