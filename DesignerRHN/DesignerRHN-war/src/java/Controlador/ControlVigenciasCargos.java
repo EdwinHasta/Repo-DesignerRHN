@@ -115,6 +115,7 @@ public class ControlVigenciasCargos implements Serializable {
 
     public ControlVigenciasCargos() {
         System.out.println("Se creo un nuevo BakingBean YUPI!");
+        
         empleado = new Empleados();
         bandera = 0;
         //Vigencias Cargos
@@ -1061,6 +1062,7 @@ public class ControlVigenciasCargos implements Serializable {
                 permitirIndex = false;
                 context.update("form:estructurasDialog");
                 context.execute("estructurasDialog.show()");
+                context.update("form:datosVCEmpleado");
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("MOTIVOC")) {
@@ -1173,8 +1175,8 @@ public class ControlVigenciasCargos implements Serializable {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
+            context.update("form:datosVCEmpleado");
         }
-        //context.update("form:datosVCEmpleado");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
@@ -1446,8 +1448,6 @@ public class ControlVigenciasCargos implements Serializable {
                 }
             }
         }
-
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     //PRIMER REGISTRO
@@ -1621,7 +1621,6 @@ public class ControlVigenciasCargos implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFecha");
                 context.execute("editarFecha.show()");
@@ -1703,7 +1702,6 @@ public class ControlVigenciasCargos implements Serializable {
         if (index >= 0) {
 
             if (tipoLista == 0) {
-                System.out.println("Entro a vcempleado");
                 if (!listVCModificar.isEmpty() && listVCModificar.contains(vigenciasCargosEmpleado.get(index))) {
                     int modIndex = listVCModificar.indexOf(vigenciasCargosEmpleado.get(index));
                     listVCModificar.remove(modIndex);
@@ -1717,7 +1715,6 @@ public class ControlVigenciasCargos implements Serializable {
                 vigenciasCargosEmpleado.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("Entro filterVc");
                 if (!listVCModificar.isEmpty() && listVCModificar.contains(filterVC.get(index))) {
                     int modIndex = listVCModificar.indexOf(filterVC.get(index));
                     listVCModificar.remove(modIndex);
@@ -1740,7 +1737,6 @@ public class ControlVigenciasCargos implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                System.out.println("pasoo");
                 context.update("form:ACEPTAR");
             }
         }
@@ -1791,10 +1787,6 @@ public class ControlVigenciasCargos implements Serializable {
 
     public void confirmarDuplicar() {
 
-        System.out.println("Datos del duplicado: " + duplicarVC.getSecuencia() + "  " + duplicarVC.getFechavigencia());
-        if (listVCCrear.contains(duplicarVC)) {
-            System.out.println("Ya lo contengo.");
-        }
         vigenciasCargosEmpleado.add(duplicarVC);
         listVCCrear.add(duplicarVC);
         RequestContext context = RequestContext.getCurrentInstance();
