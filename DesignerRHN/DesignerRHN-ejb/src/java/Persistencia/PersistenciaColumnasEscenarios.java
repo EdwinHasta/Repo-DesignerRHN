@@ -27,7 +27,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     @Override 
     public List<ColumnasEscenarios> buscarColumnasEscenarios() {
         try {
-            Query query = em.createQuery("SELECT cc FROM ColumnasEscenarios cc ORDER BY cc.secuencia DESC");
+            Query query = em.createNativeQuery("SELECT * FROM ColumnasEscenarios cc WHERE ESCENARIO = (select SECUENCIA from escenarios where QVWNOMBRE= 'QVWEMPLEADOSCORTE') ORDER BY cc.nombrecolumna ASC",ColumnasEscenarios.class);
             List<ColumnasEscenarios> competenciascargos = query.getResultList();
             return competenciascargos;
         } catch (Exception e) {
