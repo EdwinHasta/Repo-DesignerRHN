@@ -11,6 +11,10 @@ package ClasesAyuda;
  */
 public class ColumnasBusquedaAvanzada {
 
+    private String codigo;
+    private String primeroApellido;
+    private String segundoApellido;
+    private String nombre;
     private String columna0;
     private String columna1;
     private String columna2;
@@ -22,7 +26,11 @@ public class ColumnasBusquedaAvanzada {
     private String columna8;
     private String columna9;
 
-    public ColumnasBusquedaAvanzada(String columna0, String columna1, String columna2, String columna3, String columna4, String columna5, String columna6, String columna7, String columna8, String columna9) {
+    public ColumnasBusquedaAvanzada(String codigo, String primeroApellido, String segundoApellido, String nombre, String columna0, String columna1, String columna2, String columna3, String columna4, String columna5, String columna6, String columna7, String columna8, String columna9) {
+        this.codigo = codigo;
+        this.primeroApellido = primeroApellido;
+        this.segundoApellido = segundoApellido;
+        this.nombre = nombre;
         this.columna0 = columna0;
         this.columna1 = columna1;
         this.columna2 = columna2;
@@ -36,6 +44,38 @@ public class ColumnasBusquedaAvanzada {
     }
 
     public ColumnasBusquedaAvanzada() {
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getPrimeroApellido() {
+        return primeroApellido;
+    }
+
+    public void setPrimeroApellido(String primeroApellido) {
+        this.primeroApellido = primeroApellido;
+    }
+
+    public String getSegundoApellido() {
+        return segundoApellido;
+    }
+
+    public void setSegundoApellido(String segundoApellido) {
+        this.segundoApellido = segundoApellido;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getColumna0() {

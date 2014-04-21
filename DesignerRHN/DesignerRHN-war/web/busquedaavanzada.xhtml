@@ -701,7 +701,7 @@
 
                                     <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewFormaPago" activeIndex="#{controlBusquedaAvanzada.tabActivaFormaPago}" onTabChange="#{controlBusquedaAvanzada.changeTapFormaPago()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapFormaPago()}" process="@this" />
-                                        <p:tab id="tabMensajeFormaPago" title="#{msg['infoBasico']}" >
+                                        <p:tab id="tabMensajeFormaPago" title="#{msg['infoBasica']}" >
                                             <div style="height: 60px;">
                                                 <p:scrollPanel style="width: 800px; height: 85px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textFormaPago"
@@ -1113,26 +1113,18 @@
                                                     <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
                                                 </p:inputText>
 
-                                                <p:selectOneRadio id="tipoFechaJornadaLaboral" style="position: absolute; left: 120px; top: 30px;" onchange="#{controlBusquedaAvanzada.activarCasillasFechasJornadaLaboral()}" value="#{controlBusquedaAvanzada.tipoFechaJornadaLaboral}">
-                                                    <f:selectItem itemLabel="#{msg['actual']}" itemValue="1" />
-                                                    <f:selectItem itemLabel="#{msg['historico']}" itemValue="2" />
-                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.activarCasillasFechasJornadaLaboral()}" process="@this"/>
-                                                </p:selectOneRadio>  
-
-                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 175px; top: 65px;color: #14388B;font-weight: bold"/>
-                                                <div id="posicionFechaInicialModJornadaLaboral" style="font-size: 10px; position: absolute; top: 60px; left: 225px">
-                                                    <lnk:calendar id="parametroFechaInicialModJornadaLaboral" disabled="#{controlBusquedaAvanzada.activoFechasJornadaLaboral}"
-                                                                  value="#{controlBusquedaAvanzada.fechaInicialJornadaLaboral}" >
+                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 175px; top: 45px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaInicialModJornadaLaboral" style="font-size: 10px; position: absolute; top: 40px; left: 225px">
+                                                    <lnk:calendar id="parametroFechaInicialModJornadaLaboral" value="#{controlBusquedaAvanzada.fechaInicialJornadaLaboral}" >
                                                         <p:ajax event="dateSelect" update="parametroFechaInicialModJornadaLaboral" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloJornadaLaboral(1)}" process="@this" />
                                                         <p:ajax event="change" update="parametroFechaInicialModJornadaLaboral" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloJornadaLaboral(1)}" process="@this"/>
                                                         <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceJornadaLaboral(1)}" process="@this"/>
                                                     </lnk:calendar>
                                                 </div>
 
-                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 175px; top: 90px;color: #14388B;font-weight: bold"/>
-                                                <div id="posicionFechaFinalModJornadaLaboral" style="font-size: 10px; position: absolute; top: 85px; left: 225px">
-                                                    <lnk:calendar id="parametroFechaFinalModJornadaLaboral" disabled="#{controlBusquedaAvanzada.activoFechasJornadaLaboral}"
-                                                                  value="#{controlBusquedaAvanzada.fechaFinalJornadaLaboral}" >
+                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 175px; top: 70px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaFinalModJornadaLaboral" style="font-size: 10px; position: absolute; top: 65px; left: 225px">
+                                                    <lnk:calendar id="parametroFechaFinalModJornadaLaboral" value="#{controlBusquedaAvanzada.fechaFinalJornadaLaboral}" >
                                                         <p:ajax event="dateSelect" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloJornadaLaboral(2)}" update="parametroFechaFinalModJornadaLaboral" process="@this"/>
                                                         <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloJornadaLaboral(2)}" update="parametroFechaFinalModJornadaLaboral" process="@this"/>
                                                         <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceJornadaLaboral(2)}" process="@this" />
@@ -1174,26 +1166,18 @@
                                                     <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
                                                 </p:inputText>
 
-                                                <p:selectOneRadio id="tipoFechaFechaRetiro" style="position: absolute; left: 120px; top: 30px;" onchange="#{controlBusquedaAvanzada.activarCasillasFechasFechaRetiro()}" value="#{controlBusquedaAvanzada.tipoFechaFechaRetiro}">
-                                                    <f:selectItem itemLabel="#{msg['actual']}" itemValue="1" />
-                                                    <f:selectItem itemLabel="#{msg['historico']}" itemValue="2" />
-                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.activarCasillasFechasFechaRetiro()}" process="@this"/>
-                                                </p:selectOneRadio>  
-
-                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 175px; top: 65px;color: #14388B;font-weight: bold"/>
-                                                <div id="posicionFechaInicialModFechaRetiro" style="font-size: 10px; position: absolute; top: 60px; left: 225px">
-                                                    <lnk:calendar id="parametroFechaInicialModFechaRetiro" disabled="#{controlBusquedaAvanzada.activoFechasMotivoRetiro}"
-                                                                  value="#{controlBusquedaAvanzada.fechaInicialFechaRetiro}" >
+                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 175px; top: 45px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaInicialModFechaRetiro" style="font-size: 10px; position: absolute; top: 40px; left: 225px">
+                                                    <lnk:calendar id="parametroFechaInicialModFechaRetiro" value="#{controlBusquedaAvanzada.fechaInicialFechaRetiro}" >
                                                         <p:ajax event="dateSelect" update="parametroFechaInicialModFechaRetiro" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloFechaRetiro(1)}" process="@this" />
                                                         <p:ajax event="change" update="parametroFechaInicialModFechaRetiro" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloFechaRetiro(1)}" process="@this"/>
                                                         <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceFechaRetiro(1)}" process="@this"/>
                                                     </lnk:calendar>
                                                 </div>
 
-                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 175px; top: 90px;color: #14388B;font-weight: bold"/>
-                                                <div id="posicionFechaFinalModFechaRetiro" style="font-size: 10px; position: absolute; top: 85px; left: 225px">
-                                                    <lnk:calendar id="parametroFechaFinalModFechaRetiro" disabled="#{controlBusquedaAvanzada.activoFechasMotivoRetiro}"
-                                                                  value="#{controlBusquedaAvanzada.fechaFinalFechaRetiro}" >
+                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 175px; top: 70px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaFinalModFechaRetiro" style="font-size: 10px; position: absolute; top: 65px; left: 225px">
+                                                    <lnk:calendar id="parametroFechaFinalModFechaRetiro" value="#{controlBusquedaAvanzada.fechaFinalFechaRetiro}" >
                                                         <p:ajax event="dateSelect" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloFechaRetiro(2)}" update="parametroFechaFinalModFechaRetiro" process="@this"/>
                                                         <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloFechaRetiro(2)}" update="parametroFechaFinalModFechaRetiro" process="@this"/>
                                                         <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceFechaRetiro(2)}" process="@this" />
@@ -1213,21 +1197,20 @@
                             </p:scrollPanel>
                         </fieldset>
                         
-                        <fieldset style="position: absolute; left: 10px; top: 390px; font-size: 11px; width: 830px; height: 125px; border-radius: 5px; ">
-                                    <legend style="font-size: 12px; color: blue"><strong>Resultado de Busqueda</strong></legend>
-                                    
-                                    <p:dataTable id="resultadoBusquedaAvanzada" var="car" value="#{controlBusquedaAvanzada.carsSmall}" 
-                                            filteredValue="#{controlBusquedaAvanzada.filteredCars}" draggableColumns="true"
-                                             scrollable="true" scrollWidth="830" scrollHeight="70"
-                                              liveScroll="true" scrollRows="3" style="font-size: 10px; border: 1px;width: 815px;position: relative"
-                                              rowIndexVar="indice" editable="true" editMode="cell">
+                        <fieldset style="position: absolute; left: 10px; top: 390px; font-size: 11px; width: 730px; height: 125px; border-radius: 5px; ">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['resultadoBusqueda']}</strong></legend>
+                                            
+                                    <p:dataTable id="resultadoBusquedaAvanzada" widgetVar="resultadoBusquedaAvanzada" var="busqueda" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 715px;position: relative"
+                                                 value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}" scrollable="true" scrollWidth="733" scrollHeight="70"
+                                                 liveScroll="true" scrollRows="4" filteredValue="#{controlBusquedaAvanzada.filteredListaColumnasBusquedaAvanzada}" emptyMessage="#{msg['vacio']}"
+                                                 editable="true" editMode="cell">
                                         
-                                   <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" columnIndexVar="colIndex" 
+                                   <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" width="120" columnIndexVar="colIndex" 
                                               sortBy="#{column.property}" filterBy="#{column.property}">
                                        <f:facet name="header">
                                            #{column.header}
                                        </f:facet>
-                                       <h:outputText value="#{car[column.property]}"/>
+                                       <h:outputText value="#{busqueda[column.property]}"/>
                                    </p:columns>
 
                                </p:dataTable>
@@ -1235,25 +1218,23 @@
                                
                                     
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 10px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" value="Agregar Columna" actionListener="#{controlBusquedaAvanzada.dispararDialogo()}"/>
-                        <p:commandButton style="position: absolute; left: 140px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="btn" update="resultadoBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.updateColumns}" value="Cargar Tabla" process="@parent"/>
-                               
-                        <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" process="@this" />
+                        <p:commandButton id="detalles" style="position: absolute; left: 780px; top: 395px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 90px" value="#{msg['detalle']}" action="configurarColumnas" actionListener="#{controlConfigurarColumnas.recibirListaColumnasEscenarios(controlBusquedaAvanzada.listaColumnasEscenarios)}"/>
+                        <p:tooltip style="font-size: 12px" for="detalles" value="#{msg['textDetalles']}" />
+                        <p:commandButton id="ejecutarbnt" value="" style="position: absolute; left: 785px; top: 423px; background-size: 100% 100%;background-image: url(Imagenes/ejecutarBusqueda.png) ;background-repeat: no-repeat; width: 80px; height: 80px;"  update="resultadoBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.ejecutarQuery}" process="@parent"/>
+                        <p:tooltip style="font-size: 12px" for="ejecutarbnt" value="#{msg['textEjecutar']}" />
+                        <p:commandButton id="btnbuscar" style="position: absolute; left: 780px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 90px" value="#{msg['buscar']}"  update="resultadoBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.ejecutarQuery}" process="@parent"/>
+                        <p:tooltip style="font-size: 12px" for="btnbuscar" value="#{msg['textEjecutar']}" />
+                        
+                        <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" action="nominaf" process="@this" />
                         <p:commandButton style="position: absolute; left: 285px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" actionListener="#{controlBusquedaAvanzada.cancelarModificaciones()}" icon="ui-icon-refresh" process="@this" />
-                        <p:commandButton style="position: absolute; left: 790px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" process="@this" />
+                        <p:commandButton style="position: absolute; left: 790px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" action="nominaf" icon="ui-icon-arrowreturnthick-1-w" process="@this" />
 
 
 
                     </p:panel>
-
-                    <p:dialog id="nuevaColumna" header="Nueva Columna" widgetVar="nuevaColumna"  resizable="false" draggable="false" modal="true" height="90" width="375px" style="font-size: 12px" closable="false">  
-                        <h:outputText value="Nueva Columna: "  style="position: absolute; left: 10px; top: 15px;"  />
-                        <p:inputText value="#{controlPruebasUnitarias.nuevaColumna}" style="position: absolute; left: 110px; top: 10px; font-weight:bold;" />
-                        <p:commandButton value="Aceptar" onclick="nuevaColumna.hide();" actionListener="#{controlPruebasUnitarias.agregarColumna()}" style="position: absolute; top: 50px; left: 250px"/>
-                        <p:commandButton value="Cancelar" onclick="nuevaColumna.hide();" style="position: absolute; top: 50px; left: 50px"/>
-                    </p:dialog>
                     
                     <!-- Dialogos de la #$%& cantidad de listas de valores que hay !-->
+
                     
                      <p:dialog header="#{msg['motivoRetiroD']}" widgetVar="MotivoFechaRetiroDialogo" draggable="false" resizable="false" closable="false" id="MotivoFechaRetiroDialogo"  
                               showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
@@ -1999,8 +1980,13 @@
                         <h:outputText value="#{msg['errorPromedios']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     
+                    <p:dialog id="errorNewColumna" header="#{msg['atencion']}" widgetVar="errorNewColumna"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorNewColumna']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
                 </h:form>
-
+                
                 <h:form id="formularioDialogos">
 
                     <!-- MODULO CARGOS -->
@@ -2053,7 +2039,7 @@
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaLocalizacionBA.localizacion.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarLocalizacionModCentroCosto" value="#{msg['atras']}" onclick="editarLocalizacionModCentroCosto.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-
+d
                     <p:dialog id="editarMotivoModCentroCosto" header="#{msg['atencion']}" widgetVar="editarMotivoModCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaLocalizacionBA.motivo.descripcion}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModCentroCosto" value="#{msg['atras']}" onclick="editarMotivoModCentroCosto.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>

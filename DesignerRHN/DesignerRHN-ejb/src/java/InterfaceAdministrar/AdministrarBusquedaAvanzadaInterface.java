@@ -6,6 +6,7 @@
 package InterfaceAdministrar;
 
 import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
+import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface AdministrarBusquedaAvanzadaInterface {
     public List<Empleados> ejecutarQueryBusquedaAvanzadaPorModulos(String query);
 
     public String armarQueryModulosBusquedaAvanzada(List<ParametrosQueryBusquedaAvanzada> listaParametro);
+    
+    public List<ColumnasEscenarios> buscarColumnasEscenarios();
 
 }

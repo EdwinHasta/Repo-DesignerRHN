@@ -26,8 +26,8 @@
         <Node id="Ciudades.xhtml" x="150" y="1050" zoom="true"/>
         <Node id="PaginaPrincipal.xhtml" x="650" y="750" zoom="true"/>
         <Node id="EmplComprobante.xhtml" x="650" y="600" zoom="true"/>
-        <Node id="iniciored.xhtml" x="1150" y="1050" zoom="true"/>
         <Node id="Estructura.xhtml" x="650" y="900" zoom="true"/>
+        <Node id="iniciored.xhtml" x="1150" y="1050" zoom="true"/>
         <Node id="NovedadesReemplazos.xhtml" x="400" y="600" zoom="true"/>
         <Node id="EmplVigenciaTipoTrabajador.xhtml" x="1650" y="150" zoom="true"/>
         <Node id="NReporteNomina.xhtml" x="150" y="600" zoom="true"/>
@@ -40,8 +40,8 @@
         <Node id="EmplVigenciaAfiliacion3.xhtml" x="400" y="1350" zoom="true"/>
         <Node id="PerTelefono.xhtml" x="650" y="1050" zoom="true"/>
         <Node id="Imagenes/Prueba.xhtml" x="2150" y="300" zoom="true"/>
-        <Node id="perdireccion.xhtml" x="150" y="900" zoom="true"/>
         <Node id="NovedadEmpleado.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="perdireccion.xhtml" x="150" y="900" zoom="true"/>
         <Node id="EmplVigenciaSueldo.xhtml" x="1400" y="750" zoom="true"/>
         <Node id="NominaF.xhtml" x="2650" y="150" zoom="true"/>
         <Node id="Barra.xhtml" x="1150" y="150" zoom="true"/>
